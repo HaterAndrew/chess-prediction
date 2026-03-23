@@ -714,7 +714,8 @@ class N5v4_Final:
         # At long T with very low counts, anchor toward family historical size
         # Blend of recent final (60%) and mean (40%) — recent is a better
         # predictor (MAPE 13.8%) but mean is more stable
-        if current_count < 15 and days_remaining >= 42 and use_family:
+        anchor_thresh = 15 if days_remaining < 60 else 30
+        if current_count < anchor_thresh and days_remaining >= 42 and use_family:
             fam_recent = self.family_recent_final.get(family, 0)
             fam_mean_val = self.family_mean_final.get(family, 0)
             if fam_recent > 0 and fam_mean_val > 0:
@@ -723,7 +724,7 @@ class N5v4_Final:
                 fam_anchor = fam_recent or fam_mean_val
             if fam_anchor > 0:
                 # Blend: more weight to anchor when count is very low
-                anchor_w = max(0.2, min(0.6, 1.0 - current_count / 15))
+                anchor_w = max(0.2, min(0.6, 1.0 - current_count / anchor_thresh))
                 point = anchor_w * fam_anchor + (1 - anchor_w) * point
                 # Widen CI to reflect uncertainty of anchoring
                 low = min(low, point * 0.5)

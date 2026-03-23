@@ -552,6 +552,16 @@ class N5v4_Final:
         'New York State Scholastic Championships',
     }
 
+    # Blitz/action events: massive day-of registration (100-300% growth at T<=1)
+    # Standard ratio models vastly underpredict these
+    BLITZ_FAMILIES = {
+        'World Open Blitz Championship',
+        'North American Blitz Championship',
+        'Chicago Open Blitz',
+        'Blitz at Foxwoods',
+        'World Open Action',
+    }
+
     def predict_nowcast(self, current_count, days_remaining, family, **kwargs):
         """
         Predict final count given current registrations and days remaining.
@@ -561,6 +571,7 @@ class N5v4_Final:
         # Late-surge families: dampen ratio extrapolation to avoid over-prediction
         # These events get bulk registrations in the last 1-3 days
         is_late_surge = family in self.LATE_SURGE_FAMILIES
+        is_blitz = family in self.BLITZ_FAMILIES
 
         # Use family-specific ratios if available (>= 2 data points at some T)
         use_family = False
@@ -640,7 +651,8 @@ class N5v4_Final:
 
         # For non-family fallback, cap ratios based on lead time
         # (size-matched ratios are better than global but still noisy)
-        if not use_family:
+        # Exempt blitz events — they have legitimately high short-T ratios
+        if not use_family and not is_blitz:
             if days_remaining <= 7:
                 med = min(med, 2.0)
                 lo_r = min(lo_r, 1.5)

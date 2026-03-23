@@ -351,9 +351,9 @@ class N5v4_Final:
             elif T >= 7:
                 shrink = 0.38
             elif T >= 5:
-                shrink = 0.48
+                shrink = 0.50
             else:
-                shrink = 0.60
+                shrink = 0.70
             self.ci_scale[T] *= shrink
 
         # Build pooled per-family regression: final ~ count_at_T + T + intercept

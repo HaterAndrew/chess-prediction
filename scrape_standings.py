@@ -98,6 +98,35 @@ BASE_URLS = [
     "https://archive.chessevents.com",
 ]
 
+# Archive tournament slugs (no spaces/hyphens, as used in archive index URLs)
+ARCHIVE_SLUGS = [
+    "chicagoopen",
+    "worldopen",
+    "northamericanopen",
+    "libertybell",
+    "atlanticopen",
+    "bradleyopen",
+    "clevelandopen",
+    "continentalopen",
+    "easternopen",
+    "foxwoodsopen",
+    "georgewashingtonopen",
+    "goldenstate",
+    "kingsislandopen",
+    "losangelesopen",
+    "midamericaopen",
+    "midwestclass",
+    "nationalchesscongress",
+    "pacificcoastopen",
+    "philadelphiaopen",
+    "southernopen",
+    "southwestclass",
+    "westernclass",
+    "bostonchesscongress",
+]
+
+ARCHIVE_BASE = "https://archive.chessevents.com"
+
 
 def fetch(url):
     """GET a URL, return (response, soup) or (None, None) on failure."""
@@ -320,6 +349,175 @@ def clean_section_name(raw_name):
     return name.strip()
 
 
+def _archive_canonical_name(slug):
+    """Derive a display name from an archive slug (no-spaces format)."""
+    # Insert spaces before capital-style boundaries, then title-case
+    # e.g. "chicagoopen" -> "Chicago Open", "midamericaopen" -> "Mid America Open"
+    # Use SLUG_DISPLAY first if available
+    if slug in SLUG_DISPLAY:
+        return SLUG_DISPLAY[slug]
+    # Try hyphenated form
+    hyphenated = slug
+    if hyphenated in SLUG_DISPLAY:
+        return SLUG_DISPLAY[hyphenated]
+    # Fallback: split known compound words
+    # Common pattern: words ending in "open", "class", "congress", "state"
+    name = slug
+    for suffix in ["open", "class", "congress", "state"]:
+        if name.endswith(suffix) and name != suffix:
+            name = name[: -len(suffix)] + " " + suffix
+            break
+    return name.replace("-", " ").title()
+
+
+def _extract_year_from_archive_link(href):
+    """Pull the 4-digit year from an archive year-page URL path."""
+    m = re.search(r"/(\d{4})/\d{2}/", href)
+    if m:
+        return int(m.group(1))
+    return None
+
+
+def count_archive_standings_players(soup):
+    """
+    Count player rows on an archive WordPress standings page.
+    Counts <tr> tags containing at least one <td> (skips header rows with <th>).
+    """
+    best_count = 0
+    tables = soup.find_all("table")
+    for table in tables:
+        data_rows = table.find_all("tr")
+        count = 0
+        for row in data_rows:
+            # Only count rows that have <td> cells (not header rows)
+            if row.find("td"):
+                count += 1
+        if count > best_count:
+            best_count = count
+    return best_count
+
+
+def scrape_archive_tournaments(results, scraped):
+    """
+    Scrape tournament data from archive.chessevents.com WordPress pages.
+
+    Archive URL patterns:
+      Index:     /chicagoopen/
+      Year page: /2015/05/chicago-open-2015/
+      Standings: /2015/05/chicago-open-2015-standings-open-section/
+
+    Appends to *results* list and *scraped* set in-place.
+    """
+    print("\n" + "=" * 60)
+    print("PHASE 3: Scraping archive.chessevents.com tournament pages")
+    print("=" * 60)
+
+    for archive_slug in ARCHIVE_SLUGS:
+        canonical = _archive_canonical_name(archive_slug)
+        index_url = f"{ARCHIVE_BASE}/{archive_slug}/"
+        print(f"\n[ARCHIVE] {canonical} — {index_url}")
+
+        _, index_soup = fetch(index_url)
+        if index_soup is None:
+            print(f"  -> index page not available")
+            continue
+
+        # Collect year-page links from the index page.
+        # Year pages live under /YYYY/MM/{slug}-YYYY/ on the archive domain.
+        year_links = {}  # year -> url
+        for link in index_soup.find_all("a", href=True):
+            href = link["href"]
+            # Absolute or relative — normalise to absolute
+            full_url = urljoin(index_url, href)
+            parsed = urlparse(full_url)
+            # Must be on the archive domain
+            if "archive.chessevents.com" not in parsed.netloc:
+                continue
+            year = _extract_year_from_archive_link(parsed.path)
+            if year and year not in year_links:
+                year_links[year] = full_url
+
+        if not year_links:
+            print(f"  -> no year pages found")
+            continue
+
+        print(f"  -> found year pages: {sorted(year_links.keys())}")
+
+        for year in sorted(year_links):
+            if (canonical, year) in scraped:
+                print(f"  [{canonical} {year}] already scraped, skipping")
+                continue
+
+            year_url = year_links[year]
+            print(f"\n  [{canonical} {year}] {year_url}")
+
+            _, year_soup = fetch(year_url)
+            if year_soup is None:
+                print(f"    -> year page not available")
+                continue
+
+            # Find all links containing "standings" — these point to section pages
+            section_links = []  # (section_name, url)
+            seen_urls = set()
+            for link in year_soup.find_all("a", href=True):
+                href = link["href"]
+                full = urljoin(year_url, href)
+                if "standings" not in full.lower():
+                    continue
+                if full in seen_urls:
+                    continue
+                seen_urls.add(full)
+
+                # Derive section name from the URL tail:
+                # .../chicago-open-2015-standings-open-section/
+                # -> "open-section" -> "Open Section"
+                path = urlparse(full).path.rstrip("/")
+                tail = path.rsplit("/", 1)[-1]  # last path component
+                # Extract the part after "standings-"
+                m = re.search(r"standings-(.+)$", tail, re.IGNORECASE)
+                if m:
+                    sec_slug = m.group(1)
+                    sec_name = sec_slug.replace("-", " ").title()
+                else:
+                    sec_name = link.get_text(strip=True) or "Main"
+                section_links.append((sec_name, full))
+
+            if not section_links:
+                print(f"    -> no standings links found on year page")
+                continue
+
+            print(f"    -> {len(section_links)} section standings page(s)")
+
+            section_counts = {}
+            for sec_name, sec_url in section_links:
+                _, sec_soup = fetch(sec_url)
+                if sec_soup is None:
+                    print(f"       {sec_name}: fetch failed")
+                    continue
+                players = count_archive_standings_players(sec_soup)
+                if players > 0:
+                    section_counts[sec_name] = players
+                    print(f"       {sec_name}: {players} players")
+                else:
+                    print(f"       {sec_name}: no player data")
+
+            if not section_counts:
+                print(f"    -> no player data for any section")
+                continue
+
+            total = sum(section_counts.values())
+            print(f"    => TOTAL: {total} players across {len(section_counts)} section(s)")
+
+            results.append({
+                "tournament_name": canonical,
+                "year": year,
+                "total_players": total,
+                "num_sections": len(section_counts),
+                "sections": json.dumps(section_counts, ensure_ascii=False),
+            })
+            scraped.add((canonical, year))
+
+
 def scrape_all():
     """Main scraping logic."""
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -406,6 +604,9 @@ def scrape_all():
             "sections": json.dumps(section_counts, ensure_ascii=False),
         })
         scraped.add((canonical, year))
+
+    # Phase 3: Scrape archive.chessevents.com WordPress pages
+    scrape_archive_tournaments(results, scraped)
 
     # Write output CSV
     print("\n" + "=" * 60)

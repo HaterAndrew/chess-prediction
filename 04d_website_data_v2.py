@@ -571,10 +571,10 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
         "historical": historical,
         "daily_data": [[0, 0]],
         "registration_curve": reg_curve,
-        "status": "live",
+        "status": status_label,
     }
     tournaments_out.append(t_out)
-    print(f"  Added from metadata: {mfamily} (event {event_date.strftime('%Y-%m-%d')}, {days_remaining} days out)")
+    print(f"  Added from metadata: {mfamily} (event {event_date.strftime('%Y-%m-%d')}, {days_remaining} days out, status={status_label})")
 
 # ── Add ALL historical tournament editions ──
 # Every individual edition (non-online, non-covid, >=10 entries) gets its own entry

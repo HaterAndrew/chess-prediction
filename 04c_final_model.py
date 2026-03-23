@@ -744,7 +744,7 @@ class N5v4_Final:
         elif days_remaining >= 3:
             cap_hi, cap_lo = 1.40, 0.65
         else:
-            cap_hi, cap_lo = 1.35, 0.7
+            cap_hi, cap_lo = 1.40, 0.65
         high = min(high, point * cap_hi)
         low = max(low, point * cap_lo)
 
@@ -873,6 +873,21 @@ class N5v4_Final:
         if is_blitz and days_remaining <= 3:
             min_blitz_upper = current_count * 3.5
             high = max(high, min_blitz_upper)
+
+        # Minimum CI width: at very short T, CIs can be unrealistically tight
+        # (±3% of point) due to LOO calibration on well-predicted training data.
+        # Ensure at least ±5% of point at T<=3, ±4% at T<=7.
+        if days_remaining <= 3:
+            min_half = point * 0.05
+        elif days_remaining <= 7:
+            min_half = point * 0.04
+        else:
+            min_half = 0
+        if min_half > 0:
+            if high - point < min_half:
+                high = point + min_half
+            if point - low < min_half:
+                low = point - min_half
 
         # Floor: point estimate must be >= current_count (can't un-register)
         # but allow CI lower bound to go below point for honest uncertainty

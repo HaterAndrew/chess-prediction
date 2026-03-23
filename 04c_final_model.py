@@ -307,15 +307,15 @@ class N5v4_Final:
         # more shrinkage at short T (ratios converge toward 1.0)
         for T in self.ci_scale:
             if T >= 60:
-                shrink = 0.50
+                shrink = 0.40
             elif T >= 28:
-                shrink = 0.42
-            elif T >= 7:
                 shrink = 0.38
+            elif T >= 7:
+                shrink = 0.36
             elif T >= 5:
-                shrink = 0.45
+                shrink = 0.42
             else:
-                shrink = 0.55
+                shrink = 0.50
             self.ci_scale[T] *= shrink
 
         # Build pooled per-family regression: final ~ count_at_T + T + intercept
@@ -512,12 +512,24 @@ class N5v4_Final:
             return size_matched
         return self.ratios.get('__global__', {})
 
+    # Families with late-surge registration patterns (scholastic/HS events)
+    # where standard ratio extrapolation over-predicts
+    LATE_SURGE_FAMILIES = {
+        'New York State High School Championship',
+        'New York State Scholastic Championships Grades K-8',
+        'New York State Scholastic Championships',
+    }
+
     def predict_nowcast(self, current_count, days_remaining, family, **kwargs):
         """
         Predict final count given current registrations and days remaining.
         days_remaining is in the same coordinate system as the training T
         (i.e., days before last_reg/event_end for historical data).
         """
+        # Late-surge families: dampen ratio extrapolation to avoid over-prediction
+        # These events get bulk registrations in the last 1-3 days
+        is_late_surge = family in self.LATE_SURGE_FAMILIES
+
         # Use family-specific ratios if available (>= 2 data points at some T)
         use_family = False
         fam_ratios = self.ratios.get(family, {})
@@ -610,6 +622,15 @@ class N5v4_Final:
                 lo_r = min(lo_r, 10.0)
                 hi_r = min(hi_r, 25.0)
 
+        # Late-surge damping: these events get most registrations in last 1-3 days
+        # Standard ratios over-extrapolate because early registration is very sparse
+        if is_late_surge and days_remaining > 3:
+            # Dampen ratio toward 1.0 (i.e., predict closer to current count)
+            damp = min(0.7, days_remaining / 90)  # more damping at longer T
+            med = 1.0 + (med - 1.0) * (1 - damp)
+            lo_r = 1.0 + (lo_r - 1.0) * (1 - damp)
+            hi_r = 1.0 + (hi_r - 1.0) * (1 - damp)
+
         point = current_count * med
         low = current_count * lo_r
         high = current_count * hi_r
@@ -630,13 +651,13 @@ class N5v4_Final:
         # at long lead times (where LOO leaves too few family data points)
         # Use tighter cap at shorter lead times where we have more certainty
         if days_remaining >= 60:
-            cap_hi, cap_lo = 2.5, 0.4
+            cap_hi, cap_lo = 2.0, 0.45
         elif days_remaining >= 28:
-            cap_hi, cap_lo = 2.0, 0.5
+            cap_hi, cap_lo = 1.8, 0.5
         elif days_remaining >= 7:
-            cap_hi, cap_lo = 1.6, 0.6
+            cap_hi, cap_lo = 1.5, 0.6
         else:
-            cap_hi, cap_lo = 1.4, 0.7
+            cap_hi, cap_lo = 1.35, 0.7
         high = min(high, point * cap_hi)
         low = max(low, point * cap_lo)
 

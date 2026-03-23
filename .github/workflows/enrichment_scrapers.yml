@@ -1,0 +1,64 @@
+name: Weekly Enrichment Scrapers
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'   # Every Monday at 12:00 UTC (8:00 AM ET)
+  workflow_dispatch:
+    inputs:
+      scraper:
+        description: 'Which scraper to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - fees
+          - standings
+          - historical
+
+jobs:
+  enrichment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4 pandas numpy
+
+      - name: Run fee scraper
+        if: >
+          github.event_name == 'schedule' ||
+          github.event.inputs.scraper == 'fees' ||
+          github.event.inputs.scraper == 'all'
+        run: PYTHONUNBUFFERED=1 python scrape_fees.py
+
+      - name: Run standings scraper
+        if: >
+          github.event_name == 'schedule' ||
+          github.event.inputs.scraper == 'standings' ||
+          github.event.inputs.scraper == 'all'
+        run: PYTHONUNBUFFERED=1 python scrape_standings.py
+        timeout-minutes: 60
+
+      - name: Run historical scraper
+        if: >
+          github.event_name == 'schedule' ||
+          github.event.inputs.scraper == 'historical' ||
+          github.event.inputs.scraper == 'all'
+        run: PYTHONUNBUFFERED=1 python scrape_historical.py
+        timeout-minutes: 30
+
+      - name: Commit and push enrichment data
+        run: |
+          git config user.name "CCA Bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add output/tournament_fees.csv output/historical_standings.csv output/historical_tournaments.csv
+          git diff --cached --quiet || git commit -m "Enrichment data update: $(date +%Y-%m-%d)"
+          git push

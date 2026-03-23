@@ -27,11 +27,14 @@ OUTPUT_DIR = mod.OUTPUT_DIR
 def load_data():
     summary = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_summary.csv"))
     daily = pd.read_csv(os.path.join(OUTPUT_DIR, "daily_registration_counts.csv"))
-    return summary, daily
+    hist_path = os.path.join(OUTPUT_DIR, "historical_tournaments.csv")
+    hist = pd.read_csv(hist_path) if os.path.exists(hist_path) else pd.DataFrame()
+    enrichment_lookup = mod.build_enrichment_lookup(hist)
+    return summary, daily, enrichment_lookup
 
 
 def run_expanded_blind_test():
-    summary, daily = load_data()
+    summary, daily, enrichment_lookup = load_data()
 
     # Filter to valid tournaments (same criteria as the model)
     s = summary[
@@ -71,7 +74,7 @@ def run_expanded_blind_test():
 
         model = N5v4_Final()
         try:
-            model.fit(train, train_d)
+            model.fit(train, train_d, enrichment_lookup=enrichment_lookup)
         except Exception as e:
             print(f"  Model fit failed: {e}")
             continue

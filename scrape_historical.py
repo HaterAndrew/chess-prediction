@@ -29,6 +29,7 @@ import statistics
 from datetime import datetime
 from collections import Counter
 
+import pandas as pd
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -569,18 +570,35 @@ def main():
         print(f"  Limited to first {args.limit} tournaments")
 
     # Step 2: Parse and enrich each tournament
+    # Resume logic: load existing results to skip already-processed tournaments
+    out_path = os.path.join(OUTPUT_DIR, "historical_tournaments.csv")
     results = []
+    already_done = set()
+    if os.path.exists(out_path):
+        existing = pd.read_csv(out_path)
+        for _, row in existing.iterrows():
+            already_done.add((str(row.get('tournament_name', '')), int(row.get('year', 0))))
+            results.append(row.to_dict())
+        print(f"  Resuming: {len(already_done)} tournaments already processed")
+
     n_total = len(raw_tournaments)
     n_errors = 0
     n_html_found = 0
+    n_skipped = 0
 
-    print(f"\nProcessing {n_total} tournaments...")
+    print(f"\nProcessing {n_total} tournaments...", flush=True)
     for i, record in enumerate(raw_tournaments):
         try:
             record_info = parse_tournament_record(record)
 
             # Skip records with no name
             if not record_info.get("name"):
+                continue
+
+            # Skip already-processed tournaments (resume support)
+            year = extract_year(record_info)
+            if (record_info.get("name", ""), year) in already_done:
+                n_skipped += 1
                 continue
 
             # Optionally skip HTML and/or realtime fetches
@@ -622,15 +640,16 @@ def main():
             elif n_errors == 11:
                 print("  (suppressing further error messages)")
 
-        # Progress report
+        # Progress report + incremental save every 50
         if (i + 1) % 50 == 0 or (i + 1) == n_total:
             print(f"  [{i+1}/{n_total}] processed, "
                   f"{len(results)} valid, "
                   f"{n_html_found} with HTML data, "
-                  f"{n_errors} errors")
+                  f"{n_skipped} skipped (resume), "
+                  f"{n_errors} errors", flush=True)
+            save_results(results, out_path)
 
-    # Step 3: Save results
-    out_path = os.path.join(OUTPUT_DIR, "historical_tournaments.csv")
+    # Step 3: Final save
     save_results(results, out_path)
     print(f"\nSaved {len(results)} tournaments to {out_path}")
 

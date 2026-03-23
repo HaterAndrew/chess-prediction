@@ -18,13 +18,60 @@ m04c = import_module("04c_final_model")
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 CHOP_POINTS = [120, 90, 60, 42, 28, 14, 7, 3, 1, 0]
 T_GRID = np.arange(0, 121)
-TODAY = pd.Timestamp('2026-03-23')
+TODAY = pd.Timestamp.now().normalize()
 
 # Load data
 summary = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_summary.csv"))
 daily = pd.read_csv(os.path.join(OUTPUT_DIR, "daily_registration_counts.csv"))
 meta = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_metadata.csv"))
 meta['start_date'] = pd.to_datetime(meta['start_date'])
+
+# Merge fresh scrape data into summary for 2026 tournaments
+# daily_scrape.csv has the latest entry counts from chessaction.com
+scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
+if os.path.exists(scrape_path):
+    scrape = pd.read_csv(scrape_path)
+    scrape['date'] = pd.to_datetime(scrape['date'])
+    # Get the most recent scrape per tournament
+    latest_scrape = scrape.sort_values('date').groupby('tournament_name').last().reset_index()
+    # Update 2026 tournament counts in summary
+    updated = 0
+    for _, s in latest_scrape.iterrows():
+        # Match by family name (strip year prefix "2026 " from scrape name)
+        scrape_name = s['tournament_name']
+        family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
+        mask = (summary['family'] == family_name) & (summary['tournament_year'] == 2026)
+        if mask.any() and s['entry_count'] > 0:
+            old_count = summary.loc[mask, 'final_count'].iloc[0]
+            summary.loc[mask, 'final_count'] = s['entry_count']
+            if old_count != s['entry_count']:
+                updated += 1
+    # Also update daily registration counts with latest scrape data
+    for _, s in scrape.iterrows():
+        scrape_name = s['tournament_name']
+        family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
+        tid_match = summary[(summary['family'] == family_name) & (summary['tournament_year'] == 2026)]
+        if len(tid_match) == 0:
+            continue
+        tid = tid_match.iloc[0]['tid']
+        m_match = meta[(meta['family'] == family_name) & (meta['year'] == 2026)]
+        event_date = m_match.iloc[0]['start_date'] if len(m_match) > 0 else None
+        if event_date is not None:
+            T = max((pd.to_datetime(event_date) - pd.to_datetime(s['date'])).days, 0)
+            # Check if this (tid, T) already exists
+            existing = daily[(daily['tid'] == tid) & (daily['T'] == T)]
+            if len(existing) == 0 and s['entry_count'] > 0:
+                new_row = pd.DataFrame([{
+                    'tid': tid, 'T': T, 'daily_regs': 0,
+                    'cum_regs': s['entry_count'], 'cum_pct': 1.0
+                }])
+                daily = pd.concat([daily, new_row], ignore_index=True)
+    print(f"  Merged scrape data: {updated} tournament counts updated, {len(latest_scrape)} tournaments in scrape")
+
+# Load enrichment data if available
+hist_path = os.path.join(OUTPUT_DIR, "historical_tournaments.csv")
+hist_enrich = pd.read_csv(hist_path) if os.path.exists(hist_path) else pd.DataFrame()
+enrichment_lookup = m04c.build_enrichment_lookup(hist_enrich)
 
 # Filter exclusions: online, COVID, sub-events we don't want
 EXCLUDE_FAMILIES = [
@@ -47,7 +94,8 @@ def build_ratio_model(train_summary, train_daily):
     valid = train_summary[
         (train_summary['has_timestamps']) &
         (~train_summary['is_online'].fillna(False)) &
-        (~train_summary['is_covid'].fillna(False))
+        (~train_summary['is_covid'].fillna(False)) &
+        (train_summary['tournament_year'] < 2026)  # exclude in-progress 2026 data
     ]
 
     ratios = {}  # family -> {T -> [ratio, ...]}
@@ -200,7 +248,7 @@ def get_event_date(family, year):
         avg_day = int(hist_dates.dt.day.median())
         try:
             return pd.Timestamp(year, avg_month, avg_day)
-        except:
+        except (ValueError, OverflowError):
             pass
     return None
 
@@ -231,7 +279,7 @@ train_ts = train[train['has_timestamps']]
 # - proper prediction intervals, empirical Bayes shrinkage
 # - expanding-window calibration, T-interpolation
 prod_model = m04c.N5v4_Final()
-prod_model.fit(train_ts, daily)
+prod_model.fit(train_ts, daily, enrichment_lookup=enrichment_lookup)
 
 ratios = build_ratio_model(train, daily)  # kept for families without timestamps
 curves = build_template_curves(train, daily)
@@ -344,7 +392,7 @@ for _, row in t2026.iterrows():
 
     # Get metadata
     m = meta[(meta['family'] == family) & (meta['year'] == 2026)]
-    eb_deadline = m.iloc[0]['early_bird_deadline'] if len(m) > 0 else None
+    eb_deadline = m.iloc[0]['early_bird_deadline'] if len(m) > 0 and pd.notna(m.iloc[0].get('early_bird_deadline')) else None
     eb_fee = float(m.iloc[0]['early_bird_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('early_bird_fee')) else None
     reg_fee = float(m.iloc[0]['regular_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('regular_fee')) else None
     onsite_fee = float(m.iloc[0]['onsite_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('onsite_fee')) else None
@@ -378,7 +426,9 @@ for _, row in t2026.iterrows():
             ci_lo = int(np.percentile(hist_counts, 10)) if len(hist_counts) >= 5 else int(hist_med * 0.7)
             ci_hi = int(np.percentile(hist_counts, 90)) if len(hist_counts) >= 5 else int(hist_med * 1.3)
         else:
-            point, ci_lo, ci_hi = prod_model.predict_nowcast(current_count, days_to_end, family)
+            point, ci_lo, ci_hi = prod_model.predict_nowcast(
+                current_count, days_to_end, family,
+                early_bird_deadline=eb_deadline)
             if point is None:
                 point, ci_lo, ci_hi = predict_with_lognormal_ci(current_count, days_to_end, family, ratios)
 
@@ -432,7 +482,7 @@ for _, row in t2026.iterrows():
         "year": 2026,
         "event_start": event_date.strftime('%Y-%m-%d') if event_date else None,
         "event_end": None,
-        "early_bird_deadline": str(eb_deadline)[:10] if eb_deadline else None,
+        "early_bird_deadline": str(eb_deadline)[:10] if eb_deadline and str(eb_deadline) != 'nan' else None,
         "early_bird_fee": eb_fee,
         "regular_fee": reg_fee,
         "onsite_fee": onsite_fee,
@@ -476,8 +526,24 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
     ].sort_values('tournament_year')
     historical = [{"year": int(h['tournament_year']), "count": int(h['final_count'])}
                   for _, h in hist.iterrows()]
-    # Predict from historical mean
-    hist_mean = np.mean([h['count'] for h in historical]) if historical else 100
+    # Predict from historical data with proper variance-based CI
+    hist_counts = [h['count'] for h in historical]
+    hist_mean = np.mean(hist_counts) if hist_counts else 100
+    # Sanity check: 0 registrations close to event = likely cancelled/not tracked
+    if days_remaining < 30:
+        status_label = "not_tracked"
+    else:
+        status_label = "live"
+    # Use actual variance for CI when enough history exists
+    if len(hist_counts) >= 5:
+        ci_lo = int(np.percentile(hist_counts, 10))
+        ci_hi = int(np.percentile(hist_counts, 90))
+    elif len(hist_counts) >= 2:
+        ci_lo = int(min(hist_counts))
+        ci_hi = int(max(hist_counts))
+    else:
+        ci_lo = int(hist_mean * 0.7)
+        ci_hi = int(hist_mean * 1.3)
     curve = curves.get(mfamily, curves.get('__global__', {}))
     reg_curve = []
     for db in [120, 90, 75, 60, 42, 28, 21, 14, 7, 3, 1, 0]:
@@ -492,15 +558,15 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
         "year": 2026,
         "event_start": event_date.strftime('%Y-%m-%d'),
         "event_end": str(mrow['end_date'])[:10] if pd.notna(mrow.get('end_date')) else None,
-        "early_bird_deadline": str(eb_deadline)[:10] if pd.notna(eb_deadline) else None,
+        "early_bird_deadline": str(eb_deadline)[:10] if pd.notna(eb_deadline) and str(eb_deadline) != 'nan' else None,
         "early_bird_fee": eb_fee,
         "regular_fee": reg_fee,
         "onsite_fee": onsite_fee,
         "current_count": 0,
         "days_remaining": int(days_remaining),
         "point_estimate": int(hist_mean),
-        "ci_lower": int(hist_mean * 0.7),
-        "ci_upper": int(hist_mean * 1.3),
+        "ci_lower": ci_lo,
+        "ci_upper": ci_hi,
         "ci_level": 0.80,
         "historical": historical,
         "daily_data": [[0, 0]],
@@ -597,7 +663,7 @@ n_complete = sum(1 for t in tournaments_out if t['status'] == 'complete')
 n_historical = sum(1 for t in tournaments_out if t['status'] == 'historical')
 
 output = {
-    "generated": "2026-03-23",
+    "generated": TODAY.strftime('%Y-%m-%d'),
     "model": "N5v4_Final",
     "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with ensemble shrinkage. Empirical Bayes sigma shrinkage, T-interpolation, expanding-window calibration, and plausibility guardrails.",
     "tournaments": tournaments_out

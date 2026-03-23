@@ -325,8 +325,22 @@ def scrape_all():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     results = []
-    # Track (slug, year) combos we've already successfully scraped to avoid dupes
     scraped = set()
+
+    # Resume logic: load existing results
+    if os.path.exists(OUTPUT_CSV):
+        with open(OUTPUT_CSV, "r") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                scraped.add((row["tournament_name"], int(row["year"])))
+                results.append({
+                    "tournament_name": row["tournament_name"],
+                    "year": int(row["year"]),
+                    "total_players": int(row["total_players"]),
+                    "num_sections": int(row["num_sections"]),
+                    "sections": row["sections"],
+                })
+        print(f"  Resuming: {len(scraped)} tournament-years already processed", flush=True)
 
     # Phase 1: Discover events from index/schedule/archive pages
     print("=" * 60)

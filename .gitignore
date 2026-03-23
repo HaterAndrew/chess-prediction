@@ -14,3 +14,6 @@ output/*.js
 # But keep these tracked
 !output/daily_scrape.csv
 !output/website_data.json
+!output/tournament_fees.csv
+!output/historical_standings.csv
+!output/historical_tournaments.csv

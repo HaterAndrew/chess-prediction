@@ -21,6 +21,7 @@ from scipy import stats
 from scipy.interpolate import interp1d
 import json
 import os
+import re
 import sys
 import warnings
 from datetime import datetime, timedelta
@@ -37,7 +38,7 @@ FAMILY_ALIASES = {
     'Atlantic City Open': ['Open at Foxwoods', 'Princeton Open', 'Foxwoods Open'],
 }
 T_GRID = np.arange(0, 121)
-TODAY = datetime(2026, 3, 23)
+TODAY = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 # Typical tournament duration (days between event_start and last_reg/event_end)
 TYPICAL_DURATION = 4
 
@@ -46,7 +47,39 @@ def load_data():
     summary = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_summary.csv"))
     daily = pd.read_csv(os.path.join(OUTPUT_DIR, "daily_registration_counts.csv"))
     meta = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_metadata.csv"))
-    return summary, daily, meta
+    # Load enrichment data if available
+    hist_path = os.path.join(OUTPUT_DIR, "historical_tournaments.csv")
+    hist = pd.read_csv(hist_path) if os.path.exists(hist_path) else pd.DataFrame()
+    return summary, daily, meta, hist
+
+
+def build_enrichment_lookup(hist):
+    """Build (family, year) -> enrichment dict from historical_tournaments.csv."""
+    lookup = {}
+    if hist.empty:
+        return lookup
+    for _, row in hist.iterrows():
+        name = str(row.get('tournament_name', ''))
+        year = int(row.get('year', 0))
+        # Strip year prefix to get family (e.g., "2025 Chicago Open" -> "Chicago Open")
+        family = re.sub(r'^\d{4}\s+', '', name).strip()
+        if not family or not year:
+            continue
+        lookup[(family, year)] = {
+            'total_entries': row.get('total_entries', 0),
+            'withdrawal_count': row.get('withdrawal_count', 0),
+            'unique_states': row.get('unique_states', 0),
+            'num_sections': 0,  # from sections JSON
+        }
+        # Parse sections JSON for section count
+        sections_str = row.get('sections', '')
+        if sections_str and isinstance(sections_str, str) and sections_str.strip():
+            try:
+                sections = json.loads(sections_str)
+                lookup[(family, year)]['num_sections'] = len(sections)
+            except (json.JSONDecodeError, TypeError):
+                pass
+    return lookup
 
 
 def load_meta_lookup(meta):
@@ -178,8 +211,9 @@ class N5v4_Final:
         self.reg_params = {}  # family -> [slope_count, slope_T, intercept]
         self.family_n_editions = {}  # family -> count of training editions
 
-    def fit(self, summary, daily):
+    def fit(self, summary, daily, enrichment_lookup=None):
         """Build ratios from completed, non-online, non-covid tournaments."""
+        self.enrichment = enrichment_lookup or {}
         valid = summary[
             (summary['has_timestamps']) &
             (~summary.get('is_online', pd.Series(False)).fillna(False)) &
@@ -229,6 +263,20 @@ class N5v4_Final:
         # Track number of training editions per family (for CI widening)
         self.family_n_editions = valid.groupby('family').size().to_dict()
 
+        # Compute per-family withdrawal rates from enrichment data
+        self.family_withdrawal_rates = {}
+        if self.enrichment:
+            from collections import defaultdict
+            wd_data = defaultdict(list)
+            for (fam, yr), info in self.enrichment.items():
+                total = info.get('total_entries', 0)
+                wd = info.get('withdrawal_count', 0)
+                if total > 0 and wd > 0 and isinstance(wd, (int, float)):
+                    wd_data[fam].append(wd / total)
+            for fam, rates in wd_data.items():
+                if rates:
+                    self.family_withdrawal_rates[fam] = np.median(rates)
+
         # Compute global log-sigma per T for empirical Bayes shrinkage
         for T in CHOP_POINTS:
             g_rats = self.global_ratios.get(T, [])
@@ -241,10 +289,20 @@ class N5v4_Final:
         # so 2024-2025 serve as honest validation for 2026 production predictions
         self._calibrate(valid, daily, cal_max_year=2024)
 
-        # Shrink CI scales for ensemble (ratio CIs are too wide when centered on
-        # the better ensemble point estimate)
+        # T-dependent CI shrinkage: less shrinkage at long T (more uncertainty),
+        # more shrinkage at short T (ratios converge toward 1.0)
         for T in self.ci_scale:
-            self.ci_scale[T] *= self.CI_ENSEMBLE_SHRINK
+            if T >= 60:
+                shrink = 0.50
+            elif T >= 28:
+                shrink = 0.42
+            elif T >= 7:
+                shrink = 0.38
+            elif T >= 5:
+                shrink = 0.45
+            else:
+                shrink = 0.55
+            self.ci_scale[T] *= shrink
 
         # Build pooled per-family regression: final ~ count_at_T + T + intercept
         # Pooling across all T values gives more data points and lets the model
@@ -593,11 +651,16 @@ class N5v4_Final:
                 if ratio_diff > 0.5:
                     point = reg_pred
 
-        # Re-center CI on ensemble point estimate (ratio CI may be off-center
-        # relative to the blended prediction, reducing coverage unnecessarily)
-        ci_half_width = (high - low) / 2
-        low = point - ci_half_width
-        high = point + ci_half_width
+        # Re-center CI on ensemble point estimate in log-space to preserve
+        # lognormal asymmetry (right-skewed, appropriate for count data)
+        if point > 0 and low > 0 and high > 0:
+            log_half_w = (np.log(high) - np.log(low)) / 2
+            low = np.exp(np.log(point) - log_half_w)
+            high = np.exp(np.log(point) + log_half_w)
+        else:
+            ci_half_width = (high - low) / 2
+            low = point - ci_half_width
+            high = point + ci_half_width
 
         # Widen CIs for families with few training editions.
         # Size-matched fallback (0 editions) and single-edition families
@@ -621,6 +684,29 @@ class N5v4_Final:
             # Post-widening cap for 1-edition families
             high = min(high, point * 3.0)
             low = max(low, point * 0.3)
+
+        # Withdrawal rate correction: reduce prediction by expected withdrawal %
+        wd_rate = self.family_withdrawal_rates.get(family, 0.0)
+        if wd_rate > 0 and wd_rate < 0.15:  # sanity cap at 15%
+            point *= (1 - wd_rate)
+            low *= (1 - wd_rate)
+            high *= (1 - wd_rate)
+
+        # Fee deadline surge: if early bird deadline is within 7 days,
+        # boost remaining-to-register estimate by 10%
+        eb_deadline = kwargs.get('early_bird_deadline')
+        if eb_deadline and days_remaining > 0:
+            try:
+                if isinstance(eb_deadline, str):
+                    eb_deadline = pd.to_datetime(eb_deadline)
+                days_to_eb = (eb_deadline - TODAY).days
+                if 0 < days_to_eb <= 7:
+                    remaining_est = point - current_count
+                    if remaining_est > 0:
+                        point = current_count + remaining_est * 1.10
+                        high = high + remaining_est * 0.10  # widen upper CI slightly
+            except (ValueError, TypeError):
+                pass
 
         # Floor: point estimate must be >= current_count (can't un-register)
         # but allow CI lower bound to go below point for honest uncertainty

@@ -30,6 +30,12 @@ warnings.filterwarnings('ignore')
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 CHOP_POINTS = [90, 60, 42, 28, 21, 14, 10, 7, 5, 3, 1]
+
+# Family aliases: map new/unknown families to comparable historical families.
+# Ratios from ALL alias families are pooled together for prediction.
+FAMILY_ALIASES = {
+    'Atlantic City Open': ['Open at Foxwoods', 'Princeton Open', 'Foxwoods Open'],
+}
 T_GRID = np.arange(0, 121)
 TODAY = datetime(2026, 3, 23)
 # Typical tournament duration (days between event_start and last_reg/event_end)
@@ -443,6 +449,16 @@ class N5v4_Final:
         # Use family-specific ratios if available (>= 2 data points at some T)
         use_family = False
         fam_ratios = self.ratios.get(family, {})
+
+        # Check family aliases: pool ratios from comparable families
+        if not fam_ratios and family in FAMILY_ALIASES:
+            fam_ratios = {}
+            for alias_fam in FAMILY_ALIASES[family]:
+                alias_rats = self.ratios.get(alias_fam, {})
+                for T, rats in alias_rats.items():
+                    if isinstance(T, (int, float)):
+                        fam_ratios.setdefault(T, []).extend(rats)
+
         if fam_ratios:
             for T, rats in fam_ratios.items():
                 if isinstance(T, (int, float)) and len(rats) >= 2:
@@ -543,6 +559,12 @@ class N5v4_Final:
         # Ensemble: blend ratio-based point estimate with pooled regression
         # Regression uses (count_at_T, T) -> final_count
         fam_reg = self.reg_params.get(family)
+        # For aliased families, try alias regression params
+        if fam_reg is None and family in FAMILY_ALIASES:
+            for alias_fam in FAMILY_ALIASES[family]:
+                fam_reg = self.reg_params.get(alias_fam)
+                if fam_reg is not None:
+                    break
         if fam_reg is None and not use_family and days_remaining >= 14:
             # Build size-matched regression only at long lead times for unknown
             # families. At short T (< 14), ratio-based prediction is more reliable
@@ -581,6 +603,10 @@ class N5v4_Final:
         # Size-matched fallback (0 editions) and single-edition families
         # have much higher prediction variance than well-observed families.
         n_editions = self.family_n_editions.get(family, 0)
+        # For aliased families, sum editions across all alias sources
+        if n_editions == 0 and family in FAMILY_ALIASES:
+            n_editions = sum(self.family_n_editions.get(f, 0)
+                            for f in FAMILY_ALIASES[family])
         if n_editions == 0:
             ci_half_width = (high - low) / 2 * self.CI_WIDEN_0_EDITIONS
             low = point - ci_half_width

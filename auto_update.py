@@ -20,7 +20,7 @@ from datetime import datetime
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
-SITE_DIR = os.path.join(PROJECT_DIR, "site")
+SITE_DIR = os.path.join(PROJECT_DIR, "docs")
 SCRAPE_CSV = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
 WEBSITE_JSON = os.path.join(OUTPUT_DIR, "website_data.json")
 INDEX_HTML = os.path.join(SITE_DIR, "index.html")

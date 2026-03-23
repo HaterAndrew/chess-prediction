@@ -69,9 +69,9 @@ def canonicalize_family(name):
     # Normalize G7/G 7 variants
     if name == "World Open G 7 Championship":
         name = "World Open G7 Championship"
-    # CCA renamed "Atlantic Open" to "Atlantic City Open" starting 2026
-    if name == 'Atlantic City Open':
-        name = 'Atlantic Open'
+    # Atlantic City Open (2026+) is a NEW tournament, NOT a rename of Atlantic Open.
+    # It uses Foxwoods/Princeton as comparable family (similar size, NE open format).
+    # Leave as "Atlantic City Open" — model will use FAMILY_ALIASES for ratio lookup.
     # Remove trailing whitespace
     name = name.strip()
     return name

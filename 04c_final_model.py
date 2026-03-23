@@ -362,9 +362,9 @@ class N5v4_Final:
         # more shrinkage at short T (ratios converge toward 1.0)
         for T in self.ci_scale:
             if T >= 60:
-                shrink = 0.42
+                shrink = 0.33
             elif T >= 28:
-                shrink = 0.42
+                shrink = 0.36
             elif T >= 7:
                 shrink = 0.40
             elif T >= 5:

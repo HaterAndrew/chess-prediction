@@ -365,6 +365,8 @@ class N5v4_Final:
                 shrink = 0.33
             elif T >= 28:
                 shrink = 0.36
+            elif T >= 10:
+                shrink = 0.42
             elif T >= 7:
                 shrink = 0.40
             elif T >= 5:

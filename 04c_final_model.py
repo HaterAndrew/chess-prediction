@@ -49,6 +49,9 @@ FAMILY_ALIASES = {
     'World Open Senior': ['World Open Senior Amateur'],
     'World Open Senior Amateur': ['World Open Senior'],
     'World Open Junior Championship': ['World Open Junior Octos'],
+    # NY State Scholastic name variants
+    'New York State Scholastic Championships Grades K-8': ['New York State Scholastic Championships'],
+    'New York State Scholastic Championships': ['New York State Scholastic Championships Grades K-8'],
 }
 T_GRID = np.arange(0, 121)
 TODAY = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)

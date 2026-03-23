@@ -350,14 +350,19 @@ for _, row in t2026.iterrows():
     onsite_fee = float(m.iloc[0]['onsite_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('onsite_fee')) else None
 
     # Historical data (needed for guardrails and output)
+    # Include alias families for tournaments with no direct history
+    families_to_search = [family]
+    if hasattr(m04c, 'FAMILY_ALIASES') and family in m04c.FAMILY_ALIASES:
+        families_to_search.extend(m04c.FAMILY_ALIASES[family])
     hist = summary[
-        (summary['family'] == family) &
+        (summary['family'].isin(families_to_search)) &
         (~summary['is_online'].fillna(False)) &
         (~summary['is_covid'].fillna(False)) &
         (summary['tournament_year'] < 2026) &
         (summary['tournament_year'] >= 2019)
     ].sort_values('tournament_year')
-    historical = [{"year": int(h['tournament_year']), "count": int(h['final_count'])}
+    historical = [{"year": int(h['tournament_year']), "count": int(h['final_count']),
+                   "family": h['family']}
                   for _, h in hist.iterrows()]
 
     # Predictions — use production model with guardrails

@@ -367,7 +367,7 @@ class N5v4_Final:
             elif T >= 5:
                 shrink = 0.50
             else:
-                shrink = 0.70
+                shrink = 0.75
             self.ci_scale[T] *= shrink
 
         # Build pooled per-family regression: final ~ count_at_T + T + intercept
@@ -860,6 +860,13 @@ class N5v4_Final:
                         high = high + remaining_est * 0.10  # widen upper CI slightly
             except (ValueError, TypeError):
                 pass
+
+        # Blitz events have extreme day-of surges (2-4x). Widen upper CI
+        # at short T to capture this, since the parametric model assumes
+        # gradual registration and under-covers blitz.
+        if is_blitz and days_remaining <= 3:
+            min_blitz_upper = current_count * 3.5
+            high = max(high, min_blitz_upper)
 
         # Floor: point estimate must be >= current_count (can't un-register)
         # but allow CI lower bound to go below point for honest uncertainty

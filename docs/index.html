@@ -1119,7 +1119,7 @@ footer a { color: var(--muted); }
 const TOURNAMENT_DATA = {
   "generated": "2026-03-23",
   "model": "N5v4_Final",
-  "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with ensemble shrinkage. Empirical Bayes sigma shrinkage, T-interpolation, expanding-window calibration, and plausibility guardrails.",
+  "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Features: family aliases, growth trends, count-based ratio adjustment, late-surge/blitz handling, enrichment data integration.",
   "tournaments": [
     {
       "family": "Atlantic City Open",

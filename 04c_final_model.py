@@ -325,13 +325,13 @@ class N5v4_Final:
             if T >= 60:
                 shrink = 0.42
             elif T >= 28:
-                shrink = 0.40
+                shrink = 0.42
             elif T >= 7:
                 shrink = 0.38
             elif T >= 5:
-                shrink = 0.45
+                shrink = 0.48
             else:
-                shrink = 0.55
+                shrink = 0.60
             self.ci_scale[T] *= shrink
 
         # Build pooled per-family regression: final ~ count_at_T + T + intercept
@@ -668,6 +668,8 @@ class N5v4_Final:
             cap_hi, cap_lo = 1.8, 0.5
         elif days_remaining >= 7:
             cap_hi, cap_lo = 1.5, 0.6
+        elif days_remaining >= 3:
+            cap_hi, cap_lo = 1.40, 0.65
         else:
             cap_hi, cap_lo = 1.35, 0.7
         high = min(high, point * cap_hi)

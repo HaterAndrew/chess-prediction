@@ -16,6 +16,9 @@ on:
           - standings
           - historical
 
+permissions:
+  contents: write
+
 jobs:
   enrichment:
     runs-on: ubuntu-latest

@@ -69,6 +69,9 @@ def canonicalize_family(name):
     # Normalize G7/G 7 variants
     if name == "World Open G 7 Championship":
         name = "World Open G7 Championship"
+    # CCA renamed "Atlantic Open" to "Atlantic City Open" starting 2026
+    if name == 'Atlantic City Open':
+        name = 'Atlantic Open'
     # Remove trailing whitespace
     name = name.strip()
     return name

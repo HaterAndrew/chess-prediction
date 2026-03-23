@@ -887,7 +887,9 @@ class N5v4_Final:
         # Minimum CI width: at very short T, CIs can be unrealistically tight
         # (±3% of point) due to LOO calibration on well-predicted training data.
         # Ensure at least ±5% of point at T<=3, ±4% at T<=7.
-        if days_remaining <= 3:
+        if days_remaining <= 1:
+            min_half = point * 0.06
+        elif days_remaining <= 3:
             min_half = point * 0.05
         elif days_remaining <= 7:
             min_half = point * 0.04

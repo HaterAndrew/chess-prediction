@@ -36,6 +36,9 @@ CHOP_POINTS = [90, 60, 42, 28, 21, 14, 10, 7, 5, 3, 1]
 # Ratios from ALL alias families are pooled together for prediction.
 FAMILY_ALIASES = {
     'Atlantic City Open': ['Open at Foxwoods', 'Princeton Open', 'Foxwoods Open'],
+    'Princeton Open': ['Open at Foxwoods', 'Atlantic City Open', 'Foxwoods Open'],
+    'Western Class': ['Western Class Championships'],
+    'Western Class Championships': ['Western Class'],
 }
 T_GRID = np.arange(0, 121)
 TODAY = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
@@ -202,8 +205,8 @@ class N5v4_Final:
     # These factors were calibrated on 2024-2025 holdout to bring coverage
     # from ~40% up to ~80% for these subgroups. Increased from 5.0/3.0 to
     # compensate for tighter ensemble shrinkage (0.32 vs 0.42).
-    CI_WIDEN_0_EDITIONS = 5.5
-    CI_WIDEN_1_EDITION = 3.5
+    CI_WIDEN_0_EDITIONS = 2.5
+    CI_WIDEN_1_EDITION = 2.0
 
     def __init__(self):
         self.ratios = {}
@@ -259,6 +262,17 @@ class N5v4_Final:
         # Compute mean final count per family for size-matched fallback
         fam_finals = valid.groupby('family')['final_count'].mean()
         self.family_mean_final = fam_finals.to_dict()
+
+        # Supplement with standings data for families not in training set
+        standings_path = os.path.join(OUTPUT_DIR, "historical_standings.csv")
+        if os.path.exists(standings_path):
+            import pandas as _pd
+            standings = _pd.read_csv(standings_path)
+            # Only use records with real data (>10 players, not parsing artifacts)
+            standings = standings[standings['total_players'] > 10]
+            for fam, grp in standings.groupby('tournament_name'):
+                if fam not in self.family_mean_final:
+                    self.family_mean_final[fam] = grp['total_players'].mean()
 
         # Track number of training editions per family (for CI widening)
         self.family_n_editions = valid.groupby('family').size().to_dict()
@@ -599,6 +613,18 @@ class N5v4_Final:
         point = current_count * med
         low = current_count * lo_r
         high = current_count * hi_r
+
+        # At long T with very low counts, anchor toward family historical mean
+        # The ratio-based prediction is unreliable when current_count is tiny
+        if current_count < 15 and days_remaining >= 42 and use_family:
+            fam_mean = self.family_mean_final.get(family, 0)
+            if fam_mean > 0:
+                # Blend: more weight to family mean when count is very low
+                anchor_w = max(0.2, min(0.6, 1.0 - current_count / 15))
+                point = anchor_w * fam_mean + (1 - anchor_w) * point
+                # Widen CI to reflect uncertainty of anchoring
+                low = min(low, point * 0.5)
+                high = max(high, point * 1.5)
 
         # Cap CI width relative to point estimate to prevent absurd CIs
         # at long lead times (where LOO leaves too few family data points)

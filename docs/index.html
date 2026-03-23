@@ -7,8 +7,10 @@
 <meta name="description" content="Predict chess tournament entries using historical registration patterns from 192K CCA records. Point estimates and 80% confidence intervals for tournament directors.">
 <title>CCA Entry Predictor — Chess Tournament Registration Forecasting</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♔</text></svg>">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'">
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
 <style>
 /* ══════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -67,6 +69,8 @@ body {
 }
 ::selection { background: rgba(240,192,64,.25); color: var(--text); }
 a { color: var(--blue); text-decoration: none; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
+button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; }
@@ -604,6 +608,96 @@ header {
 }
 
 /* ══════════════════════════════════════════════════════
+   PAGE TABS (top-level navigation)
+   ══════════════════════════════════════════════════════ */
+.page-tabs {
+  display: flex; gap: 0; border-bottom: 2px solid var(--border);
+  margin-bottom: 16px; padding-top: 8px;
+}
+.page-tab {
+  padding: 10px 22px; font-size: .82rem; font-weight: 600;
+  color: var(--muted); cursor: pointer; border: none; background: none;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+  transition: color .2s, border-color .2s; white-space: nowrap;
+}
+.page-tab:hover { color: var(--text); }
+.page-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.page-tab-panel { display: none; }
+.page-tab-panel.active { display: block; }
+
+/* ══════════════════════════════════════════════════════
+   CHESS PUZZLE BOARD
+   ══════════════════════════════════════════════════════ */
+.puzzle-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px; }
+@media (max-width: 900px) { .puzzle-layout { grid-template-columns: 1fr; } }
+.chess-board-wrap { position: relative; width: 100%; max-width: 480px; }
+.chess-board {
+  display: grid; grid-template-columns: repeat(8, 1fr);
+  border: 2px solid var(--border); border-radius: 6px; overflow: hidden;
+  aspect-ratio: 1; user-select: none;
+}
+.chess-sq {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 0; position: relative; cursor: pointer; transition: background .15s;
+}
+.chess-sq .piece { font-size: clamp(24px, 5.5vw, 48px); line-height: 1; pointer-events: none; filter: drop-shadow(0 1px 2px rgba(0,0,0,.4)); }
+.chess-sq.light { background: #b8b090; }
+.chess-sq.dark { background: #6b8a5e; }
+.chess-sq.selected { background: #f0c040 !important; }
+.chess-sq.hint { background: rgba(240,192,64,.35) !important; }
+.chess-sq.last-move { background: rgba(56,139,253,.25) !important; }
+.chess-sq.correct { background: rgba(63,185,80,.35) !important; }
+.chess-sq.wrong { background: rgba(248,81,73,.35) !important; }
+.puzzle-info {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+}
+.puzzle-rating { font-size: 1.8rem; font-weight: 900; color: var(--gold); }
+.puzzle-themes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.puzzle-theme-tag {
+  background: var(--surface2); border: 1px solid var(--border-light);
+  border-radius: 12px; padding: 2px 10px; font-size: .68rem; color: var(--muted);
+}
+.puzzle-status { font-size: 1rem; font-weight: 700; margin: 16px 0; min-height: 28px; }
+.puzzle-nav { display: flex; gap: 8px; margin-top: 16px; }
+.puzzle-btn {
+  padding: 8px 18px; border-radius: 6px; font-weight: 600; font-size: .78rem;
+  cursor: pointer; transition: opacity .2s; border: 1px solid var(--border);
+  background: var(--surface2); color: var(--text);
+}
+.puzzle-btn:hover { opacity: .8; }
+.puzzle-btn.primary { background: var(--gold); color: #000; border-color: var(--gold); }
+.puzzle-btn:disabled { opacity: .4; cursor: not-allowed; }
+.puzzle-progress { display: flex; gap: 6px; margin: 12px 0; }
+.puzzle-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--surface3); border: 1px solid var(--border);
+  transition: background .3s;
+}
+.puzzle-dot.solved { background: var(--green); border-color: var(--green); }
+.puzzle-dot.failed { background: var(--red); border-color: var(--red); }
+.puzzle-dot.current { border-color: var(--gold); box-shadow: 0 0 6px var(--gold); }
+.puzzle-score { font-size: .82rem; color: var(--muted); margin-top: 4px; }
+
+/* This Day in Chess History */
+.history-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-top: 20px;
+}
+.history-card h3 { font-size: .92rem; font-weight: 700; color: var(--gold); margin-bottom: 12px; }
+.history-event {
+  padding: 10px 0; border-bottom: 1px solid var(--border-light);
+  font-size: .82rem; line-height: 1.5;
+}
+.history-event:last-child { border-bottom: none; }
+.history-year { font-weight: 700; color: var(--blue); margin-right: 6px; }
+.history-cat {
+  display: inline-block; font-size: .6rem; padding: 1px 6px; border-radius: 8px;
+  text-transform: uppercase; letter-spacing: .5px; margin-left: 6px;
+  background: var(--surface2); color: var(--muted); border: 1px solid var(--border-light);
+}
+
+/* ══════════════════════════════════════════════════════
    DATA ENTRY PANEL
    ══════════════════════════════════════════════════════ */
 .data-entry-toggle {
@@ -682,6 +776,10 @@ footer a { color: var(--muted); }
   .mini-grid { grid-template-columns: repeat(2, 1fr); }
   .drop-menu { min-width: 260px; }
 }
+@media (max-width: 768px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .mini-grid { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 600px) {
   .hero-number { font-size: 3rem !important; }
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
@@ -689,13 +787,18 @@ footer a { color: var(--muted); }
   .chart-wrap { height: 260px; }
   .tab-bar { gap: 6px; }
   .drop-menu { min-width: 240px; left: 0; right: auto; }
-  .cat-btn { padding: 6px 10px; font-size: .72rem; }
+  .cat-btn { padding: 8px 14px; font-size: .72rem; min-height: 44px; }
+  .cat-item { min-height: 44px; display: flex; align-items: center; }
+  .mini-card { min-height: 44px; }
   .timeline { flex-wrap: wrap; gap: 12px; }
   .timeline::before { display: none; }
   .mini-grid { grid-template-columns: 1fr; }
   .delta-value { font-size: 1.4rem; }
   .mini-card-number { font-size: 1.3rem; }
   .model-info { font-size: .75rem; }
+}
+@media (min-width: 1440px) {
+  .container { max-width: 1400px; }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -713,17 +816,6 @@ footer a { color: var(--muted); }
 }
 .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
 .back-to-top:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
-
-/* ══════════════════════════════════════════════════════
-   PANEL ENTER ANIMATION
-   ══════════════════════════════════════════════════════ */
-.fade-enter {
-  animation: fadeSlideIn .35s ease forwards;
-}
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
 
 /* ══════════════════════════════════════════════════════
    KEYBOARD HINT (subtle)
@@ -748,7 +840,7 @@ footer a { color: var(--muted); }
     <div class="splash-title">Chess Tournament<br><em>Entry Predictor</em></div>
     <div class="splash-scrape-date" id="splashScrapeDate"></div>
     <div class="splash-divider"></div>
-    <div class="splash-tagline">Predict tournament entries using historical registration patterns from 192K CCA records. Point estimates and confidence intervals for tournament directors.</div>
+    <div class="splash-tagline">Predict tournament entries using historical patterns from 192K Continental Chess Association (CCA) records. Point estimates and confidence intervals for tournament directors.</div>
     <div class="splash-stats">
       <div class="splash-stat">
         <div class="splash-stat-num gold" id="ss-live">0</div>
@@ -763,14 +855,15 @@ footer a { color: var(--muted); }
         <div class="splash-stat-label">Years of Data</div>
       </div>
     </div>
-    <div class="splash-enter" onclick="dismissSplash()">Enter Dashboard &#9654;</div>
+    <button class="splash-enter" onclick="dismissSplash()" aria-label="Enter Dashboard">Enter Dashboard &#9654;</button>
     <div class="splash-version">v2.2 &middot; March 2026 &middot; Historical Ratio Model</div>
   </div>
 </div>
 
 <!-- ══════════════════ HEADER ══════════════════ -->
-<div class="main-content" id="mainContent">
-<header>
+<a href="#deltaBanner" class="skip-link" style="position:absolute;top:-100%;left:0;padding:8px 16px;background:var(--gold);color:#000;z-index:10000;font-weight:700;text-decoration:none;border-radius:0 0 6px 0" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Skip to content</a>
+<div class="main-content" id="mainContent" role="application">
+<header role="banner">
   <div class="container header-inner">
     <div class="logo">
       <div class="logo-icon">&#9822;</div>
@@ -787,7 +880,17 @@ footer a { color: var(--muted); }
   </div>
 </header>
 
-<div class="container">
+<main class="container" aria-live="polite">
+
+  <!-- ── Page-Level Tabs ── -->
+  <div class="page-tabs" role="tablist">
+    <button class="page-tab active" onclick="switchPageTab('predictions')" role="tab" aria-selected="true" id="ptab-predictions">Predictions</button>
+    <button class="page-tab" onclick="switchPageTab('puzzles')" role="tab" aria-selected="false" id="ptab-puzzles">&#9822; Puzzles</button>
+    <button class="page-tab" onclick="switchPageTab('dataentry')" role="tab" aria-selected="false" id="ptab-dataentry">Data Entry</button>
+  </div>
+
+  <!-- ══════ PREDICTIONS TAB ══════ -->
+  <div class="page-tab-panel active" id="panel-predictions" role="tabpanel">
 
   <!-- ── Summary Stats Bar ── -->
   <div id="summaryBar" style="display:flex;gap:20px;padding:14px 0 10px;flex-wrap:wrap;font-size:.76rem;color:var(--muted);border-bottom:1px solid var(--border-light);margin-bottom:0"></div>
@@ -823,7 +926,7 @@ footer a { color: var(--muted); }
   <div class="chart-card" id="chartCard">
     <div class="chart-top">
       <div>
-        <div class="chart-title" id="chartTitle">Cumulative Registrations</div>
+        <div class="chart-title" id="chartTitle">Cumulative Entries</div>
         <div class="chart-subtitle" id="chartSubtitle"></div>
       </div>
       <div class="chart-legend" id="chartLegend"></div>
@@ -874,12 +977,12 @@ footer a { color: var(--muted); }
   <div class="panel model-info" style="margin-bottom:24px">
     <div class="panel-title">About This Model</div>
     <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap">
-      <p style="flex:1;min-width:240px;margin:0">Historical ratio model: predicts final count as current registrations × median historical ratio at each lead time. 80% CIs from lognormal fits with IQR outlier removal. Blind-tested on held-out 2024–2025 data.</p>
+      <p style="flex:1;min-width:240px;margin:0">Historical ratio model: predicts final count as current entries × median historical ratio at each lead time. 80% confidence intervals (CIs) from lognormal fits with IQR outlier removal. Blind-tested on held-out 2024–2025 data.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-self:center">
         <div style="padding:8px 14px;background:var(--surface3);border-radius:8px;text-align:center;min-width:80px">
-          <div style="font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Chi Open</div>
+          <div style="font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Chicago Open</div>
           <div style="font-size:1rem;font-weight:800;color:var(--gold)">12.0%</div>
-          <div style="font-size:.55rem;color:var(--muted)">MAPE</div>
+          <div style="font-size:.55rem;color:var(--muted)" title="Mean Absolute Percentage Error">MAPE</div>
         </div>
         <div style="padding:8px 14px;background:var(--surface3);border-radius:8px;text-align:center;min-width:80px">
           <div style="font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">CI Cover</div>
@@ -889,7 +992,7 @@ footer a { color: var(--muted); }
         <div style="padding:8px 14px;background:var(--surface3);border-radius:8px;text-align:center;min-width:80px">
           <div style="font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Overall</div>
           <div style="font-size:1rem;font-weight:800">33.6%</div>
-          <div style="font-size:.55rem;color:var(--muted)">MAPE</div>
+          <div style="font-size:.55rem;color:var(--muted)" title="Mean Absolute Percentage Error">MAPE</div>
         </div>
         <div style="padding:8px 14px;background:var(--surface3);border-radius:8px;text-align:center;min-width:80px">
           <div style="font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Conv.</div>
@@ -915,7 +1018,7 @@ footer a { color: var(--muted); }
               <th class="sortable" onclick="sortTable('date',event)">Event Date</th>
               <th class="sortable" onclick="sortTable('current',event)">Current</th>
               <th class="sortable" onclick="sortTable('predicted',event)">Predicted</th>
-              <th>80% CI</th>
+              <th title="80% Confidence Interval">80% CI</th>
               <th class="sortable" onclick="sortTable('progress',event)">Progress</th>
             </tr>
           </thead>
@@ -927,15 +1030,51 @@ footer a { color: var(--muted); }
 
 </div>
 
-<!-- ── Data Entry Panel ── -->
-<div class="container">
-  <div class="data-entry-toggle" id="deToggle" onclick="toggleDataEntry()">
-    <span class="arrow">&#9654;</span> Manual Data Entry
-    <span style="font-weight:400;color:var(--muted);font-size:.72rem;margin-left:auto">Update entries, dates, deadlines</span>
-  </div>
-  <div class="data-entry-panel" id="dePanel">
-    <div style="font-size:.72rem;color:var(--muted);margin-bottom:12px">
-      Update tournament data below. Changes save to your browser and override scraped data. Click Save to apply.
+  </div><!-- /panel-predictions -->
+
+  <!-- ══════ PUZZLES TAB ══════ -->
+  <div class="page-tab-panel" id="panel-puzzles" role="tabpanel">
+    <div class="puzzle-layout">
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <h2 style="font-size:1.1rem;font-weight:700">Daily Chess Puzzles</h2>
+          <div class="puzzle-score" id="puzzleScore"></div>
+        </div>
+        <div class="puzzle-progress" id="puzzleProgress"></div>
+        <div class="chess-board-wrap">
+          <div class="chess-board" id="chessBoard"></div>
+        </div>
+        <div class="puzzle-nav">
+          <button class="puzzle-btn" id="puzzlePrev" onclick="puzzleNav(-1)" disabled>&#9664; Prev</button>
+          <button class="puzzle-btn" id="puzzleHint" onclick="puzzleGiveHint()">Hint</button>
+          <button class="puzzle-btn" id="puzzleRetry" onclick="puzzleRetry()" style="display:none">Retry</button>
+          <button class="puzzle-btn primary" id="puzzleNext" onclick="puzzleNav(1)">Next &#9654;</button>
+        </div>
+      </div>
+      <div>
+        <div class="puzzle-info" id="puzzleInfo">
+          <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Puzzle <span id="puzzleNum">1</span> of <span id="puzzleTotal">10</span></div>
+          <div class="puzzle-rating" id="puzzleRating">–</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:2px" id="puzzleDifficulty"></div>
+          <div class="puzzle-themes" id="puzzleThemes"></div>
+          <div class="puzzle-status" id="puzzleStatus">
+            <span style="color:var(--muted)">Find the best move for <span id="puzzleTurn" style="font-weight:700"></span></span>
+          </div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:8px" id="puzzleMoveList"></div>
+          <a id="puzzleLink" href="#" target="_blank" rel="noopener" style="display:inline-block;margin-top:12px;font-size:.72rem;color:var(--blue)">View on Lichess &rarr;</a>
+        </div>
+        <div class="history-card" id="historyCard">
+          <h3>&#9812; This Day in Chess History</h3>
+          <div id="historyEvents">Loading...</div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /panel-puzzles -->
+
+  <!-- ══════ DATA ENTRY TAB ══════ -->
+  <div class="page-tab-panel" id="panel-dataentry" role="tabpanel">
+    <div style="font-size:.72rem;color:var(--muted);margin:12px 0">
+      Update tournament data below. Changes save to your browser and override scraped data.
     </div>
     <table class="de-table">
       <thead>
@@ -943,8 +1082,8 @@ footer a { color: var(--muted); }
           <th>Tournament</th>
           <th style="width:80px">Entries</th>
           <th style="width:120px">Event Start</th>
-          <th style="width:120px">EB Deadline</th>
-          <th style="width:80px">EB Fee</th>
+          <th style="width:120px">Early Bird Deadline</th>
+          <th style="width:80px">Early Bird Fee</th>
           <th style="width:80px">Reg Fee</th>
           <th style="width:80px">Onsite Fee</th>
         </tr>
@@ -956,13 +1095,14 @@ footer a { color: var(--muted); }
       <span class="de-saved-msg" id="deSavedMsg">Saved!</span>
       <button style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:6px;padding:6px 14px;color:var(--muted);font-size:.72rem;cursor:pointer" onclick="clearDataEntry()">Reset to Default</button>
     </div>
-  </div>
-</div>
+  </div><!-- /panel-dataentry -->
 
-<footer>
+</main>
+
+<footer role="contentinfo">
   <div class="container">
-    <div style="margin-bottom:6px">CCA Entry Predictor &middot; Built on 192K registration records across 778 tournaments &middot; 15 years of data</div>
-    <div>Historical Ratio Model &middot; 81.9% CI coverage &middot; Blind-tested on 2024–2025 data</div>
+    <div style="margin-bottom:6px">CCA Entry Predictor &middot; Built on 192K entry records across 778 tournaments &middot; 15 years of data</div>
+    <div>Historical Ratio Model &middot; 81.9% CI coverage &middot; Blind-tested on 2024–2025 data &middot; Data from <a href="https://www.chessaction.com" target="_blank" rel="noopener">chessaction.com</a></div>
     <div style="margin-top:8px;font-size:.65rem;opacity:.5">
       <span class="kbd-hint">&larr;</span> <span class="kbd-hint">&rarr;</span> navigate tournaments &middot;
       <span class="kbd-hint">Esc</span> close dropdowns
@@ -1305,101 +1445,6 @@ const TOURNAMENT_DATA = {
         {
           "days_before": 1,
           "cumulative_pct": 0.9419
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live"
-    },
-    {
-      "family": "Atlantic Open",
-      "year": 2026,
-      "event_start": "2026-04-01",
-      "event_end": "2026-04-05",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 9,
-      "point_estimate": 316,
-      "ci_lower": 221,
-      "ci_upper": 411,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 289
-        },
-        {
-          "year": 2022,
-          "count": 412
-        },
-        {
-          "year": 2023,
-          "count": 371
-        },
-        {
-          "year": 2024,
-          "count": 272
-        },
-        {
-          "year": 2025,
-          "count": 238
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          0
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0022
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0116
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0143
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0212
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0679
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1288
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.211
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3079
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4737
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.772
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9436
         },
         {
           "days_before": 0,
@@ -2629,8 +2674,8 @@ const TOURNAMENT_DATA = {
       "current_count": 0,
       "days_remaining": 250,
       "point_estimate": 623,
-      "ci_lower": 436,
-      "ci_upper": 810,
+      "ci_lower": 572,
+      "ci_upper": 677,
       "ci_level": 0.8,
       "historical": [
         {
@@ -74337,9 +74382,259 @@ const TOURNAMENT_DATA = {
         }
       ],
       "status": "historical"
+    },
+    {
+      "family": "Atlantic Open",
+      "year": 2026,
+      "event_start": "2026-04-01",
+      "event_end": "2026-04-05",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "days_remaining": 9,
+      "point_estimate": 316,
+      "ci_lower": 251,
+      "ci_upper": 395,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 289
+        },
+        {
+          "year": 2022,
+          "count": 412
+        },
+        {
+          "year": 2023,
+          "count": 371
+        },
+        {
+          "year": 2024,
+          "count": 272
+        },
+        {
+          "year": 2025,
+          "count": 238
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0022
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0116
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0143
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0212
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0679
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1288
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.211
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3079
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4737
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.772
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9436
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "not_tracked"
     }
   ]
 };
+
+// ══════════════════════════════════════════════════════════
+// PUZZLE DATA (embedded from puzzle pipeline)
+// ══════════════════════════════════════════════════════════
+const PUZZLE_DATA = {
+  "date": "2026-03-23",
+  "puzzles": [
+    {
+      "id": "0Goww",
+      "fen": "5r1k/p5p1/1p5p/2p1Q3/1P4n1/2P5/P4qPP/R5RK w - - 1 27",
+      "moves": "e5e1 f2f4 e1g3 g4f2 g3f2 f4f2",
+      "rating": 2090,
+      "themes": [
+        "advantage",
+        "endgame",
+        "long"
+      ],
+      "url": "https://lichess.org/training/0Goww",
+      "game_url": "https://lichess.org/pKu9tDFW#53"
+    },
+    {
+      "id": "0UIzD",
+      "fen": "2r3k1/1br2pp1/2Nq3p/1BPp4/5P2/4P3/1PQ3PP/2R3K1 b - - 0 24",
+      "moves": "c7c6 c5d6 c6c2 c1c2 c8c2 d6d7",
+      "rating": 2014,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/0UIzD",
+      "game_url": "https://lichess.org/oOD2jNFC/black#48"
+    },
+    {
+      "id": "00UQj",
+      "fen": "6r1/pp1qbpk1/8/2pPp1r1/2P1Pp2/P1N2Qp1/3B2K1/R6R w - - 0 31",
+      "moves": "h1h3 d7h3 g2h3 g3g2",
+      "rating": 2313,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "master",
+        "middlegame",
+        "sacrifice",
+        "short"
+      ],
+      "url": "https://lichess.org/training/00UQj",
+      "game_url": "https://lichess.org/uZNJ299M#61"
+    },
+    {
+      "id": "13n32",
+      "fen": "5rk1/p4p2/bpn3p1/2p5/4P2q/P1P1B1QP/BP5K/3R4 b - - 0 26",
+      "moves": "h4e4 a2d5 e4e5 d5c6 e5g3 h2g3",
+      "rating": 2406,
+      "themes": [
+        "advantage",
+        "interference",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/13n32",
+      "game_url": "https://lichess.org/oa2DHFyA/black#52"
+    },
+    {
+      "id": "03z37",
+      "fen": "2k2r2/ppq3p1/3b1np1/2p2b2/N2P4/1P2P2P/P1PQ2P1/R1B2RK1 w - - 1 19",
+      "moves": "d4c5 d6h2 g1h1 f6e4 f1f3 e4d2",
+      "rating": 2066,
+      "themes": [
+        "crushing",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/03z37",
+      "game_url": "https://lichess.org/9oBT7KCo#37"
+    },
+    {
+      "id": "0g5z0",
+      "fen": "r2k1r2/p1R1bpQ1/1p2p3/3pP3/7P/8/Pq3PP1/2R3K1 b - - 0 23",
+      "moves": "e7c5 c7c5 b6c5 g7f8",
+      "rating": 2107,
+      "themes": [
+        "capturingDefender",
+        "crushing",
+        "middlegame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0g5z0",
+      "game_url": "https://lichess.org/uJHOdnyj/black#46"
+    },
+    {
+      "id": "0ZFSV",
+      "fen": "r3r1k1/1pqb1pbp/p4np1/2n3B1/4p3/2P2NNP/PPB1QPP1/3RR1K1 w - - 0 18",
+      "moves": "g5f6 e4f3 e2f3 d7c6 g3e4 c6e4 c2e4 g7f6",
+      "rating": 2515,
+      "themes": [
+        "advantage",
+        "master",
+        "middlegame",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/0ZFSV",
+      "game_url": "https://lichess.org/IlPl1rv3#35"
+    },
+    {
+      "id": "09oid",
+      "fen": "rnb1k1nr/ppp1bppp/3q4/1N6/3P4/5N2/PPp1QPPP/R1B1R1K1 b kq - 2 10",
+      "moves": "d6d7 f3e5 d7d8 e2c4",
+      "rating": 2257,
+      "themes": [
+        "advantage",
+        "opening",
+        "short"
+      ],
+      "url": "https://lichess.org/training/09oid",
+      "game_url": "https://lichess.org/MUmll7ae/black#20"
+    },
+    {
+      "id": "08UVh",
+      "fen": "6k1/5pp1/7p/q1p1p3/2BbPn2/BQpP3P/5PP1/6K1 b - - 1 31",
+      "moves": "c3c2 b3b8 g8h7 c4f7",
+      "rating": 2295,
+      "themes": [
+        "crushing",
+        "deflection",
+        "endgame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/08UVh",
+      "game_url": "https://lichess.org/JyfIsxvd/black#62"
+    },
+    {
+      "id": "0gJAk",
+      "fen": "8/7p/5pp1/p7/k4P2/4P3/2K2P1P/8 b - - 1 42",
+      "moves": "a4a3 c2c3 f6f5 f2f3 a3a4 c3c4",
+      "rating": 2324,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "quietMove"
+      ],
+      "url": "https://lichess.org/training/0gJAk",
+      "game_url": "https://lichess.org/mWjWZmnp/black#84"
+    }
+  ]
+};
+
+// ══════════════════════════════════════════════════════════
+// CHESS HISTORY DATA (this day in chess history)
+// ══════════════════════════════════════════════════════════
+const CHESS_HISTORY = {};
 
 // ══════════════════════════════════════════════════════════
 // STATE
@@ -74352,6 +74647,12 @@ let histChartObj = null;
 // ══════════════════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════════════════
+function esc(s) {
+  if (s == null) return '';
+  const d = document.createElement('div');
+  d.textContent = String(s);
+  return d.innerHTML;
+}
 function fmt(n) { return n == null ? '–' : n.toLocaleString(); }
 function isDone(t) { return t.status === 'complete' || t.status === 'historical'; }
 function fmtDate(s) {
@@ -74385,6 +74686,314 @@ function interpCurve(curve, daysBefore) {
     }
   }
   return 1;
+}
+
+// ══════════════════════════════════════════════════════════
+// PAGE TABS
+// ══════════════════════════════════════════════════════════
+function switchPageTab(tab) {
+  document.querySelectorAll('.page-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+  document.querySelectorAll('.page-tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('ptab-' + tab).classList.add('active');
+  document.getElementById('ptab-' + tab).setAttribute('aria-selected', 'true');
+  document.getElementById('panel-' + tab).classList.add('active');
+  if (tab === 'puzzles') initPuzzles();
+  if (tab === 'dataentry') renderDataEntry();
+}
+
+// ══════════════════════════════════════════════════════════
+// CHESS PUZZLE ENGINE
+// ══════════════════════════════════════════════════════════
+const PIECE_UNICODE = {
+  K: '♔', Q: '♕', R: '♖', B: '♗', N: '♘', P: '♙',
+  k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟'
+};
+
+let puzzleState = {
+  puzzles: [],
+  currentIdx: 0,
+  board: null, // 8x8 array
+  selected: null, // [row, col]
+  turn: 'w',
+  moveIdx: 0, // which solution move we're on (player moves are even indices after setup)
+  solved: [], // 'solved'|'failed'|null per puzzle
+  hintShown: false,
+  flipped: false, // flip board for black
+  lastMove: null, // [fromR, fromC, toR, toC]
+  animating: false,
+  initialized: false
+};
+
+function parseFEN(fen) {
+  const board = [];
+  const parts = fen.split(' ');
+  const rows = parts[0].split('/');
+  for (const row of rows) {
+    const r = [];
+    for (const ch of row) {
+      if (ch >= '1' && ch <= '8') { for (let i = 0; i < parseInt(ch); i++) r.push(null); }
+      else r.push(ch);
+    }
+    board.push(r);
+  }
+  return { board, turn: parts[1] || 'w' };
+}
+
+function boardToFEN(board) {
+  return board.map(row => {
+    let s = '', empty = 0;
+    for (const sq of row) {
+      if (sq === null) { empty++; }
+      else { if (empty > 0) { s += empty; empty = 0; } s += sq; }
+    }
+    if (empty > 0) s += empty;
+    return s;
+  }).join('/');
+}
+
+function uciToCoords(uci) {
+  const fc = uci.charCodeAt(0) - 97, fr = 8 - parseInt(uci[1]);
+  const tc = uci.charCodeAt(2) - 97, tr = 8 - parseInt(uci[3]);
+  const promo = uci.length > 4 ? uci[4] : null;
+  return { fr, fc, tr, tc, promo };
+}
+
+function applyUCIMove(board, uci, turn) {
+  const { fr, fc, tr, tc, promo } = uciToCoords(uci);
+  const b = board.map(r => [...r]);
+  const piece = b[fr][fc];
+  b[tr][tc] = promo ? (turn === 'w' ? promo.toUpperCase() : promo.toLowerCase()) : piece;
+  b[fr][fc] = null;
+  // En passant
+  if (piece && piece.toLowerCase() === 'p' && fc !== tc && board[tr][tc] === null) {
+    b[fr][tc] = null;
+  }
+  // Castling
+  if (piece && piece.toLowerCase() === 'k' && Math.abs(fc - tc) === 2) {
+    if (tc > fc) { b[fr][5] = b[fr][7]; b[fr][7] = null; } // kingside
+    else { b[fr][3] = b[fr][0]; b[fr][0] = null; } // queenside
+  }
+  return b;
+}
+
+function renderBoard() {
+  const el = document.getElementById('chessBoard');
+  if (!el || !puzzleState.board) return;
+  const b = puzzleState.board;
+  const flip = puzzleState.flipped;
+  let html = '';
+  for (let ri = 0; ri < 8; ri++) {
+    for (let ci = 0; ci < 8; ci++) {
+      const r = flip ? 7 - ri : ri;
+      const c = flip ? 7 - ci : ci;
+      const isLight = (r + c) % 2 === 0;
+      let cls = 'chess-sq ' + (isLight ? 'light' : 'dark');
+      if (puzzleState.selected && puzzleState.selected[0] === r && puzzleState.selected[1] === c) cls += ' selected';
+      if (puzzleState.lastMove) {
+        const [lfr, lfc, ltr, ltc] = puzzleState.lastMove;
+        if ((r === lfr && c === lfc) || (r === ltr && c === ltc)) cls += ' last-move';
+      }
+      const piece = b[r][c];
+      const pieceHtml = piece ? `<span class="piece">${PIECE_UNICODE[piece]}</span>` : '';
+      html += `<div class="${cls}" data-r="${r}" data-c="${c}" onclick="puzzleSquareClick(${r},${c})">${pieceHtml}</div>`;
+    }
+  }
+  el.innerHTML = html;
+}
+
+function puzzleSquareClick(r, c) {
+  if (puzzleState.animating) return;
+  const ps = puzzleState;
+  const puzzle = ps.puzzles[ps.currentIdx];
+  if (!puzzle) return;
+  const moves = puzzle.moves.split(' ');
+  // Player moves on even moveIdx (0-indexed after setup move is applied)
+  if (ps.moveIdx >= moves.length) return; // puzzle done
+
+  const piece = ps.board[r][c];
+  const isMyPiece = piece && ((ps.turn === 'w' && piece === piece.toUpperCase()) || (ps.turn === 'b' && piece === piece.toLowerCase()));
+
+  if (ps.selected) {
+    // Trying to make a move
+    const [sr, sc] = ps.selected;
+    if (r === sr && c === sc) { ps.selected = null; renderBoard(); return; }
+    if (isMyPiece) { ps.selected = [r, c]; renderBoard(); return; }
+    // Build UCI from selected -> clicked
+    const fromUci = String.fromCharCode(97 + sc) + (8 - sr);
+    const toUci = String.fromCharCode(97 + c) + (8 - r);
+    let uci = fromUci + toUci;
+    // Check promotion
+    const srcPiece = ps.board[sr][sc];
+    if (srcPiece && srcPiece.toLowerCase() === 'p' && (r === 0 || r === 7)) uci += 'q'; // auto-queen
+    const expected = moves[ps.moveIdx];
+    if (uci === expected) {
+      // Correct move!
+      ps.board = applyUCIMove(ps.board, uci, ps.turn);
+      ps.lastMove = [sr, sc, r, c];
+      ps.selected = null;
+      ps.turn = ps.turn === 'w' ? 'b' : 'w';
+      ps.moveIdx++;
+      renderBoard();
+      if (ps.moveIdx >= moves.length) {
+        puzzleSolved();
+      } else {
+        // Play opponent's response after a brief delay
+        puzzleStatus('&#10003; Correct! Keep going...', 'var(--green)');
+        ps.animating = true;
+        setTimeout(() => {
+          const opMove = moves[ps.moveIdx];
+          const { fr, fc: fcc, tr, tc: tcc } = uciToCoords(opMove);
+          ps.board = applyUCIMove(ps.board, opMove, ps.turn);
+          ps.lastMove = [fr, fcc, tr, tcc];
+          ps.turn = ps.turn === 'w' ? 'b' : 'w';
+          ps.moveIdx++;
+          ps.animating = false;
+          renderBoard();
+          if (ps.moveIdx >= moves.length) puzzleSolved();
+          else puzzleStatus('Find the best move for ' + (ps.turn === 'w' ? 'White' : 'Black'), 'var(--muted)');
+        }, 500);
+      }
+    } else {
+      // Wrong move
+      const sq = document.querySelector(`.chess-sq[data-r="${r}"][data-c="${c}"]`);
+      if (sq) { sq.classList.add('wrong'); setTimeout(() => sq.classList.remove('wrong'), 600); }
+      ps.selected = null;
+      puzzleFailed();
+    }
+  } else {
+    if (isMyPiece) { ps.selected = [r, c]; renderBoard(); }
+  }
+}
+
+function puzzleStatus(msg, color) {
+  const el = document.getElementById('puzzleStatus');
+  if (el) el.innerHTML = `<span style="color:${color}">${msg}</span>`;
+}
+
+function puzzleSolved() {
+  const ps = puzzleState;
+  if (ps.solved[ps.currentIdx] !== 'failed') ps.solved[ps.currentIdx] = 'solved';
+  puzzleStatus('&#9733; Puzzle solved!', 'var(--green)');
+  renderPuzzleProgress();
+  document.getElementById('puzzleRetry').style.display = 'none';
+}
+
+function puzzleFailed() {
+  const ps = puzzleState;
+  ps.solved[ps.currentIdx] = 'failed';
+  puzzleStatus('&#10007; Incorrect — try again or click Retry', 'var(--red)');
+  renderPuzzleProgress();
+  document.getElementById('puzzleRetry').style.display = '';
+}
+
+function puzzleGiveHint() {
+  const ps = puzzleState;
+  const puzzle = ps.puzzles[ps.currentIdx];
+  if (!puzzle) return;
+  const moves = puzzle.moves.split(' ');
+  if (ps.moveIdx >= moves.length) return;
+  const move = moves[ps.moveIdx];
+  const { fr, fc } = uciToCoords(move);
+  // Highlight the source square
+  const sq = document.querySelector(`.chess-sq[data-r="${fr}"][data-c="${fc}"]`);
+  if (sq) { sq.classList.add('hint'); setTimeout(() => sq.classList.remove('hint'), 1500); }
+  ps.hintShown = true;
+}
+
+function puzzleRetry() {
+  loadPuzzle(puzzleState.currentIdx);
+}
+
+function puzzleNav(dir) {
+  const ps = puzzleState;
+  const next = ps.currentIdx + dir;
+  if (next < 0 || next >= ps.puzzles.length) return;
+  loadPuzzle(next);
+}
+
+function loadPuzzle(idx) {
+  const ps = puzzleState;
+  ps.currentIdx = idx;
+  const puzzle = ps.puzzles[idx];
+  if (!puzzle) return;
+
+  // Parse FEN and apply setup move
+  const { board, turn } = parseFEN(puzzle.fen);
+  const moves = puzzle.moves.split(' ');
+  // First move in the moves list is the "last move played" (setup) — apply it
+  const setupMove = moves[0];
+  ps.board = applyUCIMove(board, setupMove, turn);
+  const { fr, fc, tr, tc } = uciToCoords(setupMove);
+  ps.lastMove = [fr, fc, tr, tc];
+  ps.turn = turn === 'w' ? 'b' : 'w'; // after setup move, it's the other side's turn
+  ps.flipped = ps.turn === 'b'; // flip board so player is at bottom
+  ps.moveIdx = 1; // player starts at move index 1
+  ps.selected = null;
+  ps.hintShown = false;
+  ps.animating = false;
+
+  // Update UI
+  document.getElementById('puzzleNum').textContent = idx + 1;
+  document.getElementById('puzzleRating').textContent = puzzle.rating;
+  const diff = puzzle.rating >= 2500 ? 'Master' : puzzle.rating >= 2200 ? 'Expert' : puzzle.rating >= 2000 ? 'Advanced' : 'Intermediate';
+  document.getElementById('puzzleDifficulty').textContent = diff;
+  document.getElementById('puzzleThemes').innerHTML = (puzzle.themes || []).map(t => `<span class="puzzle-theme-tag">${esc(t.replace(/([A-Z])/g, ' $1').trim())}</span>`).join('');
+  document.getElementById('puzzleLink').href = puzzle.url || '#';
+  document.getElementById('puzzleTurn').textContent = ps.turn === 'w' ? 'White' : 'Black';
+  puzzleStatus('Find the best move for ' + (ps.turn === 'w' ? 'White' : 'Black'), 'var(--muted)');
+  document.getElementById('puzzleMoveList').textContent = '';
+  document.getElementById('puzzlePrev').disabled = idx === 0;
+  document.getElementById('puzzleNext').disabled = idx === ps.puzzles.length - 1;
+  document.getElementById('puzzleRetry').style.display = 'none';
+
+  renderBoard();
+  renderPuzzleProgress();
+}
+
+function renderPuzzleProgress() {
+  const ps = puzzleState;
+  const el = document.getElementById('puzzleProgress');
+  if (!el) return;
+  el.innerHTML = ps.puzzles.map((_, i) => {
+    let cls = 'puzzle-dot';
+    if (ps.solved[i] === 'solved') cls += ' solved';
+    else if (ps.solved[i] === 'failed') cls += ' failed';
+    if (i === ps.currentIdx) cls += ' current';
+    return `<div class="${cls}" onclick="loadPuzzle(${i})" style="cursor:pointer" title="Puzzle ${i+1}"></div>`;
+  }).join('');
+  const solved = ps.solved.filter(s => s === 'solved').length;
+  document.getElementById('puzzleScore').textContent = `${solved}/${ps.puzzles.length} solved`;
+}
+
+function loadHistoryEvents() {
+  const el = document.getElementById('historyEvents');
+  if (!el) return;
+  const today = new Date();
+  const key = String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+  if (typeof CHESS_HISTORY !== 'undefined' && CHESS_HISTORY[key]) {
+    const events = CHESS_HISTORY[key];
+    el.innerHTML = events.map(e =>
+      `<div class="history-event"><span class="history-year">${e.year}</span>${esc(e.event)}<span class="history-cat">${esc(e.category)}</span></div>`
+    ).join('');
+  } else {
+    el.innerHTML = '<div class="history-event" style="color:var(--muted)">No historical events found for today.</div>';
+  }
+}
+
+let puzzlesInitialized = false;
+function initPuzzles() {
+  if (puzzlesInitialized) return;
+  puzzlesInitialized = true;
+  const ps = puzzleState;
+  if (typeof PUZZLE_DATA !== 'undefined' && PUZZLE_DATA.puzzles && PUZZLE_DATA.puzzles.length > 0) {
+    ps.puzzles = PUZZLE_DATA.puzzles;
+    ps.solved = new Array(ps.puzzles.length).fill(null);
+    document.getElementById('puzzleTotal').textContent = ps.puzzles.length;
+    loadPuzzle(0);
+  } else {
+    document.getElementById('chessBoard').innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted);grid-column:1/-1">No puzzles available. Run the puzzle scraper to generate daily puzzles.</div>';
+  }
+  loadHistoryEvents();
 }
 
 // ══════════════════════════════════════════════════════════
@@ -74445,7 +75054,8 @@ function initChessboard() {
     ctx.fillRect(0, 0, W, H);
   }
   drawBoard();
-  window.addEventListener('resize', drawBoard);
+  let resizeRaf;
+  window.addEventListener('resize', () => { cancelAnimationFrame(resizeRaf); resizeRaf = requestAnimationFrame(drawBoard); });
 
   // Knight that hops across the board
   const knight = document.createElement('div');
@@ -74563,9 +75173,9 @@ function filterHistResults(q) {
   showFamilies.forEach(fam => {
     const editions = byFamily[fam].sort((a, b) => b.t.year - a.t.year);
     // Family header
-    html += `<div style="padding:5px 14px 3px;font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;background:var(--surface2);border-bottom:1px solid var(--border-light);position:sticky;top:0">${fam} <span style="font-weight:400;opacity:.7">(${editions.length})</span></div>`;
+    html += `<div style="padding:5px 14px 3px;font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;background:var(--surface2);border-bottom:1px solid var(--border-light);position:sticky;top:0">${esc(fam)} <span style="font-weight:400;opacity:.7">(${editions.length})</span></div>`;
     editions.forEach(({t, i}) => {
-      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromDrop(${i})">`;
+      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromDrop(${i})" onkeydown="if(event.key==='Enter')selectFromDrop(${i})" tabindex="0" role="option">`;
       html += `<span class="cat-item-name" style="padding-left:6px">${t.year}</span>`;
       html += `<span class="cat-item-meta">${fmt(t.current_count)} entries</span></div>`;
     });
@@ -74586,7 +75196,9 @@ function toggleDrop(which, e) {
   if (openDrop === which) { closeDrop(); return; }
   closeDrop();
   openDrop = which;
-  document.getElementById('dropBtn_' + which).classList.add('open');
+  const btn = document.getElementById('dropBtn_' + which);
+  btn.classList.add('open');
+  btn.setAttribute('aria-expanded', 'true');
   const menu = document.getElementById('dropMenu_' + which);
   menu.style.display = 'block';
   if (which === 'hist') {
@@ -74601,7 +75213,7 @@ function closeDrop() {
   if (!openDrop) return;
   const btn = document.getElementById('dropBtn_' + openDrop);
   const menu = document.getElementById('dropMenu_' + openDrop);
-  if (btn) btn.classList.remove('open');
+  if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
   if (menu) menu.style.display = 'none';
   openDrop = null;
 }
@@ -74630,31 +75242,31 @@ function renderTabs() {
 
   // ── Upcoming dropdown ──
   html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn" id="dropBtn_live" onclick="toggleDrop('live',event)" style="border-left:3px solid var(--green)">`;
+  html += `<div class="cat-btn" id="dropBtn_live" onclick="toggleDrop('live',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('live',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true" style="border-left:3px solid var(--green)">`;
   html += `<span class="live-dot"></span>Upcoming <span class="cat-count" style="background:var(--green-dim);color:var(--green)">${live.length}</span> <span class="cat-arrow">&#9662;</span></div>`;
   html += `<div class="drop-menu" id="dropMenu_live">`;
   live.sort((a, b) => a.t.days_remaining - b.t.days_remaining).forEach(({t, i}) => {
-    html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromDrop(${i})">`;
-    html += `<span class="cat-item-name"><span class="live-dot"></span>${t.family}</span>`;
+    html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromDrop(${i})" onkeydown="if(event.key==='Enter')selectFromDrop(${i})" tabindex="0" role="option">`;
+    html += `<span class="cat-item-name"><span class="live-dot"></span>${esc(t.family)}</span>`;
     html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)} reg</span></div>`;
   });
   html += `</div></div>`;
 
   // ── Complete dropdown ──
   html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn" id="dropBtn_complete" onclick="toggleDrop('complete',event)" style="border-left:3px solid var(--blue)">`;
+  html += `<div class="cat-btn" id="dropBtn_complete" onclick="toggleDrop('complete',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('complete',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true" style="border-left:3px solid var(--blue)">`;
   html += `Complete <span class="cat-count">${complete.length}</span> <span class="cat-arrow">&#9662;</span></div>`;
   html += `<div class="drop-menu" id="dropMenu_complete">`;
   complete.forEach(({t, i}) => {
-    html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromDrop(${i})">`;
-    html += `<span class="cat-item-name">${t.family}</span>`;
+    html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromDrop(${i})" onkeydown="if(event.key==='Enter')selectFromDrop(${i})" tabindex="0" role="option">`;
+    html += `<span class="cat-item-name">${esc(t.family)}</span>`;
     html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)}</span></div>`;
   });
   html += `</div></div>`;
 
   // ── Historical search dropdown ──
   html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn" id="dropBtn_hist" onclick="toggleDrop('hist',event)" style="border-left:3px solid var(--purple)">`;
+  html += `<div class="cat-btn" id="dropBtn_hist" onclick="toggleDrop('hist',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('hist',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true" style="border-left:3px solid var(--purple)">`;
   html += `<span style="opacity:.6">&#128269;</span> Historical <span class="cat-count" style="background:var(--purple-dim);color:var(--purple)">${nHist}</span> <span class="cat-arrow">&#9662;</span></div>`;
   html += `<div class="drop-menu drop-menu-search" id="dropMenu_hist">`;
   html += `<div class="tab-search-bar">`;
@@ -74970,8 +75582,8 @@ function renderChart(t) {
   const ctx = document.getElementById('mainChart');
   if (chart) { chart.destroy(); chart = null; }
 
-  if (!t.daily_data || t.daily_data.length === 0) {
-    // No registration timeline data — show placeholder
+  if (!t.daily_data || t.daily_data.length === 0 || !t.event_start) {
+    // No registration timeline data or missing event date — show placeholder
     document.getElementById('chartLegend').innerHTML = '';
     document.getElementById('chartSubtitle').textContent = `${t.family} ${t.year} — No registration timeline available`;
     document.getElementById('chartCard').classList.remove('live-glow');
@@ -75007,7 +75619,7 @@ function renderChart(t) {
   };
 
   datasets.push({
-    label: 'Actual Registrations',
+    label: 'Actual Entries',
     data: actualData,
     borderColor: '#58a6ff',
     backgroundColor: (context) => {
@@ -75264,7 +75876,7 @@ function renderChart(t) {
               // Pick date from the most relevant dataset present in the tooltip.
               // Prefer Projected (in future) or Actual (in past) over historical years.
               const primary = items.find(i => i.dataset.label === 'Projected')
-                           || items.find(i => i.dataset.label === 'Actual Registrations')
+                           || items.find(i => i.dataset.label === 'Actual Entries')
                            || items[0];
               const d = primary.raw.x;
               const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -75286,7 +75898,7 @@ function renderChart(t) {
               const isHistorical = isDone(t);
               const isPastOrToday = hoveredDate <= today;
 
-              if (item.dataset.label === 'Actual Registrations') {
+              if (item.dataset.label === 'Actual Entries') {
                 // Only show actual line when hovering over real data (past/today),
                 // not when hovering over future projected points
                 if (!isHistorical && !isPastOrToday) return null;
@@ -75365,9 +75977,9 @@ function renderChart(t) {
     const ebD = new Date(t.early_bird_deadline + 'T00:00:00');
     const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
     if (ebD < today) {
-      sub += ` · EB ended ${fmtDate(t.early_bird_deadline)}`;
+      sub += ` · Early bird ended ${fmtDate(t.early_bird_deadline)}`;
     } else {
-      sub += ` · EB in ${Math.ceil((ebD - today) / 86400000)}d`;
+      sub += ` · Early bird in ${Math.ceil((ebD - today) / 86400000)}d`;
     }
   }
   document.getElementById('chartSubtitle').textContent = sub;
@@ -75578,7 +76190,7 @@ function renderHistorical(t) {
 
   wrap.innerHTML = `
     <table class="comp-table">
-      <thead><tr><th>Year</th><th>Count</th><th>YoY</th><th>Change</th></tr></thead>
+      <thead><tr><th>Year</th><th>Count</th><th title="Year-over-Year">YoY</th><th>Change</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
   `;
@@ -75694,7 +76306,7 @@ function renderRegCurve(t) {
     const diff = (actualPct - expectedPct).toFixed(1);
     const ahead = parseFloat(diff) > 0;
     document.getElementById('regCurveCaption').textContent =
-      `At T-${t.days_remaining}: expected ${expectedPct}%, actual ${actualPct}% of predicted final — ${ahead ? 'ahead' : 'behind'} typical pace by ${Math.abs(diff)}pp`;
+      `At T-${t.days_remaining}: expected ${expectedPct}%, actual ${actualPct}% of predicted final — ${ahead ? 'ahead' : 'behind'} typical pace by ${Math.abs(diff)} percentage points`;
   } else {
     document.getElementById('regCurveCaption').textContent =
       `Historical registration pattern for ${t.family}. Shows % of final entries at each lead time.`;
@@ -75832,8 +76444,8 @@ function renderAllTournaments() {
       }
     }
 
-    return `<tr onclick="selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})">
-      <td><div class="t-name">${t.family}</div><div class="t-sub">${t.year}${isLive ? ' · ' + t.days_remaining + 'd out' : ''}</div></td>
+    return `<tr onclick="selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})" onkeydown="if(event.key==='Enter'){selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})}" tabindex="0" style="cursor:pointer">
+      <td><div class="t-name">${esc(t.family)}</div><div class="t-sub">${t.year}${isLive ? ' · ' + t.days_remaining + 'd out' : ''}</div></td>
       <td>${pill}</td>
       <td>${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
       <td style="font-weight:600;color:var(--blue)">${fmt(t.current_count)} ${paceStr}</td>
@@ -75863,7 +76475,7 @@ function renderSummaryBar() {
     <span><strong style="color:var(--green)">${live.length}</strong> upcoming</span>
     <span><strong style="color:var(--muted)">${complete2026.length}</strong> complete '26</span>
     <span><strong style="color:var(--purple)">${historical.length}</strong> historical</span>
-    <span><strong style="color:var(--blue)">${fmt(totalRegs)}</strong> 2026 registrations</span>
+    <span><strong style="color:var(--blue)">${fmt(totalRegs)}</strong> 2026 entries</span>
     ${nextEvent ? `<span style="cursor:pointer" onclick="selectTournament(${TOURNAMENT_DATA.tournaments.indexOf(nextEvent)})">Next: <strong style="color:var(--gold)">${nextEvent.family}</strong> in ${nextEvent.days_remaining}d</span>` : ''}
   `;
 }
@@ -75894,9 +76506,9 @@ function renderMiniCards() {
         paceIndicator = `<span style="color:var(--muted);font-size:.68rem">&#8212; on pace</span>`;
       }
     }
-    return `<div class="mini-card ${isSelected ? 'mini-card-active' : ''}" onclick="selectTournament(${i})">
+    return `<div class="mini-card ${isSelected ? 'mini-card-active' : ''}" onclick="selectTournament(${i})" onkeydown="if(event.key==='Enter')selectTournament(${i})" tabindex="0" role="button" aria-label="${esc(t.family)} - ${fmt(t.point_estimate)} predicted">
       <div class="mini-card-header">
-        <span class="mini-card-name">${t.family}</span>
+        <span class="mini-card-name">${esc(t.family)}</span>
         <span class="mini-badge badge-live"><span class="live-dot" style="width:5px;height:5px"></span>T-${t.days_remaining}</span>
       </div>
       <div style="display:flex;align-items:baseline;gap:8px">
@@ -76036,13 +76648,13 @@ function renderDataEntry() {
     const regFee = o.regular_fee !== undefined ? o.regular_fee : (t.regular_fee || '');
     const onsiteFee = o.onsite_fee !== undefined ? o.onsite_fee : (t.onsite_fee || '');
     return `<tr>
-      <td class="fam-name">${t.family}</td>
-      <td><input type="number" data-family="${t.family}" data-field="current_count" value="${entries}" min="0"></td>
-      <td><input type="date" data-family="${t.family}" data-field="event_start" value="${start}"></td>
-      <td><input type="date" data-family="${t.family}" data-field="early_bird_deadline" value="${ebDeadline}"></td>
-      <td><input type="number" data-family="${t.family}" data-field="early_bird_fee" value="${ebFee}" min="0"></td>
-      <td><input type="number" data-family="${t.family}" data-field="regular_fee" value="${regFee}" min="0"></td>
-      <td><input type="number" data-family="${t.family}" data-field="onsite_fee" value="${onsiteFee}" min="0"></td>
+      <td class="fam-name">${esc(t.family)}</td>
+      <td><input type="number" data-family="${esc(t.family)}" data-field="current_count" value="${entries}" min="0"></td>
+      <td><input type="date" data-family="${esc(t.family)}" data-field="event_start" value="${start}"></td>
+      <td><input type="date" data-family="${esc(t.family)}" data-field="early_bird_deadline" value="${ebDeadline}"></td>
+      <td><input type="number" data-family="${esc(t.family)}" data-field="early_bird_fee" value="${ebFee}" min="0"></td>
+      <td><input type="number" data-family="${esc(t.family)}" data-field="regular_fee" value="${regFee}" min="0"></td>
+      <td><input type="number" data-family="${esc(t.family)}" data-field="onsite_fee" value="${onsiteFee}" min="0"></td>
     </tr>`;
   }).join('');
 }
@@ -76085,23 +76697,33 @@ function clearDataEntry() {
 }
 
 function applyOverrides() {
-  const overrides = JSON.parse(localStorage.getItem('cca_overrides') || '{}');
+  let overrides;
+  try {
+    overrides = JSON.parse(localStorage.getItem('cca_overrides') || '{}');
+    if (typeof overrides !== 'object' || overrides === null || Array.isArray(overrides)) {
+      overrides = {};
+    }
+  } catch (e) {
+    console.warn('Invalid overrides in localStorage, ignoring');
+    return;
+  }
   if (Object.keys(overrides).length === 0) return;
 
+  const validFamilies = new Set(TOURNAMENT_DATA.tournaments.map(t => t.family));
   TOURNAMENT_DATA.tournaments.forEach(t => {
     const o = overrides[t.family];
-    if (!o || t.status !== 'live') return;
-    if (o.current_count !== undefined) t.current_count = o.current_count;
-    if (o.event_start) {
+    if (!o || typeof o !== 'object' || t.status !== 'live') return;
+    if (typeof o.current_count === 'number' && o.current_count >= 0 && o.current_count < 100000) t.current_count = o.current_count;
+    if (typeof o.event_start === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(o.event_start)) {
       t.event_start = o.event_start;
       const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
       const evt = new Date(o.event_start + 'T00:00:00');
       t.days_remaining = Math.max(0, Math.ceil((evt - today) / 86400000));
     }
-    if (o.early_bird_deadline) t.early_bird_deadline = o.early_bird_deadline;
-    if (o.early_bird_fee !== undefined) t.early_bird_fee = o.early_bird_fee;
-    if (o.regular_fee !== undefined) t.regular_fee = o.regular_fee;
-    if (o.onsite_fee !== undefined) t.onsite_fee = o.onsite_fee;
+    if (typeof o.early_bird_deadline === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(o.early_bird_deadline)) t.early_bird_deadline = o.early_bird_deadline;
+    if (typeof o.early_bird_fee === 'number' && o.early_bird_fee >= 0) t.early_bird_fee = o.early_bird_fee;
+    if (typeof o.regular_fee === 'number' && o.regular_fee >= 0) t.regular_fee = o.regular_fee;
+    if (typeof o.onsite_fee === 'number' && o.onsite_fee >= 0) t.onsite_fee = o.onsite_fee;
   });
 }
 

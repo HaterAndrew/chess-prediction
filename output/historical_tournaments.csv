@@ -1,201 +1,551 @@
 tournament_name,year,start_date,end_date,state,total_entries,sections,schedule_dist,unique_states,withdrawal_count,rating_mean,rating_median,rating_std
-2026 Southern Class,2026,2026-03-13,2026-03-15,Florida,0,,,,,,,
-2026 Western Class Championshps,2026,2026-03-06,2026-03-08,California,0,,,,,,,
-2026 New York State Scholastic Championships Grades K-8,2026,2026-03-07,2026-03-08,New York,0,,,,,,,
-2026 George Washington Open,2026,2026-02-27,2026-03-01,Virginia,0,,"{""3-day"": 117, ""2-day"": 92}",,11,,,
-2026 George Washington Sunday Octos,2026,2026-03-01,2026-03-01,Virginia,0,,,,,,,
-2026 New York State High School Championship,2026,2026-02-28,2026-03-01,New York,0,,,,5,,,
-2026 New York State Senior Championship (With Young Adult/Middle Age Section),2026,2026-02-28,2026-03-01,New York,0,,,,,,,
-2026 George Washington Saturday Octos,2026,2026-02-28,2026-02-28,Virginia,0,,,,,,,
-2026 Southwest Class Championships,2026,2026-02-12,2026-02-16,Texas,0,,"{""3-day"": 98, ""2-day"": 97}",,7,,,
-2026 Liberty Bell Open,2026,2026-01-16,2026-01-19,Pennsylvania,0,,"{""2-day"": 74, ""3-day"": 217, ""4-day"": 273}",,11,,,
-2026 Golden State Open,2026,2026-01-16,2026-01-19,California,0,,"{""3-day"": 170, ""4-day"": 146, ""2-day"": 70}",,7,,,
-2026 Boston Chess Congress,2026,2026-01-02,2026-01-04,Massachusetts,0,,"{""3-day"": 226, ""2-day"": 132}",,16,,,
-2025 North American Open,2025,2025-12-26,2025-12-30,Nevada,0,,"{""5-day"": 133, ""4-day"": 737, ""3-day"": 383}",,74,,,
-2025 North American Blitz Championship,2025,2025-12-29,2025-12-30,Nevada,0,,,,,,,
-2025 Eastern Open,2025,2025-12-26,2025-12-29,Virginia,0,,"{""4-day"": 269, ""2-day"": 39, ""3-day"": 81}",,13,,,
-2025 National Chess Congress,2025,2025-11-28,2025-11-30,Pennsylvania,0,,"{""2-day"": 295, ""3-day"": 410}",,18,,,
-2025 Kings Island Open,2025,2025-11-14,2025-11-16,Ohio,0,,"{""2-day"": 150, ""3-day"": 206}",,14,,,
-2025 Los Angeles Open,2025,2025-11-07,2025-11-09,California,0,,"{""2-day"": 202, ""3-day"": 194}",,14,,,
-2025 Eastern Chess Congress,2025,2025-10-24,2025-10-26,New Jersey,0,,"{""2-day"": 93, ""3-day"": 102}",,6,,,
-2025 Midwest Class Championships,2025,2025-10-10,2025-10-12,Illinois,0,,,,,,,
-2025 Hartford Open,2025,2025-10-10,2025-10-12,Connecticut,0,,"{""3-day"": 101, ""2-day"": 88}",,12,,,
-2025 New York State Championship,2025,2025-08-29,2025-09-01,New York,0,,"{""3-day"": 234, ""4-day"": 71, ""2-day"": 43}",,15,,,
-2025 Atlantic Open,2025,2025-08-22,2025-08-24,District Of Columbia,0,,"{""3-day"": 119, ""2-day"": 118}",,4,,,
-2025 Central California Open,2025,2025-08-22,2025-08-24,California,0,,,,,,,
-2025 Indianapolis Open,2025,2025-08-22,2025-08-24,Indiana,0,,,,,,,
-2025 Continental Open,2025,2025-08-14,2025-08-17,Massachusetts,0,,,,,,,
-2025 Pacific Coast Open,2025,2025-08-08,2025-08-10,California,0,,,,,,,
-2025 Southern Open,2025,2025-07-25,2025-07-27,Florida,0,,,,,,,
-2025 Bradley Open,2025,2025-07-25,2025-07-27,Connecticut,0,,,,,,,
-2025 Chicago Class,2025,2025-07-18,2025-07-20,Illinois,0,,,,,,,
-2025 Pittsburgh Open,2025,2025-07-18,2025-07-20,Pennsylvania,0,,,,,,,
-"2025 World Open, top 6 sections",2025,2025-07-02,2025-07-06,Pennsylvania,0,,,,,,,
-2025 World Open Blitz Championship,2025,2025-07-06,2025-07-06,Pennsylvania,0,,,,,,,
-2025 World Open G/10 Championship,2025,2025-07-05,2025-07-05,Pennsylvania,0,,,,,,,
-2025 World Open G/7 Championship,2025,2025-07-02,2025-07-02,Pennsylvania,0,,,,,,,
-2025 World Open Under 13 Championship,2025,2025-06-30,2025-07-01,Pennsylvania,0,,,,,,,
-2025 World Open Amateur,2025,2025-06-30,2025-07-01,Pennsylvania,0,,,,,,,
-2025 World Open Senior Amateur,2025,2025-06-30,2025-07-01,Pennsylvania,0,,,,,,,
-2025 World Open Womens Championship,2025,2025-06-30,2025-07-01,Pennsylvania,0,,,,,,,
-2025 World Open Action,2025,2025-07-01,2025-07-01,Pennsylvania,0,,,,,,,
-2025 Philadelphia International,2025,2025-06-26,2025-06-30,Pennsylvania,0,,,,,,,
-"2025 World Open, lower sections",2025,2025-06-27,2025-06-29,Pennsylvania,0,,,,,,,
-2025 Philadelphia Open,2025,2025-06-27,2025-06-29,Pennsylvania,0,,,,,,,
-World Open Junior Octos,2025,2025-06-26,2025-06-26,Pennsylvania,0,,,,,,,
-Philadelphia Octos,2025,2025-06-26,2025-06-26,Pennsylvania,0,,,,,,,
-2025 New York State Open,2025,2025-06-20,2025-06-22,New York,0,,,,,,,
-2025 Cleveland Open,2025,2025-06-13,2025-06-15,Ohio,0,,,,,,,
-2025 Eastern Class,2025,2025-06-06,2025-06-08,Connecticut,0,,,,,,,
-2025 Chicago Open,2025,2025-05-22,2025-05-26,Illinois,0,,,,,,,
-2025 Chicago Open Blitz,2025,2025-05-25,2025-05-25,Illinois,0,,,,,,,
-2025 Niagara Falls Open,2025,2025-05-02,2025-05-04,New York,0,,,,,,,
-2025 Princeton Open,2025,2025-04-16,2025-04-20,New Jersey,0,,,,,,,
-2025 Mid-America Open,2025,2025-03-21,2025-03-23,Missouri,0,,,,,,,
-2025 New York State High School Championship,2025,2025-03-15,2025-03-16,New York,0,,,,,,,
-2025 New York State Senior Championship (With Young Adult/Middle Age Section),2025,2025-03-15,2025-03-16,New York,0,,,,,,,
-2025 Western Class Championshps,2025,2025-03-07,2025-03-09,California,0,,,,,,,
-2025 New York State Scholastic Championships Grades K-8,2025,2025-03-08,2025-03-09,New York,0,,,,,,,
-2025 Southern Class,2025,2025-03-07,2025-03-09,Florida,0,,,,,,,
-WAIT LIST-2025 New York State Scholastic Championships Grades K-8,2025,2025-03-08,2025-03-09,New York,0,,,,,,,
-2025 George Washington Open,2025,2025-02-21,2025-02-23,Virginia,0,,,,,,,
-2025 Southwest Class Championships,2025,2025-02-13,2025-02-17,Texas,0,,,,,,,
-2025 Liberty Bell Open,2025,2025-01-17,2025-01-20,Pennsylvania,0,,,,,,,
-2025 Golden State Open,2025,2025-01-17,2025-01-20,California,0,,,,,,,
-2025 Boston Chess Congress,2025,2025-01-03,2025-01-05,Massachusetts,0,,,,,,,
-2024 North American Open,2024,2024-12-26,2024-12-30,Nevada,0,,,,,,,
-2024 North American Blitz Championship,2024,2024-12-29,2024-12-30,Nevada,0,,,,,,,
-2024 Eastern Open,2024,2024-12-26,2024-12-29,Virginia,0,,,,,,,
-2024 National Chess Congress,2024,2024-11-29,2024-12-01,Pennsylvania,0,,,,,,,
-2024 Kings Island Open,2024,2024-11-15,2024-11-17,Ohio,0,,,,,,,
-2024 Los Angeles Open,2024,2024-11-01,2024-11-03,California,0,,,,,,,
-2024 Eastern Chess Congress,2024,2024-10-25,2024-10-27,New Jersey,0,,,,,,,
-2024 Hartford Open,2024,2024-10-18,2024-10-20,Connecticut,0,,,,,,,
-2024 Midwest Class Championships,2024,2024-10-11,2024-10-13,Illinois,0,,,,,,,
-2024 New York State Championship,2024,2024-08-30,2024-09-02,New York,0,,,,,,,
-2024 Indianapolis Open,2024,2024-08-23,2024-08-25,Indiana,0,,,,,,,
-2024 Atlantic Open,2024,2024-08-23,2024-08-25,District Of Columbia,0,,,,,,,
-2024 Continental Open,2024,2024-08-15,2024-08-18,Massachusetts,0,,,,,,,
-2024 Central California Open,2024,2024-08-09,2024-08-11,California,0,,,,,,,
-2024 Pittsburgh Open,2024,2024-07-26,2024-07-28,Pennsylvania,0,,,,,,,
-2024 Bradley Open,2024,2024-07-26,2024-07-28,Connecticut,0,,,,,,,
-2024 Chicago Class,2024,2024-07-19,2024-07-21,Illinois,0,,,,,,,
-2024 Southern Open,2024,2024-07-19,2024-07-21,Florida,0,,,,,,,
-2024 Pacific Coast Open,2024,2024-07-19,2024-07-21,California,0,,,,,,,
-"2024 World Open, top 6 sections",2024,2024-07-03,2024-07-07,Pennsylvania,0,,,,,,,
-2024 World Open Blitz Championship,2024,2024-07-07,2024-07-07,Pennsylvania,0,,,,,,,
-2024 World Open G/10 Championship,2024,2024-07-06,2024-07-06,Pennsylvania,0,,,,,,,
-2024 World Open G/7 Championship,2024,2024-07-03,2024-07-03,Pennsylvania,0,,,,,,,
-2024 World Open Senior Amateur,2024,2024-07-01,2024-07-02,Pennsylvania,0,,,,,,,
-2024 World Open Womens Championship,2024,2024-07-01,2024-07-02,Pennsylvania,0,,,,,,,
-2024 World Open Amateur,2024,2024-07-01,2024-07-02,Pennsylvania,0,,,,,,,
-2024 World Open Junior Championship,2024,2024-07-01,2024-07-02,Pennsylvania,0,,,,,,,
-2024 Philadelphia International,2024,2024-06-27,2024-07-01,Pennsylvania,0,,,,,,,
-"2024 World Open, lower sections",2024,2024-06-28,2024-06-30,Pennsylvania,0,,,,,,,
-2024 Philadelphia Open,2024,2024-06-28,2024-06-30,Pennsylvania,0,,,,,,,
-2024 World Open Under 13 Championship,2024,2024-06-26,2024-06-27,Pennsylvania,0,,,,,,,
-2024 New York State Open,2024,2024-06-14,2024-06-16,New York,0,,,,,,,
-2024 Eastern Class,2024,2024-06-07,2024-06-09,Connecticut,0,,,,,,,
-2024 Cleveland Open,2024,2024-06-07,2024-06-09,Ohio,0,,,,,,,
-2024 Niagara Falls Open,2024,2024-05-31,2024-06-02,New York,0,,,,,,,
-2024 Chicago Open,2024,2024-05-23,2024-05-27,Illinois,0,,,,,,,
-2024 Chicago Open Blitz,2024,2024-05-26,2024-05-26,Illinois,0,,,,,,,
-2024 CCA April Classic on ICC,2024,2024-04-13,2024-04-13,Internet,0,,,,,,,
-2024 Open at Foxwoods,2024,2024-03-27,2024-03-31,Connecticut,0,,,,,,,
-2024 Mid-America Open,2024,2024-03-22,2024-03-24,Missouri,0,,,,,,,
-2024 Southern Class,2024,2024-03-15,2024-03-17,Florida,0,,,,,,,
-2024 New York State Scholastic Championships,2024,2024-03-09,2024-03-10,New York,0,,,,,,,
-2024 New York State Scholastic Championships_WAITLIST,2024,2024-03-09,2024-03-10,New York,0,,,,,,,
-2024 CCA March Classic on ICC,2024,2024-03-09,2024-03-09,Internet,0,,,,,,,
-2024 Western Class Championshps,2024,2024-03-01,2024-03-03,California,0,,,,,,,
-2024 George Washington Open,2024,2024-02-23,2024-02-25,Virginia,0,,,,,,,
-2024 Southwest Class Championships,2024,2024-02-15,2024-02-19,Texas,0,,,,,,,
-2024 CCA February Classic on ICC,2024,2024-02-10,2024-02-10,Internet,0,,,,,,,
-2024 Liberty Bell Open,2024,2024-01-12,2024-01-15,Pennsylvania,0,,,,,,,
-2024 Golden State Open,2024,2024-01-12,2024-01-15,California,0,,,,,,,
-2024 CCA January Classic on ICC,2024,2024-01-13,2024-01-13,Internet,0,,,,,,,
-2024 Boston Chess Congress,2024,2024-01-05,2024-01-07,Massachusetts,0,,,,,,,
-2023 North American Open,2023,2023-12-26,2023-12-30,Nevada,0,,,,,,,
-2023 Eastern Open,2023,2023-12-26,2023-12-29,Virginia,0,,,,,,,
-2023 North American Blitz Championship,2023,2023-12-29,2023-12-29,Nevada,0,,,,,,,
-2023 CCA December Celebration on ICC,2023,2023-12-09,2023-12-09,Internet,0,,,,,,,
-2023 National Chess Congress,2023,2023-11-24,2023-11-26,Pennsylvania,0,,,,,,,
-2023 Kings Island Open,2023,2023-11-10,2023-11-12,Ohio,0,,,,,,,
-2023 CCA November Classic on ICC,2023,2023-11-11,2023-11-11,Internet,0,,,,,,,
-2023 Los Angeles Open,2023,2023-11-03,2023-11-05,California,0,,,,,,,
-2023 Eastern Chess Congress,2023,2023-10-27,2023-10-29,New Jersey,0,,,,,,,
-2023 Washington Chess Congess,2023,2023-10-20,2023-10-22,Virginia,0,,,,,,,
-2023 Midwest Class Championships,2023,2023-10-06,2023-10-08,Illinois,0,,,,,,,
-2023 Hartford Open,2023,2023-10-06,2023-10-08,Connecticut,0,,,,,,,
-2023 CCA October Open on ICC,2023,2023-10-07,2023-10-07,Internet,0,,,,,,,
-2023 Central New York Open,2023,2023-09-22,2023-09-24,New York,0,,,,,,,
-2023 CCA September Action on ICC,2023,2023-09-23,2023-09-23,Internet,0,,,,,,,
-2023 CCA September Open on ICC,2023,2023-09-09,2023-09-09,Internet,0,,,,,,,
-2023 New York State Championship,2023,2023-09-01,2023-09-04,New York,0,,,,,,,
-2023 Atlantic Open,2023,2023-08-25,2023-08-27,Virginia,0,,,,,,,
-2023 Indianapolis Open,2023,2023-08-25,2023-08-27,Indiana,0,,,,,,,
-2023 CCA August Action on ICC,2023,2023-08-19,2023-08-19,Internet,0,,,,,,,
-2023 Central California Open,2023,2023-08-11,2023-08-13,California,0,,,,,,,
-2023 CCA August Open on ICC,2023,2023-08-05,2023-08-05,Internet,0,,,,,,,
-2023 Southern Open,2023,2023-07-28,2023-07-30,Florida,0,,,,,,,
-2023 Bradley Open,2023,2023-07-28,2023-07-30,Connecticut,0,,,,,,,
-2023 Pacific Coast Open,2023,2023-07-21,2023-07-23,California,0,,,,,,,
-2023 Pittsburgh Open,2023,2023-07-21,2023-07-23,Pennsylvania,0,,,,,,,
-2023 CCA July Action on ICC,2023,2023-07-22,2023-07-22,Internet,0,,,,,,,
-2023 Continental Open,2023,2023-07-13,2023-07-16,Massachusetts,0,,,,,,,
-2023 Chicago Class,2023,2023-07-14,2023-07-16,Illinois,0,,,,,,,
-2023 CCA July Open on ICC,2023,2023-07-08,2023-07-08,Internet,0,,,,,,,
-2023 World Open Blitz Championship,2023,2023-07-04,2023-07-05,Pennsylvania,0,,,,,,,
-"2023 World Open, top 6 sections",2023,2023-06-30,2023-07-04,Pennsylvania,0,,,,,,,
-2023 World Open G/10 Championship,2023,2023-07-03,2023-07-03,Pennsylvania,0,,,,,,,
-2023 World Open G7 Championship,2023,2023-06-30,2023-07-01,Pennsylvania,0,,,,,,,
-2023 World Open Action,2023,2023-06-29,2023-06-30,Pennsylvania,0,,,,,,,
-2023 World Open Women&amp;#39;s Championship,2023,2023-06-29,2023-06-30,Pennsylvania,0,,,,,,,
-2023 World Open Junior Championship,2023,2023-06-28,2023-06-29,Pennsylvania,0,,,,,,,
-2023 World Open Senior Amateur,2023,2023-06-28,2023-06-29,Pennsylvania,0,,,,,,,
-2023 Philadelphia International,2023,2023-06-24,2023-06-28,Pennsylvania,0,,,,,,,
-2023 World Open Amateur,2023,2023-06-26,2023-06-28,Pennsylvania,0,,,,,,,
-2023 World Open Under 13 Championship,2023,2023-06-26,2023-06-27,Pennsylvania,0,,,,,,,
-"2023 World Open, lower sections",2023,2023-06-23,2023-06-25,Pennsylvania,0,,,,,,,
-2023 Philadelphia Open,2023,2023-06-23,2023-06-25,Pennsylvania,0,,,,,,,
-2023 Continental Class,2023,2023-06-16,2023-06-18,Virginia,0,,,,,,,
-2023 CCA June Action on ICC,2023,2023-06-17,2023-06-17,Internet,0,,,,,,,
-2023 Cleveland Open,2023,2023-06-09,2023-06-11,Ohio,0,,,,,,,
-2023 CCA June Open on ICC,2023,2023-06-03,2023-06-03,Internet,0,,,,,,,
-2023 Chicago Open,2023,2023-05-25,2023-05-29,Illinois,0,,,,,,,
-2023 Chicago Open Blitz,2023,2023-05-28,2023-05-28,Illinois,0,,,,,,,
-2023 CCA May Action on ICC,2023,2023-05-20,2023-05-20,Internet,0,,,,,,,
-2023 Niagara Falls Open,2023,2023-05-05,2023-05-07,New York,0,,,,,,,
-2023 CCA May Open on ICC,2023,2023-05-06,2023-05-06,Internet,0,,,,,,,
-2023 CCA April Action on ICC,2023,2023-04-15,2023-04-15,Internet,0,,,,,,,
-2023 Open at Foxwoods,2023,2023-04-05,2023-04-09,Connecticut,0,,,,,,,
-2023 Blitz at Foxwoods,2023,2023-04-08,2023-04-08,Connecticut,0,,,,,,,
-2023 CCA April Open on ICC,2023,2023-04-01,2023-04-01,Internet,0,,,,,,,
-2023 Mid-America Open,2023,2023-03-24,2023-03-26,Missouri,0,,,,,,,
-2023 Eastern Class,2023,2023-03-17,2023-03-19,Connecticut,0,,,,,,,
-2023 Southern Class,2023,2023-03-17,2023-03-19,Florida,0,,,,,,,
-2023 ICC March G/60,2023,2023-03-18,2023-03-19,Internet,0,,,,,,,
-2023 New York State Scholastic Championships,2023,2023-03-11,2023-03-12,New York,0,,,,,,,
-2023 Western Class,2023,2023-03-03,2023-03-05,California,0,,,,,,,
-2023 CCA March Open on ICC,2023,2023-03-04,2023-03-04,Internet,0,,,,,,,
-2023 George Washington Open,2023,2023-02-24,2023-02-26,Virginia,0,,,,,,,
-2023 CCA February Action on ICC,2023,2023-02-25,2023-02-25,Internet,0,,,,,,,
-2023 Southwest Class Championships,2023,2023-02-16,2023-02-20,Texas,0,,,,,,,
-2023 CCA February Open on ICC,2023,2023-02-04,2023-02-04,Internet,0,,,,,,,
-2023 CCA January Action on ICC,2023,2023-01-21,2023-01-21,Internet,0,,,,,,,
-2023 Liberty Bell Open,2023,2023-01-13,2023-01-16,Pennsylvania,0,,,,,,,
-2023 Golden State Open,2023,2023-01-13,2023-01-16,California,0,,,,,,,
-2023 Boston Chess Congress,2023,2023-01-06,2023-01-08,Massachusetts,0,,,,,,,
-2023 CCA January Open on ICC,2023,2023-01-07,2023-01-07,Internet,0,,,,,,,
-2022 North American Open,2022,2022-12-26,2022-12-30,Nevada,0,,,,,,,
-2022 Eastern Open,2022,2022-12-26,2022-12-29,Virginia,0,,,,,,,
-2022 North American Blitz Championship,2022,2022-12-29,2022-12-29,Nevada,0,,,,,,,
-2022 CCA December Action on ICC,2022,2022-12-17,2022-12-17,Internet,0,,,,,,,
-2022 CCA December Open on ICC,2022,2022-12-03,2022-12-03,Internet,0,,,,,,,
-2022 National Chess Congress,2022,2022-11-25,2022-11-27,Pennsylvania,0,,,,,,,
-2022 Kings Island Open,2022,2022-11-11,2022-11-13,Ohio,0,,,,,,,
-2022 Los Angeles Open,2022,2022-11-04,2022-11-06,California,0,,,,,,,
-2022 CCA November Open on ICC,2022,2022-11-05,2022-11-05,Internet,0,,,,,,,
-2022 Eastern Chess Congress,2022,2022-10-28,2022-10-30,New Jersey,0,,,,,,,
-2022 Central New York Open,2022,2022-10-21,2022-10-23,New York,0,,,,,,,
-2022 Eastern Chess Congress Action on ICC,2022,2022-10-22,2022-10-22,Internet,0,,,,,,,
+2026 Southern Class,2026,2026-03-13,2026-03-15,Florida,0,nan,nan,nan,nan,nan,nan,nan
+2026 Western Class Championshps,2026,2026-03-06,2026-03-08,California,0,nan,nan,nan,nan,nan,nan,nan
+2026 New York State Scholastic Championships Grades K-8,2026,2026-03-07,2026-03-08,New York,0,nan,nan,nan,nan,nan,nan,nan
+2026 George Washington Open,2026,2026-02-27,2026-03-01,Virginia,0,nan,"{""3-day"": 117, ""2-day"": 92}",nan,11.0,nan,nan,nan
+2026 George Washington Sunday Octos,2026,2026-03-01,2026-03-01,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2026 New York State High School Championship,2026,2026-02-28,2026-03-01,New York,0,nan,nan,nan,5.0,nan,nan,nan
+2026 New York State Senior Championship (With Young Adult/Middle Age Section),2026,2026-02-28,2026-03-01,New York,0,nan,nan,nan,nan,nan,nan,nan
+2026 George Washington Saturday Octos,2026,2026-02-28,2026-02-28,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2026 Southwest Class Championships,2026,2026-02-12,2026-02-16,Texas,0,nan,"{""3-day"": 98, ""2-day"": 97}",nan,7.0,nan,nan,nan
+2026 Liberty Bell Open,2026,2026-01-16,2026-01-19,Pennsylvania,0,nan,"{""2-day"": 74, ""3-day"": 217, ""4-day"": 273}",nan,11.0,nan,nan,nan
+2026 Golden State Open,2026,2026-01-16,2026-01-19,California,0,nan,"{""3-day"": 170, ""4-day"": 146, ""2-day"": 70}",nan,7.0,nan,nan,nan
+2026 Boston Chess Congress,2026,2026-01-02,2026-01-04,Massachusetts,0,nan,"{""3-day"": 226, ""2-day"": 132}",nan,16.0,nan,nan,nan
+2025 North American Open,2025,2025-12-26,2025-12-30,Nevada,0,nan,"{""5-day"": 133, ""4-day"": 737, ""3-day"": 383}",nan,74.0,nan,nan,nan
+2025 North American Blitz Championship,2025,2025-12-29,2025-12-30,Nevada,0,nan,nan,nan,nan,nan,nan,nan
+2025 Eastern Open,2025,2025-12-26,2025-12-29,Virginia,0,nan,"{""4-day"": 269, ""2-day"": 39, ""3-day"": 81}",nan,13.0,nan,nan,nan
+2025 National Chess Congress,2025,2025-11-28,2025-11-30,Pennsylvania,0,nan,"{""2-day"": 295, ""3-day"": 410}",nan,18.0,nan,nan,nan
+2025 Kings Island Open,2025,2025-11-14,2025-11-16,Ohio,0,nan,"{""2-day"": 150, ""3-day"": 206}",nan,14.0,nan,nan,nan
+2025 Los Angeles Open,2025,2025-11-07,2025-11-09,California,0,nan,"{""2-day"": 202, ""3-day"": 194}",nan,14.0,nan,nan,nan
+2025 Eastern Chess Congress,2025,2025-10-24,2025-10-26,New Jersey,0,nan,"{""2-day"": 93, ""3-day"": 102}",nan,6.0,nan,nan,nan
+2025 Midwest Class Championships,2025,2025-10-10,2025-10-12,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2025 Hartford Open,2025,2025-10-10,2025-10-12,Connecticut,0,nan,"{""3-day"": 101, ""2-day"": 88}",nan,12.0,nan,nan,nan
+2025 New York State Championship,2025,2025-08-29,2025-09-01,New York,0,nan,"{""3-day"": 234, ""4-day"": 71, ""2-day"": 43}",nan,15.0,nan,nan,nan
+2025 Atlantic Open,2025,2025-08-22,2025-08-24,District Of Columbia,0,nan,"{""3-day"": 119, ""2-day"": 118}",nan,4.0,nan,nan,nan
+2025 Central California Open,2025,2025-08-22,2025-08-24,California,0,nan,nan,nan,nan,nan,nan,nan
+2025 Indianapolis Open,2025,2025-08-22,2025-08-24,Indiana,0,nan,nan,nan,nan,nan,nan,nan
+2025 Continental Open,2025,2025-08-14,2025-08-17,Massachusetts,0,nan,nan,nan,nan,nan,nan,nan
+2025 Pacific Coast Open,2025,2025-08-08,2025-08-10,California,0,nan,nan,nan,nan,nan,nan,nan
+2025 Southern Open,2025,2025-07-25,2025-07-27,Florida,0,nan,nan,nan,nan,nan,nan,nan
+2025 Bradley Open,2025,2025-07-25,2025-07-27,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2025 Chicago Class,2025,2025-07-18,2025-07-20,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2025 Pittsburgh Open,2025,2025-07-18,2025-07-20,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+"2025 World Open, top 6 sections",2025,2025-07-02,2025-07-06,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 World Open Blitz Championship,2025,2025-07-06,2025-07-06,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 World Open G/10 Championship,2025,2025-07-05,2025-07-05,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 World Open G/7 Championship,2025,2025-07-02,2025-07-02,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 World Open Under 13 Championship,2025,2025-06-30,2025-07-01,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 World Open Amateur,2025,2025-06-30,2025-07-01,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 World Open Senior Amateur,2025,2025-06-30,2025-07-01,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 World Open Womens Championship,2025,2025-06-30,2025-07-01,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 World Open Action,2025,2025-07-01,2025-07-01,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 Philadelphia International,2025,2025-06-26,2025-06-30,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+"2025 World Open, lower sections",2025,2025-06-27,2025-06-29,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 Philadelphia Open,2025,2025-06-27,2025-06-29,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+World Open Junior Octos,2025,2025-06-26,2025-06-26,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+Philadelphia Octos,2025,2025-06-26,2025-06-26,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 New York State Open,2025,2025-06-20,2025-06-22,New York,0,nan,nan,nan,nan,nan,nan,nan
+2025 Cleveland Open,2025,2025-06-13,2025-06-15,Ohio,0,nan,nan,nan,nan,nan,nan,nan
+2025 Eastern Class,2025,2025-06-06,2025-06-08,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2025 Chicago Open,2025,2025-05-22,2025-05-26,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2025 Chicago Open Blitz,2025,2025-05-25,2025-05-25,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2025 Niagara Falls Open,2025,2025-05-02,2025-05-04,New York,0,nan,nan,nan,nan,nan,nan,nan
+2025 Princeton Open,2025,2025-04-16,2025-04-20,New Jersey,0,nan,nan,nan,nan,nan,nan,nan
+2025 Mid-America Open,2025,2025-03-21,2025-03-23,Missouri,0,nan,nan,nan,nan,nan,nan,nan
+2025 New York State High School Championship,2025,2025-03-15,2025-03-16,New York,0,nan,nan,nan,nan,nan,nan,nan
+2025 New York State Senior Championship (With Young Adult/Middle Age Section),2025,2025-03-15,2025-03-16,New York,0,nan,nan,nan,nan,nan,nan,nan
+2025 Western Class Championshps,2025,2025-03-07,2025-03-09,California,0,nan,nan,nan,nan,nan,nan,nan
+2025 New York State Scholastic Championships Grades K-8,2025,2025-03-08,2025-03-09,New York,0,nan,nan,nan,nan,nan,nan,nan
+2025 Southern Class,2025,2025-03-07,2025-03-09,Florida,0,nan,nan,nan,nan,nan,nan,nan
+WAIT LIST-2025 New York State Scholastic Championships Grades K-8,2025,2025-03-08,2025-03-09,New York,0,nan,nan,nan,nan,nan,nan,nan
+2025 George Washington Open,2025,2025-02-21,2025-02-23,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2025 Southwest Class Championships,2025,2025-02-13,2025-02-17,Texas,0,nan,nan,nan,nan,nan,nan,nan
+2025 Liberty Bell Open,2025,2025-01-17,2025-01-20,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2025 Golden State Open,2025,2025-01-17,2025-01-20,California,0,nan,nan,nan,nan,nan,nan,nan
+2025 Boston Chess Congress,2025,2025-01-03,2025-01-05,Massachusetts,0,nan,nan,nan,nan,nan,nan,nan
+2024 North American Open,2024,2024-12-26,2024-12-30,Nevada,0,nan,nan,nan,nan,nan,nan,nan
+2024 North American Blitz Championship,2024,2024-12-29,2024-12-30,Nevada,0,nan,nan,nan,nan,nan,nan,nan
+2024 Eastern Open,2024,2024-12-26,2024-12-29,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2024 National Chess Congress,2024,2024-11-29,2024-12-01,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 Kings Island Open,2024,2024-11-15,2024-11-17,Ohio,0,nan,nan,nan,nan,nan,nan,nan
+2024 Los Angeles Open,2024,2024-11-01,2024-11-03,California,0,nan,nan,nan,nan,nan,nan,nan
+2024 Eastern Chess Congress,2024,2024-10-25,2024-10-27,New Jersey,0,nan,nan,nan,nan,nan,nan,nan
+2024 Hartford Open,2024,2024-10-18,2024-10-20,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2024 Midwest Class Championships,2024,2024-10-11,2024-10-13,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2024 New York State Championship,2024,2024-08-30,2024-09-02,New York,0,nan,nan,nan,nan,nan,nan,nan
+2024 Indianapolis Open,2024,2024-08-23,2024-08-25,Indiana,0,nan,nan,nan,nan,nan,nan,nan
+2024 Atlantic Open,2024,2024-08-23,2024-08-25,District Of Columbia,0,nan,nan,nan,nan,nan,nan,nan
+2024 Continental Open,2024,2024-08-15,2024-08-18,Massachusetts,0,nan,nan,nan,nan,nan,nan,nan
+2024 Central California Open,2024,2024-08-09,2024-08-11,California,0,nan,nan,nan,nan,nan,nan,nan
+2024 Pittsburgh Open,2024,2024-07-26,2024-07-28,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 Bradley Open,2024,2024-07-26,2024-07-28,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2024 Chicago Class,2024,2024-07-19,2024-07-21,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2024 Southern Open,2024,2024-07-19,2024-07-21,Florida,0,nan,nan,nan,nan,nan,nan,nan
+2024 Pacific Coast Open,2024,2024-07-19,2024-07-21,California,0,nan,nan,nan,nan,nan,nan,nan
+"2024 World Open, top 6 sections",2024,2024-07-03,2024-07-07,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 World Open Blitz Championship,2024,2024-07-07,2024-07-07,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 World Open G/10 Championship,2024,2024-07-06,2024-07-06,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 World Open G/7 Championship,2024,2024-07-03,2024-07-03,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 World Open Senior Amateur,2024,2024-07-01,2024-07-02,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 World Open Womens Championship,2024,2024-07-01,2024-07-02,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 World Open Amateur,2024,2024-07-01,2024-07-02,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 World Open Junior Championship,2024,2024-07-01,2024-07-02,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 Philadelphia International,2024,2024-06-27,2024-07-01,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+"2024 World Open, lower sections",2024,2024-06-28,2024-06-30,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 Philadelphia Open,2024,2024-06-28,2024-06-30,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 World Open Under 13 Championship,2024,2024-06-26,2024-06-27,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 New York State Open,2024,2024-06-14,2024-06-16,New York,0,nan,nan,nan,nan,nan,nan,nan
+2024 Eastern Class,2024,2024-06-07,2024-06-09,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2024 Cleveland Open,2024,2024-06-07,2024-06-09,Ohio,0,nan,nan,nan,nan,nan,nan,nan
+2024 Niagara Falls Open,2024,2024-05-31,2024-06-02,New York,0,nan,nan,nan,nan,nan,nan,nan
+2024 Chicago Open,2024,2024-05-23,2024-05-27,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2024 Chicago Open Blitz,2024,2024-05-26,2024-05-26,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2024 CCA April Classic on ICC,2024,2024-04-13,2024-04-13,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2024 Open at Foxwoods,2024,2024-03-27,2024-03-31,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2024 Mid-America Open,2024,2024-03-22,2024-03-24,Missouri,0,nan,nan,nan,nan,nan,nan,nan
+2024 Southern Class,2024,2024-03-15,2024-03-17,Florida,0,nan,nan,nan,nan,nan,nan,nan
+2024 New York State Scholastic Championships,2024,2024-03-09,2024-03-10,New York,0,nan,nan,nan,nan,nan,nan,nan
+2024 New York State Scholastic Championships_WAITLIST,2024,2024-03-09,2024-03-10,New York,0,nan,nan,nan,nan,nan,nan,nan
+2024 CCA March Classic on ICC,2024,2024-03-09,2024-03-09,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2024 Western Class Championshps,2024,2024-03-01,2024-03-03,California,0,nan,nan,nan,nan,nan,nan,nan
+2024 George Washington Open,2024,2024-02-23,2024-02-25,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2024 Southwest Class Championships,2024,2024-02-15,2024-02-19,Texas,0,nan,nan,nan,nan,nan,nan,nan
+2024 CCA February Classic on ICC,2024,2024-02-10,2024-02-10,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2024 Liberty Bell Open,2024,2024-01-12,2024-01-15,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2024 Golden State Open,2024,2024-01-12,2024-01-15,California,0,nan,nan,nan,nan,nan,nan,nan
+2024 CCA January Classic on ICC,2024,2024-01-13,2024-01-13,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2024 Boston Chess Congress,2024,2024-01-05,2024-01-07,Massachusetts,0,nan,nan,nan,nan,nan,nan,nan
+2023 North American Open,2023,2023-12-26,2023-12-30,Nevada,0,nan,nan,nan,nan,nan,nan,nan
+2023 Eastern Open,2023,2023-12-26,2023-12-29,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2023 North American Blitz Championship,2023,2023-12-29,2023-12-29,Nevada,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA December Celebration on ICC,2023,2023-12-09,2023-12-09,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 National Chess Congress,2023,2023-11-24,2023-11-26,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 Kings Island Open,2023,2023-11-10,2023-11-12,Ohio,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA November Classic on ICC,2023,2023-11-11,2023-11-11,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Los Angeles Open,2023,2023-11-03,2023-11-05,California,0,nan,nan,nan,nan,nan,nan,nan
+2023 Eastern Chess Congress,2023,2023-10-27,2023-10-29,New Jersey,0,nan,nan,nan,nan,nan,nan,nan
+2023 Washington Chess Congess,2023,2023-10-20,2023-10-22,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2023 Midwest Class Championships,2023,2023-10-06,2023-10-08,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2023 Hartford Open,2023,2023-10-06,2023-10-08,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA October Open on ICC,2023,2023-10-07,2023-10-07,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Central New York Open,2023,2023-09-22,2023-09-24,New York,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA September Action on ICC,2023,2023-09-23,2023-09-23,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA September Open on ICC,2023,2023-09-09,2023-09-09,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 New York State Championship,2023,2023-09-01,2023-09-04,New York,0,nan,nan,nan,nan,nan,nan,nan
+2023 Atlantic Open,2023,2023-08-25,2023-08-27,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2023 Indianapolis Open,2023,2023-08-25,2023-08-27,Indiana,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA August Action on ICC,2023,2023-08-19,2023-08-19,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Central California Open,2023,2023-08-11,2023-08-13,California,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA August Open on ICC,2023,2023-08-05,2023-08-05,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Southern Open,2023,2023-07-28,2023-07-30,Florida,0,nan,nan,nan,nan,nan,nan,nan
+2023 Bradley Open,2023,2023-07-28,2023-07-30,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2023 Pacific Coast Open,2023,2023-07-21,2023-07-23,California,0,nan,nan,nan,nan,nan,nan,nan
+2023 Pittsburgh Open,2023,2023-07-21,2023-07-23,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA July Action on ICC,2023,2023-07-22,2023-07-22,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Continental Open,2023,2023-07-13,2023-07-16,Massachusetts,0,nan,nan,nan,nan,nan,nan,nan
+2023 Chicago Class,2023,2023-07-14,2023-07-16,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA July Open on ICC,2023,2023-07-08,2023-07-08,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 World Open Blitz Championship,2023,2023-07-04,2023-07-05,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+"2023 World Open, top 6 sections",2023,2023-06-30,2023-07-04,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 World Open G/10 Championship,2023,2023-07-03,2023-07-03,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 World Open G7 Championship,2023,2023-06-30,2023-07-01,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 World Open Action,2023,2023-06-29,2023-06-30,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 World Open Women&amp;#39;s Championship,2023,2023-06-29,2023-06-30,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 World Open Junior Championship,2023,2023-06-28,2023-06-29,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 World Open Senior Amateur,2023,2023-06-28,2023-06-29,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 Philadelphia International,2023,2023-06-24,2023-06-28,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 World Open Amateur,2023,2023-06-26,2023-06-28,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 World Open Under 13 Championship,2023,2023-06-26,2023-06-27,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+"2023 World Open, lower sections",2023,2023-06-23,2023-06-25,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 Philadelphia Open,2023,2023-06-23,2023-06-25,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 Continental Class,2023,2023-06-16,2023-06-18,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA June Action on ICC,2023,2023-06-17,2023-06-17,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Cleveland Open,2023,2023-06-09,2023-06-11,Ohio,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA June Open on ICC,2023,2023-06-03,2023-06-03,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Chicago Open,2023,2023-05-25,2023-05-29,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2023 Chicago Open Blitz,2023,2023-05-28,2023-05-28,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA May Action on ICC,2023,2023-05-20,2023-05-20,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Niagara Falls Open,2023,2023-05-05,2023-05-07,New York,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA May Open on ICC,2023,2023-05-06,2023-05-06,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA April Action on ICC,2023,2023-04-15,2023-04-15,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Open at Foxwoods,2023,2023-04-05,2023-04-09,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2023 Blitz at Foxwoods,2023,2023-04-08,2023-04-08,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA April Open on ICC,2023,2023-04-01,2023-04-01,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Mid-America Open,2023,2023-03-24,2023-03-26,Missouri,0,nan,nan,nan,nan,nan,nan,nan
+2023 Eastern Class,2023,2023-03-17,2023-03-19,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2023 Southern Class,2023,2023-03-17,2023-03-19,Florida,0,nan,nan,nan,nan,nan,nan,nan
+2023 ICC March G/60,2023,2023-03-18,2023-03-19,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 New York State Scholastic Championships,2023,2023-03-11,2023-03-12,New York,0,nan,nan,nan,nan,nan,nan,nan
+2023 Western Class,2023,2023-03-03,2023-03-05,California,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA March Open on ICC,2023,2023-03-04,2023-03-04,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 George Washington Open,2023,2023-02-24,2023-02-26,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA February Action on ICC,2023,2023-02-25,2023-02-25,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Southwest Class Championships,2023,2023-02-16,2023-02-20,Texas,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA February Open on ICC,2023,2023-02-04,2023-02-04,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA January Action on ICC,2023,2023-01-21,2023-01-21,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2023 Liberty Bell Open,2023,2023-01-13,2023-01-16,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2023 Golden State Open,2023,2023-01-13,2023-01-16,California,0,nan,nan,nan,nan,nan,nan,nan
+2023 Boston Chess Congress,2023,2023-01-06,2023-01-08,Massachusetts,0,nan,nan,nan,nan,nan,nan,nan
+2023 CCA January Open on ICC,2023,2023-01-07,2023-01-07,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 North American Open,2022,2022-12-26,2022-12-30,Nevada,0,nan,nan,nan,nan,nan,nan,nan
+2022 Eastern Open,2022,2022-12-26,2022-12-29,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2022 North American Blitz Championship,2022,2022-12-29,2022-12-29,Nevada,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA December Action on ICC,2022,2022-12-17,2022-12-17,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA December Open on ICC,2022,2022-12-03,2022-12-03,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 National Chess Congress,2022,2022-11-25,2022-11-27,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 Kings Island Open,2022,2022-11-11,2022-11-13,Ohio,0,nan,nan,nan,nan,nan,nan,nan
+2022 Los Angeles Open,2022,2022-11-04,2022-11-06,California,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA November Open on ICC,2022,2022-11-05,2022-11-05,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Eastern Chess Congress,2022,2022-10-28,2022-10-30,New Jersey,0,nan,nan,nan,nan,nan,nan,nan
+2022 Central New York Open,2022,2022-10-21,2022-10-23,New York,0,nan,nan,nan,nan,nan,nan,nan
+2022 Eastern Chess Congress Action on ICC,2022,2022-10-22,2022-10-22,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Hartford Open,2022,2022-10-14,2022-10-16,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2022 Midwest Class Championships,2022,2022-10-07,2022-10-09,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA October Open on ICC,2022,2022-10-08,2022-10-08,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Midwest Action on ICC,2022,2022-09-24,2022-09-24,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 ICC September Rapid,2022,2022-09-17,2022-09-17,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA September Open on ICC,2022,2022-09-10,2022-09-10,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 New York State Championship,2022,2022-09-02,2022-09-05,New York,0,nan,nan,nan,nan,nan,nan,nan
+2022 Atlantic Open,2022,2022-08-26,2022-08-28,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2022 Indianapolis Open,2022,2022-08-26,2022-08-28,Indiana,0,nan,nan,nan,nan,nan,nan,nan
+2022 Central California Open,2022,2022-08-19,2022-08-21,California,0,nan,nan,nan,nan,nan,nan,nan
+2022 Atlantic Action on ICC,2022,2022-08-20,2022-08-20,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 ICC August Rapid,2022,2022-08-13,2022-08-13,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA August Open on ICC,2022,2022-08-06,2022-08-06,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Continental Open,2022,2022-07-27,2022-07-31,Massachusetts,0,nan,nan,nan,nan,nan,nan,nan
+2022 Southern Open,2022,2022-07-22,2022-07-24,Florida,0,nan,nan,nan,nan,nan,nan,nan
+2022 Pittsburgh Open,2022,2022-07-22,2022-07-24,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 Continental Action on ICC,2022,2022-07-23,2022-07-23,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Pacific Coast Open,2022,2022-07-15,2022-07-17,California,0,nan,nan,nan,nan,nan,nan,nan
+2022 Chicago Class,2022,2022-07-15,2022-07-17,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2022 Bradley Open,2022,2022-07-15,2022-07-17,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA July Open on ICC,2022,2022-07-09,2022-07-09,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 World Open Blitz Championship,2022,2022-07-04,2022-07-05,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 World Open,2022,2022-06-29,2022-07-04,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 World Open G/10 Championship,2022,2022-07-03,2022-07-04,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 World Open FIDE U2400,2022,2022-06-29,2022-06-30,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 World Open Women&#039;s Championship,2022,2022-06-29,2022-06-30,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 World Open G7 Championship,2022,2022-06-30,2022-06-30,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 World Open Amateur,2022,2022-06-27,2022-06-29,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 Philadelphia International,2022,2022-06-24,2022-06-28,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 Philadelphia Open,2022,2022-06-24,2022-06-26,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 World Open Under 13 Championship,2022,2022-06-23,2022-06-24,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 World Open Senior Amateur,2022,2022-06-23,2022-06-24,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 World Open FIDE U2200,2022,2022-06-23,2022-06-24,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 Midwest Chess Congress,2022,2022-06-17,2022-06-19,Iowa,0,nan,nan,nan,nan,nan,nan,nan
+2022 World Open Action on ICC,2022,2022-06-18,2022-06-18,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Cleveland Open,2022,2022-06-10,2022-06-12,Ohio,0,nan,nan,nan,nan,nan,nan,nan
+2022 Northeast Open,2022,2022-06-10,2022-06-12,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA June Open on ICC,2022,2022-06-04,2022-06-04,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Chicago Open,2022,2022-05-26,2022-05-30,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2022 Chicago FIDE U2200,2022,2022-05-29,2022-05-30,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2022 Chicago Action on ICC,2022,2022-05-21,2022-05-21,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Niagara Falls Open,2022,2022-05-13,2022-05-15,New York,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA May Open on ICC,2022,2022-05-07,2022-05-07,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Eastern Class,2022,2022-04-29,2022-05-01,Massachusetts,0,nan,nan,nan,nan,nan,nan,nan
+2022 April Game 60 on ICC,2022,2022-04-30,2022-05-01,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Eastern Action on ICC,2022,2022-04-23,2022-04-23,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Open at Foxwoods,2022,2022-04-13,2022-04-17,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2022 FIDE U2400 at Foxwoods,2022,2022-04-16,2022-04-17,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2022 April Rapid on ICC,2022,2022-04-16,2022-04-16,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA April Open on ICC,2022,2022-04-09,2022-04-09,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Mid-America Open,2022,2022-03-25,2022-03-27,Missouri,0,nan,nan,nan,nan,nan,nan,nan
+2022 March Game 60 on ICC,2022,2022-03-26,2022-03-27,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Southern Class,2022,2022-03-18,2022-03-20,Florida,0,nan,nan,nan,nan,nan,nan,nan
+2022 Mid-America Action on ICC,2022,2022-03-19,2022-03-19,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 New York State Scholastic Championships,2022,2022-03-12,2022-03-13,New York,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA March Open on ICC,2022,2022-03-12,2022-03-12,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Western Class,2022,2022-03-04,2022-03-06,California,0,nan,nan,nan,nan,nan,nan,nan
+2022 Western Action on ICC,2022,2022-02-27,2022-02-27,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA February Open on ICC,2022,2022-02-26,2022-02-26,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Southwest Class Championships,2022,2022-02-17,2022-02-21,Texas,0,nan,nan,nan,nan,nan,nan,nan
+2022 Southwest Action on ICC,2022,2022-02-12,2022-02-12,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Youth Rapid Chess Challenge on ICC,2022,2022-02-05,2022-02-05,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 CCA January Open on ICC,2022,2022-01-29,2022-01-29,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 January Game 60 on ICC,2022,2022-01-22,2022-01-23,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Golden State Open,2022,2022-01-14,2022-01-17,California,0,nan,nan,nan,nan,nan,nan,nan
+2022 Liberty Bell Open,2022,2022-01-14,2022-01-17,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2022 Boston Chess Congress,2022,2022-01-07,2022-01-09,Massachusetts,0,nan,nan,nan,nan,nan,nan,nan
+2022 Golden State Action on ICC,2022,2022-01-08,2022-01-08,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2022 Liberty Bell Action on ICC,2022,2022-01-02,2022-01-02,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 North American Open,2021,2021-12-26,2021-12-30,Nevada,0,nan,nan,nan,nan,nan,nan,nan
+2021 New York State Junior Championships,2021,2021-12-29,2021-12-30,New York,0,nan,nan,nan,nan,nan,nan,nan
+2021 Empire State Open,2021,2021-12-26,2021-12-28,New York,0,nan,nan,nan,nan,nan,nan,nan
+2021 New York Under 13 Action Championship,2021,2021-12-28,2021-12-28,New York,0,nan,nan,nan,nan,nan,nan,nan
+2021 North American Scholastics,2021,2021-12-19,2021-12-19,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 North American Action on ICC,2021,2021-12-18,2021-12-18,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 CCA December Open on ICC,2021,2021-12-04,2021-12-04,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 National Chess Congress,2021,2021-11-26,2021-11-28,Pennsylvania,0,nan,nan,nan,nan,nan,nan,nan
+2021 Niagara Falls Open,2021,2021-11-19,2021-11-21,New York,0,nan,nan,nan,nan,nan,nan,nan
+2021 CCA November Open,2021,2021-11-20,2021-11-20,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 Kings Island Open,2021,2021-11-12,2021-11-14,Ohio,0,nan,nan,nan,nan,nan,nan,nan
+2021 Northeast Open,2021,2021-11-05,2021-11-07,Connecticut,0,nan,nan,nan,nan,nan,nan,nan
+2021 Los Angeles Open,2021,2021-11-05,2021-11-07,California,0,nan,nan,nan,nan,nan,nan,nan
+2021 Kings Island Open Warmup on ICC,2021,2021-11-06,2021-11-07,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 CCA Halloween Open on ICC,2021,2021-10-30,2021-10-30,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 Central New York Open,2021,2021-10-22,2021-10-24,New York,0,nan,nan,nan,nan,nan,nan,nan
+2021 CCA October Open on ICC,2021,2021-10-23,2021-10-23,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 Susan Kantor Memorial on ICC,2021,2021-10-17,2021-10-17,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 CCA-ICC October Scholastic on ICC,2021,2021-10-16,2021-10-16,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 Washington Chess Congress,2021,2021-10-07,2021-10-11,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2021 Midwest Class Championships,2021,2021-10-08,2021-10-10,Illinois,0,nan,nan,nan,nan,nan,nan,nan
+2021 Eastern Chess Congress,2021,2021-10-01,2021-10-03,New Jersey,0,nan,nan,nan,nan,nan,nan,nan
+2021 Eastern Chess Congress Warmup on ICC,2021,2021-09-25,2021-09-26,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 CCA-ICC September Scholastic on ICC,2021,2021-09-18,2021-09-18,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 CCA September Open on ICC,2021,2021-09-11,2021-09-11,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 New York State Championship,2021,2021-09-03,2021-09-06,New York,0,nan,nan,nan,nan,nan,nan,nan
+2021 Indianapolis Open,2021,2021-08-27,2021-08-29,Indiana,0,nan,nan,nan,nan,nan,nan,nan
+2021 Atlantic Open,2021,2021-08-27,2021-08-29,Virginia,0,nan,nan,nan,nan,nan,nan,nan
+2021 Central California Open,2021,2021-08-20,2021-08-22,California,0,nan,nan,nan,nan,nan,nan,nan
+2021 CCA August Open on ICC,2021,2021-08-21,2021-08-21,Internet,0,nan,nan,nan,nan,nan,nan,nan
+2021 Continental Open,2021,2021-08-12,2021-08-16,Massachusetts,0,nan,nan,nan,nan,nan,nan,nan
+2021 Pacific Coast Open,2021,2021-07-30,2021-08-01,California,0,,"{""3-day"": 274, ""2-day"": 172}",,,,,
+2021 Peter Henner Memorial,2021,2021-07-30,2021-08-01,New York,0,,"{""3-day"": 75, ""2-day"": 41}",,,,,
+2021 Southern Open,2021,2021-07-23,2021-07-25,Florida,0,,"{""3-day"": 182, ""2-day"": 157}",,,,,
+2021 Pittsburgh Open,2021,2021-07-23,2021-07-25,Pennsylvania,0,,"{""2-day"": 150, ""3-day"": 117}",,,,,
+2021 Chicago Class,2021,2021-07-16,2021-07-18,Illinois,0,,,,,,,
+2021 Bradley Open,2021,2021-07-16,2021-07-18,Connecticut,0,,,,,,,
+2021 CCA July Open on ICC,2021,2021-07-10,2021-07-10,Internet,0,,,,,,,
+2021 World Open Blitz Championship,2021,2021-07-05,2021-07-06,Pennsylvania,0,,"{""5-day"": 644, ""4-day"": 295, ""3-day"": 120}",,,,,
+2021 World Open,2021,2021-07-01,2021-07-05,Pennsylvania,0,,"{""5-day"": 644, ""4-day"": 295, ""3-day"": 120}",,,,,
+2021 World Open G/10 Championship,2021,2021-07-04,2021-07-04,Pennsylvania,0,,"{""5-day"": 644, ""4-day"": 295, ""3-day"": 120}",,,,,
+2021 World Open G7 Championship,2021,2021-07-01,2021-07-01,Pennsylvania,0,,"{""5-day"": 644, ""4-day"": 295, ""3-day"": 120}",,,,,
+2021 Philadelphia International,2021,2021-06-26,2021-06-30,Pennsylvania,0,,,,,,,
+2021 World Open Action,2021,2021-06-30,2021-06-30,Pennsylvania,0,,"{""5-day"": 644, ""4-day"": 295, ""3-day"": 120}",,,,,
+2021 World Open Senior Amateur,2021,2021-06-28,2021-06-29,Pennsylvania,0,,"{""5-day"": 644, ""4-day"": 295, ""3-day"": 120}",,,,,
+2021 World Open Warmup,2021,2021-06-28,2021-06-29,Pennsylvania,0,,"{""5-day"": 644, ""4-day"": 295, ""3-day"": 120}",,,,,
+2021 World Open Under 13 Championship,2021,2021-06-28,2021-06-29,Pennsylvania,0,,"{""5-day"": 644, ""4-day"": 295, ""3-day"": 120}",,,,,
+2021 World Open Womens Championship,2021,2021-06-28,2021-06-29,Pennsylvania,0,,"{""5-day"": 644, ""4-day"": 295, ""3-day"": 120}",,,,,
+2021 Philadelphia Open,2021,2021-06-25,2021-06-27,Pennsylvania,0,,,,,,,
+2021 Cleveland Open,2021,2021-06-11,2021-06-13,Ohio,0,,,,,,,
+2021 CCA June Open on ICC,2021,2021-06-05,2021-06-05,Internet,0,,,,,,,
+2021 Chicago Open,2021,2021-05-27,2021-05-31,Illinois,0,,,,,,,
+2021 Chicago Open Blitz,2021,2021-05-30,2021-05-30,Illinois,0,,,,,,,
+2021 North American Under 13 on ICC,2021,2021-05-22,2021-05-23,Internet,0,,,,,,,
+2021 CCA May Open on ICC,2021,2021-05-16,2021-05-16,Internet,0,,,,,,,
+2021 New York State Open on ICC,2021,2021-05-15,2021-05-15,Internet,0,,,,,,,
+2021 Eastern Class on ICC,2021,2021-05-01,2021-05-02,Internet,0,,,,,,,
+2021 Eastern Class Blitz on ICC,2021,2021-04-30,2021-04-30,Internet,0,,,,,,,
+2021 New York State Scholastic Championships on ICC,2021,2021-04-17,2021-04-18,Internet,0,,,,,,,
+2021 CCA April Open on ICC,2021,2021-04-10,2021-04-10,Internet,0,,,,,,,
+2021 North American Class on ICC,2021,2021-04-02,2021-04-04,Internet,0,,,,,,,
+2021 Mid-America Open on ICC,2021,2021-03-27,2021-03-28,Internet,0,,,,,,,
+2021 Mid-America Blitz on ICC,2021,2021-03-26,2021-03-26,Internet,0,,,,,,,
+2021 CCA March Open on ICC,2021,2021-03-21,2021-03-21,Internet,0,,,,,,,
+2021 Southern Class on ICC,2021,2021-03-20,2021-03-20,Internet,0,,,,,,,
+2021 Western Class on ICC,2021,2021-03-06,2021-03-07,Internet,0,,,,,,,
+2021 Western Class Blitz on ICC,2021,2021-03-05,2021-03-05,Internet,0,,,,,,,
+2021 CCA February Open on ICC,2021,2021-02-28,2021-02-28,Internet,0,,,,,,,
+2021 George Washington Open on ICC,2021,2021-02-27,2021-02-27,Internet,0,,,,,,,
+2021 Southwest Class on ICC,2021,2021-02-20,2021-02-21,Internet,0,,,,,,,
+2021 Southwest Class Blitz on ICC,2021,2021-02-19,2021-02-19,Internet,0,,,,,,,
+2021 Golden State Open on ICC,2021,2021-01-23,2021-01-24,Internet,0,,,,,,,
+2021 Golden State Blitz on ICC,2021,2021-01-22,2021-01-22,Internet,0,,,,,,,
+2021 Liberty Bell Open on ICC,2021,2021-01-16,2021-01-18,Internet,0,,,,,,,
+2021 Liberty Bell Open Blitz on ICC,2021,2021-01-15,2021-01-15,Internet,0,,,,,,,
+2021 CCA January Open on ICC,2021,2021-01-10,2021-01-10,Internet,0,,,,,,,
+2021 Mountains Open on ICC,2021,2021-01-09,2021-01-09,Internet,0,,,,,,,
+2021 Boston Chess Congress on ICC,2021,2021-01-02,2021-01-03,Internet,0,,,,,,,
+2020 North American Blitz on ICC,2020,2020-12-31,2020-12-31,Internet,0,,,,,,,
+2020 Manhattan Open on ICC,2020,2020-12-30,2020-12-30,Internet,0,,,,,,,
+2020 North American Open on ICC,2020,2020-12-26,2020-12-29,Internet,0,,,,,,,
+2020 Chicago Class on ICC,2020,2020-12-20,2020-12-20,Internet,0,,,,,,,
+2020 Atlantic Open on ICC,2020,2020-12-19,2020-12-19,Internet,0,,,,,,,
+2020 Atlantic Open Blitz on ICC,2020,2020-12-18,2020-12-18,Internet,0,,,,,,,
+2020 CCA December Open on ICC,2020,2020-12-13,2020-12-13,Internet,0,,,,,,,
+2020 Philadelphia Open on ICC,2020,2020-12-12,2020-12-12,Internet,0,,,,,,,
+2020 Free Software Testing Blitz on ICC,2020,2020-12-09,2020-12-09,Internet,0,,,,,,,
+2020 Cleveland Open on ICC,2020,2020-12-06,2020-12-06,Internet,0,,,,,,,
+2020 Los Angeles Open on ICC,2020,2020-12-05,2020-12-05,Internet,0,,,,,,,
+2020 Los Angeles Open Blitz on ICC,2020,2020-12-04,2020-12-04,Internet,0,,,,,,,
+2020 National Chess Congress on ICC,2020,2020-11-27,2020-11-29,Internet,0,,,,,,,
+2020 CCA November Open on ICC,2020,2020-11-22,2020-11-22,Internet,0,,,,,,,
+2020 Mid-America Open on ICC,2020,2020-11-21,2020-11-21,Internet,0,,"{""3-day"": 43, ""2-day"": 12}",,3,,,
+2020 Kings Island Open on ICC,2020,2020-11-14,2020-11-15,Internet,0,,,,,,,
+2020 Kings Island Open Blitz on ICC,2020,2020-11-13,2020-11-13,Internet,0,,,,,,,
+2020 Continental Open on ICC,2020,2020-11-06,2020-11-08,Internet,0,,,,,,,
+2020 Indianapolis Open on ICC,2020,2020-11-01,2020-11-01,Internet,0,,,,,,,
+2020 Southern Open on ICC,2020,2020-10-31,2020-10-31,Internet,0,,,,,,,
+2020 Southern Open Blitz on ICC,2020,2020-10-30,2020-10-30,Internet,0,,,,,,,
+2020 Eastern Chess Congress on ICC,2020,2020-10-24,2020-10-25,Internet,0,,,,,,,
+2020 CCA October Game/7 on ICC,2020,2020-10-16,2020-10-16,Internet,0,,,,,,,
+2020 Chicago Open Blitz on ICC,2020,2020-10-12,2020-10-12,Internet,0,,,,,,,
+2020 Chicago Open on ICC,2020,2020-10-09,2020-10-11,Internet,0,,,,,,,
+2020 Bradley Open at ICC,2020,2020-10-04,2020-10-04,Internet,0,,,,,,,
+2020 Pittsburgh Open on ICC,2020,2020-10-03,2020-10-03,Internet,0,,,,,,,
+2020 Pacific Coast Open on ICC,2020,2020-09-26,2020-09-27,Internet,0,,,,,,,
+2020 CCA September Blitz on ICC,2020,2020-09-25,2020-09-25,Internet,0,,,,,,,
+2020 CCA September Quick on ICC,2020,2020-09-20,2020-09-20,Internet,0,,,,,,,
+2020 CCA September Open on ICC,2020,2020-09-19,2020-09-19,Internet,0,,,,,,,
+2020 CCA September Rapid on ICC,2020,2020-09-13,2020-09-13,Internet,0,,,,,,,
+2020 CCA September Action on ICC,2020,2020-09-12,2020-09-12,Internet,0,,,,,,,
+2020 New York State Championship on ICC,2020,2020-09-05,2020-09-07,Internet,0,,,,,,,
+2020 CCA August Rapid on ICC,2020,2020-08-30,2020-08-30,Internet,0,,,,,,,
+2020 CCA August Open on ICC,2020,2020-08-29,2020-08-29,Internet,0,,,,,,,
+2020 CCA August Blitz on ICC,2020,2020-08-28,2020-08-28,Internet,0,,,,,,,
+2020 North American Scholastics on ICC,2020,2020-08-22,2020-08-23,Internet,0,,,,,,,
+2020 World Open on ICC,2020,2020-08-07,2020-08-09,Internet,0,,"{""5-day"": 35, ""6-day"": 8, ""4-day"": 8, ""3-day"": 5}",,7,,,
+2020 World Open Womens Championship on ICC,2020,2020-08-02,2020-08-02,Internet,0,,"{""5-day"": 35, ""6-day"": 8, ""4-day"": 8, ""3-day"": 5}",,7,,,
+2020 CCA World Open Warmup on ICC,2020,2020-08-01,2020-08-01,Internet,0,,"{""5-day"": 35, ""6-day"": 8, ""4-day"": 8, ""3-day"": 5}",,7,,,
+2020 World Open G/7 Championship on ICC,2020,2020-07-31,2020-07-31,Internet,0,,"{""5-day"": 35, ""6-day"": 8, ""4-day"": 8, ""3-day"": 5}",,7,,,
+2020 CCA July Open on ICC,2020,2020-07-25,2020-07-26,Internet,0,,,,,,,
+2020 CCA July Rapid on ICC,2020,2020-07-24,2020-07-24,Internet,0,,,,,,,
+2020 World Open Under 13 Champ on ICC,2020,2020-07-17,2020-07-17,Internet,0,,"{""5-day"": 35, ""6-day"": 8, ""4-day"": 8, ""3-day"": 5}",,7,,,
+2020 World Open Senior Amateur on ICC,2020,2020-07-12,2020-07-12,Internet,0,,"{""5-day"": 35, ""6-day"": 8, ""4-day"": 8, ""3-day"": 5}",,7,,,
+2020 World Open Action on ICC,2020,2020-07-11,2020-07-11,Internet,0,,"{""5-day"": 35, ""6-day"": 8, ""4-day"": 8, ""3-day"": 5}",,7,,,
+2020 World Open G/10 on ICC,2020,2020-07-05,2020-07-05,Internet,0,,"{""5-day"": 35, ""6-day"": 8, ""4-day"": 8, ""3-day"": 5}",,7,,,
+2020 World Open G/45 on ICC,2020,2020-07-04,2020-07-04,Internet,0,,"{""5-day"": 35, ""6-day"": 8, ""4-day"": 8, ""3-day"": 5}",,7,,,
+2020 World Open Blitz on ICC,2020,2020-07-03,2020-07-03,Internet,0,,"{""5-day"": 35, ""6-day"": 8, ""4-day"": 8, ""3-day"": 5}",,7,,,
+2020 CCA June Open on ICC,2020,2020-06-21,2020-06-21,Internet,0,,,,,,,
+2020 Continental Chess June Quick on ICC,2020,2020-06-20,2020-06-20,Internet,0,,,,,,,
+2020 Continental Chess June Rapid on ICC,2020,2020-06-14,2020-06-14,Pennsylvania,0,,,,,,,
+2020 Western Class Championships,2020,2020-03-06,2020-03-08,California,0,,,,,,,
+2020 George Washington Open,2020,2020-02-21,2020-02-23,Virginia,0,,"{""2-day"": 117, ""3-day"": 126}",,,,,
+2020 Southwest Class,2020,2020-02-13,2020-02-17,Texas,0,,,,,,,
+2020 Liberty Bell Open,2020,2020-01-17,2020-01-20,Pennsylvania,0,,"{""3-day"": 147, ""2-day"": 59, ""4-day"": 156}",,,,,
+2020 Golden State Open,2020,2020-01-17,2020-01-20,California,0,,"{""2-day"": 63, ""4-day"": 104, ""3-day"": 136}",,,,,
+2020 Boston Chess Congress,2020,2020-01-03,2020-01-05,Massachusetts,0,,"{""2-day"": 129, ""3-day"": 138}",,,,,
+2019 North American Open,2019,2019-12-26,2019-12-30,Nevada,0,,"{""4-day"": 521, ""3-day"": 245, ""5-day"": 95}",,,,,
+2019 Empire City Open,2019,2019-12-26,2019-12-28,New York,0,,"{""3-day"": 199, ""2-day"": 119}",,,,,
+2019 National Chess Congress,2019,2019-11-29,2019-12-01,Pennsylvania,0,,"{""2-day"": 208, ""3-day"": 339}",,,,,
+2019 Schenectady Open at Proctors,2019,2019-11-23,2019-11-24,New York,0,,,,,,,
+2019 Kings Island Open,2019,2019-11-15,2019-11-17,Ohio,0,,"{""2-day"": 133, ""3-day"": 163}",,,,,
+2019 Los Angeles Open,2019,2019-11-01,2019-11-03,California,0,,"{""2-day"": 130, ""3-day"": 110}",,,,,
+2019 Stamford Open,2019,2019-11-01,2019-11-03,Connecticut,0,,"{""2-day"": 89, ""3-day"": 92}",,,,,
+2019 Eastern Chess Congress,2019,2019-10-25,2019-10-27,New Jersey,0,,"{""2-day"": 88, ""3-day"": 132}",,,,,
+2019 Central New York Open,2019,2019-10-19,2019-10-20,New York,0,,,,,,,
+2019 Washington Chess Congress,2019,2019-10-10,2019-10-14,Virginia,0,,"{""3-day"": 117, ""2-day"": 136}",,,,,
+2019 Midwest Class Championships,2019,2019-10-11,2019-10-13,Illinois,0,,,,,,,
+2019 Peter Henner Memorial,2019,2019-09-28,2019-09-29,New York,0,,,,,,,
+2019 Hartford Open,2019,2019-09-20,2019-09-22,Connecticut,0,,"{""2-day"": 55, ""3-day"": 55}",,,,,
+2019 New York State Championship,2019,2019-08-30,2019-09-02,New York,0,,"{""4-day"": 30, ""3-day"": 127, ""2-day"": 28}",,,,,
+2019 Atlantic Open,2019,2019-08-23,2019-08-25,Virginia,0,,"{""3-day"": 133, ""2-day"": 155}",,,,,
+2019 Indianapolis Open,2019,2019-08-23,2019-08-25,Indiana,0,,"{""2-day"": 111, ""3-day"": 93}",,,,,
+2019 Continental Open,2019,2019-08-14,2019-08-18,Massachusetts,0,,,,,,,
+2019 Central California Open,2019,2019-08-16,2019-08-18,California,0,,"{""3-day"": 67, ""2-day"": 61}",,,,,
+2019 Cleveland Open,2019,2019-08-02,2019-08-04,Ohio,0,,,,,,,
+2019 Pacific Coast Open,2019,2019-07-26,2019-07-28,California,0,,"{""3-day"": 110, ""2-day"": 120}",,,,,
+2019 Bradley Open,2019,2019-07-26,2019-07-28,Connecticut,0,,,,,,,
+2019 Manhattan Open,2019,2019-07-19,2019-07-21,New York,0,,"{""2-day"": 229, ""3-day"": 205}",,,,,
+2019 Southern Open,2019,2019-07-19,2019-07-21,Florida,0,,"{""2-day"": 89, ""3-day"": 92}",,,,,
+2019 Chicago Class,2019,2019-07-19,2019-07-21,Illinois,0,,,,,,,
+2019 World Open,2019,2019-07-02,2019-07-07,Pennsylvania,0,,"{""5-day"": 718, ""4-day"": 242, ""3-day"": 225, ""6-day"": 79}",,,,,
+2019 World Open Warmup,2019,2019-07-01,2019-07-02,Pennsylvania,0,,"{""5-day"": 718, ""4-day"": 242, ""3-day"": 225, ""6-day"": 79}",,,,,
+2019 World Open Senior Amateur,2019,2019-07-01,2019-07-02,Pennsylvania,0,,"{""5-day"": 718, ""4-day"": 242, ""3-day"": 225, ""6-day"": 79}",,,,,
+2019 World Open Womens Championship,2019,2019-07-01,2019-07-02,Pennsylvania,0,,"{""5-day"": 718, ""4-day"": 242, ""3-day"": 225, ""6-day"": 79}",,,,,
+2019 World Open Under 13 Championship,2019,2019-07-01,2019-07-02,Pennsylvania,0,,"{""5-day"": 718, ""4-day"": 242, ""3-day"": 225, ""6-day"": 79}",,,,,
+2019 World Open Action,2019,2019-07-02,2019-07-02,Pennsylvania,0,,"{""5-day"": 718, ""4-day"": 242, ""3-day"": 225, ""6-day"": 79}",,,,,
+2019 Philadelphia International,2019,2019-06-27,2019-07-01,Pennsylvania,0,,,,,,,
+2019 Philadelphia Open,2019,2019-06-28,2019-06-30,Pennsylvania,0,,,,,,,
+2019 Pittsburgh Open,2019,2019-06-21,2019-06-23,Pennsylvania,0,,"{""3-day"": 104, ""2-day"": 127}",,,,,
+2019 Continental Class Championships,2019,2019-06-14,2019-06-16,Virginia,0,,,,,,,
+2019 Northeast Open,2019,2019-06-07,2019-06-09,Connecticut,0,,,,,,,
+2019 Chicago Open,2019,2019-05-23,2019-05-27,Illinois,0,,,,,,,
+2019 New York State Open and Senior,2019,2019-05-17,2019-05-19,New York,0,,,,,,,
+2019 Open at Foxwoods,2019,2019-04-17,2019-04-21,Connecticut,0,,,,,,,
+2019 Eastern Class Championships,2019,2019-04-05,2019-04-07,Massachusetts,0,,"{""2-day"": 88, ""3-day"": 132}",,,,,
+2019 Mid-America Open,2019,2019-03-22,2019-03-24,Missouri,0,,"{""3-day"": 214, ""2-day"": 105}",,,,,
+2019 Bill Little Memorial,2019,2019-03-23,2019-03-24,New York,0,,,,,,,
+2019 Southern Class Championships,2019,2019-03-15,2019-03-17,Florida,0,,"{""3-day"": 82, ""2-day"": 114}",,,,,
+2019 New York State Scholastic Championships,2019,2019-03-09,2019-03-10,New York,0,,,,,,,
+2019 Western Class Championships,2019,2019-03-01,2019-03-03,California,0,,,,,,,
+2019 George Washington Open,2019,2019-02-22,2019-02-24,Virginia,0,,"{""3-day"": 122, ""2-day"": 131}",,,,,
+2019 Southwest Class,2019,2019-02-14,2019-02-18,Texas,0,,,,,,,
+2019 Golden State Open,2019,2019-01-18,2019-01-21,California,0,,"{""2-day"": 37, ""4-day"": 114, ""3-day"": 122}",,,,,
+2019 Liberty Bell Open,2019,2019-01-18,2019-01-21,Pennsylvania,0,,"{""3-day"": 110, ""4-day"": 130, ""2-day"": 47}",,,,,
+2019 Boston Chess Congress,2019,2019-01-04,2019-01-06,Massachusetts,0,,"{""2-day"": 129, ""3-day"": 139}",,,,,
+2018 North American Open,2018,2018-12-26,2018-12-30,Nevada,0,,"{""5-day"": 125, ""4-day"": 485, ""3-day"": 212}",,,,,
+2018 Empire City Open,2018,2018-12-27,2018-12-29,New York,0,,"{""3-day"": 213, ""2-day"": 85}",,,,,
+2018 National Chess Congress,2018,2018-11-23,2018-11-25,Pennsylvania,0,,"{""2-day"": 213, ""3-day"": 310}",,,,,
+2018 Kings Island Open,2018,2018-11-09,2018-11-11,Ohio,0,,"{""2-day"": 114, ""3-day"": 137}",,,,,
+2018 Los Angeles Open,2018,2018-11-02,2018-11-04,California,0,,"{""3-day"": 123, ""2-day"": 129}",,,,,
+2018 Stamford Open,2018,2018-11-02,2018-11-04,Connecticut,0,,"{""2-day"": 137, ""3-day"": 94}",,,,,
+2018 Eastern Chess Congress,2018,2018-10-26,2018-10-28,New Jersey,0,,"{""2-day"": 130, ""3-day"": 148}",,,,,
+2018 Central New York Open,2018,2018-10-13,2018-10-14,New York,0,,,,,,,
+2018 Washington Chess Congress,2018,2018-10-04,2018-10-08,Virginia,0,,"{""2-day"": 130, ""3-day"": 115}",,,,,
+2018 Midwest Class Championships,2018,2018-10-05,2018-10-07,Illinois,0,,,,,,,
+2018 Hartford Open,2018,2018-09-21,2018-09-23,Connecticut,0,,"{""2-day"": 61, ""3-day"": 61}",,,,,
+2018 New York State Championship,2017,2017-08-31,2018-09-03,New York,0,,"{""4-day"": 22, ""3-day"": 126, ""2-day"": 35}",,,,,
+2018 Atlantic Open,2018,2018-08-24,2018-08-26,Virginia,0,,"{""2-day"": 131, ""3-day"": 167}",,,,,
+2018 Indianapolis Open,2018,2018-08-24,2018-08-26,Indiana,0,,"{""2-day"": 92, ""3-day"": 99}",,,,,
+2018 Continental Open,2018,2018-08-16,2018-08-20,Massachusetts,0,,,,,,,
+2018 Cleveland Open,2018,2018-08-10,2018-08-12,Ohio,0,,,,,,,
+2018 Central California Open,2018,2018-08-10,2018-08-12,California,0,,"{""3-day"": 70, ""2-day"": 58}",,,,,
+2018 Manhattan Open,2018,2018-08-03,2018-08-05,New York,0,,"{""3-day"": 203, ""2-day"": 260}",,,,,
+2018 Pittsburgh Open,2018,2018-07-27,2018-07-29,Pennsylvania,0,,"{""4-day"": 189, ""3-day"": 165, ""2-day"": 74, ""5-day"": 99}",,,,,
+2018 Bradley Open,2018,2018-07-27,2018-07-29,Connecticut,0,,,,,,,
+2018 Southern Open,2018,2018-07-27,2018-07-29,Florida,0,,"{""2-day"": 137, ""3-day"": 94}",,,,,
+2018 Peter Henner Memorial,2018,2018-07-20,2018-07-22,New York,0,,"{""3-day"": 43, ""2-day"": 56}",,,,,
+2018 Chicago Class,2018,2018-07-20,2018-07-22,Illinois,0,,,,,,,
+2018 Pacific Coast Open,2018,2018-07-20,2018-07-22,California,0,,"{""3-day"": 123, ""2-day"": 122}",,,,,
+2018 World Open,2018,2018-07-03,2018-07-08,Pennsylvania,0,,"{""5-day"": 595, ""4-day"": 219, ""3-day"": 219, ""6-day"": 114}",,,,,
+2018 World Open Womens Championship,2018,2018-07-02,2018-07-03,Pennsylvania,0,,"{""5-day"": 595, ""4-day"": 219, ""3-day"": 219, ""6-day"": 114}",,,,,
+2018 World Open Action,2018,2018-07-03,2018-07-03,Pennsylvania,0,,"{""5-day"": 595, ""4-day"": 219, ""3-day"": 219, ""6-day"": 114}",,,,,
+2018 World Open Under 13 Championship,2018,2018-07-02,2018-07-03,Pennsylvania,0,,"{""5-day"": 595, ""4-day"": 219, ""3-day"": 219, ""6-day"": 114}",,,,,
+2018 Philadelphia International,2018,2018-06-28,2018-07-02,Pennsylvania,0,,,,,,,
+2018 World Open Senior Amateur,2018,2018-06-27,2018-07-01,Pennsylvania,0,,"{""5-day"": 595, ""4-day"": 219, ""3-day"": 219, ""6-day"": 114}",,,,,
+2018 Continental Class Championships,2018,2018-06-15,2018-06-17,Virginia,0,,,,,,,
+2018 Northeast Open,2018,2018-06-08,2018-06-10,Connecticut,0,,,,,,,
+2018 Chicago Open,2018,2018-05-24,2018-05-28,Illinois,0,,,,,,,
+2018 New York State Open and Senior,2018,2018-05-18,2018-05-20,New York,0,,,,,,,
+2018 Eastern Class Championships,2018,2018-04-27,2018-04-29,Massachusetts,0,,"{""2-day"": 130, ""3-day"": 148}",,,,,
+2018 Bill Little Memorial,2018,2018-04-07,2018-04-08,New York,0,,,,,,,
+2018 Philadelphia Open,2018,2018-03-28,2018-04-01,Pennsylvania,0,,,,,,,
+2018 Southern Class Championships,2018,2018-03-16,2018-03-18,Florida,0,,"{""2-day"": 102, ""3-day"": 72}",,,,,
+2018 New York State Scholastic Championships,2018,2018-03-10,2018-03-11,New York,0,,,,,,,
+2018 Western Class Championships,2018,2018-03-02,2018-03-04,California,0,,,,,,,
+2018 George Washington Open,2018,2018-02-23,2018-02-25,Virginia,0,,"{""2-day"": 116, ""3-day"": 111}",,,,,
+2018 Southwest Class,2018,2018-02-15,2018-02-19,Texas,0,,,,,,,
+2018 Liberty Bell Open,2018,2018-01-12,2018-01-15,Pennsylvania,0,,"{""3-day"": 136, ""4-day"": 146, ""2-day"": 52}",,,,,
+2018 Golden State Open,2018,2018-01-12,2018-01-15,California,0,,"{""3-day"": 118, ""2-day"": 53, ""4-day"": 117}",,,,,
+2018 Boston Chess Congress,2018,2018-01-05,2018-01-07,Massachusetts,0,,"{""2-day"": 101, ""3-day"": 136}",,,,,
+2017 North American Open,2017,2017-12-26,2017-12-30,Nevada,0,,"{""5-day"": 130, ""3-day"": 217, ""4-day"": 453}",,,,,
+2017 Empire City Open,2017,2017-12-28,2017-12-30,New York,0,,"{""3-day"": 188, ""2-day"": 119}",,,,,
+2017 National Chess Congress,2017,2017-11-24,2017-11-26,Pennsylvania,0,,"{""2-day"": 279, ""3-day"": 363}",,,,,
+2017 Kings Island Open,2017,2017-11-10,2017-11-12,Ohio,0,,"{""3-day"": 172, ""2-day"": 118}",,,,,
+2017 Los Angeles Open,2017,2017-11-03,2017-11-05,California,0,,"{""2-day"": 111, ""3-day"": 102}",,,,,
+2017 Stamford Open,2017,2017-11-03,2017-11-05,Connecticut,0,,"{""2-day"": 125, ""3-day"": 86}",,,,,
+2017 Eastern Chess Congress,2017,2017-10-27,2017-10-29,New Jersey,0,,"{""2-day"": 140, ""3-day"": 131}",,,,,
+2017 Central New York Open,2017,2017-10-21,2017-10-22,New York,0,,,,,,,
+2017 Washington Chess Congress,2017,2017-10-06,2017-10-09,Virginia,0,,"{""2-day"": 132, ""3-day"": 122}",,,,,
+2017 Midwest Class Championships,2017,2017-10-06,2017-10-08,Illinois,0,,,,,,,
+2017 Hartford Open,2017,2017-09-22,2017-09-24,Connecticut,0,,"{""2-day"": 74, ""3-day"": 51}",,,,,
+2017 New York State Championship,2017,2017-09-01,2017-09-04,New York,0,,"{""4-day"": 22, ""3-day"": 126, ""2-day"": 35}",,,,,
+2017 Indianapolis Open,2017,2017-08-25,2017-08-27,Indiana,0,,"{""2-day"": 75, ""3-day"": 84}",,,,,
+2017 Atlantic Open,2017,2017-08-25,2017-08-27,Virginia,0,,"{""3-day"": 120, ""2-day"": 163}",,,,,
+2017 Continental Open,2017,2017-08-10,2017-08-13,Massachusetts,0,,,,,,,
+2017 Central California Open,2017,2017-08-11,2017-08-13,California,0,,"{""3-day"": 83, ""2-day"": 67}",,,,,
+2017 Pacific Coast Open,2017,2017-07-14,2017-07-16,California,0,,"{""3-day"": 114, ""2-day"": 118}",,,,,
+2017 Chicago Class,2017,2017-07-14,2017-07-16,Illinois,0,,,,,,,
+2017 World Open,2017,2017-06-29,2017-07-04,Pennsylvania,0,,"{""5-day"": 649, ""3-day"": 195, ""4-day"": 239, ""6-day"": 101}",,,,,
+2017 Philadelphia International,2017,2017-06-24,2017-06-29,Pennsylvania,0,,"{""6-day"": 87}",,,,,
+2017 World Open Action,2017,2017-06-29,2017-06-29,Pennsylvania,0,,"{""5-day"": 649, ""3-day"": 195, ""4-day"": 239, ""6-day"": 101}",,,,,
+2017 World Open Under 13 Championship,2017,2017-06-28,2017-06-29,Pennsylvania,0,,"{""5-day"": 649, ""3-day"": 195, ""4-day"": 239, ""6-day"": 101}",,,,,
+2017 World Open Warmup,2017,2017-06-26,2017-06-28,Pennsylvania,0,,"{""5-day"": 649, ""3-day"": 195, ""4-day"": 239, ""6-day"": 101}",,,,,
+2017 World Open Senior,2017,2017-06-23,2017-06-25,Pennsylvania,0,,"{""5-day"": 649, ""3-day"": 195, ""4-day"": 239, ""6-day"": 101}",,,,,
+2017 Continental Class Championships,2017,2017-06-16,2017-06-18,Virginia,0,,,,,,,
+2017 Northeast Open,2017,2017-06-09,2017-06-11,Connecticut,0,,,,,,,
+2017 Chicago Open,2017,2017-05-25,2017-05-29,Illinois,0,,,,,,,
+2017 New York State Open,2017,2017-05-19,2017-05-21,New York,0,,"{""2-day"": 44, ""3-day"": 42}",,,,,
+2017 Eastern Class Championships,2017,2017-04-28,2017-04-30,Massachusetts,0,,"{""2-day"": 140, ""3-day"": 131}",,,,,
+2017 Philadelphia Open,2017,2017-04-12,2017-04-16,Pennsylvania,0,,,,,,,
+2017 Mid-America Open,2017,2017-03-24,2017-03-26,Missouri,0,,"{""3-day"": 200, ""2-day"": 105}",,,,,
+2017 Southern Class Championships,2017,2017-03-24,2017-03-26,Florida,0,,"{""2-day"": 136, ""3-day"": 67}",,,,,
+2017 New York State Scholastic Championships,2017,2017-03-11,2017-03-12,New York,0,,,,,,,
+2017 Western Class Championships,2017,2017-03-03,2017-03-05,California,0,,,,,,,
+2017 George Washington Open,2017,2017-02-24,2017-02-26,Virginia,0,,"{""2-day"": 106, ""3-day"": 91}",,,,,
+2017 Southwest Class,2017,2017-02-16,2017-02-20,Texas,0,,,,,,,
+2017 Liberty Bell Open,2017,2017-01-13,2017-01-16,Pennsylvania,0,,"{""2-day"": 63, ""3-day"": 135, ""4-day"": 138}",,,,,
+2017 Boston Chess Congress,2016,2016-01-06,2017-01-08,Massachusetts,0,,"{""3-day"": 117, ""2-day"": 125}",,,,,
+2016 North American Open,2016,2016-12-26,2016-12-30,Nevada,0,,"{""4-day"": 478, ""3-day"": 193, ""5-day"": 94}",,,,,
+2016 Empire City Open,2016,2016-12-27,2016-12-29,New York,0,,"{""3-day"": 226, ""2-day"": 171}",,,,,
+2016 National Chess Congress,2016,2016-11-25,2016-11-27,Pennsylvania,0,,"{""2-day"": 267, ""3-day"": 327}",,,,,
+2016 Kings Island Open,2016,2016-11-11,2016-11-13,Ohio,0,,"{""3-day"": 165, ""2-day"": 114}",,,,,
+2016 Los Angeles Open,2016,2016-11-04,2016-11-06,California,0,,"{""2-day"": 99, ""3-day"": 72}",,,,,
+2016 Stamford Open,2016,2016-11-04,2016-11-06,Connecticut,0,,"{""3-day"": 95, ""2-day"": 107}",,,,,
+2016 Eastern Chess Congress,2016,2016-10-28,2016-10-30,New Jersey,0,,"{""3-day"": 143, ""2-day"": 108}",,,,,
+2016 Central New York Open,2016,2016-10-15,2016-10-16,New York,0,,,,,,,
+2016 Washington Chess Congress,2016,2016-10-05,2016-10-10,Virginia,0,,"{""3-day"": 96, ""2-day"": 106}",,,,,
+2016 Midwest Class Championships,2016,2016-10-07,2016-10-09,Illinois,0,,,,,,,
+2016 Southern Class Championships,2016,2016-09-23,2016-09-25,Florida,0,,"{""2-day"": 101, ""3-day"": 67}",,,,,
+2016 Hartford Open,2016,2016-09-23,2016-09-25,Connecticut,0,,"{""3-day"": 41, ""2-day"": 45}",,,,,

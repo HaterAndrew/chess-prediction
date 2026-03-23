@@ -95,8 +95,12 @@ def create_session():
     session.mount("https://", adapter)
     session.mount("http://", adapter)
     session.headers.update({
-        "User-Agent": "Mozilla/5.0 (compatible; chess-research/1.0)",
-        "Accept": "text/html,application/json,*/*",
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/javascript, */*; q=0.01",
+        "Accept-Language": "en-US,en;q=0.9",
+        "X-Requested-With": "XMLHttpRequest",
+        "Referer": "https://www.chessaction.com/tournaments/",
+        "Origin": "https://www.chessaction.com",
     })
     return session
 

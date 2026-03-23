@@ -15,8 +15,8 @@
       "current_count": 195,
       "days_remaining": 9,
       "point_estimate": 454,
-      "ci_lower": 423,
-      "ci_upper": 487,
+      "ci_lower": 424,
+      "ci_upper": 485,
       "ci_level": 0.8,
       "historical": [
         {
@@ -347,8 +347,8 @@
       "current_count": 180,
       "days_remaining": 59,
       "point_estimate": 930,
-      "ci_lower": 847,
-      "ci_upper": 1021,
+      "ci_lower": 863,
+      "ci_upper": 1002,
       "ci_level": 0.8,
       "historical": [
         {

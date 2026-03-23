@@ -70,6 +70,15 @@ def step_scrape():
     print(f"  Scrape complete: {count} tournaments for {today}")
 
 
+def step_update_puzzles():
+    """Generate daily chess puzzles."""
+    puzzle_script = os.path.join(PROJECT_DIR, "scrape_puzzles.py")
+    if os.path.exists(puzzle_script):
+        run_step("Generate daily puzzles", [sys.executable, "scrape_puzzles.py"])
+    else:
+        print("  Skipping puzzles (scrape_puzzles.py not found)")
+
+
 def step_update_model():
     """Re-run the prediction model and website data generator."""
     # 04d_website_data_v2.py imports and runs 04c_final_model internally
@@ -129,6 +138,52 @@ def step_update_html():
 
     # Replace
     new_html = html[:start_idx] + f'const TOURNAMENT_DATA = {json_data};' + html[end_idx:]
+
+    # Also embed PUZZLE_DATA if available
+    puzzle_json_path = os.path.join(OUTPUT_DIR, "daily_puzzles.json")
+    if os.path.exists(puzzle_json_path):
+        with open(puzzle_json_path, 'r') as f:
+            puzzle_json = f.read().strip()
+        puzzle_marker = 'const PUZZLE_DATA = '
+        p_start = new_html.find(puzzle_marker)
+        if p_start != -1:
+            p_data_start = p_start + len(puzzle_marker)
+            p_brace = 0
+            p_end = None
+            for i in range(p_data_start, len(new_html)):
+                if new_html[i] == '{': p_brace += 1
+                elif new_html[i] == '}':
+                    p_brace -= 1
+                    if p_brace == 0:
+                        p_end = i + 1
+                        if p_end < len(new_html) and new_html[p_end] == ';': p_end += 1
+                        break
+            if p_end:
+                new_html = new_html[:p_start] + f'const PUZZLE_DATA = {puzzle_json};' + new_html[p_end:]
+                print(f"  Updated PUZZLE_DATA in index.html")
+
+    # Also embed CHESS_HISTORY if available
+    history_json_path = os.path.join(OUTPUT_DIR, "chess_history.json")
+    if os.path.exists(history_json_path):
+        with open(history_json_path, 'r') as f:
+            history_json = f.read().strip()
+        history_marker = 'const CHESS_HISTORY = '
+        h_start = new_html.find(history_marker)
+        if h_start != -1:
+            h_data_start = h_start + len(history_marker)
+            h_brace = 0
+            h_end = None
+            for i in range(h_data_start, len(new_html)):
+                if new_html[i] == '{': h_brace += 1
+                elif new_html[i] == '}':
+                    h_brace -= 1
+                    if h_brace == 0:
+                        h_end = i + 1
+                        if h_end < len(new_html) and new_html[h_end] == ';': h_end += 1
+                        break
+            if h_end:
+                new_html = new_html[:h_start] + f'const CHESS_HISTORY = {history_json};' + new_html[h_end:]
+                print(f"  Updated CHESS_HISTORY in index.html")
 
     with open(INDEX_HTML, 'w') as f:
         f.write(new_html)
@@ -191,6 +246,7 @@ def main():
         else:
             step_scrape()
         step_update_model()
+        step_update_puzzles()
         step_update_html()
         step_log_run()
 

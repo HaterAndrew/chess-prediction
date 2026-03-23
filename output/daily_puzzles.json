@@ -1,0 +1,146 @@
+{
+  "date": "2026-03-23",
+  "puzzles": [
+    {
+      "id": "0Goww",
+      "fen": "5r1k/p5p1/1p5p/2p1Q3/1P4n1/2P5/P4qPP/R5RK w - - 1 27",
+      "moves": "e5e1 f2f4 e1g3 g4f2 g3f2 f4f2",
+      "rating": 2090,
+      "themes": [
+        "advantage",
+        "endgame",
+        "long"
+      ],
+      "url": "https://lichess.org/training/0Goww",
+      "game_url": "https://lichess.org/pKu9tDFW#53"
+    },
+    {
+      "id": "0UIzD",
+      "fen": "2r3k1/1br2pp1/2Nq3p/1BPp4/5P2/4P3/1PQ3PP/2R3K1 b - - 0 24",
+      "moves": "c7c6 c5d6 c6c2 c1c2 c8c2 d6d7",
+      "rating": 2014,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/0UIzD",
+      "game_url": "https://lichess.org/oOD2jNFC/black#48"
+    },
+    {
+      "id": "00UQj",
+      "fen": "6r1/pp1qbpk1/8/2pPp1r1/2P1Pp2/P1N2Qp1/3B2K1/R6R w - - 0 31",
+      "moves": "h1h3 d7h3 g2h3 g3g2",
+      "rating": 2313,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "master",
+        "middlegame",
+        "sacrifice",
+        "short"
+      ],
+      "url": "https://lichess.org/training/00UQj",
+      "game_url": "https://lichess.org/uZNJ299M#61"
+    },
+    {
+      "id": "13n32",
+      "fen": "5rk1/p4p2/bpn3p1/2p5/4P2q/P1P1B1QP/BP5K/3R4 b - - 0 26",
+      "moves": "h4e4 a2d5 e4e5 d5c6 e5g3 h2g3",
+      "rating": 2406,
+      "themes": [
+        "advantage",
+        "interference",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/13n32",
+      "game_url": "https://lichess.org/oa2DHFyA/black#52"
+    },
+    {
+      "id": "03z37",
+      "fen": "2k2r2/ppq3p1/3b1np1/2p2b2/N2P4/1P2P2P/P1PQ2P1/R1B2RK1 w - - 1 19",
+      "moves": "d4c5 d6h2 g1h1 f6e4 f1f3 e4d2",
+      "rating": 2066,
+      "themes": [
+        "crushing",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/03z37",
+      "game_url": "https://lichess.org/9oBT7KCo#37"
+    },
+    {
+      "id": "0g5z0",
+      "fen": "r2k1r2/p1R1bpQ1/1p2p3/3pP3/7P/8/Pq3PP1/2R3K1 b - - 0 23",
+      "moves": "e7c5 c7c5 b6c5 g7f8",
+      "rating": 2107,
+      "themes": [
+        "capturingDefender",
+        "crushing",
+        "middlegame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0g5z0",
+      "game_url": "https://lichess.org/uJHOdnyj/black#46"
+    },
+    {
+      "id": "0ZFSV",
+      "fen": "r3r1k1/1pqb1pbp/p4np1/2n3B1/4p3/2P2NNP/PPB1QPP1/3RR1K1 w - - 0 18",
+      "moves": "g5f6 e4f3 e2f3 d7c6 g3e4 c6e4 c2e4 g7f6",
+      "rating": 2515,
+      "themes": [
+        "advantage",
+        "master",
+        "middlegame",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/0ZFSV",
+      "game_url": "https://lichess.org/IlPl1rv3#35"
+    },
+    {
+      "id": "09oid",
+      "fen": "rnb1k1nr/ppp1bppp/3q4/1N6/3P4/5N2/PPp1QPPP/R1B1R1K1 b kq - 2 10",
+      "moves": "d6d7 f3e5 d7d8 e2c4",
+      "rating": 2257,
+      "themes": [
+        "advantage",
+        "opening",
+        "short"
+      ],
+      "url": "https://lichess.org/training/09oid",
+      "game_url": "https://lichess.org/MUmll7ae/black#20"
+    },
+    {
+      "id": "08UVh",
+      "fen": "6k1/5pp1/7p/q1p1p3/2BbPn2/BQpP3P/5PP1/6K1 b - - 1 31",
+      "moves": "c3c2 b3b8 g8h7 c4f7",
+      "rating": 2295,
+      "themes": [
+        "crushing",
+        "deflection",
+        "endgame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/08UVh",
+      "game_url": "https://lichess.org/JyfIsxvd/black#62"
+    },
+    {
+      "id": "0gJAk",
+      "fen": "8/7p/5pp1/p7/k4P2/4P3/2K2P1P/8 b - - 1 42",
+      "moves": "a4a3 c2c3 f6f5 f2f3 a3a4 c3c4",
+      "rating": 2324,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "quietMove"
+      ],
+      "url": "https://lichess.org/training/0gJAk",
+      "game_url": "https://lichess.org/mWjWZmnp/black#84"
+    }
+  ]
+}

@@ -263,6 +263,22 @@ class N5v4_Final:
         fam_finals = valid.groupby('family')['final_count'].mean()
         self.family_mean_final = fam_finals.to_dict()
 
+        # Compute per-family growth trend (YoY slope normalized by mean)
+        # Used to adjust predictions for growing/declining tournaments
+        self.family_trend = {}
+        for fam, grp in valid.groupby('family'):
+            grp_sorted = grp.sort_values('tournament_year')
+            if len(grp_sorted) >= 3:
+                counts = grp_sorted['final_count'].values
+                years = grp_sorted['tournament_year'].values
+                # Simple linear regression: count ~ year
+                if len(set(years)) >= 3:
+                    slope = np.polyfit(years, counts, 1)[0]
+                    mean_count = np.mean(counts)
+                    if mean_count > 0:
+                        # Normalize slope as fraction of mean (e.g., -0.05 = 5% decline/year)
+                        self.family_trend[fam] = np.clip(slope / mean_count, -0.15, 0.15)
+
         # Supplement with standings data for families not in training set
         standings_path = os.path.join(OUTPUT_DIR, "historical_standings.csv")
         if os.path.exists(standings_path):
@@ -307,15 +323,15 @@ class N5v4_Final:
         # more shrinkage at short T (ratios converge toward 1.0)
         for T in self.ci_scale:
             if T >= 60:
-                shrink = 0.40
-            elif T >= 28:
-                shrink = 0.38
-            elif T >= 7:
-                shrink = 0.36
-            elif T >= 5:
                 shrink = 0.42
+            elif T >= 28:
+                shrink = 0.40
+            elif T >= 7:
+                shrink = 0.38
+            elif T >= 5:
+                shrink = 0.45
             else:
-                shrink = 0.50
+                shrink = 0.55
             self.ci_scale[T] *= shrink
 
         # Build pooled per-family regression: final ~ count_at_T + T + intercept
@@ -618,12 +634,14 @@ class N5v4_Final:
 
         # Late-surge damping: these events get most registrations in last 1-3 days
         # Standard ratios over-extrapolate because early registration is very sparse
+        # Use aggressive damping — these tournaments have ~1.1-1.4x ratio even at T=28
         if is_late_surge and days_remaining > 3:
-            # Dampen ratio toward 1.0 (i.e., predict closer to current count)
-            damp = min(0.7, days_remaining / 90)  # more damping at longer T
-            med = 1.0 + (med - 1.0) * (1 - damp)
-            lo_r = 1.0 + (lo_r - 1.0) * (1 - damp)
-            hi_r = 1.0 + (hi_r - 1.0) * (1 - damp)
+            # Target ratio: 1.1-1.5 depending on lead time (much lower than standard opens)
+            max_ratio = 1.1 + 0.4 * min(days_remaining / 90, 1.0)  # 1.1 at T=3, 1.5 at T=90
+            if med > max_ratio:
+                med = max_ratio
+            lo_r = min(lo_r, med)
+            hi_r = min(hi_r, max_ratio * 1.5)
 
         point = current_count * med
         low = current_count * lo_r
@@ -702,6 +720,18 @@ class N5v4_Final:
             ci_half_width = (high - low) / 2
             low = point - ci_half_width
             high = point + ci_half_width
+
+        # Growth trend adjustment: shift prediction for growing/declining families
+        # e.g., if a tournament grows ~5%/year, nudge prediction up for current year
+        trend = self.family_trend.get(family, 0.0)
+        if trend != 0.0 and days_remaining >= 7:
+            # Apply trend relative to most recent training year
+            # Moderate: at most half the raw trend rate to avoid overfit
+            adj = 1.0 + trend * 0.5
+            point *= adj
+            # Shift CI center but don't widen — trend is a location shift
+            low *= adj
+            high *= adj
 
         # Widen CIs for families with few training editions.
         # Size-matched fallback (0 editions) and single-edition families

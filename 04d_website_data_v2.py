@@ -418,39 +418,33 @@ for _, row in t2026.iterrows():
     if status == 'complete':
         point, ci_lo, ci_hi = current_count, current_count, current_count
     elif status == 'live' and days_remaining > 0:
-        # Guardrail: don't trust ratio-based predictions with < 10 regs
-        # and > 60 days out — fall back to historical average
-        if current_count < 10 and days_remaining > 60 and len(hist_counts) >= 1:
-            hist_med = int(np.median(hist_counts))
-            point = hist_med
-            ci_lo = int(np.percentile(hist_counts, 10)) if len(hist_counts) >= 5 else int(hist_med * 0.7)
-            ci_hi = int(np.percentile(hist_counts, 90)) if len(hist_counts) >= 5 else int(hist_med * 1.3)
-        else:
-            point, ci_lo, ci_hi = prod_model.predict_nowcast(
-                current_count, days_to_end, family,
-                early_bird_deadline=eb_deadline)
-            if point is None:
-                point, ci_lo, ci_hi = predict_with_lognormal_ci(current_count, days_to_end, family, ratios)
+        point, ci_lo, ci_hi = prod_model.predict_nowcast(
+            current_count, days_to_end, family,
+            early_bird_deadline=eb_deadline)
+        if point is None:
+            point, ci_lo, ci_hi = predict_with_lognormal_ci(current_count, days_to_end, family, ratios)
 
-        # Plausibility check against historical range
-        if len(hist_counts) >= 1:
+        # Plausibility check: if point estimate is far outside historical range,
+        # blend with historical median but preserve model's CI width
+        if len(hist_counts) >= 3:
             hist_min = min(hist_counts)
             hist_max = max(hist_counts)
             hist_med = int(np.median(hist_counts))
-            hist_p25 = int(np.percentile(hist_counts, 25))
-            # Far out + low prediction: ratio model unreliable, use historical median
-            if days_remaining > 60 and point < hist_p25:
+            ci_width = ci_hi - ci_lo
+            if days_remaining > 60 and point < hist_med * 0.7:
+                # Far out + low: blend model with historical median (50/50)
+                point = int(0.5 * point + 0.5 * hist_med)
+                ci_lo = int(point - ci_width / 2)
+                ci_hi = int(point + ci_width / 2)
+            elif point < hist_min * 0.3:
+                # Extremely low — re-center on historical median
                 point = hist_med
-                ci_lo = int(np.percentile(hist_counts, 10)) if len(hist_counts) >= 5 else int(hist_med * 0.7)
-                ci_hi = int(np.percentile(hist_counts, 90)) if len(hist_counts) >= 5 else int(hist_med * 1.3)
-            elif point < hist_min * 0.5:
-                # Prediction unreasonably low — use historical median
-                point = hist_med
-                ci_lo = int(np.percentile(hist_counts, 10)) if len(hist_counts) >= 5 else int(hist_med * 0.7)
-                ci_hi = int(np.percentile(hist_counts, 90)) if len(hist_counts) >= 5 else int(hist_med * 1.3)
+                ci_lo = int(point - ci_width / 2)
+                ci_hi = int(point + ci_width / 2)
             elif point > hist_max * 3.0:
                 point = int(hist_max * 1.5)
-                ci_hi = min(ci_hi, int(hist_max * 2.5))
+                ci_lo = int(point - ci_width / 2)
+                ci_hi = int(point + ci_width / 2)
     else:
         point, ci_lo, ci_hi = current_count, current_count, current_count
 

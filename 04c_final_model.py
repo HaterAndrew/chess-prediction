@@ -216,7 +216,7 @@ class N5v4_Final:
     # from ~40% up to ~80% for these subgroups. Increased from 5.0/3.0 to
     # compensate for tighter ensemble shrinkage (0.32 vs 0.42).
     CI_WIDEN_0_EDITIONS = 2.5
-    CI_WIDEN_1_EDITION = 2.0
+    CI_WIDEN_1_EDITION = 1.5
 
     def __init__(self):
         self.ratios = {}

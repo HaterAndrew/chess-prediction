@@ -18,7 +18,33 @@
       "ci_lower": 421,
       "ci_upper": 470,
       "ci_level": 0.8,
-      "historical": [],
+      "historical": [
+        {
+          "year": 2019,
+          "count": 415,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2022,
+          "count": 472,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2023,
+          "count": 445,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2024,
+          "count": 465,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2025,
+          "count": 574,
+          "family": "Princeton Open"
+        }
+      ],
       "daily_data": [
         [
           0,
@@ -422,23 +448,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 843
+          "count": 843,
+          "family": "Chicago Open"
         },
         {
           "year": 2022,
-          "count": 944
+          "count": 944,
+          "family": "Chicago Open"
         },
         {
           "year": 2023,
-          "count": 960
+          "count": 960,
+          "family": "Chicago Open"
         },
         {
           "year": 2024,
-          "count": 860
+          "count": 860,
+          "family": "Chicago Open"
         },
         {
           "year": 2025,
-          "count": 899
+          "count": 899,
+          "family": "Chicago Open"
         }
       ],
       "daily_data": [
@@ -721,23 +752,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 224
+          "count": 224,
+          "family": "Cleveland Open"
         },
         {
           "year": 2022,
-          "count": 201
+          "count": 201,
+          "family": "Cleveland Open"
         },
         {
           "year": 2023,
-          "count": 226
+          "count": 226,
+          "family": "Cleveland Open"
         },
         {
           "year": 2024,
-          "count": 167
+          "count": 167,
+          "family": "Cleveland Open"
         },
         {
           "year": 2025,
-          "count": 199
+          "count": 199,
+          "family": "Cleveland Open"
         }
       ],
       "daily_data": [
@@ -820,11 +856,13 @@
       "historical": [
         {
           "year": 2024,
-          "count": 76
+          "count": 76,
+          "family": "New York State Open"
         },
         {
           "year": 2025,
-          "count": 83
+          "count": 83,
+          "family": "New York State Open"
         }
       ],
       "daily_data": [
@@ -903,23 +941,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 1532
+          "count": 1532,
+          "family": "World Open"
         },
         {
           "year": 2022,
-          "count": 1922
+          "count": 1922,
+          "family": "World Open"
         },
         {
           "year": 2023,
-          "count": 1976
+          "count": 1976,
+          "family": "World Open"
         },
         {
           "year": 2024,
-          "count": 1706
+          "count": 1706,
+          "family": "World Open"
         },
         {
           "year": 2025,
-          "count": 1674
+          "count": 1674,
+          "family": "World Open"
         }
       ],
       "daily_data": [
@@ -1078,23 +1121,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 330
+          "count": 330,
+          "family": "Chicago Class"
         },
         {
           "year": 2022,
-          "count": 337
+          "count": 337,
+          "family": "Chicago Class"
         },
         {
           "year": 2023,
-          "count": 280
+          "count": 280,
+          "family": "Chicago Class"
         },
         {
           "year": 2024,
-          "count": 270
+          "count": 270,
+          "family": "Chicago Class"
         },
         {
           "year": 2025,
-          "count": 294
+          "count": 294,
+          "family": "Chicago Class"
         }
       ],
       "daily_data": [
@@ -1173,23 +1221,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 176
+          "count": 176,
+          "family": "Pittsburgh Open"
         },
         {
           "year": 2022,
-          "count": 195
+          "count": 195,
+          "family": "Pittsburgh Open"
         },
         {
           "year": 2023,
-          "count": 183
+          "count": 183,
+          "family": "Pittsburgh Open"
         },
         {
           "year": 2024,
-          "count": 166
+          "count": 166,
+          "family": "Pittsburgh Open"
         },
         {
           "year": 2025,
-          "count": 152
+          "count": 152,
+          "family": "Pittsburgh Open"
         }
       ],
       "daily_data": [
@@ -1272,23 +1325,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 171
+          "count": 171,
+          "family": "Bradley Open"
         },
         {
           "year": 2022,
-          "count": 227
+          "count": 227,
+          "family": "Bradley Open"
         },
         {
           "year": 2023,
-          "count": 256
+          "count": 256,
+          "family": "Bradley Open"
         },
         {
           "year": 2024,
-          "count": 270
+          "count": 270,
+          "family": "Bradley Open"
         },
         {
           "year": 2025,
-          "count": 246
+          "count": 246,
+          "family": "Bradley Open"
         }
       ],
       "daily_data": [
@@ -1371,23 +1429,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 230
+          "count": 230,
+          "family": "Pacific Coast Open"
         },
         {
           "year": 2022,
-          "count": 344
+          "count": 344,
+          "family": "Pacific Coast Open"
         },
         {
           "year": 2023,
-          "count": 403
+          "count": 403,
+          "family": "Pacific Coast Open"
         },
         {
           "year": 2024,
-          "count": 361
+          "count": 361,
+          "family": "Pacific Coast Open"
         },
         {
           "year": 2025,
-          "count": 391
+          "count": 391,
+          "family": "Pacific Coast Open"
         }
       ],
       "daily_data": [
@@ -1470,23 +1533,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 110
+          "count": 110,
+          "family": "Hartford Open"
         },
         {
           "year": 2022,
-          "count": 198
+          "count": 198,
+          "family": "Hartford Open"
         },
         {
           "year": 2023,
-          "count": 223
+          "count": 223,
+          "family": "Hartford Open"
         },
         {
           "year": 2024,
-          "count": 199
+          "count": 199,
+          "family": "Hartford Open"
         },
         {
           "year": 2025,
-          "count": 189
+          "count": 189,
+          "family": "Hartford Open"
         }
       ],
       "daily_data": [
@@ -1664,23 +1732,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 270
+          "count": 270,
+          "family": "Boston Chess Congress"
         },
         {
           "year": 2022,
-          "count": 287
+          "count": 287,
+          "family": "Boston Chess Congress"
         },
         {
           "year": 2023,
-          "count": 391
+          "count": 391,
+          "family": "Boston Chess Congress"
         },
         {
           "year": 2024,
-          "count": 342
+          "count": 342,
+          "family": "Boston Chess Congress"
         },
         {
           "year": 2025,
-          "count": 383
+          "count": 383,
+          "family": "Boston Chess Congress"
         }
       ],
       "daily_data": [
@@ -1995,23 +2068,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 287
+          "count": 287,
+          "family": "Liberty Bell Open"
         },
         {
           "year": 2022,
-          "count": 362
+          "count": 362,
+          "family": "Liberty Bell Open"
         },
         {
           "year": 2023,
-          "count": 473
+          "count": 473,
+          "family": "Liberty Bell Open"
         },
         {
           "year": 2024,
-          "count": 481
+          "count": 481,
+          "family": "Liberty Bell Open"
         },
         {
           "year": 2025,
-          "count": 530
+          "count": 530,
+          "family": "Liberty Bell Open"
         }
       ],
       "daily_data": [
@@ -2326,23 +2404,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 273
+          "count": 273,
+          "family": "Golden State Open"
         },
         {
           "year": 2022,
-          "count": 275
+          "count": 275,
+          "family": "Golden State Open"
         },
         {
           "year": 2023,
-          "count": 293
+          "count": 293,
+          "family": "Golden State Open"
         },
         {
           "year": 2024,
-          "count": 293
+          "count": 293,
+          "family": "Golden State Open"
         },
         {
           "year": 2025,
-          "count": 377
+          "count": 377,
+          "family": "Golden State Open"
         }
       ],
       "daily_data": [
@@ -2641,19 +2724,23 @@
       "historical": [
         {
           "year": 2019,
-          "count": 253
+          "count": 253,
+          "family": "George Washington Open"
         },
         {
           "year": 2023,
-          "count": 345
+          "count": 345,
+          "family": "George Washington Open"
         },
         {
           "year": 2024,
-          "count": 266
+          "count": 266,
+          "family": "George Washington Open"
         },
         {
           "year": 2025,
-          "count": 250
+          "count": 250,
+          "family": "George Washington Open"
         }
       ],
       "daily_data": [
@@ -2928,19 +3015,23 @@
       "historical": [
         {
           "year": 2022,
-          "count": 397
+          "count": 397,
+          "family": "Southwest Class Championships"
         },
         {
           "year": 2023,
-          "count": 426
+          "count": 426,
+          "family": "Southwest Class Championships"
         },
         {
           "year": 2024,
-          "count": 441
+          "count": 441,
+          "family": "Southwest Class Championships"
         },
         {
           "year": 2025,
-          "count": 488
+          "count": 488,
+          "family": "Southwest Class Championships"
         }
       ],
       "daily_data": [
@@ -3355,15 +3446,18 @@
       "historical": [
         {
           "year": 2019,
-          "count": 253
+          "count": 253,
+          "family": "Western Class Championships"
         },
         {
           "year": 2024,
-          "count": 421
+          "count": 421,
+          "family": "Western Class Championships"
         },
         {
           "year": 2025,
-          "count": 389
+          "count": 389,
+          "family": "Western Class Championships"
         }
       ],
       "daily_data": [
@@ -3662,23 +3756,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 320
+          "count": 320,
+          "family": "Mid-America Open"
         },
         {
           "year": 2022,
-          "count": 288
+          "count": 288,
+          "family": "Mid-America Open"
         },
         {
           "year": 2023,
-          "count": 328
+          "count": 328,
+          "family": "Mid-America Open"
         },
         {
           "year": 2024,
-          "count": 305
+          "count": 305,
+          "family": "Mid-America Open"
         },
         {
           "year": 2025,
-          "count": 262
+          "count": 262,
+          "family": "Mid-America Open"
         }
       ],
       "daily_data": [
@@ -3937,7 +4036,8 @@
       "historical": [
         {
           "year": 2025,
-          "count": 219
+          "count": 219,
+          "family": "New York State High School Championship"
         }
       ],
       "daily_data": [
@@ -4244,7 +4344,8 @@
       "historical": [
         {
           "year": 2025,
-          "count": 57
+          "count": 57,
+          "family": "New York State Senior Championship With Young Adult Mi"
         }
       ],
       "daily_data": [
@@ -4451,7 +4552,8 @@
       "historical": [
         {
           "year": 2025,
-          "count": 1767
+          "count": 1767,
+          "family": "New York State Scholastic Championships Grades K-8"
         }
       ],
       "daily_data": [
@@ -5054,19 +5156,23 @@
       "historical": [
         {
           "year": 2022,
-          "count": 200
+          "count": 200,
+          "family": "Southern Class"
         },
         {
           "year": 2023,
-          "count": 264
+          "count": 264,
+          "family": "Southern Class"
         },
         {
           "year": 2024,
-          "count": 259
+          "count": 259,
+          "family": "Southern Class"
         },
         {
           "year": 2025,
-          "count": 170
+          "count": 170,
+          "family": "Southern Class"
         }
       ],
       "daily_data": [

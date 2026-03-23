@@ -39,6 +39,16 @@ FAMILY_ALIASES = {
     'Princeton Open': ['Open at Foxwoods', 'Atlantic City Open', 'Foxwoods Open'],
     'Western Class': ['Western Class Championships'],
     'Western Class Championships': ['Western Class'],
+    # World Open sub-event name variants
+    'World Open Under 13': ['World Open Under 13 Championship', 'World Open Under 13 Champ'],
+    'World Open Under 13 Champ': ['World Open Under 13 Championship', 'World Open Under 13'],
+    'World Open G 10': ['World Open G 10 Championship'],
+    'World Open G 10 Championship': ['World Open G 10'],
+    'World Open Blitz': ['World Open Blitz Championship'],
+    'World Open Blitz Championship': ['World Open Blitz'],
+    'World Open Senior': ['World Open Senior Amateur'],
+    'World Open Senior Amateur': ['World Open Senior'],
+    'World Open Junior Championship': ['World Open Junior Octos'],
 }
 T_GRID = np.arange(0, 121)
 TODAY = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
@@ -349,7 +359,7 @@ class N5v4_Final:
             elif T >= 28:
                 shrink = 0.42
             elif T >= 7:
-                shrink = 0.38
+                shrink = 0.40
             elif T >= 5:
                 shrink = 0.50
             else:

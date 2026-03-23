@@ -1,0 +1,45 @@
+name: Daily Scrape & Update
+
+on:
+  schedule:
+    - cron: '17 10 * * *'  # 6:17 AM ET (UTC-4)
+  workflow_dispatch:  # allow manual trigger
+
+jobs:
+  scrape-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Install dependencies
+        run: |
+          pip install pandas numpy scipy scikit-learn selenium
+
+      - name: Run scraper
+        run: |
+          cd $GITHUB_WORKSPACE
+          python scrape_entries.py
+
+      - name: Update predictions
+        run: |
+          cd $GITHUB_WORKSPACE
+          python auto_update.py --skip-scrape
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "CCA Bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add output/daily_scrape.csv output/website_data.json site/index.html
+          git diff --cached --quiet || git commit -m "Daily update: $(date +%Y-%m-%d)"
+          git push

@@ -1,0 +1,16 @@
+# Virtual environment
+venv/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Output files (large/generated) — exclude most
+output/*.csv
+output/*.pkl
+output/*.png
+output/*.js
+
+# But keep these tracked
+!output/daily_scrape.csv
+!output/website_data.json

@@ -982,6 +982,333 @@ const TOURNAMENT_DATA = {
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with ensemble shrinkage. Empirical Bayes sigma shrinkage, T-interpolation, expanding-window calibration, and plausibility guardrails.",
   "tournaments": [
     {
+      "family": "Atlantic Open",
+      "year": 2026,
+      "event_start": "2026-04-01",
+      "event_end": "2026-04-05",
+      "early_bird_deadline": "nan",
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 184,
+      "days_remaining": 9,
+      "point_estimate": 408,
+      "ci_lower": 396,
+      "ci_upper": 420,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 289
+        },
+        {
+          "year": 2022,
+          "count": 412
+        },
+        {
+          "year": 2023,
+          "count": 371
+        },
+        {
+          "year": 2024,
+          "count": 272
+        },
+        {
+          "year": 2025,
+          "count": 238
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          1
+        ],
+        [
+          30,
+          2
+        ],
+        [
+          47,
+          3
+        ],
+        [
+          49,
+          4
+        ],
+        [
+          59,
+          5
+        ],
+        [
+          61,
+          6
+        ],
+        [
+          72,
+          7
+        ],
+        [
+          73,
+          9
+        ],
+        [
+          76,
+          10
+        ],
+        [
+          82,
+          11
+        ],
+        [
+          83,
+          12
+        ],
+        [
+          87,
+          13
+        ],
+        [
+          89,
+          15
+        ],
+        [
+          91,
+          16
+        ],
+        [
+          93,
+          17
+        ],
+        [
+          94,
+          19
+        ],
+        [
+          95,
+          20
+        ],
+        [
+          97,
+          22
+        ],
+        [
+          100,
+          24
+        ],
+        [
+          102,
+          25
+        ],
+        [
+          103,
+          27
+        ],
+        [
+          104,
+          29
+        ],
+        [
+          109,
+          30
+        ],
+        [
+          114,
+          31
+        ],
+        [
+          116,
+          33
+        ],
+        [
+          117,
+          34
+        ],
+        [
+          118,
+          37
+        ],
+        [
+          119,
+          38
+        ],
+        [
+          120,
+          39
+        ],
+        [
+          121,
+          42
+        ],
+        [
+          122,
+          45
+        ],
+        [
+          123,
+          47
+        ],
+        [
+          124,
+          48
+        ],
+        [
+          125,
+          49
+        ],
+        [
+          126,
+          51
+        ],
+        [
+          127,
+          52
+        ],
+        [
+          128,
+          54
+        ],
+        [
+          129,
+          57
+        ],
+        [
+          130,
+          62
+        ],
+        [
+          131,
+          65
+        ],
+        [
+          132,
+          71
+        ],
+        [
+          133,
+          75
+        ],
+        [
+          134,
+          82
+        ],
+        [
+          135,
+          83
+        ],
+        [
+          136,
+          84
+        ],
+        [
+          137,
+          88
+        ],
+        [
+          138,
+          97
+        ],
+        [
+          139,
+          104
+        ],
+        [
+          140,
+          109
+        ],
+        [
+          141,
+          112
+        ],
+        [
+          142,
+          120
+        ],
+        [
+          143,
+          132
+        ],
+        [
+          144,
+          139
+        ],
+        [
+          145,
+          147
+        ],
+        [
+          146,
+          148
+        ],
+        [
+          147,
+          158
+        ],
+        [
+          148,
+          172
+        ],
+        [
+          149,
+          178
+        ],
+        [
+          150,
+          184
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0043
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.012
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0148
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0238
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.07
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.14
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.2162
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3319
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4916
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.805
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9459
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live"
+    },
+    {
       "family": "Chicago Open",
       "year": 2026,
       "event_start": "2026-05-21",
@@ -3915,312 +4242,6 @@ const TOURNAMENT_DATA = {
       "status": "complete"
     },
     {
-      "family": "Atlantic City Open",
-      "year": 2026,
-      "event_start": "2026-03-21",
-      "event_end": null,
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 184,
-      "days_remaining": 0,
-      "point_estimate": 184,
-      "ci_lower": 184,
-      "ci_upper": 184,
-      "ci_level": 0.8,
-      "historical": [],
-      "daily_data": [
-        [
-          0,
-          1
-        ],
-        [
-          30,
-          2
-        ],
-        [
-          47,
-          3
-        ],
-        [
-          49,
-          4
-        ],
-        [
-          59,
-          5
-        ],
-        [
-          61,
-          6
-        ],
-        [
-          72,
-          7
-        ],
-        [
-          73,
-          9
-        ],
-        [
-          76,
-          10
-        ],
-        [
-          82,
-          11
-        ],
-        [
-          83,
-          12
-        ],
-        [
-          87,
-          13
-        ],
-        [
-          89,
-          15
-        ],
-        [
-          91,
-          16
-        ],
-        [
-          93,
-          17
-        ],
-        [
-          94,
-          19
-        ],
-        [
-          95,
-          20
-        ],
-        [
-          97,
-          22
-        ],
-        [
-          100,
-          24
-        ],
-        [
-          102,
-          25
-        ],
-        [
-          103,
-          27
-        ],
-        [
-          104,
-          29
-        ],
-        [
-          109,
-          30
-        ],
-        [
-          114,
-          31
-        ],
-        [
-          116,
-          33
-        ],
-        [
-          117,
-          34
-        ],
-        [
-          118,
-          37
-        ],
-        [
-          119,
-          38
-        ],
-        [
-          120,
-          39
-        ],
-        [
-          121,
-          42
-        ],
-        [
-          122,
-          45
-        ],
-        [
-          123,
-          47
-        ],
-        [
-          124,
-          48
-        ],
-        [
-          125,
-          49
-        ],
-        [
-          126,
-          51
-        ],
-        [
-          127,
-          52
-        ],
-        [
-          128,
-          54
-        ],
-        [
-          129,
-          57
-        ],
-        [
-          130,
-          62
-        ],
-        [
-          131,
-          65
-        ],
-        [
-          132,
-          71
-        ],
-        [
-          133,
-          75
-        ],
-        [
-          134,
-          82
-        ],
-        [
-          135,
-          83
-        ],
-        [
-          136,
-          84
-        ],
-        [
-          137,
-          88
-        ],
-        [
-          138,
-          97
-        ],
-        [
-          139,
-          104
-        ],
-        [
-          140,
-          109
-        ],
-        [
-          141,
-          112
-        ],
-        [
-          142,
-          120
-        ],
-        [
-          143,
-          132
-        ],
-        [
-          144,
-          139
-        ],
-        [
-          145,
-          147
-        ],
-        [
-          146,
-          148
-        ],
-        [
-          147,
-          158
-        ],
-        [
-          148,
-          172
-        ],
-        [
-          149,
-          178
-        ],
-        [
-          150,
-          184
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0109
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.023
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0413
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0846
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1521
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.2074
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3019
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4686
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7587
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9419
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "complete"
-    },
-    {
       "family": "Western Class Championships",
       "year": 2026,
       "event_start": "2026-03-07",
@@ -6189,7 +6210,7 @@ const TOURNAMENT_DATA = {
     {
       "family": "Atlantic Open",
       "year": 2015,
-      "event_start": "2015-08-26",
+      "event_start": "2015-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -6216,47 +6237,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.0022
+          "cumulative_pct": 0.0043
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0116
+          "cumulative_pct": 0.012
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0143
+          "cumulative_pct": 0.0148
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0212
+          "cumulative_pct": 0.0238
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0679
+          "cumulative_pct": 0.07
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1288
+          "cumulative_pct": 0.14
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.211
+          "cumulative_pct": 0.2162
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3079
+          "cumulative_pct": 0.3319
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4737
+          "cumulative_pct": 0.4916
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.772
+          "cumulative_pct": 0.805
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9436
+          "cumulative_pct": 0.9459
         },
         {
           "days_before": 0,
@@ -6268,7 +6289,7 @@ const TOURNAMENT_DATA = {
     {
       "family": "Atlantic Open",
       "year": 2016,
-      "event_start": "2016-08-26",
+      "event_start": "2016-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -6299,47 +6320,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.0022
+          "cumulative_pct": 0.0043
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0116
+          "cumulative_pct": 0.012
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0143
+          "cumulative_pct": 0.0148
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0212
+          "cumulative_pct": 0.0238
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0679
+          "cumulative_pct": 0.07
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1288
+          "cumulative_pct": 0.14
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.211
+          "cumulative_pct": 0.2162
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3079
+          "cumulative_pct": 0.3319
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4737
+          "cumulative_pct": 0.4916
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.772
+          "cumulative_pct": 0.805
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9436
+          "cumulative_pct": 0.9459
         },
         {
           "days_before": 0,
@@ -6351,7 +6372,7 @@ const TOURNAMENT_DATA = {
     {
       "family": "Atlantic Open",
       "year": 2017,
-      "event_start": "2017-08-26",
+      "event_start": "2017-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -6386,47 +6407,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.0022
+          "cumulative_pct": 0.0043
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0116
+          "cumulative_pct": 0.012
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0143
+          "cumulative_pct": 0.0148
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0212
+          "cumulative_pct": 0.0238
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0679
+          "cumulative_pct": 0.07
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1288
+          "cumulative_pct": 0.14
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.211
+          "cumulative_pct": 0.2162
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3079
+          "cumulative_pct": 0.3319
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4737
+          "cumulative_pct": 0.4916
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.772
+          "cumulative_pct": 0.805
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9436
+          "cumulative_pct": 0.9459
         },
         {
           "days_before": 0,
@@ -6438,7 +6459,7 @@ const TOURNAMENT_DATA = {
     {
       "family": "Atlantic Open",
       "year": 2018,
-      "event_start": "2018-08-26",
+      "event_start": "2018-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -6477,47 +6498,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.0022
+          "cumulative_pct": 0.0043
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0116
+          "cumulative_pct": 0.012
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0143
+          "cumulative_pct": 0.0148
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0212
+          "cumulative_pct": 0.0238
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0679
+          "cumulative_pct": 0.07
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1288
+          "cumulative_pct": 0.14
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.211
+          "cumulative_pct": 0.2162
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3079
+          "cumulative_pct": 0.3319
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4737
+          "cumulative_pct": 0.4916
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.772
+          "cumulative_pct": 0.805
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9436
+          "cumulative_pct": 0.9459
         },
         {
           "days_before": 0,
@@ -6529,7 +6550,7 @@ const TOURNAMENT_DATA = {
     {
       "family": "Atlantic Open",
       "year": 2019,
-      "event_start": "2019-08-26",
+      "event_start": "2019-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -6572,47 +6593,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.0022
+          "cumulative_pct": 0.0043
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0116
+          "cumulative_pct": 0.012
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0143
+          "cumulative_pct": 0.0148
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0212
+          "cumulative_pct": 0.0238
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0679
+          "cumulative_pct": 0.07
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1288
+          "cumulative_pct": 0.14
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.211
+          "cumulative_pct": 0.2162
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3079
+          "cumulative_pct": 0.3319
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4737
+          "cumulative_pct": 0.4916
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.772
+          "cumulative_pct": 0.805
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9436
+          "cumulative_pct": 0.9459
         },
         {
           "days_before": 0,
@@ -6624,7 +6645,7 @@ const TOURNAMENT_DATA = {
     {
       "family": "Atlantic Open",
       "year": 2022,
-      "event_start": "2022-08-26",
+      "event_start": "2022-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -6887,47 +6908,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.0022
+          "cumulative_pct": 0.0043
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0116
+          "cumulative_pct": 0.012
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0143
+          "cumulative_pct": 0.0148
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0212
+          "cumulative_pct": 0.0238
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0679
+          "cumulative_pct": 0.07
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1288
+          "cumulative_pct": 0.14
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.211
+          "cumulative_pct": 0.2162
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3079
+          "cumulative_pct": 0.3319
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4737
+          "cumulative_pct": 0.4916
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.772
+          "cumulative_pct": 0.805
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9436
+          "cumulative_pct": 0.9459
         },
         {
           "days_before": 0,
@@ -6939,7 +6960,7 @@ const TOURNAMENT_DATA = {
     {
       "family": "Atlantic Open",
       "year": 2023,
-      "event_start": "2023-08-26",
+      "event_start": "2023-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -7218,47 +7239,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.0022
+          "cumulative_pct": 0.0043
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0116
+          "cumulative_pct": 0.012
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0143
+          "cumulative_pct": 0.0148
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0212
+          "cumulative_pct": 0.0238
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0679
+          "cumulative_pct": 0.07
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1288
+          "cumulative_pct": 0.14
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.211
+          "cumulative_pct": 0.2162
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3079
+          "cumulative_pct": 0.3319
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4737
+          "cumulative_pct": 0.4916
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.772
+          "cumulative_pct": 0.805
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9436
+          "cumulative_pct": 0.9459
         },
         {
           "days_before": 0,
@@ -7493,47 +7514,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.0022
+          "cumulative_pct": 0.0043
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0116
+          "cumulative_pct": 0.012
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0143
+          "cumulative_pct": 0.0148
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0212
+          "cumulative_pct": 0.0238
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0679
+          "cumulative_pct": 0.07
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1288
+          "cumulative_pct": 0.14
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.211
+          "cumulative_pct": 0.2162
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3079
+          "cumulative_pct": 0.3319
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4737
+          "cumulative_pct": 0.4916
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.772
+          "cumulative_pct": 0.805
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9436
+          "cumulative_pct": 0.9459
         },
         {
           "days_before": 0,
@@ -7784,47 +7805,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.0022
+          "cumulative_pct": 0.0043
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0116
+          "cumulative_pct": 0.012
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0143
+          "cumulative_pct": 0.0148
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0212
+          "cumulative_pct": 0.0238
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0679
+          "cumulative_pct": 0.07
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1288
+          "cumulative_pct": 0.14
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.211
+          "cumulative_pct": 0.2162
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3079
+          "cumulative_pct": 0.3319
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4737
+          "cumulative_pct": 0.4916
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.772
+          "cumulative_pct": 0.805
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9436
+          "cumulative_pct": 0.9459
         },
         {
           "days_before": 0,
@@ -74797,7 +74818,10 @@ function renderChart(t) {
     fill: true,
     borderWidth: 2.5,
     pointRadius: pointRadii,
-    pointHoverRadius: 5,
+    pointHoverRadius: 6,
+    pointHoverBackgroundColor: '#58a6ff',
+    pointHoverBorderColor: '#fff',
+    pointHoverBorderWidth: 2,
     pointBackgroundColor: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? '#fff' : '#58a6ff'),
     pointBorderColor: '#58a6ff',
     pointBorderWidth: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? 3 : 0),
@@ -74832,6 +74856,10 @@ function renderChart(t) {
       borderWidth: 2,
       borderDash: [6, 4],
       pointRadius: 0,
+      pointHoverRadius: 6,
+      pointHoverBackgroundColor: '#f0c040',
+      pointHoverBorderColor: '#fff',
+      pointHoverBorderWidth: 2,
       tension: 0.3,
       order: 3
     });
@@ -74887,9 +74915,12 @@ function renderChart(t) {
         data: hData,
         borderColor: histColors[colorIdx] || histColors[histColors.length - 1],
         borderWidth: 1.5,
-        borderDash: [5, 4],  // dashed
-        pointRadius: 0,      // no points
-        pointHoverRadius: 3,
+        borderDash: [5, 4],
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: histColors[colorIdx] || histColors[histColors.length - 1],
+        pointHoverBorderColor: '#e6edf3',
+        pointHoverBorderWidth: 1.5,
         tension: 0.3,
         order: 6
       });
@@ -74922,35 +74953,93 @@ function renderChart(t) {
         ctx2.stroke();
         ctx2.setLineDash([]);
         ctx2.globalAlpha = 1;
-        ctx2.fillStyle = line.color;
-        ctx2.font = '10px -apple-system, system-ui, sans-serif';
+        ctx2.font = 'bold 11px -apple-system, system-ui, sans-serif';
         ctx2.textAlign = 'center';
-        ctx2.fillText(line.label, x, yScale.top - 5);
+        // Draw background pill behind label
+        const textW = ctx2.measureText(line.label).width;
+        const pillX = x - textW / 2 - 5;
+        const pillY = yScale.top - 18;
+        const pillW = textW + 10;
+        const pillH = 16;
+        ctx2.fillStyle = 'rgba(13,17,23,0.85)';
+        ctx2.beginPath();
+        ctx2.roundRect(pillX, pillY, pillW, pillH, 4);
+        ctx2.fill();
+        ctx2.strokeStyle = line.color;
+        ctx2.lineWidth = 1;
+        ctx2.globalAlpha = 0.6;
+        ctx2.stroke();
+        ctx2.globalAlpha = 1;
+        // Draw label text
+        ctx2.fillStyle = line.color;
+        ctx2.fillText(line.label, x, yScale.top - 6);
         ctx2.restore();
       });
     }
   };
 
-  // Crosshair plugin — subtle vertical line that follows mouse
+  // Crosshair plugin — vertical line that follows mouse x position
   const crosshairPlugin = {
     id: 'crosshair',
-    afterDraw(chartInstance) {
-      if (chartInstance.tooltip?._active?.length) {
-        const ctx2 = chartInstance.ctx;
-        const x = chartInstance.tooltip._active[0].element.x;
-        const yScale = chartInstance.scales.y;
-        ctx2.save();
-        ctx2.beginPath();
-        ctx2.setLineDash([3, 3]);
-        ctx2.strokeStyle = 'rgba(139,148,158,0.25)';
-        ctx2.lineWidth = 1;
-        ctx2.moveTo(x, yScale.top);
-        ctx2.lineTo(x, yScale.bottom);
-        ctx2.stroke();
-        ctx2.restore();
+    _mouseX: null,
+    afterEvent(chartInstance, args) {
+      const evt = args.event;
+      if (evt.type === 'mousemove' || evt.type === 'click') {
+        this._mouseX = evt.x;
+      } else if (evt.type === 'mouseout') {
+        this._mouseX = null;
       }
+    },
+    afterDraw(chartInstance) {
+      if (this._mouseX == null) return;
+      if (!chartInstance.tooltip?._active?.length) return;
+      const ctx2 = chartInstance.ctx;
+      const x = this._mouseX;
+      const xScale = chartInstance.scales.x;
+      const yScale = chartInstance.scales.y;
+      if (x < xScale.left || x > xScale.right) return;
+
+      ctx2.save();
+      ctx2.beginPath();
+      ctx2.setLineDash([3, 3]);
+      ctx2.strokeStyle = 'rgba(139,148,158,0.35)';
+      ctx2.lineWidth = 1;
+      ctx2.moveTo(x, yScale.top);
+      ctx2.lineTo(x, yScale.bottom);
+      ctx2.stroke();
+      ctx2.restore();
     }
   };
+
+  // Custom interaction mode: find nearest point by x-pixel in EACH dataset
+  // independently, so datasets with different date ranges align correctly.
+  // Only includes a dataset if the hovered x falls within its data range
+  // (with a small pixel margin), preventing stale endpoint matches.
+  if (!Chart.Interaction.modes.xAligned) {
+    Chart.Interaction.modes.xAligned = function(chart2, e, options, useFinalPosition) {
+      const items = [];
+      const mouseX = e.x;
+      chart2.data.datasets.forEach((ds, dsIdx) => {
+        const meta = chart2.getDatasetMeta(dsIdx);
+        if (!meta.visible || !meta.data.length) return;
+        // Determine the pixel range this dataset covers
+        const firstPx = meta.data[0].x;
+        const lastPx = meta.data[meta.data.length - 1].x;
+        const margin = 15; // px tolerance beyond endpoints
+        // Skip if mouse is outside this dataset's x-range
+        if (mouseX < firstPx - margin || mouseX > lastPx + margin) return;
+        let bestIdx = -1, bestDist = Infinity;
+        meta.data.forEach((el, idx) => {
+          const dist = Math.abs(el.x - mouseX);
+          if (dist < bestDist) { bestDist = dist; bestIdx = idx; }
+        });
+        if (bestIdx >= 0 && bestDist < 50) {
+          items.push({ datasetIndex: dsIdx, index: bestIdx, element: meta.data[bestIdx] });
+        }
+      });
+      return items;
+    };
+  }
 
   chart = new Chart(ctx, {
     type: 'line',
@@ -74958,27 +75047,82 @@ function renderChart(t) {
     plugins: [vertLinePlugin, crosshairPlugin],
     options: {
       responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
+      interaction: { mode: 'xAligned', intersect: false },
+      hover: { mode: 'xAligned', intersect: false },
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: 'rgba(13,17,23,.95)', borderColor: '#30363d', borderWidth: 1,
-          titleColor: '#e6edf3', bodyColor: '#c9d1d9', padding: 14, displayColors: true,
-          cornerRadius: 8, titleFont: { weight: '600' },
+          backgroundColor: 'rgba(13,17,23,.97)', borderColor: '#30363d', borderWidth: 1,
+          titleColor: '#e6edf3', bodyColor: '#c9d1d9', padding: { top: 10, bottom: 10, left: 14, right: 14 },
+          displayColors: true, cornerRadius: 8,
+          titleFont: { weight: '600', size: 13 }, bodyFont: { size: 12 },
+          titleMarginBottom: 8, bodySpacing: 5,
+          usePointStyle: true, pointStyleWidth: 8,
           callbacks: {
-            title(items) { return items.length ? items[0].raw.x.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ''; },
+            title(items) {
+              if (!items.length) return '';
+              // Pick date from the most relevant dataset present in the tooltip.
+              // Prefer Projected (in future) or Actual (in past) over historical years.
+              const primary = items.find(i => i.dataset.label === 'Projected')
+                           || items.find(i => i.dataset.label === 'Actual Registrations')
+                           || items[0];
+              const d = primary.raw.x;
+              const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+              // Calculate days before event
+              if (t.event_start) {
+                const evDate = new Date(t.event_start + 'T00:00:00');
+                const diff = Math.round((evDate - d) / 86400000);
+                if (diff > 0) return `${dateStr}  ·  T-${diff}`;
+                if (diff === 0) return `${dateStr}  ·  Event Day`;
+                return `${dateStr}  ·  T+${Math.abs(diff)}`;
+              }
+              return dateStr;
+            },
             label(item) {
               if (item.dataset.label === 'CI Upper' || item.dataset.label === 'CI Lower') return null;
-              return ` ${item.dataset.label}: ${fmt(item.raw.y)}`;
+              const val = fmt(item.raw.y);
+              const hoveredDate = item.raw.x;
+              const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
+              const isHistorical = isDone(t);
+              const isPastOrToday = hoveredDate <= today;
+
+              if (item.dataset.label === 'Actual Registrations') {
+                // Only show actual line when hovering over real data (past/today),
+                // not when hovering over future projected points
+                if (!isHistorical && !isPastOrToday) return null;
+                if (item.dataIndex > 0) {
+                  const prev = item.dataset.data[item.dataIndex - 1].y;
+                  const delta = item.raw.y - prev;
+                  if (delta > 0) return ` Actual: ${val}  (+${delta}/day)`;
+                  if (delta === 0) return ` Actual: ${val}  (no change)`;
+                  return ` Actual: ${val}  (${delta}/day)`;
+                }
+                return ` Actual: ${val}`;
+              }
+
+              if (item.dataset.label === 'Projected') {
+                // Only show projection when hovering over future dates
+                if (isPastOrToday) return null;
+                return ` Projected: ${val}`;
+              }
+
+              // Historical year labels
+              return ` ${item.dataset.label}: ${val}`;
             },
             afterBody(items) {
-              // Show CI range if we're in the projection area
-              const ciUp = items.find(i => i.dataset.label === 'CI Upper');
-              const ciLo = items.find(i => i.dataset.label === 'CI Lower');
-              if (ciUp && ciLo) {
-                return [`  CI: ${fmt(ciLo.raw.y)} – ${fmt(ciUp.raw.y)}`];
+              const lines = [];
+              if (!items.length) return lines;
+              const hoveredDate = items[0].raw.x;
+              const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
+              // Only show CI when hovering future (projection) area
+              if (hoveredDate > today) {
+                const ciUp = items.find(i => i.dataset.label === 'CI Upper');
+                const ciLo = items.find(i => i.dataset.label === 'CI Lower');
+                if (ciUp && ciLo) {
+                  lines.push(`  80% CI: ${fmt(ciLo.raw.y)} – ${fmt(ciUp.raw.y)}`);
+                }
               }
-              return [];
+              return lines;
             }
           },
           filter(item) { return item.dataset.label !== 'CI Upper' && item.dataset.label !== 'CI Lower'; }

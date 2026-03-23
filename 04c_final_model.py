@@ -346,19 +346,14 @@ class N5v4_Final:
                 continue
             X = np.array([[p[0], p[1]] for p in pts], dtype=float)
             y = np.array([p[2] for p in pts], dtype=float)
-            X_aug = np.column_stack([X, np.ones(len(X))])
             try:
-                # Huber regression: robust to outlier tournaments while
-                # keeping the linear framework. epsilon=1.35 is the default
-                # and provides a good balance between robustness and efficiency.
                 hub = HuberRegressor(epsilon=1.35, max_iter=200)
                 hub.fit(X, y)
-                # Store as [slope_count, slope_T, intercept] for compatibility
                 coeffs = np.array([hub.coef_[0], hub.coef_[1], hub.intercept_])
                 self.reg_params[fam] = coeffs
             except Exception:
-                # Fallback to OLS if Huber fails
                 try:
+                    X_aug = np.column_stack([X, np.ones(len(X))])
                     coeffs, _, _, _ = np.linalg.lstsq(X_aug, y, rcond=None)
                     self.reg_params[fam] = coeffs
                 except Exception:
@@ -472,7 +467,6 @@ class N5v4_Final:
             if est_final > 0 and 0.5 <= mean_final / est_final <= 2.0:
                 matched_pts.extend(self._reg_data.get(fam, []))
         if len(matched_pts) < 10:
-            # Fall back to large/small global regression
             est_final = current_count * 2
             if est_final > 300 and self._large_reg is not None:
                 return self._large_reg

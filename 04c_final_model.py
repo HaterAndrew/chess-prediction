@@ -870,9 +870,19 @@ class N5v4_Final:
         # Blitz events have extreme day-of surges (2-4x). Widen upper CI
         # at short T to capture this, since the parametric model assumes
         # gradual registration and under-covers blitz.
-        if is_blitz and days_remaining <= 3:
-            min_blitz_upper = current_count * 3.5
-            high = max(high, min_blitz_upper)
+        if is_blitz:
+            if days_remaining <= 1:
+                min_blitz_upper = current_count * 4.0
+            elif days_remaining <= 3:
+                min_blitz_upper = current_count * 5.0
+            elif days_remaining <= 5:
+                min_blitz_upper = current_count * 6.0
+            elif days_remaining <= 7:
+                min_blitz_upper = current_count * 5.0
+            else:
+                min_blitz_upper = 0
+            if min_blitz_upper > 0:
+                high = max(high, min_blitz_upper)
 
         # Minimum CI width: at very short T, CIs can be unrealistically tight
         # (±3% of point) due to LOO calibration on well-predicted training data.

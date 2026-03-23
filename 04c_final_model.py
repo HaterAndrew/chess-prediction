@@ -814,9 +814,22 @@ class N5v4_Final:
             ci_half_width = (high - low) / 2 * self.CI_WIDEN_0_EDITIONS
             low = point - ci_half_width
             high = point + ci_half_width
-            # Post-widening cap: prevent absurd CIs (e.g., [184, 7000])
-            high = min(high, point * 4.0)
-            low = max(low, point * 0.2)
+            # For 0-edition families, point estimate may be fundamentally wrong.
+            # Ensure upper bound accounts for growth potential. Multiplier is
+            # highest for small counts at long T (most uncertain).
+            if days_remaining >= 28 and current_count < 20:
+                min_upper = current_count * 25
+            elif days_remaining >= 28 and current_count < 80:
+                min_upper = current_count * 8
+            elif days_remaining >= 7 and current_count < 30:
+                min_upper = current_count * 10
+            elif days_remaining >= 7 and current_count < 100:
+                min_upper = current_count * 4
+            else:
+                min_upper = high
+            high = max(high, min_upper)
+            high = min(high, max(point * 8.0, current_count * 30))
+            low = max(low, point * 0.15)
         elif n_editions == 1:
             ci_half_width = (high - low) / 2 * self.CI_WIDEN_1_EDITION
             low = point - ci_half_width

@@ -35,11 +35,15 @@ TODAY = date.today().isoformat()
 # Patterns to exclude from World Open consolidation
 WO_EXCLUDE_PATTERNS = re.compile(r'blitz|action|g\s*\d|g/\d|g\s+50', re.IGNORECASE)
 
-# Map CCA tournament names to family names used in metadata
-# (CCA prefixes with year, e.g. "2026 Pittsburgh Open" -> "Pittsburgh Open")
+# CCA name -> canonical family name (for cases where CCA renamed a tournament)
+CCA_FAMILY_ALIASES = {
+    'Atlantic City Open': 'Atlantic Open',
+}
+
 def to_family(name):
-    """Strip year prefix from CCA tournament name to get family name."""
-    return re.sub(r'^\d{4}\s+', '', name).strip()
+    """Strip year prefix from CCA tournament name and apply canonical aliases."""
+    family = re.sub(r'^\d{4}\s+', '', name).strip()
+    return CCA_FAMILY_ALIASES.get(family, family)
 
 
 def init_driver():

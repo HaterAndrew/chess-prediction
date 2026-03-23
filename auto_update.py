@@ -6,7 +6,7 @@ Steps:
   2. Read latest scrape data from output/daily_scrape.csv
   3. Run 04c_final_model.py + 04d_website_data_v2.py to regenerate predictions
   4. Regenerate output/website_data.json
-  5. Update the TOURNAMENT_DATA block in site/index.html
+  5. Update the TOURNAMENT_DATA block in docs/index.html
   6. Log the run to output/update_log.csv
 """
 
@@ -86,7 +86,7 @@ def step_update_model():
 
 
 def step_update_html():
-    """Replace the TOURNAMENT_DATA block in site/index.html."""
+    """Replace the TOURNAMENT_DATA block in docs/index.html."""
     if not os.path.exists(WEBSITE_JSON):
         raise RuntimeError(f"Missing {WEBSITE_JSON}")
     if not os.path.exists(INDEX_HTML):
@@ -139,7 +139,7 @@ def step_update_html():
     site_json = os.path.join(SITE_DIR, "website_data.json")
     with open(site_json, 'w') as f:
         f.write(json_data)
-    print(f"  Copied website_data.json to site/")
+    print(f"  Copied website_data.json to docs/")
 
 
 def step_log_run():

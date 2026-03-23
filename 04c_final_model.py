@@ -279,13 +279,35 @@ class N5v4_Final:
                         # Normalize slope as fraction of mean (e.g., -0.05 = 5% decline/year)
                         self.family_trend[fam] = np.clip(slope / mean_count, -0.15, 0.15)
 
-        # Supplement with standings data for families not in training set
+        # Supplement with standings data — normalize names to match training families
         standings_path = os.path.join(OUTPUT_DIR, "historical_standings.csv")
         if os.path.exists(standings_path):
-            import pandas as _pd
-            standings = _pd.read_csv(standings_path)
-            # Only use records with real data (>10 players, not parsing artifacts)
+            standings = pd.read_csv(standings_path)
             standings = standings[standings['total_players'] > 10]
+            # Map standings names to training family names
+            _STANDINGS_NAME_MAP = {
+                'Bostonchess Congress': 'Boston Chess Congress',
+                'Midamerica Open': 'Mid-America Open',
+                'Kingsisland Open': 'Kings Island Open',
+                'Pacificcoast Open': 'Pacific Coast Open',
+                'Losangeles Open': 'Los Angeles Open',
+                'Georgewashington Open': 'George Washington Open',
+                'Foxwoods Open': 'Open at Foxwoods',
+                'Midwest Class': 'Midwest Class Championships',
+                'Western Class': 'Western Class Championships',
+                'Centralcalifornia': 'Central California Open',
+                'Centralnewyork': 'Central New York Open',
+                'Easternchesscongress': 'Eastern Chess Congress',
+                'Easternclass': 'Eastern Class',
+                'Chicagoclass': 'Chicago Class',
+                'Continentalclass': 'Continental Class',
+                'Continentalopen': 'Continental Open',
+                'Empirestate': 'Empire State Open',
+                'Empirecity': 'Empire City Open',
+                'Southwest Class': 'Southwest Class Championships',
+            }
+            standings['tournament_name'] = standings['tournament_name'].replace(
+                _STANDINGS_NAME_MAP)
             for fam, grp in standings.groupby('tournament_name'):
                 if fam not in self.family_mean_final:
                     self.family_mean_final[fam] = grp['total_players'].mean()
@@ -642,6 +664,19 @@ class N5v4_Final:
                 med = max_ratio
             lo_r = min(lo_r, med)
             hi_r = min(hi_r, max_ratio * 1.5)
+
+        # Count-based ratio adjustment: when current count is already a large
+        # fraction of the expected final, shrink ratios toward 1.0
+        # (high counts → tournament is close to final → lower remaining growth)
+        fam_mean = self.family_mean_final.get(family, 0)
+        if fam_mean > 0 and current_count > 0 and use_family:
+            fill_pct = current_count / fam_mean  # e.g., 0.7 = 70% of expected final
+            if fill_pct > 0.6:
+                # Linearly shrink toward 1.0 as fill_pct goes from 0.6 to 1.0+
+                shrink = min(1.0, (fill_pct - 0.6) * 2.0)  # 0 at 0.6, 0.8 at 1.0
+                med = 1.0 + (med - 1.0) * (1 - shrink * 0.2)  # at most 20% reduction
+                lo_r = 1.0 + (lo_r - 1.0) * (1 - shrink * 0.2)
+                hi_r = 1.0 + (hi_r - 1.0) * (1 - shrink * 0.2)
 
         point = current_count * med
         low = current_count * lo_r

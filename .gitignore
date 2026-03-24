@@ -11,9 +11,13 @@ output/*.pkl
 output/*.png
 output/*.js
 
-# But keep these tracked
+# But keep these tracked (needed for CI and model training)
 !output/daily_scrape.csv
 !output/website_data.json
 !output/tournament_fees.csv
 !output/historical_standings.csv
 !output/historical_tournaments.csv
+!output/tournament_summary.csv
+!output/daily_registration_counts.csv
+!output/tournament_metadata.csv
+!output/update_log.csv

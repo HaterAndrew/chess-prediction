@@ -180,7 +180,8 @@ def update_csv(tournaments):
 def sync_metadata(tournaments):
     """
     Update tournament_metadata.csv with dates scraped from chessaction.com.
-    Only updates 2026 rows for families that appear in the scraped data.
+    Updates existing 2026 rows AND adds new rows for tournaments that
+    appear on chessaction but aren't in the CSV yet.
     Preserves fee and venue info already in the CSV.
     """
     if not os.path.exists(META_PATH):
@@ -198,11 +199,14 @@ def sync_metadata(tournaments):
         family = to_family(t['name'])
         scraped[family] = t
 
+    # Track which scraped families already have a 2026 row
+    existing_2026 = set()
     updated = 0
     for row in meta_rows:
         if row['year'] != '2026':
             continue
         family = row['family']
+        existing_2026.add(family)
         if family not in scraped:
             continue
 
@@ -216,12 +220,28 @@ def sync_metadata(tournaments):
             row['end_date'] = t['end_date']
             updated += 1
 
-    if updated:
+    # Add new rows for scraped tournaments missing from metadata
+    added = 0
+    for family, t in scraped.items():
+        if family in existing_2026:
+            continue
+        new_row = {fn: '' for fn in fieldnames}
+        new_row['family'] = family
+        new_row['year'] = '2026'
+        new_row['start_date'] = t['start_date']
+        new_row['end_date'] = t['end_date']
+        if 'venue_state' in fieldnames:
+            new_row['venue_state'] = t.get('state', '')
+        meta_rows.append(new_row)
+        print(f"  ADDED {family}: {t['start_date']}..{t['end_date']}")
+        added += 1
+
+    if updated or added:
         with open(META_PATH, 'w', newline='') as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(meta_rows)
-        print(f"  Synced {updated} date change(s) to {META_PATH}")
+        print(f"  Synced metadata: {updated} updated, {added} added to {META_PATH}")
     else:
         print("  All 2026 metadata dates match CCA — no changes needed.")
 

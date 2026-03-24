@@ -202,7 +202,7 @@ class N5v4_Final:
     - LOO-calibrated CI width scaling with ensemble shrinkage
     - Ensemble: blends ratio prediction with per-family pooled
       regression using final ~ count_at_T + T + intercept
-      (T-dependent weights: ratio 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28)
+      (T-dependent weights: ratio 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28)
     - Ratio cap: at T>=60, falls back to regression-only if ratio
       prediction diverges >50% from regression
     - CI widening for low-history families (0 or 1 prior editions)
@@ -1286,7 +1286,7 @@ def build_website_json(summary, daily, meta_lookup, model, template_curves):
         'model_description': (
             'Ensemble model (N5v4): historical ratio (harmonic mean) + '
             'per-family pooled Huber regression (final ~ count_at_T + T). '
-            'T-dependent weights (ratio: 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). '
+            'T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). '
             '80% CI from lognormal prediction intervals, LOO-calibrated with '
             'ensemble shrinkage. Empirical Bayes sigma shrinkage, T-interpolation, '
             'expanding-window calibration, and plausibility guardrails.'

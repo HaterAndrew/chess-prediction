@@ -54,10 +54,10 @@ if os.path.exists(scrape_path):
         if len(tid_match) == 0:
             continue
         tid = tid_match.iloc[0]['tid']
-        m_match = meta[(meta['family'] == family_name) & (meta['year'] == 2026)]
-        event_date = m_match.iloc[0]['start_date'] if len(m_match) > 0 else None
-        if event_date is not None:
-            T = max((pd.to_datetime(event_date) - pd.to_datetime(s['date'])).days, 0)
+        # T must use the same reference as 01_data_prep (last_reg), not event_date
+        last_reg = tid_match.iloc[0].get('last_reg')
+        if pd.notna(last_reg):
+            T = max((pd.to_datetime(last_reg) - pd.to_datetime(s['date'])).days, 0)
             # Check if this (tid, T) already exists
             existing = daily[(daily['tid'] == tid) & (daily['T'] == T)]
             if len(existing) == 0 and s['entry_count'] > 0:

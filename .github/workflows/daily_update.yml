@@ -27,7 +27,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas numpy scipy scikit-learn selenium zstandard
+          pip install pandas numpy scipy scikit-learn selenium zstandard requests beautifulsoup4
 
       - name: Run scraper
         run: |

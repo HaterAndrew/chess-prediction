@@ -193,6 +193,7 @@ def lognormal_ci(ratio_values, level=0.80, global_sigma=None):
     return med, lo, hi
 
 
+
 class N5v4_Final:
     """
     Historical ratio model with:
@@ -784,6 +785,9 @@ class N5v4_Final:
                 ratio_diff = abs(ratio_point - reg_pred) / max(reg_pred, 1)
                 if ratio_diff > 0.5:
                     point = reg_pred
+
+        # (YoY pacing tested: hurt MAPE in all configs. Ratio model already
+        # captures count-level info; pacing adds noise from timing variability.)
 
         # Re-center CI on ensemble point estimate in log-space to preserve
         # lognormal asymmetry (right-skewed, appropriate for count data)

@@ -471,6 +471,32 @@ for _, row in t2026.iterrows():
     # Fix known typos in family names
     display_family = family
 
+    # YoY pacing context: what was the count at the same T last year?
+    prior_year_pace = None
+    if status == 'live' and days_to_end > 0:
+        # Find most recent prior year's tournament for this family
+        prior_hist = summary[
+            (summary['family'] == family) &
+            (summary['tournament_year'] == summary[
+                (summary['family'] == family) &
+                (summary['tournament_year'] < 2026)
+            ]['tournament_year'].max())
+        ]
+        if len(prior_hist) > 0:
+            prior_tid = prior_hist.iloc[0]['tid']
+            prior_daily = daily[daily['tid'] == prior_tid]
+            if len(prior_daily) > 0:
+                # Find count at closest T to current days_to_end
+                prior_at_T = prior_daily[prior_daily['T'] >= days_to_end].sort_values('T')
+                if len(prior_at_T) > 0:
+                    prior_count_at_T = int(prior_at_T.iloc[0]['cum_regs'])
+                    prior_year_val = int(prior_hist.iloc[0]['tournament_year'])
+                    prior_year_pace = {
+                        "year": prior_year_val,
+                        "count_at_same_point": prior_count_at_T,
+                        "final": int(prior_hist.iloc[0]['final_count']),
+                    }
+
     t_out = {
         "family": display_family,
         "year": 2026,
@@ -490,6 +516,7 @@ for _, row in t2026.iterrows():
         "daily_data": daily_data,
         "registration_curve": reg_curve,
         "status": status,
+        "prior_year_pace": prior_year_pace,
     }
 
     # Add event_end from metadata

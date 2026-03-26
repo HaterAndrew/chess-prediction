@@ -77,9 +77,14 @@ enrichment_lookup = m04c.build_enrichment_lookup(hist_enrich)
 EXCLUDE_FAMILIES = [
     # World Open sub-events (combined into "World Open" entry)
     'World Open  lower sections', 'World Open  top 6 sections',
+    'World Open G 50 Championship', 'World Open G/50 Championship',
+    'World Open G7 Championship', 'World Open G/7 Championship',
+    'World Open G 10 Championship', 'World Open G/10 Championship',
+    'World Open Action',
+    # Atlantic City sub-events
+    'DC International', 'DC Open',
     # Tiny side events with 1-6 registrants, not real tournaments
     'George Washington Saturday Octos', 'George Washington Sunday Octos',
-    'World Open G 50 Championship',
 ]
 
 # Exclude all blitz events

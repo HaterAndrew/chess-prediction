@@ -77128,7 +77128,8 @@ function initEmailTab() {
     lbl.style.cssText = 'display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;user-select:none;font-size:.88rem';
     lbl.onmouseover = () => lbl.style.background = 'var(--surface2)';
     lbl.onmouseout = () => lbl.style.background = '';
-    lbl.innerHTML = `<input type="checkbox" data-eidx="${i}" checked style="accent-color:var(--gold);width:15px;height:15px;cursor:pointer">
+    const defaultOn = t.days_remaining <= 60;
+    lbl.innerHTML = `<input type="checkbox" data-eidx="${i}" ${defaultOn ? 'checked' : ''} style="accent-color:var(--gold);width:15px;height:15px;cursor:pointer">
       <span>${t.family}</span>
       <span style="font-size:.72rem;color:var(--muted);margin-left:auto">${t.days_remaining}d</span>`;
     grid.appendChild(lbl);

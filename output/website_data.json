@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-25",
+  "generated": "2026-03-26",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Features: family aliases, growth trends, count-based ratio adjustment, late-surge/blitz handling, enrichment data integration.",
   "tournaments": [
@@ -13,10 +13,10 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 226,
-      "days_remaining": 7,
-      "point_estimate": 450,
-      "ci_lower": 423,
-      "ci_upper": 478,
+      "days_remaining": 6,
+      "point_estimate": 445,
+      "ci_lower": 421,
+      "ci_upper": 471,
       "ci_level": 0.8,
       "historical": [
         {
@@ -346,10 +346,10 @@
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
       "current_count": 183,
-      "days_remaining": 57,
-      "point_estimate": 901,
-      "ci_lower": 851,
-      "ci_upper": 953,
+      "days_remaining": 56,
+      "point_estimate": 892,
+      "ci_lower": 845,
+      "ci_upper": 941,
       "ci_level": 0.8,
       "historical": [
         {
@@ -641,7 +641,7 @@
       "status": "live",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 156,
+        "count_at_same_point": 170,
         "final": 899
       }
     },
@@ -655,10 +655,10 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 3,
-      "days_remaining": 72,
+      "days_remaining": 71,
       "point_estimate": 195,
-      "ci_lower": 112,
-      "ci_upper": 341,
+      "ci_lower": 113,
+      "ci_upper": 338,
       "ci_level": 0.8,
       "historical": [
         {
@@ -764,10 +764,10 @@
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
       "current_count": 2,
-      "days_remaining": 72,
+      "days_remaining": 71,
       "point_estimate": 192,
       "ci_lower": 107,
-      "ci_upper": 344,
+      "ci_upper": 345,
       "ci_level": 0.8,
       "historical": [
         {
@@ -873,7 +873,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 1,
-      "days_remaining": 86,
+      "days_remaining": 85,
       "point_estimate": 81,
       "ci_lower": 47,
       "ci_upper": 140,
@@ -954,228 +954,6 @@
       }
     },
     {
-      "family": "World Open G/50 Championship",
-      "year": 2026,
-      "event_start": "2026-06-25",
-      "event_end": "2026-06-25",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 92,
-      "point_estimate": 100,
-      "ci_lower": 70,
-      "ci_upper": 130,
-      "ci_level": 0.8,
-      "historical": [],
-      "daily_data": [
-        [
-          0,
-          0
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0109
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.023
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0413
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0846
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1521
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.2074
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3019
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4686
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7587
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9419
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live"
-    },
-    {
-      "family": "DC International",
-      "year": 2026,
-      "event_start": "2026-06-25",
-      "event_end": "2026-06-29",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 92,
-      "point_estimate": 100,
-      "ci_lower": 70,
-      "ci_upper": 130,
-      "ci_level": 0.8,
-      "historical": [],
-      "daily_data": [
-        [
-          0,
-          0
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0109
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.023
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0413
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0846
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1521
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.2074
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3019
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4686
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7587
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9419
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live"
-    },
-    {
-      "family": "DC Open",
-      "year": 2026,
-      "event_start": "2026-06-26",
-      "event_end": "2026-06-28",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 93,
-      "point_estimate": 100,
-      "ci_lower": 70,
-      "ci_upper": 130,
-      "ci_level": 0.8,
-      "historical": [],
-      "daily_data": [
-        [
-          0,
-          0
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0109
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.023
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0413
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0846
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1521
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.2074
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3019
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4686
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7587
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9419
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live"
-    },
-    {
       "family": "World Open",
       "year": 2026,
       "event_start": "2026-07-01",
@@ -1185,10 +963,10 @@
       "regular_fee": 328.0,
       "onsite_fee": 350.0,
       "current_count": 35,
-      "days_remaining": 98,
-      "point_estimate": 1379,
-      "ci_lower": 1178,
-      "ci_upper": 1613,
+      "days_remaining": 97,
+      "point_estimate": 1376,
+      "ci_lower": 1176,
+      "ci_upper": 1610,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1361,154 +1139,6 @@
       }
     },
     {
-      "family": "World Open G/7 Championship",
-      "year": 2026,
-      "event_start": "2026-07-01",
-      "event_end": "2026-07-01",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 98,
-      "point_estimate": 100,
-      "ci_lower": 70,
-      "ci_upper": 130,
-      "ci_level": 0.8,
-      "historical": [],
-      "daily_data": [
-        [
-          0,
-          0
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0109
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.023
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0413
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0846
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1521
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.2074
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3019
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4686
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7587
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9419
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live"
-    },
-    {
-      "family": "World Open G/10 Championship",
-      "year": 2026,
-      "event_start": "2026-07-04",
-      "event_end": "2026-07-04",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 101,
-      "point_estimate": 100,
-      "ci_lower": 70,
-      "ci_upper": 130,
-      "ci_level": 0.8,
-      "historical": [],
-      "daily_data": [
-        [
-          0,
-          0
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0109
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.023
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0413
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0846
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1521
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.2074
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3019
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4686
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7587
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9419
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live"
-    },
-    {
       "family": "Chicago Class",
       "year": 2026,
       "event_start": "2026-07-17",
@@ -1518,7 +1148,7 @@
       "regular_fee": 138.0,
       "onsite_fee": 150.0,
       "current_count": 1,
-      "days_remaining": 114,
+      "days_remaining": 113,
       "point_estimate": 275,
       "ci_lower": 150,
       "ci_upper": 501,
@@ -1619,10 +1249,10 @@
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
       "current_count": 2,
-      "days_remaining": 114,
+      "days_remaining": 113,
       "point_estimate": 168,
       "ci_lower": 88,
-      "ci_upper": 321,
+      "ci_upper": 320,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1728,7 +1358,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 114,
+      "days_remaining": 113,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -1823,7 +1453,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 2,
-      "days_remaining": 121,
+      "days_remaining": 120,
       "point_estimate": 262,
       "ci_lower": 151,
       "ci_upper": 453,
@@ -1932,10 +1562,10 @@
       "regular_fee": 143.0,
       "onsite_fee": 155.0,
       "current_count": 3,
-      "days_remaining": 128,
+      "days_remaining": 127,
       "point_estimate": 383,
       "ci_lower": 213,
-      "ci_upper": 691,
+      "ci_upper": 690,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2041,7 +1671,7 @@
       "regular_fee": 160.0,
       "onsite_fee": 160.0,
       "current_count": 0,
-      "days_remaining": 248,
+      "days_remaining": 247,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -21342,85 +20972,6 @@
         {
           "days_before": 1,
           "cumulative_pct": 0.9821
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "historical"
-    },
-    {
-      "family": "DC International",
-      "year": 2015,
-      "event_start": "2015-02-19",
-      "event_end": null,
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 128,
-      "days_remaining": 0,
-      "point_estimate": 128,
-      "ci_lower": 128,
-      "ci_upper": 128,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2015,
-          "count": 128
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          128
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0109
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.023
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0413
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0846
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1521
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.2074
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3019
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4686
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7587
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9419
         },
         {
           "days_before": 0,
@@ -73803,7 +73354,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 7,
+      "days_remaining": 6,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,

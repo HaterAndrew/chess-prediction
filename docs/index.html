@@ -1129,7 +1129,7 @@ footer a { color: var(--muted); }
       <span style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Output</span>
       <button id="emailCopyBtn" onclick="copyEmail()" style="padding:5px 14px;border-radius:6px;font-size:.78rem;font-weight:600;background:var(--surface2);color:var(--text);border:1px solid var(--border);cursor:pointer">Copy to clipboard</button>
     </div>
-    <div id="emailOutput" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;font-family:-apple-system,'Segoe UI',system-ui,Roboto,sans-serif;font-size:.9rem;line-height:1.6;min-height:180px;color:var(--text2)"></div>
+    <div id="emailOutput" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;white-space:pre-wrap;tab-size:16;-moz-tab-size:16;font-family:-apple-system,'Segoe UI',system-ui,Roboto,sans-serif;font-size:.9rem;line-height:1.6;min-height:180px;color:var(--text2)"></div>
   </div><!-- /panel-email -->
 
 </main>
@@ -76715,17 +76715,11 @@ function emailHistAvg(t) {
   return Math.round(c.reduce((a, b) => a + b, 0) / c.length);
 }
 
-// HTML table builder — renders as real table, copies formatted into email clients
-function emailHtmlTable(headers, rows) {
-  const thStyle = 'padding:4px 12px;text-align:left;border-bottom:1px solid #555;font-weight:bold';
-  const tdStyle = 'padding:4px 12px;text-align:left';
-  let h = '<table style="border-collapse:collapse;margin:8px 0 4px 16px;font-size:inherit">';
-  h += '<tr>' + headers.map(c => `<th style="${thStyle}">${c}</th>`).join('') + '</tr>';
-  rows.forEach(r => {
-    h += '<tr>' + r.map(c => `<td style="${tdStyle}">${c !== '' && c != null ? c : ''}</td>`).join('') + '</tr>';
-  });
-  h += '</table>';
-  return h;
+// Tab-separated table — tabs align natively in every email client
+function emailTable(headers, rows) {
+  const cell = c => (c !== '' && c != null) ? String(c) : '';
+  const line = cols => cols.map(cell).join('\t');
+  return line(headers) + '\n' + rows.map(r => line(r)).join('\n');
 }
 
 function emailFormatTournament(t, len) {
@@ -76734,24 +76728,25 @@ function emailFormatTournament(t, len) {
   const pace = t.prior_year_pace;
   const name = t.family.toUpperCase();
   const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
-  const parts = []; // mix of strings (paragraphs) and {table: html}
+  const parts = [];
 
   // ── SHORT ──
   if (len === 'short') {
-    let s = `<b>${name}:</b>  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
+    let s = `${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
     if (ly) s += `  Last year was ${ly.count}.`;
+    parts.push(s);
     if (pace) {
       const d = t.current_count - pace.count_at_same_point;
-      if (d > 0) s += `  At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`;
-      else if (d < 0) s += `  At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`;
-      else s += `  At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`;
+      if (d > 0) parts.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`);
+      else if (d < 0) parts.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`);
+      else parts.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
     }
-    return s;
+    return parts.join('  ');
   }
 
   // ── MEDIUM ──
   if (len === 'medium') {
-    let main = `<b>${name}:</b>  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
+    let main = `${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
     if (ly) {
       const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
       if (pct > 10) main += `  Last year was ${ly.count}, so we are ahead.`;
@@ -76769,14 +76764,13 @@ function emailFormatTournament(t, len) {
     if (sorted.length >= 2) {
       const rows = [[2026, t.current_count, t.point_estimate, '']];
       sorted.forEach(h => rows.push([h.year, '', '', h.count]));
-      parts.push(emailHtmlTable(['YEAR', 'ENTRIES', 'PROJECTION', 'FINAL'], rows));
+      parts.push(emailTable(['YEAR', 'ENTRIES', 'PROJECTION', 'FINAL'], rows));
     }
-    return parts.join('<br>');
+    return parts.join('\n');
   }
 
   // ── LONG ──
-  let main = `<b>${name}:</b>  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
-  parts.push(main);
+  parts.push(`${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`);
 
   if (ly) {
     const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
@@ -76810,12 +76804,12 @@ function emailFormatTournament(t, len) {
   }
 
   if (sorted.length >= 2) {
-    const rows = [[2026, t.current_count, t.point_estimate, `${t.ci_lower}\u2013${t.ci_upper}`, '']];
+    const rows = [[2026, t.current_count, t.point_estimate, `${t.ci_lower}-${t.ci_upper}`, '']];
     sorted.forEach(h => rows.push([h.year, '', '', '', h.count]));
-    parts.push(emailHtmlTable(['YEAR', 'ENTRIES', 'PROJECTION', 'RANGE', 'FINAL'], rows));
+    parts.push(emailTable(['YEAR', 'ENTRIES', 'PROJECTION', 'RANGE', 'FINAL'], rows));
   }
 
-  return parts.join('<br>');
+  return parts.join('\n');
 }
 
 function emailOverallTheme(selected) {
@@ -76838,7 +76832,7 @@ function emailOverallTheme(selected) {
 function generateEmail() {
   const selected = emailGetSelected();
   const out = document.getElementById('emailOutput');
-  if (!selected.length) { out.innerHTML = '<span style="color:var(--muted);font-style:italic">No tournaments selected.</span>'; return; }
+  if (!selected.length) { out.textContent = 'No tournaments selected.'; return; }
   const len = emailLength;
   const sections = [];
   sections.push('Team');
@@ -76849,7 +76843,7 @@ function generateEmail() {
     sections.push(emailFormatTournament(t, len));
   });
   sections.push('Dave');
-  out.innerHTML = sections.join('<br><br>');
+  out.textContent = sections.join('\n\n');
   const btn = document.getElementById('emailCopyBtn');
   btn.textContent = 'Copy to clipboard';
   btn.style.background = 'var(--surface2)';
@@ -76857,17 +76851,10 @@ function generateEmail() {
   btn.style.color = 'var(--text)';
 }
 
-// Copy as rich text (HTML) so tables paste formatted in email clients
 function copyEmail() {
-  const out = document.getElementById('emailOutput');
-  const html = out.innerHTML;
-  if (!html) return;
-  const plain = out.innerText;
-  const blob = new Blob([html], {type: 'text/html'});
-  const textBlob = new Blob([plain], {type: 'text/plain'});
-  navigator.clipboard.write([
-    new ClipboardItem({'text/html': blob, 'text/plain': textBlob})
-  ]).then(() => {
+  const text = document.getElementById('emailOutput').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById('emailCopyBtn');
     btn.textContent = 'Copied!';
     btn.style.background = 'var(--green)';

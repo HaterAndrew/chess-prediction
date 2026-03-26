@@ -310,18 +310,28 @@ prod_model = m04c.N5v4_Final()
 prod_model.fit(train_ts, daily, enrichment_lookup=enrichment_lookup,
                completed_tids=completed_tids if completed_tids else None)
 
-# Automated recalibration: compare predictions on completed 2026 tournaments
-# to actual final counts, compute bias + CI corrections for live predictions
-if completed_tids:
-    recal_data = summary[summary['tid'].isin(completed_tids)].copy()
-    if len(recal_data) >= 3:
-        recal_diag = prod_model.recalibrate(recal_data, daily)
-        print(f"  Recalibration from {len(recal_data)} completed tournaments:")
-        for T, d in sorted(recal_diag.items()):
-            print(f"    T-{T:>2}: bias {d['mean_bias']:>+5.1f}% → factor {d['bias_factor']:.3f}, "
-                  f"CI cov {d['coverage']:>3.0f}% → adj {d['ci_adj']:.3f}")
-    else:
-        print(f"  Recalibration skipped: need ≥3 completed tournaments, have {len(recal_data)}")
+# Automated recalibration: learn from ALL completed tournaments (2024-2025 + 2026)
+# Recent data is weighted more heavily (2026 conditions > 2019 conditions)
+recal_data = summary[
+    (summary['has_timestamps']) &
+    (~summary['is_online'].fillna(False)) &
+    (~summary['is_covid'].fillna(False)) &
+    (summary['final_count'] >= 50) &
+    (
+        (summary['tournament_year'].isin([2024, 2025])) |
+        (summary['tid'].isin(completed_tids))
+    )
+].copy()
+if len(recal_data) >= 5:
+    recal_diag = prod_model.recalibrate(recal_data, daily)
+    n_2026 = len(recal_data[recal_data['tournament_year'] == 2026])
+    n_older = len(recal_data) - n_2026
+    print(f"  Recalibration from {len(recal_data)} tournaments ({n_older} from 2024-25, {n_2026} from 2026):")
+    for T, d in sorted(recal_diag.items()):
+        print(f"    T-{T:>2}: bias {d['mean_bias']:>+5.1f}% → factor {d['bias_factor']:.3f}, "
+              f"CI cov {d['coverage']:>3.0f}% → adj {d['ci_adj']:.3f} (n={d['n']})")
+else:
+    print(f"  Recalibration skipped: need ≥5 completed tournaments, have {len(recal_data)}")
 
 ratios = build_ratio_model(train, daily)  # kept for families without timestamps
 curves = build_template_curves(train, daily)

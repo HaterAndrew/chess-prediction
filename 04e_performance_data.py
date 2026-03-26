@@ -114,12 +114,20 @@ def main():
 
     print(f"Found {len(completed_families)} completed 2026 tournaments for evaluation")
 
-    # Apply automated recalibration (bias + CI corrections from completed data)
-    if completed_tids:
-        recal_data = summary[summary['tid'].isin(completed_tids)].copy()
-        if len(recal_data) >= 3:
-            recal_diag = model.recalibrate(recal_data, daily)
-            print(f"  Recalibration applied from {len(recal_data)} tournaments")
+    # Apply automated recalibration from ALL recent completed tournaments
+    recal_data = summary[
+        (summary['has_timestamps']) &
+        (~summary['is_online'].fillna(False)) &
+        (~summary['is_covid'].fillna(False)) &
+        (summary['final_count'] >= 50) &
+        (
+            (summary['tournament_year'].isin([2024, 2025])) |
+            (summary['tid'].isin(completed_tids))
+        )
+    ].copy()
+    if len(recal_data) >= 5:
+        model.recalibrate(recal_data, daily)
+        print(f"  Recalibration applied from {len(recal_data)} tournaments (2024-2026)")
 
     if not completed_families:
         # Output empty performance data

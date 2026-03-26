@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>CCA Prediction Update — Email Generator</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♔</text></svg>">
+<style>
+:root {
+  --bg: #06090f;
+  --surface: #0d1117;
+  --surface2: #161b22;
+  --surface3: #21262d;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text2: #c9d1d9;
+  --muted: #8b949e;
+  --blue: #58a6ff;
+  --gold: #f0c040;
+  --green: #3fb950;
+  --red: #f85149;
+  --radius: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, 'Segoe UI', system-ui, Roboto, sans-serif;
+  line-height: 1.6;
+  padding: 32px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+h1 { font-size: 1.5rem; margin-bottom: 4px; }
+.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+.section { margin-bottom: 24px; }
+.section-label {
+  font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--muted); margin-bottom: 8px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+/* Tournament selector */
+.tournament-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+.tournament-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px; border-radius: 6px;
+  cursor: pointer; user-select: none;
+  transition: background .15s;
+}
+.tournament-item:hover { background: var(--surface2); }
+.tournament-item input[type="checkbox"] {
+  accent-color: var(--gold); width: 16px; height: 16px; cursor: pointer;
+}
+.tournament-item .name { font-size: 0.9rem; }
+.tournament-item .meta {
+  font-size: 0.75rem; color: var(--muted); margin-left: auto; white-space: nowrap;
+}
+
+/* Controls */
+.controls {
+  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+}
+.length-toggle {
+  display: inline-flex; border-radius: 6px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+.length-toggle button {
+  padding: 6px 16px; font-size: 0.85rem;
+  background: var(--surface); color: var(--text2);
+  border: none; cursor: pointer; transition: all .15s;
+}
+.length-toggle button:not(:last-child) { border-right: 1px solid var(--border); }
+.length-toggle button.active {
+  background: var(--gold); color: #000; font-weight: 600;
+}
+.btn {
+  padding: 8px 20px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all .15s;
+}
+.btn-primary {
+  background: var(--blue); color: #fff; border: none;
+}
+.btn-primary:hover { filter: brightness(1.15); }
+.btn-copy {
+  background: var(--surface2); color: var(--text); border: 1px solid var(--border);
+}
+.btn-copy:hover { border-color: var(--gold); }
+.btn-copy.copied {
+  background: var(--green); color: #000; border-color: var(--green);
+}
+.select-actions { display: flex; gap: 8px; margin-left: auto; }
+.select-actions button {
+  font-size: 0.8rem; color: var(--blue); background: none;
+  border: none; cursor: pointer; text-decoration: underline;
+}
+
+/* Output */
+.output-area {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  white-space: pre-wrap;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  min-height: 200px;
+  color: var(--text2);
+}
+.output-area:empty::before {
+  content: 'Select tournaments and click Generate...';
+  color: var(--muted); font-style: italic;
+}
+.output-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+</style>
+</head>
+<body>
+
+<h1>Prediction Update Email Generator</h1>
+<p class="subtitle">Generates tournament update emails from website prediction data.</p>
+
+<div class="section">
+  <div class="section-label">Tournaments</div>
+  <div class="card">
+    <div class="controls" style="margin-bottom: 12px;">
+      <div class="select-actions" style="margin-left: 0;">
+        <button onclick="selectAll()">Select all</button>
+        <button onclick="selectNone()">Clear all</button>
+        <button onclick="selectClose()">Next 60 days</button>
+      </div>
+    </div>
+    <div class="tournament-grid" id="tournamentGrid"></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Options</div>
+  <div class="card">
+    <div class="controls">
+      <div class="length-toggle" id="lengthToggle">
+        <button data-len="short" onclick="setLength('short')">Short</button>
+        <button data-len="medium" class="active" onclick="setLength('medium')">Medium</button>
+        <button data-len="long" onclick="setLength('long')">Long</button>
+      </div>
+      <button class="btn btn-primary" onclick="generate()">Generate</button>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="output-header">
+    <div class="section-label" style="margin-bottom: 0;">Output</div>
+    <button class="btn btn-copy" id="copyBtn" onclick="copyOutput()">Copy to clipboard</button>
+  </div>
+  <div class="output-area" id="output"></div>
+</div>
+
+<script>
+let data = null;
+let selectedLength = 'medium';
+let liveTournaments = [];
+
+function init() {
+  liveTournaments = data.tournaments
+    .filter(t => t.status === 'live')
+    .sort((a, b) => a.days_remaining - b.days_remaining);
+
+  const grid = document.getElementById('tournamentGrid');
+  grid.innerHTML = '';
+  liveTournaments.forEach((t, i) => {
+    const el = document.createElement('label');
+    el.className = 'tournament-item';
+    el.innerHTML = `
+      <input type="checkbox" data-idx="${i}" checked>
+      <span class="name">${t.family}</span>
+      <span class="meta">${t.days_remaining}d</span>
+    `;
+    grid.appendChild(el);
+  });
+}
+
+function getSelected() {
+  const boxes = document.querySelectorAll('#tournamentGrid input[type="checkbox"]');
+  const selected = [];
+  boxes.forEach(cb => {
+    if (cb.checked) selected.push(liveTournaments[parseInt(cb.dataset.idx)]);
+  });
+  return selected;
+}
+
+function selectAll() {
+  document.querySelectorAll('#tournamentGrid input').forEach(cb => cb.checked = true);
+}
+function selectNone() {
+  document.querySelectorAll('#tournamentGrid input').forEach(cb => cb.checked = false);
+}
+function selectClose() {
+  document.querySelectorAll('#tournamentGrid input').forEach(cb => {
+    const idx = parseInt(cb.dataset.idx);
+    cb.checked = liveTournaments[idx].days_remaining <= 60;
+  });
+}
+
+function setLength(len) {
+  selectedLength = len;
+  document.querySelectorAll('#lengthToggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.len === len);
+  });
+}
+
+// ── Helpers ──
+
+function histAvg(t) {
+  if (!t.historical || t.historical.length === 0) return null;
+  const counts = t.historical.map(h => h.count);
+  return Math.round(counts.reduce((a, b) => a + b, 0) / counts.length);
+}
+
+function lastYear(t) {
+  if (!t.historical || t.historical.length === 0) return null;
+  const sorted = [...t.historical].sort((a, b) => b.year - a.year);
+  return sorted[0];
+}
+
+function histMin(t) {
+  if (!t.historical || t.historical.length === 0) return null;
+  return Math.min(...t.historical.map(h => h.count));
+}
+
+function pad(s, w) { return String(s).padEnd(w); }
+function padr(s, w) { return String(s).padStart(w); }
+
+// ── Email generation in Dave's voice ──
+
+function formatTournament(t, len) {
+  const ly = lastYear(t);
+  const avg = histAvg(t);
+  const pace = t.prior_year_pace;
+  const name = t.family.toUpperCase();
+  const lines = [];
+
+  // ── SHORT: one-liner ──
+  if (len === 'short') {
+    let line = `${name}:  We are at ${t.current_count} which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
+    if (ly) line += `  Last year was ${ly.count}.`;
+    return line;
+  }
+
+  // ── MEDIUM: numbers + directional commentary + pacing ──
+  if (len === 'medium') {
+    lines.push(`${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`);
+
+    if (ly) {
+      const diff = t.point_estimate - ly.count;
+      const pct = Math.round(diff / ly.count * 100);
+      if (pct > 10) {
+        lines[lines.length - 1] += `  Last year was ${ly.count}, so we are ahead.`;
+      } else if (pct < -10) {
+        lines[lines.length - 1] += `  Last year was ${ly.count}, so we are still behind.`;
+      } else if (pct < -3) {
+        lines[lines.length - 1] += `  Last year was ${ly.count}, so we are a little behind.`;
+      } else {
+        lines[lines.length - 1] += `  Last year was ${ly.count}.`;
+      }
+    }
+
+    if (pace) {
+      const delta = t.current_count - pace.count_at_same_point;
+      if (delta > 0) {
+        lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`);
+      } else if (delta < 0) {
+        lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`);
+      } else {
+        lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
+      }
+    }
+
+    return lines.join('  ');
+  }
+
+  // ── LONG: deep dive — multi-year context, pacing, table ──
+  lines.push(`${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`);
+
+  // Directional vs last year
+  if (ly) {
+    const diff = t.point_estimate - ly.count;
+    const pct = Math.round(diff / ly.count * 100);
+    if (pct > 15) {
+      lines.push(`Last year was ${ly.count}, so the projection has us well ahead.`);
+    } else if (pct > 5) {
+      lines.push(`Last year was ${ly.count}, so we are tracking ahead.`);
+    } else if (pct > -5) {
+      lines.push(`Last year was ${ly.count}, so we are in the same neighborhood.`);
+    } else if (pct > -15) {
+      lines.push(`Last year was ${ly.count}, so we are still a bit behind.`);
+    } else {
+      lines.push(`Last year was ${ly.count}, so we are lagging.`);
+    }
+  }
+
+  // vs historical average
+  if (avg && t.historical.length >= 3) {
+    const pct = Math.round((t.point_estimate - avg) / avg * 100);
+    if (pct < -10) {
+      lines.push(`The historical average is ${avg}, so we are still below the norm.`);
+    } else if (pct > 10) {
+      lines.push(`The historical average is ${avg}, so we are trending above average.`);
+    }
+  }
+
+  // Pacing at same point
+  if (pace) {
+    const delta = t.current_count - pace.count_at_same_point;
+    let paceNote = `At this point last year we were at ${pace.count_at_same_point} which predicted ${pace.final}`;
+    if (delta > 0) {
+      paceNote += `, so we are ahead of pace.`;
+    } else if (delta < 0) {
+      paceNote += `, so we are behind.`;
+    } else {
+      paceNote += `.`;
+    }
+    lines.push(paceNote);
+  }
+
+  // Multi-year history table (Dave's tabular format)
+  if (t.historical && t.historical.length >= 2) {
+    const sorted = [...t.historical].sort((a, b) => b.year - a.year);
+    lines.push('');
+    // Column headers
+    lines.push(`            YEAR            ENTRIES            PROJECTION            FINAL`);
+    // Current year
+    lines.push(`            2026            ${padr(t.current_count, 6)}            ${padr(t.point_estimate, 10)}`);
+    // Historical years
+    sorted.forEach(h => {
+      lines.push(`            ${h.year}            ${padr('', 6)}                                      ${padr(h.count, 6)}`);
+    });
+  }
+
+  return lines.join('\n');
+}
+
+function generateOverallTheme(selected) {
+  if (selected.length === 0) return '';
+
+  let ahead = 0, behind = 0;
+  selected.forEach(t => {
+    const ly = lastYear(t);
+    if (!ly) return;
+    const pct = (t.point_estimate - ly.count) / ly.count;
+    if (pct > 0.05) ahead++;
+    else if (pct < -0.05) behind++;
+  });
+
+  const total = ahead + behind;
+  if (total === 0) return 'Things are holding steady across the board.';
+  if (behind === 0) return 'The overall theme is improvement across the board.';
+  if (ahead === 0) return 'The overall theme is we are still lagging across the board.';
+  if (ahead >= behind) return 'The overall theme is a mixed bag — some improvement, but we are still behind on a few events.';
+  return 'The overall theme today is there has been some improvement, but we are still lagging.';
+}
+
+function generate() {
+  const selected = getSelected();
+  if (selected.length === 0) {
+    document.getElementById('output').textContent = 'No tournaments selected.';
+    return;
+  }
+
+  const len = selectedLength;
+  const lines = [];
+
+  lines.push('Team');
+  lines.push('');
+
+  // Theme line for medium and long
+  if (len !== 'short' && selected.length > 1) {
+    lines.push(generateOverallTheme(selected));
+    lines.push('');
+  }
+
+  // Tournament sections
+  selected.forEach((t, i) => {
+    lines.push(formatTournament(t, len));
+    if (i < selected.length - 1) lines.push('');
+  });
+
+  lines.push('');
+  lines.push('Dave');
+
+  document.getElementById('output').textContent = lines.join('\n');
+  // Reset copy button
+  const btn = document.getElementById('copyBtn');
+  btn.textContent = 'Copy to clipboard';
+  btn.classList.remove('copied');
+}
+
+function copyOutput() {
+  const text = document.getElementById('output').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy to clipboard';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// Load data from JSON or JS
+async function loadData() {
+  // Try website_data.json first (docs/), then tournament_data.js (output/)
+  try {
+    const resp = await fetch('website_data.json');
+    if (resp.ok) { data = await resp.json(); init(); return; }
+  } catch(e) {}
+  // Fallback: try loading the JS global
+  if (typeof TOURNAMENT_DATA !== 'undefined') {
+    data = TOURNAMENT_DATA;
+    init();
+    return;
+  }
+  document.getElementById('output').textContent = 'Could not load tournament data.';
+}
+loadData();
+</script>
+</body>
+</html>

@@ -15,9 +15,9 @@
       "onsite_fee": null,
       "current_count": 242,
       "days_remaining": 6,
-      "point_estimate": 440,
-      "ci_lower": 410,
-      "ci_upper": 472,
+      "point_estimate": 461,
+      "ci_lower": 430,
+      "ci_upper": 494,
       "ci_level": 0.8,
       "historical": [
         {
@@ -348,9 +348,9 @@
       "onsite_fee": 250.0,
       "current_count": 182,
       "days_remaining": 56,
-      "point_estimate": 890,
-      "ci_lower": 838,
-      "ci_upper": 945,
+      "point_estimate": 897,
+      "ci_lower": 845,
+      "ci_upper": 953,
       "ci_level": 0.8,
       "historical": [
         {
@@ -657,9 +657,9 @@
       "onsite_fee": null,
       "current_count": 3,
       "days_remaining": 71,
-      "point_estimate": 195,
-      "ci_lower": 119,
-      "ci_upper": 320,
+      "point_estimate": 196,
+      "ci_lower": 120,
+      "ci_upper": 322,
       "ci_level": 0.8,
       "historical": [
         {
@@ -766,9 +766,9 @@
       "onsite_fee": 110.0,
       "current_count": 2,
       "days_remaining": 71,
-      "point_estimate": 192,
-      "ci_lower": 114,
-      "ci_upper": 324,
+      "point_estimate": 193,
+      "ci_lower": 115,
+      "ci_upper": 326,
       "ci_level": 0.8,
       "historical": [
         {
@@ -875,9 +875,9 @@
       "onsite_fee": null,
       "current_count": 1,
       "days_remaining": 85,
-      "point_estimate": 76,
-      "ci_lower": 46,
-      "ci_upper": 125,
+      "point_estimate": 79,
+      "ci_lower": 48,
+      "ci_upper": 130,
       "ci_level": 0.8,
       "historical": [
         {
@@ -965,9 +965,9 @@
       "onsite_fee": 350.0,
       "current_count": 35,
       "days_remaining": 97,
-      "point_estimate": 1301,
-      "ci_lower": 1171,
-      "ci_upper": 1446,
+      "point_estimate": 1352,
+      "ci_lower": 1217,
+      "ci_upper": 1502,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1150,9 +1150,9 @@
       "onsite_fee": 150.0,
       "current_count": 1,
       "days_remaining": 113,
-      "point_estimate": 260,
-      "ci_lower": 151,
-      "ci_upper": 446,
+      "point_estimate": 270,
+      "ci_lower": 157,
+      "ci_upper": 464,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1251,9 +1251,9 @@
       "onsite_fee": 110.0,
       "current_count": 2,
       "days_remaining": 113,
-      "point_estimate": 159,
-      "ci_lower": 95,
-      "ci_upper": 267,
+      "point_estimate": 165,
+      "ci_lower": 98,
+      "ci_upper": 277,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1455,9 +1455,9 @@
       "onsite_fee": null,
       "current_count": 2,
       "days_remaining": 120,
-      "point_estimate": 247,
-      "ci_lower": 151,
-      "ci_upper": 406,
+      "point_estimate": 257,
+      "ci_lower": 157,
+      "ci_upper": 421,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1564,9 +1564,9 @@
       "onsite_fee": 155.0,
       "current_count": 3,
       "days_remaining": 127,
-      "point_estimate": 362,
-      "ci_lower": 221,
-      "ci_upper": 594,
+      "point_estimate": 376,
+      "ci_lower": 230,
+      "ci_upper": 617,
       "ci_level": 0.8,
       "historical": [
         {

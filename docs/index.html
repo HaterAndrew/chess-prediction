@@ -1143,63 +1143,46 @@ footer a { color: var(--muted); }
   <!-- ══════ PERFORMANCE TAB ══════ -->
   <div class="page-tab-panel" id="panel-performance" role="tabpanel">
 
-    <!-- ── EXEC HERO ── -->
-    <div style="margin:16px 0 28px">
-      <!-- Grade + KPI row -->
-      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px">
-        <!-- Big grade card -->
-        <div id="perfGradeCard" style="display:flex;align-items:center;gap:20px;padding:24px 32px;background:var(--surface);border:1px solid var(--border);border-radius:14px;min-width:260px;flex:1.2">
-          <div id="perfGradeLetter" style="font-size:4rem;font-weight:900;line-height:1;color:var(--gold)"></div>
-          <div>
-            <div id="perfGradeLabel" style="font-size:1rem;font-weight:700;color:var(--text)"></div>
-            <div id="perfGradeDetail" style="font-size:.78rem;color:var(--muted);margin-top:4px"></div>
-            <div id="perfGradeMeta" style="font-size:.68rem;color:var(--muted);margin-top:2px"></div>
-          </div>
-        </div>
-        <!-- KPI cards -->
-        <div id="perfKPIs" style="display:flex;gap:12px;flex:2;flex-wrap:wrap"></div>
+    <!-- Hero: grade + stats -->
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin:18px 0 22px;align-items:stretch">
+      <div id="perfGradeCard" style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 36px;background:linear-gradient(135deg,rgba(240,192,64,.08),rgba(56,139,253,.04));border:1px solid rgba(240,192,64,.2);border-radius:16px;min-width:140px">
+        <div id="perfGradeLetter" style="font-size:4.5rem;font-weight:900;line-height:1;color:var(--gold);text-shadow:0 0 24px rgba(240,192,64,.4)"></div>
+        <div id="perfGradeLabel" style="font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:8px"></div>
       </div>
-
-      <!-- Predicted vs Actual scatter -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:20px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-          <div style="font-size:.88rem;font-weight:700;color:var(--text)">Predicted vs Actual Entries</div>
-          <div style="font-size:.68rem;color:var(--muted)">Each dot = one tournament at T-14</div>
-        </div>
-        <div id="perfScatter" style="position:relative;width:100%;height:260px"></div>
-      </div>
-
-      <!-- Accuracy timeline — clean horizontal -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:20px">
-        <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:4px">Forecast Accuracy Over Time</div>
-        <div style="font-size:.68rem;color:var(--muted);margin-bottom:16px">How error decreases as the event approaches</div>
-        <div id="perfTimeline" style="position:relative;width:100%;height:200px"></div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:10px;min-width:240px">
+        <div id="perfGradeDetail" style="font-size:.82rem;color:var(--text);font-weight:600"></div>
+        <div id="perfGradeMeta" style="font-size:.68rem;color:var(--muted)"></div>
+        <div id="perfKPIs" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:4px"></div>
       </div>
     </div>
 
-    <!-- ── DETAILED SECTION (collapsed by default) ── -->
-    <details style="margin-bottom:24px">
-      <summary style="font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);cursor:pointer;padding:8px 0;user-select:none">Detailed Breakdown</summary>
-
-      <!-- Accuracy by horizon bars -->
-      <div style="margin:16px 0 24px">
-        <div style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px">Mean Absolute Error by Horizon</div>
-        <div id="perfHorizonChart" style="display:flex;gap:8px;align-items:flex-end;height:160px;padding:12px 0;border-bottom:1px solid var(--border)"></div>
-        <div id="perfHorizonLabels" style="display:flex;gap:8px;margin-top:4px"></div>
+    <!-- Two-column chart area -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px">
+      <!-- Predicted vs Actual -->
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+          <span style="font-size:.78rem;font-weight:700;color:var(--text)">Predicted vs Actual</span>
+          <span style="font-size:.6rem;color:var(--muted)">at T-14</span>
+        </div>
+        <canvas id="perfScatterCanvas" style="width:100%;height:220px"></canvas>
       </div>
-
-      <!-- CI coverage bars -->
-      <div style="margin-bottom:24px">
-        <div style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px">80% Confidence Interval Coverage</div>
-        <div id="perfCIChart" style="display:flex;gap:8px;align-items:flex-end;height:120px;padding:12px 0;border-bottom:1px solid var(--border)"></div>
-        <div id="perfCILabels" style="display:flex;gap:8px;margin-top:4px"></div>
+      <!-- Error over lead time -->
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+          <span style="font-size:.78rem;font-weight:700;color:var(--text)">Error by Lead Time</span>
+          <span style="font-size:.6rem;color:var(--muted)">MAE % at each horizon</span>
+        </div>
+        <canvas id="perfTimelineCanvas" style="width:100%;height:220px"></canvas>
       </div>
+    </div>
 
-      <!-- Per-tournament table -->
-      <div style="margin-bottom:24px">
-        <div style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px">Per-Tournament Results</div>
-        <div id="perfTable" style="overflow-x:auto"></div>
-      </div>
+    <!-- Horizon detail strip -->
+    <div id="perfHorizonStrip" style="display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap"></div>
+
+    <!-- Per-tournament table -->
+    <details style="margin-bottom:24px" open>
+      <summary style="font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:10px 0;user-select:none;border-top:1px solid var(--border)">Tournament Results</summary>
+      <div id="perfTable" style="overflow-x:auto;margin-top:8px"></div>
     </details>
   </div><!-- /panel-performance -->
 
@@ -77920,253 +77903,234 @@ function initPerformanceTab() {
   const data = typeof PERFORMANCE_DATA !== 'undefined' ? PERFORMANCE_DATA : {};
   if (!data.aggregate || data.aggregate.length === 0) {
     document.getElementById('perfGradeLetter').textContent = '--';
-    document.getElementById('perfGradeLabel').textContent = 'No data yet';
+    document.getElementById('perfGradeLabel').textContent = 'NO DATA';
     document.getElementById('perfGradeDetail').textContent = 'Performance data will appear once tournaments complete.';
     return;
   }
 
-  // Grade card
-  const gradeColors = {'A+':'#22c55e','A':'#22c55e','A-':'#4ade80','B+':'#86efac','B':'var(--gold)','B-':'var(--gold)','C+':'#fb923c','C':'#f97316','C-':'#ea580c','D':'#ef4444','F':'#dc2626'};
-  const gradeColor = gradeColors[data.grade] || 'var(--gold)';
-  document.getElementById('perfGradeLetter').textContent = data.grade;
-  document.getElementById('perfGradeLetter').style.color = gradeColor;
-  document.getElementById('perfGradeLabel').textContent = 'Model Grade';
-  document.getElementById('perfGradeDetail').textContent = data.grade_detail || '';
-  document.getElementById('perfGradeMeta').textContent = `${data.n_tournaments} completed tournament${data.n_tournaments !== 1 ? 's' : ''} evaluated \u00b7 Updated ${data.generated}`;
-
-  // KPI cards
   const agg = data.aggregate;
   const t14 = agg.find(a => a.T === 14) || agg[0];
   const t1 = agg.find(a => a.T === 1);
   const avgCov = Math.round(agg.reduce((s, a) => s + a.ci_coverage, 0) / agg.length);
-  const avgBias = (agg.reduce((s, a) => s + a.bias_pct, 0) / agg.length).toFixed(1);
+  const avgBias = +(agg.reduce((s, a) => s + a.bias_pct, 0) / agg.length).toFixed(1);
 
+  // Grade
+  const gc = {'A+':'#22c55e','A':'#22c55e','A-':'#4ade80','B+':'#86efac','B':'var(--gold)','B-':'var(--gold)','C+':'#fb923c','C':'#f97316','C-':'#ea580c','D':'#ef4444','F':'#dc2626'};
+  document.getElementById('perfGradeLetter').textContent = data.grade;
+  document.getElementById('perfGradeLetter').style.color = gc[data.grade] || 'var(--gold)';
+  document.getElementById('perfGradeLabel').textContent = 'MODEL GRADE';
+  document.getElementById('perfGradeDetail').textContent = `Blind-tested on ${data.n_tournaments} completed 2026 tournaments`;
+  document.getElementById('perfGradeMeta').textContent = `N5v4_Final Ensemble \u00b7 Rolling retrain + auto-recalibration \u00b7 Updated ${data.generated}`;
+
+  // KPI cards
   const kpis = [
-    {label: '2-Week Forecast Error', value: t14.mae_pct.toFixed(1) + '%', sub: 'MAE at T-14', color: t14.mae_pct <= 8 ? '#22c55e' : t14.mae_pct <= 12 ? '#4ade80' : 'var(--gold)'},
-    {label: 'Day-Before Accuracy', value: t1 ? t1.mae_pct.toFixed(1) + '%' : '--', sub: 'MAE at T-1', color: t1 && t1.mae_pct <= 5 ? '#22c55e' : '#4ade80'},
-    {label: 'Avg CI Coverage', value: avgCov + '%', sub: 'Target: 80%', color: avgCov >= 75 ? '#22c55e' : avgCov >= 60 ? 'var(--gold)' : '#ef4444'},
-    {label: 'Avg Bias', value: (avgBias > 0 ? '+' : '') + avgBias + '%', sub: avgBias > 0 ? 'Slight over-prediction' : 'Slight under-prediction', color: Math.abs(avgBias) <= 5 ? '#22c55e' : 'var(--gold)'},
+    {v: t14.mae_pct.toFixed(1) + '%', l: '2-Week Error', s: 'MAE at T-14', c: t14.mae_pct <= 8 ? '#22c55e' : t14.mae_pct <= 15 ? 'var(--gold)' : '#ef4444'},
+    {v: t1 ? t1.mae_pct.toFixed(1) + '%' : '--', l: 'Day-Before', s: 'MAE at T-1', c: t1 && t1.mae_pct <= 5 ? '#22c55e' : '#4ade80'},
+    {v: avgCov + '%', l: 'CI Coverage', s: 'Target 80%', c: avgCov >= 75 ? '#22c55e' : avgCov >= 60 ? 'var(--gold)' : '#ef4444'},
+    {v: (avgBias > 0 ? '+' : '') + avgBias + '%', l: 'Bias', s: avgBias > 2 ? 'Over-predicts' : avgBias < -2 ? 'Under-predicts' : 'Well-centered', c: Math.abs(avgBias) <= 5 ? '#22c55e' : 'var(--gold)'},
   ];
-  const kpiBox = document.getElementById('perfKPIs');
-  kpiBox.innerHTML = kpis.map(k => `
-    <div style="flex:1;min-width:120px;padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-align:center">
-      <div style="font-size:1.6rem;font-weight:800;color:${k.color};line-height:1.1">${k.value}</div>
-      <div style="font-size:.72rem;font-weight:600;color:var(--text);margin-top:6px">${k.label}</div>
-      <div style="font-size:.62rem;color:var(--muted);margin-top:2px">${k.sub}</div>
+  document.getElementById('perfKPIs').innerHTML = kpis.map(k => `
+    <div style="padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-align:center">
+      <div style="font-size:1.4rem;font-weight:800;color:${k.c};line-height:1;font-variant-numeric:tabular-nums">${k.v}</div>
+      <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-top:5px;letter-spacing:.03em">${k.l}</div>
+      <div style="font-size:.58rem;color:var(--muted);margin-top:1px">${k.s}</div>
     </div>`).join('');
 
-  // Predicted vs Actual scatter (T-14)
-  renderPerfScatter(data);
+  // Canvas charts
+  requestAnimationFrame(() => {
+    perfDrawScatter(data);
+    perfDrawTimeline(data);
+  });
 
-  // Accuracy timeline
-  renderPerfTimeline(data);
+  // Horizon strip
+  const strip = document.getElementById('perfHorizonStrip');
+  strip.innerHTML = agg.map(a => {
+    const bg = a.mae_pct <= 8 ? 'rgba(34,197,94,.12)' : a.mae_pct <= 12 ? 'rgba(240,192,64,.10)' : 'rgba(239,68,68,.10)';
+    const bc = a.mae_pct <= 8 ? 'rgba(34,197,94,.25)' : a.mae_pct <= 12 ? 'rgba(240,192,64,.2)' : 'rgba(239,68,68,.2)';
+    const tc = a.mae_pct <= 8 ? '#22c55e' : a.mae_pct <= 12 ? 'var(--gold)' : '#ef4444';
+    return `<div style="flex:1;min-width:80px;padding:10px 8px;background:${bg};border:1px solid ${bc};border-radius:10px;text-align:center" title="n=${a.n}, bias ${a.bias_pct > 0 ? '+' : ''}${a.bias_pct}%">
+      <div style="font-size:.6rem;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase">T-${a.T}</div>
+      <div style="font-size:1.1rem;font-weight:800;color:${tc};margin:3px 0 2px">${a.mae_pct.toFixed(1)}%</div>
+      <div style="font-size:.55rem;color:var(--muted)">CI ${a.ci_coverage}%</div>
+    </div>`;
+  }).join('');
 
-  // Detailed section: bar charts + table
-  renderPerfBars('perfHorizonChart', 'perfHorizonLabels', agg, 'mae_pct', 30, (v) => v.toFixed(1) + '%', (a) => {
-    return a.mae_pct <= 8 ? '#22c55e' : a.mae_pct <= 12 ? '#4ade80' : a.mae_pct <= 18 ? 'var(--gold)' : '#ef4444';
-  }, 'MAE');
-
-  renderPerfBars('perfCIChart', 'perfCILabels', agg, 'ci_coverage', 100, (v) => v.toFixed(0) + '%', (a) => {
-    return a.ci_coverage >= 75 ? '#22c55e' : a.ci_coverage >= 60 ? 'var(--gold)' : '#ef4444';
-  }, 'Coverage');
-
-  renderPerfTable(data);
+  // Table
+  perfDrawTable(data);
 }
 
-function renderPerfScatter(data) {
-  const el = document.getElementById('perfScatter');
-  const W = el.clientWidth || 600;
-  const H = 260;
-  const pad = {t:10, r:20, b:30, l:50};
-  const pw = W - pad.l - pad.r;
-  const ph = H - pad.t - pad.b;
+function perfDrawScatter(data) {
+  const canvas = document.getElementById('perfScatterCanvas');
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.clientWidth; const H = canvas.clientHeight;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
 
-  // Collect T-14 predictions (fall back to best available T)
+  const pad = {t:8, r:12, b:28, l:44};
+  const pw = W - pad.l - pad.r; const ph = H - pad.t - pad.b;
+
   const pts = [];
   data.tournaments.forEach(t => {
-    const p14 = t.predictions.find(p => p.T === 14) || t.predictions.find(p => p.T === 28) || t.predictions[0];
-    if (p14) pts.push({family: t.family, actual: t.final_count, predicted: p14.predicted, ci_lo: p14.ci_lower, ci_hi: p14.ci_upper, in_ci: p14.in_ci});
+    const p = t.predictions.find(p => p.T === 14) || t.predictions.find(p => p.T === 28) || t.predictions[0];
+    if (p) pts.push({f: t.family, a: t.final_count, p: p.predicted, lo: p.ci_lower, hi: p.ci_upper, ok: p.in_ci});
   });
   if (!pts.length) return;
 
-  const maxVal = Math.max(...pts.map(p => Math.max(p.actual, p.predicted, p.ci_hi))) * 1.1;
+  const maxV = Math.max(...pts.map(p => Math.max(p.a, p.p, p.hi))) * 1.12;
+  const x = v => pad.l + (v / maxV) * pw;
+  const y = v => pad.t + ph - (v / maxV) * ph;
 
-  let svg = `<svg width="${W}" height="${H}" style="display:block">`;
-  // Grid lines
-  for (let i = 0; i <= 4; i++) {
-    const v = Math.round(maxVal / 4 * i);
-    const x = pad.l + (v / maxVal) * pw;
-    const y = pad.t + ph - (v / maxVal) * ph;
-    svg += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + pw}" y2="${y}" stroke="var(--border)" stroke-dasharray="3,3"/>`;
-    svg += `<text x="${pad.l - 6}" y="${y + 3}" fill="var(--muted)" font-size="9" text-anchor="end">${v.toLocaleString()}</text>`;
+  // Grid
+  ctx.strokeStyle = '#30363d'; ctx.lineWidth = 0.5; ctx.setLineDash([3, 3]);
+  for (let i = 1; i <= 4; i++) {
+    const v = Math.round(maxV / 4 * i);
+    ctx.beginPath(); ctx.moveTo(pad.l, y(v)); ctx.lineTo(pad.l + pw, y(v)); ctx.stroke();
+    ctx.fillStyle = '#8b949e'; ctx.font = '9px system-ui'; ctx.textAlign = 'right';
+    ctx.fillText(v.toLocaleString(), pad.l - 5, y(v) + 3);
   }
-  // Perfect prediction line
-  svg += `<line x1="${pad.l}" y1="${pad.t + ph}" x2="${pad.l + pw}" y2="${pad.t}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="6,4" opacity=".4"/>`;
-  svg += `<text x="${pad.l + pw - 2}" y="${pad.t + 12}" fill="var(--muted)" font-size="8" text-anchor="end" opacity=".5">Perfect</text>`;
+  ctx.setLineDash([]);
+
+  // Perfect line
+  ctx.strokeStyle = 'rgba(240,192,64,.2)'; ctx.lineWidth = 1.5;
+  ctx.setLineDash([8, 5]);
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t + ph); ctx.lineTo(pad.l + pw, pad.t); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(240,192,64,.35)'; ctx.font = '8px system-ui'; ctx.textAlign = 'right';
+  ctx.fillText('Perfect prediction', pad.l + pw - 2, pad.t + 10);
 
   // CI whiskers + dots
   pts.forEach(p => {
-    const x = pad.l + (p.actual / maxVal) * pw;
-    const yPred = pad.t + ph - (p.predicted / maxVal) * ph;
-    const yLo = pad.t + ph - (p.ci_lo / maxVal) * ph;
-    const yHi = pad.t + ph - (p.ci_hi / maxVal) * ph;
-    const dotColor = p.in_ci ? '#22c55e' : '#ef4444';
-    // CI whisker
-    svg += `<line x1="${x}" y1="${yLo}" x2="${x}" y2="${yHi}" stroke="${dotColor}" stroke-width="2" opacity=".3"/>`;
-    // Dot
-    svg += `<circle cx="${x}" cy="${yPred}" r="5" fill="${dotColor}" opacity=".85"><title>${esc(p.family)}: actual ${p.actual}, predicted ${p.predicted}</title></circle>`;
+    const px = x(p.a); const py = y(p.p);
+    const col = p.ok ? '#22c55e' : '#ef4444';
+    // Whisker
+    ctx.strokeStyle = col; ctx.globalAlpha = 0.25; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(px, y(p.lo)); ctx.lineTo(px, y(p.hi)); ctx.stroke();
+    ctx.globalAlpha = 1;
+    // Dot with glow
+    ctx.shadowColor = col; ctx.shadowBlur = 8;
+    ctx.fillStyle = col; ctx.beginPath(); ctx.arc(px, py, 4.5, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+    // Outline
+    ctx.strokeStyle = '#0d1117'; ctx.lineWidth = 1.2; ctx.stroke();
   });
 
   // Axis labels
-  svg += `<text x="${pad.l + pw / 2}" y="${H - 4}" fill="var(--muted)" font-size="10" text-anchor="middle">Actual Entries</text>`;
-  svg += `<text x="12" y="${pad.t + ph / 2}" fill="var(--muted)" font-size="10" text-anchor="middle" transform="rotate(-90,12,${pad.t + ph / 2})">Predicted</text>`;
-  svg += '</svg>';
-  el.innerHTML = svg;
+  ctx.fillStyle = '#8b949e'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+  ctx.fillText('Actual Entries', pad.l + pw / 2, H - 6);
+  ctx.save(); ctx.translate(10, pad.t + ph / 2); ctx.rotate(-Math.PI / 2);
+  ctx.fillText('Predicted', 0, 0); ctx.restore();
 }
 
-function renderPerfTimeline(data) {
-  const el = document.getElementById('perfTimeline');
-  const W = el.clientWidth || 600;
-  const H = 200;
-  const pad = {t:16, r:20, b:32, l:42};
-  const pw = W - pad.l - pad.r;
-  const ph = H - pad.t - pad.b;
+function perfDrawTimeline(data) {
+  const canvas = document.getElementById('perfTimelineCanvas');
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.clientWidth; const H = canvas.clientHeight;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
 
-  const agg = [...data.aggregate].sort((a, b) => b.T - a.T); // T-90 to T-1
+  const pad = {t:20, r:14, b:28, l:36};
+  const pw = W - pad.l - pad.r; const ph = H - pad.t - pad.b;
+  const agg = [...data.aggregate].sort((a, b) => b.T - a.T);
   if (!agg.length) return;
 
-  const maxMAE = Math.max(20, ...agg.map(a => a.mae_pct)) * 1.15;
-  const xScale = (i) => pad.l + (i / (agg.length - 1)) * pw;
-  const yScale = (v) => pad.t + ph - (v / maxMAE) * ph;
+  const maxMAE = Math.max(15, ...agg.map(a => a.mae_pct)) * 1.2;
+  const xp = i => pad.l + (i / Math.max(agg.length - 1, 1)) * pw;
+  const yp = v => pad.t + ph - (v / maxMAE) * ph;
 
-  let svg = `<svg width="${W}" height="${H}" style="display:block">`;
+  // Good zone
+  const gy = yp(10);
+  ctx.fillStyle = 'rgba(34,197,94,.05)';
+  ctx.fillRect(pad.l, gy, pw, pad.t + ph - gy);
 
-  // Horizontal grid
-  [5, 10, 15, 20].forEach(v => {
-    if (v > maxMAE) return;
-    const y = yScale(v);
-    svg += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + pw}" y2="${y}" stroke="var(--border)" stroke-dasharray="3,3"/>`;
-    svg += `<text x="${pad.l - 6}" y="${y + 3}" fill="var(--muted)" font-size="9" text-anchor="end">${v}%</text>`;
+  // Grid
+  ctx.strokeStyle = '#30363d'; ctx.lineWidth = 0.5; ctx.setLineDash([3, 3]);
+  [5, 10, 15].filter(v => v < maxMAE).forEach(v => {
+    ctx.beginPath(); ctx.moveTo(pad.l, yp(v)); ctx.lineTo(pad.l + pw, yp(v)); ctx.stroke();
+    ctx.fillStyle = '#8b949e'; ctx.font = '8px system-ui'; ctx.textAlign = 'right';
+    ctx.fillText(v + '%', pad.l - 4, yp(v) + 3);
   });
+  ctx.setLineDash([]);
 
-  // "Good" zone shading (< 10% MAE)
-  const goodY = yScale(10);
-  svg += `<rect x="${pad.l}" y="${goodY}" width="${pw}" height="${pad.t + ph - goodY}" fill="#22c55e" opacity=".06" rx="4"/>`;
-  svg += `<text x="${pad.l + pw - 4}" y="${goodY + 12}" fill="#22c55e" font-size="8" text-anchor="end" opacity=".6">Good (&lt;10%)</text>`;
+  // Area fill
+  ctx.beginPath(); ctx.moveTo(xp(0), pad.t + ph);
+  agg.forEach((a, i) => ctx.lineTo(xp(i), yp(a.mae_pct)));
+  ctx.lineTo(xp(agg.length - 1), pad.t + ph); ctx.closePath();
+  const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + ph);
+  grad.addColorStop(0, 'rgba(240,192,64,.18)'); grad.addColorStop(1, 'rgba(240,192,64,.02)');
+  ctx.fillStyle = grad; ctx.fill();
 
-  // MAE line + area
-  let pathD = '';
-  let areaD = `M ${xScale(0)} ${pad.t + ph} `;
-  agg.forEach((a, i) => {
-    const x = xScale(i);
-    const y = yScale(a.mae_pct);
-    pathD += (i === 0 ? 'M ' : 'L ') + x + ' ' + y + ' ';
-    areaD += 'L ' + x + ' ' + y + ' ';
-  });
-  areaD += `L ${xScale(agg.length - 1)} ${pad.t + ph} Z`;
-  svg += `<path d="${areaD}" fill="var(--gold)" opacity=".12"/>`;
-  svg += `<path d="${pathD}" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linejoin="round"/>`;
+  // Line
+  ctx.beginPath();
+  agg.forEach((a, i) => { i === 0 ? ctx.moveTo(xp(i), yp(a.mae_pct)) : ctx.lineTo(xp(i), yp(a.mae_pct)); });
+  ctx.strokeStyle = 'var(--gold)'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.stroke();
 
   // Dots + labels
   agg.forEach((a, i) => {
-    const x = xScale(i);
-    const y = yScale(a.mae_pct);
-    const color = a.mae_pct <= 8 ? '#22c55e' : a.mae_pct <= 12 ? '#4ade80' : 'var(--gold)';
-    svg += `<circle cx="${x}" cy="${y}" r="4.5" fill="${color}" stroke="var(--surface)" stroke-width="1.5"/>`;
-    svg += `<text x="${x}" y="${y - 9}" fill="var(--text)" font-size="9" font-weight="600" text-anchor="middle">${a.mae_pct.toFixed(1)}%</text>`;
-    svg += `<text x="${x}" y="${pad.t + ph + 14}" fill="var(--muted)" font-size="9" text-anchor="middle">T-${a.T}</text>`;
+    const cx = xp(i); const cy = yp(a.mae_pct);
+    const c = a.mae_pct <= 8 ? '#22c55e' : a.mae_pct <= 12 ? '#4ade80' : '#f0c040';
+    ctx.shadowColor = c; ctx.shadowBlur = 6;
+    ctx.fillStyle = c; ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = '#161b22'; ctx.lineWidth = 1.5; ctx.stroke();
+    // Value
+    ctx.fillStyle = '#e6edf3'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText(a.mae_pct.toFixed(1) + '%', cx, cy - 10);
+    // T label
+    ctx.fillStyle = '#8b949e'; ctx.font = '9px system-ui';
+    ctx.fillText('T-' + a.T, cx, pad.t + ph + 14);
   });
 
-  // X-axis label
-  svg += `<text x="${pad.l + pw / 2}" y="${H - 4}" fill="var(--muted)" font-size="10" text-anchor="middle">Days Before Event</text>`;
-  // Y-axis label
-  svg += `<text x="10" y="${pad.t + ph / 2}" fill="var(--muted)" font-size="10" text-anchor="middle" transform="rotate(-90,10,${pad.t + ph / 2})">Error (MAE%)</text>`;
-
-  svg += '</svg>';
-  el.innerHTML = svg;
+  // Axis
+  ctx.fillStyle = '#8b949e'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+  ctx.fillText('Days Before Event', pad.l + pw / 2, H - 5);
 }
 
-function renderPerfBars(chartId, labelId, aggregate, field, maxVal, fmt, colorFn, label) {
-  const chart = document.getElementById(chartId);
-  const labels = document.getElementById(labelId);
-  chart.innerHTML = '';
-  labels.innerHTML = '';
-  const barW = `calc((100% - ${(aggregate.length - 1) * 8}px) / ${aggregate.length})`;
-
-  aggregate.forEach(a => {
-    const val = a[field];
-    const pct = Math.min(val / maxVal * 100, 100);
-    const color = colorFn(a);
-
-    const bar = document.createElement('div');
-    bar.style.cssText = `width:${barW};display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%`;
-    bar.innerHTML = `
-      <div style="font-size:.68rem;color:var(--text);font-weight:600;margin-bottom:4px">${fmt(val)}</div>
-      <div style="width:100%;height:${pct}%;background:${color};border-radius:4px 4px 0 0;min-height:4px;transition:height .3s"></div>`;
-    bar.title = `T-${a.T}: ${label} ${fmt(val)} (n=${a.n})`;
-    chart.appendChild(bar);
-
-    const lbl = document.createElement('div');
-    lbl.style.cssText = `width:${barW};text-align:center;font-size:.65rem;color:var(--muted)`;
-    lbl.textContent = `T-${a.T}`;
-    labels.appendChild(lbl);
-  });
-}
-
-function renderPerfTable(data) {
+function perfDrawTable(data) {
   const table = document.getElementById('perfTable');
   const agg = data.aggregate;
   const tPoints = agg.map(a => a.T);
 
-  // Build header
-  let html = `<table style="width:100%;border-collapse:collapse;font-size:.78rem">
-    <thead>
-      <tr style="border-bottom:2px solid var(--border);text-align:left">
-        <th style="padding:8px 10px;white-space:nowrap">Tournament</th>
-        <th style="padding:8px 6px;text-align:right;white-space:nowrap">Final</th>`;
-  tPoints.forEach(T => {
-    html += `<th style="padding:8px 6px;text-align:center;white-space:nowrap;font-size:.7rem">T-${T}</th>`;
-  });
+  let html = `<table style="width:100%;border-collapse:collapse;font-size:.76rem">
+    <thead><tr style="border-bottom:2px solid var(--border)">
+      <th style="padding:8px 10px;text-align:left;white-space:nowrap">Tournament</th>
+      <th style="padding:8px 8px;text-align:right;white-space:nowrap">Final</th>`;
+  tPoints.forEach(T => { html += `<th style="padding:8px 4px;text-align:center;font-size:.68rem;white-space:nowrap">T-${T}</th>`; });
   html += `</tr></thead><tbody>`;
 
-  // Tournament rows
   data.tournaments.forEach((t, idx) => {
-    const bg = idx % 2 === 0 ? '' : 'background:var(--surface)';
-    html += `<tr style="border-bottom:1px solid var(--border);${bg}">
-      <td style="padding:6px 10px;white-space:nowrap;font-weight:500">${esc(t.family)}</td>
-      <td style="padding:6px 6px;text-align:right;font-weight:600">${t.final_count.toLocaleString()}</td>`;
+    const bg = idx % 2 ? 'background:var(--surface2)' : '';
+    html += `<tr style="border-bottom:1px solid rgba(48,54,61,.4);${bg}">
+      <td style="padding:5px 10px;white-space:nowrap;font-weight:500">${esc(t.family)}</td>
+      <td style="padding:5px 8px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums">${t.final_count.toLocaleString()}</td>`;
     tPoints.forEach(T => {
-      const pred = t.predictions.find(p => p.T === T);
-      if (pred) {
-        const errColor = Math.abs(pred.error_pct) <= 5 ? '#22c55e' : Math.abs(pred.error_pct) <= 15 ? 'var(--gold)' : '#ef4444';
-        const ciIcon = pred.in_ci ? '<span style="color:#22c55e" title="Within 80% CI">&#10003;</span>' : '<span style="color:#ef4444" title="Outside 80% CI">&#10007;</span>';
-        html += `<td style="padding:6px 6px;text-align:center;font-size:.72rem" title="Predicted ${pred.predicted} from ${pred.count_at_T} registered, CI [${pred.ci_lower}, ${pred.ci_upper}]">
-          <span style="color:${errColor};font-weight:600">${pred.error_pct > 0 ? '+' : ''}${pred.error_pct}%</span>
-          <span style="margin-left:2px;font-size:.62rem">${ciIcon}</span>
-        </td>`;
+      const p = t.predictions.find(p => p.T === T);
+      if (p) {
+        const ec = Math.abs(p.error_pct) <= 5 ? '#22c55e' : Math.abs(p.error_pct) <= 15 ? 'var(--gold)' : '#ef4444';
+        const ci = p.in_ci ? '\u2713' : '\u2717';
+        const cic = p.in_ci ? '#22c55e' : '#ef4444';
+        html += `<td style="padding:5px 4px;text-align:center;font-size:.7rem" title="Pred ${p.predicted} from ${p.count_at_T} reg, CI [${p.ci_lower}-${p.ci_upper}]">
+          <span style="color:${ec};font-weight:600;font-variant-numeric:tabular-nums">${p.error_pct > 0 ? '+' : ''}${p.error_pct}%</span><span style="color:${cic};font-size:.58rem;margin-left:2px">${ci}</span></td>`;
       } else {
-        html += `<td style="padding:6px 6px;text-align:center;color:var(--muted);font-size:.7rem">\u2014</td>`;
+        html += `<td style="padding:5px 4px;text-align:center;color:var(--muted)">\u2014</td>`;
       }
     });
     html += '</tr>';
   });
 
-  // Aggregate row
-  html += `<tr style="border-top:2px solid var(--border);font-weight:600">
-    <td style="padding:8px 10px" colspan="2">Aggregate (${data.n_tournaments} tournaments)</td>`;
+  // Aggregate
+  html += `<tr style="border-top:2px solid var(--border);font-weight:700;background:rgba(240,192,64,.04)">
+    <td style="padding:8px 10px" colspan="2">Average (${data.n_tournaments})</td>`;
   tPoints.forEach(T => {
     const a = agg.find(x => x.T === T);
     if (a) {
-      html += `<td style="padding:8px 6px;text-align:center;font-size:.72rem">
-        <div>MAE ${a.mae_pct}%</div>
-        <div style="font-size:.62rem;color:var(--muted)">CI ${a.ci_coverage}%</div>
-      </td>`;
-    } else {
-      html += `<td style="padding:8px 6px;text-align:center">\u2014</td>`;
-    }
+      html += `<td style="padding:8px 4px;text-align:center;font-size:.68rem">
+        <div style="color:var(--text)">${a.mae_pct}%</div>
+        <div style="font-size:.56rem;color:var(--muted);font-weight:400">CI ${a.ci_coverage}%</div></td>`;
+    } else html += '<td>\u2014</td>';
   });
   html += '</tr></tbody></table>';
-
   table.innerHTML = html;
 }
 

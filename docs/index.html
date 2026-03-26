@@ -916,6 +916,10 @@ footer a { color: var(--muted); }
       <div class="hero-number" id="heroNumber" style="font-size:3.2rem"></div>
       <div class="hero-ci" id="heroCi"></div>
     </div>
+    <div id="weekBreakdown" style="display:none;flex:1;min-width:200px;max-width:340px">
+      <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Last 7 Days</div>
+      <div id="weekBars" style="display:flex;flex-direction:column;gap:3px"></div>
+    </div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;flex:1;justify-content:flex-end">
       <div class="kpi-card" id="kpiCurrent"></div>
       <div class="kpi-card" id="kpiDays"></div>
@@ -77644,6 +77648,52 @@ function renderHero(t) {
     <div class="kpi-value" style="font-size:1.1rem;color:var(--muted)">–</div>
     <div class="kpi-sub">No pace data</div>
   `;
+
+  // ── Last 7 days breakdown ──
+  const weekEl = document.getElementById('weekBreakdown');
+  const barsEl = document.getElementById('weekBars');
+  if (!isDone(t) && t.daily_data && t.daily_data.length >= 2) {
+    // Get last 7 data points and compute daily new entries
+    const dd = t.daily_data;
+    const recent = dd.slice(-8); // need 8 to get 7 diffs
+    const days = [];
+    for (let i = 1; i < recent.length; i++) {
+      const dayGap = recent[i][0] - recent[i-1][0];
+      const newEntries = recent[i][1] - recent[i-1][1];
+      // If gap > 1, spread evenly (data may skip days)
+      if (dayGap > 0) {
+        const perDay = newEntries / dayGap;
+        for (let g = 0; g < dayGap && days.length < 7; g++) {
+          days.push(Math.round(perDay));
+        }
+      }
+    }
+    if (days.length >= 2) {
+      const maxNew = Math.max(...days, 1);
+      // Calculate day labels (working backwards from today)
+      const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const today = new Date();
+      barsEl.innerHTML = days.slice(-7).map((n, i, arr) => {
+        const d = new Date(today);
+        d.setDate(d.getDate() - (arr.length - 1 - i));
+        const label = dayNames[d.getDay()];
+        const pct = Math.max((n / maxNew) * 100, 2);
+        const color = n === maxNew ? 'var(--gold)' : 'var(--blue)';
+        return `<div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:.68rem;color:var(--muted);width:26px;text-align:right">${label}</span>
+          <div style="flex:1;height:14px;background:var(--surface2);border-radius:3px;overflow:hidden">
+            <div style="width:${pct}%;height:100%;background:${color};border-radius:3px;transition:width .3s"></div>
+          </div>
+          <span style="font-size:.72rem;color:var(--text2);width:28px;font-weight:${n === maxNew ? '700' : '400'}">+${n}</span>
+        </div>`;
+      }).join('');
+      weekEl.style.display = '';
+    } else {
+      weekEl.style.display = 'none';
+    }
+  } else {
+    weekEl.style.display = 'none';
+  }
 }
 
 // ── KPI Row ──

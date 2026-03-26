@@ -916,9 +916,9 @@ footer a { color: var(--muted); }
       <div class="hero-number" id="heroNumber" style="font-size:3.2rem"></div>
       <div class="hero-ci" id="heroCi"></div>
     </div>
-    <div id="weekBreakdown" style="display:none;flex:1;min-width:200px;max-width:340px">
-      <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Last 7 Days</div>
-      <div id="weekBars" style="display:flex;flex-direction:column;gap:3px"></div>
+    <div id="weekBreakdown" style="display:none;flex:1;min-width:180px;max-width:280px">
+      <div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Last 7 Days</div>
+      <div id="weekBars" style="display:flex;flex-direction:column;gap:2px"></div>
     </div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;flex:1;justify-content:flex-end">
       <div class="kpi-card" id="kpiCurrent"></div>
@@ -77670,21 +77670,21 @@ function renderHero(t) {
     }
     if (days.length >= 2) {
       const maxNew = Math.max(...days, 1);
-      // Calculate day labels (working backwards from today)
       const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
       const today = new Date();
       barsEl.innerHTML = days.slice(-7).map((n, i, arr) => {
         const d = new Date(today);
         d.setDate(d.getDate() - (arr.length - 1 - i));
-        const label = dayNames[d.getDay()];
+        const label = `${dayNames[d.getDay()]} ${months[d.getMonth()]} ${d.getDate()}`;
         const pct = Math.max((n / maxNew) * 100, 2);
         const color = n === maxNew ? 'var(--gold)' : 'var(--blue)';
-        return `<div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:.68rem;color:var(--muted);width:26px;text-align:right">${label}</span>
-          <div style="flex:1;height:14px;background:var(--surface2);border-radius:3px;overflow:hidden">
-            <div style="width:${pct}%;height:100%;background:${color};border-radius:3px;transition:width .3s"></div>
+        return `<div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:.6rem;color:var(--muted);width:62px;text-align:right;white-space:nowrap">${label}</span>
+          <div style="flex:1;height:11px;background:var(--surface2);border-radius:2px;overflow:hidden">
+            <div style="width:${pct}%;height:100%;background:${color};border-radius:2px;transition:width .3s"></div>
           </div>
-          <span style="font-size:.72rem;color:var(--text2);width:28px;font-weight:${n === maxNew ? '700' : '400'}">+${n}</span>
+          <span style="font-size:.64rem;color:var(--text2);width:24px;font-weight:${n === maxNew ? '700' : '400'}">+${n}</span>
         </div>`;
       }).join('');
       weekEl.style.display = '';

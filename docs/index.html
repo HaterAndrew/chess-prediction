@@ -78696,7 +78696,7 @@ function renderSummaryBar() {
     <span><strong style="color:var(--green)">${live.length}</strong> upcoming</span>
     <span><strong style="color:var(--muted)">${complete2026.length}</strong> complete '26</span>
     <span><strong style="color:var(--purple)">${historical.length}</strong> historical</span>
-    <span><strong style="color:var(--blue)">${fmt(totalRegs)}</strong> 2026 entries</span>
+    <span><strong style="color:var(--blue)">${fmt(totalRegs)}</strong> YTD entries</span>
     ${nextEvent ? `<span style="cursor:pointer" onclick="selectTournament(${TOURNAMENT_DATA.tournaments.indexOf(nextEvent)})">Next: <strong style="color:var(--gold)">${nextEvent.family}</strong> in ${nextEvent.days_remaining}d</span>` : ''}
   `;
 }

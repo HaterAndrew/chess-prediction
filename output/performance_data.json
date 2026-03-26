@@ -1,0 +1,962 @@
+{
+  "generated": "2026-03-26",
+  "model": "N5v4_Final",
+  "n_tournaments": 11,
+  "grade": "A",
+  "grade_detail": "T-14 MAE: 4.6%, CI coverage: 82.0%",
+  "aggregate": [
+    {
+      "T": 90,
+      "n": 6,
+      "mae_pct": 2.7,
+      "median_ape_pct": 2.2,
+      "ci_coverage": 100.0,
+      "bias_pct": -0.1
+    },
+    {
+      "T": 60,
+      "n": 9,
+      "mae_pct": 4.6,
+      "median_ape_pct": 4.5,
+      "ci_coverage": 100.0,
+      "bias_pct": 0.1
+    },
+    {
+      "T": 42,
+      "n": 11,
+      "mae_pct": 8.1,
+      "median_ape_pct": 4.4,
+      "ci_coverage": 91.0,
+      "bias_pct": 2.8
+    },
+    {
+      "T": 28,
+      "n": 11,
+      "mae_pct": 6.2,
+      "median_ape_pct": 2.2,
+      "ci_coverage": 82.0,
+      "bias_pct": 0.5
+    },
+    {
+      "T": 14,
+      "n": 11,
+      "mae_pct": 4.6,
+      "median_ape_pct": 1.0,
+      "ci_coverage": 82.0,
+      "bias_pct": 3.7
+    },
+    {
+      "T": 7,
+      "n": 11,
+      "mae_pct": 6.6,
+      "median_ape_pct": 4.3,
+      "ci_coverage": 73.0,
+      "bias_pct": 1.9
+    },
+    {
+      "T": 3,
+      "n": 11,
+      "mae_pct": 4.3,
+      "median_ape_pct": 4.3,
+      "ci_coverage": 73.0,
+      "bias_pct": 0.6
+    },
+    {
+      "T": 1,
+      "n": 11,
+      "mae_pct": 1.9,
+      "median_ape_pct": 1.9,
+      "ci_coverage": 100.0,
+      "bias_pct": 0.0
+    }
+  ],
+  "tournaments": [
+    {
+      "family": "Boston Chess Congress",
+      "final_count": 359,
+      "event_start": "2026-01-03",
+      "predictions": [
+        {
+          "T": 90,
+          "count_at_T": 4,
+          "predicted": 358,
+          "ci_lower": 219,
+          "ci_upper": 588,
+          "error_pct": -0.3,
+          "abs_error_pct": 0.3,
+          "in_ci": 1
+        },
+        {
+          "T": 60,
+          "count_at_T": 15,
+          "predicted": 373,
+          "ci_lower": 228,
+          "ci_upper": 612,
+          "error_pct": 3.9,
+          "abs_error_pct": 3.9,
+          "in_ci": 1
+        },
+        {
+          "T": 42,
+          "count_at_T": 24,
+          "predicted": 372,
+          "ci_lower": 331,
+          "ci_upper": 418,
+          "error_pct": 3.6,
+          "abs_error_pct": 3.6,
+          "in_ci": 1
+        },
+        {
+          "T": 28,
+          "count_at_T": 47,
+          "predicted": 364,
+          "ci_lower": 342,
+          "ci_upper": 388,
+          "error_pct": 1.4,
+          "abs_error_pct": 1.4,
+          "in_ci": 1
+        },
+        {
+          "T": 14,
+          "count_at_T": 89,
+          "predicted": 364,
+          "ci_lower": 346,
+          "ci_upper": 382,
+          "error_pct": 1.4,
+          "abs_error_pct": 1.4,
+          "in_ci": 1
+        },
+        {
+          "T": 7,
+          "count_at_T": 164,
+          "predicted": 379,
+          "ci_lower": 362,
+          "ci_upper": 397,
+          "error_pct": 5.6,
+          "abs_error_pct": 5.6,
+          "in_ci": 0
+        },
+        {
+          "T": 3,
+          "count_at_T": 297,
+          "predicted": 381,
+          "ci_lower": 359,
+          "ci_upper": 403,
+          "error_pct": 6.1,
+          "abs_error_pct": 6.1,
+          "in_ci": 1
+        },
+        {
+          "T": 1,
+          "count_at_T": 326,
+          "predicted": 352,
+          "ci_lower": 333,
+          "ci_upper": 371,
+          "error_pct": -1.9,
+          "abs_error_pct": 1.9,
+          "in_ci": 1
+        }
+      ]
+    },
+    {
+      "family": "Liberty Bell Open",
+      "final_count": 564,
+      "event_start": "2026-01-16",
+      "predictions": [
+        {
+          "T": 60,
+          "count_at_T": 10,
+          "predicted": 525,
+          "ci_lower": 320,
+          "ci_upper": 861,
+          "error_pct": -6.9,
+          "abs_error_pct": 6.9,
+          "in_ci": 1
+        },
+        {
+          "T": 42,
+          "count_at_T": 30,
+          "predicted": 539,
+          "ci_lower": 488,
+          "ci_upper": 595,
+          "error_pct": -4.4,
+          "abs_error_pct": 4.4,
+          "in_ci": 1
+        },
+        {
+          "T": 28,
+          "count_at_T": 56,
+          "predicted": 514,
+          "ci_lower": 483,
+          "ci_upper": 548,
+          "error_pct": -8.9,
+          "abs_error_pct": 8.9,
+          "in_ci": 0
+        },
+        {
+          "T": 14,
+          "count_at_T": 246,
+          "predicted": 644,
+          "ci_lower": 586,
+          "ci_upper": 709,
+          "error_pct": 14.2,
+          "abs_error_pct": 14.2,
+          "in_ci": 0
+        },
+        {
+          "T": 7,
+          "count_at_T": 361,
+          "predicted": 664,
+          "ci_lower": 616,
+          "ci_upper": 715,
+          "error_pct": 17.7,
+          "abs_error_pct": 17.7,
+          "in_ci": 0
+        },
+        {
+          "T": 3,
+          "count_at_T": 497,
+          "predicted": 535,
+          "ci_lower": 505,
+          "ci_upper": 567,
+          "error_pct": -5.1,
+          "abs_error_pct": 5.1,
+          "in_ci": 1
+        },
+        {
+          "T": 1,
+          "count_at_T": 553,
+          "predicted": 560,
+          "ci_lower": 553,
+          "ci_upper": 592,
+          "error_pct": -0.7,
+          "abs_error_pct": 0.7,
+          "in_ci": 1
+        }
+      ]
+    },
+    {
+      "family": "Golden State Open",
+      "final_count": 387,
+      "event_start": "2026-02-13",
+      "predictions": [
+        {
+          "T": 90,
+          "count_at_T": 4,
+          "predicted": 383,
+          "ci_lower": 205,
+          "ci_upper": 715,
+          "error_pct": -1.0,
+          "abs_error_pct": 1.0,
+          "in_ci": 1
+        },
+        {
+          "T": 60,
+          "count_at_T": 8,
+          "predicted": 352,
+          "ci_lower": 215,
+          "ci_upper": 577,
+          "error_pct": -9.0,
+          "abs_error_pct": 9.0,
+          "in_ci": 1
+        },
+        {
+          "T": 42,
+          "count_at_T": 22,
+          "predicted": 357,
+          "ci_lower": 300,
+          "ci_upper": 425,
+          "error_pct": -7.8,
+          "abs_error_pct": 7.8,
+          "in_ci": 1
+        },
+        {
+          "T": 28,
+          "count_at_T": 44,
+          "predicted": 362,
+          "ci_lower": 335,
+          "ci_upper": 392,
+          "error_pct": -6.5,
+          "abs_error_pct": 6.5,
+          "in_ci": 1
+        },
+        {
+          "T": 14,
+          "count_at_T": 112,
+          "predicted": 378,
+          "ci_lower": 354,
+          "ci_upper": 404,
+          "error_pct": -2.3,
+          "abs_error_pct": 2.3,
+          "in_ci": 1
+        },
+        {
+          "T": 7,
+          "count_at_T": 200,
+          "predicted": 389,
+          "ci_lower": 371,
+          "ci_upper": 407,
+          "error_pct": 0.5,
+          "abs_error_pct": 0.5,
+          "in_ci": 1
+        },
+        {
+          "T": 3,
+          "count_at_T": 343,
+          "predicted": 365,
+          "ci_lower": 344,
+          "ci_upper": 386,
+          "error_pct": -5.7,
+          "abs_error_pct": 5.7,
+          "in_ci": 0
+        },
+        {
+          "T": 1,
+          "count_at_T": 376,
+          "predicted": 379,
+          "ci_lower": 376,
+          "ci_upper": 400,
+          "error_pct": -2.1,
+          "abs_error_pct": 2.1,
+          "in_ci": 1
+        }
+      ]
+    },
+    {
+      "family": "George Washington Open",
+      "final_count": 209,
+      "event_start": "2026-02-28",
+      "predictions": [
+        {
+          "T": 42,
+          "count_at_T": 23,
+          "predicted": 241,
+          "ci_lower": 211,
+          "ci_upper": 275,
+          "error_pct": 15.3,
+          "abs_error_pct": 15.3,
+          "in_ci": 0
+        },
+        {
+          "T": 28,
+          "count_at_T": 34,
+          "predicted": 225,
+          "ci_lower": 207,
+          "ci_upper": 244,
+          "error_pct": 7.7,
+          "abs_error_pct": 7.7,
+          "in_ci": 1
+        },
+        {
+          "T": 14,
+          "count_at_T": 58,
+          "predicted": 205,
+          "ci_lower": 195,
+          "ci_upper": 215,
+          "error_pct": -1.9,
+          "abs_error_pct": 1.9,
+          "in_ci": 1
+        },
+        {
+          "T": 7,
+          "count_at_T": 94,
+          "predicted": 200,
+          "ci_lower": 191,
+          "ci_upper": 209,
+          "error_pct": -4.3,
+          "abs_error_pct": 4.3,
+          "in_ci": 1
+        },
+        {
+          "T": 3,
+          "count_at_T": 172,
+          "predicted": 227,
+          "ci_lower": 214,
+          "ci_upper": 241,
+          "error_pct": 8.6,
+          "abs_error_pct": 8.6,
+          "in_ci": 0
+        },
+        {
+          "T": 1,
+          "count_at_T": 191,
+          "predicted": 217,
+          "ci_lower": 206,
+          "ci_upper": 230,
+          "error_pct": 3.8,
+          "abs_error_pct": 3.8,
+          "in_ci": 1
+        }
+      ]
+    },
+    {
+      "family": "Southwest Class Championships",
+      "final_count": 492,
+      "event_start": "2026-02-13",
+      "predictions": [
+        {
+          "T": 90,
+          "count_at_T": 17,
+          "predicted": 504,
+          "ci_lower": 284,
+          "ci_upper": 893,
+          "error_pct": 2.4,
+          "abs_error_pct": 2.4,
+          "in_ci": 1
+        },
+        {
+          "T": 60,
+          "count_at_T": 36,
+          "predicted": 491,
+          "ci_lower": 431,
+          "ci_upper": 559,
+          "error_pct": -0.2,
+          "abs_error_pct": 0.2,
+          "in_ci": 1
+        },
+        {
+          "T": 42,
+          "count_at_T": 71,
+          "predicted": 494,
+          "ci_lower": 442,
+          "ci_upper": 553,
+          "error_pct": 0.4,
+          "abs_error_pct": 0.4,
+          "in_ci": 1
+        },
+        {
+          "T": 28,
+          "count_at_T": 127,
+          "predicted": 503,
+          "ci_lower": 467,
+          "ci_upper": 541,
+          "error_pct": 2.2,
+          "abs_error_pct": 2.2,
+          "in_ci": 1
+        },
+        {
+          "T": 14,
+          "count_at_T": 246,
+          "predicted": 497,
+          "ci_lower": 471,
+          "ci_upper": 523,
+          "error_pct": 1.0,
+          "abs_error_pct": 1.0,
+          "in_ci": 1
+        },
+        {
+          "T": 7,
+          "count_at_T": 355,
+          "predicted": 502,
+          "ci_lower": 479,
+          "ci_upper": 525,
+          "error_pct": 2.0,
+          "abs_error_pct": 2.0,
+          "in_ci": 1
+        },
+        {
+          "T": 3,
+          "count_at_T": 442,
+          "predicted": 471,
+          "ci_lower": 444,
+          "ci_upper": 499,
+          "error_pct": -4.3,
+          "abs_error_pct": 4.3,
+          "in_ci": 1
+        },
+        {
+          "T": 1,
+          "count_at_T": 483,
+          "predicted": 489,
+          "ci_lower": 483,
+          "ci_upper": 516,
+          "error_pct": -0.6,
+          "abs_error_pct": 0.6,
+          "in_ci": 1
+        }
+      ]
+    },
+    {
+      "family": "Western Class Championships",
+      "final_count": 318,
+      "event_start": "2026-03-07",
+      "predictions": [
+        {
+          "T": 60,
+          "count_at_T": 10,
+          "predicted": 347,
+          "ci_lower": 212,
+          "ci_upper": 570,
+          "error_pct": 9.1,
+          "abs_error_pct": 9.1,
+          "in_ci": 1
+        },
+        {
+          "T": 42,
+          "count_at_T": 34,
+          "predicted": 343,
+          "ci_lower": 285,
+          "ci_upper": 411,
+          "error_pct": 7.9,
+          "abs_error_pct": 7.9,
+          "in_ci": 1
+        },
+        {
+          "T": 28,
+          "count_at_T": 61,
+          "predicted": 323,
+          "ci_lower": 280,
+          "ci_upper": 372,
+          "error_pct": 1.6,
+          "abs_error_pct": 1.6,
+          "in_ci": 1
+        },
+        {
+          "T": 14,
+          "count_at_T": 110,
+          "predicted": 321,
+          "ci_lower": 287,
+          "ci_upper": 358,
+          "error_pct": 0.9,
+          "abs_error_pct": 0.9,
+          "in_ci": 1
+        },
+        {
+          "T": 7,
+          "count_at_T": 149,
+          "predicted": 284,
+          "ci_lower": 252,
+          "ci_upper": 320,
+          "error_pct": -10.7,
+          "abs_error_pct": 10.7,
+          "in_ci": 1
+        },
+        {
+          "T": 3,
+          "count_at_T": 272,
+          "predicted": 326,
+          "ci_lower": 279,
+          "ci_upper": 381,
+          "error_pct": 2.5,
+          "abs_error_pct": 2.5,
+          "in_ci": 1
+        },
+        {
+          "T": 1,
+          "count_at_T": 302,
+          "predicted": 329,
+          "ci_lower": 305,
+          "ci_upper": 354,
+          "error_pct": 3.5,
+          "abs_error_pct": 3.5,
+          "in_ci": 1
+        }
+      ]
+    },
+    {
+      "family": "Mid-America Open",
+      "final_count": 200,
+      "event_start": "2026-03-20",
+      "predictions": [
+        {
+          "T": 42,
+          "count_at_T": 14,
+          "predicted": 263,
+          "ci_lower": 160,
+          "ci_upper": 430,
+          "error_pct": 31.5,
+          "abs_error_pct": 31.5,
+          "in_ci": 1
+        },
+        {
+          "T": 28,
+          "count_at_T": 27,
+          "predicted": 243,
+          "ci_lower": 236,
+          "ci_upper": 251,
+          "error_pct": 21.5,
+          "abs_error_pct": 21.5,
+          "in_ci": 0
+        },
+        {
+          "T": 14,
+          "count_at_T": 63,
+          "predicted": 253,
+          "ci_lower": 243,
+          "ci_upper": 264,
+          "error_pct": 26.5,
+          "abs_error_pct": 26.5,
+          "in_ci": 0
+        },
+        {
+          "T": 7,
+          "count_at_T": 108,
+          "predicted": 242,
+          "ci_lower": 231,
+          "ci_upper": 253,
+          "error_pct": 21.0,
+          "abs_error_pct": 21.0,
+          "in_ci": 0
+        },
+        {
+          "T": 3,
+          "count_at_T": 157,
+          "predicted": 217,
+          "ci_lower": 205,
+          "ci_upper": 230,
+          "error_pct": 8.5,
+          "abs_error_pct": 8.5,
+          "in_ci": 0
+        },
+        {
+          "T": 1,
+          "count_at_T": 178,
+          "predicted": 207,
+          "ci_lower": 196,
+          "ci_upper": 218,
+          "error_pct": 3.5,
+          "abs_error_pct": 3.5,
+          "in_ci": 1
+        }
+      ]
+    },
+    {
+      "family": "New York State High School Championship",
+      "final_count": 198,
+      "event_start": "2026-02-27",
+      "predictions": [
+        {
+          "T": 90,
+          "count_at_T": 3,
+          "predicted": 194,
+          "ci_lower": 113,
+          "ci_upper": 334,
+          "error_pct": -2.0,
+          "abs_error_pct": 2.0,
+          "in_ci": 1
+        },
+        {
+          "T": 60,
+          "count_at_T": 12,
+          "predicted": 189,
+          "ci_lower": 110,
+          "ci_upper": 324,
+          "error_pct": -4.5,
+          "abs_error_pct": 4.5,
+          "in_ci": 1
+        },
+        {
+          "T": 42,
+          "count_at_T": 29,
+          "predicted": 172,
+          "ci_lower": 142,
+          "ci_upper": 207,
+          "error_pct": -13.1,
+          "abs_error_pct": 13.1,
+          "in_ci": 1
+        },
+        {
+          "T": 28,
+          "count_at_T": 78,
+          "predicted": 167,
+          "ci_lower": 134,
+          "ci_upper": 208,
+          "error_pct": -15.7,
+          "abs_error_pct": 15.7,
+          "in_ci": 1
+        },
+        {
+          "T": 14,
+          "count_at_T": 149,
+          "predicted": 196,
+          "ci_lower": 158,
+          "ci_upper": 244,
+          "error_pct": -1.0,
+          "abs_error_pct": 1.0,
+          "in_ci": 1
+        },
+        {
+          "T": 7,
+          "count_at_T": 180,
+          "predicted": 194,
+          "ci_lower": 180,
+          "ci_upper": 237,
+          "error_pct": -2.0,
+          "abs_error_pct": 2.0,
+          "in_ci": 1
+        },
+        {
+          "T": 3,
+          "count_at_T": 193,
+          "predicted": 193,
+          "ci_lower": 193,
+          "ci_upper": 248,
+          "error_pct": -2.5,
+          "abs_error_pct": 2.5,
+          "in_ci": 1
+        },
+        {
+          "T": 1,
+          "count_at_T": 196,
+          "predicted": 197,
+          "ci_lower": 196,
+          "ci_upper": 226,
+          "error_pct": -0.5,
+          "abs_error_pct": 0.5,
+          "in_ci": 1
+        }
+      ]
+    },
+    {
+      "family": "New York State Senior Championship With Young Adult Mi",
+      "final_count": 61,
+      "event_start": "2026-02-27",
+      "predictions": [
+        {
+          "T": 60,
+          "count_at_T": 5,
+          "predicted": 63,
+          "ci_lower": 34,
+          "ci_upper": 118,
+          "error_pct": 3.3,
+          "abs_error_pct": 3.3,
+          "in_ci": 1
+        },
+        {
+          "T": 42,
+          "count_at_T": 8,
+          "predicted": 61,
+          "ci_lower": 37,
+          "ci_upper": 102,
+          "error_pct": 0.0,
+          "abs_error_pct": 0.0,
+          "in_ci": 1
+        },
+        {
+          "T": 28,
+          "count_at_T": 15,
+          "predicted": 62,
+          "ci_lower": 47,
+          "ci_upper": 82,
+          "error_pct": 1.6,
+          "abs_error_pct": 1.6,
+          "in_ci": 1
+        },
+        {
+          "T": 14,
+          "count_at_T": 24,
+          "predicted": 61,
+          "ci_lower": 49,
+          "ci_upper": 77,
+          "error_pct": 0.0,
+          "abs_error_pct": 0.0,
+          "in_ci": 1
+        },
+        {
+          "T": 7,
+          "count_at_T": 36,
+          "predicted": 58,
+          "ci_lower": 47,
+          "ci_upper": 73,
+          "error_pct": -4.9,
+          "abs_error_pct": 4.9,
+          "in_ci": 1
+        },
+        {
+          "T": 3,
+          "count_at_T": 52,
+          "predicted": 60,
+          "ci_lower": 52,
+          "ci_upper": 81,
+          "error_pct": -1.6,
+          "abs_error_pct": 1.6,
+          "in_ci": 1
+        },
+        {
+          "T": 1,
+          "count_at_T": 56,
+          "predicted": 59,
+          "ci_lower": 56,
+          "ci_upper": 68,
+          "error_pct": -3.3,
+          "abs_error_pct": 3.3,
+          "in_ci": 1
+        }
+      ]
+    },
+    {
+      "family": "New York State Scholastic Championships Grades K-8",
+      "final_count": 1753,
+      "event_start": "2026-03-06",
+      "predictions": [
+        {
+          "T": 90,
+          "count_at_T": 156,
+          "predicted": 1665,
+          "ci_lower": 1388,
+          "ci_upper": 1999,
+          "error_pct": -5.0,
+          "abs_error_pct": 5.0,
+          "in_ci": 1
+        },
+        {
+          "T": 60,
+          "count_at_T": 324,
+          "predicted": 1756,
+          "ci_lower": 1463,
+          "ci_upper": 2108,
+          "error_pct": 0.2,
+          "abs_error_pct": 0.2,
+          "in_ci": 1
+        },
+        {
+          "T": 42,
+          "count_at_T": 795,
+          "predicted": 1688,
+          "ci_lower": 1406,
+          "ci_upper": 2026,
+          "error_pct": -3.7,
+          "abs_error_pct": 3.7,
+          "in_ci": 1
+        },
+        {
+          "T": 28,
+          "count_at_T": 1408,
+          "predicted": 1752,
+          "ci_lower": 1408,
+          "ci_upper": 2273,
+          "error_pct": -0.1,
+          "abs_error_pct": 0.1,
+          "in_ci": 1
+        },
+        {
+          "T": 14,
+          "count_at_T": 1647,
+          "predicted": 1769,
+          "ci_lower": 1647,
+          "ci_upper": 2143,
+          "error_pct": 0.9,
+          "abs_error_pct": 0.9,
+          "in_ci": 1
+        },
+        {
+          "T": 7,
+          "count_at_T": 1705,
+          "predicted": 1706,
+          "ci_lower": 1705,
+          "ci_upper": 2067,
+          "error_pct": -2.7,
+          "abs_error_pct": 2.7,
+          "in_ci": 1
+        },
+        {
+          "T": 3,
+          "count_at_T": 1733,
+          "predicted": 1733,
+          "ci_lower": 1733,
+          "ci_upper": 2207,
+          "error_pct": -1.1,
+          "abs_error_pct": 1.1,
+          "in_ci": 1
+        },
+        {
+          "T": 1,
+          "count_at_T": 1749,
+          "predicted": 1749,
+          "ci_lower": 1749,
+          "ci_upper": 1979,
+          "error_pct": -0.2,
+          "abs_error_pct": 0.2,
+          "in_ci": 1
+        }
+      ]
+    },
+    {
+      "family": "Southern Class",
+      "final_count": 195,
+      "event_start": "2026-03-14",
+      "predictions": [
+        {
+          "T": 90,
+          "count_at_T": 1,
+          "predicted": 206,
+          "ci_lower": 126,
+          "ci_upper": 337,
+          "error_pct": 5.6,
+          "abs_error_pct": 5.6,
+          "in_ci": 1
+        },
+        {
+          "T": 60,
+          "count_at_T": 5,
+          "predicted": 204,
+          "ci_lower": 125,
+          "ci_upper": 335,
+          "error_pct": 4.6,
+          "abs_error_pct": 4.6,
+          "in_ci": 1
+        },
+        {
+          "T": 42,
+          "count_at_T": 11,
+          "predicted": 197,
+          "ci_lower": 120,
+          "ci_upper": 323,
+          "error_pct": 1.0,
+          "abs_error_pct": 1.0,
+          "in_ci": 1
+        },
+        {
+          "T": 28,
+          "count_at_T": 31,
+          "predicted": 197,
+          "ci_lower": 189,
+          "ci_upper": 206,
+          "error_pct": 1.0,
+          "abs_error_pct": 1.0,
+          "in_ci": 1
+        },
+        {
+          "T": 14,
+          "count_at_T": 60,
+          "predicted": 196,
+          "ci_lower": 191,
+          "ci_upper": 201,
+          "error_pct": 0.5,
+          "abs_error_pct": 0.5,
+          "in_ci": 1
+        },
+        {
+          "T": 7,
+          "count_at_T": 96,
+          "predicted": 193,
+          "ci_lower": 184,
+          "ci_upper": 202,
+          "error_pct": -1.0,
+          "abs_error_pct": 1.0,
+          "in_ci": 1
+        },
+        {
+          "T": 3,
+          "count_at_T": 157,
+          "predicted": 198,
+          "ci_lower": 187,
+          "ci_upper": 210,
+          "error_pct": 1.5,
+          "abs_error_pct": 1.5,
+          "in_ci": 1
+        },
+        {
+          "T": 1,
+          "count_at_T": 172,
+          "predicted": 193,
+          "ci_lower": 183,
+          "ci_upper": 204,
+          "error_pct": -1.0,
+          "abs_error_pct": 1.0,
+          "in_ci": 1
+        }
+      ]
+    }
+  ]
+}

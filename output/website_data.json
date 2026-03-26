@@ -1,7 +1,8 @@
 {
   "generated": "2026-03-26",
   "model": "N5v4_Final",
-  "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Features: family aliases, growth trends, count-based ratio adjustment, late-surge/blitz handling, enrichment data integration.",
+  "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
+  "n_completed_in_training": 21,
   "tournaments": [
     {
       "family": "Atlantic City Open",
@@ -14,9 +15,9 @@
       "onsite_fee": null,
       "current_count": 242,
       "days_remaining": 6,
-      "point_estimate": 455,
-      "ci_lower": 430,
-      "ci_upper": 481,
+      "point_estimate": 440,
+      "ci_lower": 410,
+      "ci_upper": 472,
       "ci_level": 0.8,
       "historical": [
         {
@@ -347,9 +348,9 @@
       "onsite_fee": 250.0,
       "current_count": 182,
       "days_remaining": 56,
-      "point_estimate": 891,
-      "ci_lower": 844,
-      "ci_upper": 941,
+      "point_estimate": 890,
+      "ci_lower": 838,
+      "ci_upper": 945,
       "ci_level": 0.8,
       "historical": [
         {
@@ -657,8 +658,8 @@
       "current_count": 3,
       "days_remaining": 71,
       "point_estimate": 195,
-      "ci_lower": 113,
-      "ci_upper": 338,
+      "ci_lower": 119,
+      "ci_upper": 320,
       "ci_level": 0.8,
       "historical": [
         {
@@ -766,8 +767,8 @@
       "current_count": 2,
       "days_remaining": 71,
       "point_estimate": 192,
-      "ci_lower": 107,
-      "ci_upper": 345,
+      "ci_lower": 114,
+      "ci_upper": 324,
       "ci_level": 0.8,
       "historical": [
         {
@@ -874,9 +875,9 @@
       "onsite_fee": null,
       "current_count": 1,
       "days_remaining": 85,
-      "point_estimate": 81,
-      "ci_lower": 47,
-      "ci_upper": 140,
+      "point_estimate": 76,
+      "ci_lower": 46,
+      "ci_upper": 125,
       "ci_level": 0.8,
       "historical": [
         {
@@ -964,9 +965,9 @@
       "onsite_fee": 350.0,
       "current_count": 35,
       "days_remaining": 97,
-      "point_estimate": 1376,
-      "ci_lower": 1176,
-      "ci_upper": 1610,
+      "point_estimate": 1301,
+      "ci_lower": 1171,
+      "ci_upper": 1446,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1149,9 +1150,9 @@
       "onsite_fee": 150.0,
       "current_count": 1,
       "days_remaining": 113,
-      "point_estimate": 275,
-      "ci_lower": 150,
-      "ci_upper": 501,
+      "point_estimate": 260,
+      "ci_lower": 151,
+      "ci_upper": 446,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1250,9 +1251,9 @@
       "onsite_fee": 110.0,
       "current_count": 2,
       "days_remaining": 113,
-      "point_estimate": 168,
-      "ci_lower": 88,
-      "ci_upper": 320,
+      "point_estimate": 159,
+      "ci_lower": 95,
+      "ci_upper": 267,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1454,9 +1455,9 @@
       "onsite_fee": null,
       "current_count": 2,
       "days_remaining": 120,
-      "point_estimate": 262,
+      "point_estimate": 247,
       "ci_lower": 151,
-      "ci_upper": 453,
+      "ci_upper": 406,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1563,9 +1564,9 @@
       "onsite_fee": 155.0,
       "current_count": 3,
       "days_remaining": 127,
-      "point_estimate": 383,
-      "ci_lower": 213,
-      "ci_upper": 690,
+      "point_estimate": 362,
+      "ci_lower": 221,
+      "ci_upper": 594,
       "ci_level": 0.8,
       "historical": [
         {

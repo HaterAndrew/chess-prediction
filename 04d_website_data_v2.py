@@ -280,11 +280,48 @@ train = summary[
 ]
 train_ts = train[train['has_timestamps']]
 
+# Identify completed 2026 tournaments (last_reg in the past) for rolling retraining
+completed_2026 = summary[
+    (summary['tournament_year'] == 2026) &
+    (~summary['is_online'].fillna(False)) &
+    (summary['has_timestamps'])
+].copy()
+completed_2026['last_reg'] = pd.to_datetime(completed_2026['last_reg'])
+completed_tids = set()
+for _, row in completed_2026.iterrows():
+    family = row['family']
+    lr = row['last_reg']
+    if pd.isna(lr) or lr > TODAY:
+        continue
+    # Check metadata — if event_start is in the future, it's still live
+    m_row = meta[(meta['family'] == family) & (meta['year'] == 2026)]
+    if len(m_row) > 0 and pd.notna(m_row.iloc[0]['start_date']) and m_row.iloc[0]['start_date'] > TODAY:
+        continue
+    completed_tids.add(row['tid'])
+
+if completed_tids:
+    print(f"  Rolling retraining: {len(completed_tids)} completed 2026 tournaments included in training")
+
 # Use production model (N5v4_Final) with all fixes:
 # - proper prediction intervals, empirical Bayes shrinkage
 # - expanding-window calibration, T-interpolation
+# - rolling retraining: completed 2026 tournaments fold into training data
 prod_model = m04c.N5v4_Final()
-prod_model.fit(train_ts, daily, enrichment_lookup=enrichment_lookup)
+prod_model.fit(train_ts, daily, enrichment_lookup=enrichment_lookup,
+               completed_tids=completed_tids if completed_tids else None)
+
+# Automated recalibration: compare predictions on completed 2026 tournaments
+# to actual final counts, compute bias + CI corrections for live predictions
+if completed_tids:
+    recal_data = summary[summary['tid'].isin(completed_tids)].copy()
+    if len(recal_data) >= 3:
+        recal_diag = prod_model.recalibrate(recal_data, daily)
+        print(f"  Recalibration from {len(recal_data)} completed tournaments:")
+        for T, d in sorted(recal_diag.items()):
+            print(f"    T-{T:>2}: bias {d['mean_bias']:>+5.1f}% → factor {d['bias_factor']:.3f}, "
+                  f"CI cov {d['coverage']:>3.0f}% → adj {d['ci_adj']:.3f}")
+    else:
+        print(f"  Recalibration skipped: need ≥3 completed tournaments, have {len(recal_data)}")
 
 ratios = build_ratio_model(train, daily)  # kept for families without timestamps
 curves = build_template_curves(train, daily)
@@ -691,7 +728,8 @@ n_historical = sum(1 for t in tournaments_out if t['status'] == 'historical')
 output = {
     "generated": TODAY.strftime('%Y-%m-%d'),
     "model": "N5v4_Final",
-    "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Features: family aliases, growth trends, count-based ratio adjustment, late-surge/blitz handling, enrichment data integration.",
+    "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
+    "n_completed_in_training": len(completed_tids) if completed_tids else 0,
     "tournaments": tournaments_out
 }
 

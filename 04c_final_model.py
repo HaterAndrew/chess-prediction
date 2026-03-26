@@ -228,8 +228,13 @@ class N5v4_Final:
         self.reg_params = {}  # family -> [slope_count, slope_T, intercept]
         self.family_n_editions = {}  # family -> count of training editions
 
-    def fit(self, summary, daily, enrichment_lookup=None):
-        """Build ratios from completed, non-online, non-covid tournaments."""
+    def fit(self, summary, daily, enrichment_lookup=None, completed_tids=None):
+        """Build ratios from completed, non-online, non-covid tournaments.
+
+        completed_tids: optional set of 2026 tournament tids that have completed.
+            If provided, these are included in training (rolling retraining).
+            All other 2026 tournaments are excluded.
+        """
         self.enrichment = enrichment_lookup or {}
         valid = summary[
             (summary['has_timestamps']) &
@@ -237,8 +242,14 @@ class N5v4_Final:
             (~summary.get('is_covid', pd.Series(False)).fillna(False))
         ].copy()
 
-        # Exclude 2026 (in-progress) tournaments
-        valid = valid[valid['tournament_year'] < 2026]
+        # Exclude in-progress 2026 tournaments, but keep completed ones
+        if completed_tids:
+            valid = valid[
+                (valid['tournament_year'] < 2026) |
+                (valid['tid'].isin(completed_tids))
+            ]
+        else:
+            valid = valid[valid['tournament_year'] < 2026]
 
         self.ratios = {}
         self.global_ratios = {}
@@ -355,9 +366,12 @@ class N5v4_Final:
                 if len(vals) >= 5:
                     self.global_log_sigma[T] = np.std(np.log(vals), ddof=1)
 
-        # LOO calibration — use expanding window: calibrate on pre-2024 data
-        # so 2024-2025 serve as honest validation for 2026 production predictions
-        self._calibrate(valid, daily, cal_max_year=2024)
+        # LOO calibration — expanding window.
+        # With completed 2026 data in training, calibrate on pre-2025 data
+        # (2025 + completed 2026 serve as validation). Without 2026 data,
+        # calibrate on pre-2024 (original behavior).
+        cal_year = 2025 if completed_tids else 2024
+        self._calibrate(valid, daily, cal_max_year=cal_year)
 
         # T-dependent CI shrinkage: less shrinkage at long T (more uncertainty),
         # more shrinkage at short T (ratios converge toward 1.0)
@@ -905,6 +919,22 @@ class N5v4_Final:
             if point - low < min_half:
                 low = point - min_half
 
+        # Apply recalibration corrections if available
+        if hasattr(self, '_recal_bias') and self._recal_bias:
+            # Find nearest T-band for bias correction
+            recal_Ts = sorted(self._recal_bias.keys())
+            nearest_T = min(recal_Ts, key=lambda t: abs(t - days_remaining))
+            bias_factor = self._recal_bias.get(nearest_T, 1.0)
+            ci_adj = self._recal_ci.get(nearest_T, 1.0)
+            # Apply bias correction (shrink toward actual)
+            center = point * bias_factor
+            # Apply CI width adjustment
+            half_w_log = (np.log(max(high, 1)) - np.log(max(low, 1))) / 2
+            half_w_log *= ci_adj
+            low = np.exp(np.log(max(center, 1)) - half_w_log)
+            high = np.exp(np.log(max(center, 1)) + half_w_log)
+            point = center
+
         # Floor: point estimate must be >= current_count (can't un-register)
         # but allow CI lower bound to go below point for honest uncertainty
         point = round(max(point, current_count))
@@ -912,6 +942,113 @@ class N5v4_Final:
         high = round(max(high, point))
 
         return (point, low, high)
+
+    def recalibrate(self, completed_tournaments, daily, T_points=None):
+        """Automated recalibration from completed tournament results.
+
+        Computes per-T bias correction and CI width adjustment factors
+        by comparing model predictions to actual final counts.
+
+        completed_tournaments: DataFrame with completed tournaments
+            (must have tid, family, final_count columns)
+        daily: daily registration counts DataFrame
+        T_points: list of T values to calibrate at (default: CHOP_POINTS)
+
+        Sets self._recal_bias and self._recal_ci dicts.
+        Returns dict with calibration diagnostics.
+        """
+        if T_points is None:
+            T_points = [90, 60, 42, 28, 14, 7, 3, 1]
+
+        # Filter to meaningful tournaments (skip tiny sub-events)
+        completed_tournaments = completed_tournaments[
+            completed_tournaments['final_count'] >= 50
+        ]
+
+        self._recal_bias = {}
+        self._recal_ci = {}
+        diagnostics = {}
+
+        for T in T_points:
+            errors = []   # (predicted - actual) / actual
+            ci_hits = []  # 1 if actual in CI, else 0
+
+            for _, row in completed_tournaments.iterrows():
+                tid = row['tid']
+                family = row['family']
+                actual = row['final_count']
+
+                td = daily[daily['tid'] == tid].sort_values('T', ascending=False)
+                if len(td) == 0:
+                    continue
+
+                # Find count at this T (within 2-day tolerance)
+                available = td[(td['T'] >= T - 2) & (td['T'] <= T + 2)].copy()
+                if len(available) == 0:
+                    continue
+                available['dist'] = (available['T'] - T).abs()
+                closest = available.sort_values('dist').iloc[0]
+                count_at_T = int(closest['cum_regs'])
+                if count_at_T <= 0:
+                    continue
+
+                # Predict WITHOUT recalibration (use raw model)
+                old_bias = self._recal_bias
+                old_ci = self._recal_ci
+                self._recal_bias = {}
+                self._recal_ci = {}
+                point, lo, hi = self.predict_nowcast(count_at_T, T, family)
+                self._recal_bias = old_bias
+                self._recal_ci = old_ci
+
+                if point is None:
+                    continue
+
+                errors.append((point - actual) / actual)
+                ci_hits.append(1 if lo <= actual <= hi else 0)
+
+            if len(errors) < 3:
+                continue
+
+            # Trim extreme outliers (>2× IQR) before computing bias
+            err_arr = np.array(errors)
+            q1, q3 = np.percentile(err_arr, [25, 75])
+            iqr = q3 - q1
+            mask = (err_arr >= q1 - 2 * iqr) & (err_arr <= q3 + 2 * iqr)
+            trimmed = err_arr[mask]
+            if len(trimmed) < 3:
+                trimmed = err_arr  # not enough after trimming, use all
+
+            # Bias correction: if model over-predicts by X%, multiply by 1/(1+X)
+            mean_bias = np.mean(trimmed)
+            bias_factor = 1.0 / (1.0 + mean_bias)
+            # Clamp: don't over-correct (max ±20% adjustment)
+            bias_factor = max(0.80, min(1.20, bias_factor))
+
+            # CI adjustment: if coverage is below/above 80% target, widen/narrow
+            coverage = np.mean(ci_hits)
+            if coverage < 0.70:
+                ci_adj = 1.15  # widen CIs by 15%
+            elif coverage < 0.75:
+                ci_adj = 1.08  # widen by 8%
+            elif coverage > 0.90:
+                ci_adj = 0.90  # narrow by 10%
+            elif coverage > 0.85:
+                ci_adj = 0.95  # narrow by 5%
+            else:
+                ci_adj = 1.0   # on target
+
+            self._recal_bias[T] = bias_factor
+            self._recal_ci[T] = ci_adj
+            diagnostics[T] = {
+                'n': len(errors),
+                'mean_bias': round(mean_bias * 100, 1),
+                'coverage': round(coverage * 100, 0),
+                'bias_factor': round(bias_factor, 3),
+                'ci_adj': round(ci_adj, 3),
+            }
+
+        return diagnostics
 
 
 def build_template_curves(summary, daily):

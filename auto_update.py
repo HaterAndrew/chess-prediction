@@ -85,6 +85,12 @@ def step_update_model():
     run_step("Generate predictions (04d_website_data_v2.py)",
              [sys.executable, "04d_website_data_v2.py"])
 
+
+def step_performance():
+    """Generate model performance / blind test data."""
+    run_step("Generate performance data (04e_performance_data.py)",
+             [sys.executable, "04e_performance_data.py"])
+
     if not os.path.exists(WEBSITE_JSON):
         raise RuntimeError(f"Model did not produce {WEBSITE_JSON}")
 
@@ -185,6 +191,29 @@ def step_update_html():
                 new_html = new_html[:h_start] + f'const CHESS_HISTORY = {history_json};' + new_html[h_end:]
                 print(f"  Updated CHESS_HISTORY in index.html")
 
+    # Embed PERFORMANCE_DATA if available
+    perf_json_path = os.path.join(OUTPUT_DIR, "performance_data.json")
+    if os.path.exists(perf_json_path):
+        with open(perf_json_path, 'r') as f:
+            perf_json = f.read().strip()
+        perf_marker = 'const PERFORMANCE_DATA = '
+        pf_start = new_html.find(perf_marker)
+        if pf_start != -1:
+            pf_data_start = pf_start + len(perf_marker)
+            pf_brace = 0
+            pf_end = None
+            for i in range(pf_data_start, len(new_html)):
+                if new_html[i] == '{': pf_brace += 1
+                elif new_html[i] == '}':
+                    pf_brace -= 1
+                    if pf_brace == 0:
+                        pf_end = i + 1
+                        if pf_end < len(new_html) and new_html[pf_end] == ';': pf_end += 1
+                        break
+            if pf_end:
+                new_html = new_html[:pf_start] + f'const PERFORMANCE_DATA = {perf_json};' + new_html[pf_end:]
+                print(f"  Updated PERFORMANCE_DATA in index.html")
+
     with open(INDEX_HTML, 'w') as f:
         f.write(new_html)
 
@@ -246,6 +275,7 @@ def main():
         else:
             step_scrape()
         step_update_model()
+        step_performance()
         step_update_puzzles()
         step_update_html()
         step_log_run()

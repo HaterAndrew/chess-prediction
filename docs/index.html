@@ -77901,19 +77901,13 @@ function renderChart(t) {
       order: 3
     });
 
-    // CI band — follows curve shape, starts from last actual point
+    // CI band — full range from today to event
     const ciUp = [], ciLo = [];
     const pctAt0 = interpCurve(t.registration_curve, 0);
     const ciUpperScale = pctAt0 > 0 ? t.ci_upper / pctAt0 : t.ci_upper;
     const ciLowerScale = pctAt0 > 0 ? t.ci_lower / pctAt0 : t.ci_lower;
-    // Start CI from last actual point (converged, no band yet)
-    if (lastActual) {
-      ciUp.push({ x: lastActual.x, y: lastActual.y });
-      ciLo.push({ x: lastActual.x, y: lastActual.y });
-    }
     for (let db = todayDB; db >= 0; db--) {
       const date = addDays(eventStart, -db);
-      if (lastActual && date <= lastActual.x) continue;
       const pctAtDb = interpCurve(t.registration_curve, db);
       ciUp.push({ x: date, y: Math.round(ciUpperScale * pctAtDb) });
       ciLo.push({ x: date, y: Math.max(0, Math.round(ciLowerScale * pctAtDb)) });

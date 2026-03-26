@@ -910,17 +910,17 @@ footer a { color: var(--muted); }
   </div>
 
   <!-- ── Hero KPI (compact) ── -->
-  <div style="display:flex;align-items:center;gap:24px;padding:16px 0 8px;flex-wrap:wrap" id="heroSection">
-    <div>
+  <div style="display:flex;align-items:stretch;gap:20px;padding:16px 0 8px" id="heroSection">
+    <div style="flex:0 0 auto">
       <div class="hero-label" id="heroLabel">Predicted Final Entries</div>
       <div class="hero-number" id="heroNumber" style="font-size:3.2rem"></div>
       <div class="hero-ci" id="heroCi"></div>
     </div>
-    <div id="weekBreakdown" style="display:none;flex:1;min-width:180px;max-width:280px">
+    <div id="weekBreakdown" style="display:none;flex:1 1 0;min-width:0">
       <div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Last 7 Days</div>
-      <div id="weekBars" style="display:flex;flex-direction:column;gap:2px"></div>
+      <div id="weekBars" style="display:flex;flex-direction:column;gap:2px;justify-content:center;height:calc(100% - 18px)"></div>
     </div>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;flex:1;justify-content:flex-end">
+    <div style="display:flex;gap:10px;flex:0 0 auto;align-items:stretch">
       <div class="kpi-card" id="kpiCurrent"></div>
       <div class="kpi-card" id="kpiDays"></div>
       <div class="kpi-card" id="kpiPace"></div>

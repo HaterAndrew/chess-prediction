@@ -112,9 +112,9 @@ h1 { font-size: 1.5rem; margin-bottom: 4px; }
   border-radius: var(--radius);
   padding: 20px;
   white-space: pre-wrap;
-  font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: 0.95rem;
-  line-height: 1.7;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.84rem;
+  line-height: 1.65;
   min-height: 200px;
   color: var(--text2);
 }
@@ -232,17 +232,21 @@ function histAvg(t) {
 
 function lastYear(t) {
   if (!t.historical || t.historical.length === 0) return null;
-  const sorted = [...t.historical].sort((a, b) => b.year - a.year);
-  return sorted[0];
+  return [...t.historical].sort((a, b) => b.year - a.year)[0];
 }
 
-function histMin(t) {
-  if (!t.historical || t.historical.length === 0) return null;
-  return Math.min(...t.historical.map(h => h.count));
+function buildTable(headers, rows) {
+  const widths = headers.map((h, i) => {
+    const vals = [h, ...rows.map(r => r[i] || '')];
+    return Math.max(...vals.map(v => String(v).length));
+  });
+  const sep = '    ';
+  const hdr = headers.map((h, i) => String(h).padEnd(widths[i])).join(sep);
+  const body = rows.map(r =>
+    r.map((c, i) => String(c || '').padEnd(widths[i])).join(sep)
+  );
+  return [hdr, ...body].map(l => '    ' + l).join('\n');
 }
-
-function pad(s, w) { return String(s).padEnd(w); }
-function padr(s, w) { return String(s).padStart(w); }
 
 // ── Email generation in Dave's voice ──
 
@@ -251,105 +255,85 @@ function formatTournament(t, len) {
   const avg = histAvg(t);
   const pace = t.prior_year_pace;
   const name = t.family.toUpperCase();
-  const lines = [];
+  const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
 
-  // ── SHORT: one-liner ──
+  // ── SHORT ──
   if (len === 'short') {
-    let line = `${name}:  We are at ${t.current_count} which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
-    if (ly) line += `  Last year was ${ly.count}.`;
-    return line;
-  }
-
-  // ── MEDIUM: numbers + directional commentary + pacing ──
-  if (len === 'medium') {
-    lines.push(`${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`);
-
-    if (ly) {
-      const diff = t.point_estimate - ly.count;
-      const pct = Math.round(diff / ly.count * 100);
-      if (pct > 10) {
-        lines[lines.length - 1] += `  Last year was ${ly.count}, so we are ahead.`;
-      } else if (pct < -10) {
-        lines[lines.length - 1] += `  Last year was ${ly.count}, so we are still behind.`;
-      } else if (pct < -3) {
-        lines[lines.length - 1] += `  Last year was ${ly.count}, so we are a little behind.`;
-      } else {
-        lines[lines.length - 1] += `  Last year was ${ly.count}.`;
-      }
-    }
-
+    const lines = [];
+    let s = `${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
+    if (ly) s += `  Last year was ${ly.count}.`;
+    lines.push(s);
     if (pace) {
-      const delta = t.current_count - pace.count_at_same_point;
-      if (delta > 0) {
-        lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`);
-      } else if (delta < 0) {
-        lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`);
-      } else {
-        lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
-      }
+      const d = t.current_count - pace.count_at_same_point;
+      if (d > 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`);
+      else if (d < 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`);
+      else lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
     }
-
     return lines.join('  ');
   }
 
-  // ── LONG: deep dive — multi-year context, pacing, table ──
+  // ── MEDIUM ──
+  if (len === 'medium') {
+    const lines = [];
+    lines.push(`${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`);
+    if (ly) {
+      const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
+      if (pct > 10) lines.push(`Last year was ${ly.count}, so we are ahead.`);
+      else if (pct < -10) lines.push(`Last year was ${ly.count}, so we are still behind.`);
+      else if (pct < -3) lines.push(`Last year was ${ly.count}, so we are a little behind.`);
+      else lines.push(`Last year was ${ly.count}.`);
+    }
+    if (pace) {
+      const d = t.current_count - pace.count_at_same_point;
+      if (d > 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`);
+      else if (d < 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`);
+      else lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
+    }
+    if (sorted.length >= 2) {
+      const rows = [['2026', t.current_count, t.point_estimate, '']];
+      sorted.forEach(h => rows.push([String(h.year), '', '', h.count]));
+      lines.push('');
+      lines.push(buildTable(['YEAR', 'ENTRIES', 'PROJECTION', 'FINAL'], rows));
+    }
+    return lines.join('\n');
+  }
+
+  // ── LONG ──
+  const lines = [];
   lines.push(`${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`);
-
-  // Directional vs last year
   if (ly) {
-    const diff = t.point_estimate - ly.count;
-    const pct = Math.round(diff / ly.count * 100);
-    if (pct > 15) {
-      lines.push(`Last year was ${ly.count}, so the projection has us well ahead.`);
-    } else if (pct > 5) {
-      lines.push(`Last year was ${ly.count}, so we are tracking ahead.`);
-    } else if (pct > -5) {
-      lines.push(`Last year was ${ly.count}, so we are in the same neighborhood.`);
-    } else if (pct > -15) {
-      lines.push(`Last year was ${ly.count}, so we are still a bit behind.`);
-    } else {
-      lines.push(`Last year was ${ly.count}, so we are lagging.`);
-    }
+    const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
+    if (pct > 15) lines.push(`Last year was ${ly.count}, so the projection has us well ahead.`);
+    else if (pct > 5) lines.push(`Last year was ${ly.count}, so we are tracking ahead.`);
+    else if (pct > -5) lines.push(`Last year was ${ly.count}, so we are in the same neighborhood.`);
+    else if (pct > -15) lines.push(`Last year was ${ly.count}, so we are still a bit behind.`);
+    else lines.push(`Last year was ${ly.count}, so we are lagging.`);
   }
-
-  // vs historical average
-  if (avg && t.historical.length >= 3) {
+  if (avg && sorted.length >= 3) {
     const pct = Math.round((t.point_estimate - avg) / avg * 100);
-    if (pct < -10) {
-      lines.push(`The historical average is ${avg}, so we are still below the norm.`);
-    } else if (pct > 10) {
-      lines.push(`The historical average is ${avg}, so we are trending above average.`);
-    }
+    if (pct < -10) lines.push(`The historical average is ${avg}, so we are still below the norm.`);
+    else if (pct > 10) lines.push(`The historical average is ${avg}, so we are trending above average.`);
   }
-
-  // Pacing at same point
   if (pace) {
-    const delta = t.current_count - pace.count_at_same_point;
-    let paceNote = `At this point last year we were at ${pace.count_at_same_point} which predicted ${pace.final}`;
-    if (delta > 0) {
-      paceNote += `, so we are ahead of pace.`;
-    } else if (delta < 0) {
-      paceNote += `, so we are behind.`;
-    } else {
-      paceNote += `.`;
-    }
-    lines.push(paceNote);
+    const d = t.current_count - pace.count_at_same_point;
+    lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}` +
+      (d > 0 ? `, so we are ahead of pace.` : d < 0 ? `, so we are behind.` : `.`));
   }
-
-  // Multi-year history table (Dave's tabular format)
-  if (t.historical && t.historical.length >= 2) {
-    const sorted = [...t.historical].sort((a, b) => b.year - a.year);
+  if (sorted.length >= 3) {
+    const counts = sorted.map(h => h.count);
+    const worst = Math.min(...counts);
+    const best = Math.max(...counts);
+    const worstYr = sorted.find(h => h.count === worst).year;
+    const bestYr = sorted.find(h => h.count === best).year;
+    if (t.point_estimate < worst) lines.push(`The last time we were this low was ${worstYr} when we got ${worst}.`);
+    else if (t.point_estimate > best) lines.push(`If we hit the projection, it would be the best year since at least ${bestYr} (${best}).`);
+  }
+  if (sorted.length >= 2) {
+    const rows = [['2026', t.current_count, t.point_estimate, `${t.ci_lower}-${t.ci_upper}`, '']];
+    sorted.forEach(h => rows.push([String(h.year), '', '', '', h.count]));
     lines.push('');
-    // Column headers
-    lines.push(`            YEAR            ENTRIES            PROJECTION            FINAL`);
-    // Current year
-    lines.push(`            2026            ${padr(t.current_count, 6)}            ${padr(t.point_estimate, 10)}`);
-    // Historical years
-    sorted.forEach(h => {
-      lines.push(`            ${h.year}            ${padr('', 6)}                                      ${padr(h.count, 6)}`);
-    });
+    lines.push(buildTable(['YEAR', 'ENTRIES', 'PROJECTION', 'RANGE', 'FINAL'], rows));
   }
-
   return lines.join('\n');
 }
 
@@ -369,7 +353,7 @@ function generateOverallTheme(selected) {
   if (total === 0) return 'Things are holding steady across the board.';
   if (behind === 0) return 'The overall theme is improvement across the board.';
   if (ahead === 0) return 'The overall theme is we are still lagging across the board.';
-  if (ahead >= behind) return 'The overall theme is a mixed bag — some improvement, but we are still behind on a few events.';
+  if (ahead >= behind) return 'The overall theme is a mixed bag \u2014 some improvement, but we are still behind on a few events.';
   return 'The overall theme today is there has been some improvement, but we are still lagging.';
 }
 

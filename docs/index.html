@@ -1129,7 +1129,7 @@ footer a { color: var(--muted); }
       <span style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Output</span>
       <button id="emailCopyBtn" onclick="copyEmail()" style="padding:5px 14px;border-radius:6px;font-size:.78rem;font-weight:600;background:var(--surface2);color:var(--text);border:1px solid var(--border);cursor:pointer">Copy to clipboard</button>
     </div>
-    <div id="emailOutput" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;white-space:pre-wrap;font-family:Georgia,'Times New Roman',serif;font-size:.92rem;line-height:1.7;min-height:180px;color:var(--text2)"></div>
+    <div id="emailOutput" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;white-space:pre-wrap;font-family:'Consolas','Monaco','Courier New',monospace;font-size:.84rem;line-height:1.65;min-height:180px;color:var(--text2)"></div>
   </div><!-- /panel-email -->
 
 </main>
@@ -77170,29 +77170,34 @@ function emailHistAvg(t) {
   return Math.round(c.reduce((a, b) => a + b, 0) / c.length);
 }
 
+// Monospace-aligned table builder
+function emailTable(headers, rows) {
+  // Calculate column widths
+  const widths = headers.map((h, i) => {
+    const vals = [h, ...rows.map(r => r[i] || '')];
+    return Math.max(...vals.map(v => String(v).length));
+  });
+  const sep = '    ';
+  const hdr = headers.map((h, i) => String(h).padEnd(widths[i])).join(sep);
+  const body = rows.map(r =>
+    r.map((c, i) => String(c || '').padEnd(widths[i])).join(sep)
+  );
+  return [hdr, ...body].map(l => '    ' + l).join('\n');
+}
+
 function emailFormatTournament(t, len) {
   const ly = emailLastYear(t);
   const avg = emailHistAvg(t);
   const pace = t.prior_year_pace;
   const name = t.family.toUpperCase();
+  const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
 
+  // ── SHORT: count, projection, range, last year comparison, pacing ──
   if (len === 'short') {
-    let s = `${name}:  We are at ${t.current_count} which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
-    if (ly) s += `  Last year was ${ly.count}.`;
-    return s;
-  }
-
-  if (len === 'medium') {
     const lines = [];
-    let main = `${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
-    if (ly) {
-      const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
-      if (pct > 10) main += `  Last year was ${ly.count}, so we are ahead.`;
-      else if (pct < -10) main += `  Last year was ${ly.count}, so we are still behind.`;
-      else if (pct < -3) main += `  Last year was ${ly.count}, so we are a little behind.`;
-      else main += `  Last year was ${ly.count}.`;
-    }
-    lines.push(main);
+    let s = `${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
+    if (ly) s += `  Last year was ${ly.count}.`;
+    lines.push(s);
     if (pace) {
       const d = t.current_count - pace.count_at_same_point;
       if (d > 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`);
@@ -77202,9 +77207,37 @@ function emailFormatTournament(t, len) {
     return lines.join('  ');
   }
 
-  // Long
+  // ── MEDIUM: narrative + pacing + table ──
+  if (len === 'medium') {
+    const lines = [];
+    lines.push(`${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`);
+    if (ly) {
+      const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
+      if (pct > 10) lines.push(`Last year was ${ly.count}, so we are ahead.`);
+      else if (pct < -10) lines.push(`Last year was ${ly.count}, so we are still behind.`);
+      else if (pct < -3) lines.push(`Last year was ${ly.count}, so we are a little behind.`);
+      else lines.push(`Last year was ${ly.count}.`);
+    }
+    if (pace) {
+      const d = t.current_count - pace.count_at_same_point;
+      if (d > 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`);
+      else if (d < 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`);
+      else lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
+    }
+    if (sorted.length >= 2) {
+      const rows = [['2026', t.current_count, t.point_estimate, '']];
+      sorted.forEach(h => rows.push([String(h.year), '', '', h.count]));
+      lines.push('');
+      lines.push(emailTable(['YEAR', 'ENTRIES', 'PROJECTION', 'FINAL'], rows));
+    }
+    return lines.join('\n');
+  }
+
+  // ── LONG: full deep dive ──
   const lines = [];
   lines.push(`${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`);
+
+  // Directional vs last year
   if (ly) {
     const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
     if (pct > 15) lines.push(`Last year was ${ly.count}, so the projection has us well ahead.`);
@@ -77213,26 +77246,43 @@ function emailFormatTournament(t, len) {
     else if (pct > -15) lines.push(`Last year was ${ly.count}, so we are still a bit behind.`);
     else lines.push(`Last year was ${ly.count}, so we are lagging.`);
   }
-  if (avg && t.historical.length >= 3) {
+
+  // vs historical average
+  if (avg && sorted.length >= 3) {
     const pct = Math.round((t.point_estimate - avg) / avg * 100);
     if (pct < -10) lines.push(`The historical average is ${avg}, so we are still below the norm.`);
     else if (pct > 10) lines.push(`The historical average is ${avg}, so we are trending above average.`);
   }
+
+  // Pacing at same point with multi-year context
   if (pace) {
     const d = t.current_count - pace.count_at_same_point;
-    let s = `At this point last year we were at ${pace.count_at_same_point} which predicted ${pace.final}`;
-    s += d > 0 ? `, so we are ahead of pace.` : d < 0 ? `, so we are behind.` : `.`;
-    lines.push(s);
+    lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}` +
+      (d > 0 ? `, so we are ahead of pace.` : d < 0 ? `, so we are behind.` : `.`));
   }
-  if (t.historical && t.historical.length >= 2) {
-    const sorted = [...t.historical].sort((a, b) => b.year - a.year);
+
+  // Worst/best year context
+  if (sorted.length >= 3) {
+    const counts = sorted.map(h => h.count);
+    const worst = Math.min(...counts);
+    const best = Math.max(...counts);
+    const worstYr = sorted.find(h => h.count === worst).year;
+    const bestYr = sorted.find(h => h.count === best).year;
+    if (t.point_estimate < worst) {
+      lines.push(`The last time we were this low was ${worstYr} when we got ${worst}.`);
+    } else if (t.point_estimate > best) {
+      lines.push(`If we hit the projection, it would be the best year since at least ${bestYr} (${best}).`);
+    }
+  }
+
+  // Table
+  if (sorted.length >= 2) {
+    const rows = [['2026', t.current_count, t.point_estimate, `${t.ci_lower}-${t.ci_upper}`, '']];
+    sorted.forEach(h => rows.push([String(h.year), '', '', '', h.count]));
     lines.push('');
-    lines.push(`            YEAR            ENTRIES            PROJECTION            FINAL`);
-    lines.push(`            2026            ${String(t.current_count).padStart(6)}            ${String(t.point_estimate).padStart(10)}`);
-    sorted.forEach(h => {
-      lines.push(`            ${h.year}                                                          ${String(h.count).padStart(6)}`);
-    });
+    lines.push(emailTable(['YEAR', 'ENTRIES', 'PROJECTION', 'RANGE', 'FINAL'], rows));
   }
+
   return lines.join('\n');
 }
 

@@ -77872,14 +77872,18 @@ function renderChart(t) {
     // (e.g. Pittsburgh: 2 regs but predicted 176 from historical median)
     const scaleFactor = todayPct > 0 ? t.point_estimate / interpCurve(t.registration_curve, 0) : t.point_estimate;
 
-    for (let db = todayDB; db >= 0; db--) {
-      const pct = interpCurve(t.registration_curve, db);
-      projData.push({ x: addDays(eventStart, -db), y: Math.round(scaleFactor * pct) });
+    // Start projection from the last actual data point to avoid a gap
+    const lastActual = actualData.length > 0 ? actualData[actualData.length - 1] : null;
+    if (lastActual) {
+      projData.push({ x: lastActual.x, y: lastActual.y });
     }
 
-    // Ensure projection starts at current_count (connect actual to projection)
-    if (projData.length > 0) {
-      projData[0].y = t.current_count;
+    for (let db = todayDB; db >= 0; db--) {
+      const pct = interpCurve(t.registration_curve, db);
+      const projDate = addDays(eventStart, -db);
+      // Skip points at or before the last actual data point
+      if (lastActual && projDate <= lastActual.x) continue;
+      projData.push({ x: projDate, y: Math.round(scaleFactor * pct) });
     }
 
     datasets.push({
@@ -77897,13 +77901,19 @@ function renderChart(t) {
       order: 3
     });
 
-    // CI band — follows curve shape
+    // CI band — follows curve shape, starts from last actual point
     const ciUp = [], ciLo = [];
     const pctAt0 = interpCurve(t.registration_curve, 0);
     const ciUpperScale = pctAt0 > 0 ? t.ci_upper / pctAt0 : t.ci_upper;
     const ciLowerScale = pctAt0 > 0 ? t.ci_lower / pctAt0 : t.ci_lower;
+    // Start CI from last actual point (converged, no band yet)
+    if (lastActual) {
+      ciUp.push({ x: lastActual.x, y: lastActual.y });
+      ciLo.push({ x: lastActual.x, y: lastActual.y });
+    }
     for (let db = todayDB; db >= 0; db--) {
       const date = addDays(eventStart, -db);
+      if (lastActual && date <= lastActual.x) continue;
       const pctAtDb = interpCurve(t.registration_curve, db);
       ciUp.push({ x: date, y: Math.round(ciUpperScale * pctAtDb) });
       ciLo.push({ x: date, y: Math.max(0, Math.round(ciLowerScale * pctAtDb)) });

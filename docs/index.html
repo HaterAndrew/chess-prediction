@@ -891,6 +891,7 @@ footer a { color: var(--muted); }
     <button class="page-tab" onclick="switchPageTab('dataentry')" role="tab" aria-selected="false" id="ptab-dataentry">Data Entry</button>
     <button class="page-tab" onclick="switchPageTab('email')" role="tab" aria-selected="false" id="ptab-email">&#9993; Email</button>
     <button class="page-tab" onclick="switchPageTab('performance')" role="tab" aria-selected="false" id="ptab-performance">&#9733; Performance</button>
+    <button class="page-tab" onclick="switchPageTab('about')" role="tab" aria-selected="false" id="ptab-about">&#9881; About the Model</button>
     <button class="page-tab" onclick="switchPageTab('puzzles')" role="tab" aria-selected="false" id="ptab-puzzles">&#9822; Puzzles</button>
   </div>
 
@@ -1185,6 +1186,333 @@ footer a { color: var(--muted); }
       <div id="perfTable" style="overflow-x:auto;margin-top:8px"></div>
     </details>
   </div><!-- /panel-performance -->
+
+  <div class="page-tab-panel" id="panel-about" role="tabpanel">
+
+    <!-- Title -->
+    <div style="margin:18px 0 28px">
+      <h2 style="font-size:1.5rem;font-weight:800;color:var(--gold);margin-bottom:4px">CCA Tournament Entry Prediction Model</h2>
+      <p style="font-size:.82rem;color:var(--muted)">A plain-English explanation of how the model works, how it was tested, and where it falls short.</p>
+    </div>
+
+    <!-- The Core Idea -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:10px">The Core Idea</h3>
+      <p style="font-size:.84rem;color:var(--text2);line-height:1.7">
+        Every CCA tournament follows a registration curve &mdash; entries trickle in slowly, then accelerate as the event nears.
+        The model exploits this pattern. If a tournament has 180 entries with 60 days to go, and the same tournament historically
+        had ~170 at that point and finished with ~900, we expect roughly 900 again. We compute the <strong>ratio</strong> of
+        final-to-current entries at the same lead time across all prior years, average them, and multiply:
+        <span style="color:var(--gold);font-weight:600">180 &times; 5 = 900</span>.
+      </p>
+    </div>
+
+    <!-- Why Two Models? -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:10px">Why Two Models?</h3>
+      <p style="font-size:.84rem;color:var(--text2);line-height:1.7">
+        The ratio approach works well with good history. For newer tournaments or unusual patterns, we also run a
+        <strong>regression</strong> &mdash; a best-fit line through all data points. The final prediction blends both.
+        Close to the event (last few days), we trust the ratio more (80% weight) because the current count is highly informative.
+        Months out, we lean on regression (85% weight) because the count is still noisy.
+      </p>
+    </div>
+
+    <!-- Ensemble Equation -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:12px">Ensemble Equation</h3>
+      <p style="font-size:.84rem;color:var(--text2);line-height:1.7;margin-bottom:14px">
+        The predicted final entry count is a weighted blend of the two sub-models:
+      </p>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;text-align:center;margin-bottom:14px">
+        <span style="font-size:1rem;font-weight:700;color:var(--gold);font-family:monospace">F<sub>pred</sub> = w(T) &middot; F<sub>ratio</sub> + (1 &minus; w(T)) &middot; F<sub>reg</sub></span>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:.78rem;border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">T (days to end)</th>
+            <th style="text-align:center;padding:8px 10px;color:var(--muted);font-weight:600">&le; 3</th>
+            <th style="text-align:center;padding:8px 10px;color:var(--muted);font-weight:600">&le; 7</th>
+            <th style="text-align:center;padding:8px 10px;color:var(--muted);font-weight:600">&le; 28</th>
+            <th style="text-align:center;padding:8px 10px;color:var(--muted);font-weight:600">&gt; 28</th>
+          </tr></thead>
+          <tbody><tr>
+            <td style="padding:8px 10px;color:var(--text2)">w(T) &mdash; ratio weight</td>
+            <td style="text-align:center;padding:8px 10px;color:var(--gold);font-weight:600">0.80</td>
+            <td style="text-align:center;padding:8px 10px;color:var(--gold);font-weight:600">0.55</td>
+            <td style="text-align:center;padding:8px 10px;color:var(--gold);font-weight:600">0.30</td>
+            <td style="text-align:center;padding:8px 10px;color:var(--gold);font-weight:600">0.15</td>
+          </tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Two sub-model cards -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
+      <!-- Ratio Model -->
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px">
+        <h3 style="font-size:.9rem;font-weight:700;color:var(--blue);margin-bottom:10px">Historical Ratio Model (Primary)</h3>
+        <p style="font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:10px">
+          For each tournament family at lead time T, compute final/current ratios from every prior year. Central estimate uses
+          the <strong>harmonic mean</strong> (downweights outlier-high ratios):
+        </p>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:monospace;font-size:.78rem;color:var(--gold)">
+          r = Final / Count_at_T &rarr; F<sub>ratio</sub> = Count &times; HarmonicMean(r<sub>1</sub>, r<sub>2</sub>, &hellip;, r<sub>n</sub>)
+        </div>
+        <p style="font-size:.76rem;color:var(--muted);margin-top:8px">
+          When T falls between historical chop points, ratios are blended in log-space via inverse-distance interpolation.
+        </p>
+      </div>
+      <!-- Regression Model -->
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px">
+        <h3 style="font-size:.9rem;font-weight:700;color:var(--blue);margin-bottom:10px">Huber Regression Model (Secondary)</h3>
+        <p style="font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:10px">
+          Per-family robust linear regression (Huber loss, &epsilon; = 1.35) trained on all historical (count, T) &rarr; final pairs.
+          Falls back to a size-matched global model for unknown families:
+        </p>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:monospace;font-size:.78rem;color:var(--gold)">
+          F<sub>reg</sub> = &beta;<sub>0</sub> &middot; Count_at_T + &beta;<sub>1</sub> &middot; T + &beta;<sub>2</sub>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confidence Intervals -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:10px">Confidence Intervals &amp; Sanity Checks</h3>
+      <p style="font-size:.84rem;color:var(--text2);line-height:1.7;margin-bottom:10px">
+        Every prediction includes a confidence interval &mdash; a range the actual result has fallen within about
+        <strong style="color:var(--gold)">9 out of 10 times</strong> in backtesting (intentionally conservative &mdash;
+        better to be a little wide than a little narrow). Wider far from the event, tighter as it approaches.
+      </p>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:monospace;font-size:.75rem;color:var(--text2);overflow-x:auto">
+        CI = Count &times; exp( &mu; &plusmn; t(&alpha;, n&minus;1) &middot; &sigma; &middot; &radic;(1 + 1/n) &middot; s(T) &middot; shrink(T) )
+      </div>
+      <p style="font-size:.76rem;color:var(--muted);margin-top:10px">
+        s(T) calibrated via LOO for 80% coverage. Shrink(T) = 0.33 at T &ge; 60 &rarr; 0.75 at T &lt; 5.
+        &sigma; floored via variance regularization for families with &le; 3 editions.
+        Small adjustments (1&ndash;5%) correct for year-over-year trends, historical withdrawals, and near-capacity dampening.
+        Predictions that drift too far from historical norms are pulled back via plausibility bounds.
+      </p>
+    </div>
+
+    <!-- Sequential Adjustments -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:12px">Sequential Adjustments</h3>
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:.78rem;border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">Adjustment</th>
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">Trigger</th>
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">Effect</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:8px 10px;color:var(--text2)">Late-surge damping</td><td style="padding:8px 10px;color:var(--text2)">Scholastic families, T &gt; 3</td><td style="padding:8px 10px;color:var(--text2)">Cap ratio at 1.1 + 0.4 &middot; min(T/90, 1)</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:8px 10px;color:var(--text2)">Fill-% shrinkage</td><td style="padding:8px 10px;color:var(--text2)">Count &gt; 60% of family mean</td><td style="padding:8px 10px;color:var(--text2)">Shrink ratio toward 1.0 (max 20%)</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:8px 10px;color:var(--text2)">Family anchor</td><td style="padding:8px 10px;color:var(--text2)">Count &lt; threshold, T &ge; 42</td><td style="padding:8px 10px;color:var(--text2)">Blend with 0.6 &middot; recent + 0.4 &middot; mean final</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:8px 10px;color:var(--text2)">Growth trend</td><td style="padding:8px 10px;color:var(--text2)">T &ge; 7</td><td style="padding:8px 10px;color:var(--text2)">Multiply by 1 + trend &middot; 0.5 (capped &plusmn;15%)</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:8px 10px;color:var(--text2)">Withdrawal correction</td><td style="padding:8px 10px;color:var(--text2)">Historical data available</td><td style="padding:8px 10px;color:var(--text2)">Reduce by median withdrawal rate</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:8px 10px;color:var(--text2)">Plausibility bounds</td><td style="padding:8px 10px;color:var(--text2)">Pred &lt; 70% of family median</td><td style="padding:8px 10px;color:var(--text2)">Blend toward historical median</td></tr>
+            <tr><td style="padding:8px 10px;color:var(--text2)">Edition widening</td><td style="padding:8px 10px;color:var(--text2)">0&ndash;1 prior editions</td><td style="padding:8px 10px;color:var(--text2)">Widen CI by 2.5&times; / 1.5&times;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- How We Tested It -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:10px">How We Tested It</h3>
+      <p style="font-size:.84rem;color:var(--text2);line-height:1.7;margin-bottom:12px">
+        We never test on data the model has seen. We train through (say) 2023, then predict every 2024 tournament as if living
+        in early 2024 &mdash; no future information leaks in. Across <strong style="color:var(--gold)">88 tournament-years</strong>,
+        the median error was <strong style="color:var(--gold)">7.6%</strong> and the confidence interval captured the true result
+        <strong style="color:var(--gold)">91% of the time</strong>. The gap between median error (7.6%) and mean error (13.0%)
+        reflects a small number of tournaments with unusual conditions; most predictions are tighter than the average suggests.
+      </p>
+      <p style="font-size:.78rem;color:var(--muted);line-height:1.6">
+        Validated via <strong>expanding-window blind test</strong>: train on years &le; Y, predict year Y+1 at each observed lead time.
+        No future data leakage. 88 tournament-years across 2023&ndash;2025.
+      </p>
+    </div>
+
+    <!-- Model Selection -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:12px">What We Tried and Rejected</h3>
+      <p style="font-size:.84rem;color:var(--text2);line-height:1.7;margin-bottom:14px">
+        We tested several alternatives on the same blind test. None improved accuracy:
+      </p>
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:.78rem;border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">Configuration</th>
+            <th style="text-align:center;padding:8px 10px;color:var(--muted);font-weight:600">MedAPE</th>
+            <th style="text-align:center;padding:8px 10px;color:var(--muted);font-weight:600">MAPE</th>
+            <th style="text-align:center;padding:8px 10px;color:var(--muted);font-weight:600">80% Cov</th>
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">Verdict</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:8px 10px;color:var(--text2)">Harmonic-mean ratio only</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">8.2%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">14.8%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">89%</td><td style="padding:8px 10px;color:var(--muted)">Good base, wide CIs</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light);background:rgba(240,192,64,.04)"><td style="padding:8px 10px;color:var(--gold);font-weight:600">+ Huber regression ensemble</td><td style="text-align:center;padding:8px 10px;color:var(--gold);font-weight:600">7.6%</td><td style="text-align:center;padding:8px 10px;color:var(--gold);font-weight:600">13.0%</td><td style="text-align:center;padding:8px 10px;color:var(--gold);font-weight:600">91%</td><td style="padding:8px 10px;color:var(--gold)">Selected</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:8px 10px;color:var(--text2)">+ YoY pacing (direct blend)</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">8.5%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">15.0%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">88%</td><td style="padding:8px 10px;color:var(--muted)">Adds noise</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:8px 10px;color:var(--text2)">+ YoY pacing (dampened)</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">7.9%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">14.1%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">89%</td><td style="padding:8px 10px;color:var(--muted)">Marginal harm</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:8px 10px;color:var(--text2)">+ Recency-weighted ratios</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">7.8%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">13.4%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">82%</td><td style="padding:8px 10px;color:var(--muted)">CI coverage crash</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:8px 10px;color:var(--text2)">Log-linear regression</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">7.9%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">13.5%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">90%</td><td style="padding:8px 10px;color:var(--muted)">No improvement</td></tr>
+            <tr><td style="padding:8px 10px;color:var(--text2)">Aggressive fill-% shrink</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">7.7%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">13.2%</td><td style="text-align:center;padding:8px 10px;color:var(--text2)">90%</td><td style="padding:8px 10px;color:var(--muted)">Neutral &rarr; rejected</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:.74rem;color:var(--muted);margin-top:10px">
+        Selection rule: keep only changes that improve Median APE without degrading 80% CI coverage below 88%.
+      </p>
+    </div>
+
+    <!-- Prior Approaches -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:12px">Prior Approaches</h3>
+      <p style="font-size:.84rem;color:var(--text2);line-height:1.7;margin-bottom:14px">
+        Earlier prediction methods used at CCA provided the foundation for the current model:
+      </p>
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:.78rem;border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">Metric</th>
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">Manual Multiplier Approach</th>
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">Ratio Model</th>
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">Current Ensemble Model</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border-light)">
+              <td style="padding:8px 10px;color:var(--muted);font-weight:600">Method</td>
+              <td style="padding:8px 10px;color:var(--text2)">Fixed multiplier &times; current entries; multiplier from days-to-event lookup, chosen subjectively</td>
+              <td style="padding:8px 10px;color:var(--text2)">Historical ratio (entries_at_T / final), median across past 4 years</td>
+              <td style="padding:8px 10px;color:var(--text2)">Ensemble: ratio-based + Huber regression, T-dependent weighting</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-light)">
+              <td style="padding:8px 10px;color:var(--muted);font-weight:600">Error Rate</td>
+              <td style="padding:8px 10px;color:var(--text2)">~20% median (est.)</td>
+              <td style="padding:8px 10px;color:var(--text2)">~12&ndash;15% median (est.)</td>
+              <td style="padding:8px 10px;color:var(--text2)">7.6% median APE (blind tested)</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-light)">
+              <td style="padding:8px 10px;color:var(--muted);font-weight:600">Prediction Intervals</td>
+              <td style="padding:8px 10px;color:var(--text2)">None</td>
+              <td style="padding:8px 10px;color:var(--text2)">MAE-based error bars; not calibrated intervals</td>
+              <td style="padding:8px 10px;color:var(--text2)">Lognormal calibrated 80% CI; 91% coverage</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-light)">
+              <td style="padding:8px 10px;color:var(--muted);font-weight:600">Blind Testing</td>
+              <td style="padding:8px 10px;color:var(--text2)">No formal backtesting</td>
+              <td style="padding:8px 10px;color:var(--text2)">No formal backtesting</td>
+              <td style="padding:8px 10px;color:var(--text2)">88 tournament-years, 2023&ndash;2025 expanding window</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 10px;color:var(--muted);font-weight:600">Limitations</td>
+              <td style="padding:8px 10px;color:var(--text2)">Multiplier updated by feel; no systematic validation</td>
+              <td style="padding:8px 10px;color:var(--text2)">Single-deadline events only; no multi-deadline handling</td>
+              <td style="padding:8px 10px;color:var(--text2)">Needs 3+ yrs history; cannot anticipate one-off disruptions</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:.76rem;color:var(--muted);margin-top:10px">
+        Each approach built on lessons from its predecessor. The prior models&rsquo; intuition &mdash; that historical ratios are the strongest
+        predictor &mdash; remains the core of the current system.
+      </p>
+    </div>
+
+    <!-- Worked Example -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:10px">Worked Example: Chicago Open 2026</h3>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px">Forward-looking estimate &mdash; 180 entries, 62 days to end (May 21&ndash;25, 2026).</p>
+
+      <!-- Step 1 -->
+      <h4 style="font-size:.84rem;font-weight:700;color:var(--blue);margin-bottom:8px">Step 1 &mdash; Historical Ratios at T &asymp; 60</h4>
+      <div style="overflow-x:auto;margin-bottom:14px">
+        <table style="width:100%;max-width:420px;font-size:.78rem;border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">Year</th>
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">Count at T&asymp;60</th>
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">Final</th>
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">Ratio</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="text-align:center;padding:6px 10px;color:var(--text2)">2022</td><td style="text-align:center;padding:6px 10px;color:var(--text2)">168</td><td style="text-align:center;padding:6px 10px;color:var(--text2)">944</td><td style="text-align:center;padding:6px 10px;color:var(--gold)">5.62</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="text-align:center;padding:6px 10px;color:var(--text2)">2023</td><td style="text-align:center;padding:6px 10px;color:var(--text2)">161</td><td style="text-align:center;padding:6px 10px;color:var(--text2)">960</td><td style="text-align:center;padding:6px 10px;color:var(--gold)">5.96</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="text-align:center;padding:6px 10px;color:var(--text2)">2024</td><td style="text-align:center;padding:6px 10px;color:var(--text2)">191</td><td style="text-align:center;padding:6px 10px;color:var(--text2)">860</td><td style="text-align:center;padding:6px 10px;color:var(--gold)">4.50</td></tr>
+            <tr><td style="text-align:center;padding:6px 10px;color:var(--text2)">2025</td><td style="text-align:center;padding:6px 10px;color:var(--text2)">188</td><td style="text-align:center;padding:6px 10px;color:var(--text2)">899</td><td style="text-align:center;padding:6px 10px;color:var(--gold)">4.78</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:16px">
+        Harmonic mean = 4 / (1/5.62 + 1/5.96 + 1/4.50 + 1/4.78) = <strong style="color:var(--gold)">5.15</strong>
+        &rarr; F<sub>ratio</sub> = 180 &times; 5.15 = <strong style="color:var(--gold)">927</strong>
+      </p>
+
+      <!-- Step 2 -->
+      <h4 style="font-size:.84rem;font-weight:700;color:var(--blue);margin-bottom:8px">Step 2 &mdash; Huber Regression</h4>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:16px;font-family:monospace">
+        F<sub>reg</sub> = &beta;<sub>0</sub> &middot; 180 + &beta;<sub>1</sub> &middot; 62 + &beta;<sub>2</sub> &asymp; <strong style="color:var(--gold)">907</strong>
+      </p>
+
+      <!-- Step 3 -->
+      <h4 style="font-size:.84rem;font-weight:700;color:var(--blue);margin-bottom:8px">Step 3 &mdash; Ensemble Blend</h4>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:16px">
+        At T = 62 (&gt; 28), ratio weight w = 0.15:<br>
+        <span style="font-family:monospace">F<sub>pred</sub> = 0.15 &times; 927 + 0.85 &times; 907 = <strong style="color:var(--gold)">910</strong></span>
+      </p>
+
+      <!-- Step 4 -->
+      <h4 style="font-size:.84rem;font-weight:700;color:var(--blue);margin-bottom:8px">Step 4 &mdash; Adjustments</h4>
+      <div style="overflow-x:auto;margin-bottom:14px">
+        <table style="width:100%;font-size:.78rem;border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:6px 10px;color:var(--muted);font-weight:600">Adjustment</th>
+            <th style="text-align:left;padding:6px 10px;color:var(--muted);font-weight:600">Calculation</th>
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">Result</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:6px 10px;color:var(--text2)">Growth trend (&minus;3.4%/yr)</td><td style="padding:6px 10px;color:var(--text2)">910 &times; (1 + (&minus;0.034) &middot; 0.5)</td><td style="text-align:center;padding:6px 10px;color:var(--gold)">894</td></tr>
+            <tr style="border-bottom:1px solid var(--border-light)"><td style="padding:6px 10px;color:var(--text2)">Withdrawal corr. (1.2%)</td><td style="padding:6px 10px;color:var(--text2)">894 &times; (1 &minus; 0.012)</td><td style="text-align:center;padding:6px 10px;color:var(--gold)">883</td></tr>
+            <tr><td style="padding:6px 10px;color:var(--text2)">Plausibility bounds</td><td style="padding:6px 10px;color:var(--text2)">Below 70% of family median (916); blend</td><td style="text-align:center;padding:6px 10px;color:var(--gold)">900</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:.76rem;color:var(--muted);margin-bottom:16px">
+        The plausibility check prevents compounding small adjustments from pushing the prediction unreasonably far from historical norms.
+        Final point estimate: ~908 (after CI re-centering in log-space).
+      </p>
+
+      <!-- Step 5 -->
+      <h4 style="font-size:.84rem;font-weight:700;color:var(--blue);margin-bottom:8px">Step 5 &mdash; Confidence Interval</h4>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:14px">
+        From lognormal fit on log-ratios, calibrated via LOO with T-dependent shrinkage:<br>
+        <span style="font-family:monospace;font-size:.78rem">&sigma; = std(log(r)) = 0.127 &rarr; raw CI = [788, 1046] &rarr; &times; shrink(0.33 at T&asymp;60) &rarr; CI = [856, 963]</span>
+      </p>
+
+      <!-- Result card -->
+      <div style="background:linear-gradient(135deg,rgba(240,192,64,.08),rgba(56,139,253,.04));border:1px solid rgba(240,192,64,.25);border-radius:12px;padding:18px 24px;text-align:center">
+        <div style="font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:6px">Chicago Open 2026 Prediction</div>
+        <div style="font-size:2.2rem;font-weight:900;color:var(--gold);line-height:1">908</div>
+        <div style="font-size:.88rem;color:var(--text2);margin-top:4px">80% CI: 856 &ndash; 963</div>
+      </div>
+    </div>
+
+    <!-- Limitations -->
+    <div style="background:var(--surface2);border:1px solid rgba(248,81,73,.15);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--red);margin-bottom:10px">Limitations</h3>
+      <p style="font-size:.84rem;color:var(--text2);line-height:1.7">
+        The model predicts from historical patterns. It cannot anticipate one-off events: venue changes, competing tournaments
+        on the same weekend, entry fee changes, or external disruptions. It works best with 3+ years of history &mdash;
+        brand-new events get wider confidence ranges.
+        <strong>This model is a baseline; tournament directors should apply manual adjustments for known upcoming factors.</strong>
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align:center;padding:12px 0;font-size:.7rem;color:var(--muted)">
+      USAREUR-AF Operational Data Team &middot; March 2026
+    </div>
+
+  </div><!-- /panel-about -->
 
 </main>
 

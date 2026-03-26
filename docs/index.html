@@ -1142,39 +1142,65 @@ footer a { color: var(--muted); }
 
   <!-- ══════ PERFORMANCE TAB ══════ -->
   <div class="page-tab-panel" id="panel-performance" role="tabpanel">
-    <div style="font-size:.72rem;color:var(--muted);margin:12px 0 16px">
-      Model accuracy on completed 2026 tournaments. Blind-tested at various lead times (days before event).
-    </div>
 
-    <!-- Grade card -->
-    <div id="perfGradeCard" style="display:flex;align-items:center;gap:24px;padding:20px 28px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:24px">
-      <div id="perfGradeLetter" style="font-size:3.2rem;font-weight:800;line-height:1;color:var(--gold)"></div>
-      <div>
-        <div id="perfGradeLabel" style="font-size:.95rem;font-weight:600;color:var(--text)"></div>
-        <div id="perfGradeDetail" style="font-size:.78rem;color:var(--muted);margin-top:4px"></div>
-        <div id="perfGradeMeta" style="font-size:.7rem;color:var(--muted);margin-top:2px"></div>
+    <!-- ── EXEC HERO ── -->
+    <div style="margin:16px 0 28px">
+      <!-- Grade + KPI row -->
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px">
+        <!-- Big grade card -->
+        <div id="perfGradeCard" style="display:flex;align-items:center;gap:20px;padding:24px 32px;background:var(--surface);border:1px solid var(--border);border-radius:14px;min-width:260px;flex:1.2">
+          <div id="perfGradeLetter" style="font-size:4rem;font-weight:900;line-height:1;color:var(--gold)"></div>
+          <div>
+            <div id="perfGradeLabel" style="font-size:1rem;font-weight:700;color:var(--text)"></div>
+            <div id="perfGradeDetail" style="font-size:.78rem;color:var(--muted);margin-top:4px"></div>
+            <div id="perfGradeMeta" style="font-size:.68rem;color:var(--muted);margin-top:2px"></div>
+          </div>
+        </div>
+        <!-- KPI cards -->
+        <div id="perfKPIs" style="display:flex;gap:12px;flex:2;flex-wrap:wrap"></div>
+      </div>
+
+      <!-- Predicted vs Actual scatter -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div style="font-size:.88rem;font-weight:700;color:var(--text)">Predicted vs Actual Entries</div>
+          <div style="font-size:.68rem;color:var(--muted)">Each dot = one tournament at T-14</div>
+        </div>
+        <div id="perfScatter" style="position:relative;width:100%;height:260px"></div>
+      </div>
+
+      <!-- Accuracy timeline — clean horizontal -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:20px">
+        <div style="font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:4px">Forecast Accuracy Over Time</div>
+        <div style="font-size:.68rem;color:var(--muted);margin-bottom:16px">How error decreases as the event approaches</div>
+        <div id="perfTimeline" style="position:relative;width:100%;height:200px"></div>
       </div>
     </div>
 
-    <!-- Accuracy by horizon -->
-    <div style="margin-bottom:24px">
-      <div style="font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px">Accuracy by Forecast Horizon</div>
-      <div id="perfHorizonChart" style="display:flex;gap:8px;align-items:flex-end;height:180px;padding:12px 0;border-bottom:1px solid var(--border)"></div>
-      <div id="perfHorizonLabels" style="display:flex;gap:8px;margin-top:4px"></div>
-    </div>
+    <!-- ── DETAILED SECTION (collapsed by default) ── -->
+    <details style="margin-bottom:24px">
+      <summary style="font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);cursor:pointer;padding:8px 0;user-select:none">Detailed Breakdown</summary>
 
-    <!-- CI coverage bar -->
-    <div style="margin-bottom:24px">
-      <div style="font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px">80% Confidence Interval Coverage</div>
-      <div id="perfCIChart" style="display:flex;gap:8px;align-items:flex-end;height:120px;padding:12px 0;border-bottom:1px solid var(--border)"></div>
-      <div id="perfCILabels" style="display:flex;gap:8px;margin-top:4px"></div>
-    </div>
+      <!-- Accuracy by horizon bars -->
+      <div style="margin:16px 0 24px">
+        <div style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px">Mean Absolute Error by Horizon</div>
+        <div id="perfHorizonChart" style="display:flex;gap:8px;align-items:flex-end;height:160px;padding:12px 0;border-bottom:1px solid var(--border)"></div>
+        <div id="perfHorizonLabels" style="display:flex;gap:8px;margin-top:4px"></div>
+      </div>
 
-    <!-- Per-tournament table -->
-    <div style="margin-bottom:24px">
-      <div style="font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px">Per-Tournament Breakdown</div>
-      <div id="perfTable" style="overflow-x:auto"></div>
-    </div>
+      <!-- CI coverage bars -->
+      <div style="margin-bottom:24px">
+        <div style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px">80% Confidence Interval Coverage</div>
+        <div id="perfCIChart" style="display:flex;gap:8px;align-items:flex-end;height:120px;padding:12px 0;border-bottom:1px solid var(--border)"></div>
+        <div id="perfCILabels" style="display:flex;gap:8px;margin-top:4px"></div>
+      </div>
+
+      <!-- Per-tournament table -->
+      <div style="margin-bottom:24px">
+        <div style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px">Per-Tournament Results</div>
+        <div id="perfTable" style="overflow-x:auto"></div>
+      </div>
+    </details>
   </div><!-- /panel-performance -->
 
 </main>
@@ -77904,24 +77930,160 @@ function initPerformanceTab() {
   const gradeColor = gradeColors[data.grade] || 'var(--gold)';
   document.getElementById('perfGradeLetter').textContent = data.grade;
   document.getElementById('perfGradeLetter').style.color = gradeColor;
-  document.getElementById('perfGradeLabel').textContent = 'Model Grade — N5v4_Final Ensemble';
+  document.getElementById('perfGradeLabel').textContent = 'Model Grade';
   document.getElementById('perfGradeDetail').textContent = data.grade_detail || '';
-  document.getElementById('perfGradeMeta').textContent = `${data.n_tournaments} completed tournament${data.n_tournaments !== 1 ? 's' : ''} evaluated \u00b7 Generated ${data.generated}`;
+  document.getElementById('perfGradeMeta').textContent = `${data.n_tournaments} completed tournament${data.n_tournaments !== 1 ? 's' : ''} evaluated \u00b7 Updated ${data.generated}`;
 
-  // Accuracy by horizon (bar chart)
-  renderPerfBars('perfHorizonChart', 'perfHorizonLabels', data.aggregate, 'mae_pct', 30, (v) => v.toFixed(1) + '%', (a) => {
-    const c = a.mae_pct <= 8 ? '#22c55e' : a.mae_pct <= 12 ? '#4ade80' : a.mae_pct <= 18 ? 'var(--gold)' : '#ef4444';
-    return c;
+  // KPI cards
+  const agg = data.aggregate;
+  const t14 = agg.find(a => a.T === 14) || agg[0];
+  const t1 = agg.find(a => a.T === 1);
+  const avgCov = Math.round(agg.reduce((s, a) => s + a.ci_coverage, 0) / agg.length);
+  const avgBias = (agg.reduce((s, a) => s + a.bias_pct, 0) / agg.length).toFixed(1);
+
+  const kpis = [
+    {label: '2-Week Forecast Error', value: t14.mae_pct.toFixed(1) + '%', sub: 'MAE at T-14', color: t14.mae_pct <= 8 ? '#22c55e' : t14.mae_pct <= 12 ? '#4ade80' : 'var(--gold)'},
+    {label: 'Day-Before Accuracy', value: t1 ? t1.mae_pct.toFixed(1) + '%' : '--', sub: 'MAE at T-1', color: t1 && t1.mae_pct <= 5 ? '#22c55e' : '#4ade80'},
+    {label: 'Avg CI Coverage', value: avgCov + '%', sub: 'Target: 80%', color: avgCov >= 75 ? '#22c55e' : avgCov >= 60 ? 'var(--gold)' : '#ef4444'},
+    {label: 'Avg Bias', value: (avgBias > 0 ? '+' : '') + avgBias + '%', sub: avgBias > 0 ? 'Slight over-prediction' : 'Slight under-prediction', color: Math.abs(avgBias) <= 5 ? '#22c55e' : 'var(--gold)'},
+  ];
+  const kpiBox = document.getElementById('perfKPIs');
+  kpiBox.innerHTML = kpis.map(k => `
+    <div style="flex:1;min-width:120px;padding:16px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;text-align:center">
+      <div style="font-size:1.6rem;font-weight:800;color:${k.color};line-height:1.1">${k.value}</div>
+      <div style="font-size:.72rem;font-weight:600;color:var(--text);margin-top:6px">${k.label}</div>
+      <div style="font-size:.62rem;color:var(--muted);margin-top:2px">${k.sub}</div>
+    </div>`).join('');
+
+  // Predicted vs Actual scatter (T-14)
+  renderPerfScatter(data);
+
+  // Accuracy timeline
+  renderPerfTimeline(data);
+
+  // Detailed section: bar charts + table
+  renderPerfBars('perfHorizonChart', 'perfHorizonLabels', agg, 'mae_pct', 30, (v) => v.toFixed(1) + '%', (a) => {
+    return a.mae_pct <= 8 ? '#22c55e' : a.mae_pct <= 12 ? '#4ade80' : a.mae_pct <= 18 ? 'var(--gold)' : '#ef4444';
   }, 'MAE');
 
-  // CI coverage bars
-  renderPerfBars('perfCIChart', 'perfCILabels', data.aggregate, 'ci_coverage', 100, (v) => v.toFixed(0) + '%', (a) => {
-    const c = a.ci_coverage >= 75 ? '#22c55e' : a.ci_coverage >= 60 ? 'var(--gold)' : '#ef4444';
-    return c;
+  renderPerfBars('perfCIChart', 'perfCILabels', agg, 'ci_coverage', 100, (v) => v.toFixed(0) + '%', (a) => {
+    return a.ci_coverage >= 75 ? '#22c55e' : a.ci_coverage >= 60 ? 'var(--gold)' : '#ef4444';
   }, 'Coverage');
 
-  // Per-tournament table
   renderPerfTable(data);
+}
+
+function renderPerfScatter(data) {
+  const el = document.getElementById('perfScatter');
+  const W = el.clientWidth || 600;
+  const H = 260;
+  const pad = {t:10, r:20, b:30, l:50};
+  const pw = W - pad.l - pad.r;
+  const ph = H - pad.t - pad.b;
+
+  // Collect T-14 predictions (fall back to best available T)
+  const pts = [];
+  data.tournaments.forEach(t => {
+    const p14 = t.predictions.find(p => p.T === 14) || t.predictions.find(p => p.T === 28) || t.predictions[0];
+    if (p14) pts.push({family: t.family, actual: t.final_count, predicted: p14.predicted, ci_lo: p14.ci_lower, ci_hi: p14.ci_upper, in_ci: p14.in_ci});
+  });
+  if (!pts.length) return;
+
+  const maxVal = Math.max(...pts.map(p => Math.max(p.actual, p.predicted, p.ci_hi))) * 1.1;
+
+  let svg = `<svg width="${W}" height="${H}" style="display:block">`;
+  // Grid lines
+  for (let i = 0; i <= 4; i++) {
+    const v = Math.round(maxVal / 4 * i);
+    const x = pad.l + (v / maxVal) * pw;
+    const y = pad.t + ph - (v / maxVal) * ph;
+    svg += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + pw}" y2="${y}" stroke="var(--border)" stroke-dasharray="3,3"/>`;
+    svg += `<text x="${pad.l - 6}" y="${y + 3}" fill="var(--muted)" font-size="9" text-anchor="end">${v.toLocaleString()}</text>`;
+  }
+  // Perfect prediction line
+  svg += `<line x1="${pad.l}" y1="${pad.t + ph}" x2="${pad.l + pw}" y2="${pad.t}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="6,4" opacity=".4"/>`;
+  svg += `<text x="${pad.l + pw - 2}" y="${pad.t + 12}" fill="var(--muted)" font-size="8" text-anchor="end" opacity=".5">Perfect</text>`;
+
+  // CI whiskers + dots
+  pts.forEach(p => {
+    const x = pad.l + (p.actual / maxVal) * pw;
+    const yPred = pad.t + ph - (p.predicted / maxVal) * ph;
+    const yLo = pad.t + ph - (p.ci_lo / maxVal) * ph;
+    const yHi = pad.t + ph - (p.ci_hi / maxVal) * ph;
+    const dotColor = p.in_ci ? '#22c55e' : '#ef4444';
+    // CI whisker
+    svg += `<line x1="${x}" y1="${yLo}" x2="${x}" y2="${yHi}" stroke="${dotColor}" stroke-width="2" opacity=".3"/>`;
+    // Dot
+    svg += `<circle cx="${x}" cy="${yPred}" r="5" fill="${dotColor}" opacity=".85"><title>${esc(p.family)}: actual ${p.actual}, predicted ${p.predicted}</title></circle>`;
+  });
+
+  // Axis labels
+  svg += `<text x="${pad.l + pw / 2}" y="${H - 4}" fill="var(--muted)" font-size="10" text-anchor="middle">Actual Entries</text>`;
+  svg += `<text x="12" y="${pad.t + ph / 2}" fill="var(--muted)" font-size="10" text-anchor="middle" transform="rotate(-90,12,${pad.t + ph / 2})">Predicted</text>`;
+  svg += '</svg>';
+  el.innerHTML = svg;
+}
+
+function renderPerfTimeline(data) {
+  const el = document.getElementById('perfTimeline');
+  const W = el.clientWidth || 600;
+  const H = 200;
+  const pad = {t:16, r:20, b:32, l:42};
+  const pw = W - pad.l - pad.r;
+  const ph = H - pad.t - pad.b;
+
+  const agg = [...data.aggregate].sort((a, b) => b.T - a.T); // T-90 to T-1
+  if (!agg.length) return;
+
+  const maxMAE = Math.max(20, ...agg.map(a => a.mae_pct)) * 1.15;
+  const xScale = (i) => pad.l + (i / (agg.length - 1)) * pw;
+  const yScale = (v) => pad.t + ph - (v / maxMAE) * ph;
+
+  let svg = `<svg width="${W}" height="${H}" style="display:block">`;
+
+  // Horizontal grid
+  [5, 10, 15, 20].forEach(v => {
+    if (v > maxMAE) return;
+    const y = yScale(v);
+    svg += `<line x1="${pad.l}" y1="${y}" x2="${pad.l + pw}" y2="${y}" stroke="var(--border)" stroke-dasharray="3,3"/>`;
+    svg += `<text x="${pad.l - 6}" y="${y + 3}" fill="var(--muted)" font-size="9" text-anchor="end">${v}%</text>`;
+  });
+
+  // "Good" zone shading (< 10% MAE)
+  const goodY = yScale(10);
+  svg += `<rect x="${pad.l}" y="${goodY}" width="${pw}" height="${pad.t + ph - goodY}" fill="#22c55e" opacity=".06" rx="4"/>`;
+  svg += `<text x="${pad.l + pw - 4}" y="${goodY + 12}" fill="#22c55e" font-size="8" text-anchor="end" opacity=".6">Good (&lt;10%)</text>`;
+
+  // MAE line + area
+  let pathD = '';
+  let areaD = `M ${xScale(0)} ${pad.t + ph} `;
+  agg.forEach((a, i) => {
+    const x = xScale(i);
+    const y = yScale(a.mae_pct);
+    pathD += (i === 0 ? 'M ' : 'L ') + x + ' ' + y + ' ';
+    areaD += 'L ' + x + ' ' + y + ' ';
+  });
+  areaD += `L ${xScale(agg.length - 1)} ${pad.t + ph} Z`;
+  svg += `<path d="${areaD}" fill="var(--gold)" opacity=".12"/>`;
+  svg += `<path d="${pathD}" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linejoin="round"/>`;
+
+  // Dots + labels
+  agg.forEach((a, i) => {
+    const x = xScale(i);
+    const y = yScale(a.mae_pct);
+    const color = a.mae_pct <= 8 ? '#22c55e' : a.mae_pct <= 12 ? '#4ade80' : 'var(--gold)';
+    svg += `<circle cx="${x}" cy="${y}" r="4.5" fill="${color}" stroke="var(--surface)" stroke-width="1.5"/>`;
+    svg += `<text x="${x}" y="${y - 9}" fill="var(--text)" font-size="9" font-weight="600" text-anchor="middle">${a.mae_pct.toFixed(1)}%</text>`;
+    svg += `<text x="${x}" y="${pad.t + ph + 14}" fill="var(--muted)" font-size="9" text-anchor="middle">T-${a.T}</text>`;
+  });
+
+  // X-axis label
+  svg += `<text x="${pad.l + pw / 2}" y="${H - 4}" fill="var(--muted)" font-size="10" text-anchor="middle">Days Before Event</text>`;
+  // Y-axis label
+  svg += `<text x="10" y="${pad.t + ph / 2}" fill="var(--muted)" font-size="10" text-anchor="middle" transform="rotate(-90,10,${pad.t + ph / 2})">Error (MAE%)</text>`;
+
+  svg += '</svg>';
+  el.innerHTML = svg;
 }
 
 function renderPerfBars(chartId, labelId, aggregate, field, maxVal, fmt, colorFn, label) {

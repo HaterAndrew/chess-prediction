@@ -347,22 +347,25 @@ header {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 10px 14px;
+  padding: 12px 18px;
   flex: 0 1 auto;
-  min-width: 100px;
+  min-width: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   transition: border-color .2s, box-shadow .2s, transform .2s;
 }
 .kpi-card:hover { border-color: var(--border-light); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
 .kpi-label {
-  font-size: .6rem; color: var(--muted);
+  font-size: .65rem; color: var(--muted);
   text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 .kpi-value {
-  font-size: 1.15rem; font-weight: 800; line-height: 1;
+  font-size: 1.5rem; font-weight: 800; line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-.kpi-sub { font-size: .68rem; color: var(--muted); margin-top: 3px; }
+.kpi-sub { font-size: .7rem; color: var(--muted); margin-top: 6px; }
 .v-blue { color: var(--blue); }
 .v-gold { color: var(--gold); }
 .v-green { color: var(--green); }

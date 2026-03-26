@@ -887,6 +887,7 @@ footer a { color: var(--muted); }
     <button class="page-tab active" onclick="switchPageTab('predictions')" role="tab" aria-selected="true" id="ptab-predictions">Predictions</button>
     <button class="page-tab" onclick="switchPageTab('puzzles')" role="tab" aria-selected="false" id="ptab-puzzles">&#9822; Puzzles</button>
     <button class="page-tab" onclick="switchPageTab('dataentry')" role="tab" aria-selected="false" id="ptab-dataentry">Data Entry</button>
+    <button class="page-tab" onclick="switchPageTab('email')" role="tab" aria-selected="false" id="ptab-email">&#9993; Email</button>
   </div>
 
   <!-- ══════ PREDICTIONS TAB ══════ -->
@@ -1096,6 +1097,40 @@ footer a { color: var(--muted); }
       <button style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:6px;padding:6px 14px;color:var(--muted);font-size:.72rem;cursor:pointer" onclick="clearDataEntry()">Reset to Default</button>
     </div>
   </div><!-- /panel-dataentry -->
+
+  <!-- ══════ EMAIL TAB ══════ -->
+  <div class="page-tab-panel" id="panel-email" role="tabpanel">
+    <div style="font-size:.72rem;color:var(--muted);margin:12px 0 16px">
+      Generate prediction update emails. Select tournaments, pick a length, and copy the output.
+    </div>
+
+    <!-- Tournament selector -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
+      <span style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Tournaments</span>
+      <button onclick="emailSelectAll()" style="font-size:.72rem;color:var(--blue);background:none;border:none;cursor:pointer;text-decoration:underline">Select all</button>
+      <button onclick="emailSelectNone()" style="font-size:.72rem;color:var(--blue);background:none;border:none;cursor:pointer;text-decoration:underline">Clear</button>
+      <button onclick="emailSelectClose()" style="font-size:.72rem;color:var(--blue);background:none;border:none;cursor:pointer;text-decoration:underline">Next 60 days</button>
+    </div>
+    <div id="emailGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin-bottom:20px"></div>
+
+    <!-- Length + generate -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+      <span style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Length</span>
+      <div class="email-len-toggle" id="emailLenToggle" style="display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid var(--border)">
+        <button data-len="short" onclick="setEmailLength('short')" style="padding:5px 14px;font-size:.82rem;background:var(--surface2);color:var(--text2);border:none;cursor:pointer">Short</button>
+        <button data-len="medium" onclick="setEmailLength('medium')" style="padding:5px 14px;font-size:.82rem;background:var(--gold);color:#000;font-weight:600;border:none;cursor:pointer;border-left:1px solid var(--border);border-right:1px solid var(--border)">Medium</button>
+        <button data-len="long" onclick="setEmailLength('long')" style="padding:5px 14px;font-size:.82rem;background:var(--surface2);color:var(--text2);border:none;cursor:pointer">Long</button>
+      </div>
+      <button onclick="generateEmail()" style="padding:6px 18px;border-radius:6px;font-size:.82rem;font-weight:600;background:var(--blue);color:#fff;border:none;cursor:pointer">Generate</button>
+    </div>
+
+    <!-- Output -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <span style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Output</span>
+      <button id="emailCopyBtn" onclick="copyEmail()" style="padding:5px 14px;border-radius:6px;font-size:.78rem;font-weight:600;background:var(--surface2);color:var(--text);border:1px solid var(--border);cursor:pointer">Copy to clipboard</button>
+    </div>
+    <div id="emailOutput" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;white-space:pre-wrap;font-family:Georgia,'Times New Roman',serif;font-size:.92rem;line-height:1.7;min-height:180px;color:var(--text2)"></div>
+  </div><!-- /panel-email -->
 
 </main>
 
@@ -77070,6 +77105,193 @@ function switchPageTab(tab) {
   document.getElementById('panel-' + tab).classList.add('active');
   if (tab === 'puzzles') initPuzzles();
   if (tab === 'dataentry') renderDataEntry();
+  if (tab === 'email') initEmailTab();
+}
+
+// ══════════════════════════════════════════════════════════
+// EMAIL GENERATOR
+// ══════════════════════════════════════════════════════════
+let emailLength = 'medium';
+let emailLive = [];
+let emailInited = false;
+
+function initEmailTab() {
+  if (emailInited) return;
+  emailInited = true;
+  emailLive = TOURNAMENT_DATA.tournaments
+    .filter(t => t.status === 'live')
+    .sort((a, b) => a.days_remaining - b.days_remaining);
+  const grid = document.getElementById('emailGrid');
+  grid.innerHTML = '';
+  emailLive.forEach((t, i) => {
+    const lbl = document.createElement('label');
+    lbl.style.cssText = 'display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;user-select:none;font-size:.88rem';
+    lbl.onmouseover = () => lbl.style.background = 'var(--surface2)';
+    lbl.onmouseout = () => lbl.style.background = '';
+    lbl.innerHTML = `<input type="checkbox" data-eidx="${i}" checked style="accent-color:var(--gold);width:15px;height:15px;cursor:pointer">
+      <span>${t.family}</span>
+      <span style="font-size:.72rem;color:var(--muted);margin-left:auto">${t.days_remaining}d</span>`;
+    grid.appendChild(lbl);
+  });
+}
+
+function emailGetSelected() {
+  const sel = [];
+  document.querySelectorAll('#emailGrid input[type="checkbox"]').forEach(cb => {
+    if (cb.checked) sel.push(emailLive[parseInt(cb.dataset.eidx)]);
+  });
+  return sel;
+}
+function emailSelectAll() { document.querySelectorAll('#emailGrid input').forEach(cb => cb.checked = true); }
+function emailSelectNone() { document.querySelectorAll('#emailGrid input').forEach(cb => cb.checked = false); }
+function emailSelectClose() {
+  document.querySelectorAll('#emailGrid input').forEach(cb => {
+    cb.checked = emailLive[parseInt(cb.dataset.eidx)].days_remaining <= 60;
+  });
+}
+
+function setEmailLength(len) {
+  emailLength = len;
+  document.querySelectorAll('#emailLenToggle button').forEach(b => {
+    const active = b.dataset.len === len;
+    b.style.background = active ? 'var(--gold)' : 'var(--surface2)';
+    b.style.color = active ? '#000' : 'var(--text2)';
+    b.style.fontWeight = active ? '600' : '400';
+  });
+}
+
+function emailLastYear(t) {
+  if (!t.historical || !t.historical.length) return null;
+  return [...t.historical].sort((a, b) => b.year - a.year)[0];
+}
+function emailHistAvg(t) {
+  if (!t.historical || !t.historical.length) return null;
+  const c = t.historical.map(h => h.count);
+  return Math.round(c.reduce((a, b) => a + b, 0) / c.length);
+}
+
+function emailFormatTournament(t, len) {
+  const ly = emailLastYear(t);
+  const avg = emailHistAvg(t);
+  const pace = t.prior_year_pace;
+  const name = t.family.toUpperCase();
+
+  if (len === 'short') {
+    let s = `${name}:  We are at ${t.current_count} which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
+    if (ly) s += `  Last year was ${ly.count}.`;
+    return s;
+  }
+
+  if (len === 'medium') {
+    const lines = [];
+    let main = `${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
+    if (ly) {
+      const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
+      if (pct > 10) main += `  Last year was ${ly.count}, so we are ahead.`;
+      else if (pct < -10) main += `  Last year was ${ly.count}, so we are still behind.`;
+      else if (pct < -3) main += `  Last year was ${ly.count}, so we are a little behind.`;
+      else main += `  Last year was ${ly.count}.`;
+    }
+    lines.push(main);
+    if (pace) {
+      const d = t.current_count - pace.count_at_same_point;
+      if (d > 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`);
+      else if (d < 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`);
+      else lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
+    }
+    return lines.join('  ');
+  }
+
+  // Long
+  const lines = [];
+  lines.push(`${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`);
+  if (ly) {
+    const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
+    if (pct > 15) lines.push(`Last year was ${ly.count}, so the projection has us well ahead.`);
+    else if (pct > 5) lines.push(`Last year was ${ly.count}, so we are tracking ahead.`);
+    else if (pct > -5) lines.push(`Last year was ${ly.count}, so we are in the same neighborhood.`);
+    else if (pct > -15) lines.push(`Last year was ${ly.count}, so we are still a bit behind.`);
+    else lines.push(`Last year was ${ly.count}, so we are lagging.`);
+  }
+  if (avg && t.historical.length >= 3) {
+    const pct = Math.round((t.point_estimate - avg) / avg * 100);
+    if (pct < -10) lines.push(`The historical average is ${avg}, so we are still below the norm.`);
+    else if (pct > 10) lines.push(`The historical average is ${avg}, so we are trending above average.`);
+  }
+  if (pace) {
+    const d = t.current_count - pace.count_at_same_point;
+    let s = `At this point last year we were at ${pace.count_at_same_point} which predicted ${pace.final}`;
+    s += d > 0 ? `, so we are ahead of pace.` : d < 0 ? `, so we are behind.` : `.`;
+    lines.push(s);
+  }
+  if (t.historical && t.historical.length >= 2) {
+    const sorted = [...t.historical].sort((a, b) => b.year - a.year);
+    lines.push('');
+    lines.push(`            YEAR            ENTRIES            PROJECTION            FINAL`);
+    lines.push(`            2026            ${String(t.current_count).padStart(6)}            ${String(t.point_estimate).padStart(10)}`);
+    sorted.forEach(h => {
+      lines.push(`            ${h.year}                                                          ${String(h.count).padStart(6)}`);
+    });
+  }
+  return lines.join('\n');
+}
+
+function emailOverallTheme(selected) {
+  let ahead = 0, behind = 0;
+  selected.forEach(t => {
+    const ly = emailLastYear(t);
+    if (!ly) return;
+    const pct = (t.point_estimate - ly.count) / ly.count;
+    if (pct > 0.05) ahead++;
+    else if (pct < -0.05) behind++;
+  });
+  const total = ahead + behind;
+  if (total === 0) return 'Things are holding steady across the board.';
+  if (behind === 0) return 'The overall theme is improvement across the board.';
+  if (ahead === 0) return 'The overall theme is we are still lagging across the board.';
+  if (ahead >= behind) return 'The overall theme is a mixed bag \u2014 some improvement, but we are still behind on a few events.';
+  return 'The overall theme today is there has been some improvement, but we are still lagging.';
+}
+
+function generateEmail() {
+  const selected = emailGetSelected();
+  const out = document.getElementById('emailOutput');
+  if (!selected.length) { out.textContent = 'No tournaments selected.'; return; }
+  const len = emailLength;
+  const lines = ['Team', ''];
+  if (len !== 'short' && selected.length > 1) {
+    lines.push(emailOverallTheme(selected));
+    lines.push('');
+  }
+  selected.forEach((t, i) => {
+    lines.push(emailFormatTournament(t, len));
+    if (i < selected.length - 1) lines.push('');
+  });
+  lines.push('', 'Dave');
+  out.textContent = lines.join('\n');
+  const btn = document.getElementById('emailCopyBtn');
+  btn.textContent = 'Copy to clipboard';
+  btn.style.background = 'var(--surface2)';
+  btn.style.borderColor = 'var(--border)';
+  btn.style.color = 'var(--text)';
+}
+
+function copyEmail() {
+  const text = document.getElementById('emailOutput').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('emailCopyBtn');
+    btn.textContent = 'Copied!';
+    btn.style.background = 'var(--green)';
+    btn.style.borderColor = 'var(--green)';
+    btn.style.color = '#000';
+    setTimeout(() => {
+      btn.textContent = 'Copy to clipboard';
+      btn.style.background = 'var(--surface2)';
+      btn.style.borderColor = 'var(--border)';
+      btn.style.color = 'var(--text)';
+    }, 2000);
+  });
 }
 
 // ══════════════════════════════════════════════════════════

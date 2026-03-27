@@ -1,9 +1,17 @@
 # Virtual environment
 venv/
+.venv/
+env/
 
 # Python bytecode
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
 
 # Output files (large/generated) — exclude most
 output/*.csv
@@ -21,3 +29,24 @@ output/*.js
 !output/daily_registration_counts.csv
 !output/tournament_metadata.csv
 !output/update_log.csv
+
+# Data (local dev DB)
+*.db
+data/
+*.sqlite3
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (frontend)
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db

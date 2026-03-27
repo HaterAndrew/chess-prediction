@@ -46,7 +46,34 @@ if os.path.exists(scrape_path):
             summary.loc[mask, 'final_count'] = s['entry_count']
             if old_count != s['entry_count']:
                 updated += 1
-    # Also update daily registration counts with latest scrape data
+    # Also update daily registration counts with latest scrape data.
+    # For live 2026 tournaments, use event_start as the T reference so scrape
+    # data extends the curve beyond the stale last_reg date.
+    # Step 1: Shift existing T values from last_reg-based to event_start-based (once per tid)
+    shifted_tids = set()
+    for _, s in latest_scrape.iterrows():
+        scrape_name = s['tournament_name']
+        family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
+        tid_match = summary[(summary['family'] == family_name) & (summary['tournament_year'] == 2026)]
+        if len(tid_match) == 0:
+            continue
+        tid = tid_match.iloc[0]['tid']
+        if tid in shifted_tids:
+            continue
+        last_reg = tid_match.iloc[0].get('last_reg')
+        meta_row = meta[(meta['family'] == family_name) & (meta['year'] == 2026)]
+        if len(meta_row) == 0:
+            meta_row = meta[(meta['year'] == 2026) & (meta['start_date'] > pd.Timestamp.now())]
+            meta_row = meta_row[meta_row['family'].str.contains(family_name.split()[0], case=False, na=False)]
+        if len(meta_row) > 0 and pd.notna(last_reg):
+            event_start = pd.to_datetime(meta_row.iloc[0]['start_date'])
+            offset = (event_start - pd.to_datetime(last_reg)).days
+            if offset > 0:
+                mask = daily['tid'] == tid
+                daily.loc[mask, 'T'] = daily.loc[mask, 'T'] + offset
+                shifted_tids.add(tid)
+
+    # Step 2: Insert scrape rows using event_start-based T
     for _, s in scrape.iterrows():
         scrape_name = s['tournament_name']
         family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
@@ -54,18 +81,28 @@ if os.path.exists(scrape_path):
         if len(tid_match) == 0:
             continue
         tid = tid_match.iloc[0]['tid']
-        # T must use the same reference as 01_data_prep (last_reg), not event_date
         last_reg = tid_match.iloc[0].get('last_reg')
-        if pd.notna(last_reg):
+        meta_row = meta[(meta['family'] == family_name) & (meta['year'] == 2026)]
+        if len(meta_row) == 0:
+            meta_row = meta[(meta['year'] == 2026) & (meta['start_date'] > pd.Timestamp.now())]
+            meta_row = meta_row[meta_row['family'].str.contains(family_name.split()[0], case=False, na=False)]
+        if len(meta_row) > 0:
+            event_start = pd.to_datetime(meta_row.iloc[0]['start_date'])
+            T = max((event_start - pd.to_datetime(s['date'])).days, 0)
+        elif pd.notna(last_reg):
             T = max((pd.to_datetime(last_reg) - pd.to_datetime(s['date'])).days, 0)
-            # Check if this (tid, T) already exists
-            existing = daily[(daily['tid'] == tid) & (daily['T'] == T)]
-            if len(existing) == 0 and s['entry_count'] > 0:
-                new_row = pd.DataFrame([{
-                    'tid': tid, 'T': T, 'daily_regs': 0,
-                    'cum_regs': s['entry_count'], 'cum_pct': 1.0
-                }])
-                daily = pd.concat([daily, new_row], ignore_index=True)
+        else:
+            continue
+        # Insert or update
+        existing = daily[(daily['tid'] == tid) & (daily['T'] == T)]
+        if len(existing) == 0 and s['entry_count'] > 0:
+            new_row = pd.DataFrame([{
+                'tid': tid, 'T': T, 'daily_regs': 0,
+                'cum_regs': s['entry_count'], 'cum_pct': 1.0
+            }])
+            daily = pd.concat([daily, new_row], ignore_index=True)
+        elif len(existing) > 0 and s['entry_count'] > existing.iloc[0]['cum_regs']:
+            daily.loc[(daily['tid'] == tid) & (daily['T'] == T), 'cum_regs'] = s['entry_count']
     print(f"  Merged scrape data: {updated} tournament counts updated, {len(latest_scrape)} tournaments in scrape")
 
 # Load enrichment data if available
@@ -737,6 +774,7 @@ n_historical = sum(1 for t in tournaments_out if t['status'] == 'historical')
 
 output = {
     "generated": TODAY.strftime('%Y-%m-%d'),
+    "generated_time": pd.Timestamp.now(tz='America/New_York').isoformat(),
     "model": "N5v4_Final",
     "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
     "n_completed_in_training": len(completed_tids) if completed_tids else 0,

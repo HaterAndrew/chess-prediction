@@ -1534,7 +1534,7 @@ footer a { color: var(--muted); }
 // TOURNAMENT DATA (embedded from model pipeline)
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
-  "generated": "2026-03-27",
+  "generated": "2026-03-27T13:15:00-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
   "n_completed_in_training": 16,
@@ -76992,6 +76992,15 @@ function fmtDate(s) {
 }
 function fmtDateLong(s) {
   if (!s) return '–';
+  // If timestamp includes time (ISO 8601), show date + time in ET
+  if (s.includes('T')) {
+    const d = new Date(s);
+    return d.toLocaleString('en-US', {
+      month: 'long', day: 'numeric', year: 'numeric',
+      hour: 'numeric', minute: '2-digit',
+      timeZone: 'America/New_York', timeZoneName: 'short'
+    });
+  }
   const d = new Date(s + 'T00:00:00');
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }

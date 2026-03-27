@@ -1534,7 +1534,8 @@ footer a { color: var(--muted); }
 // TOURNAMENT DATA (embedded from model pipeline)
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
-  "generated": "2026-03-27T13:15:00-04:00",
+  "generated": "2026-03-27",
+  "generated_time": "2026-03-27T13:15:00-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
   "n_completed_in_training": 16,
@@ -78779,7 +78780,7 @@ function initSplash() {
   document.getElementById('ss-live').textContent = live;
   document.getElementById('ss-total').textContent = ts.length;
   document.getElementById('ss-years').textContent = yearSpan;
-  document.getElementById('splashScrapeDate').textContent = 'Last scrape: ' + fmtDateLong(TOURNAMENT_DATA.generated);
+  document.getElementById('splashScrapeDate').textContent = 'Last scrape: ' + fmtDateLong(TOURNAMENT_DATA.generated_time || TOURNAMENT_DATA.generated);
 
   // Auto-animate numbers
   animateNum('ss-live', 0, live, 800);
@@ -80397,7 +80398,7 @@ function selectTournament(index) {
 }
 
 function init() {
-  document.getElementById('lastUpdated').textContent = fmtDateLong(TOURNAMENT_DATA.generated);
+  document.getElementById('lastUpdated').textContent = fmtDateLong(TOURNAMENT_DATA.generated_time || TOURNAMENT_DATA.generated);
   initSplash();
   renderAllTournaments();
   renderSummaryBar();

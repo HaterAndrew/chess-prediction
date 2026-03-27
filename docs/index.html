@@ -1534,10 +1534,10 @@ footer a { color: var(--muted); }
 // TOURNAMENT DATA (embedded from model pipeline)
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
-  "generated": "2026-03-26",
+  "generated": "2026-03-27",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
-  "n_completed_in_training": 21,
+  "n_completed_in_training": 16,
   "tournaments": [
     {
       "family": "Atlantic City Open",
@@ -1548,11 +1548,11 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 242,
-      "days_remaining": 6,
-      "point_estimate": 461,
-      "ci_lower": 430,
-      "ci_upper": 494,
+      "current_count": 249,
+      "days_remaining": 5,
+      "point_estimate": 457,
+      "ci_lower": 429,
+      "ci_upper": 486,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1881,11 +1881,11 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 182,
-      "days_remaining": 56,
-      "point_estimate": 897,
-      "ci_lower": 845,
-      "ci_upper": 953,
+      "current_count": 183,
+      "days_remaining": 55,
+      "point_estimate": 892,
+      "ci_lower": 841,
+      "ci_upper": 946,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2177,7 +2177,7 @@ const TOURNAMENT_DATA = {
       "status": "live",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 170,
+        "count_at_same_point": 171,
         "final": 899
       }
     },
@@ -2191,10 +2191,10 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 3,
-      "days_remaining": 71,
+      "days_remaining": 70,
       "point_estimate": 196,
-      "ci_lower": 120,
-      "ci_upper": 322,
+      "ci_lower": 119,
+      "ci_upper": 321,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2300,10 +2300,10 @@ const TOURNAMENT_DATA = {
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
       "current_count": 2,
-      "days_remaining": 71,
+      "days_remaining": 70,
       "point_estimate": 193,
-      "ci_lower": 115,
-      "ci_upper": 326,
+      "ci_lower": 113,
+      "ci_upper": 327,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2409,10 +2409,10 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 1,
-      "days_remaining": 85,
+      "days_remaining": 84,
       "point_estimate": 79,
       "ci_lower": 48,
-      "ci_upper": 130,
+      "ci_upper": 129,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2499,10 +2499,10 @@ const TOURNAMENT_DATA = {
       "regular_fee": 328.0,
       "onsite_fee": 350.0,
       "current_count": 35,
-      "days_remaining": 97,
-      "point_estimate": 1352,
-      "ci_lower": 1217,
-      "ci_upper": 1502,
+      "days_remaining": 96,
+      "point_estimate": 1341,
+      "ci_lower": 1207,
+      "ci_upper": 1490,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2670,7 +2670,7 @@ const TOURNAMENT_DATA = {
       "status": "live",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 31,
+        "count_at_same_point": 1,
         "final": 1674
       }
     },
@@ -2684,10 +2684,10 @@ const TOURNAMENT_DATA = {
       "regular_fee": 138.0,
       "onsite_fee": 150.0,
       "current_count": 1,
-      "days_remaining": 113,
-      "point_estimate": 270,
-      "ci_lower": 157,
-      "ci_upper": 464,
+      "days_remaining": 112,
+      "point_estimate": 268,
+      "ci_lower": 156,
+      "ci_upper": 461,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2785,10 +2785,10 @@ const TOURNAMENT_DATA = {
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
       "current_count": 2,
-      "days_remaining": 113,
-      "point_estimate": 165,
+      "days_remaining": 112,
+      "point_estimate": 164,
       "ci_lower": 98,
-      "ci_upper": 277,
+      "ci_upper": 275,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2894,7 +2894,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 113,
+      "days_remaining": 112,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -2989,10 +2989,10 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 2,
-      "days_remaining": 120,
-      "point_estimate": 257,
-      "ci_lower": 157,
-      "ci_upper": 421,
+      "days_remaining": 119,
+      "point_estimate": 255,
+      "ci_lower": 156,
+      "ci_upper": 419,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3098,10 +3098,10 @@ const TOURNAMENT_DATA = {
       "regular_fee": 143.0,
       "onsite_fee": 155.0,
       "current_count": 3,
-      "days_remaining": 127,
-      "point_estimate": 376,
-      "ci_lower": 230,
-      "ci_upper": 617,
+      "days_remaining": 126,
+      "point_estimate": 374,
+      "ci_lower": 228,
+      "ci_upper": 613,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3207,7 +3207,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": 160.0,
       "onsite_fee": 160.0,
       "current_count": 0,
-      "days_remaining": 247,
+      "days_remaining": 246,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -74890,7 +74890,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 6,
+      "days_remaining": 5,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -74982,153 +74982,150 @@ const TOURNAMENT_DATA = {
 // PUZZLE DATA (embedded from puzzle pipeline)
 // ══════════════════════════════════════════════════════════
 const PUZZLE_DATA = {
-  "date": "2026-03-26",
+  "date": "2026-03-27",
   "puzzles": [
     {
-      "id": "0dBxV",
-      "fen": "N2q1b1r/pQ1b1ppp/2p2k2/8/2P5/8/PP3PPP/n1BK1BNR w - - 1 15",
-      "moves": "g1f3 d7c8 d1e2 d8e8",
-      "rating": 2463,
+      "id": "0sg9V",
+      "fen": "5rk1/rb3ppp/p1n4q/4p3/2BP2Q1/P3P1R1/1PPN2PP/5RK1 w - - 2 23",
+      "moves": "f1f6 h6f6 d2e4 f6h6",
+      "rating": 2055,
       "themes": [
         "advantage",
-        "discoveredAttack",
-        "discoveredCheck",
+        "hangingPiece",
         "middlegame",
         "short"
       ],
-      "url": "https://lichess.org/training/0dBxV",
-      "game_url": "https://lichess.org/EujCCOl9#29"
+      "url": "https://lichess.org/training/0sg9V",
+      "game_url": "https://lichess.org/Ot3b32Nd#45"
     },
     {
-      "id": "0dW09",
-      "fen": "4b3/4P3/3K4/p2B1k2/6p1/6P1/8/8 b - - 0 45",
-      "moves": "a5a4 d5c6 e8f7 c6a4",
-      "rating": 2210,
+      "id": "0GLXc",
+      "fen": "1Q4k1/5ppp/5n2/3p4/8/5R2/1PP3PP/q3r1NK b - - 3 24",
+      "moves": "f6e8 f3f1 a1b2 b8b2",
+      "rating": 2073,
       "themes": [
+        "advantage",
+        "endgame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0GLXc",
+      "game_url": "https://lichess.org/SbDiypic/black#48"
+    },
+    {
+      "id": "0WxR7",
+      "fen": "8/8/8/1B6/p1p5/P1P2p2/1P1k1K2/3b4 w - - 4 55",
+      "moves": "b5c6 d2c1 f2e1 c1b2 e1d1 f3f2",
+      "rating": 2720,
+      "themes": [
+        "advancedPawn",
         "bishopEndgame",
         "crushing",
         "endgame",
-        "interference",
-        "master",
-        "short"
+        "long",
+        "sacrifice"
       ],
-      "url": "https://lichess.org/training/0dW09",
-      "game_url": "https://lichess.org/9lHI8R28/black#90"
+      "url": "https://lichess.org/training/0WxR7",
+      "game_url": "https://lichess.org/pyV3LbF5#109"
     },
     {
-      "id": "09e7O",
-      "fen": "r7/p4rkp/5pp1/1NPQ4/1P2p3/6P1/P4RKP/q7 b - - 1 29",
-      "moves": "f6f5 d5a8 e4e3 f2e2 f5f4 a8f3",
-      "rating": 2523,
+      "id": "0Dwaa",
+      "fen": "r2qkbQ1/ppp1pr2/2n5/3p4/3P4/5N1B/PPb1PP2/RNB1K3 b Qq - 1 12",
+      "moves": "c2f5 h3f5 f7f5 g8g6 e8d7 g6f5",
+      "rating": 2041,
+      "themes": [
+        "advantage",
+        "attraction",
+        "fork",
+        "long",
+        "opening"
+      ],
+      "url": "https://lichess.org/training/0Dwaa",
+      "game_url": "https://lichess.org/1b56uw4E/black#24"
+    },
+    {
+      "id": "0k7Zk",
+      "fen": "3rk1r1/2R2p2/4b3/6q1/3p3Q/6P1/P4P1P/4R1K1 w - - 5 33",
+      "moves": "e1e6 f7e6 h4h7 g8f8",
+      "rating": 2024,
       "themes": [
         "crushing",
         "endgame",
         "hangingPiece",
-        "long"
+        "short"
       ],
-      "url": "https://lichess.org/training/09e7O",
-      "game_url": "https://lichess.org/R3RFLJtC/black#58"
+      "url": "https://lichess.org/training/0k7Zk",
+      "game_url": "https://lichess.org/fnwj9JFG#65"
     },
     {
-      "id": "0IxiY",
-      "fen": "r2qkb1r/pp2pppp/3p1n2/2p5/2B1P3/1QP2n2/PP1P1P1P/RNB1RK2 b kq - 1 9",
-      "moves": "f3e1 c4f7 e8d7 b3b7 d8c7 f7e6 d7e6 b7c7",
-      "rating": 2130,
+      "id": "0pQUA",
+      "fen": "8/5kp1/1p2p1pp/PP1pK3/3Pn3/4P2P/N7/8 b - - 0 35",
+      "moves": "g6g5 a5a6 f7e7 a2b4",
+      "rating": 2633,
       "themes": [
-        "attackingF2F7",
         "crushing",
-        "deflection",
-        "middlegame",
-        "veryLong"
+        "endgame",
+        "knightEndgame",
+        "short"
       ],
-      "url": "https://lichess.org/training/0IxiY",
-      "game_url": "https://lichess.org/fiUurzzF/black#18"
+      "url": "https://lichess.org/training/0pQUA",
+      "game_url": "https://lichess.org/ka0GtrcZ/black#70"
     },
     {
-      "id": "10nAs",
-      "fen": "2R5/6pk/7p/3Np2P/2pnP3/5pP1/5P1K/2r5 b - - 0 33",
-      "moves": "d4e2 d5e7 e2g3 h2g3",
-      "rating": 2258,
+      "id": "0GOqY",
+      "fen": "2b5/6k1/ppp1P1p1/3B1nQp/1qP2p2/1P6/P5PP/3R2K1 w - - 0 31",
+      "moves": "d5c6 b4c5 g1h1 f5g3 g5g3 f4g3",
+      "rating": 2243,
       "themes": [
         "advantage",
         "endgame",
-        "quietMove",
-        "short"
+        "fork",
+        "long"
       ],
-      "url": "https://lichess.org/training/10nAs",
-      "game_url": "https://lichess.org/rwsoFRtV/black#66"
+      "url": "https://lichess.org/training/0GOqY",
+      "game_url": "https://lichess.org/pTQwjVBj#61"
     },
     {
-      "id": "0092V",
-      "fen": "r2qk1nr/ppp3pp/2n5/1B1pp3/1b1P4/5Q1P/PP1B1PP1/RN2K2R b KQkq - 3 11",
-      "moves": "e5e4 b5c6 b7c6 f3h5 g7g6 h5e5",
-      "rating": 2267,
+      "id": "0j15I",
+      "fen": "r1bq2kr/ppp3p1/3pP2p/2b1n1N1/3p4/6Q1/PPP2PPP/RNB1R1K1 b - - 1 12",
+      "moves": "d8f6 g5e4 f6e6 f2f4 e5g6 e4c5",
+      "rating": 2815,
       "themes": [
-        "crushing",
-        "exposedKing",
+        "advantage",
         "long",
         "opening"
       ],
-      "url": "https://lichess.org/training/0092V",
-      "game_url": "https://lichess.org/bW5LiCa5/black#22"
+      "url": "https://lichess.org/training/0j15I",
+      "game_url": "https://lichess.org/Y8Lbe3A3/black#24"
     },
     {
-      "id": "0rQaz",
-      "fen": "r2q4/p3npk1/1p2p1p1/2p1P1P1/3PP3/PN3Q2/4r3/2K4R b - - 1 26",
-      "moves": "e2a2 f3f6 g7f8 h1h7 f8e8 d4d5",
-      "rating": 2897,
+      "id": "0m3Gr",
+      "fen": "Nnbkr3/pp3pQp/3p4/2b5/2P2N2/6P1/PP5P/R1B1KB1q w Q - 1 18",
+      "moves": "f4e2 e8e2 e1e2 h1e4",
+      "rating": 2269,
       "themes": [
-        "crushing",
-        "long",
-        "middlegame"
-      ],
-      "url": "https://lichess.org/training/0rQaz",
-      "game_url": "https://lichess.org/G0lyY5mW/black#52"
-    },
-    {
-      "id": "0oq5T",
-      "fen": "3q2k1/p1p2pp1/6rp/4P3/2N2n2/4QbP1/P1P2P1P/R5K1 w - - 0 23",
-      "moves": "e3f3 d8d4 a1d1 d4c4",
-      "rating": 2018,
-      "themes": [
-        "crushing",
-        "endgame",
-        "fork",
-        "master",
-        "masterVsMaster",
+        "advantage",
+        "attraction",
+        "middlegame",
         "pin",
+        "sacrifice",
         "short"
       ],
-      "url": "https://lichess.org/training/0oq5T",
-      "game_url": "https://lichess.org/ezUbiVaK#45"
+      "url": "https://lichess.org/training/0m3Gr",
+      "game_url": "https://lichess.org/s4Mjg01l#35"
     },
     {
-      "id": "0Ovuz",
-      "fen": "r6r/1pp1nkpp/p1n1b3/4P3/8/1Q6/PPPN2PP/2K3NR w - - 2 17",
-      "moves": "b3b7 a8a7 b7a7 c6a7",
-      "rating": 2011,
+      "id": "0p3zk",
+      "fen": "2r2qk1/4R2p/1P4b1/5nP1/1K1Q3P/P7/8/4R3 w - - 1 39",
+      "moves": "d4d7 f5e7 d7e7 f8f4",
+      "rating": 2083,
       "themes": [
-        "advantage",
+        "crushing",
+        "master",
         "middlegame",
-        "short",
-        "trappedPiece"
-      ],
-      "url": "https://lichess.org/training/0Ovuz",
-      "game_url": "https://lichess.org/lgFDtVgm#33"
-    },
-    {
-      "id": "0cKGA",
-      "fen": "2rq1rkn/1p2npp1/p3p2P/3pP1N1/3P4/2P5/3Q1P2/R4K1R b - - 0 22",
-      "moves": "g7g6 g5e4 e7f5 e4f6",
-      "rating": 2509,
-      "themes": [
-        "advantage",
-        "middlegame",
-        "quietMove",
         "short"
       ],
-      "url": "https://lichess.org/training/0cKGA",
-      "game_url": "https://lichess.org/sMf6PURA/black#44"
+      "url": "https://lichess.org/training/0p3zk",
+      "game_url": "https://lichess.org/rXpw9Vuq#77"
     }
   ]
 };
@@ -77025,7 +77022,7 @@ function interpCurve(curve, daysBefore) {
 // PERFORMANCE DATA (model blind test results)
 // ══════════════════════════════════════════════════════════
 const PERFORMANCE_DATA = {
-  "generated": "2026-03-26",
+  "generated": "2026-03-27",
   "model": "N5v4_Final",
   "n_tournaments": 11,
   "grade": "A",
@@ -77034,10 +77031,10 @@ const PERFORMANCE_DATA = {
     {
       "T": 90,
       "n": 6,
-      "mae_pct": 4.3,
-      "median_ape_pct": 3.2,
+      "mae_pct": 3.9,
+      "median_ape_pct": 2.7,
       "ci_coverage": 100.0,
-      "bias_pct": 3.8
+      "bias_pct": 3.2
     },
     {
       "T": 60,
@@ -77045,7 +77042,7 @@ const PERFORMANCE_DATA = {
       "mae_pct": 5.0,
       "median_ape_pct": 4.9,
       "ci_coverage": 100.0,
-      "bias_pct": 0.9
+      "bias_pct": 0.6
     },
     {
       "T": 42,
@@ -77058,26 +77055,26 @@ const PERFORMANCE_DATA = {
     {
       "T": 28,
       "n": 11,
-      "mae_pct": 6.4,
-      "median_ape_pct": 2.8,
+      "mae_pct": 6.3,
+      "median_ape_pct": 2.6,
       "ci_coverage": 82.0,
-      "bias_pct": 1.1
+      "bias_pct": 1.0
     },
     {
       "T": 14,
       "n": 11,
       "mae_pct": 5.0,
-      "median_ape_pct": 1.6,
+      "median_ape_pct": 1.4,
       "ci_coverage": 82.0,
-      "bias_pct": 4.4
+      "bias_pct": 4.3
     },
     {
       "T": 7,
       "n": 11,
-      "mae_pct": 7.9,
-      "median_ape_pct": 5.2,
-      "ci_coverage": 55.0,
-      "bias_pct": 6.7
+      "mae_pct": 7.6,
+      "median_ape_pct": 4.7,
+      "ci_coverage": 64.0,
+      "bias_pct": 6.2
     },
     {
       "T": 3,
@@ -77105,61 +77102,61 @@ const PERFORMANCE_DATA = {
         {
           "T": 90,
           "count_at_T": 4,
-          "predicted": 372,
-          "ci_lower": 227,
-          "ci_upper": 610,
-          "error_pct": 3.6,
-          "abs_error_pct": 3.6,
+          "predicted": 370,
+          "ci_lower": 226,
+          "ci_upper": 607,
+          "error_pct": 3.1,
+          "abs_error_pct": 3.1,
           "in_ci": 1
         },
         {
           "T": 60,
           "count_at_T": 15,
-          "predicted": 376,
-          "ci_lower": 229,
-          "ci_upper": 616,
-          "error_pct": 4.7,
-          "abs_error_pct": 4.7,
+          "predicted": 375,
+          "ci_lower": 228,
+          "ci_upper": 614,
+          "error_pct": 4.5,
+          "abs_error_pct": 4.5,
           "in_ci": 1
         },
         {
           "T": 42,
           "count_at_T": 24,
-          "predicted": 367,
-          "ci_lower": 326,
-          "ci_upper": 412,
-          "error_pct": 2.2,
-          "abs_error_pct": 2.2,
-          "in_ci": 1
-        },
-        {
-          "T": 28,
-          "count_at_T": 47,
-          "predicted": 367,
-          "ci_lower": 343,
-          "ci_upper": 392,
-          "error_pct": 2.2,
-          "abs_error_pct": 2.2,
-          "in_ci": 1
-        },
-        {
-          "T": 14,
-          "count_at_T": 89,
           "predicted": 366,
-          "ci_lower": 346,
-          "ci_upper": 387,
+          "ci_lower": 326,
+          "ci_upper": 411,
           "error_pct": 1.9,
           "abs_error_pct": 1.9,
           "in_ci": 1
         },
         {
+          "T": 28,
+          "count_at_T": 47,
+          "predicted": 366,
+          "ci_lower": 342,
+          "ci_upper": 392,
+          "error_pct": 1.9,
+          "abs_error_pct": 1.9,
+          "in_ci": 1
+        },
+        {
+          "T": 14,
+          "count_at_T": 89,
+          "predicted": 365,
+          "ci_lower": 346,
+          "ci_upper": 386,
+          "error_pct": 1.7,
+          "abs_error_pct": 1.7,
+          "in_ci": 1
+        },
+        {
           "T": 7,
           "count_at_T": 164,
-          "predicted": 397,
-          "ci_lower": 379,
-          "ci_upper": 416,
-          "error_pct": 10.6,
-          "abs_error_pct": 10.6,
+          "predicted": 395,
+          "ci_lower": 378,
+          "ci_upper": 414,
+          "error_pct": 10.0,
+          "abs_error_pct": 10.0,
           "in_ci": 0
         },
         {
@@ -77192,11 +77189,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 60,
           "count_at_T": 10,
-          "predicted": 529,
-          "ci_lower": 323,
-          "ci_upper": 868,
-          "error_pct": -6.2,
-          "abs_error_pct": 6.2,
+          "predicted": 527,
+          "ci_lower": 322,
+          "ci_upper": 865,
+          "error_pct": -6.6,
+          "abs_error_pct": 6.6,
           "in_ci": 1
         },
         {
@@ -77204,7 +77201,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 30,
           "predicted": 531,
           "ci_lower": 481,
-          "ci_upper": 587,
+          "ci_upper": 586,
           "error_pct": -5.9,
           "abs_error_pct": 5.9,
           "in_ci": 1
@@ -77212,31 +77209,31 @@ const PERFORMANCE_DATA = {
         {
           "T": 28,
           "count_at_T": 56,
-          "predicted": 518,
-          "ci_lower": 484,
-          "ci_upper": 554,
-          "error_pct": -8.2,
-          "abs_error_pct": 8.2,
+          "predicted": 517,
+          "ci_lower": 483,
+          "ci_upper": 553,
+          "error_pct": -8.3,
+          "abs_error_pct": 8.3,
           "in_ci": 0
         },
         {
           "T": 14,
           "count_at_T": 246,
-          "predicted": 649,
-          "ci_lower": 582,
-          "ci_upper": 725,
-          "error_pct": 15.1,
-          "abs_error_pct": 15.1,
+          "predicted": 648,
+          "ci_lower": 580,
+          "ci_upper": 723,
+          "error_pct": 14.9,
+          "abs_error_pct": 14.9,
           "in_ci": 0
         },
         {
           "T": 7,
           "count_at_T": 361,
-          "predicted": 695,
-          "ci_lower": 645,
-          "ci_upper": 749,
-          "error_pct": 23.2,
-          "abs_error_pct": 23.2,
+          "predicted": 691,
+          "ci_lower": 642,
+          "ci_upper": 745,
+          "error_pct": 22.5,
+          "abs_error_pct": 22.5,
           "in_ci": 0
         },
         {
@@ -77269,21 +77266,21 @@ const PERFORMANCE_DATA = {
         {
           "T": 90,
           "count_at_T": 4,
-          "predicted": 398,
-          "ci_lower": 213,
-          "ci_upper": 743,
-          "error_pct": 2.8,
-          "abs_error_pct": 2.8,
+          "predicted": 396,
+          "ci_lower": 212,
+          "ci_upper": 738,
+          "error_pct": 2.3,
+          "abs_error_pct": 2.3,
           "in_ci": 1
         },
         {
           "T": 60,
           "count_at_T": 8,
-          "predicted": 355,
+          "predicted": 353,
           "ci_lower": 216,
-          "ci_upper": 581,
-          "error_pct": -8.3,
-          "abs_error_pct": 8.3,
+          "ci_upper": 579,
+          "error_pct": -8.8,
+          "abs_error_pct": 8.8,
           "in_ci": 1
         },
         {
@@ -77291,7 +77288,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 22,
           "predicted": 352,
           "ci_lower": 296,
-          "ci_upper": 419,
+          "ci_upper": 417,
           "error_pct": -9.0,
           "abs_error_pct": 9.0,
           "in_ci": 1
@@ -77299,32 +77296,32 @@ const PERFORMANCE_DATA = {
         {
           "T": 28,
           "count_at_T": 44,
-          "predicted": 365,
-          "ci_lower": 335,
+          "predicted": 364,
+          "ci_lower": 334,
           "ci_upper": 396,
-          "error_pct": -5.7,
-          "abs_error_pct": 5.7,
+          "error_pct": -5.9,
+          "abs_error_pct": 5.9,
           "in_ci": 1
         },
         {
           "T": 14,
           "count_at_T": 112,
-          "predicted": 381,
-          "ci_lower": 353,
-          "ci_upper": 411,
-          "error_pct": -1.6,
-          "abs_error_pct": 1.6,
+          "predicted": 380,
+          "ci_lower": 352,
+          "ci_upper": 410,
+          "error_pct": -1.8,
+          "abs_error_pct": 1.8,
           "in_ci": 1
         },
         {
           "T": 7,
           "count_at_T": 200,
-          "predicted": 407,
-          "ci_lower": 388,
-          "ci_upper": 427,
-          "error_pct": 5.2,
-          "abs_error_pct": 5.2,
-          "in_ci": 0
+          "predicted": 405,
+          "ci_lower": 386,
+          "ci_upper": 424,
+          "error_pct": 4.7,
+          "abs_error_pct": 4.7,
+          "in_ci": 1
         },
         {
           "T": 3,
@@ -77367,7 +77364,7 @@ const PERFORMANCE_DATA = {
           "T": 28,
           "count_at_T": 34,
           "predicted": 226,
-          "ci_lower": 207,
+          "ci_lower": 206,
           "ci_upper": 247,
           "error_pct": 8.1,
           "abs_error_pct": 8.1,
@@ -77377,7 +77374,7 @@ const PERFORMANCE_DATA = {
           "T": 14,
           "count_at_T": 58,
           "predicted": 206,
-          "ci_lower": 195,
+          "ci_lower": 194,
           "ci_upper": 218,
           "error_pct": -1.4,
           "abs_error_pct": 1.4,
@@ -77386,11 +77383,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 7,
           "count_at_T": 94,
-          "predicted": 209,
-          "ci_lower": 200,
-          "ci_upper": 219,
-          "error_pct": 0.0,
-          "abs_error_pct": 0.0,
+          "predicted": 208,
+          "ci_lower": 199,
+          "ci_upper": 218,
+          "error_pct": -0.5,
+          "abs_error_pct": 0.5,
           "in_ci": 1
         },
         {
@@ -77423,21 +77420,21 @@ const PERFORMANCE_DATA = {
         {
           "T": 90,
           "count_at_T": 17,
-          "predicted": 523,
-          "ci_lower": 295,
-          "ci_upper": 927,
-          "error_pct": 6.3,
-          "abs_error_pct": 6.3,
+          "predicted": 520,
+          "ci_lower": 294,
+          "ci_upper": 922,
+          "error_pct": 5.7,
+          "abs_error_pct": 5.7,
           "in_ci": 1
         },
         {
           "T": 60,
           "count_at_T": 36,
-          "predicted": 495,
-          "ci_lower": 434,
-          "ci_upper": 564,
-          "error_pct": 0.6,
-          "abs_error_pct": 0.6,
+          "predicted": 493,
+          "ci_lower": 432,
+          "ci_upper": 562,
+          "error_pct": 0.2,
+          "abs_error_pct": 0.2,
           "in_ci": 1
         },
         {
@@ -77445,7 +77442,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 71,
           "predicted": 487,
           "ci_lower": 436,
-          "ci_upper": 545,
+          "ci_upper": 544,
           "error_pct": -1.0,
           "abs_error_pct": 1.0,
           "in_ci": 1
@@ -77453,31 +77450,31 @@ const PERFORMANCE_DATA = {
         {
           "T": 28,
           "count_at_T": 127,
-          "predicted": 506,
-          "ci_lower": 468,
-          "ci_upper": 547,
-          "error_pct": 2.8,
-          "abs_error_pct": 2.8,
+          "predicted": 505,
+          "ci_lower": 467,
+          "ci_upper": 546,
+          "error_pct": 2.6,
+          "abs_error_pct": 2.6,
           "in_ci": 1
         },
         {
           "T": 14,
           "count_at_T": 246,
-          "predicted": 500,
-          "ci_lower": 471,
-          "ci_upper": 531,
-          "error_pct": 1.6,
-          "abs_error_pct": 1.6,
+          "predicted": 499,
+          "ci_lower": 470,
+          "ci_upper": 530,
+          "error_pct": 1.4,
+          "abs_error_pct": 1.4,
           "in_ci": 1
         },
         {
           "T": 7,
           "count_at_T": 355,
-          "predicted": 525,
-          "ci_lower": 502,
-          "ci_upper": 550,
-          "error_pct": 6.7,
-          "abs_error_pct": 6.7,
+          "predicted": 523,
+          "ci_lower": 499,
+          "ci_upper": 547,
+          "error_pct": 6.3,
+          "abs_error_pct": 6.3,
           "in_ci": 0
         },
         {
@@ -77510,19 +77507,19 @@ const PERFORMANCE_DATA = {
         {
           "T": 60,
           "count_at_T": 10,
-          "predicted": 350,
-          "ci_lower": 214,
-          "ci_upper": 574,
-          "error_pct": 10.1,
-          "abs_error_pct": 10.1,
+          "predicted": 349,
+          "ci_lower": 213,
+          "ci_upper": 572,
+          "error_pct": 9.7,
+          "abs_error_pct": 9.7,
           "in_ci": 1
         },
         {
           "T": 42,
           "count_at_T": 34,
           "predicted": 338,
-          "ci_lower": 281,
-          "ci_upper": 406,
+          "ci_lower": 282,
+          "ci_upper": 404,
           "error_pct": 6.3,
           "abs_error_pct": 6.3,
           "in_ci": 1
@@ -77531,8 +77528,8 @@ const PERFORMANCE_DATA = {
           "T": 28,
           "count_at_T": 61,
           "predicted": 325,
-          "ci_lower": 280,
-          "ci_upper": 378,
+          "ci_lower": 279,
+          "ci_upper": 377,
           "error_pct": 2.2,
           "abs_error_pct": 2.2,
           "in_ci": 1
@@ -77540,21 +77537,21 @@ const PERFORMANCE_DATA = {
         {
           "T": 14,
           "count_at_T": 110,
-          "predicted": 323,
+          "predicted": 322,
           "ci_lower": 284,
-          "ci_upper": 367,
-          "error_pct": 1.6,
-          "abs_error_pct": 1.6,
+          "ci_upper": 366,
+          "error_pct": 1.3,
+          "abs_error_pct": 1.3,
           "in_ci": 1
         },
         {
           "T": 7,
           "count_at_T": 149,
-          "predicted": 298,
-          "ci_lower": 264,
-          "ci_upper": 335,
-          "error_pct": -6.3,
-          "abs_error_pct": 6.3,
+          "predicted": 296,
+          "ci_lower": 263,
+          "ci_upper": 333,
+          "error_pct": -6.9,
+          "abs_error_pct": 6.9,
           "in_ci": 1
         },
         {
@@ -77597,18 +77594,18 @@ const PERFORMANCE_DATA = {
         {
           "T": 28,
           "count_at_T": 27,
-          "predicted": 245,
+          "predicted": 244,
           "ci_lower": 237,
-          "ci_upper": 253,
-          "error_pct": 22.5,
-          "abs_error_pct": 22.5,
+          "ci_upper": 252,
+          "error_pct": 22.0,
+          "abs_error_pct": 22.0,
           "in_ci": 0
         },
         {
           "T": 14,
           "count_at_T": 63,
           "predicted": 255,
-          "ci_lower": 244,
+          "ci_lower": 243,
           "ci_upper": 267,
           "error_pct": 27.5,
           "abs_error_pct": 27.5,
@@ -77617,11 +77614,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 7,
           "count_at_T": 108,
-          "predicted": 253,
-          "ci_lower": 242,
-          "ci_upper": 265,
-          "error_pct": 26.5,
-          "abs_error_pct": 26.5,
+          "predicted": 252,
+          "ci_lower": 241,
+          "ci_upper": 264,
+          "error_pct": 26.0,
+          "abs_error_pct": 26.0,
           "in_ci": 0
         },
         {
@@ -77654,29 +77651,29 @@ const PERFORMANCE_DATA = {
         {
           "T": 90,
           "count_at_T": 3,
-          "predicted": 202,
+          "predicted": 201,
           "ci_lower": 117,
-          "ci_upper": 347,
-          "error_pct": 2.0,
-          "abs_error_pct": 2.0,
+          "ci_upper": 345,
+          "error_pct": 1.5,
+          "abs_error_pct": 1.5,
           "in_ci": 1
         },
         {
           "T": 60,
           "count_at_T": 12,
-          "predicted": 190,
-          "ci_lower": 111,
-          "ci_upper": 327,
-          "error_pct": -4.0,
-          "abs_error_pct": 4.0,
+          "predicted": 189,
+          "ci_lower": 110,
+          "ci_upper": 325,
+          "error_pct": -4.5,
+          "abs_error_pct": 4.5,
           "in_ci": 1
         },
         {
           "T": 42,
           "count_at_T": 29,
           "predicted": 169,
-          "ci_lower": 140,
-          "ci_upper": 204,
+          "ci_lower": 141,
+          "ci_upper": 203,
           "error_pct": -14.6,
           "abs_error_pct": 14.6,
           "in_ci": 1
@@ -77696,7 +77693,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 149,
           "predicted": 197,
           "ci_lower": 154,
-          "ci_upper": 254,
+          "ci_upper": 253,
           "error_pct": -0.5,
           "abs_error_pct": 0.5,
           "in_ci": 1
@@ -77704,11 +77701,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 7,
           "count_at_T": 180,
-          "predicted": 203,
+          "predicted": 202,
           "ci_lower": 180,
-          "ci_upper": 249,
-          "error_pct": 2.5,
-          "abs_error_pct": 2.5,
+          "ci_upper": 247,
+          "error_pct": 2.0,
+          "abs_error_pct": 2.0,
           "in_ci": 1
         },
         {
@@ -77818,29 +77815,29 @@ const PERFORMANCE_DATA = {
         {
           "T": 90,
           "count_at_T": 156,
-          "predicted": 1730,
-          "ci_lower": 1441,
-          "ci_upper": 2076,
-          "error_pct": -1.3,
-          "abs_error_pct": 1.3,
+          "predicted": 1719,
+          "ci_lower": 1432,
+          "ci_upper": 2063,
+          "error_pct": -1.9,
+          "abs_error_pct": 1.9,
           "in_ci": 1
         },
         {
           "T": 60,
           "count_at_T": 324,
-          "predicted": 1770,
-          "ci_lower": 1475,
-          "ci_upper": 2124,
-          "error_pct": 1.0,
-          "abs_error_pct": 1.0,
+          "predicted": 1764,
+          "ci_lower": 1470,
+          "ci_upper": 2117,
+          "error_pct": 0.6,
+          "abs_error_pct": 0.6,
           "in_ci": 1
         },
         {
           "T": 42,
           "count_at_T": 795,
-          "predicted": 1664,
+          "predicted": 1663,
           "ci_lower": 1386,
-          "ci_upper": 1997,
+          "ci_upper": 1996,
           "error_pct": -5.1,
           "abs_error_pct": 5.1,
           "in_ci": 1
@@ -77848,31 +77845,31 @@ const PERFORMANCE_DATA = {
         {
           "T": 28,
           "count_at_T": 1408,
-          "predicted": 1763,
+          "predicted": 1759,
           "ci_lower": 1408,
-          "ci_upper": 2327,
-          "error_pct": 0.6,
-          "abs_error_pct": 0.6,
+          "ci_upper": 2321,
+          "error_pct": 0.3,
+          "abs_error_pct": 0.3,
           "in_ci": 1
         },
         {
           "T": 14,
           "count_at_T": 1647,
-          "predicted": 1782,
+          "predicted": 1778,
           "ci_lower": 1647,
-          "ci_upper": 2222,
-          "error_pct": 1.7,
-          "abs_error_pct": 1.7,
+          "ci_upper": 2212,
+          "error_pct": 1.4,
+          "abs_error_pct": 1.4,
           "in_ci": 1
         },
         {
           "T": 7,
           "count_at_T": 1705,
-          "predicted": 1787,
+          "predicted": 1778,
           "ci_lower": 1705,
-          "ci_upper": 2165,
-          "error_pct": 1.9,
-          "abs_error_pct": 1.9,
+          "ci_upper": 2151,
+          "error_pct": 1.4,
+          "abs_error_pct": 1.4,
           "in_ci": 1
         },
         {
@@ -77880,7 +77877,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 1733,
           "predicted": 1766,
           "ci_lower": 1733,
-          "ci_upper": 2280,
+          "ci_upper": 2281,
           "error_pct": 0.7,
           "abs_error_pct": 0.7,
           "in_ci": 1
@@ -77890,7 +77887,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 1749,
           "predicted": 1749,
           "ci_lower": 1749,
-          "ci_upper": 1980,
+          "ci_upper": 1981,
           "error_pct": -0.2,
           "abs_error_pct": 0.2,
           "in_ci": 1
@@ -77905,29 +77902,29 @@ const PERFORMANCE_DATA = {
         {
           "T": 90,
           "count_at_T": 1,
-          "predicted": 214,
+          "predicted": 212,
           "ci_lower": 130,
-          "ci_upper": 350,
-          "error_pct": 9.7,
-          "abs_error_pct": 9.7,
+          "ci_upper": 348,
+          "error_pct": 8.7,
+          "abs_error_pct": 8.7,
           "in_ci": 1
         },
         {
           "T": 60,
           "count_at_T": 5,
-          "predicted": 206,
-          "ci_lower": 126,
-          "ci_upper": 337,
-          "error_pct": 5.6,
-          "abs_error_pct": 5.6,
+          "predicted": 205,
+          "ci_lower": 125,
+          "ci_upper": 336,
+          "error_pct": 5.1,
+          "abs_error_pct": 5.1,
           "in_ci": 1
         },
         {
           "T": 42,
           "count_at_T": 11,
           "predicted": 194,
-          "ci_lower": 119,
-          "ci_upper": 319,
+          "ci_lower": 118,
+          "ci_upper": 318,
           "error_pct": -0.5,
           "abs_error_pct": 0.5,
           "in_ci": 1
@@ -77937,7 +77934,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 31,
           "predicted": 198,
           "ci_lower": 189,
-          "ci_upper": 208,
+          "ci_upper": 207,
           "error_pct": 1.5,
           "abs_error_pct": 1.5,
           "in_ci": 1
@@ -77947,7 +77944,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 60,
           "predicted": 197,
           "ci_lower": 192,
-          "ci_upper": 203,
+          "ci_upper": 202,
           "error_pct": 1.0,
           "abs_error_pct": 1.0,
           "in_ci": 1
@@ -77955,11 +77952,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 7,
           "count_at_T": 96,
-          "predicted": 202,
-          "ci_lower": 193,
-          "ci_upper": 211,
-          "error_pct": 3.6,
-          "abs_error_pct": 3.6,
+          "predicted": 201,
+          "ci_lower": 192,
+          "ci_upper": 210,
+          "error_pct": 3.1,
+          "abs_error_pct": 3.1,
           "in_ci": 1
         },
         {

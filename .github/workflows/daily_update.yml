@@ -2,7 +2,7 @@ name: Daily Scrape & Update
 
 on:
   schedule:
-    - cron: '17 10 * * *'  # 6:17 AM ET (UTC-4)
+    - cron: '15 1 * * *'   # 2015 EST (UTC-5)
   workflow_dispatch:  # allow manual trigger
 
 permissions:

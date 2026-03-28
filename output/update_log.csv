@@ -873,3 +873,34 @@ run_timestamp,family,status,current_count,point_estimate,ci_lower,ci_upper,days_
 2026-03-27 14:14:15,New York State Senior Championship With Young Adult Mi,complete,61,61,61,61,0
 2026-03-27 14:14:15,New York State Scholastic Championships Grades K-8,complete,1753,1753,1753,1753,0
 2026-03-27 14:14:15,Southern Class,complete,195,195,195,195,0
+2026-03-28 15:13:22,Atlantic City Open,live,265,460,435,487,4
+2026-03-28 15:13:22,Chicago Open,live,185,891,841,944,54
+2026-03-28 15:13:22,Hartford Open,live,3,195,119,321,69
+2026-03-28 15:13:22,Cleveland Open,live,2,192,113,329,69
+2026-03-28 15:13:22,New York State Open,live,2,82,49,138,83
+2026-03-28 15:13:22,DC International,live,0,100,70,130,89
+2026-03-28 15:13:22,Philadelphia International,live,0,122,96,145,89
+2026-03-28 15:13:22,DC Open,live,0,100,70,130,90
+2026-03-28 15:13:22,Philadelphia Open,live,0,286,251,319,90
+2026-03-28 15:13:22,"World Open, lower sections",live,0,100,70,130,91
+2026-03-28 15:13:22,"World Open, top 6 sections",live,0,100,70,130,95
+2026-03-28 15:13:22,Chicago Class,live,1,268,156,461,111
+2026-03-28 15:13:22,Pittsburgh Open,live,2,164,98,275,111
+2026-03-28 15:13:22,Southern Open,live,0,232,183,282,111
+2026-03-28 15:13:22,Bradley Open,live,2,255,156,418,118
+2026-03-28 15:13:22,Pacific Coast Open,live,3,374,228,613,125
+2026-03-28 15:13:22,Central California Open,live,0,175,144,203,139
+2026-03-28 15:13:22,Atlantic Open,live,0,316,251,395,146
+2026-03-28 15:13:22,New York State Championship,live,0,304,237,347,160
+2026-03-28 15:13:22,National Chess Congress,live,0,623,572,677,245
+2026-03-28 15:13:22,Boston Chess Congress,complete,359,359,359,359,0
+2026-03-28 15:13:22,Liberty Bell Open,complete,564,564,564,564,0
+2026-03-28 15:13:22,Golden State Open,complete,387,387,387,387,0
+2026-03-28 15:13:22,George Washington Open,complete,209,209,209,209,0
+2026-03-28 15:13:22,Southwest Class Championships,complete,492,492,492,492,0
+2026-03-28 15:13:22,Western Class Championships,complete,318,318,318,318,0
+2026-03-28 15:13:22,Mid-America Open,complete,200,200,200,200,0
+2026-03-28 15:13:22,New York State High School Championship,complete,198,198,198,198,0
+2026-03-28 15:13:22,New York State Senior Championship With Young Adult Mi,complete,61,61,61,61,0
+2026-03-28 15:13:22,New York State Scholastic Championships Grades K-8,complete,1753,1753,1753,1753,0
+2026-03-28 15:13:22,Southern Class,complete,195,195,195,195,0

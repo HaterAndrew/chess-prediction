@@ -28,23 +28,35 @@ meta['start_date'] = pd.to_datetime(meta['start_date'])
 
 # Merge fresh scrape data into summary for 2026 tournaments
 # daily_scrape.csv has the latest entry counts from chessaction.com
+# Use active_count (net of withdrawals) when available, fall back to entry_count
 scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
 if os.path.exists(scrape_path):
     scrape = pd.read_csv(scrape_path)
     scrape['date'] = pd.to_datetime(scrape['date'])
+    # Backfill active_count for older rows that predate the withdrawal columns
+    if 'active_count' not in scrape.columns:
+        scrape['active_count'] = scrape['entry_count']
+    else:
+        scrape['active_count'] = scrape['active_count'].fillna(scrape['entry_count'])
+    if 'withdrawal_count' not in scrape.columns:
+        scrape['withdrawal_count'] = 0
+    else:
+        scrape['withdrawal_count'] = scrape['withdrawal_count'].fillna(0)
     # Get the most recent scrape per tournament
     latest_scrape = scrape.sort_values('date').groupby('tournament_name').last().reset_index()
-    # Update 2026 tournament counts in summary
+    # Update 2026 tournament counts in summary using active (net) counts
     updated = 0
     for _, s in latest_scrape.iterrows():
         # Match by family name (strip year prefix "2026 " from scrape name)
         scrape_name = s['tournament_name']
         family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
         mask = (summary['family'] == family_name) & (summary['tournament_year'] == 2026)
-        if mask.any() and s['entry_count'] > 0:
+        # Use active_count (net) for predictions; fall back to entry_count if 0
+        net_count = int(s['active_count']) if s['active_count'] > 0 else int(s['entry_count'])
+        if mask.any() and net_count > 0:
             old_count = summary.loc[mask, 'final_count'].iloc[0]
-            summary.loc[mask, 'final_count'] = s['entry_count']
-            if old_count != s['entry_count']:
+            summary.loc[mask, 'final_count'] = net_count
+            if old_count != net_count:
                 updated += 1
     # Also update daily registration counts with latest scrape data.
     # For live 2026 tournaments, use event_start as the T reference so scrape
@@ -93,16 +105,17 @@ if os.path.exists(scrape_path):
             T = max((pd.to_datetime(last_reg) - pd.to_datetime(s['date'])).days, 0)
         else:
             continue
-        # Insert or update
+        # Insert or update — use active_count (net) for curve data
+        scrape_count = int(s['active_count']) if s['active_count'] > 0 else int(s['entry_count'])
         existing = daily[(daily['tid'] == tid) & (daily['T'] == T)]
-        if len(existing) == 0 and s['entry_count'] > 0:
+        if len(existing) == 0 and scrape_count > 0:
             new_row = pd.DataFrame([{
                 'tid': tid, 'T': T, 'daily_regs': 0,
-                'cum_regs': s['entry_count'], 'cum_pct': 1.0
+                'cum_regs': scrape_count, 'cum_pct': 1.0
             }])
             daily = pd.concat([daily, new_row], ignore_index=True)
-        elif len(existing) > 0 and s['entry_count'] > existing.iloc[0]['cum_regs']:
-            daily.loc[(daily['tid'] == tid) & (daily['T'] == T), 'cum_regs'] = s['entry_count']
+        elif len(existing) > 0 and scrape_count > existing.iloc[0]['cum_regs']:
+            daily.loc[(daily['tid'] == tid) & (daily['T'] == T), 'cum_regs'] = scrape_count
     print(f"  Merged scrape data: {updated} tournament counts updated, {len(latest_scrape)} tournaments in scrape")
 
 # Load enrichment data if available
@@ -112,14 +125,17 @@ enrichment_lookup = m04c.build_enrichment_lookup(hist_enrich)
 
 # Filter exclusions: online, COVID, sub-events we don't want
 EXCLUDE_FAMILIES = [
-    # World Open sub-events (combined into "World Open" entry)
-    'World Open  lower sections', 'World Open  top 6 sections',
+    # World Open sub-events we don't want (keep only Under 13, top 6, lower)
     'World Open G 50 Championship', 'World Open G/50 Championship',
     'World Open G7 Championship', 'World Open G/7 Championship',
     'World Open G 10 Championship', 'World Open G/10 Championship',
     'World Open Action',
-    # Atlantic City sub-events
-    'DC International', 'DC Open',
+    'World Open Womens Championship', "World Open Women's Championship",
+    'World Open Senior', 'World Open Senior Amateur',
+    'World Open Junior Championship', 'World Open Junior Octos',
+    # The old combined "World Open" family (pre-2023) — superseded by
+    # top-6/lower split; exclude to avoid double-counting
+    'World Open',
     # Tiny side events with 1-6 registrants, not real tournaments
     'George Washington Saturday Octos', 'George Washington Sunday Octos',
 ]
@@ -373,59 +389,18 @@ else:
 ratios = build_ratio_model(train, daily)  # kept for families without timestamps
 curves = build_template_curves(train, daily)
 
-# ── Combine all World Open sub-events into "World Open" per year ──
-# Aggregate all non-blitz World Open families into a single entry per year
-wo_all = summary[
+# ── World Open: keep only Under 13, top 6, lower as separate families ──
+# All other WO sub-events are already in EXCLUDE_FAMILIES.
+# Exclude any remaining WO variants that slipped through naming differences.
+WO_KEEP = {'World Open Under 13', 'World Open top 6 sections', 'World Open lower sections'}
+wo_extra_exclude = summary[
     (summary['family'].str.startswith('World Open')) &
-    (~summary['family'].str.contains('Blitz', case=False, na=False)) &
-    (~summary['is_online'].fillna(False)) &
-    (summary['family'] != 'World Open')  # keep existing "World Open" rows as-is
-]
-
-wo_sub_families = wo_all['family'].unique().tolist()
-print(f"Combining {len(wo_sub_families)} World Open sub-families into 'World Open'")
-
-for yr in wo_all['tournament_year'].dropna().unique():
-    yr_subs = wo_all[wo_all['tournament_year'] == yr]
-    if len(yr_subs) == 0:
-        continue
-    combined_count = yr_subs['final_count'].sum()
-    # Check if a "World Open" row already exists for this year
-    existing_wo = summary[(summary['family'] == 'World Open') & (summary['tournament_year'] == yr)]
-    if len(existing_wo) > 0:
-        # Add sub-event counts to existing World Open row
-        summary.loc[existing_wo.index[0], 'final_count'] += combined_count
-    else:
-        # Create new combined row
-        wo_row = yr_subs.iloc[0].copy()
-        wo_row['family'] = 'World Open'
-        wo_row['final_count'] = combined_count
-        summary = pd.concat([summary, pd.DataFrame([wo_row])], ignore_index=True)
-
-    # Combine daily data
-    sub_tids = yr_subs['tid'].values
-    # Also include main World Open tid if it exists
-    if len(existing_wo) > 0:
-        main_tid = existing_wo.iloc[0]['tid']
-        all_tids = list(sub_tids) + [main_tid]
-        rep_tid = main_tid
-    else:
-        all_tids = list(sub_tids)
-        rep_tid = sub_tids[0]
-
-    sub_daily = daily[daily['tid'].isin(all_tids)]
-    if len(sub_daily) > 0:
-        agg = sub_daily.groupby('T').agg({'cum_regs': 'sum'}).reset_index()
-        agg['tid'] = rep_tid
-        max_regs = agg['cum_regs'].max()
-        agg['cum_pct'] = agg['cum_regs'] / max_regs if max_regs > 0 else 0
-        daily = pd.concat([daily[~daily['tid'].isin(all_tids)], agg], ignore_index=True)
-
-# Remove all sub-event rows from summary (keep only "World Open")
-summary = summary[~summary['family'].isin(wo_sub_families)]
-# Also add sub-families to exclude list so they don't appear separately
-EXCLUDE_FAMILIES.extend(wo_sub_families)
-print(f"World Open combined across all years")
+    (~summary['family'].isin(WO_KEEP))
+]['family'].unique().tolist()
+if wo_extra_exclude:
+    EXCLUDE_FAMILIES.extend(wo_extra_exclude)
+    print(f"Excluding {len(wo_extra_exclude)} additional World Open sub-families: {wo_extra_exclude}")
+print(f"World Open: keeping {WO_KEEP & set(summary['family'].unique())}")
 
 # Get 2026 tournaments
 t2026 = summary[
@@ -435,6 +410,16 @@ t2026 = summary[
 ].copy()
 
 print(f"Found {len(t2026)} 2026 tournaments (after filtering)")
+
+# Build withdrawal lookup from latest scrape data (family -> withdrawal_count)
+withdrawal_lookup = {}
+if os.path.exists(scrape_path):
+    for _, s in latest_scrape.iterrows():
+        scrape_name = s['tournament_name']
+        fam = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
+        wd = int(s.get('withdrawal_count', 0)) if pd.notna(s.get('withdrawal_count')) else 0
+        gross = int(s.get('entry_count', 0))
+        withdrawal_lookup[fam] = {'withdrawal_count': wd, 'gross_count': gross}
 
 tournaments_out = []
 
@@ -586,6 +571,11 @@ for _, row in t2026.iterrows():
                         "final": int(prior_hist.iloc[0]['final_count']),
                     }
 
+    # Withdrawal data from scrape
+    wd_info = withdrawal_lookup.get(family, {})
+    withdrawal_count = wd_info.get('withdrawal_count', 0)
+    gross_count = wd_info.get('gross_count', int(current_count))
+
     t_out = {
         "family": display_family,
         "year": 2026,
@@ -596,6 +586,8 @@ for _, row in t2026.iterrows():
         "regular_fee": reg_fee,
         "onsite_fee": onsite_fee,
         "current_count": int(current_count),
+        "gross_count": int(gross_count),
+        "withdrawal_count": int(withdrawal_count),
         "days_remaining": int(days_remaining),
         "point_estimate": int(point),
         "ci_lower": int(ci_lo),

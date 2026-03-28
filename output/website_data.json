@@ -1,6 +1,6 @@
 {
-  "generated": "2026-03-27",
-  "generated_time": "2026-03-27T09:15:02.051087-04:00",
+  "generated": "2026-03-28",
+  "generated_time": "2026-03-28T06:13:07.462137-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
   "n_completed_in_training": 16,
@@ -14,11 +14,11 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 249,
-      "days_remaining": 5,
-      "point_estimate": 457,
-      "ci_lower": 429,
-      "ci_upper": 486,
+      "current_count": 267,
+      "days_remaining": 4,
+      "point_estimate": 461,
+      "ci_lower": 436,
+      "ci_upper": 488,
       "ci_level": 0.8,
       "historical": [
         {
@@ -303,6 +303,10 @@
         [
           155,
           249
+        ],
+        [
+          156,
+          267
         ]
       ],
       "registration_curve": [
@@ -367,11 +371,11 @@
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 183,
-      "days_remaining": 55,
-      "point_estimate": 892,
+      "current_count": 185,
+      "days_remaining": 54,
+      "point_estimate": 891,
       "ci_lower": 841,
-      "ci_upper": 946,
+      "ci_upper": 944,
       "ci_level": 0.8,
       "historical": [
         {
@@ -628,6 +632,10 @@
         [
           120,
           183
+        ],
+        [
+          121,
+          185
         ]
       ],
       "registration_curve": [
@@ -683,7 +691,7 @@
       "status": "live",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 171,
+        "count_at_same_point": 177,
         "final": 899
       }
     },
@@ -697,8 +705,8 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 3,
-      "days_remaining": 70,
-      "point_estimate": 196,
+      "days_remaining": 69,
+      "point_estimate": 195,
       "ci_lower": 119,
       "ci_upper": 321,
       "ci_level": 0.8,
@@ -756,6 +764,10 @@
         ],
         [
           17,
+          3
+        ],
+        [
+          18,
           3
         ]
       ],
@@ -826,10 +838,10 @@
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
       "current_count": 2,
-      "days_remaining": 70,
-      "point_estimate": 193,
+      "days_remaining": 69,
+      "point_estimate": 192,
       "ci_lower": 113,
-      "ci_upper": 327,
+      "ci_upper": 329,
       "ci_level": 0.8,
       "historical": [
         {
@@ -885,6 +897,10 @@
         ],
         [
           25,
+          2
+        ],
+        [
+          26,
           2
         ]
       ],
@@ -954,11 +970,11 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 1,
-      "days_remaining": 84,
-      "point_estimate": 79,
-      "ci_lower": 48,
-      "ci_upper": 129,
+      "current_count": 2,
+      "days_remaining": 83,
+      "point_estimate": 82,
+      "ci_lower": 49,
+      "ci_upper": 138,
       "ci_level": 0.8,
       "historical": [
         {
@@ -996,6 +1012,10 @@
         [
           7,
           1
+        ],
+        [
+          8,
+          2
         ]
       ],
       "registration_curve": [
@@ -1065,10 +1085,10 @@
       "regular_fee": 328.0,
       "onsite_fee": 350.0,
       "current_count": 35,
-      "days_remaining": 96,
-      "point_estimate": 1341,
-      "ci_lower": 1207,
-      "ci_upper": 1490,
+      "days_remaining": 95,
+      "point_estimate": 1338,
+      "ci_lower": 1204,
+      "ci_upper": 1487,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1208,6 +1228,10 @@
         ],
         [
           121,
+          32
+        ],
+        [
+          122,
           1
         ],
         [
@@ -1268,7 +1292,7 @@
       "status": "live",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 1,
+        "count_at_same_point": 31,
         "final": 1674
       }
     },
@@ -1282,7 +1306,7 @@
       "regular_fee": 138.0,
       "onsite_fee": 150.0,
       "current_count": 1,
-      "days_remaining": 112,
+      "days_remaining": 111,
       "point_estimate": 268,
       "ci_lower": 156,
       "ci_upper": 461,
@@ -1337,6 +1361,10 @@
         ],
         [
           22,
+          1
+        ],
+        [
+          23,
           1
         ]
       ],
@@ -1403,7 +1431,7 @@
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
       "current_count": 2,
-      "days_remaining": 112,
+      "days_remaining": 111,
       "point_estimate": 164,
       "ci_lower": 98,
       "ci_upper": 275,
@@ -1462,6 +1490,10 @@
         ],
         [
           34,
+          2
+        ],
+        [
+          35,
           2
         ]
       ],
@@ -1532,7 +1564,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 112,
+      "days_remaining": 111,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -1627,10 +1659,10 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 2,
-      "days_remaining": 119,
+      "days_remaining": 118,
       "point_estimate": 255,
       "ci_lower": 156,
-      "ci_upper": 419,
+      "ci_upper": 418,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1686,6 +1718,10 @@
         ],
         [
           38,
+          2
+        ],
+        [
+          39,
           2
         ]
       ],
@@ -1756,7 +1792,7 @@
       "regular_fee": 143.0,
       "onsite_fee": 155.0,
       "current_count": 3,
-      "days_remaining": 126,
+      "days_remaining": 125,
       "point_estimate": 374,
       "ci_lower": 228,
       "ci_upper": 613,
@@ -1815,6 +1851,10 @@
         ],
         [
           22,
+          3
+        ],
+        [
+          23,
           3
         ]
       ],
@@ -1876,6 +1916,291 @@
       }
     },
     {
+      "family": "Central California Open",
+      "year": 2026,
+      "event_start": "2026-08-14",
+      "event_end": "2026-08-16",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "days_remaining": 139,
+      "point_estimate": 175,
+      "ci_lower": 144,
+      "ci_upper": 203,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 128
+        },
+        {
+          "year": 2022,
+          "count": 188
+        },
+        {
+          "year": 2023,
+          "count": 214
+        },
+        {
+          "year": 2024,
+          "count": 169
+        },
+        {
+          "year": 2025,
+          "count": 179
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0024
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0151
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0227
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0445
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0855
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1253
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.1656
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.2721
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4857
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7665
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9512
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live"
+    },
+    {
+      "family": "Atlantic Open",
+      "year": 2026,
+      "event_start": "2026-08-21",
+      "event_end": "2026-08-23",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "days_remaining": 146,
+      "point_estimate": 316,
+      "ci_lower": 251,
+      "ci_upper": 395,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 289
+        },
+        {
+          "year": 2022,
+          "count": 412
+        },
+        {
+          "year": 2023,
+          "count": 371
+        },
+        {
+          "year": 2024,
+          "count": 272
+        },
+        {
+          "year": 2025,
+          "count": 238
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0022
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0116
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0143
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0212
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0679
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1288
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.211
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3079
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4737
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.772
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9436
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live"
+    },
+    {
+      "family": "New York State Championship",
+      "year": 2026,
+      "event_start": "2026-09-04",
+      "event_end": "2026-09-07",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "days_remaining": 160,
+      "point_estimate": 304,
+      "ci_lower": 237,
+      "ci_upper": 347,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 185
+        },
+        {
+          "year": 2022,
+          "count": 316
+        },
+        {
+          "year": 2023,
+          "count": 347
+        },
+        {
+          "year": 2024,
+          "count": 326
+        },
+        {
+          "year": 2025,
+          "count": 348
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0042
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0055
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.006
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0216
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0551
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1419
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.2049
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3266
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4819
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.8666
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9777
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live"
+    },
+    {
       "family": "National Chess Congress",
       "year": 2026,
       "event_start": "2026-11-28",
@@ -1885,7 +2210,7 @@
       "regular_fee": 160.0,
       "onsite_fee": 160.0,
       "current_count": 0,
-      "days_remaining": 246,
+      "days_remaining": 245,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -73557,101 +73882,6 @@
         }
       ],
       "status": "historical"
-    },
-    {
-      "family": "Atlantic Open",
-      "year": 2026,
-      "event_start": "2026-04-01",
-      "event_end": "2026-04-05",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 5,
-      "point_estimate": 316,
-      "ci_lower": 251,
-      "ci_upper": 395,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 289
-        },
-        {
-          "year": 2022,
-          "count": 412
-        },
-        {
-          "year": 2023,
-          "count": 371
-        },
-        {
-          "year": 2024,
-          "count": 272
-        },
-        {
-          "year": 2025,
-          "count": 238
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          0
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0022
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0116
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0143
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0212
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0679
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1288
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.211
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3079
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4737
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.772
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9436
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "not_tracked"
     }
   ]
 }

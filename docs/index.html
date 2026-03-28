@@ -80903,7 +80903,7 @@ function renderDataEntry() {
 
   body.innerHTML = live.map(t => {
     const o = overrides[t.family] || {};
-    const entries = o.current_count !== undefined ? o.current_count : t.current_count;
+    const entries = t.current_count; // always use scraped value
     const start = o.event_start || t.event_start || '';
     const ebDeadline = o.early_bird_deadline || t.early_bird_deadline || '';
     const ebFee = o.early_bird_fee !== undefined ? o.early_bird_fee : (t.early_bird_fee || '');
@@ -80911,7 +80911,7 @@ function renderDataEntry() {
     const onsiteFee = o.onsite_fee !== undefined ? o.onsite_fee : (t.onsite_fee || '');
     return `<tr>
       <td class="fam-name">${esc(t.family)}</td>
-      <td><input type="number" data-family="${esc(t.family)}" data-field="current_count" value="${entries}" min="0"></td>
+      <td><input type="number" data-family="${esc(t.family)}" data-field="current_count" value="${entries}" min="0" readonly style="opacity:.6" title="Auto-scraped"></td>
       <td><input type="date" data-family="${esc(t.family)}" data-field="event_start" value="${start}"></td>
       <td><input type="date" data-family="${esc(t.family)}" data-field="early_bird_deadline" value="${ebDeadline}"></td>
       <td><input type="number" data-family="${esc(t.family)}" data-field="early_bird_fee" value="${ebFee}" min="0"></td>
@@ -80930,7 +80930,8 @@ function saveDataEntry() {
     const field = inp.dataset.field;
     if (!overrides[family]) overrides[family] = {};
     const val = inp.value;
-    if (field === 'current_count' || field.includes('fee')) {
+    if (field === 'current_count') return; // auto-scraped, never override
+    if (field.includes('fee')) {
       overrides[family][field] = val !== '' ? Number(val) : undefined;
     } else {
       overrides[family][field] = val || undefined;
@@ -80975,7 +80976,7 @@ function applyOverrides() {
   TOURNAMENT_DATA.tournaments.forEach(t => {
     const o = overrides[t.family];
     if (!o || typeof o !== 'object' || t.status !== 'live') return;
-    if (typeof o.current_count === 'number' && o.current_count >= 0 && o.current_count < 100000) t.current_count = o.current_count;
+    // current_count is auto-scraped — do NOT override from localStorage
     if (typeof o.event_start === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(o.event_start)) {
       t.event_start = o.event_start;
       const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');

@@ -76680,7 +76680,7 @@ function loadPuzzle(idx) {
   // Update UI
   document.getElementById('puzzleNum').textContent = idx + 1;
   document.getElementById('puzzleRating').textContent = puzzle.rating;
-  const diff = puzzle.rating >= 2500 ? 'Master' : puzzle.rating >= 2200 ? 'Expert' : puzzle.rating >= 2000 ? 'Advanced' : 'Intermediate';
+  const diff = puzzle.rating >= 2500 ? 'Master' : puzzle.rating >= 2300 ? 'Expert' : puzzle.rating >= 2100 ? 'Hard' : 'Moderate';
   document.getElementById('puzzleDifficulty').textContent = diff;
   document.getElementById('puzzleThemes').innerHTML = (puzzle.themes || []).map(t => `<span class="puzzle-theme-tag">${esc(t.replace(/([A-Z])/g, ' $1').trim())}</span>`).join('');
   document.getElementById('puzzleLink').href = puzzle.url || '#';

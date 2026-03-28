@@ -1122,13 +1122,18 @@ footer a { color: var(--muted); }
     </div>
     <div id="emailGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin-bottom:20px"></div>
 
-    <!-- Length + generate -->
+    <!-- Length + format + generate -->
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
       <span style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Length</span>
       <div class="email-len-toggle" id="emailLenToggle" style="display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid var(--border)">
         <button data-len="short" onclick="setEmailLength('short')" style="padding:5px 14px;font-size:.82rem;background:var(--surface2);color:var(--text2);border:none;cursor:pointer">Short</button>
         <button data-len="medium" onclick="setEmailLength('medium')" style="padding:5px 14px;font-size:.82rem;background:var(--gold);color:#000;font-weight:600;border:none;cursor:pointer;border-left:1px solid var(--border);border-right:1px solid var(--border)">Medium</button>
         <button data-len="long" onclick="setEmailLength('long')" style="padding:5px 14px;font-size:.82rem;background:var(--surface2);color:var(--text2);border:none;cursor:pointer">Long</button>
+      </div>
+      <span style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-left:8px">Format</span>
+      <div id="emailFmtToggle" style="display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid var(--border)">
+        <button data-fmt="html" onclick="setEmailFormat('html')" style="padding:5px 14px;font-size:.82rem;background:var(--gold);color:#000;font-weight:600;border:none;cursor:pointer">Rich HTML</button>
+        <button data-fmt="text" onclick="setEmailFormat('text')" style="padding:5px 14px;font-size:.82rem;background:var(--surface2);color:var(--text2);border:none;cursor:pointer;border-left:1px solid var(--border)">Plain Text</button>
       </div>
       <button onclick="generateEmail()" style="padding:6px 18px;border-radius:6px;font-size:.82rem;font-weight:600;background:var(--blue);color:#fff;border:none;cursor:pointer">Generate</button>
     </div>
@@ -75990,6 +75995,7 @@ function switchPageTab(tab) {
 // EMAIL GENERATOR
 // ══════════════════════════════════════════════════════════
 let emailLength = 'medium';
+let emailFormat = 'html';
 let emailLive = [];
 let emailInited = false;
 
@@ -76039,6 +76045,18 @@ function setEmailLength(len) {
   });
 }
 
+function setEmailFormat(fmt) {
+  emailFormat = fmt;
+  document.querySelectorAll('#emailFmtToggle button').forEach(b => {
+    const active = b.dataset.fmt === fmt;
+    b.style.background = active ? 'var(--gold)' : 'var(--surface2)';
+    b.style.color = active ? '#000' : 'var(--text2)';
+    b.style.fontWeight = active ? '600' : '400';
+  });
+}
+
+// ── Data helpers ──
+
 function emailLastYear(t) {
   if (!t.historical || !t.historical.length) return null;
   return [...t.historical].sort((a, b) => b.year - a.year)[0];
@@ -76049,17 +76067,84 @@ function emailHistAvg(t) {
   return Math.round(c.reduce((a, b) => a + b, 0) / c.length);
 }
 
-// Tab-separated table — tabs align natively in every email client
+function emailTrend(t) {
+  const dd = t.daily_data;
+  if (!dd || dd.length < 3) return null;
+  // daily_data is [T, cumulative_count] where T = days before event (descending = older)
+  // Sort by T descending so we go from furthest out to closest
+  const sorted = [...dd].sort((a, b) => b[0] - a[0]);
+  const total = sorted[0][1] > 0 ? sorted[sorted.length - 1][1] : 0;
+  if (total <= 2) return null;
+  // Find midpoint and compute rate in each half
+  const mid = Math.floor(sorted.length / 2);
+  const earlySpan = sorted[0][0] - sorted[mid][0]; // days in early half
+  const earlyRegs = sorted[mid][1] - sorted[0][1]; // regs gained in early half
+  const lateSpan = sorted[mid][0] - sorted[sorted.length - 1][0]; // days in late half
+  const lateRegs = sorted[sorted.length - 1][1] - sorted[mid][1]; // regs gained in late half
+  if (earlySpan <= 0 || lateSpan <= 0) return null;
+  const earlyRate = earlyRegs / earlySpan;
+  const lateRate = lateRegs / lateSpan;
+  if (earlyRate <= 0 && lateRate <= 0) return null;
+  const ratio = earlyRate > 0 ? lateRate / earlyRate : 999;
+  if (ratio > 2.0) return 'Registration started slow but is accelerating.';
+  if (ratio > 1.3) return 'Registration pace is picking up.';
+  if (ratio > 0.7) return 'Registration has been steady throughout.';
+  if (ratio > 0.3) return 'Most entries came in early \u2014 pace has slowed.';
+  return 'Registration front-loaded; recent activity is light.';
+}
+
+// ── Plain-text table (tab-separated — aligns natively in email clients) ──
 function emailTable(headers, rows) {
   const cell = c => (c !== '' && c != null) ? String(c) : '';
   const line = cols => cols.map(cell).join('\t');
   return line(headers) + '\n' + rows.map(r => line(r)).join('\n');
 }
 
+// ── Historical table rows with YoY deltas ──
+function emailHistRows(t, includeRange) {
+  const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
+  const rows = [];
+  // 2026 row
+  if (includeRange) {
+    rows.push([2026, t.current_count, t.point_estimate, `${t.ci_lower}-${t.ci_upper}`, '', '', '']);
+  } else {
+    rows.push([2026, t.current_count, t.point_estimate, '', '', '']);
+  }
+  // Historical rows with deltas
+  for (let i = 0; i < sorted.length; i++) {
+    const h = sorted[i];
+    const prev = sorted[i + 1];
+    let delta = '', pct = '';
+    if (prev) {
+      const d = h.count - prev.count;
+      delta = (d >= 0 ? '+' : '') + d;
+      pct = (d >= 0 ? '+' : '') + Math.round(d / prev.count * 100) + '%';
+    }
+    if (includeRange) {
+      rows.push([h.year, '', '', '', h.count, delta, pct]);
+    } else {
+      rows.push([h.year, '', '', h.count, delta, pct]);
+    }
+  }
+  // Average row
+  const avg = emailHistAvg(t);
+  if (avg && sorted.length >= 2) {
+    if (includeRange) {
+      rows.push(['AVG', '', '', '', avg, '', '']);
+    } else {
+      rows.push(['AVG', '', '', avg, '', '']);
+    }
+  }
+  return rows;
+}
+
+// ── Plain-text tournament formatter ──
+
 function emailFormatTournament(t, len) {
   const ly = emailLastYear(t);
   const avg = emailHistAvg(t);
   const pace = t.prior_year_pace;
+  const trend = emailTrend(t);
   const name = t.family.toUpperCase();
   const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
   const parts = [];
@@ -76075,6 +76160,7 @@ function emailFormatTournament(t, len) {
       else if (d < 0) parts.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`);
       else parts.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
     }
+    if (trend) parts.push(trend);
     return parts.join('  ');
   }
 
@@ -76095,10 +76181,10 @@ function emailFormatTournament(t, len) {
       else if (d < 0) parts.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`);
       else parts.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
     }
-    if (sorted.length >= 2) {
-      const rows = [[2026, t.current_count, t.point_estimate, '']];
-      sorted.forEach(h => rows.push([h.year, '', '', h.count]));
-      parts.push(emailTable(['YEAR', 'ENTRIES', 'PROJECTION', 'FINAL'], rows));
+    if (trend) parts.push(trend);
+    if (sorted.length >= 1) {
+      const headers = ['YEAR', 'ENTRIES', 'PROJECTION', 'FINAL', '\u0394', '%'];
+      parts.push(emailTable(headers, emailHistRows(t, false)));
     }
     return parts.join('\n');
   }
@@ -76127,6 +76213,8 @@ function emailFormatTournament(t, len) {
       (d > 0 ? `, so we are ahead of pace.` : d < 0 ? `, so we are behind.` : `.`));
   }
 
+  if (trend) parts.push(trend);
+
   if (sorted.length >= 3) {
     const counts = sorted.map(h => h.count);
     const worst = Math.min(...counts);
@@ -76137,14 +76225,152 @@ function emailFormatTournament(t, len) {
     else if (t.point_estimate > best) parts.push(`If we hit the projection, it would be the best year since at least ${bestYr} (${best}).`);
   }
 
-  if (sorted.length >= 2) {
-    const rows = [[2026, t.current_count, t.point_estimate, `${t.ci_lower}-${t.ci_upper}`, '']];
-    sorted.forEach(h => rows.push([h.year, '', '', '', h.count]));
-    parts.push(emailTable(['YEAR', 'ENTRIES', 'PROJECTION', 'RANGE', 'FINAL'], rows));
+  if (sorted.length >= 1) {
+    const headers = ['YEAR', 'ENTRIES', 'PROJECTION', 'RANGE', 'FINAL', '\u0394', '%'];
+    parts.push(emailTable(headers, emailHistRows(t, true)));
   }
 
   return parts.join('\n');
 }
+
+// ── HTML tournament formatter ──
+
+function emailHtmlTable(t, includeRange) {
+  const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
+  if (sorted.length < 1) return '';
+  const avg = emailHistAvg(t);
+  const thStyle = 'padding:6px 12px;text-align:right;font-size:13px;font-weight:600;border-bottom:2px solid #444;color:#222';
+  const tdStyle = 'padding:5px 12px;text-align:right;font-size:13px;border-bottom:1px solid #e0e0e0';
+  const headers = includeRange
+    ? ['Year','Entries','Proj.','Range','Final','\u0394','%']
+    : ['Year','Entries','Proj.','Final','\u0394','%'];
+
+  let html = '<table style="border-collapse:collapse;margin:8px 0 4px;font-family:-apple-system,Segoe UI,system-ui,Roboto,sans-serif">';
+  html += '<tr>' + headers.map(h => `<th style="${thStyle}">${h}</th>`).join('') + '</tr>';
+
+  // 2026 row
+  const projStyle = 'padding:5px 12px;text-align:right;font-size:13px;border-bottom:1px solid #e0e0e0;font-weight:600;color:#1a73e8';
+  if (includeRange) {
+    html += `<tr><td style="${tdStyle};font-weight:600">2026</td><td style="${projStyle}">${t.current_count}</td><td style="${projStyle}">${t.point_estimate}</td><td style="${tdStyle}">${t.ci_lower}\u2013${t.ci_upper}</td><td style="${tdStyle}"></td><td style="${tdStyle}"></td><td style="${tdStyle}"></td></tr>`;
+  } else {
+    html += `<tr><td style="${tdStyle};font-weight:600">2026</td><td style="${projStyle}">${t.current_count}</td><td style="${projStyle}">${t.point_estimate}</td><td style="${tdStyle}"></td><td style="${tdStyle}"></td><td style="${tdStyle}"></td></tr>`;
+  }
+
+  // Historical rows
+  for (let i = 0; i < sorted.length; i++) {
+    const h = sorted[i];
+    const prev = sorted[i + 1];
+    let delta = '', pct = '', dColor = '#222';
+    if (prev) {
+      const d = h.count - prev.count;
+      delta = (d >= 0 ? '+' : '') + d;
+      pct = (d >= 0 ? '+' : '') + Math.round(d / prev.count * 100) + '%';
+      dColor = d > 0 ? '#1e7e34' : d < 0 ? '#c62828' : '#222';
+    }
+    const dStyle = `padding:5px 12px;text-align:right;font-size:13px;border-bottom:1px solid #e0e0e0;color:${dColor}`;
+    if (includeRange) {
+      html += `<tr><td style="${tdStyle}">${h.year}</td><td style="${tdStyle}"></td><td style="${tdStyle}"></td><td style="${tdStyle}"></td><td style="${tdStyle}">${h.count}</td><td style="${dStyle}">${delta}</td><td style="${dStyle}">${pct}</td></tr>`;
+    } else {
+      html += `<tr><td style="${tdStyle}">${h.year}</td><td style="${tdStyle}"></td><td style="${tdStyle}"></td><td style="${tdStyle}">${h.count}</td><td style="${dStyle}">${delta}</td><td style="${dStyle}">${pct}</td></tr>`;
+    }
+  }
+
+  // Average row
+  if (avg && sorted.length >= 2) {
+    const avgStyle = 'padding:5px 12px;text-align:right;font-size:13px;border-top:2px solid #444;font-weight:600;color:#555';
+    if (includeRange) {
+      html += `<tr><td style="${avgStyle}">AVG</td><td style="${avgStyle}"></td><td style="${avgStyle}"></td><td style="${avgStyle}"></td><td style="${avgStyle}">${avg}</td><td style="${avgStyle}"></td><td style="${avgStyle}"></td></tr>`;
+    } else {
+      html += `<tr><td style="${avgStyle}">AVG</td><td style="${avgStyle}"></td><td style="${avgStyle}"></td><td style="${avgStyle}">${avg}</td><td style="${avgStyle}"></td><td style="${avgStyle}"></td></tr>`;
+    }
+  }
+  html += '</table>';
+  return html;
+}
+
+function emailFormatTournamentHtml(t, len) {
+  const ly = emailLastYear(t);
+  const avg = emailHistAvg(t);
+  const pace = t.prior_year_pace;
+  const trend = emailTrend(t);
+  const name = t.family.toUpperCase();
+  const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
+  const parts = [];
+
+  const paceText = (function() {
+    if (!pace) return '';
+    const d = t.current_count - pace.count_at_same_point;
+    if (d > 0) return `At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`;
+    if (d < 0) return `At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`;
+    return `At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`;
+  })();
+
+  // ── SHORT ──
+  if (len === 'short') {
+    let s = `<strong>${name}:</strong>  We are at <strong>${t.current_count}</strong> entries which projects to <strong>${t.point_estimate}</strong> with a range of ${t.ci_lower} to ${t.ci_upper}.`;
+    if (ly) s += `  Last year was ${ly.count}.`;
+    if (paceText) s += '  ' + paceText;
+    if (trend) s += '  ' + trend;
+    return `<p style="margin:0 0 16px;line-height:1.6">${s}</p>`;
+  }
+
+  // ── MEDIUM ──
+  if (len === 'medium') {
+    let main = `<strong>${name}:</strong>  We are at <strong>${t.current_count}</strong> entries which projects to <strong>${t.point_estimate}</strong> with a range of ${t.ci_lower} to ${t.ci_upper}.`;
+    if (ly) {
+      const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
+      if (pct > 10) main += `  Last year was ${ly.count}, so we are ahead.`;
+      else if (pct < -10) main += `  Last year was ${ly.count}, so we are still behind.`;
+      else if (pct < -3) main += `  Last year was ${ly.count}, so we are a little behind.`;
+      else main += `  Last year was ${ly.count}.`;
+    }
+    parts.push(`<p style="margin:0 0 4px;line-height:1.6">${main}</p>`);
+    if (paceText) parts.push(`<p style="margin:0 0 4px;line-height:1.6">${paceText}</p>`);
+    if (trend) parts.push(`<p style="margin:0 0 4px;line-height:1.6;color:#555;font-style:italic">${trend}</p>`);
+    if (sorted.length >= 1) parts.push(emailHtmlTable(t, false));
+    return parts.join('');
+  }
+
+  // ── LONG ──
+  let main = `<strong>${name}:</strong>  We are at <strong>${t.current_count}</strong> entries which projects to <strong>${t.point_estimate}</strong> with a range of ${t.ci_lower} to ${t.ci_upper}.`;
+  parts.push(`<p style="margin:0 0 4px;line-height:1.6">${main}</p>`);
+
+  if (ly) {
+    const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
+    let lyText;
+    if (pct > 15) lyText = `Last year was ${ly.count}, so the projection has us well ahead.`;
+    else if (pct > 5) lyText = `Last year was ${ly.count}, so we are tracking ahead.`;
+    else if (pct > -5) lyText = `Last year was ${ly.count}, so we are in the same neighborhood.`;
+    else if (pct > -15) lyText = `Last year was ${ly.count}, so we are still a bit behind.`;
+    else lyText = `Last year was ${ly.count}, so we are lagging.`;
+    parts.push(`<p style="margin:0 0 4px;line-height:1.6">${lyText}</p>`);
+  }
+
+  if (avg && sorted.length >= 3) {
+    const pct = Math.round((t.point_estimate - avg) / avg * 100);
+    if (pct < -10) parts.push(`<p style="margin:0 0 4px;line-height:1.6">The historical average is ${avg}, so we are still below the norm.</p>`);
+    else if (pct > 10) parts.push(`<p style="margin:0 0 4px;line-height:1.6">The historical average is ${avg}, so we are trending above average.</p>`);
+  }
+
+  if (paceText) parts.push(`<p style="margin:0 0 4px;line-height:1.6">${paceText}</p>`);
+  if (trend) parts.push(`<p style="margin:0 0 4px;line-height:1.6;color:#555;font-style:italic">${trend}</p>`);
+
+  if (sorted.length >= 3) {
+    const counts = sorted.map(h => h.count);
+    const worst = Math.min(...counts);
+    const best = Math.max(...counts);
+    const worstYr = sorted.find(h => h.count === worst).year;
+    const bestYr = sorted.find(h => h.count === best).year;
+    if (t.point_estimate < worst) parts.push(`<p style="margin:0 0 4px;line-height:1.6">The last time we were this low was ${worstYr} when we got ${worst}.</p>`);
+    else if (t.point_estimate > best) parts.push(`<p style="margin:0 0 4px;line-height:1.6">If we hit the projection, it would be the best year since at least ${bestYr} (${best}).</p>`);
+  }
+
+  if (sorted.length >= 1) parts.push(emailHtmlTable(t, true));
+
+  return parts.join('');
+}
+
+// ── Overall theme ──
 
 function emailOverallTheme(selected) {
   let ahead = 0, behind = 0;
@@ -76163,21 +76389,44 @@ function emailOverallTheme(selected) {
   return 'The overall theme today is there has been some improvement, but we are still lagging.';
 }
 
+// ── Generate + Copy ──
+
 function generateEmail() {
   const selected = emailGetSelected();
   const out = document.getElementById('emailOutput');
   if (!selected.length) { out.textContent = 'No tournaments selected.'; return; }
   const len = emailLength;
-  const sections = [];
-  sections.push('Team');
-  if (len !== 'short' && selected.length > 1) {
-    sections.push(emailOverallTheme(selected));
+  const fmt = emailFormat;
+
+  if (fmt === 'html') {
+    const htmlParts = [];
+    htmlParts.push('<p style="margin:0 0 16px;line-height:1.6">Team,</p>');
+    if (len !== 'short' && selected.length > 1) {
+      htmlParts.push(`<p style="margin:0 0 16px;line-height:1.6">${emailOverallTheme(selected)}</p>`);
+    }
+    selected.forEach(t => {
+      htmlParts.push(`<div style="margin-bottom:20px">${emailFormatTournamentHtml(t, len)}</div>`);
+    });
+    htmlParts.push('<p style="margin:16px 0 0;line-height:1.6">Dave</p>');
+    const fullHtml = htmlParts.join('');
+    out.innerHTML = fullHtml;
+    out.style.whiteSpace = 'normal';
+    out.dataset.emailHtml = fullHtml;
+  } else {
+    const sections = [];
+    sections.push('Team,');
+    if (len !== 'short' && selected.length > 1) {
+      sections.push(emailOverallTheme(selected));
+    }
+    selected.forEach(t => {
+      sections.push(emailFormatTournament(t, len));
+    });
+    sections.push('Dave');
+    out.textContent = sections.join('\n\n');
+    out.style.whiteSpace = 'pre-wrap';
+    out.dataset.emailHtml = '';
   }
-  selected.forEach(t => {
-    sections.push(emailFormatTournament(t, len));
-  });
-  sections.push('Dave');
-  out.textContent = sections.join('\n\n');
+
   const btn = document.getElementById('emailCopyBtn');
   btn.textContent = 'Copy to clipboard';
   btn.style.background = 'var(--surface2)';
@@ -76186,9 +76435,12 @@ function generateEmail() {
 }
 
 function copyEmail() {
-  const text = document.getElementById('emailOutput').textContent;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => {
+  const out = document.getElementById('emailOutput');
+  const htmlContent = out.dataset.emailHtml;
+  const plainText = out.textContent || out.innerText;
+  if (!plainText) return;
+
+  function onCopied() {
     const btn = document.getElementById('emailCopyBtn');
     btn.textContent = 'Copied!';
     btn.style.background = 'var(--green)';
@@ -76200,7 +76452,21 @@ function copyEmail() {
       btn.style.borderColor = 'var(--border)';
       btn.style.color = 'var(--text)';
     }, 2000);
-  });
+  }
+
+  if (htmlContent && emailFormat === 'html') {
+    // Copy as rich HTML so it pastes formatted in Gmail/Outlook
+    const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+    const textBlob = new Blob([plainText], { type: 'text/plain' });
+    navigator.clipboard.write([
+      new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob })
+    ]).then(onCopied).catch(() => {
+      // Fallback to plain text if ClipboardItem not supported
+      navigator.clipboard.writeText(plainText).then(onCopied);
+    });
+  } else {
+    navigator.clipboard.writeText(plainText).then(onCopied);
+  }
 }
 
 // ══════════════════════════════════════════════════════════

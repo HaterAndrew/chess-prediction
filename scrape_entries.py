@@ -62,18 +62,13 @@ def init_driver():
     return driver
 
 
-def scrape_index(driver):
+def scrape_index(driver, max_retries=3, backoff=15):
     """
     Load CCA index page and extract all 2026 tournaments with their
     name, URL, dates, state, and entry count in a single pass.
+    Retries up to max_retries times with backoff between attempts.
     """
     url = 'https://chessaction.com/CCA/index.php?vendor=Continental%20Chess%20Association'
-    print(f"Loading CCA index: {url}")
-    driver.get(url)
-    print("Waiting 10s for AJAX content...")
-    time.sleep(10)
-
-    page_source = driver.page_source
 
     # Extract: link, name, start date, end date, state, entry count
     pattern = (
@@ -83,27 +78,46 @@ def scrape_index(driver):
         r'\s*(?:&nbsp;\s*)*State:\s*([^<]+?)\s*</div>'
         r'.*?Entry List \[(\d+)\]'
     )
-    matches = re.findall(pattern, page_source, re.DOTALL)
 
-    tournaments = []
-    for rel_url, name, start_date, end_date, state, count in matches:
-        if '2026' not in name and '2026' not in rel_url:
-            continue
-        full_url = f'https://chessaction.com/{rel_url}'.replace('&amp;', '&')
-        # Parse dates to ISO format
-        start_iso = datetime.strptime(start_date.strip(), '%b %d, %Y').strftime('%Y-%m-%d')
-        end_iso = datetime.strptime(end_date.strip(), '%b %d, %Y').strftime('%Y-%m-%d')
-        tournaments.append({
-            'name': name.strip(),
-            'url': full_url,
-            'start_date': start_iso,
-            'end_date': end_iso,
-            'state': state.strip(),
-            'entry_count': int(count),
-        })
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"Loading CCA index (attempt {attempt}/{max_retries}): {url}")
+            driver.get(url)
+            print("Waiting 10s for AJAX content...")
+            time.sleep(10)
 
-    print(f"Found {len(tournaments)} tournaments for 2026")
-    return tournaments
+            page_source = driver.page_source
+            matches = re.findall(pattern, page_source, re.DOTALL)
+
+            if not matches:
+                raise ValueError("Regex matched 0 tournaments — page may not have loaded")
+
+            tournaments = []
+            for rel_url, name, start_date, end_date, state, count in matches:
+                if '2026' not in name and '2026' not in rel_url:
+                    continue
+                full_url = f'https://chessaction.com/{rel_url}'.replace('&amp;', '&')
+                start_iso = datetime.strptime(start_date.strip(), '%b %d, %Y').strftime('%Y-%m-%d')
+                end_iso = datetime.strptime(end_date.strip(), '%b %d, %Y').strftime('%Y-%m-%d')
+                tournaments.append({
+                    'name': name.strip(),
+                    'url': full_url,
+                    'start_date': start_iso,
+                    'end_date': end_iso,
+                    'state': state.strip(),
+                    'entry_count': int(count),
+                })
+
+            print(f"Found {len(tournaments)} tournaments for 2026")
+            return tournaments
+
+        except Exception as e:
+            print(f"  Attempt {attempt} failed: {e}")
+            if attempt < max_retries:
+                print(f"  Retrying in {backoff}s...")
+                time.sleep(backoff)
+            else:
+                raise
 
 
 def consolidate_world_open(tournaments):

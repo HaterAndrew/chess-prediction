@@ -39,19 +39,20 @@ FAMILY_ALIASES = {
     'Princeton Open': ['Open at Foxwoods', 'Atlantic City Open', 'Foxwoods Open'],
     'Western Class': ['Western Class Championships'],
     'Western Class Championships': ['Western Class'],
-    # World Open sub-event name variants
+    # World Open sub-event name variants (only Under 13, top 6, lower tracked)
     'World Open Under 13': ['World Open Under 13 Championship', 'World Open Under 13 Champ'],
     'World Open Under 13 Champ': ['World Open Under 13 Championship', 'World Open Under 13'],
-    'World Open G 10': ['World Open G 10 Championship'],
-    'World Open G 10 Championship': ['World Open G 10'],
-    'World Open Blitz': ['World Open Blitz Championship'],
-    'World Open Blitz Championship': ['World Open Blitz'],
-    'World Open Senior': ['World Open Senior Amateur'],
-    'World Open Senior Amateur': ['World Open Senior'],
-    'World Open Junior Championship': ['World Open Junior Octos'],
+    'World Open Under 13 Championship': ['World Open Under 13', 'World Open Under 13 Champ'],
+    'World Open top 6 sections': ['World Open'],
+    'World Open lower sections': ['World Open'],
     # NY State Scholastic name variants
     'New York State Scholastic Championships Grades K-8': ['New York State Scholastic Championships'],
     'New York State Scholastic Championships': ['New York State Scholastic Championships Grades K-8'],
+    # DC tournaments are relocated Philadelphia tournaments (same events, new city)
+    'DC Open': ['Philadelphia Open'],
+    'DC International': ['Philadelphia International'],
+    'Philadelphia Open': ['DC Open'],
+    'Philadelphia International': ['DC International'],
 }
 T_GRID = np.arange(0, 121)
 TODAY = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)

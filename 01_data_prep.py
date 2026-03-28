@@ -58,11 +58,13 @@ def canonicalize_family(name):
     name = re.sub(r'\s{2,}', ' ', name)
     # Normalize apostrophes
     name = name.replace('\u2019', "'").replace('\u2018', "'")
-    # Consolidate World Open section splits back to "World Open"
-    # Starting in 2023, CCA split into "top 6 sections" / "lower sections"
-    # but these are the same tournament as pre-2023 "World Open"
-    if name in ('World Open top 6 sections', 'World Open lower sections'):
-        name = 'World Open'
+    # Normalize World Open Under 13 name variants
+    if re.match(r'^World Open Under 13\b', name):
+        name = 'World Open Under 13'
+    # Keep "World Open top 6 sections" and "World Open lower sections" as
+    # separate families (no longer consolidated into "World Open").
+    # All other World Open sub-events (G/7, G/10, Blitz, Action, Women,
+    # Senior, Junior, etc.) are excluded downstream.
     # Normalize Women's Championship variants
     if name == "World Open Women s Championship":
         name = "World Open Womens Championship"

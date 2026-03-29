@@ -40,6 +40,8 @@
   --orange-dim: rgba(210,153,34,.10);
   --purple: #bc8cff;
   --purple-dim: rgba(188,140,255,.10);
+  --sq-light: #ebecd0;
+  --sq-dark: #739552;
   --radius: 12px;
   --radius-sm: 8px;
   --radius-lg: 16px;
@@ -631,8 +633,8 @@ header {
 /* ══════════════════════════════════════════════════════
    CHESS PUZZLE BOARD
    ══════════════════════════════════════════════════════ */
-.puzzle-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px; }
-@media (max-width: 900px) { .puzzle-layout { grid-template-columns: 1fr; } }
+.puzzle-layout { display: grid; grid-template-columns: minmax(0,480px) minmax(260px,1fr); gap: 24px; margin-top: 16px; max-width: 960px; margin-left: auto; margin-right: auto; }
+@media (max-width: 900px) { .puzzle-layout { grid-template-columns: 1fr; justify-items: center; } }
 .chess-board-wrap { position: relative; width: 100%; max-width: 480px; }
 .chess-board {
   display: grid; grid-template-columns: repeat(8, 1fr);
@@ -644,8 +646,15 @@ header {
   font-size: 0; position: relative; cursor: pointer; transition: background .15s;
 }
 .chess-sq .piece { font-size: clamp(24px, 5.5vw, 48px); line-height: 1; pointer-events: none; filter: drop-shadow(0 1px 2px rgba(0,0,0,.4)); }
-.chess-sq.light { background: #b8b090; }
-.chess-sq.dark { background: #6b8a5e; }
+.chess-sq .piece.white-piece { color: #fff; }
+.chess-sq .piece.black-piece { color: #312e2b; }
+.chess-sq .coord-label { position: absolute; font-size: 0.55rem; font-weight: 700; pointer-events: none; line-height: 1; opacity: .7; }
+.chess-sq .rank-label { top: 2px; left: 3px; }
+.chess-sq .file-label { bottom: 2px; right: 3px; }
+.chess-sq.light .coord-label { color: var(--sq-dark); }
+.chess-sq.dark .coord-label { color: var(--sq-light); }
+.chess-sq.light { background: var(--sq-light); }
+.chess-sq.dark { background: var(--sq-dark); }
 .chess-sq.selected { background: #f0c040 !important; }
 .chess-sq.hint { background: rgba(240,192,64,.35) !important; }
 .chess-sq.last-move { background: rgba(56,139,253,.25) !important; }
@@ -681,6 +690,12 @@ header {
 .puzzle-dot.failed { background: var(--red); border-color: var(--red); }
 .puzzle-dot.current { border-color: var(--gold); box-shadow: 0 0 6px var(--gold); }
 .puzzle-score { font-size: .82rem; color: var(--muted); margin-top: 4px; }
+.puzzle-move-list {
+  font-family: 'SF Mono', SFMono-Regular, Consolas, monospace; font-size: .72rem;
+  background: var(--surface2); border: 1px solid var(--border-light); border-radius: var(--radius-sm);
+  padding: 8px 12px; max-height: 100px; overflow-y: auto; color: var(--text2); margin-top: 8px;
+  min-height: 28px; line-height: 1.6;
+}
 
 /* This Day in Chess History */
 .history-card {
@@ -1051,6 +1066,7 @@ footer a { color: var(--muted); }
           <div class="puzzle-score" id="puzzleScore"></div>
         </div>
         <div class="puzzle-progress" id="puzzleProgress"></div>
+        <div class="puzzle-score" id="puzzleStats" style="display:none"></div>
         <div class="chess-board-wrap">
           <div class="chess-board" id="chessBoard"></div>
         </div>
@@ -1058,19 +1074,24 @@ footer a { color: var(--muted); }
           <button class="puzzle-btn" id="puzzlePrev" onclick="puzzleNav(-1)" disabled>&#9664; Prev</button>
           <button class="puzzle-btn" id="puzzleHint" onclick="puzzleGiveHint()">Hint</button>
           <button class="puzzle-btn" id="puzzleRetry" onclick="puzzleRetry()" style="display:none">Retry</button>
+          <button class="puzzle-btn" id="puzzleSolution" onclick="puzzleShowSolution()" style="display:none">Solution</button>
           <button class="puzzle-btn primary" id="puzzleNext" onclick="puzzleNav(1)">Next &#9654;</button>
+          <button class="puzzle-btn" id="puzzleShare" onclick="puzzleShareResults()" style="display:none">Share &#128203;</button>
         </div>
       </div>
       <div>
         <div class="puzzle-info" id="puzzleInfo">
           <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Puzzle <span id="puzzleNum">1</span> of <span id="puzzleTotal">10</span></div>
-          <div class="puzzle-rating" id="puzzleRating">–</div>
+          <div style="display:flex;align-items:baseline;gap:12px">
+            <div class="puzzle-rating" id="puzzleRating">–</div>
+            <div id="puzzleTimer" style="font-size:.82rem;color:var(--muted);font-family:'SF Mono',SFMono-Regular,Consolas,monospace">00:00</div>
+          </div>
           <div style="font-size:.72rem;color:var(--muted);margin-top:2px" id="puzzleDifficulty"></div>
           <div class="puzzle-themes" id="puzzleThemes"></div>
           <div class="puzzle-status" id="puzzleStatus">
             <span style="color:var(--muted)">Find the best move for <span id="puzzleTurn" style="font-weight:700"></span></span>
           </div>
-          <div style="font-size:.72rem;color:var(--muted);margin-top:8px" id="puzzleMoveList"></div>
+          <div class="puzzle-move-list" id="puzzleMoveList" style="display:none"></div>
           <a id="puzzleLink" href="#" target="_blank" rel="noopener" style="display:inline-block;margin-top:12px;font-size:.72rem;color:var(--blue)">View on Lichess &rarr;</a>
         </div>
         <div class="history-card" id="historyCard">
@@ -1540,7 +1561,7 @@ footer a { color: var(--muted); }
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
   "generated": "2026-03-29",
-  "generated_time": "2026-03-29T00:11:45.310857-04:00",
+  "generated_time": "2026-03-29T16:42:17.250146-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
   "n_completed_in_training": 16,
@@ -2720,101 +2741,6 @@ const TOURNAMENT_DATA = {
       "status": "live"
     },
     {
-      "family": "Philadelphia International",
-      "year": 2026,
-      "event_start": "2026-06-25",
-      "event_end": "2026-06-29",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 88,
-      "point_estimate": 122,
-      "ci_lower": 96,
-      "ci_upper": 145,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 147
-        },
-        {
-          "year": 2022,
-          "count": 88
-        },
-        {
-          "year": 2023,
-          "count": 108
-        },
-        {
-          "year": 2024,
-          "count": 143
-        },
-        {
-          "year": 2025,
-          "count": 126
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          0
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0219
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0485
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0786
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.1273
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.2675
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.4444
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.5448
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.5931
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.7055
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.8008
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9244
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live"
-    },
-    {
       "family": "DC Open",
       "year": 2026,
       "event_start": "2026-06-26",
@@ -2880,101 +2806,6 @@ const TOURNAMENT_DATA = {
         {
           "days_before": 1,
           "cumulative_pct": 0.943
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live"
-    },
-    {
-      "family": "Philadelphia Open",
-      "year": 2026,
-      "event_start": "2026-06-26",
-      "event_end": "2026-06-28",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 89,
-      "point_estimate": 286,
-      "ci_lower": 251,
-      "ci_upper": 319,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 231
-        },
-        {
-          "year": 2022,
-          "count": 281
-        },
-        {
-          "year": 2023,
-          "count": 281
-        },
-        {
-          "year": 2024,
-          "count": 312
-        },
-        {
-          "year": 2025,
-          "count": 325
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          0
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0092
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0196
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0349
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0479
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.1236
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1849
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.2352
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3188
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.465
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7303
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9378
         },
         {
           "days_before": 0,
@@ -76756,46 +76587,78 @@ function perfDrawTable(data) {
 // CHESS PUZZLE ENGINE
 // ══════════════════════════════════════════════════════════
 const PIECE_UNICODE = {
-  K: '♔', Q: '♕', R: '♖', B: '♗', N: '♘', P: '♙',
-  k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟'
+  K: '\u2654', Q: '\u2655', R: '\u2656', B: '\u2657', N: '\u2658', P: '\u2659',
+  k: '\u265a', q: '\u265b', r: '\u265c', b: '\u265d', n: '\u265e', p: '\u265f'
 };
 
 let puzzleState = {
   puzzles: [],
   currentIdx: 0,
-  board: null, // 8x8 array
-  selected: null, // [row, col]
+  board: null,
+  selected: null,
   turn: 'w',
-  moveIdx: 0, // which solution move we're on (player moves are even indices after setup)
-  solved: [], // 'solved'|'failed'|null per puzzle
+  moveIdx: 0,
+  solved: [],
   hintShown: false,
-  flipped: false, // flip board for black
-  lastMove: null, // [fromR, fromC, toR, toC]
+  flipped: false,
+  lastMove: null,
   animating: false,
-  initialized: false
+  initialized: false,
+  timerStart: null,
+  timerInterval: null,
+  times: [],
+  hintLevel: 0,
+  showingSolution: false,
+  notation: []
 };
 
+// ── Timer ──
+function startPuzzleTimer() {
+  var ps = puzzleState;
+  if (ps.timerInterval) clearInterval(ps.timerInterval);
+  ps.timerStart = Date.now();
+  var el = document.getElementById('puzzleTimer');
+  if (el) el.textContent = '00:00';
+  ps.timerInterval = setInterval(function() {
+    var secs = Math.floor((Date.now() - ps.timerStart) / 1000);
+    var m = String(Math.floor(secs / 60)).padStart(2, '0');
+    var s = String(secs % 60).padStart(2, '0');
+    if (el) el.textContent = m + ':' + s;
+  }, 1000);
+}
+
+function stopPuzzleTimer() {
+  var ps = puzzleState;
+  if (ps.timerInterval) { clearInterval(ps.timerInterval); ps.timerInterval = null; }
+  if (ps.timerStart) {
+    var elapsed = Math.floor((Date.now() - ps.timerStart) / 1000);
+    if (ps.times[ps.currentIdx] === null) ps.times[ps.currentIdx] = elapsed;
+  }
+}
+
+// ── FEN / UCI helpers ──
 function parseFEN(fen) {
-  const board = [];
-  const parts = fen.split(' ');
-  const rows = parts[0].split('/');
-  for (const row of rows) {
-    const r = [];
-    for (const ch of row) {
-      if (ch >= '1' && ch <= '8') { for (let i = 0; i < parseInt(ch); i++) r.push(null); }
+  var board = [];
+  var parts = fen.split(' ');
+  var rows = parts[0].split('/');
+  for (var ri = 0; ri < rows.length; ri++) {
+    var r = [];
+    for (var ci = 0; ci < rows[ri].length; ci++) {
+      var ch = rows[ri][ci];
+      if (ch >= '1' && ch <= '8') { for (var j = 0; j < parseInt(ch); j++) r.push(null); }
       else r.push(ch);
     }
     board.push(r);
   }
-  return { board, turn: parts[1] || 'w' };
+  return { board: board, turn: parts[1] || 'w' };
 }
 
 function boardToFEN(board) {
-  return board.map(row => {
-    let s = '', empty = 0;
-    for (const sq of row) {
-      if (sq === null) { empty++; }
-      else { if (empty > 0) { s += empty; empty = 0; } s += sq; }
+  return board.map(function(row) {
+    var s = '', empty = 0;
+    for (var i = 0; i < row.length; i++) {
+      if (row[i] === null) { empty++; }
+      else { if (empty > 0) { s += empty; empty = 0; } s += row[i]; }
     }
     if (empty > 0) s += empty;
     return s;
@@ -76803,111 +76666,233 @@ function boardToFEN(board) {
 }
 
 function uciToCoords(uci) {
-  const fc = uci.charCodeAt(0) - 97, fr = 8 - parseInt(uci[1]);
-  const tc = uci.charCodeAt(2) - 97, tr = 8 - parseInt(uci[3]);
-  const promo = uci.length > 4 ? uci[4] : null;
-  return { fr, fc, tr, tc, promo };
+  var fc = uci.charCodeAt(0) - 97, fr = 8 - parseInt(uci[1]);
+  var tc = uci.charCodeAt(2) - 97, tr = 8 - parseInt(uci[3]);
+  var promo = uci.length > 4 ? uci[4] : null;
+  return { fr: fr, fc: fc, tr: tr, tc: tc, promo: promo };
 }
 
 function applyUCIMove(board, uci, turn) {
-  const { fr, fc, tr, tc, promo } = uciToCoords(uci);
-  const b = board.map(r => [...r]);
-  const piece = b[fr][fc];
+  var coords = uciToCoords(uci);
+  var fr = coords.fr, fc = coords.fc, tr = coords.tr, tc = coords.tc, promo = coords.promo;
+  var b = board.map(function(r) { return r.slice(); });
+  var piece = b[fr][fc];
   b[tr][tc] = promo ? (turn === 'w' ? promo.toUpperCase() : promo.toLowerCase()) : piece;
   b[fr][fc] = null;
-  // En passant
   if (piece && piece.toLowerCase() === 'p' && fc !== tc && board[tr][tc] === null) {
     b[fr][tc] = null;
   }
-  // Castling
   if (piece && piece.toLowerCase() === 'k' && Math.abs(fc - tc) === 2) {
-    if (tc > fc) { b[fr][5] = b[fr][7]; b[fr][7] = null; } // kingside
-    else { b[fr][3] = b[fr][0]; b[fr][0] = null; } // queenside
+    if (tc > fc) { b[fr][5] = b[fr][7]; b[fr][7] = null; }
+    else { b[fr][3] = b[fr][0]; b[fr][0] = null; }
   }
   return b;
 }
 
+// ── SAN notation ──
+function isSquareAttacked(board, sr, sc, byColor) {
+  var isUpper = (byColor === 'w');
+  var knightMoves = [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+  var dirs = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+  var i, r, c, p;
+  for (i = 0; i < knightMoves.length; i++) {
+    r = sr + knightMoves[i][0]; c = sc + knightMoves[i][1];
+    if (r >= 0 && r < 8 && c >= 0 && c < 8) {
+      p = board[r][c];
+      if (p && p.toLowerCase() === 'n' && (isUpper === (p === p.toUpperCase()))) return true;
+    }
+  }
+  var pawnDir = isUpper ? 1 : -1;
+  for (i = 0; i < 2; i++) {
+    var dc = i === 0 ? -1 : 1;
+    r = sr + pawnDir; c = sc + dc;
+    if (r >= 0 && r < 8 && c >= 0 && c < 8) {
+      p = board[r][c];
+      if (p && p.toLowerCase() === 'p' && (isUpper === (p === p.toUpperCase()))) return true;
+    }
+  }
+  for (i = 0; i < dirs.length; i++) {
+    r = sr + dirs[i][0]; c = sc + dirs[i][1];
+    if (r >= 0 && r < 8 && c >= 0 && c < 8) {
+      p = board[r][c];
+      if (p && p.toLowerCase() === 'k' && (isUpper === (p === p.toUpperCase()))) return true;
+    }
+  }
+  var slides = [
+    { dirs: [[-1,-1],[-1,1],[1,-1],[1,1]], pieces: ['b','q'] },
+    { dirs: [[-1,0],[1,0],[0,-1],[0,1]], pieces: ['r','q'] }
+  ];
+  for (var si = 0; si < slides.length; si++) {
+    var sdirs = slides[si].dirs, spieces = slides[si].pieces;
+    for (var di = 0; di < sdirs.length; di++) {
+      r = sr + sdirs[di][0]; c = sc + sdirs[di][1];
+      while (r >= 0 && r < 8 && c >= 0 && c < 8) {
+        p = board[r][c];
+        if (p) {
+          if (spieces.indexOf(p.toLowerCase()) >= 0 && (isUpper === (p === p.toUpperCase()))) return true;
+          break;
+        }
+        r += sdirs[di][0]; c += sdirs[di][1];
+      }
+    }
+  }
+  return false;
+}
+
+function uciToSAN(board, uci, turn) {
+  var coords = uciToCoords(uci);
+  var fr = coords.fr, fc = coords.fc, tr = coords.tr, tc = coords.tc, promo = coords.promo;
+  var piece = board[fr][fc];
+  if (!piece) return uci;
+  var p = piece.toLowerCase();
+  if (p === 'k' && Math.abs(fc - tc) === 2) return tc > fc ? 'O-O' : 'O-O-O';
+  var isCapture = board[tr][tc] !== null || (p === 'p' && fc !== tc);
+  var san = '';
+  if (p === 'p') {
+    san = isCapture ? String.fromCharCode(97 + fc) + 'x' : '';
+    san += String.fromCharCode(97 + tc) + (8 - tr);
+    if (promo) san += '=' + promo.toUpperCase();
+  } else {
+    var pLetter = p.toUpperCase();
+    var disambig = '';
+    for (var r2 = 0; r2 < 8; r2++) {
+      for (var c2 = 0; c2 < 8; c2++) {
+        if (r2 === fr && c2 === fc) continue;
+        var other = board[r2][c2];
+        if (other && other.toLowerCase() === p && ((turn === 'w') === (other === other.toUpperCase()))) {
+          if (fc !== c2) disambig = String.fromCharCode(97 + fc);
+          else disambig = String(8 - fr);
+        }
+      }
+    }
+    san = pLetter + disambig + (isCapture ? 'x' : '') + String.fromCharCode(97 + tc) + (8 - tr);
+  }
+  var newBoard = applyUCIMove(board, uci, turn);
+  var oppTurn = turn === 'w' ? 'b' : 'w';
+  var kingChar = oppTurn === 'w' ? 'K' : 'k';
+  var kr = -1, kc = -1;
+  for (var r3 = 0; r3 < 8; r3++) {
+    for (var c3 = 0; c3 < 8; c3++) {
+      if (newBoard[r3][c3] === kingChar) { kr = r3; kc = c3; }
+    }
+  }
+  if (kr >= 0 && isSquareAttacked(newBoard, kr, kc, turn)) san += '+';
+  return san;
+}
+
+function renderNotation() {
+  var ps = puzzleState;
+  var el = document.getElementById('puzzleMoveList');
+  if (!el || ps.notation.length === 0) { if (el) el.style.display = 'none'; return; }
+  el.style.display = '';
+  var playerIsBlack = ps.flipped;
+  var html = '';
+  var moveNum = 1;
+  for (var i = 0; i < ps.notation.length; i++) {
+    var isPlayerMove = (i % 2 === 0);
+    if (playerIsBlack) {
+      if (i === 0) html += moveNum + '... ';
+      else if (i % 2 === 1) html += moveNum + '. ';
+      html += '<span style="color:' + (isPlayerMove ? 'var(--text)' : 'var(--muted)') + ';font-weight:' + (isPlayerMove ? '700' : '400') + '">' + ps.notation[i] + '</span> ';
+      if (i % 2 === 1) moveNum++;
+    } else {
+      if (i % 2 === 0) html += moveNum + '. ';
+      html += '<span style="color:' + (isPlayerMove ? 'var(--text)' : 'var(--muted)') + ';font-weight:' + (isPlayerMove ? '700' : '400') + '">' + ps.notation[i] + '</span> ';
+      if (i % 2 === 1) moveNum++;
+    }
+  }
+  el.innerHTML = html;
+  el.scrollTop = el.scrollHeight;
+}
+
+// ── Board rendering ──
 function renderBoard() {
-  const el = document.getElementById('chessBoard');
+  var el = document.getElementById('chessBoard');
   if (!el || !puzzleState.board) return;
-  const b = puzzleState.board;
-  const flip = puzzleState.flipped;
-  let html = '';
-  for (let ri = 0; ri < 8; ri++) {
-    for (let ci = 0; ci < 8; ci++) {
-      const r = flip ? 7 - ri : ri;
-      const c = flip ? 7 - ci : ci;
-      const isLight = (r + c) % 2 === 0;
-      let cls = 'chess-sq ' + (isLight ? 'light' : 'dark');
+  var b = puzzleState.board;
+  var flip = puzzleState.flipped;
+  var html = '';
+  for (var ri = 0; ri < 8; ri++) {
+    for (var ci = 0; ci < 8; ci++) {
+      var r = flip ? 7 - ri : ri;
+      var c = flip ? 7 - ci : ci;
+      var isLight = (r + c) % 2 === 0;
+      var cls = 'chess-sq ' + (isLight ? 'light' : 'dark');
       if (puzzleState.selected && puzzleState.selected[0] === r && puzzleState.selected[1] === c) cls += ' selected';
       if (puzzleState.lastMove) {
-        const [lfr, lfc, ltr, ltc] = puzzleState.lastMove;
-        if ((r === lfr && c === lfc) || (r === ltr && c === ltc)) cls += ' last-move';
+        var lm = puzzleState.lastMove;
+        if ((r === lm[0] && c === lm[1]) || (r === lm[2] && c === lm[3])) cls += ' last-move';
       }
-      const piece = b[r][c];
-      const pieceHtml = piece ? `<span class="piece">${PIECE_UNICODE[piece]}</span>` : '';
-      html += `<div class="${cls}" data-r="${r}" data-c="${c}" onclick="puzzleSquareClick(${r},${c})">${pieceHtml}</div>`;
+      var piece = b[r][c];
+      var pieceColor = piece ? (piece === piece.toUpperCase() ? 'white-piece' : 'black-piece') : '';
+      var pieceHtml = piece ? '<span class="piece ' + pieceColor + '">' + PIECE_UNICODE[piece] + '</span>' : '';
+      var coordHtml = '';
+      if (ci === 0) coordHtml += '<span class="coord-label rank-label">' + (8 - r) + '</span>';
+      if (ri === 7) coordHtml += '<span class="coord-label file-label">' + String.fromCharCode(97 + c) + '</span>';
+      html += '<div class="' + cls + '" data-r="' + r + '" data-c="' + c + '" onclick="puzzleSquareClick(' + r + ',' + c + ')">' + pieceHtml + coordHtml + '</div>';
     }
   }
   el.innerHTML = html;
 }
 
+// ── Interaction ──
 function puzzleSquareClick(r, c) {
-  if (puzzleState.animating) return;
-  const ps = puzzleState;
-  const puzzle = ps.puzzles[ps.currentIdx];
+  if (puzzleState.animating || puzzleState.showingSolution) return;
+  var ps = puzzleState;
+  var puzzle = ps.puzzles[ps.currentIdx];
   if (!puzzle) return;
-  const moves = puzzle.moves.split(' ');
-  // Player moves on even moveIdx (0-indexed after setup move is applied)
-  if (ps.moveIdx >= moves.length) return; // puzzle done
+  var moves = puzzle.moves.split(' ');
+  if (ps.moveIdx >= moves.length) return;
 
-  const piece = ps.board[r][c];
-  const isMyPiece = piece && ((ps.turn === 'w' && piece === piece.toUpperCase()) || (ps.turn === 'b' && piece === piece.toLowerCase()));
+  var piece = ps.board[r][c];
+  var isMyPiece = piece && ((ps.turn === 'w' && piece === piece.toUpperCase()) || (ps.turn === 'b' && piece === piece.toLowerCase()));
 
   if (ps.selected) {
-    // Trying to make a move
-    const [sr, sc] = ps.selected;
+    var sr = ps.selected[0], sc = ps.selected[1];
     if (r === sr && c === sc) { ps.selected = null; renderBoard(); return; }
     if (isMyPiece) { ps.selected = [r, c]; renderBoard(); return; }
-    // Build UCI from selected -> clicked
-    const fromUci = String.fromCharCode(97 + sc) + (8 - sr);
-    const toUci = String.fromCharCode(97 + c) + (8 - r);
-    let uci = fromUci + toUci;
-    // Check promotion
-    const srcPiece = ps.board[sr][sc];
-    if (srcPiece && srcPiece.toLowerCase() === 'p' && (r === 0 || r === 7)) uci += 'q'; // auto-queen
-    const expected = moves[ps.moveIdx];
+    var fromUci = String.fromCharCode(97 + sc) + (8 - sr);
+    var toUci = String.fromCharCode(97 + c) + (8 - r);
+    var uci = fromUci + toUci;
+    var srcPiece = ps.board[sr][sc];
+    if (srcPiece && srcPiece.toLowerCase() === 'p' && (r === 0 || r === 7)) uci += 'q';
+    var expected = moves[ps.moveIdx];
     if (uci === expected) {
-      // Correct move!
+      var san = uciToSAN(ps.board, uci, ps.turn);
       ps.board = applyUCIMove(ps.board, uci, ps.turn);
       ps.lastMove = [sr, sc, r, c];
       ps.selected = null;
       ps.turn = ps.turn === 'w' ? 'b' : 'w';
       ps.moveIdx++;
+      ps.hintLevel = 0;
+      document.getElementById('puzzleHint').textContent = 'Hint';
+      ps.notation.push(san);
+      renderNotation();
       renderBoard();
       if (ps.moveIdx >= moves.length) {
         puzzleSolved();
       } else {
-        // Play opponent's response after a brief delay
         puzzleStatus('&#10003; Correct! Keep going...', 'var(--green)');
         ps.animating = true;
-        setTimeout(() => {
-          const opMove = moves[ps.moveIdx];
-          const { fr, fc: fcc, tr, tc: tcc } = uciToCoords(opMove);
+        setTimeout(function() {
+          var opMove = moves[ps.moveIdx];
+          var opCoords = uciToCoords(opMove);
+          var opSan = uciToSAN(ps.board, opMove, ps.turn);
           ps.board = applyUCIMove(ps.board, opMove, ps.turn);
-          ps.lastMove = [fr, fcc, tr, tcc];
+          ps.lastMove = [opCoords.fr, opCoords.fc, opCoords.tr, opCoords.tc];
           ps.turn = ps.turn === 'w' ? 'b' : 'w';
           ps.moveIdx++;
           ps.animating = false;
+          ps.notation.push(opSan);
+          renderNotation();
           renderBoard();
           if (ps.moveIdx >= moves.length) puzzleSolved();
           else puzzleStatus('Find the best move for ' + (ps.turn === 'w' ? 'White' : 'Black'), 'var(--muted)');
         }, 500);
       }
     } else {
-      // Wrong move
-      const sq = document.querySelector(`.chess-sq[data-r="${r}"][data-c="${c}"]`);
-      if (sq) { sq.classList.add('wrong'); setTimeout(() => sq.classList.remove('wrong'), 600); }
+      var wrongSq = document.querySelector('.chess-sq[data-r="' + r + '"][data-c="' + c + '"]');
+      if (wrongSq) { wrongSq.classList.add('wrong'); setTimeout(function() { wrongSq.classList.remove('wrong'); }, 600); }
       ps.selected = null;
       puzzleFailed();
     }
@@ -76917,37 +76902,58 @@ function puzzleSquareClick(r, c) {
 }
 
 function puzzleStatus(msg, color) {
-  const el = document.getElementById('puzzleStatus');
-  if (el) el.innerHTML = `<span style="color:${color}">${msg}</span>`;
+  var el = document.getElementById('puzzleStatus');
+  if (el) el.innerHTML = '<span style="color:' + color + '">' + msg + '</span>';
 }
 
 function puzzleSolved() {
-  const ps = puzzleState;
+  var ps = puzzleState;
+  stopPuzzleTimer();
   if (ps.solved[ps.currentIdx] !== 'failed') ps.solved[ps.currentIdx] = 'solved';
   puzzleStatus('&#9733; Puzzle solved!', 'var(--green)');
   renderPuzzleProgress();
   document.getElementById('puzzleRetry').style.display = 'none';
+  document.getElementById('puzzleSolution').style.display = 'none';
+  savePuzzleProgress();
 }
 
 function puzzleFailed() {
-  const ps = puzzleState;
+  var ps = puzzleState;
+  stopPuzzleTimer();
   ps.solved[ps.currentIdx] = 'failed';
-  puzzleStatus('&#10007; Incorrect — try again or click Retry', 'var(--red)');
+  puzzleStatus('&#10007; Incorrect \u2014 try again or click Retry', 'var(--red)');
   renderPuzzleProgress();
   document.getElementById('puzzleRetry').style.display = '';
+  document.getElementById('puzzleSolution').style.display = '';
+  savePuzzleProgress();
 }
 
 function puzzleGiveHint() {
-  const ps = puzzleState;
-  const puzzle = ps.puzzles[ps.currentIdx];
-  if (!puzzle) return;
-  const moves = puzzle.moves.split(' ');
+  var ps = puzzleState;
+  var puzzle = ps.puzzles[ps.currentIdx];
+  if (!puzzle || ps.showingSolution) return;
+  var moves = puzzle.moves.split(' ');
   if (ps.moveIdx >= moves.length) return;
-  const move = moves[ps.moveIdx];
-  const { fr, fc } = uciToCoords(move);
-  // Highlight the source square
-  const sq = document.querySelector(`.chess-sq[data-r="${fr}"][data-c="${fc}"]`);
-  if (sq) { sq.classList.add('hint'); setTimeout(() => sq.classList.remove('hint'), 1500); }
+  var move = moves[ps.moveIdx];
+  var coords = uciToCoords(move);
+  var btn = document.getElementById('puzzleHint');
+  ps.hintLevel++;
+  if (ps.hintLevel === 1) {
+    var sq1 = document.querySelector('.chess-sq[data-r="' + coords.fr + '"][data-c="' + coords.fc + '"]');
+    if (sq1) { sq1.classList.add('hint'); setTimeout(function() { sq1.classList.remove('hint'); }, 2000); }
+    if (btn) btn.textContent = 'Hint (2/3)';
+  } else if (ps.hintLevel === 2) {
+    var sqFrom = document.querySelector('.chess-sq[data-r="' + coords.fr + '"][data-c="' + coords.fc + '"]');
+    var sqTo = document.querySelector('.chess-sq[data-r="' + coords.tr + '"][data-c="' + coords.tc + '"]');
+    if (sqFrom) { sqFrom.classList.add('hint'); setTimeout(function() { sqFrom.classList.remove('hint'); }, 2000); }
+    if (sqTo) { sqTo.classList.add('hint'); setTimeout(function() { sqTo.classList.remove('hint'); }, 2000); }
+    if (btn) btn.textContent = 'Hint (3/3)';
+  } else {
+    ps.selected = [coords.fr, coords.fc];
+    puzzleSquareClick(coords.tr, coords.tc);
+    ps.hintLevel = 0;
+    if (btn) btn.textContent = 'Hint';
+  }
   ps.hintShown = true;
 }
 
@@ -76955,92 +76961,231 @@ function puzzleRetry() {
   loadPuzzle(puzzleState.currentIdx);
 }
 
+function puzzleShowSolution() {
+  var ps = puzzleState;
+  var puzzle = ps.puzzles[ps.currentIdx];
+  if (!puzzle) return;
+  ps.showingSolution = true;
+  document.getElementById('puzzleSolution').style.display = 'none';
+  document.getElementById('puzzleRetry').style.display = 'none';
+  var parsed = parseFEN(puzzle.fen);
+  var moves = puzzle.moves.split(' ');
+  ps.board = applyUCIMove(parsed.board, moves[0], parsed.turn);
+  ps.turn = parsed.turn === 'w' ? 'b' : 'w';
+  ps.moveIdx = 1;
+  ps.notation = [];
+  ps.lastMove = null;
+  renderBoard();
+  puzzleStatus('Showing solution...', 'var(--muted)');
+  var stepIdx = 1;
+  var solutionInterval = setInterval(function() {
+    if (stepIdx >= moves.length) {
+      clearInterval(solutionInterval);
+      puzzleStatus('Solution complete', 'var(--muted)');
+      ps.showingSolution = false;
+      return;
+    }
+    var uci = moves[stepIdx];
+    var co = uciToCoords(uci);
+    var san = uciToSAN(ps.board, uci, ps.turn);
+    ps.board = applyUCIMove(ps.board, uci, ps.turn);
+    ps.lastMove = [co.fr, co.fc, co.tr, co.tc];
+    ps.turn = ps.turn === 'w' ? 'b' : 'w';
+    ps.notation.push(san);
+    renderBoard();
+    renderNotation();
+    stepIdx++;
+  }, 700);
+}
+
 function puzzleNav(dir) {
-  const ps = puzzleState;
-  const next = ps.currentIdx + dir;
+  var ps = puzzleState;
+  var next = ps.currentIdx + dir;
   if (next < 0 || next >= ps.puzzles.length) return;
   loadPuzzle(next);
 }
 
 function loadPuzzle(idx) {
-  const ps = puzzleState;
+  var ps = puzzleState;
   ps.currentIdx = idx;
-  const puzzle = ps.puzzles[idx];
+  var puzzle = ps.puzzles[idx];
   if (!puzzle) return;
 
-  // Parse FEN and apply setup move
-  const { board, turn } = parseFEN(puzzle.fen);
-  const moves = puzzle.moves.split(' ');
-  // First move in the moves list is the "last move played" (setup) — apply it
-  const setupMove = moves[0];
-  ps.board = applyUCIMove(board, setupMove, turn);
-  const { fr, fc, tr, tc } = uciToCoords(setupMove);
-  ps.lastMove = [fr, fc, tr, tc];
-  ps.turn = turn === 'w' ? 'b' : 'w'; // after setup move, it's the other side's turn
-  ps.flipped = ps.turn === 'b'; // flip board so player is at bottom
-  ps.moveIdx = 1; // player starts at move index 1
+  var parsed = parseFEN(puzzle.fen);
+  var moves = puzzle.moves.split(' ');
+  var setupMove = moves[0];
+  ps.board = applyUCIMove(parsed.board, setupMove, parsed.turn);
+  var setupCoords = uciToCoords(setupMove);
+  ps.lastMove = [setupCoords.fr, setupCoords.fc, setupCoords.tr, setupCoords.tc];
+  ps.turn = parsed.turn === 'w' ? 'b' : 'w';
+  ps.flipped = ps.turn === 'b';
+  ps.moveIdx = 1;
   ps.selected = null;
   ps.hintShown = false;
+  ps.hintLevel = 0;
   ps.animating = false;
+  ps.showingSolution = false;
+  ps.notation = [];
 
-  // Update UI
+  startPuzzleTimer();
+
   document.getElementById('puzzleNum').textContent = idx + 1;
   document.getElementById('puzzleRating').textContent = puzzle.rating;
-  const diff = puzzle.rating >= 2500 ? 'Master' : puzzle.rating >= 2300 ? 'Expert' : puzzle.rating >= 2100 ? 'Hard' : 'Moderate';
+  var diff = puzzle.rating >= 2500 ? 'Master' : puzzle.rating >= 2300 ? 'Expert' : puzzle.rating >= 2100 ? 'Hard' : 'Moderate';
   document.getElementById('puzzleDifficulty').textContent = diff;
-  document.getElementById('puzzleThemes').innerHTML = (puzzle.themes || []).map(t => `<span class="puzzle-theme-tag">${esc(t.replace(/([A-Z])/g, ' $1').trim())}</span>`).join('');
+  document.getElementById('puzzleThemes').innerHTML = (puzzle.themes || []).map(function(t) {
+    return '<span class="puzzle-theme-tag">' + esc(t.replace(/([A-Z])/g, ' $1').trim()) + '</span>';
+  }).join('');
   document.getElementById('puzzleLink').href = puzzle.url || '#';
-  document.getElementById('puzzleTurn').textContent = ps.turn === 'w' ? 'White' : 'Black';
-  puzzleStatus('Find the best move for ' + (ps.turn === 'w' ? 'White' : 'Black'), 'var(--muted)');
-  document.getElementById('puzzleMoveList').textContent = '';
+  puzzleStatus('Find the best move for <span style="font-weight:700">' + (ps.turn === 'w' ? 'White' : 'Black') + '</span>', 'var(--muted)');
+  var ml = document.getElementById('puzzleMoveList'); ml.textContent = ''; ml.style.display = 'none';
   document.getElementById('puzzlePrev').disabled = idx === 0;
   document.getElementById('puzzleNext').disabled = idx === ps.puzzles.length - 1;
   document.getElementById('puzzleRetry').style.display = 'none';
+  document.getElementById('puzzleSolution').style.display = 'none';
+  document.getElementById('puzzleHint').textContent = 'Hint';
 
   renderBoard();
   renderPuzzleProgress();
 }
 
 function renderPuzzleProgress() {
-  const ps = puzzleState;
-  const el = document.getElementById('puzzleProgress');
+  var ps = puzzleState;
+  var el = document.getElementById('puzzleProgress');
   if (!el) return;
-  el.innerHTML = ps.puzzles.map((_, i) => {
-    let cls = 'puzzle-dot';
+  el.innerHTML = ps.puzzles.map(function(_, i) {
+    var cls = 'puzzle-dot';
     if (ps.solved[i] === 'solved') cls += ' solved';
     else if (ps.solved[i] === 'failed') cls += ' failed';
     if (i === ps.currentIdx) cls += ' current';
-    return `<div class="${cls}" onclick="loadPuzzle(${i})" style="cursor:pointer" title="Puzzle ${i+1}"></div>`;
+    return '<div class="' + cls + '" onclick="loadPuzzle(' + i + ')" style="cursor:pointer" title="Puzzle ' + (i+1) + '"></div>';
   }).join('');
-  const solved = ps.solved.filter(s => s === 'solved').length;
-  document.getElementById('puzzleScore').textContent = `${solved}/${ps.puzzles.length} solved`;
+  var solved = ps.solved.filter(function(s) { return s === 'solved'; }).length;
+  document.getElementById('puzzleScore').textContent = solved + '/' + ps.puzzles.length + ' solved';
+  renderPuzzleStats();
+}
+
+function renderPuzzleStats() {
+  var ps = puzzleState;
+  var el = document.getElementById('puzzleStats');
+  if (!el) return;
+  var attempted = ps.solved.filter(function(s) { return s !== null; }).length;
+  if (attempted === 0) { el.style.display = 'none'; return; }
+  el.style.display = '';
+  var solved = ps.solved.filter(function(s) { return s === 'solved'; }).length;
+  var completedTimes = [];
+  for (var i = 0; i < ps.times.length; i++) {
+    if (ps.times[i] !== null && ps.solved[i] !== null) completedTimes.push(ps.times[i]);
+  }
+  var avgStr = '\u2014';
+  if (completedTimes.length > 0) {
+    var sum = 0;
+    for (var j = 0; j < completedTimes.length; j++) sum += completedTimes[j];
+    var avg = Math.round(sum / completedTimes.length);
+    avgStr = Math.floor(avg / 60) + ':' + String(avg % 60).padStart(2, '0');
+  }
+  var streak = 0;
+  for (var k = ps.solved.length - 1; k >= 0; k--) {
+    if (ps.solved[k] === 'solved') streak++;
+    else if (ps.solved[k] === 'failed') break;
+  }
+  el.textContent = solved + '/' + attempted + ' | Avg ' + avgStr + ' | Streak: ' + streak;
+  var shareBtn = document.getElementById('puzzleShare');
+  if (shareBtn) shareBtn.style.display = (attempted === ps.puzzles.length) ? '' : 'none';
+}
+
+function puzzleShareResults() {
+  var ps = puzzleState;
+  var date = (typeof PUZZLE_DATA !== 'undefined' && PUZZLE_DATA.date) ? PUZZLE_DATA.date : new Date().toISOString().slice(0, 10);
+  var dots = ps.solved.map(function(s) { return s === 'solved' ? '\uD83D\uDFE2' : s === 'failed' ? '\uD83D\uDD34' : '\u26AA'; }).join('');
+  var solved = ps.solved.filter(function(s) { return s === 'solved'; }).length;
+  var total = ps.puzzles.length;
+  var completedTimes = [];
+  for (var i = 0; i < ps.times.length; i++) {
+    if (ps.times[i] !== null && ps.solved[i] !== null) completedTimes.push(ps.times[i]);
+  }
+  var avgStr = '';
+  if (completedTimes.length > 0) {
+    var sum = 0;
+    for (var j = 0; j < completedTimes.length; j++) sum += completedTimes[j];
+    var avg = Math.round(sum / completedTimes.length);
+    avgStr = ' | Avg ' + Math.floor(avg / 60) + ':' + String(avg % 60).padStart(2, '0');
+  }
+  var text = 'Chess Puzzles ' + date + '\n' + dots + '\nScore: ' + solved + '/' + total + avgStr;
+  navigator.clipboard.writeText(text).then(function() {
+    puzzleStatus('Copied to clipboard!', 'var(--green)');
+    setTimeout(function() { puzzleStatus('', ''); }, 2000);
+  }).catch(function() {
+    puzzleStatus('Copy failed', 'var(--red)');
+  });
 }
 
 function loadHistoryEvents() {
-  const el = document.getElementById('historyEvents');
+  var el = document.getElementById('historyEvents');
   if (!el) return;
-  const today = new Date();
-  const key = String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+  var today = new Date();
+  var key = String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
   if (typeof CHESS_HISTORY !== 'undefined' && CHESS_HISTORY[key]) {
-    const events = CHESS_HISTORY[key];
-    el.innerHTML = events.map(e =>
-      `<div class="history-event"><span class="history-year">${e.year}</span>${esc(e.event)}<span class="history-cat">${esc(e.category)}</span></div>`
-    ).join('');
+    var events = CHESS_HISTORY[key];
+    el.innerHTML = events.map(function(e) {
+      return '<div class="history-event"><span class="history-year">' + e.year + '</span>' + esc(e.event) + '<span class="history-cat">' + esc(e.category) + '</span></div>';
+    }).join('');
   } else {
     el.innerHTML = '<div class="history-event" style="color:var(--muted)">No historical events found for today.</div>';
   }
+}
+
+// ── localStorage persistence ──
+function getPuzzleStorageKey() {
+  if (typeof PUZZLE_DATA !== 'undefined' && PUZZLE_DATA.date) return 'puzzle_progress_' + PUZZLE_DATA.date;
+  return 'puzzle_progress_' + new Date().toISOString().slice(0, 10);
+}
+
+function savePuzzleProgress() {
+  try {
+    var ps = puzzleState;
+    var key = getPuzzleStorageKey();
+    localStorage.setItem(key, JSON.stringify({ solved: ps.solved, times: ps.times, currentIdx: ps.currentIdx }));
+    var cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 7);
+    var cutoffStr = cutoff.toISOString().slice(0, 10);
+    for (var i = localStorage.length - 1; i >= 0; i--) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('puzzle_progress_') === 0) {
+        var d = k.replace('puzzle_progress_', '');
+        if (d < cutoffStr) localStorage.removeItem(k);
+      }
+    }
+  } catch (e) { /* localStorage unavailable */ }
+}
+
+function loadPuzzleProgress() {
+  try {
+    var key = getPuzzleStorageKey();
+    var raw = localStorage.getItem(key);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) { return null; }
 }
 
 let puzzlesInitialized = false;
 function initPuzzles() {
   if (puzzlesInitialized) return;
   puzzlesInitialized = true;
-  const ps = puzzleState;
+  var ps = puzzleState;
   if (typeof PUZZLE_DATA !== 'undefined' && PUZZLE_DATA.puzzles && PUZZLE_DATA.puzzles.length > 0) {
     ps.puzzles = PUZZLE_DATA.puzzles;
     ps.solved = new Array(ps.puzzles.length).fill(null);
+    ps.times = new Array(ps.puzzles.length).fill(null);
     document.getElementById('puzzleTotal').textContent = ps.puzzles.length;
-    loadPuzzle(0);
+    var saved = loadPuzzleProgress();
+    if (saved) {
+      if (saved.solved) ps.solved = saved.solved;
+      if (saved.times) ps.times = saved.times;
+      var firstUnsolved = ps.solved.indexOf(null);
+      loadPuzzle(firstUnsolved >= 0 ? firstUnsolved : (saved.currentIdx || 0));
+    } else {
+      loadPuzzle(0);
+    }
   } else {
     document.getElementById('chessBoard').innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted);grid-column:1/-1">No puzzles available. Run the puzzle scraper to generate daily puzzles.</div>';
   }

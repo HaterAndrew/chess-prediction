@@ -1141,8 +1141,13 @@ footer a { color: var(--muted); }
   <!-- ══════ PERFORMANCE TAB ══════ -->
   <div class="page-tab-panel" id="panel-performance" role="tabpanel">
 
+    <!-- Year selector -->
+    <div id="perfYearSelector" style="display:flex;gap:6px;margin:18px 0 14px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px">View:</span>
+    </div>
+
     <!-- Hero: grade + stats -->
-    <div style="display:flex;gap:16px;flex-wrap:wrap;margin:18px 0 22px;align-items:stretch">
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin:0 0 22px;align-items:stretch">
       <div id="perfGradeCard" style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 36px;background:linear-gradient(135deg,rgba(240,192,64,.08),rgba(56,139,253,.04));border:1px solid rgba(240,192,64,.2);border-radius:16px;min-width:140px">
         <div id="perfGradeLetter" style="font-size:4.5rem;font-weight:900;line-height:1;color:var(--gold);text-shadow:0 0 24px rgba(240,192,64,.4)"></div>
         <div id="perfGradeLabel" style="font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:8px"></div>
@@ -76659,20 +76664,73 @@ function initAboutTab() {
 
 // ══════════════════════════════════════════════════════════
 let perfInited = false;
+let perfSelectedKey = 'cumulative';
 
 function initPerformanceTab() {
   if (perfInited) return;
   perfInited = true;
 
   const data = typeof PERFORMANCE_DATA !== 'undefined' ? PERFORMANCE_DATA : {};
-  if (!data.aggregate || data.aggregate.length === 0) {
+  if (!data.years && !data.cumulative) {
     document.getElementById('perfGradeLetter').textContent = '--';
     document.getElementById('perfGradeLabel').textContent = 'NO DATA';
     document.getElementById('perfGradeDetail').textContent = 'Performance data will appear once tournaments complete.';
     return;
   }
 
-  const agg = data.aggregate;
+  // Build year selector buttons
+  const selector = document.getElementById('perfYearSelector');
+  const buttons = [];
+  const years = data.years ? Object.keys(data.years).map(Number).sort() : [];
+  // Filter out years with 0 tournaments
+  const activeYears = years.filter(y => data.years[y] && data.years[y].n_tournaments > 0);
+
+  activeYears.forEach(y => {
+    const label = y === 2026 ? '2026 YTD' : String(y);
+    buttons.push({key: String(y), label: label});
+  });
+  if (data.cumulative) buttons.push({key: 'cumulative', label: 'Cumulative'});
+
+  selector.innerHTML = '<span style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px">View:</span>' +
+    buttons.map(b => `<button onclick="perfSelectYear('${b.key}')" id="perfYearBtn_${b.key}" style="padding:6px 14px;border-radius:8px;font-size:.76rem;font-weight:600;border:1px solid var(--border);cursor:pointer;transition:all .15s">${b.label}</button>`).join('');
+
+  // Default to cumulative
+  perfSelectYear('cumulative');
+}
+
+function perfSelectYear(key) {
+  perfSelectedKey = key;
+  const data = PERFORMANCE_DATA;
+
+  // Highlight active button
+  document.querySelectorAll('[id^="perfYearBtn_"]').forEach(btn => {
+    const isActive = btn.id === 'perfYearBtn_' + key;
+    btn.style.background = isActive ? 'var(--gold)' : 'var(--surface2)';
+    btn.style.color = isActive ? '#0d1117' : 'var(--text)';
+    btn.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
+  });
+
+  // Get the view data for this selection
+  let viewData;
+  if (key === 'cumulative') {
+    viewData = data.cumulative;
+  } else {
+    viewData = data.years[key];
+  }
+
+  if (!viewData || !viewData.aggregate || viewData.aggregate.length === 0) {
+    document.getElementById('perfGradeLetter').textContent = '--';
+    document.getElementById('perfGradeLetter').style.color = 'var(--muted)';
+    document.getElementById('perfGradeLabel').textContent = 'NO DATA';
+    document.getElementById('perfGradeDetail').textContent = 'No completed tournaments with sufficient data for this year.';
+    document.getElementById('perfGradeMeta').textContent = '';
+    document.getElementById('perfKPIs').innerHTML = '';
+    document.getElementById('perfHorizonStrip').innerHTML = '';
+    document.getElementById('perfTable').innerHTML = '';
+    return;
+  }
+
+  const agg = viewData.aggregate;
   const t14 = agg.find(a => a.T === 14) || agg[0];
   const t1 = agg.find(a => a.T === 1);
   const avgCov = Math.round(agg.reduce((s, a) => s + a.ci_coverage, 0) / agg.length);
@@ -76680,11 +76738,17 @@ function initPerformanceTab() {
 
   // Grade
   const gc = {'A+':'#22c55e','A':'#22c55e','A-':'#4ade80','B+':'#86efac','B':'var(--gold)','B-':'var(--gold)','C+':'#fb923c','C':'#f97316','C-':'#ea580c','D':'#ef4444','F':'#dc2626'};
-  document.getElementById('perfGradeLetter').textContent = data.grade;
-  document.getElementById('perfGradeLetter').style.color = gc[data.grade] || 'var(--gold)';
+  document.getElementById('perfGradeLetter').textContent = viewData.grade;
+  document.getElementById('perfGradeLetter').style.color = gc[viewData.grade] || 'var(--gold)';
   document.getElementById('perfGradeLabel').textContent = 'MODEL GRADE';
-  document.getElementById('perfGradeDetail').textContent = `Blind-tested on ${data.n_tournaments} completed 2026 tournaments`;
-  document.getElementById('perfGradeMeta').textContent = `N5v4_Final Ensemble \u00b7 Rolling retrain + auto-recalibration \u00b7 Updated ${data.generated}`;
+
+  const descMap = {
+    'cumulative': `Blind-tested across ${viewData.n_tournaments} tournaments (2022\u20132026)`,
+    '2026': `Blind-tested on ${viewData.n_tournaments} completed 2026 tournaments (YTD)`,
+  };
+  const desc = descMap[key] || `Blind-tested on ${viewData.n_tournaments} tournaments in ${key}`;
+  document.getElementById('perfGradeDetail').textContent = desc;
+  document.getElementById('perfGradeMeta').textContent = `N5v4_Final Ensemble \u00b7 Expanding-window retrain + auto-recalibration \u00b7 Updated ${data.generated}`;
 
   // KPI cards
   const kpis = [
@@ -76702,8 +76766,8 @@ function initPerformanceTab() {
 
   // Canvas charts
   requestAnimationFrame(() => {
-    perfDrawScatter(data);
-    perfDrawTimeline(data);
+    perfDrawScatter(viewData);
+    perfDrawTimeline(viewData);
   });
 
   // Horizon strip
@@ -76720,7 +76784,7 @@ function initPerformanceTab() {
   }).join('');
 
   // Table
-  perfDrawTable(data);
+  perfDrawTable(viewData);
 }
 
 function perfDrawScatter(data) {

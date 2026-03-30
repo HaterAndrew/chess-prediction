@@ -1331,6 +1331,12 @@ footer a { color: var(--muted); }
       </p>
     </div>
 
+    <!-- Live 2026 Performance (dynamic) -->
+    <div id="aboutLivePerf" style="background:var(--surface2);border:1px solid rgba(240,192,64,.25);border-radius:12px;padding:20px 24px;margin-bottom:18px"></div>
+
+    <!-- Bias Correction (dynamic) -->
+    <div id="aboutBiasSection" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px"></div>
+
     <!-- Model Selection -->
     <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
       <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:12px">What We Tried and Rejected</h3>
@@ -76042,6 +76048,7 @@ function switchPageTab(tab) {
   if (tab === 'dataentry') renderDataEntry();
   if (tab === 'email') initEmailTab();
   if (tab === 'performance') initPerformanceTab();
+  if (tab === 'about') initAboutTab();
 }
 
 // ══════════════════════════════════════════════════════════
@@ -76524,6 +76531,132 @@ function copyEmail() {
 
 // ══════════════════════════════════════════════════════════
 // MODEL PERFORMANCE TAB
+// ══════════════════════════════════════════════════════════
+// ABOUT TAB — Live performance + bias correction sections
+// ══════════════════════════════════════════════════════════
+let aboutInited = false;
+
+function initAboutTab() {
+  if (aboutInited) return;
+  aboutInited = true;
+
+  const perf = typeof PERFORMANCE_DATA !== 'undefined' ? PERFORMANCE_DATA : {};
+  const agg = perf.aggregate || [];
+  const tourns = perf.tournaments || [];
+
+  // ── Live 2026 Performance ──
+  const liveEl = document.getElementById('aboutLivePerf');
+  if (agg.length > 0 && tourns.length > 0) {
+    const t14 = agg.find(a => a.T === 14) || agg[0];
+    const t1 = agg.find(a => a.T === 1);
+    const avgCov = Math.round(agg.reduce((s, a) => s + a.ci_coverage, 0) / agg.length);
+    const avgBias = +(agg.reduce((s, a) => s + a.bias_pct, 0) / agg.length).toFixed(1);
+    const gc = {'A+':'#22c55e','A':'#22c55e','A-':'#4ade80','B+':'#86efac','B':'var(--gold)','B-':'var(--gold)','C+':'#fb923c','C':'#f97316'};
+    const gradeColor = gc[perf.grade] || 'var(--gold)';
+
+    let tournRows = tourns.map(t => {
+      const avgErr = +(t.predictions.reduce((s, p) => s + p.abs_error_pct, 0) / t.predictions.length).toFixed(1);
+      const ciHits = t.predictions.filter(p => p.in_ci).length;
+      const ciCov = Math.round(ciHits / t.predictions.length * 100);
+      return `<tr style="border-bottom:1px solid var(--border-light)">
+        <td style="padding:6px 10px;color:var(--text2)">${t.family}</td>
+        <td style="text-align:center;padding:6px 10px;color:var(--text2)">${fmt(t.final_count)}</td>
+        <td style="text-align:center;padding:6px 10px;color:${avgErr <= 8 ? 'var(--green)' : avgErr <= 15 ? 'var(--gold)' : '#ef4444'}">${avgErr}%</td>
+        <td style="text-align:center;padding:6px 10px;color:${ciCov >= 75 ? 'var(--green)' : 'var(--gold)'}">${ciCov}%</td>
+      </tr>`;
+    }).join('');
+
+    liveEl.innerHTML = `
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+        <h3 style="font-size:.95rem;font-weight:700;color:var(--gold);margin:0">Live 2026 Performance</h3>
+        <span style="padding:3px 10px;border-radius:6px;font-size:.88rem;font-weight:900;color:${gradeColor};background:rgba(0,0,0,.2);border:1px solid ${gradeColor}">${perf.grade}</span>
+        <span style="font-size:.72rem;color:var(--muted)">${perf.n_tournaments} completed tournaments &middot; updated ${perf.generated}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;margin-bottom:16px">
+        <div style="padding:12px;background:var(--surface3);border-radius:8px;text-align:center">
+          <div style="font-size:1.3rem;font-weight:800;color:${t14.mae_pct <= 8 ? 'var(--green)' : 'var(--gold)'}">${t14.mae_pct.toFixed(1)}%</div>
+          <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-top:3px">2-Week Error</div>
+          <div style="font-size:.55rem;color:var(--muted)">MAE at T-14 (n=${t14.n})</div>
+        </div>
+        <div style="padding:12px;background:var(--surface3);border-radius:8px;text-align:center">
+          <div style="font-size:1.3rem;font-weight:800;color:var(--green)">${t1 ? t1.mae_pct.toFixed(1) + '%' : '--'}</div>
+          <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-top:3px">Day-Before</div>
+          <div style="font-size:.55rem;color:var(--muted)">MAE at T-1${t1 ? ' (n=' + t1.n + ')' : ''}</div>
+        </div>
+        <div style="padding:12px;background:var(--surface3);border-radius:8px;text-align:center">
+          <div style="font-size:1.3rem;font-weight:800;color:${avgCov >= 75 ? 'var(--green)' : 'var(--gold)'}">${avgCov}%</div>
+          <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-top:3px">CI Coverage</div>
+          <div style="font-size:.55rem;color:var(--muted)">target 80%</div>
+        </div>
+        <div style="padding:12px;background:var(--surface3);border-radius:8px;text-align:center">
+          <div style="font-size:1.3rem;font-weight:800;color:${Math.abs(avgBias) <= 5 ? 'var(--green)' : 'var(--gold)'}">${(avgBias > 0 ? '+' : '') + avgBias}%</div>
+          <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-top:3px">Avg Bias</div>
+          <div style="font-size:.55rem;color:var(--muted)">${avgBias > 2 ? 'Over-predicts' : avgBias < -2 ? 'Under-predicts' : 'Well-centered'}</div>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:.78rem;border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:6px 10px;color:var(--muted);font-weight:600">Tournament</th>
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">Final</th>
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">Avg Error</th>
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">CI Coverage</th>
+          </tr></thead>
+          <tbody>${tournRows}</tbody>
+        </table>
+      </div>
+      <p style="font-size:.72rem;color:var(--muted);margin-top:10px">
+        Errors averaged across all lead times (T-90 through T-1) for each completed tournament.
+        Data updates daily as more tournaments complete.
+      </p>`;
+  } else {
+    liveEl.innerHTML = `
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--muted);margin-bottom:8px">Live 2026 Performance</h3>
+      <p style="font-size:.84rem;color:var(--muted);line-height:1.7">
+        No completed 2026 tournaments yet. Performance data will appear here as tournaments finish.
+      </p>`;
+  }
+
+  // ── Bias Correction Explanation ──
+  const biasEl = document.getElementById('aboutBiasSection');
+  if (agg.length > 0) {
+    let biasRows = agg.map(a => {
+      const color = Math.abs(a.bias_pct) <= 3 ? 'var(--green)' : Math.abs(a.bias_pct) <= 6 ? 'var(--gold)' : '#ef4444';
+      return `<tr style="border-bottom:1px solid var(--border-light)">
+        <td style="text-align:center;padding:6px 10px;color:var(--text2)">T-${a.T}</td>
+        <td style="text-align:center;padding:6px 10px;color:${color};font-weight:600">${(a.bias_pct > 0 ? '+' : '') + a.bias_pct.toFixed(1)}%</td>
+        <td style="text-align:center;padding:6px 10px;color:var(--text2)">${a.mae_pct.toFixed(1)}%</td>
+        <td style="text-align:center;padding:6px 10px;color:var(--text2)">n=${a.n}</td>
+      </tr>`;
+    }).join('');
+
+    biasEl.innerHTML = `
+      <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:10px">Dynamic Bias Correction</h3>
+      <p style="font-size:.84rem;color:var(--text2);line-height:1.7;margin-bottom:14px">
+        All displayed predictions are <strong>bias-corrected</strong> using live performance data. The model&rsquo;s systematic
+        over- or under-prediction at each lead time (T) is measured from completed tournaments, then subtracted from
+        upcoming predictions. As more tournaments finish and the bias estimate changes, corrections update automatically.
+      </p>
+      <div style="overflow-x:auto;margin-bottom:12px">
+        <table style="width:100%;max-width:500px;font-size:.78rem;border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">Lead Time</th>
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">Bias</th>
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">MAE</th>
+            <th style="text-align:center;padding:6px 10px;color:var(--muted);font-weight:600">Sample</th>
+          </tr></thead>
+          <tbody>${biasRows}</tbody>
+        </table>
+      </div>
+      <p style="font-size:.76rem;color:var(--muted)">
+        Positive bias = model over-predicts &rarr; predictions are reduced. Negative = under-predicts &rarr; predictions are increased.
+        Bias is interpolated for lead times between checkpoints.
+      </p>`;
+  } else {
+    biasEl.style.display = 'none';
+  }
+}
+
 // ══════════════════════════════════════════════════════════
 let perfInited = false;
 

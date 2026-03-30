@@ -678,6 +678,17 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
     tournaments_out.append(t_out)
     print(f"  Added from metadata: {mfamily} (event {event_date.strftime('%Y-%m-%d')}, {days_remaining} days out, status={status_label})")
 
+# ── Build reverse alias map for 2026 families ──
+# If "DC International" is a 2026 family with alias "Philadelphia International",
+# historical "Philadelphia International" editions should display under "DC International"
+# so the website shows one unified tournament card with full history.
+_alias_to_2026 = {}
+for t in tournaments_out:
+    fam = t['family']
+    if hasattr(m04c, 'FAMILY_ALIASES') and fam in m04c.FAMILY_ALIASES:
+        for alias in m04c.FAMILY_ALIASES[fam]:
+            _alias_to_2026[alias] = fam
+
 # ── Add ALL historical tournament editions ──
 # Every individual edition (non-online, non-covid, >=10 entries) gets its own entry
 existing_tids = set()
@@ -701,14 +712,24 @@ for _, row in historical_valid.iterrows():
     tid = row['tid']
     yr = int(row['tournament_year'])
     count = int(row['final_count'])
-    display_family = family
+    # Remap alias families to their 2026 canonical name
+    # e.g. historical "Philadelphia International" → "DC International"
+    display_family = _alias_to_2026.get(family, family)
 
     # Get event date
     event_date = get_event_date(family, yr)
 
-    # Same-family history
+    # Same-family history (include alias families so remapped entries show full lineage)
+    hist_families = [family]
+    if hasattr(m04c, 'FAMILY_ALIASES') and family in m04c.FAMILY_ALIASES:
+        hist_families.extend(m04c.FAMILY_ALIASES[family])
+    # Also check reverse: if this family is an alias of a 2026 family, include the 2026 family
+    if family in _alias_to_2026:
+        canonical = _alias_to_2026[family]
+        if canonical not in hist_families:
+            hist_families.append(canonical)
     hist = historical_valid[
-        (historical_valid['family'] == family) &
+        (historical_valid['family'].isin(hist_families)) &
         (historical_valid['tournament_year'] <= yr)
     ].sort_values('tournament_year')
     historical = [{"year": int(h['tournament_year']), "count": int(h['final_count'])}

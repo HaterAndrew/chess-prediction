@@ -276,7 +276,14 @@ def main():
             step_scrape()
         step_update_model()
         step_performance()
-        step_update_puzzles()
+
+        # Puzzles are non-critical — don't let a Lichess outage block the pipeline
+        try:
+            step_update_puzzles()
+        except Exception as e:
+            print(f"\n  ⚠ Puzzle step failed (non-fatal): {e}")
+            print(f"  Continuing with existing puzzle data…")
+
         step_update_html()
         step_log_run()
 

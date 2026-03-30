@@ -74976,6 +74976,51 @@ function esc(s) {
 }
 function fmt(n) { return n == null ? '–' : n.toLocaleString(); }
 function isDone(t) { return t.status === 'complete' || t.status === 'historical'; }
+
+// ── Bias correction: adjust predictions using T-specific model bias ──
+// Interpolates the aggregate bias at the tournament's days_remaining,
+// then reduces point estimate and CI bounds by that percentage.
+// Only applies to live (non-complete, non-historical) tournaments.
+function applyBiasCorrection(t) {
+  if (isDone(t) || !t.days_remaining) return t;
+  const perf = typeof PERFORMANCE_DATA !== 'undefined' ? PERFORMANCE_DATA : {};
+  const agg = perf.aggregate;
+  if (!agg || agg.length === 0) return t;
+
+  // Build sorted T→bias lookup
+  const pts = agg.map(a => ({T: a.T, bias: a.bias_pct})).sort((a, b) => a.T - b.T);
+  const dr = t.days_remaining;
+
+  // Interpolate bias at this tournament's days_remaining
+  let biasPct;
+  if (dr <= pts[0].T) {
+    biasPct = pts[0].bias;
+  } else if (dr >= pts[pts.length - 1].T) {
+    biasPct = pts[pts.length - 1].bias;
+  } else {
+    // Linear interpolation between bracketing T values
+    let lo = pts[0], hi = pts[pts.length - 1];
+    for (let i = 0; i < pts.length - 1; i++) {
+      if (pts[i].T <= dr && pts[i + 1].T >= dr) {
+        lo = pts[i]; hi = pts[i + 1]; break;
+      }
+    }
+    const frac = (dr - lo.T) / (hi.T - lo.T);
+    biasPct = lo.bias + frac * (hi.bias - lo.bias);
+  }
+
+  // Apply correction: if model over-predicts by X%, reduce by X%
+  const factor = 1 - biasPct / 100;
+  const corrected = Object.assign({}, t);
+  corrected._raw_point = t.point_estimate;
+  corrected._raw_ci_lower = t.ci_lower;
+  corrected._raw_ci_upper = t.ci_upper;
+  corrected._bias_pct = +biasPct.toFixed(1);
+  corrected.point_estimate = Math.max(t.current_count, Math.round(t.point_estimate * factor));
+  corrected.ci_lower = Math.max(t.current_count, Math.round(t.ci_lower * factor));
+  corrected.ci_upper = Math.round(t.ci_upper * factor);
+  return corrected;
+}
 function fmtDate(s) {
   if (!s) return '–';
   const d = new Date(s + 'T00:00:00');
@@ -78787,10 +78832,21 @@ function renderModelInfo(t) {
     </div>`;
   }
 
+  // Bias correction note (only for live tournaments where correction was applied)
+  let biasNote = '';
+  if (t._bias_pct !== undefined && !isDone(t)) {
+    const dir = t._bias_pct > 0 ? 'over' : 'under';
+    const arrow = t._bias_pct > 0 ? '↓' : '↑';
+    biasNote = `<div style="margin-top:12px;padding:8px 12px;background:var(--surface3);border-radius:8px;font-size:.72rem;color:var(--muted);line-height:1.5">
+      <span style="font-weight:700;color:var(--text2)">${arrow} Bias-corrected</span> — Model ${dir}-predicts by ${Math.abs(t._bias_pct)}% at T-${t.days_remaining}. Predictions reduced from ${fmt(t._raw_point)} → ${fmt(t.point_estimate)}, CI ${fmt(t._raw_ci_lower)}–${fmt(t._raw_ci_upper)} → ${fmt(t.ci_lower)}–${fmt(t.ci_upper)}.
+    </div>`;
+  }
+
   el.innerHTML = `
     ${gradeBadge}
     <p style="margin:0 0 14px;font-size:.78rem;color:var(--muted);line-height:1.5">${desc}</p>
-    <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px">${cards}</div>`;
+    <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px">${cards}</div>
+    ${biasNote}`;
 }
 
 function renderFees(t) {
@@ -78846,7 +78902,7 @@ function renderAllTournaments() {
   const body = document.getElementById('tourneyBody');
   // Only show upcoming + complete (not 361 historical rows)
   const active = TOURNAMENT_DATA.tournaments
-    .map((t, i) => ({t, i}))
+    .map((t, i) => ({t: applyBiasCorrection(t), i}))
     .filter(({t}) => t.status === 'live' || t.status === 'complete');
 
   // Sort
@@ -78933,7 +78989,7 @@ function renderSummaryBar() {
 function renderMiniCards() {
   const el = document.getElementById('miniGrid');
   const ts = TOURNAMENT_DATA.tournaments;
-  const live = ts.map((t, i) => ({t, i}))
+  const live = ts.map((t, i) => ({t: applyBiasCorrection(t), i}))
     .filter(({t}) => t.status === 'live')
     .sort((a, b) => a.t.days_remaining - b.t.days_remaining);
 
@@ -78977,7 +79033,7 @@ function renderMiniCards() {
 // ══════════════════════════════════════════════════════════
 function selectTournament(index) {
   selectedIndex = index;
-  const t = TOURNAMENT_DATA.tournaments[index];
+  const t = applyBiasCorrection(TOURNAMENT_DATA.tournaments[index]);
 
   // Update header label and page title
   const dot = document.getElementById('tournDot');

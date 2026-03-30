@@ -42,10 +42,11 @@ TODAY = date.today().isoformat()
 WO_KEEP_PATTERNS = re.compile(r'under\s*13|top\s+6\s+sections|lower\s+sections', re.IGNORECASE)
 
 # CCA name -> canonical family name (for cases where CCA renamed a tournament)
+# NOTE: DC Open/International are NOT aliased to Philadelphia here.
+# They are the same family (DC when in DC, Philly when in Philly).
+# The model handles history pooling via FAMILY_ALIASES in 04c_final_model.py.
 CCA_FAMILY_ALIASES = {
     'Atlantic City Open': 'Atlantic Open',
-    'DC Open': 'Philadelphia Open',
-    'DC International': 'Philadelphia International',
 }
 
 def to_family(name):

@@ -789,14 +789,36 @@ footer a { color: var(--muted); }
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; gap: 16px; }
   .kpi-row { grid-template-columns: repeat(3, 1fr); }
-  .grid-2 { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr !important; }
   .progress-row { grid-template-columns: 1fr; }
   .mini-grid { grid-template-columns: repeat(2, 1fr); }
   .drop-menu { min-width: 260px; }
+  /* Performance tab: 2-col charts → 1-col */
+  .perf-charts-grid { grid-template-columns: 1fr !important; }
 }
 @media (max-width: 768px) {
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
   .mini-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Header: stack on narrow screens */
+  .header-inner { flex-direction: column; gap: 8px; align-items: flex-start; }
+  .header-right { width: 100%; justify-content: flex-start; gap: 10px; flex-wrap: wrap; }
+  /* Page tabs: horizontal scroll strip */
+  .page-tabs {
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; flex-wrap: nowrap;
+    margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px;
+  }
+  .page-tabs::-webkit-scrollbar { display: none; }
+  .page-tab { flex-shrink: 0; padding: 10px 16px; font-size: .78rem; }
+  /* Hero section: stack vertically */
+  .hero-flex { flex-direction: column !important; gap: 14px !important; }
+  .hero-kpi-group { flex-direction: row !important; flex-wrap: wrap !important; width: 100% !important; }
+  .hero-kpi-group .kpi-card { flex: 1 1 calc(50% - 5px) !important; min-width: 0 !important; }
+  /* Data entry table scroll */
+  .de-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -20px; padding: 0 20px; }
+  .de-table { min-width: 640px; }
+  /* Email tab: stack controls */
+  .email-controls { flex-direction: column !important; align-items: flex-start !important; gap: 10px !important; }
 }
 @media (max-width: 600px) {
   .hero-number { font-size: 3rem !important; }
@@ -804,7 +826,7 @@ footer a { color: var(--muted); }
   .kpi-value { font-size: 1.3rem; }
   .chart-wrap { height: 260px; }
   .tab-bar { gap: 6px; }
-  .drop-menu { min-width: 240px; left: 0; right: auto; }
+  .drop-menu { min-width: calc(100vw - 40px); left: 0; right: auto; max-width: 100vw; }
   .cat-btn { padding: 8px 14px; font-size: .72rem; min-height: 44px; }
   .cat-item { min-height: 44px; display: flex; align-items: center; }
   .mini-card { min-height: 44px; }
@@ -814,6 +836,37 @@ footer a { color: var(--muted); }
   .delta-value { font-size: 1.4rem; }
   .mini-card-number { font-size: 1.3rem; }
   .model-info { font-size: .75rem; }
+  /* Splash tighten */
+  .splash-stats { gap: 20px; }
+  .splash-stat-num { font-size: 1.6rem; }
+  .splash-tagline { font-size: .8rem; }
+  .splash-piece { font-size: 3.5rem; }
+  .splash-enter { padding: 12px 32px; font-size: .78rem; }
+  /* Delta banner: stack on narrow */
+  .delta-banner { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .delta-value { margin-left: 0; font-size: 1.6rem; }
+  /* Chart card padding */
+  .chart-card { padding: 16px 12px; }
+  .panel { padding: 16px 12px; }
+  /* Touch targets: ensure 44px min for interactive elements */
+  .page-tab { min-height: 44px; display: flex; align-items: center; }
+  .puzzle-btn { min-height: 44px; padding: 10px 16px; }
+  .cat-btn { min-height: 44px; }
+  .back-to-top { width: 44px; height: 44px; bottom: 16px; right: 16px; }
+  /* Performance tab spacing */
+  .perf-charts-grid { gap: 12px !important; }
+  /* Tourney table: smaller text */
+  .tourney-table th { font-size: .6rem; padding: 6px 8px; }
+  .tourney-table td { font-size: .76rem; padding: 8px 8px; }
+}
+@media (max-width: 400px) {
+  .container { padding: 0 12px; }
+  .hero-number { font-size: 2.4rem !important; }
+  .hero-kpi-group .kpi-card { flex: 1 1 100% !important; }
+  .kpi-row { grid-template-columns: 1fr; }
+  .mini-grid { grid-template-columns: 1fr; }
+  .splash-title { letter-spacing: -1px; }
+  .page-tabs { margin-left: -12px; margin-right: -12px; padding-left: 12px; padding-right: 12px; }
 }
 @media (min-width: 1440px) {
   .container { max-width: 1400px; }
@@ -930,7 +983,7 @@ footer a { color: var(--muted); }
   </div>
 
   <!-- ── Hero KPI (compact) ── -->
-  <div style="display:flex;align-items:stretch;gap:20px;padding:16px 0 8px" id="heroSection">
+  <div class="hero-flex" style="display:flex;align-items:stretch;gap:20px;padding:16px 0 8px;flex-wrap:wrap" id="heroSection">
     <div style="flex:0 0 auto">
       <div class="hero-label" id="heroLabel">Predicted Final Entries</div>
       <div class="hero-number" id="heroNumber" style="font-size:3.2rem"></div>
@@ -940,7 +993,7 @@ footer a { color: var(--muted); }
       <div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Last 7 Days</div>
       <div id="weekBars" style="display:flex;flex-direction:column;gap:2px;justify-content:center;height:calc(100% - 18px)"></div>
     </div>
-    <div style="display:flex;gap:10px;flex:0 0 auto;align-items:stretch">
+    <div class="hero-kpi-group" style="display:flex;gap:10px;flex:0 0 auto;align-items:stretch">
       <div class="kpi-card" id="kpiCurrent"></div>
       <div class="kpi-card" id="kpiDays"></div>
       <div class="kpi-card" id="kpiPace"></div>
@@ -1078,6 +1131,7 @@ footer a { color: var(--muted); }
     <div style="font-size:.72rem;color:var(--muted);margin:12px 0">
       Update tournament data below. Changes save to your browser and override scraped data.
     </div>
+    <div class="de-table-wrap">
     <table class="de-table">
       <thead>
         <tr>
@@ -1092,6 +1146,7 @@ footer a { color: var(--muted); }
       </thead>
       <tbody id="deBody"></tbody>
     </table>
+    </div>
     <div style="display:flex;align-items:center;margin-top:12px">
       <button class="de-save-btn" onclick="saveDataEntry()">Save Changes</button>
       <span class="de-saved-msg" id="deSavedMsg">Saved!</span>
@@ -1115,7 +1170,7 @@ footer a { color: var(--muted); }
     <div id="emailGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin-bottom:20px"></div>
 
     <!-- Length + format + generate -->
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+    <div class="email-controls" style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
       <span style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Length</span>
       <div class="email-len-toggle" id="emailLenToggle" style="display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid var(--border)">
         <button data-len="short" onclick="setEmailLength('short')" style="padding:5px 14px;font-size:.82rem;background:var(--surface2);color:var(--text2);border:none;cursor:pointer">Short</button>
@@ -1156,7 +1211,7 @@ footer a { color: var(--muted); }
     </div>
 
     <!-- Hero: grade + stats -->
-    <div style="display:flex;gap:16px;flex-wrap:wrap;margin:0 0 22px;align-items:stretch">
+    <div class="hero-flex" style="display:flex;gap:16px;flex-wrap:wrap;margin:0 0 22px;align-items:stretch">
       <div id="perfGradeCard" style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 36px;background:linear-gradient(135deg,rgba(240,192,64,.08),rgba(56,139,253,.04));border:1px solid rgba(240,192,64,.2);border-radius:16px;min-width:140px">
         <div id="perfGradeLetter" style="font-size:4.5rem;font-weight:900;line-height:1;color:var(--gold);text-shadow:0 0 24px rgba(240,192,64,.4)"></div>
         <div id="perfGradeLabel" style="font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:8px"></div>
@@ -1169,7 +1224,7 @@ footer a { color: var(--muted); }
     </div>
 
     <!-- Two-column chart area -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px">
+    <div class="perf-charts-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px">
       <!-- Predicted vs Actual -->
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px">
         <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
@@ -1259,7 +1314,7 @@ footer a { color: var(--muted); }
     </div>
 
     <!-- Two sub-model cards -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
+    <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
       <!-- Ratio Model -->
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px">
         <h3 style="font-size:.9rem;font-weight:700;color:var(--blue);margin-bottom:10px">Historical Ratio Model (Primary)</h3>

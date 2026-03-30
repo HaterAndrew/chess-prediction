@@ -1,6 +1,6 @@
 {
   "generated": "2026-03-30",
-  "generated_time": "2026-03-30T05:57:39.246050-04:00",
+  "generated_time": "2026-03-30T06:04:40.323739-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
   "n_completed_in_training": 16,
@@ -21897,7 +21897,7 @@
       "status": "historical"
     },
     {
-      "family": "DC International",
+      "family": "Philadelphia International",
       "year": 2015,
       "event_start": "2015-02-19",
       "event_end": null,
@@ -47387,7 +47387,7 @@
       "status": "historical"
     },
     {
-      "family": "New York State Scholastic Championships",
+      "family": "New York State Scholastic Championships Grades K-8",
       "year": 2015,
       "event_start": "2015-03-10",
       "event_end": null,
@@ -47466,7 +47466,7 @@
       "status": "historical"
     },
     {
-      "family": "New York State Scholastic Championships",
+      "family": "New York State Scholastic Championships Grades K-8",
       "year": 2016,
       "event_start": "2016-03-10",
       "event_end": null,
@@ -47549,7 +47549,7 @@
       "status": "historical"
     },
     {
-      "family": "New York State Scholastic Championships",
+      "family": "New York State Scholastic Championships Grades K-8",
       "year": 2017,
       "event_start": "2017-03-10",
       "event_end": null,
@@ -47636,7 +47636,7 @@
       "status": "historical"
     },
     {
-      "family": "New York State Scholastic Championships",
+      "family": "New York State Scholastic Championships Grades K-8",
       "year": 2018,
       "event_start": "2018-03-10",
       "event_end": null,
@@ -47727,7 +47727,7 @@
       "status": "historical"
     },
     {
-      "family": "New York State Scholastic Championships",
+      "family": "New York State Scholastic Championships Grades K-8",
       "year": 2019,
       "event_start": "2019-03-10",
       "event_end": null,
@@ -47822,7 +47822,7 @@
       "status": "historical"
     },
     {
-      "family": "New York State Scholastic Championships",
+      "family": "New York State Scholastic Championships Grades K-8",
       "year": 2022,
       "event_start": "2022-03-10",
       "event_end": null,
@@ -48169,7 +48169,7 @@
       "status": "historical"
     },
     {
-      "family": "New York State Scholastic Championships",
+      "family": "New York State Scholastic Championships Grades K-8",
       "year": 2023,
       "event_start": "2023-03-10",
       "event_end": null,
@@ -48644,7 +48644,7 @@
       "status": "historical"
     },
     {
-      "family": "New York State Scholastic Championships",
+      "family": "New York State Scholastic Championships Grades K-8",
       "year": 2024,
       "event_start": "2024-03-10",
       "event_end": null,
@@ -49302,6 +49302,38 @@
       "ci_upper": 1767,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 953
+        },
+        {
+          "year": 2016,
+          "count": 952
+        },
+        {
+          "year": 2017,
+          "count": 1156
+        },
+        {
+          "year": 2018,
+          "count": 1229
+        },
+        {
+          "year": 2019,
+          "count": 1249
+        },
+        {
+          "year": 2022,
+          "count": 941
+        },
+        {
+          "year": 2023,
+          "count": 1548
+        },
+        {
+          "year": 2024,
+          "count": 1777
+        },
         {
           "year": 2025,
           "count": 1767
@@ -54909,7 +54941,7 @@
       "status": "historical"
     },
     {
-      "family": "Open at Foxwoods",
+      "family": "Atlantic City Open",
       "year": 2019,
       "event_start": "2019-04-15",
       "event_end": null,
@@ -54988,7 +55020,7 @@
       "status": "historical"
     },
     {
-      "family": "Open at Foxwoods",
+      "family": "Atlantic City Open",
       "year": 2022,
       "event_start": "2022-04-15",
       "event_end": null,
@@ -55387,7 +55419,7 @@
       "status": "historical"
     },
     {
-      "family": "Open at Foxwoods",
+      "family": "Atlantic City Open",
       "year": 2023,
       "event_start": "2023-04-15",
       "event_end": null,
@@ -55730,7 +55762,7 @@
       "status": "historical"
     },
     {
-      "family": "Open at Foxwoods",
+      "family": "Atlantic City Open",
       "year": 2024,
       "event_start": "2024-04-15",
       "event_end": null,
@@ -58193,7 +58225,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia International",
+      "family": "DC International",
       "year": 2016,
       "event_start": "2016-06-25",
       "event_end": null,
@@ -58208,6 +58240,10 @@
       "ci_upper": 66,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 128
+        },
         {
           "year": 2016,
           "count": 66
@@ -58272,7 +58308,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia International",
+      "family": "DC International",
       "year": 2017,
       "event_start": "2017-06-25",
       "event_end": null,
@@ -58287,6 +58323,10 @@
       "ci_upper": 87,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 128
+        },
         {
           "year": 2016,
           "count": 66
@@ -58355,7 +58395,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia International",
+      "family": "DC International",
       "year": 2018,
       "event_start": "2018-06-25",
       "event_end": null,
@@ -58370,6 +58410,10 @@
       "ci_upper": 151,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 128
+        },
         {
           "year": 2016,
           "count": 66
@@ -58442,7 +58486,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia International",
+      "family": "DC International",
       "year": 2019,
       "event_start": "2019-06-25",
       "event_end": null,
@@ -58457,6 +58501,10 @@
       "ci_upper": 147,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 128
+        },
         {
           "year": 2016,
           "count": 66
@@ -58533,7 +58581,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia International",
+      "family": "DC International",
       "year": 2022,
       "event_start": "2022-06-25",
       "event_end": null,
@@ -58548,6 +58596,10 @@
       "ci_upper": 88,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 128
+        },
         {
           "year": 2016,
           "count": 66
@@ -58780,7 +58832,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia International",
+      "family": "DC International",
       "year": 2023,
       "event_start": "2023-06-25",
       "event_end": null,
@@ -58795,6 +58847,10 @@
       "ci_upper": 108,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 128
+        },
         {
           "year": 2016,
           "count": 66
@@ -59055,7 +59111,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia International",
+      "family": "DC International",
       "year": 2024,
       "event_start": "2024-06-25",
       "event_end": null,
@@ -59070,6 +59126,10 @@
       "ci_upper": 143,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 128
+        },
         {
           "year": 2016,
           "count": 66
@@ -59422,7 +59482,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia International",
+      "family": "DC International",
       "year": 2025,
       "event_start": "2025-06-25",
       "event_end": null,
@@ -59437,6 +59497,10 @@
       "ci_upper": 126,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 128
+        },
         {
           "year": 2016,
           "count": 66
@@ -59737,7 +59801,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia Open",
+      "family": "DC Open",
       "year": 2015,
       "event_start": "2015-06-26",
       "event_end": null,
@@ -59816,7 +59880,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia Open",
+      "family": "DC Open",
       "year": 2016,
       "event_start": "2016-06-26",
       "event_end": null,
@@ -59899,7 +59963,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia Open",
+      "family": "DC Open",
       "year": 2017,
       "event_start": "2017-06-26",
       "event_end": null,
@@ -59986,7 +60050,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia Open",
+      "family": "DC Open",
       "year": 2018,
       "event_start": "2018-06-26",
       "event_end": null,
@@ -60077,7 +60141,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia Open",
+      "family": "DC Open",
       "year": 2019,
       "event_start": "2019-06-26",
       "event_end": null,
@@ -60172,7 +60236,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia Open",
+      "family": "DC Open",
       "year": 2022,
       "event_start": "2022-06-26",
       "event_end": null,
@@ -60523,7 +60587,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia Open",
+      "family": "DC Open",
       "year": 2023,
       "event_start": "2023-06-26",
       "event_end": null,
@@ -60826,7 +60890,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia Open",
+      "family": "DC Open",
       "year": 2024,
       "event_start": "2024-06-26",
       "event_end": null,
@@ -61173,7 +61237,7 @@
       "status": "historical"
     },
     {
-      "family": "Philadelphia Open",
+      "family": "DC Open",
       "year": 2025,
       "event_start": "2025-06-26",
       "event_end": null,
@@ -62999,7 +63063,7 @@
       "status": "historical"
     },
     {
-      "family": "Princeton Open",
+      "family": "Atlantic City Open",
       "year": 2025,
       "event_start": "2025-04-18",
       "event_end": null,
@@ -63014,6 +63078,22 @@
       "ci_upper": 574,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2019,
+          "count": 415
+        },
+        {
+          "year": 2022,
+          "count": 472
+        },
+        {
+          "year": 2023,
+          "count": 445
+        },
+        {
+          "year": 2024,
+          "count": 465
+        },
         {
           "year": 2025,
           "count": 574
@@ -69750,7 +69830,7 @@
       "status": "historical"
     },
     {
-      "family": "Western Class",
+      "family": "Western Class Championships",
       "year": 2022,
       "event_start": "2022-03-04",
       "event_end": null,
@@ -69765,6 +69845,26 @@
       "ci_upper": 362,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 200
+        },
+        {
+          "year": 2016,
+          "count": 202
+        },
+        {
+          "year": 2017,
+          "count": 254
+        },
+        {
+          "year": 2018,
+          "count": 245
+        },
+        {
+          "year": 2019,
+          "count": 253
+        },
         {
           "year": 2022,
           "count": 362
@@ -70041,7 +70141,7 @@
       "status": "historical"
     },
     {
-      "family": "Western Class",
+      "family": "Western Class Championships",
       "year": 2023,
       "event_start": "2023-03-04",
       "event_end": null,
@@ -70056,6 +70156,26 @@
       "ci_upper": 346,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 200
+        },
+        {
+          "year": 2016,
+          "count": 202
+        },
+        {
+          "year": 2017,
+          "count": 254
+        },
+        {
+          "year": 2018,
+          "count": 245
+        },
+        {
+          "year": 2019,
+          "count": 253
+        },
         {
           "year": 2022,
           "count": 362
@@ -70803,6 +70923,14 @@
           "count": 253
         },
         {
+          "year": 2022,
+          "count": 362
+        },
+        {
+          "year": 2023,
+          "count": 346
+        },
+        {
           "year": 2024,
           "count": 421
         }
@@ -71144,6 +71272,14 @@
         {
           "year": 2019,
           "count": 253
+        },
+        {
+          "year": 2022,
+          "count": 362
+        },
+        {
+          "year": 2023,
+          "count": 346
         },
         {
           "year": 2024,

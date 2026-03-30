@@ -1505,11 +1505,24 @@ footer a { color: var(--muted); }
         <span style="font-family:monospace;font-size:.78rem">&sigma; = std(log(r)) = 0.127 &rarr; raw CI = [788, 1046] &rarr; &times; shrink(0.33 at T&asymp;60) &rarr; CI = [856, 963]</span>
       </p>
 
+      <!-- Step 6 -->
+      <h4 style="font-size:.84rem;font-weight:700;color:var(--blue);margin-bottom:8px">Step 6 &mdash; Bias Correction</h4>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:14px">
+        The model&rsquo;s blind-test performance data shows a <strong>+2.7% overprediction bias</strong> at T&asymp;60.
+        We correct by scaling down:<br>
+        <span style="font-family:monospace;font-size:.78rem">factor = 1 &minus; 0.027 = 0.973</span><br>
+        <span style="font-family:monospace;font-size:.78rem">908 &times; 0.973 = <strong style="color:var(--gold)">883</strong> &nbsp;&nbsp;|&nbsp;&nbsp; CI: 856&times;0.973 &ndash; 963&times;0.973 = <strong style="color:var(--gold)">833 &ndash; 937</strong></span>
+      </p>
+      <p style="font-size:.76rem;color:var(--muted);margin-bottom:16px">
+        This correction updates automatically as more 2026 tournaments complete and the measured bias changes.
+      </p>
+
       <!-- Result card -->
       <div style="background:linear-gradient(135deg,rgba(240,192,64,.08),rgba(56,139,253,.04));border:1px solid rgba(240,192,64,.25);border-radius:12px;padding:18px 24px;text-align:center">
         <div style="font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:6px">Chicago Open 2026 Prediction</div>
-        <div style="font-size:2.2rem;font-weight:900;color:var(--gold);line-height:1">908</div>
-        <div style="font-size:.88rem;color:var(--text2);margin-top:4px">80% CI: 856 &ndash; 963</div>
+        <div style="font-size:2.2rem;font-weight:900;color:var(--gold);line-height:1">883</div>
+        <div style="font-size:.88rem;color:var(--text2);margin-top:4px">80% CI: 833 &ndash; 937</div>
+        <div style="font-size:.68rem;color:var(--muted);margin-top:4px">Pre-correction: 908 (CI 856&ndash;963) &middot; Bias adj: &minus;2.7%</div>
       </div>
     </div>
 

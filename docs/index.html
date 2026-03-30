@@ -985,46 +985,17 @@ footer a { color: var(--muted); }
     </div>
   </div>
 
-  <!-- ── Registration Curve + Fees ── -->
-  <div class="grid-2" id="curveAndFeeRow">
+  <!-- ── Registration Curve + Model Info ── -->
+  <div class="grid-2" id="curveAndModelRow">
     <div class="panel" id="regCurvePanel">
       <div class="panel-title">Registration Curve Pattern</div>
       <div style="height:200px;margin-bottom:12px"><canvas id="regCurveChart"></canvas></div>
       <div id="regCurveCaption" style="font-size:.78rem;color:var(--muted)"></div>
+      <div id="feeContent" style="margin-top:12px"></div>
     </div>
-    <div class="panel" id="feePanel">
-      <div class="panel-title">Registration Fees</div>
-      <div id="feeContent"></div>
-    </div>
-  </div>
-
-  <!-- ── Model Info (compact) ── -->
-  <div class="panel model-info" style="margin-bottom:24px">
-    <div class="panel-title">About This Model</div>
-    <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap">
-      <p style="flex:1;min-width:240px;margin:0">Historical ratio model: predicts final count as current entries × median historical ratio at each lead time. 80% confidence intervals (CIs) from lognormal fits with IQR outlier removal. Blind-tested on held-out 2024–2025 data.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-self:center">
-        <div style="padding:8px 14px;background:var(--surface3);border-radius:8px;text-align:center;min-width:80px">
-          <div style="font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Chicago Open</div>
-          <div style="font-size:1rem;font-weight:800;color:var(--gold)">12.0%</div>
-          <div style="font-size:.55rem;color:var(--muted)" title="Mean Absolute Percentage Error">MAPE</div>
-        </div>
-        <div style="padding:8px 14px;background:var(--surface3);border-radius:8px;text-align:center;min-width:80px">
-          <div style="font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">CI Cover</div>
-          <div style="font-size:1rem;font-weight:800;color:var(--green)">81.9%</div>
-          <div style="font-size:.55rem;color:var(--muted)">target 80%</div>
-        </div>
-        <div style="padding:8px 14px;background:var(--surface3);border-radius:8px;text-align:center;min-width:80px">
-          <div style="font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Overall</div>
-          <div style="font-size:1rem;font-weight:800">33.6%</div>
-          <div style="font-size:.55rem;color:var(--muted)" title="Mean Absolute Percentage Error">MAPE</div>
-        </div>
-        <div style="padding:8px 14px;background:var(--surface3);border-radius:8px;text-align:center;min-width:80px">
-          <div style="font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Conv.</div>
-          <div style="font-size:1rem;font-weight:800;color:var(--green)">Pass</div>
-          <div style="font-size:.55rem;color:var(--muted)">monotonic</div>
-        </div>
-      </div>
+    <div class="panel" id="modelInfoPanel">
+      <div class="panel-title">About This Model</div>
+      <div id="modelInfoContent"></div>
     </div>
   </div>
 
@@ -78728,63 +78699,127 @@ function renderRegCurve(t) {
 // ══════════════════════════════════════════════════════════
 // FEE PANEL
 // ══════════════════════════════════════════════════════════
+function renderModelInfo(t) {
+  const el = document.getElementById('modelInfoContent');
+  const perf = typeof PERFORMANCE_DATA !== 'undefined' ? PERFORMANCE_DATA : {};
+  const agg = perf.aggregate || [];
+  const tournPerf = (perf.tournaments || []).find(p => p.family === t.family);
+
+  // Model description
+  let desc = 'Ensemble model: predicts final count from historical ratios + per-family regression. 80% CIs from lognormal fits with LOO calibration.';
+
+  // Build KPI cards
+  let cards = '';
+
+  if (tournPerf && tournPerf.predictions && tournPerf.predictions.length > 0) {
+    // Per-tournament accuracy
+    const preds = tournPerf.predictions;
+    const avgErr = +(preds.reduce((s, p) => s + p.abs_error_pct, 0) / preds.length).toFixed(1);
+    const ciHits = preds.filter(p => p.in_ci).length;
+    const ciCov = Math.round(ciHits / preds.length * 100);
+    const bestT = preds.reduce((best, p) => p.abs_error_pct < best.abs_error_pct ? p : best);
+    const worstT = preds.reduce((worst, p) => p.abs_error_pct > worst.abs_error_pct ? p : worst);
+
+    desc = `Blind-tested on ${t.family}: actual final count was <b>${tournPerf.final_count}</b>. Model was evaluated at ${preds.length} lead times from T-${preds[0].T} to T-${preds[preds.length-1].T}.`;
+
+    cards = `
+      <div style="padding:10px 14px;background:var(--surface3);border-radius:8px;text-align:center">
+        <div style="font-size:1.2rem;font-weight:800;color:${avgErr <= 8 ? 'var(--green)' : avgErr <= 15 ? 'var(--gold)' : '#ef4444'};line-height:1">${avgErr}%</div>
+        <div style="font-size:.62rem;font-weight:600;color:var(--text);margin-top:4px">Avg Error</div>
+        <div style="font-size:.55rem;color:var(--muted)">MAPE across all T</div>
+      </div>
+      <div style="padding:10px 14px;background:var(--surface3);border-radius:8px;text-align:center">
+        <div style="font-size:1.2rem;font-weight:800;color:${ciCov >= 75 ? 'var(--green)' : ciCov >= 60 ? 'var(--gold)' : '#ef4444'};line-height:1">${ciCov}%</div>
+        <div style="font-size:.62rem;font-weight:600;color:var(--text);margin-top:4px">CI Coverage</div>
+        <div style="font-size:.55rem;color:var(--muted)">${ciHits}/${preds.length} in range</div>
+      </div>
+      <div style="padding:10px 14px;background:var(--surface3);border-radius:8px;text-align:center">
+        <div style="font-size:1.2rem;font-weight:800;color:var(--green);line-height:1">${bestT.abs_error_pct.toFixed(1)}%</div>
+        <div style="font-size:.62rem;font-weight:600;color:var(--text);margin-top:4px">Best @ T-${bestT.T}</div>
+        <div style="font-size:.55rem;color:var(--muted)">pred ${bestT.predicted}</div>
+      </div>
+      <div style="padding:10px 14px;background:var(--surface3);border-radius:8px;text-align:center">
+        <div style="font-size:1.2rem;font-weight:800;color:var(--gold);line-height:1">${worstT.abs_error_pct.toFixed(1)}%</div>
+        <div style="font-size:.62rem;font-weight:600;color:var(--text);margin-top:4px">Worst @ T-${worstT.T}</div>
+        <div style="font-size:.55rem;color:var(--muted)">pred ${worstT.predicted}</div>
+      </div>`;
+  } else if (agg.length > 0) {
+    // Global aggregate stats
+    const t14 = agg.find(a => a.T === 14) || agg[0];
+    const t1 = agg.find(a => a.T === 1);
+    const avgCov = Math.round(agg.reduce((s, a) => s + a.ci_coverage, 0) / agg.length);
+    const avgBias = +(agg.reduce((s, a) => s + a.bias_pct, 0) / agg.length).toFixed(1);
+
+    desc = `Blind-tested on ${perf.n_tournaments || '?'} completed 2026 tournaments. No per-tournament data for ${t.family} yet.`;
+
+    cards = `
+      <div style="padding:10px 14px;background:var(--surface3);border-radius:8px;text-align:center">
+        <div style="font-size:1.2rem;font-weight:800;color:${t14.mae_pct <= 8 ? 'var(--green)' : t14.mae_pct <= 15 ? 'var(--gold)' : '#ef4444'};line-height:1">${t14.mae_pct.toFixed(1)}%</div>
+        <div style="font-size:.62rem;font-weight:600;color:var(--text);margin-top:4px">2-Week Error</div>
+        <div style="font-size:.55rem;color:var(--muted)">MAE at T-14</div>
+      </div>
+      <div style="padding:10px 14px;background:var(--surface3);border-radius:8px;text-align:center">
+        <div style="font-size:1.2rem;font-weight:800;color:${t1 && t1.mae_pct <= 5 ? 'var(--green)' : 'var(--gold)'};line-height:1">${t1 ? t1.mae_pct.toFixed(1) + '%' : '--'}</div>
+        <div style="font-size:.62rem;font-weight:600;color:var(--text);margin-top:4px">Day-Before</div>
+        <div style="font-size:.55rem;color:var(--muted)">MAE at T-1</div>
+      </div>
+      <div style="padding:10px 14px;background:var(--surface3);border-radius:8px;text-align:center">
+        <div style="font-size:1.2rem;font-weight:800;color:${avgCov >= 75 ? 'var(--green)' : 'var(--gold)'};line-height:1">${avgCov}%</div>
+        <div style="font-size:.62rem;font-weight:600;color:var(--text);margin-top:4px">CI Coverage</div>
+        <div style="font-size:.55rem;color:var(--muted)">target 80%</div>
+      </div>
+      <div style="padding:10px 14px;background:var(--surface3);border-radius:8px;text-align:center">
+        <div style="font-size:1.2rem;font-weight:800;color:${Math.abs(avgBias) <= 5 ? 'var(--green)' : 'var(--gold)'};line-height:1">${(avgBias > 0 ? '+' : '') + avgBias}%</div>
+        <div style="font-size:.62rem;font-weight:600;color:var(--text);margin-top:4px">Bias</div>
+        <div style="font-size:.55rem;color:var(--muted)">${avgBias > 2 ? 'Over-predicts' : avgBias < -2 ? 'Under-predicts' : 'Well-centered'}</div>
+      </div>`;
+  } else {
+    desc = 'Ensemble model: historical ratios + per-family regression with lognormal 80% CIs. Performance data not yet available.';
+  }
+
+  // Grade badge (show if we have per-tournament or aggregate data)
+  let gradeBadge = '';
+  if (perf.grade) {
+    const gc = {'A+':'#22c55e','A':'#22c55e','A-':'#4ade80','B+':'#86efac','B':'var(--gold)','B-':'var(--gold)','C+':'#fb923c','C':'#f97316','C-':'#ea580c','D':'#ef4444','F':'#dc2626'};
+    gradeBadge = `<div style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--surface3);border-radius:6px;margin-bottom:10px">
+      <span style="font-size:1rem;font-weight:900;color:${gc[perf.grade] || 'var(--gold)'}">${perf.grade}</span>
+      <span style="font-size:.65rem;color:var(--muted)">Overall Grade${tournPerf ? ' · ' + t.family + ' data shown' : ''}</span>
+    </div>`;
+  }
+
+  el.innerHTML = `
+    ${gradeBadge}
+    <p style="margin:0 0 14px;font-size:.78rem;color:var(--muted);line-height:1.5">${desc}</p>
+    <div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:8px">${cards}</div>`;
+}
+
 function renderFees(t) {
   const el = document.getElementById('feeContent');
   if (!t.early_bird_fee && !t.regular_fee && !t.onsite_fee) {
-    el.innerHTML = `<div style="text-align:center;padding:24px 0">
-      <p style="color:var(--muted);font-size:.78rem;opacity:.6">Fee data not available for this tournament.</p>
-    </div>`;
+    el.innerHTML = '';
     return;
   }
 
   const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
-  let currentFee = null;
   let feeStatus = '';
   if (t.early_bird_deadline) {
     const ebD = new Date(t.early_bird_deadline + 'T00:00:00');
-    if (ebD >= today) {
-      currentFee = t.early_bird_fee;
-      feeStatus = `Early bird rate until ${fmtDate(t.early_bird_deadline)}`;
-    } else {
-      currentFee = t.regular_fee;
-      feeStatus = `Early bird ended ${fmtDate(t.early_bird_deadline)}`;
-    }
-  } else {
-    currentFee = t.regular_fee;
-    feeStatus = 'Standard rate';
+    feeStatus = ebD >= today
+      ? `Early bird until ${fmtDate(t.early_bird_deadline)}`
+      : `Early bird ended ${fmtDate(t.early_bird_deadline)}`;
   }
 
-  let html = '';
-  if (currentFee && !isDone(t)) {
-    html += `<div style="text-align:center;padding:16px 0 20px;border-bottom:1px solid var(--border);margin-bottom:16px">
-      <div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Current Rate</div>
-      <div style="font-size:2.2rem;font-weight:900;color:var(--gold)">$${currentFee}</div>
-      <div style="font-size:.78rem;color:var(--muted);margin-top:4px">${feeStatus}</div>
-    </div>`;
-  }
+  // Compact inline fee bar below the reg curve
+  let fees = [];
+  if (t.early_bird_fee) fees.push(`<span style="color:var(--green)">$${t.early_bird_fee}</span> <span style="color:var(--muted);font-size:.6rem">early</span>`);
+  if (t.regular_fee) fees.push(`<span style="color:var(--text2)">$${t.regular_fee}</span> <span style="color:var(--muted);font-size:.6rem">reg</span>`);
+  if (t.onsite_fee) fees.push(`<span style="color:var(--orange)">$${t.onsite_fee}</span> <span style="color:var(--muted);font-size:.6rem">on-site</span>`);
 
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center">';
-  if (t.early_bird_fee) {
-    html += `<div style="padding:10px;background:var(--surface3);border-radius:8px">
-      <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Early Bird</div>
-      <div style="font-size:1.1rem;font-weight:700;color:var(--green)">$${t.early_bird_fee}</div>
-    </div>`;
-  }
-  if (t.regular_fee) {
-    html += `<div style="padding:10px;background:var(--surface3);border-radius:8px">
-      <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Regular</div>
-      <div style="font-size:1.1rem;font-weight:700;color:var(--text2)">$${t.regular_fee}</div>
-    </div>`;
-  }
-  if (t.onsite_fee) {
-    html += `<div style="padding:10px;background:var(--surface3);border-radius:8px">
-      <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">On-site</div>
-      <div style="font-size:1.1rem;font-weight:700;color:var(--orange)">$${t.onsite_fee}</div>
-    </div>`;
-  }
-  html += '</div>';
-
-  el.innerHTML = html;
+  el.innerHTML = `<div style="display:flex;align-items:center;gap:16px;padding:10px 12px;background:var(--surface3);border-radius:8px;font-size:.82rem;font-weight:600">
+    <span style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Fees</span>
+    ${fees.join('<span style="color:var(--border)">·</span>')}
+    ${feeStatus ? `<span style="font-size:.62rem;color:var(--muted);margin-left:auto">${feeStatus}</span>` : ''}
+  </div>`;
 }
 
 // ══════════════════════════════════════════════════════════
@@ -78967,14 +79002,11 @@ function selectTournament(index) {
     renderHistorical(t);
     renderRegCurve(t);
     renderFees(t);
+    renderModelInfo(t);
 
     // Show/hide sections based on tournament type
     const miniGrid = document.getElementById('miniGrid');
     miniGrid.style.display = t.status === 'live' ? '' : 'none';
-
-    // Hide fee panel for historical tournaments (no fee data)
-    const feePanel = document.getElementById('feePanel');
-    if (feePanel) feePanel.style.display = (!t.early_bird_fee && !t.regular_fee && !t.onsite_fee) ? 'none' : '';
 
     // Scroll to delta banner smoothly when switching tournaments
     document.getElementById('deltaBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });

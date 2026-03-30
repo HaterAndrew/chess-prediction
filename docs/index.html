@@ -1141,9 +1141,18 @@ footer a { color: var(--muted); }
   <!-- ══════ PERFORMANCE TAB ══════ -->
   <div class="page-tab-panel" id="panel-performance" role="tabpanel">
 
-    <!-- Year selector -->
-    <div id="perfYearSelector" style="display:flex;gap:6px;margin:18px 0 14px;flex-wrap:wrap;align-items:center">
-      <span style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px">View:</span>
+    <!-- Year selector + size filter -->
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin:18px 0 14px;align-items:center">
+      <div id="perfYearSelector" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+        <span style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px">View:</span>
+      </div>
+      <div id="perfSizeSelector" style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">
+        <span style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px">Size:</span>
+        <button onclick="perfFilterSize('all')" id="perfSizeBtn_all" style="padding:5px 11px;border-radius:7px;font-size:.72rem;font-weight:600;border:1px solid var(--border);cursor:pointer;transition:all .15s">All</button>
+        <button onclick="perfFilterSize('small')" id="perfSizeBtn_small" style="padding:5px 11px;border-radius:7px;font-size:.72rem;font-weight:600;border:1px solid var(--border);cursor:pointer;transition:all .15s">&lt;150</button>
+        <button onclick="perfFilterSize('medium')" id="perfSizeBtn_medium" style="padding:5px 11px;border-radius:7px;font-size:.72rem;font-weight:600;border:1px solid var(--border);cursor:pointer;transition:all .15s">150-299</button>
+        <button onclick="perfFilterSize('large')" id="perfSizeBtn_large" style="padding:5px 11px;border-radius:7px;font-size:.72rem;font-weight:600;border:1px solid var(--border);cursor:pointer;transition:all .15s">300+</button>
+      </div>
     </div>
 
     <!-- Hero: grade + stats -->
@@ -99642,6 +99651,14 @@ function initAboutTab() {
 // ══════════════════════════════════════════════════════════
 let perfInited = false;
 let perfSelectedKey = 'cumulative';
+let perfSizeFilter = 'all';
+
+const PERF_SIZE_RANGES = {
+  all:    {label: 'All',     min: 0,   max: Infinity},
+  small:  {label: '<150',    min: 0,   max: 149},
+  medium: {label: '150-299', min: 150, max: 299},
+  large:  {label: '300+',    min: 300, max: Infinity},
+};
 
 function initPerformanceTab() {
   if (perfInited) return;
@@ -99659,7 +99676,6 @@ function initPerformanceTab() {
   const selector = document.getElementById('perfYearSelector');
   const buttons = [];
   const years = data.years ? Object.keys(data.years).map(Number).sort() : [];
-  // Filter out years with 0 tournaments
   const activeYears = years.filter(y => data.years[y] && data.years[y].n_tournaments > 0);
 
   activeYears.forEach(y => {
@@ -99671,15 +99687,32 @@ function initPerformanceTab() {
   selector.innerHTML = '<span style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px">View:</span>' +
     buttons.map(b => `<button onclick="perfSelectYear('${b.key}')" id="perfYearBtn_${b.key}" style="padding:6px 14px;border-radius:8px;font-size:.76rem;font-weight:600;border:1px solid var(--border);cursor:pointer;transition:all .15s">${b.label}</button>`).join('');
 
+  // Highlight default size button
+  perfHighlightSizeBtn();
+
   // Default to cumulative
   perfSelectYear('cumulative');
 }
 
+function perfFilterSize(size) {
+  perfSizeFilter = size;
+  perfHighlightSizeBtn();
+  perfRender();
+}
+
+function perfHighlightSizeBtn() {
+  document.querySelectorAll('[id^="perfSizeBtn_"]').forEach(btn => {
+    const isActive = btn.id === 'perfSizeBtn_' + perfSizeFilter;
+    btn.style.background = isActive ? 'var(--blue)' : 'var(--surface2)';
+    btn.style.color = isActive ? '#fff' : 'var(--text)';
+    btn.style.borderColor = isActive ? 'var(--blue)' : 'var(--border)';
+  });
+}
+
 function perfSelectYear(key) {
   perfSelectedKey = key;
-  const data = PERFORMANCE_DATA;
 
-  // Highlight active button
+  // Highlight active year button
   document.querySelectorAll('[id^="perfYearBtn_"]').forEach(btn => {
     const isActive = btn.id === 'perfYearBtn_' + key;
     btn.style.background = isActive ? 'var(--gold)' : 'var(--surface2)';
@@ -99687,19 +99720,61 @@ function perfSelectYear(key) {
     btn.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
   });
 
-  // Get the view data for this selection
-  let viewData;
+  perfRender();
+}
+
+function perfComputeAggregate(tournaments) {
+  const T_POINTS = [90, 60, 42, 28, 14, 7, 3, 1];
+  const agg = [];
+  T_POINTS.forEach(T => {
+    const errors = [], absErrors = [], ciHits = [];
+    tournaments.forEach(tr => {
+      const p = tr.predictions.find(p => p.T === T);
+      if (p) { errors.push(p.error_pct); absErrors.push(p.abs_error_pct); ciHits.push(p.in_ci); }
+    });
+    if (!absErrors.length) return;
+    agg.push({
+      T: T,
+      n: absErrors.length,
+      mae_pct: +(absErrors.reduce((s, v) => s + v, 0) / absErrors.length).toFixed(1),
+      median_ape_pct: +absErrors.sort((a, b) => a - b)[Math.floor(absErrors.length / 2)].toFixed(1),
+      ci_coverage: Math.round(ciHits.reduce((s, v) => s + v, 0) / ciHits.length * 100),
+      bias_pct: +(errors.reduce((s, v) => s + v, 0) / errors.length).toFixed(1),
+    });
+  });
+  return agg;
+}
+
+function perfComputeGrade(mae_pct, ci_coverage) {
+  const rubric = [
+    ['A+', 5, 85], ['A', 8, 75], ['A-', 10, 72],
+    ['B+', 12, 68], ['B', 14, 65], ['B-', 16, 60],
+    ['C+', 18, 55], ['C', 20, 50], ['C-', 22, 48],
+    ['D', 25, 45], ['F', 999, 0],
+  ];
+  for (const [grade, maxMae, minCov] of rubric) {
+    if (mae_pct <= maxMae && ci_coverage >= minCov) return grade;
+  }
+  return 'F';
+}
+
+function perfRender() {
+  const data = PERFORMANCE_DATA;
+  const key = perfSelectedKey;
+
+  // Get the base view data for this year/cumulative selection
+  let baseData;
   if (key === 'cumulative') {
-    viewData = data.cumulative;
+    baseData = data.cumulative;
   } else {
-    viewData = data.years[key];
+    baseData = data.years[key];
   }
 
-  if (!viewData || !viewData.aggregate || viewData.aggregate.length === 0) {
+  if (!baseData || !baseData.tournaments || baseData.tournaments.length === 0) {
     document.getElementById('perfGradeLetter').textContent = '--';
     document.getElementById('perfGradeLetter').style.color = 'var(--muted)';
     document.getElementById('perfGradeLabel').textContent = 'NO DATA';
-    document.getElementById('perfGradeDetail').textContent = 'No completed tournaments with sufficient data for this year.';
+    document.getElementById('perfGradeDetail').textContent = 'No completed tournaments with sufficient data.';
     document.getElementById('perfGradeMeta').textContent = '';
     document.getElementById('perfKPIs').innerHTML = '';
     document.getElementById('perfHorizonStrip').innerHTML = '';
@@ -99707,7 +99782,51 @@ function perfSelectYear(key) {
     return;
   }
 
-  const agg = viewData.aggregate;
+  // Apply size filter
+  const range = PERF_SIZE_RANGES[perfSizeFilter];
+  const filteredTournaments = baseData.tournaments.filter(t =>
+    t.final_count >= range.min && t.final_count <= range.max
+  );
+
+  // Recompute aggregate from filtered tournaments (or use pre-computed if no filter)
+  let agg, grade, nTournaments;
+  if (perfSizeFilter === 'all') {
+    agg = baseData.aggregate;
+    grade = baseData.grade;
+    nTournaments = baseData.n_tournaments;
+  } else {
+    agg = perfComputeAggregate(filteredTournaments);
+    nTournaments = filteredTournaments.length;
+    const t14 = agg.find(a => a.T === 14);
+    if (t14) {
+      grade = perfComputeGrade(t14.mae_pct, t14.ci_coverage);
+    } else if (agg.length) {
+      const best = agg.reduce((a, b) => a.T < b.T ? a : b);
+      grade = perfComputeGrade(best.mae_pct, best.ci_coverage);
+    } else {
+      grade = 'N/A';
+    }
+  }
+
+  const viewData = {
+    aggregate: agg,
+    tournaments: filteredTournaments,
+    grade: grade,
+    n_tournaments: nTournaments,
+  };
+
+  if (!agg || agg.length === 0) {
+    document.getElementById('perfGradeLetter').textContent = '--';
+    document.getElementById('perfGradeLetter').style.color = 'var(--muted)';
+    document.getElementById('perfGradeLabel').textContent = 'NO DATA';
+    document.getElementById('perfGradeDetail').textContent = `No ${PERF_SIZE_RANGES[perfSizeFilter].label} tournaments for this selection.`;
+    document.getElementById('perfGradeMeta').textContent = '';
+    document.getElementById('perfKPIs').innerHTML = '';
+    document.getElementById('perfHorizonStrip').innerHTML = '';
+    document.getElementById('perfTable').innerHTML = '';
+    return;
+  }
+
   const t14 = agg.find(a => a.T === 14) || agg[0];
   const t1 = agg.find(a => a.T === 1);
   const avgCov = Math.round(agg.reduce((s, a) => s + a.ci_coverage, 0) / agg.length);
@@ -99715,15 +99834,16 @@ function perfSelectYear(key) {
 
   // Grade
   const gc = {'A+':'#22c55e','A':'#22c55e','A-':'#4ade80','B+':'#86efac','B':'var(--gold)','B-':'var(--gold)','C+':'#fb923c','C':'#f97316','C-':'#ea580c','D':'#ef4444','F':'#dc2626'};
-  document.getElementById('perfGradeLetter').textContent = viewData.grade;
-  document.getElementById('perfGradeLetter').style.color = gc[viewData.grade] || 'var(--gold)';
+  document.getElementById('perfGradeLetter').textContent = grade;
+  document.getElementById('perfGradeLetter').style.color = gc[grade] || 'var(--gold)';
   document.getElementById('perfGradeLabel').textContent = 'MODEL GRADE';
 
+  const sizeLabel = perfSizeFilter !== 'all' ? ` (${PERF_SIZE_RANGES[perfSizeFilter].label} entries)` : '';
   const descMap = {
-    'cumulative': `Blind-tested across ${viewData.n_tournaments} tournaments (2022\u20132026)`,
-    '2026': `Blind-tested on ${viewData.n_tournaments} completed 2026 tournaments (YTD)`,
+    'cumulative': `Blind-tested across ${nTournaments} tournaments (2022\u20132026)${sizeLabel}`,
+    '2026': `Blind-tested on ${nTournaments} completed 2026 tournaments (YTD)${sizeLabel}`,
   };
-  const desc = descMap[key] || `Blind-tested on ${viewData.n_tournaments} tournaments in ${key}`;
+  const desc = descMap[key] || `Blind-tested on ${nTournaments} tournaments in ${key}${sizeLabel}`;
   document.getElementById('perfGradeDetail').textContent = desc;
   document.getElementById('perfGradeMeta').textContent = `N5v4_Final Ensemble \u00b7 Expanding-window retrain + auto-recalibration \u00b7 Updated ${data.generated}`;
 

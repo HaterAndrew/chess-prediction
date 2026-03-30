@@ -81,8 +81,18 @@ def build_puzzle_bank() -> None:
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT})
 
-    resp = session.get(LICHESS_DB_URL, stream=True, timeout=120)
-    resp.raise_for_status()
+    try:
+        resp = session.get(LICHESS_DB_URL, stream=True, timeout=120)
+        resp.raise_for_status()
+    except requests.RequestException as exc:
+        # If we already have a puzzle bank on disk, keep using it
+        if PUZZLE_BANK.exists():
+            log.warning(
+                "Lichess download failed (%s) — reusing existing puzzle bank at %s",
+                exc, PUZZLE_BANK,
+            )
+            return
+        raise
 
     # Set up zstd streaming decompressor
     dctx = zstd.ZstdDecompressor()

@@ -1561,7 +1561,7 @@ footer a { color: var(--muted); }
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
   "generated": "2026-03-30",
-  "generated_time": "2026-03-30T06:04:40.323739-04:00",
+  "generated_time": "2026-03-30T06:09:07.922866-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
   "n_completed_in_training": 16,
@@ -2761,101 +2761,6 @@ const TOURNAMENT_DATA = {
       "status": "live"
     },
     {
-      "family": "Philadelphia International",
-      "year": 2026,
-      "event_start": "2026-06-25",
-      "event_end": "2026-06-29",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 87,
-      "point_estimate": 122,
-      "ci_lower": 96,
-      "ci_upper": 145,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 147
-        },
-        {
-          "year": 2022,
-          "count": 88
-        },
-        {
-          "year": 2023,
-          "count": 108
-        },
-        {
-          "year": 2024,
-          "count": 143
-        },
-        {
-          "year": 2025,
-          "count": 126
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          0
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0219
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0485
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0786
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.1273
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.2675
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.4444
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.5448
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.5931
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.7055
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.8008
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9244
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live"
-    },
-    {
       "family": "DC Open",
       "year": 2026,
       "event_start": "2026-06-26",
@@ -2921,101 +2826,6 @@ const TOURNAMENT_DATA = {
         {
           "days_before": 1,
           "cumulative_pct": 0.943
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live"
-    },
-    {
-      "family": "Philadelphia Open",
-      "year": 2026,
-      "event_start": "2026-06-26",
-      "event_end": "2026-06-28",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 88,
-      "point_estimate": 286,
-      "ci_lower": 251,
-      "ci_upper": 319,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 231
-        },
-        {
-          "year": 2022,
-          "count": 281
-        },
-        {
-          "year": 2023,
-          "count": 281
-        },
-        {
-          "year": 2024,
-          "count": 312
-        },
-        {
-          "year": 2025,
-          "count": 325
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          0
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0092
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0196
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0349
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0479
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.1236
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1849
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.2352
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3188
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.465
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7303
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9378
         },
         {
           "days_before": 0,
@@ -23458,7 +23268,7 @@ const TOURNAMENT_DATA = {
       "status": "historical"
     },
     {
-      "family": "Philadelphia International",
+      "family": "DC International",
       "year": 2015,
       "event_start": "2015-02-19",
       "event_end": null,

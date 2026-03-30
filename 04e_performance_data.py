@@ -174,6 +174,15 @@ def main():
     enrichment_lookup = m04c.build_enrichment_lookup(hist_enrich)
     meta['start_date'] = pd.to_datetime(meta['start_date'])
 
+    # ── Exclude blitz/rapid side events (not useful for logistical planning) ──
+    blitz_mask = summary['family'].str.contains(
+        r'Blitz|Rapid|Bullet|Bughouse|Armageddon', case=False, na=False, regex=True
+    )
+    excluded = summary[blitz_mask]['family'].unique()
+    if len(excluded) > 0:
+        print(f"  Excluding {len(excluded)} blitz/rapid families: {', '.join(excluded)}")
+    summary = summary[~blitz_mask].copy()
+
     # ── Identify completed 2026 tournaments ──
     completed_2026_all = summary[
         (summary['tournament_year'] == 2026) &

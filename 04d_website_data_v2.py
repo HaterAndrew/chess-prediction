@@ -140,10 +140,12 @@ EXCLUDE_FAMILIES = [
     'George Washington Saturday Octos', 'George Washington Sunday Octos',
 ]
 
-# Exclude all blitz events
-blitz_families = summary[summary['family'].str.contains('Blitz|blitz', na=False, regex=True)]['family'].unique().tolist()
+# Exclude all blitz/rapid side events (not useful for logistical planning)
+blitz_families = summary[summary['family'].str.contains(
+    r'Blitz|Rapid|Bullet|Bughouse|Armageddon', case=False, na=False, regex=True
+)]['family'].unique().tolist()
 EXCLUDE_FAMILIES.extend(blitz_families)
-print(f"Excluding {len(blitz_families)} blitz families")
+print(f"Excluding {len(blitz_families)} blitz/rapid families")
 
 # ── Build ratio model (same as N5 but with lognormal CIs) ──
 

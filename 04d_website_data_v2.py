@@ -58,34 +58,11 @@ if os.path.exists(scrape_path):
             summary.loc[mask, 'final_count'] = net_count
             if old_count != net_count:
                 updated += 1
-    # Also update daily registration counts with latest scrape data.
-    # For live 2026 tournaments, use event_start as the T reference so scrape
-    # data extends the curve beyond the stale last_reg date.
-    # Step 1: Shift existing T values from last_reg-based to event_start-based (once per tid)
-    shifted_tids = set()
-    for _, s in latest_scrape.iterrows():
-        scrape_name = s['tournament_name']
-        family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
-        tid_match = summary[(summary['family'] == family_name) & (summary['tournament_year'] == 2026)]
-        if len(tid_match) == 0:
-            continue
-        tid = tid_match.iloc[0]['tid']
-        if tid in shifted_tids:
-            continue
-        last_reg = tid_match.iloc[0].get('last_reg')
-        meta_row = meta[(meta['family'] == family_name) & (meta['year'] == 2026)]
-        if len(meta_row) == 0:
-            meta_row = meta[(meta['year'] == 2026) & (meta['start_date'] > pd.Timestamp.now())]
-            meta_row = meta_row[meta_row['family'].str.contains(family_name.split()[0], case=False, na=False)]
-        if len(meta_row) > 0 and pd.notna(last_reg):
-            event_start = pd.to_datetime(meta_row.iloc[0]['start_date'])
-            offset = (event_start - pd.to_datetime(last_reg)).days
-            if offset > 0:
-                mask = daily['tid'] == tid
-                daily.loc[mask, 'T'] = daily.loc[mask, 'T'] + offset
-                shifted_tids.add(tid)
+    # Reanchor ALL daily T values from last_reg to event_start so the model
+    # trains and predicts in a consistent coordinate system (T=0 = event start).
+    daily = m04c.reanchor_daily_to_event_start(summary, daily, meta)
 
-    # Step 2: Insert scrape rows using event_start-based T
+    # Insert scrape rows using event_start-based T
     for _, s in scrape.iterrows():
         scrape_name = s['tournament_name']
         family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
@@ -456,15 +433,8 @@ for _, row in t2026.iterrows():
     if days_remaining > 250:
         continue
 
-    # Convert days_to_start to days_to_end (T in training coordinates)
-    # Training T is relative to last_reg/event_end, not event_start
-    m_row = meta[(meta['family'] == family) & (meta['year'] == 2026)]
-    if len(m_row) > 0 and pd.notna(m_row.iloc[0].get('end_date')):
-        event_end = pd.to_datetime(m_row.iloc[0]['end_date'])
-        days_to_end = max((event_end - TODAY).days, 0)
-    else:
-        # Estimate: typical tournament is ~4 days
-        days_to_end = days_remaining + 4
+    # T = days_remaining (days to event_start). Training data is anchored to
+    # event_start after reanchor_daily_to_event_start(), so pass directly.
 
     # Get metadata
     m = meta[(meta['family'] == family) & (meta['year'] == 2026)]
@@ -495,10 +465,10 @@ for _, row in t2026.iterrows():
         point, ci_lo, ci_hi = current_count, current_count, current_count
     elif status == 'live' and days_remaining > 0:
         point, ci_lo, ci_hi = prod_model.predict_nowcast(
-            current_count, days_to_end, family,
+            current_count, days_remaining, family,
             early_bird_deadline=eb_deadline)
         if point is None:
-            point, ci_lo, ci_hi = predict_with_lognormal_ci(current_count, days_to_end, family, ratios)
+            point, ci_lo, ci_hi = predict_with_lognormal_ci(current_count, days_remaining, family, ratios)
 
         # Plausibility check: if point estimate is far outside historical range,
         # blend with historical median but preserve model's CI width
@@ -549,7 +519,7 @@ for _, row in t2026.iterrows():
 
     # YoY pacing context: what was the count at the same T last year?
     prior_year_pace = None
-    if status == 'live' and days_to_end > 0:
+    if status == 'live' and days_remaining > 0:
         # Find most recent prior year's tournament for this family
         prior_hist = summary[
             (summary['family'] == family) &
@@ -562,8 +532,8 @@ for _, row in t2026.iterrows():
             prior_tid = prior_hist.iloc[0]['tid']
             prior_daily = daily[daily['tid'] == prior_tid]
             if len(prior_daily) > 0:
-                # Find count at closest T to current days_to_end
-                prior_at_T = prior_daily[prior_daily['T'] >= days_to_end].sort_values('T')
+                # Find count at closest T to current days_remaining
+                prior_at_T = prior_daily[prior_daily['T'] >= days_remaining].sort_values('T')
                 if len(prior_at_T) > 0:
                     prior_count_at_T = int(prior_at_T.iloc[0]['cum_regs'])
                     prior_year_val = int(prior_hist.iloc[0]['tournament_year'])
@@ -791,7 +761,7 @@ output = {
     "generated": TODAY.strftime('%Y-%m-%d'),
     "generated_time": pd.Timestamp.now(tz='America/New_York').isoformat(),
     "model": "N5v4_Final",
-    "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
+    "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start (excludes on-site registrations from training curves; final counts still include on-site, so ratios capture the on-site multiplier). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
     "n_completed_in_training": len(completed_tids) if completed_tids else 0,
     "tournaments": tournaments_out
 }

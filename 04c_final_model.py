@@ -11,8 +11,14 @@ Root cause of the [320, 2450] CI problem:
 CI approach:
 - Lognormal parametric CI on family-specific ratios (handles 4-5 data points well)
 - LOO-calibrated scaling to hit ~80% coverage
-- For prediction, map "days to event_start" to equivalent raw T (add event duration)
-  to match the training data coordinate system where T is relative to event_end/last_reg
+
+T coordinate system:
+- T is anchored to event_start (first day of tournament). T=0 means the
+  tournament starts today; T=7 means the tournament is 7 days away.
+- On-site registrations (during the event) are excluded from training data
+  so the model predicts pre-registration count only. final_count still includes
+  on-site entries, so ratios at T=0 implicitly capture the on-site multiplier.
+- For prediction, pass days_to_start directly — no duration offset needed.
 """
 
 import pandas as pd
@@ -56,8 +62,97 @@ FAMILY_ALIASES = {
 }
 T_GRID = np.arange(0, 121)
 TODAY = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-# Typical tournament duration (days between event_start and last_reg/event_end)
-TYPICAL_DURATION = 4
+# Default offset: days between event_start and last_reg for tournaments
+# without metadata. Empirically, last_reg ≈ event_start + 2 (median across
+# all CCA tournaments with both metadata and timestamp data).
+DEFAULT_EVENT_START_OFFSET = 2
+
+
+def reanchor_daily_to_event_start(summary, daily, meta):
+    """Shift daily T values from last_reg-anchored to event_start-anchored.
+
+    Training data T is originally computed as days before last_reg (≈ event_end).
+    This reanchors T so that T=0 = event_start (first day of tournament).
+    Registrations during the event (new T < 0) are dropped so the model
+    only trains on pre-registration data. final_count in summary still includes
+    on-site entries, so ratios at T=0 implicitly capture the on-site multiplier.
+
+    Returns modified daily DataFrame (summary and meta are unchanged).
+    """
+    meta_dt = meta.copy()
+    meta_dt['start_date'] = pd.to_datetime(meta_dt['start_date'], errors='coerce')
+    meta_dt['end_date'] = pd.to_datetime(meta_dt['end_date'], errors='coerce')
+
+    # Build (family, year) -> event_start lookup from metadata
+    meta_starts = {}
+    for _, m in meta_dt.iterrows():
+        if pd.notna(m['start_date']):
+            meta_starts[(m['family'], int(m['year']))] = m['start_date']
+
+    # Compute per-family median offset (last_reg - event_start) from completed
+    # tournaments that have both metadata and timestamp data
+    family_offsets = {}
+    for _, row in summary.iterrows():
+        fam = row['family']
+        yr = int(row['tournament_year']) if pd.notna(row['tournament_year']) else 0
+        lr = pd.to_datetime(row['last_reg'], errors='coerce') if pd.notna(row.get('last_reg')) else pd.NaT
+        if pd.isna(lr) or yr >= 2026:
+            continue
+        start = meta_starts.get((fam, yr))
+        if start is not None:
+            offset = (lr - start).days
+            if 0 <= offset <= 10:  # sanity: reject bad metadata
+                family_offsets.setdefault(fam, []).append(offset)
+    family_median_offset = {
+        fam: int(np.median(offs)) for fam, offs in family_offsets.items()
+    }
+    global_median_offset = DEFAULT_EVENT_START_OFFSET
+
+    # Shift T for each tournament
+    daily = daily.copy()
+    for _, row in summary.iterrows():
+        tid = row['tid']
+        fam = row['family']
+        yr = int(row['tournament_year']) if pd.notna(row['tournament_year']) else 0
+        lr = pd.to_datetime(row['last_reg'], errors='coerce') if pd.notna(row.get('last_reg')) else pd.NaT
+
+        # Determine offset (last_reg - event_start) for this tournament
+        start = meta_starts.get((fam, yr))
+        if start is not None and pd.notna(lr):
+            offset = (lr - start).days
+            if offset < 0 or offset > 30:
+                # Bad data — fall back
+                offset = family_median_offset.get(fam, global_median_offset)
+        elif pd.notna(lr):
+            offset = family_median_offset.get(fam, global_median_offset)
+        else:
+            continue  # no timestamp data, skip
+
+        # Shift T: old T was days-before-last_reg, new T is days-before-event_start
+        # new_T = old_T - offset (event_start is `offset` days before last_reg)
+        mask = daily['tid'] == tid
+        if not mask.any():
+            continue
+        daily.loc[mask, 'T'] = daily.loc[mask, 'T'] - offset
+
+    # Drop rows where T < 0 (on-site registrations during the event)
+    before = len(daily)
+    daily = daily[daily['T'] >= 0].copy()
+    dropped = before - len(daily)
+
+    # Recompute cum_regs after dropping on-site rows: cum_regs should count from
+    # earliest (highest T) down to T=0, so re-cumsum within each tid
+    daily = daily.sort_values(['tid', 'T'], ascending=[True, False])
+    daily['cum_regs'] = daily.groupby('tid')['daily_regs'].cumsum()
+    tid_totals = daily.groupby('tid')['daily_regs'].transform('sum')
+    daily.loc[tid_totals > 0, 'cum_pct'] = (
+        daily.loc[tid_totals > 0, 'cum_regs'] /
+        tid_totals[tid_totals > 0]
+    )
+
+    if dropped > 0:
+        print(f"  Reanchored T to event_start: dropped {dropped} on-site rows")
+    return daily
 
 
 def load_data():
@@ -67,6 +162,11 @@ def load_data():
     # Load enrichment data if available
     hist_path = os.path.join(OUTPUT_DIR, "historical_tournaments.csv")
     hist = pd.read_csv(hist_path) if os.path.exists(hist_path) else pd.DataFrame()
+
+    # Reanchor T from last_reg to event_start so the model predicts
+    # pre-registration only (T=0 = first day of tournament)
+    daily = reanchor_daily_to_event_start(summary, daily, meta)
+
     return summary, daily, meta, hist
 
 
@@ -600,8 +700,9 @@ class N5v4_Final:
     def predict_nowcast(self, current_count, days_remaining, family, **kwargs):
         """
         Predict final count given current registrations and days remaining.
-        days_remaining is in the same coordinate system as the training T
-        (i.e., days before last_reg/event_end for historical data).
+        days_remaining = days until event_start (T=0 is first day of tournament).
+        Training T is anchored to event_start after reanchor_daily_to_event_start().
+        Prediction includes expected on-site registrations (baked into ratios).
         """
         # Late-surge families: dampen ratio extrapolation to avoid over-prediction
         # These events get bulk registrations in the last 1-3 days
@@ -1346,10 +1447,8 @@ def build_website_json(summary, daily, meta_lookup, model, template_curves):
             event_end = pd.to_datetime(event_end)
         days_to_start = max((event_start - TODAY).days, 0)
 
-        # For prediction, convert days_to_start to "days before event_end"
-        # because training T is relative to last_reg which ~ event_end
-        event_duration = max((event_end - event_start).days, 1)
-        days_to_end = days_to_start + event_duration  # T in training coordinate system
+        # T = days_to_start: training data is anchored to event_start after
+        # reanchor_daily_to_event_start(), so pass days_to_start directly.
 
         # Predict with guardrails
         hist_counts = [h['count'] for h in get_historical(family, summary)]
@@ -1362,7 +1461,7 @@ def build_website_json(summary, daily, meta_lookup, model, template_curves):
                 lo = int(np.percentile(hist_counts, 10)) if len(hist_counts) >= 5 else int(hist_med * 0.7)
                 hi = int(np.percentile(hist_counts, 90)) if len(hist_counts) >= 5 else int(hist_med * 1.3)
             else:
-                pred, lo, hi = model.predict_nowcast(current_count, days_to_end, family)
+                pred, lo, hi = model.predict_nowcast(current_count, days_to_start, family)
                 if pred is None:
                     pred, lo, hi = current_count, current_count, current_count
 
@@ -1461,15 +1560,12 @@ def main():
     print("\n" + "=" * 70)
     print("2026 CHICAGO OPEN PREDICTION")
     print("=" * 70)
-    # Event: May 21-25, today Mar 22
-    # days_to_start = 60, days_to_end = 60 + 4 = 64 (T in training coords)
+    # Event: May 21-25. T = days to event_start (no duration offset needed).
     current = 179
     days_to_start = (datetime(2026, 5, 21) - TODAY).days
-    days_to_end = days_to_start + 4  # event is 4 days
-    pred, lo, hi = model.predict_nowcast(current, days_to_end, 'Chicago Open')
+    pred, lo, hi = model.predict_nowcast(current, days_to_start, 'Chicago Open')
     print(f"\n  Current registrations:  {current}")
     print(f"  Days to event start:    {days_to_start}")
-    print(f"  Equivalent T (to end):  {days_to_end}")
     print(f"  Point estimate:         {pred}")
     print(f"  80% CI:                 [{lo}, {hi}]")
     print(f"  CI width:               {hi - lo}")

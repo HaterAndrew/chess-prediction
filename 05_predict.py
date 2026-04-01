@@ -29,6 +29,9 @@ def load_all_data():
     """Load and prepare all data for prediction."""
     summary = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_summary.csv"))
     daily = pd.read_csv(os.path.join(OUTPUT_DIR, "daily_registration_counts.csv"))
+    meta = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_metadata.csv"))
+    # Reanchor T from last_reg to event_start for consistent predictions
+    daily = m04c.reanchor_daily_to_event_start(summary, daily, meta)
     return summary, daily
 
 

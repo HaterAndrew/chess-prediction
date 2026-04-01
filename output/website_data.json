@@ -1,381 +1,10 @@
 {
-  "generated": "2026-03-31",
-  "generated_time": "2026-03-31T00:08:13.298543-04:00",
+  "generated": "2026-04-01",
+  "generated_time": "2026-04-01T00:21:07.352671-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
-  "n_completed_in_training": 16,
+  "n_completed_in_training": 17,
   "tournaments": [
-    {
-      "family": "Atlantic City Open",
-      "year": 2026,
-      "event_start": "2026-04-01",
-      "event_end": "2026-04-05",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 376,
-      "gross_count": 390,
-      "withdrawal_count": 14,
-      "days_remaining": 1,
-      "point_estimate": 502,
-      "ci_lower": 481,
-      "ci_upper": 524,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 415,
-          "family": "Open at Foxwoods"
-        },
-        {
-          "year": 2022,
-          "count": 472,
-          "family": "Open at Foxwoods"
-        },
-        {
-          "year": 2023,
-          "count": 445,
-          "family": "Open at Foxwoods"
-        },
-        {
-          "year": 2024,
-          "count": 465,
-          "family": "Open at Foxwoods"
-        },
-        {
-          "year": 2025,
-          "count": 574,
-          "family": "Princeton Open"
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          1
-        ],
-        [
-          30,
-          2
-        ],
-        [
-          47,
-          3
-        ],
-        [
-          49,
-          4
-        ],
-        [
-          59,
-          5
-        ],
-        [
-          61,
-          6
-        ],
-        [
-          72,
-          7
-        ],
-        [
-          73,
-          9
-        ],
-        [
-          76,
-          10
-        ],
-        [
-          82,
-          11
-        ],
-        [
-          83,
-          12
-        ],
-        [
-          87,
-          13
-        ],
-        [
-          89,
-          15
-        ],
-        [
-          91,
-          16
-        ],
-        [
-          93,
-          17
-        ],
-        [
-          94,
-          19
-        ],
-        [
-          95,
-          20
-        ],
-        [
-          97,
-          22
-        ],
-        [
-          100,
-          24
-        ],
-        [
-          102,
-          25
-        ],
-        [
-          103,
-          27
-        ],
-        [
-          104,
-          29
-        ],
-        [
-          109,
-          30
-        ],
-        [
-          114,
-          31
-        ],
-        [
-          116,
-          33
-        ],
-        [
-          117,
-          34
-        ],
-        [
-          118,
-          37
-        ],
-        [
-          119,
-          38
-        ],
-        [
-          120,
-          39
-        ],
-        [
-          121,
-          42
-        ],
-        [
-          122,
-          45
-        ],
-        [
-          123,
-          47
-        ],
-        [
-          124,
-          48
-        ],
-        [
-          125,
-          49
-        ],
-        [
-          126,
-          51
-        ],
-        [
-          127,
-          52
-        ],
-        [
-          128,
-          54
-        ],
-        [
-          129,
-          57
-        ],
-        [
-          130,
-          62
-        ],
-        [
-          131,
-          65
-        ],
-        [
-          132,
-          71
-        ],
-        [
-          133,
-          75
-        ],
-        [
-          134,
-          82
-        ],
-        [
-          135,
-          83
-        ],
-        [
-          136,
-          84
-        ],
-        [
-          137,
-          88
-        ],
-        [
-          138,
-          97
-        ],
-        [
-          139,
-          104
-        ],
-        [
-          140,
-          109
-        ],
-        [
-          141,
-          112
-        ],
-        [
-          142,
-          120
-        ],
-        [
-          143,
-          132
-        ],
-        [
-          144,
-          139
-        ],
-        [
-          145,
-          147
-        ],
-        [
-          146,
-          148
-        ],
-        [
-          147,
-          158
-        ],
-        [
-          148,
-          172
-        ],
-        [
-          149,
-          178
-        ],
-        [
-          150,
-          184
-        ],
-        [
-          151,
-          195
-        ],
-        [
-          152,
-          216
-        ],
-        [
-          153,
-          226
-        ],
-        [
-          154,
-          242
-        ],
-        [
-          155,
-          249
-        ],
-        [
-          156,
-          265
-        ],
-        [
-          157,
-          277
-        ],
-        [
-          158,
-          306
-        ],
-        [
-          159,
-          376
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0111
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0249
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0424
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0857
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1544
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.2129
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3096
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4753
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7697
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.943
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live",
-      "prior_year_pace": null
-    },
     {
       "family": "Chicago Open",
       "year": 2026,
@@ -385,12 +14,12 @@
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 200,
-      "gross_count": 204,
+      "current_count": 205,
+      "gross_count": 209,
       "withdrawal_count": 4,
-      "days_remaining": 51,
-      "point_estimate": 895,
-      "ci_lower": 848,
+      "days_remaining": 50,
+      "point_estimate": 896,
+      "ci_lower": 850,
       "ci_upper": 944,
       "ci_level": 0.8,
       "historical": [
@@ -664,6 +293,10 @@
         [
           124,
           200
+        ],
+        [
+          125,
+          205
         ]
       ],
       "registration_curve": [
@@ -719,7 +352,7 @@
       "status": "live",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 188,
+        "count_at_same_point": 194,
         "final": 899
       }
     },
@@ -732,13 +365,13 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 4,
-      "gross_count": 4,
+      "current_count": 5,
+      "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 66,
-      "point_estimate": 199,
-      "ci_lower": 118,
-      "ci_upper": 336,
+      "days_remaining": 65,
+      "point_estimate": 202,
+      "ci_lower": 114,
+      "ci_upper": 358,
       "ci_level": 0.8,
       "historical": [
         {
@@ -811,6 +444,10 @@
         [
           21,
           4
+        ],
+        [
+          22,
+          5
         ]
       ],
       "registration_curve": [
@@ -879,13 +516,13 @@
       "early_bird_fee": 93.0,
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
-      "current_count": 3,
-      "gross_count": 3,
+      "current_count": 4,
+      "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 66,
-      "point_estimate": 195,
-      "ci_lower": 119,
-      "ci_upper": 319,
+      "days_remaining": 65,
+      "point_estimate": 197,
+      "ci_lower": 120,
+      "ci_upper": 324,
       "ci_level": 0.8,
       "historical": [
         {
@@ -958,6 +595,10 @@
         [
           29,
           3
+        ],
+        [
+          30,
+          4
         ]
       ],
       "registration_curve": [
@@ -1029,7 +670,7 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 80,
+      "days_remaining": 79,
       "point_estimate": 79,
       "ci_lower": 42,
       "ci_upper": 147,
@@ -1085,6 +726,10 @@
         ],
         [
           11,
+          4
+        ],
+        [
+          12,
           4
         ]
       ],
@@ -1155,7 +800,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 86,
+      "days_remaining": 85,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1229,7 +874,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 87,
+      "days_remaining": 86,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1303,7 +948,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 88,
+      "days_remaining": 87,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1377,7 +1022,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 92,
+      "days_remaining": 91,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1453,7 +1098,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 108,
+      "days_remaining": 107,
       "point_estimate": 268,
       "ci_lower": 156,
       "ci_upper": 460,
@@ -1525,6 +1170,10 @@
         [
           26,
           1
+        ],
+        [
+          27,
+          1
         ]
       ],
       "registration_curve": [
@@ -1592,7 +1241,7 @@
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 108,
+      "days_remaining": 107,
       "point_estimate": 164,
       "ci_lower": 98,
       "ci_upper": 275,
@@ -1668,6 +1317,10 @@
         [
           38,
           2
+        ],
+        [
+          39,
+          2
         ]
       ],
       "registration_curve": [
@@ -1737,7 +1390,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 108,
+      "days_remaining": 107,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -1834,7 +1487,7 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 115,
+      "days_remaining": 114,
       "point_estimate": 261,
       "ci_lower": 159,
       "ci_upper": 427,
@@ -1910,6 +1563,10 @@
         [
           42,
           3
+        ],
+        [
+          43,
+          3
         ]
       ],
       "registration_curve": [
@@ -1981,7 +1638,7 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 122,
+      "days_remaining": 121,
       "point_estimate": 377,
       "ci_lower": 230,
       "ci_upper": 619,
@@ -2057,6 +1714,10 @@
         [
           26,
           4
+        ],
+        [
+          27,
+          4
         ]
       ],
       "registration_curve": [
@@ -2126,7 +1787,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 136,
+      "days_remaining": 135,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -2221,7 +1882,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 143,
+      "days_remaining": 142,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -2316,7 +1977,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 157,
+      "days_remaining": 156,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -2411,7 +2072,7 @@
       "regular_fee": 160.0,
       "onsite_fee": 160.0,
       "current_count": 0,
-      "days_remaining": 242,
+      "days_remaining": 241,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -4216,6 +3877,381 @@
         {
           "days_before": 1,
           "cumulative_pct": 0.9775
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "complete",
+      "prior_year_pace": null
+    },
+    {
+      "family": "Atlantic City Open",
+      "year": 2026,
+      "event_start": "2026-04-01",
+      "event_end": "2026-04-05",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 383,
+      "gross_count": 400,
+      "withdrawal_count": 17,
+      "days_remaining": 0,
+      "point_estimate": 383,
+      "ci_lower": 383,
+      "ci_upper": 383,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 415,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2022,
+          "count": 472,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2023,
+          "count": 445,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2024,
+          "count": 465,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2025,
+          "count": 574,
+          "family": "Princeton Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          1
+        ],
+        [
+          30,
+          2
+        ],
+        [
+          47,
+          3
+        ],
+        [
+          49,
+          4
+        ],
+        [
+          59,
+          5
+        ],
+        [
+          61,
+          6
+        ],
+        [
+          72,
+          7
+        ],
+        [
+          73,
+          9
+        ],
+        [
+          76,
+          10
+        ],
+        [
+          82,
+          11
+        ],
+        [
+          83,
+          12
+        ],
+        [
+          87,
+          13
+        ],
+        [
+          89,
+          15
+        ],
+        [
+          91,
+          16
+        ],
+        [
+          93,
+          17
+        ],
+        [
+          94,
+          19
+        ],
+        [
+          95,
+          20
+        ],
+        [
+          97,
+          22
+        ],
+        [
+          100,
+          24
+        ],
+        [
+          102,
+          25
+        ],
+        [
+          103,
+          27
+        ],
+        [
+          104,
+          29
+        ],
+        [
+          109,
+          30
+        ],
+        [
+          114,
+          31
+        ],
+        [
+          116,
+          33
+        ],
+        [
+          117,
+          34
+        ],
+        [
+          118,
+          37
+        ],
+        [
+          119,
+          38
+        ],
+        [
+          120,
+          39
+        ],
+        [
+          121,
+          42
+        ],
+        [
+          122,
+          45
+        ],
+        [
+          123,
+          47
+        ],
+        [
+          124,
+          48
+        ],
+        [
+          125,
+          49
+        ],
+        [
+          126,
+          51
+        ],
+        [
+          127,
+          52
+        ],
+        [
+          128,
+          54
+        ],
+        [
+          129,
+          57
+        ],
+        [
+          130,
+          62
+        ],
+        [
+          131,
+          65
+        ],
+        [
+          132,
+          71
+        ],
+        [
+          133,
+          75
+        ],
+        [
+          134,
+          82
+        ],
+        [
+          135,
+          83
+        ],
+        [
+          136,
+          84
+        ],
+        [
+          137,
+          88
+        ],
+        [
+          138,
+          97
+        ],
+        [
+          139,
+          104
+        ],
+        [
+          140,
+          109
+        ],
+        [
+          141,
+          112
+        ],
+        [
+          142,
+          120
+        ],
+        [
+          143,
+          132
+        ],
+        [
+          144,
+          139
+        ],
+        [
+          145,
+          147
+        ],
+        [
+          146,
+          148
+        ],
+        [
+          147,
+          158
+        ],
+        [
+          148,
+          172
+        ],
+        [
+          149,
+          178
+        ],
+        [
+          150,
+          184
+        ],
+        [
+          151,
+          195
+        ],
+        [
+          152,
+          216
+        ],
+        [
+          153,
+          226
+        ],
+        [
+          154,
+          242
+        ],
+        [
+          155,
+          249
+        ],
+        [
+          156,
+          265
+        ],
+        [
+          157,
+          277
+        ],
+        [
+          158,
+          306
+        ],
+        [
+          159,
+          376
+        ],
+        [
+          160,
+          383
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0111
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0249
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0424
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0857
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1544
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.2129
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3096
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4753
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7697
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.943
         },
         {
           "days_before": 0,

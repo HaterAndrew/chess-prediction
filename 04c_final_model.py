@@ -1452,6 +1452,7 @@ def build_website_json(summary, daily, meta_lookup, model, template_curves):
 
         # Predict with guardrails
         hist_counts = [h['count'] for h in get_historical(family, summary)]
+        prediction_source = 'model'
         if status == 'live' and current_count > 0 and days_to_start > 0:
             # Guardrail: don't trust ratio-based predictions with < 10 regs
             # and > 60 days out — fall back to historical average
@@ -1476,8 +1477,14 @@ def build_website_json(summary, daily, meta_lookup, model, template_curves):
                 elif pred > hist_max * 3.0:
                     pred = int(hist_max * 1.5)
                     hi = min(hi, int(hist_max * 2.5))
-        elif status == 'complete' or status == 'in_progress':
+        elif status == 'in_progress':
+            # Event underway — pass through scraped count directly.
+            # Does NOT include on-site/walk-up registrations.
             pred, lo, hi = current_count, current_count, current_count
+            prediction_source = 'live_scrape'
+        elif status == 'complete':
+            pred, lo, hi = current_count, current_count, current_count
+            prediction_source = 'final'
         else:
             pred, lo, hi = current_count, current_count, current_count
 
@@ -1495,7 +1502,8 @@ def build_website_json(summary, daily, meta_lookup, model, template_curves):
             'historical': get_historical(family, summary),
             'registration_curve': build_reg_curve(family, template_curves),
             'daily_data': build_daily_data(tid, daily),
-            'status': status,
+            'status': 'live' if status == 'in_progress' else status,
+            'prediction_source': prediction_source,
         }
 
         # Fee info from metadata

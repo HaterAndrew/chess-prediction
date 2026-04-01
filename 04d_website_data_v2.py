@@ -290,13 +290,28 @@ def get_event_date(family, year):
     return None
 
 
-def determine_status(row, event_date):
-    """Determine if tournament is live, upcoming, or complete."""
+def get_event_end_date(family, year):
+    """Get event end date from metadata."""
+    match = meta[(meta['family'] == family) & (meta['year'] == year)]
+    if len(match) > 0 and pd.notna(match.iloc[0].get('end_date')):
+        return pd.to_datetime(match.iloc[0]['end_date'])
+    return None
+
+
+def determine_status(row, event_date, event_end_date=None):
+    """Determine if tournament is live, in_progress, or complete.
+
+    live: event hasn't started yet (pre-event, model predicts)
+    in_progress: event is underway (start <= today <= end, scrape passthrough)
+    complete: event is over (today > end)
+    """
     if event_date is None:
         return 'unknown'
 
-    if event_date <= TODAY:
+    if event_end_date and TODAY > event_end_date:
         return 'complete'
+    elif event_date <= TODAY:
+        return 'in_progress'
     else:
         return 'live'
 
@@ -422,7 +437,8 @@ for _, row in t2026.iterrows():
         continue
 
     event_date = get_event_date(family, 2026)
-    status = determine_status(row, event_date)
+    event_end_date = get_event_end_date(family, 2026)
+    status = determine_status(row, event_date, event_end_date)
 
     if event_date is not None:
         days_remaining = max((event_date - TODAY).days, 0)
@@ -461,8 +477,16 @@ for _, row in t2026.iterrows():
 
     # Predictions — use production model with guardrails
     hist_counts = [h['count'] for h in historical]
+    prediction_source = 'model'
     if status == 'complete':
         point, ci_lo, ci_hi = current_count, current_count, current_count
+        prediction_source = 'final'
+    elif status == 'in_progress':
+        # Event is underway — pass through scraped count directly.
+        # Model stops predicting at event_start; live scrape is the real count.
+        # Does NOT include on-site/walk-up registrations (online pre-reg only).
+        point, ci_lo, ci_hi = current_count, current_count, current_count
+        prediction_source = 'live_scrape'
     elif status == 'live' and days_remaining > 0:
         point, ci_lo, ci_hi = prod_model.predict_nowcast(
             current_count, days_remaining, family,
@@ -568,7 +592,8 @@ for _, row in t2026.iterrows():
         "historical": historical,
         "daily_data": daily_data,
         "registration_curve": reg_curve,
-        "status": status,
+        "status": 'live' if status == 'in_progress' else status,
+        "prediction_source": prediction_source,
         "prior_year_pace": prior_year_pace,
     }
 

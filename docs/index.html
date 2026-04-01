@@ -74950,7 +74950,7 @@ function isDone(t) { return t.status === 'complete' || t.status === 'historical'
 // then reduces point estimate and CI bounds by that percentage.
 // Only applies to live (non-complete, non-historical) tournaments.
 function applyBiasCorrection(t) {
-  if (isDone(t) || !t.days_remaining) return t;
+  if (isDone(t) || !t.days_remaining || t.prediction_source === 'live_scrape') return t;
   const perf = typeof PERFORMANCE_DATA !== 'undefined' ? PERFORMANCE_DATA : {};
   const agg = perf.aggregate;
   if (!agg || agg.length === 0) return t;
@@ -100040,7 +100040,9 @@ function renderDelta(t) {
   banner.className = 'delta-banner gold';
   icon.innerHTML = '&#9654;';
   main.textContent = `${t.family} — Registration in progress`;
-  sub.textContent = `${fmt(t.current_count)} entries registered · ${t.days_remaining} days until event · predicted final: ${fmt(t.point_estimate)}`;
+  sub.textContent = t.prediction_source === 'live_scrape'
+    ? `${fmt(t.current_count)} pre-registered online · event in progress · does not include on-site entries`
+    : `${fmt(t.current_count)} entries registered · ${t.days_remaining} days until event · predicted final: ${fmt(t.point_estimate)}`;
   val.textContent = `T-${t.days_remaining}`;
   val.className = 'delta-value gold';
 }
@@ -100050,7 +100052,9 @@ function renderDelta(t) {
 // ══════════════════════════════════════════════════════════
 function renderHero(t) {
   const statusPrefix = t.status === 'historical' ? `${t.year} ` : '';
-  document.getElementById('heroLabel').textContent = isDone(t) ? `${statusPrefix}Final Entries` : 'Predicted Final Entries';
+  const isLiveScrape = t.prediction_source === 'live_scrape';
+  document.getElementById('heroLabel').textContent = isDone(t) ? `${statusPrefix}Final Entries`
+    : isLiveScrape ? 'Pre-Registered Online' : 'Predicted Final Entries';
   const heroNum = document.getElementById('heroNumber');
   // Animate number count-up
   const target = t.point_estimate;
@@ -100080,9 +100084,11 @@ function renderHero(t) {
   const confBadge = !isDone(t) && t.ci_lower !== t.ci_upper
     ? ` <span style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:700;background:rgba(0,0,0,.3);border:1px solid ${confColor};color:${confColor};margin-left:6px;vertical-align:middle">${confLabel} · ${nHist} editions</span>`
     : '';
-  const ciText = t.ci_lower === t.ci_upper
-    ? `<span style="color:var(--text2)">${fmt(t.current_count)} total entries</span>${confBadge}`
-    : `<span style="color:var(--text2);font-weight:600">${fmt(t.ci_lower)}</span> <span style="opacity:.5">–</span> <span style="color:var(--text2);font-weight:600">${fmt(t.ci_upper)}</span> <span style="opacity:.7">(${Math.round((t.ci_level || .8) * 100)}% CI)</span>${confBadge}`;
+  const ciText = isLiveScrape
+    ? `<span style="color:var(--orange);font-size:.78rem">&#9888; Online pre-registrations only — does not include on-site entries</span>`
+    : t.ci_lower === t.ci_upper
+      ? `<span style="color:var(--text2)">${fmt(t.current_count)} total entries</span>${confBadge}`
+      : `<span style="color:var(--text2);font-weight:600">${fmt(t.ci_lower)}</span> <span style="opacity:.5">–</span> <span style="color:var(--text2);font-weight:600">${fmt(t.ci_upper)}</span> <span style="opacity:.7">(${Math.round((t.ci_level || .8) * 100)}% CI)</span>${confBadge}`;
   document.getElementById('heroCi').innerHTML = ciText;
 
   // Side KPI cards
@@ -100092,11 +100098,11 @@ function renderHero(t) {
     <div class="kpi-sub">${isDone(t) ? 'Final' : 'as of today'}</div>
   `;
 
-  const daysColor = isDone(t) ? '' : t.days_remaining <= 7 ? 'v-red' : t.days_remaining <= 28 ? 'v-orange' : t.days_remaining <= 60 ? 'v-gold' : '';
+  const daysColor = isDone(t) ? '' : isLiveScrape ? 'v-orange' : t.days_remaining <= 7 ? 'v-red' : t.days_remaining <= 28 ? 'v-orange' : t.days_remaining <= 60 ? 'v-gold' : '';
   document.getElementById('kpiDays').innerHTML = `
-    <div class="kpi-label">${isDone(t) ? 'Event Date' : 'Days to Event'}</div>
-    <div class="kpi-value ${daysColor}">${isDone(t) ? fmtDate(t.event_start) : t.days_remaining}</div>
-    <div class="kpi-sub">${isDone(t) ? (t.event_end ? fmtDate(t.event_start) + ' – ' + fmtDate(t.event_end) : '') : fmtDate(t.event_start)}</div>
+    <div class="kpi-label">${isDone(t) ? 'Event Date' : isLiveScrape ? 'Status' : 'Days to Event'}</div>
+    <div class="kpi-value ${daysColor}">${isDone(t) ? fmtDate(t.event_start) : isLiveScrape ? 'In Progress' : t.days_remaining}</div>
+    <div class="kpi-sub">${isDone(t) ? (t.event_end ? fmtDate(t.event_start) + ' – ' + fmtDate(t.event_end) : '') : fmtDate(t.event_start) + (t.event_end ? ' – ' + fmtDate(t.event_end) : '')}</div>
   `;
 
   // Pace/velocity card
@@ -100184,8 +100190,8 @@ function renderKPIRow(t) {
   const el = document.getElementById('kpiRow');
   const cards = [];
 
-  // % registered (only for upcoming tournaments)
-  if (!isDone(t)) {
+  // % registered (only for upcoming tournaments with model predictions)
+  if (!isDone(t) && t.prediction_source !== 'live_scrape') {
     const regPct = t.point_estimate > 0 ? (t.current_count / t.point_estimate * 100).toFixed(1) : '–';
     cards.push(`<div class="kpi-card">
       <div class="kpi-label">% Registered</div>
@@ -101010,8 +101016,9 @@ function renderRegCurve(t) {
     const expectedPct = (todayPct * 100).toFixed(1);
     const diff = (actualPct - expectedPct).toFixed(1);
     const ahead = parseFloat(diff) > 0;
-    document.getElementById('regCurveCaption').textContent =
-      `At T-${t.days_remaining}: expected ${expectedPct}%, actual ${actualPct}% of predicted final — ${ahead ? 'ahead' : 'behind'} typical pace by ${Math.abs(diff)} percentage points`;
+    document.getElementById('regCurveCaption').textContent = t.prediction_source === 'live_scrape'
+      ? `Event in progress — showing online pre-registrations only (on-site entries not included)`
+      : `At T-${t.days_remaining}: expected ${expectedPct}%, actual ${actualPct}% of predicted final — ${ahead ? 'ahead' : 'behind'} typical pace by ${Math.abs(diff)} percentage points`;
   } else {
     document.getElementById('regCurveCaption').textContent =
       `Historical registration pattern for ${t.family}. Shows % of final entries at each lead time.`;
@@ -101203,9 +101210,12 @@ function renderAllTournaments() {
 
   body.innerHTML = active.map(({t, i}) => {
     const isLive = t.status === 'live';
-    const pill = isLive
-      ? '<span class="status-pill pill-live"><span class="live-dot"></span>Upcoming</span>'
-      : '<span class="status-pill pill-complete">Complete</span>';
+    const isLiveScrape = t.prediction_source === 'live_scrape';
+    const pill = isLiveScrape
+      ? '<span class="status-pill pill-live" style="border-color:var(--orange)"><span class="live-dot" style="background:var(--orange)"></span>In Progress</span>'
+      : isLive
+        ? '<span class="status-pill pill-live"><span class="live-dot"></span>Upcoming</span>'
+        : '<span class="status-pill pill-complete">Complete</span>';
 
     const pct = t.point_estimate > 0 ? Math.min(100, (t.current_count / t.point_estimate * 100)).toFixed(0) : 100;
     const paceColor = isLive ? (pct > 30 ? 'var(--green)' : pct > 15 ? 'var(--gold)' : 'var(--blue)') : 'var(--muted)';
@@ -101224,12 +101234,16 @@ function renderAllTournaments() {
       }
     }
 
+    const subNote = isLiveScrape ? ' · online only' : isLive ? ' · ' + t.days_remaining + 'd out' : '';
+    const predLabel = isLiveScrape ? `<span title="Online pre-registrations only; does not include on-site">${fmt(t.point_estimate)}*</span>` : fmt(t.point_estimate);
+    const predColor = isLiveScrape ? 'var(--orange)' : 'var(--gold)';
+
     return `<tr onclick="selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})" onkeydown="if(event.key==='Enter'){selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})}" tabindex="0" style="cursor:pointer">
-      <td><div class="t-name">${esc(t.family)}</div><div class="t-sub">${t.year}${isLive ? ' · ' + t.days_remaining + 'd out' : ''}</div></td>
+      <td><div class="t-name">${esc(t.family)}</div><div class="t-sub">${t.year}${subNote}</div></td>
       <td>${pill}</td>
       <td>${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
       <td style="font-weight:600;color:var(--blue)">${fmt(t.current_count)} ${paceStr}</td>
-      <td style="font-weight:700;color:var(--gold)">${fmt(t.point_estimate)}</td>
+      <td style="font-weight:700;color:${predColor}">${predLabel}</td>
       <td style="font-size:.82rem;color:var(--muted)">${ci}</td>
       <td>
         <span class="pace-bar-wrap"><span class="pace-bar-fill" style="width:${pct}%;background:${paceColor}"></span></span>
@@ -101286,17 +101300,21 @@ function renderMiniCards() {
         paceIndicator = `<span style="color:var(--muted);font-size:.68rem">&#8212; on pace</span>`;
       }
     }
-    return `<div class="mini-card ${isSelected ? 'mini-card-active' : ''}" onclick="selectTournament(${i})" onkeydown="if(event.key==='Enter')selectTournament(${i})" tabindex="0" role="button" aria-label="${esc(t.family)} - ${fmt(t.point_estimate)} predicted">
+    const isLS = t.prediction_source === 'live_scrape';
+    const badge = isLS
+      ? `<span class="mini-badge" style="background:rgba(210,153,34,.15);color:var(--orange);border-color:var(--orange)">In Progress</span>`
+      : `<span class="mini-badge badge-live"><span class="live-dot" style="width:5px;height:5px"></span>T-${t.days_remaining}</span>`;
+    return `<div class="mini-card ${isSelected ? 'mini-card-active' : ''}" onclick="selectTournament(${i})" onkeydown="if(event.key==='Enter')selectTournament(${i})" tabindex="0" role="button" aria-label="${esc(t.family)} - ${fmt(t.point_estimate)} ${isLS ? 'online' : 'predicted'}">
       <div class="mini-card-header">
         <span class="mini-card-name">${esc(t.family)}</span>
-        <span class="mini-badge badge-live"><span class="live-dot" style="width:5px;height:5px"></span>T-${t.days_remaining}</span>
+        ${badge}
       </div>
       <div style="display:flex;align-items:baseline;gap:8px">
         <div class="mini-card-number">${fmt(t.point_estimate)}</div>
-        ${paceIndicator}
+        ${isLS ? '<span style="color:var(--orange);font-size:.68rem">online only</span>' : paceIndicator}
       </div>
       <div class="mini-card-details">
-        ${fmt(t.current_count)} registered · ${fmtDate(t.event_start)}
+        ${fmt(t.current_count)} ${isLS ? 'pre-registered' : 'registered'} · ${fmtDate(t.event_start)}
         <div style="margin-top:6px">
           <div class="pace-bar-wrap" style="width:100%;display:block"><div class="pace-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--blue),var(--gold))"></div></div>
         </div>

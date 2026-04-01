@@ -308,7 +308,10 @@ def determine_status(row, event_date, event_end_date=None):
     if event_date is None:
         return 'unknown'
 
-    if event_end_date and TODAY > event_end_date:
+    # Use event_end if available; otherwise estimate as start + 5 days
+    end = event_end_date if event_end_date else event_date + pd.Timedelta(days=5)
+
+    if TODAY > end:
         return 'complete'
     elif event_date <= TODAY:
         return 'in_progress'

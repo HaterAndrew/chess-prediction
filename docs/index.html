@@ -1288,7 +1288,10 @@ footer a { color: var(--muted); }
       <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:10px">The Core Idea</h3>
       <p style="font-size:.84rem;color:var(--text2);line-height:1.7">
         Every CCA tournament follows a registration curve &mdash; entries trickle in slowly, then accelerate as the event nears.
-        The model exploits this pattern. If a tournament has 180 entries with 60 days to go, and the same tournament historically
+        The model exploits this pattern. Lead time (T) is measured in <strong>days until event start</strong> &mdash; on-site
+        registrations during the event are excluded from training curves, but the final counts still include them, so the
+        model&rsquo;s ratios implicitly capture the typical on-site bump.
+        If a tournament has 180 entries with 60 days to go, and the same tournament historically
         had ~170 at that point and finished with ~900, we expect roughly 900 again. We compute the <strong>ratio</strong> of
         final-to-current entries at the same lead time across all prior years, average them, and multiply:
         <span style="color:var(--gold);font-weight:600">180 &times; 5 = 900</span>.
@@ -1318,7 +1321,7 @@ footer a { color: var(--muted); }
       <div style="overflow-x:auto">
         <table style="width:100%;font-size:.78rem;border-collapse:collapse">
           <thead><tr style="border-bottom:1px solid var(--border)">
-            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">T (days to end)</th>
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:600">T (days to event start)</th>
             <th style="text-align:center;padding:8px 10px;color:var(--muted);font-weight:600">&le; 3</th>
             <th style="text-align:center;padding:8px 10px;color:var(--muted);font-weight:600">&le; 7</th>
             <th style="text-align:center;padding:8px 10px;color:var(--muted);font-weight:600">&le; 28</th>
@@ -1516,7 +1519,7 @@ footer a { color: var(--muted); }
     <!-- Worked Example -->
     <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
       <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:10px">Worked Example: Chicago Open 2026</h3>
-      <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px">Forward-looking estimate &mdash; 180 entries, 62 days to end (May 21&ndash;25, 2026).</p>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px">Forward-looking estimate &mdash; 180 entries, 58 days to event start (May 21&ndash;25, 2026).</p>
 
       <!-- Step 1 -->
       <h4 style="font-size:.84rem;font-weight:700;color:var(--blue);margin-bottom:8px">Step 1 &mdash; Historical Ratios at T &asymp; 60</h4>
@@ -1606,17 +1609,21 @@ footer a { color: var(--muted); }
     <!-- Limitations -->
     <div style="background:var(--surface2);border:1px solid rgba(248,81,73,.15);border-radius:12px;padding:20px 24px;margin-bottom:18px">
       <h3 style="font-size:.95rem;font-weight:700;color:var(--red);margin-bottom:10px">Limitations</h3>
-      <p style="font-size:.84rem;color:var(--text2);line-height:1.7">
-        The model predicts from historical patterns. It cannot anticipate one-off events: venue changes, competing tournaments
-        on the same weekend, entry fee changes, or external disruptions. It works best with 3+ years of history &mdash;
-        brand-new events get wider confidence ranges.
-        <strong>This model is a baseline; tournament directors should apply manual adjustments for known upcoming factors.</strong>
-      </p>
+      <ul style="font-size:.84rem;color:var(--text2);line-height:1.7;margin:0;padding-left:20px">
+        <li style="margin-bottom:8px"><strong>No on-site prediction.</strong> The model predicts pre-registered entries only (up to event start).
+        On-site and late registrations (walk-ups, half-point-bye entries) are not modeled separately &mdash; they are baked into
+        the historical ratios, so the final prediction <em>includes</em> an expected on-site component, but cannot break it out.</li>
+        <li style="margin-bottom:8px">Cannot anticipate one-off events: venue changes, competing tournaments on the same weekend,
+        entry fee changes, or external disruptions.</li>
+        <li style="margin-bottom:8px">Works best with 3+ years of history &mdash; brand-new events or relocated tournaments
+        (e.g., Foxwoods &rarr; Princeton &rarr; Atlantic City) get wider confidence ranges and rely on alias family comps.</li>
+        <li><strong>This model is a baseline; tournament directors should apply manual adjustments for known upcoming factors.</strong></li>
+      </ul>
     </div>
 
     <!-- Footer -->
     <div style="text-align:center;padding:12px 0;font-size:.7rem;color:var(--muted)">
-      USAREUR-AF Operational Data Team &middot; March 2026
+      USAREUR-AF Operational Data Team &middot; April 2026
     </div>
 
   </div><!-- /panel-about -->

@@ -83,8 +83,26 @@ class Prediction(Base):
     ci_lower = Column(Numeric)         # 90% credible interval lower bound
     ci_upper = Column(Numeric)         # 90% credible interval upper bound
     parameters = Column(JSON)         # fitted model params snapshot
+    # Walk-in adjusted predictions (pre-reg * walk-in multiplier)
+    walkin_multiplier = Column(Numeric)
+    predicted_total_entries = Column(Numeric)
+    total_ci_lower = Column(Numeric)
+    total_ci_upper = Column(Numeric)
 
     tournament = relationship("Tournament", back_populates="predictions")
+
+
+class WalkInMultiplier(Base):
+    """Historical walk-in ratios: actual entries (standings) / pre-reg entries."""
+    __tablename__ = "walk_in_multipliers"
+
+    id = Column(Integer, primary_key=True)
+    family = Column(String(255), nullable=False)
+    year = Column(Integer, nullable=False)
+    prereg_count = Column(Integer)
+    standings_count = Column(Integer)
+    walk_in_ratio = Column(Numeric)
+    tournament_type = Column(String(20))  # 'open' or 'class'
 
 
 class Alert(Base):

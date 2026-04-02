@@ -90,7 +90,7 @@ SLUG_DISPLAY = {
     "westernpacificopen": "Western Pacific Open",
 }
 
-YEAR_RANGE = range(2003, 2026)
+YEAR_RANGE = range(2003, 2027)
 
 # Base URLs to try (main site and archive)
 BASE_URLS = [
@@ -134,12 +134,23 @@ def fetch(url):
         resp = SESSION.get(url, timeout=20)
         time.sleep(REQUEST_DELAY)
         if resp.status_code == 200:
+            # Detect redirects to the tournament list page (not an event page)
+            if resp.url.rstrip("/").endswith("/tournaments"):
+                print(f"  [SKIP] {url} redirected to tournament list")
+                return None, None
             soup = BeautifulSoup(resp.text, "html.parser")
             return resp, soup
         return None, None
     except requests.RequestException as exc:
         print(f"  [ERROR] {url}: {exc}")
         return None, None
+
+
+# Section names that are side events (not main tournament sections)
+SIDE_EVENT_NAMES = {
+    "blitz", "bughouse", "mixed doubles", "mixed doubles teams",
+    "speed", "bullet", "rapid", "armageddon", "puzzle",
+}
 
 
 def discover_events_from_index():
@@ -294,6 +305,12 @@ def count_players_in_standings(url):
             header_text = thead.get_text().lower()
         elif first_row:
             header_text = first_row.get_text().lower()
+
+        # Reject tables that look like a tournament list (not standings)
+        tournament_list_keywords = ["start date", "end date", "most recent",
+                                    "tournament name"]
+        if any(kw in header_text for kw in tournament_list_keywords):
+            continue
 
         standings_keywords = ["rank", "score", "rating", "pts", "name",
                               "player", "total", "state", "rd ", "round"]
@@ -490,6 +507,9 @@ def scrape_archive_tournaments(results, scraped):
 
             section_counts = {}
             for sec_name, sec_url in section_links:
+                if sec_name.lower().strip() in SIDE_EVENT_NAMES:
+                    print(f"       {sec_name}: skipped (side event)")
+                    continue
                 _, sec_soup = fetch(sec_url)
                 if sec_soup is None:
                     print(f"       {sec_name}: fetch failed")
@@ -525,20 +545,30 @@ def scrape_all():
     results = []
     scraped = set()
 
-    # Resume logic: load existing results
+    # Resume logic: load existing results, but discard clearly bad entries
+    # so they get re-scraped with the fixed logic
     if os.path.exists(OUTPUT_CSV):
+        discarded = 0
         with open(OUTPUT_CSV, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
+                total = int(row["total_players"])
+                # Discard entries that are obviously wrong:
+                # - total_players <= 10: scraper found a nav table or single row
+                # - total_players == 53: scraped the tournament list table
+                if total <= 10 or total == 53:
+                    discarded += 1
+                    continue
                 scraped.add((row["tournament_name"], int(row["year"])))
                 results.append({
                     "tournament_name": row["tournament_name"],
                     "year": int(row["year"]),
-                    "total_players": int(row["total_players"]),
+                    "total_players": total,
                     "num_sections": int(row["num_sections"]),
                     "sections": row["sections"],
                 })
-        print(f"  Resuming: {len(scraped)} tournament-years already processed", flush=True)
+        print(f"  Resuming: {len(scraped)} valid entries loaded, "
+              f"{discarded} bad entries discarded for re-scrape", flush=True)
 
     # Phase 1: Discover events from index/schedule/archive pages
     print("=" * 60)
@@ -582,6 +612,10 @@ def scrape_all():
         section_counts = {}
         for sec_name, sec_url in sections:
             clean_name = clean_section_name(sec_name)
+            # Skip side events (blitz, bughouse, etc.)
+            if clean_name.lower() in SIDE_EVENT_NAMES:
+                print(f"     {clean_name}: skipped (side event)")
+                continue
             count = count_players_in_standings(sec_url)
             if count > 0:
                 section_counts[clean_name] = count

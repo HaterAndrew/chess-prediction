@@ -56,8 +56,18 @@ def mode_a_forecast(family, year, summary):
     print(f"\n{'='*60}")
     print(f"MODE A FORECAST: {family} {year}")
     print(f"{'='*60}")
-    print(f"  Point estimate:  {pred}")
-    print(f"  80% interval:    [{lower}, {upper}]")
+    print(f"  Pre-reg estimate:  {pred}")
+    print(f"  Pre-reg 80% CI:    [{lower}, {upper}]")
+
+    # Walk-in multiplier
+    walkin_multipliers = m04c.load_walkin_multipliers()
+    t_point, t_low, t_high, ratio, source = m04c.apply_walkin_multiplier(
+        pred, lower, upper, family, walkin_multipliers)
+    if ratio:
+        print(f"\n  Walk-in multiplier: {ratio:.3f}x ({source})")
+        print(f"  Total estimate:    {t_point}")
+        print(f"  Total 80% CI:      [{t_low}, {t_high}]")
+
     print(f"\n  Historical editions:")
     for _, row in hist.tail(5).iterrows():
         yr = int(row['tournament_year']) if pd.notna(row['tournament_year']) else '?'
@@ -144,22 +154,33 @@ def mode_b_nowcast(family, summary, daily, raw_df=None):
     # Predict
     pred, lower, upper = model.predict_nowcast(current_count, days_remaining, family)
 
+    # Walk-in multiplier
+    walkin_multipliers = m04c.load_walkin_multipliers()
+    t_point, t_low, t_high, ratio, source = m04c.apply_walkin_multiplier(
+        pred, lower, upper, family, walkin_multipliers)
+
     if pred is not None:
-        print(f"\n  Point estimate:  {pred}")
-        print(f"  80% interval:    [{lower}, {upper}]")
+        print(f"\n  Pre-reg estimate:  {pred}")
+        print(f"  Pre-reg 80% CI:    [{lower}, {upper}]")
+        if ratio:
+            print(f"\n  Walk-in multiplier: {ratio:.3f}x ({source})")
+            print(f"  Total estimate:    {t_point}")
+            print(f"  Total 80% CI:      [{t_low}, {t_high}]")
     else:
         print(f"\n  Insufficient data for prediction at T-{days_remaining}")
 
     # Show predictions at multiple lead times for planning
     print(f"\n  Projection at different lead times:")
-    print(f"  {'Lead Time':<12} {'Predicted':<12} {'80% CI':<20}")
-    print(f"  {'-'*44}")
+    print(f"  {'Lead Time':<12} {'PreReg':<10} {'Total':<10} {'80% CI (total)':<25}")
+    print(f"  {'-'*57}")
 
     for T in [90, 60, 42, 28, 14, 7, 3, 1]:
         p, lo, hi = model.predict_nowcast(current_count, T, family)
         if p is not None:
-            marker = " <-- current" if abs(T - days_remaining) <= 3 else ""
-            print(f"  T-{T:<9} {p:<12} [{lo}, {hi}]{marker}")
+            tp, tl, th, _, _ = m04c.apply_walkin_multiplier(
+                p, lo, hi, family, walkin_multipliers)
+            marker = " <--" if abs(T - days_remaining) <= 3 else ""
+            print(f"  T-{T:<9} {p:<10} {tp:<10} [{tl}, {th}]{marker}")
 
     # Historical context
     hist_final = summary[

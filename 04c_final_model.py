@@ -1627,5 +1627,94 @@ def main():
     print(f"{'=' * 70}")
 
 
+def load_walkin_multipliers():
+    """
+    Load per-family walk-in multiplier stats from 06_walk_in_multipliers.py output.
+    Returns dict: family -> {median_ratio, std_ratio, n_years, tournament_type}
+    """
+    import csv
+    stats_csv = os.path.join(OUTPUT_DIR, "walk_in_family_stats.csv")
+    if not os.path.exists(stats_csv):
+        return {}
+
+    multipliers = {}
+    with open(stats_csv, "r") as f:
+        for row in csv.DictReader(f):
+            multipliers[row["family"]] = {
+                "median_ratio": float(row["median_ratio"]),
+                "std_ratio": float(row["std_ratio"]),
+                "n_years": int(row["n_years"]),
+                "tournament_type": row["tournament_type"],
+                "min_ratio": float(row["min_ratio"]),
+                "max_ratio": float(row["max_ratio"]),
+            }
+    return multipliers
+
+
+# Type-level fallback multipliers (used when no family-specific data exists)
+DEFAULT_WALKIN_MULTIPLIERS = {
+    "open": {"median_ratio": 1.64, "std_ratio": 0.15, "n_years": 0},
+    "class": {"median_ratio": 1.24, "std_ratio": 0.10, "n_years": 0},
+}
+
+
+def apply_walkin_multiplier(prereg_point, prereg_low, prereg_high, family,
+                            multipliers=None):
+    """
+    Apply walk-in multiplier to pre-registration prediction to get total entry estimate.
+
+    Returns (total_point, total_low, total_high, multiplier_used, multiplier_source)
+    where multiplier_source is 'family', 'type', or 'none'.
+    """
+    if multipliers is None:
+        multipliers = load_walkin_multipliers()
+
+    if prereg_point is None:
+        return None, None, None, None, "none"
+
+    # Try family-specific multiplier first
+    if family in multipliers:
+        m = multipliers[family]
+        ratio = m["median_ratio"]
+        std = m["std_ratio"]
+        source = "family"
+    else:
+        # Determine tournament type from family name for fallback
+        from importlib import import_module
+        try:
+            m06 = import_module("06_walk_in_multipliers")
+            is_class = family in m06.CLASS_FAMILIES
+        except (ImportError, ModuleNotFoundError):
+            is_class = "class" in family.lower()
+        ttype = "class" if is_class else "open"
+        fallback = DEFAULT_WALKIN_MULTIPLIERS[ttype]
+        ratio = fallback["median_ratio"]
+        std = fallback["std_ratio"]
+        source = "type"
+
+    # Propagate CI through multiplier uncertainty
+    # Use lognormal convolution with t-distribution for small samples
+    if std > 0:
+        n_years = multipliers.get(family, {}).get("n_years", 0) if family in multipliers else 0
+        if n_years >= 3:
+            from scipy.stats import t as t_dist
+            t_crit = t_dist.ppf(0.95, df=max(n_years - 1, 1))
+        else:
+            t_crit = 1.645  # fallback to normal z for type-level
+        log_mu = np.log(ratio)
+        log_sigma = np.log(1 + std / ratio)
+        m_low = np.exp(log_mu - t_crit * log_sigma)
+        m_high = np.exp(log_mu + t_crit * log_sigma)
+    else:
+        m_low = ratio
+        m_high = ratio
+
+    total_point = int(round(prereg_point * ratio))
+    total_low = int(round(prereg_low * m_low))
+    total_high = int(round(prereg_high * m_high))
+
+    return total_point, total_low, total_high, ratio, source
+
+
 if __name__ == "__main__":
     main()

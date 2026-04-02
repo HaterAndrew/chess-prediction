@@ -1672,25 +1672,15 @@ def apply_walkin_multiplier(prereg_point, prereg_low, prereg_high, family,
     if prereg_point is None:
         return None, None, None, None, "none"
 
-    # Try family-specific multiplier first
+    # Only apply walk-in multiplier for families with actual historical data
     if family in multipliers:
         m = multipliers[family]
-        ratio = m["median_ratio"]
+        ratio = min(m["median_ratio"], 1.2)  # hard cap at 1.2x
         std = m["std_ratio"]
         source = "family"
     else:
-        # Determine tournament type from family name for fallback
-        from importlib import import_module
-        try:
-            m06 = import_module("06_walk_in_multipliers")
-            is_class = family in m06.CLASS_FAMILIES
-        except (ImportError, ModuleNotFoundError):
-            is_class = "class" in family.lower()
-        ttype = "class" if is_class else "open"
-        fallback = DEFAULT_WALKIN_MULTIPLIERS[ttype]
-        ratio = fallback["median_ratio"]
-        std = fallback["std_ratio"]
-        source = "type"
+        # No family-specific data — don't guess
+        return None, None, None, None, "none"
 
     # Propagate CI through multiplier uncertainty
     # Use lognormal convolution with t-distribution for small samples

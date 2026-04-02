@@ -100388,7 +100388,7 @@ function renderDelta(t) {
   main.textContent = `${t.family} — Registration in progress`;
   sub.textContent = t.prediction_source === 'live_scrape'
     ? `${fmt(t.current_count)} pre-registered online · event in progress · does not include on-site entries`
-    : `${fmt(t.current_count)} entries registered · ${t.days_remaining} days until event · predicted final: ${fmt(t.point_estimate)}`;
+    : `${fmt(t.current_count)} entries registered · ${t.days_remaining} days until event · predicted total: ${fmt(t.total_estimate || t.point_estimate)}`;
   val.textContent = `T-${t.days_remaining}`;
   val.className = 'delta-value gold';
 }
@@ -100399,11 +100399,13 @@ function renderDelta(t) {
 function renderHero(t) {
   const statusPrefix = t.status === 'historical' ? `${t.year} ` : '';
   const isLiveScrape = t.prediction_source === 'live_scrape';
+  const hasWalkin = !isDone(t) && t.total_estimate && t.walkin_multiplier;
   document.getElementById('heroLabel').textContent = isDone(t) ? `${statusPrefix}Final Entries`
-    : isLiveScrape ? 'Pre-Registered Online' : 'Predicted Final Entries';
+    : isLiveScrape ? 'Pre-Registered Online'
+    : hasWalkin ? 'Predicted Total Entries' : 'Predicted Final Entries';
   const heroNum = document.getElementById('heroNumber');
-  // Animate number count-up
-  const target = t.point_estimate;
+  // Animate number count-up — show total_estimate if walk-in data available
+  const target = hasWalkin ? t.total_estimate : t.point_estimate;
   const duration = 600;
   const start = performance.now();
   function animHero(now) {
@@ -100430,11 +100432,14 @@ function renderHero(t) {
   const confBadge = !isDone(t) && t.ci_lower !== t.ci_upper
     ? ` <span style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:700;background:rgba(0,0,0,.3);border:1px solid ${confColor};color:${confColor};margin-left:6px;vertical-align:middle">${confLabel} · ${nHist} editions</span>`
     : '';
+  const ciLo = hasWalkin ? t.total_ci_lower : t.ci_lower;
+  const ciHi = hasWalkin ? t.total_ci_upper : t.ci_upper;
+  const walkinNote = hasWalkin ? ` <span style="opacity:.6;font-size:.7rem">incl. ~${Math.round((t.walkin_multiplier - 1) * 100)}% walk-ins</span>` : '';
   const ciText = isLiveScrape
     ? `<span style="color:var(--orange);font-size:.78rem">&#9888; Online pre-registrations only — does not include on-site entries</span>`
     : t.ci_lower === t.ci_upper
       ? `<span style="color:var(--text2)">${fmt(t.current_count)} total entries</span>${confBadge}`
-      : `<span style="color:var(--text2);font-weight:600">${fmt(t.ci_lower)}</span> <span style="opacity:.5">–</span> <span style="color:var(--text2);font-weight:600">${fmt(t.ci_upper)}</span> <span style="opacity:.7">(${Math.round((t.ci_level || .8) * 100)}% CI)</span>${confBadge}`;
+      : `<span style="color:var(--text2);font-weight:600">${fmt(ciLo)}</span> <span style="opacity:.5">–</span> <span style="color:var(--text2);font-weight:600">${fmt(ciHi)}</span> <span style="opacity:.7">(${Math.round((t.ci_level || .8) * 100)}% CI)</span>${walkinNote}${confBadge}`;
   document.getElementById('heroCi').innerHTML = ciText;
 
   // Side KPI cards

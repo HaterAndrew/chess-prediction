@@ -1672,15 +1672,17 @@ def apply_walkin_multiplier(prereg_point, prereg_low, prereg_high, family,
     if prereg_point is None:
         return None, None, None, None, "none"
 
-    # Only apply walk-in multiplier for families with actual historical data
+    # Apply walk-in multiplier: family-specific if available, otherwise global guesstimate
     if family in multipliers:
         m = multipliers[family]
-        ratio = min(m["median_ratio"], 1.2)  # hard cap at 1.2x
+        ratio = min(m["median_ratio"], 1.1)  # hard cap at 1.1x
         std = m["std_ratio"]
         source = "family"
     else:
-        # No family-specific data — don't guess
-        return None, None, None, None, "none"
+        # Global guesstimate based on 2023+ median, capped at 1.1x
+        ratio = 1.1
+        std = 0.0
+        source = "estimate"
 
     # Propagate CI through multiplier uncertainty
     # Use lognormal convolution with t-distribution for small samples

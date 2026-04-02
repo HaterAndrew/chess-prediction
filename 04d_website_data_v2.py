@@ -776,6 +776,25 @@ for _, row in historical_valid.iterrows():
     }
     tournaments_out.append(t_out)
 
+# ── Apply walk-in multiplier to ALL tournaments ──
+from importlib import import_module
+_m04c = import_module("04c_final_model")
+_walkin_mults = _m04c.load_walkin_multipliers()
+_walkin_applied = 0
+for t_out in tournaments_out:
+    family = t_out["family"]
+    tp, tl, th, ratio, wsource = _m04c.apply_walkin_multiplier(
+        t_out["point_estimate"], t_out["ci_lower"], t_out["ci_upper"],
+        family, _walkin_mults)
+    if ratio:
+        t_out["walkin_multiplier"] = round(ratio, 3)
+        t_out["walkin_source"] = wsource
+        t_out["total_estimate"] = tp
+        t_out["total_ci_lower"] = tl
+        t_out["total_ci_upper"] = th
+        _walkin_applied += 1
+print(f"\nWalk-in multiplier applied to {_walkin_applied}/{len(tournaments_out)} tournaments")
+
 # Sort: live first (by days_remaining desc), then 2026 complete, then historical
 status_order = {'live': 0, 'complete': 1, 'historical': 2, 'unknown': 3}
 tournaments_out.sort(key=lambda t: (status_order.get(t['status'], 9), t['days_remaining']))
@@ -789,7 +808,7 @@ output = {
     "generated": TODAY.strftime('%Y-%m-%d'),
     "generated_time": pd.Timestamp.now(tz='America/New_York').isoformat(),
     "model": "N5v4_Final",
-    "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start (excludes on-site registrations from training curves; final counts still include on-site, so ratios capture the on-site multiplier). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
+    "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
     "n_completed_in_training": len(completed_tids) if completed_tids else 0,
     "tournaments": tournaments_out
 }

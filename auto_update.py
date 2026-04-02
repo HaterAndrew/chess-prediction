@@ -5,9 +5,13 @@ Steps:
   1. Run scrape_entries.py to get fresh CCA entry counts
   2. Read latest scrape data from output/daily_scrape.csv
   3. Run 04c_final_model.py + 04d_website_data_v2.py to regenerate predictions
+     (includes walk-in multiplier from output/walk_in_family_stats.csv)
   4. Regenerate output/website_data.json
   5. Update the TOURNAMENT_DATA block in docs/index.html
   6. Log the run to output/update_log.csv
+
+Note: Walk-in multiplier data (06_walk_in_multipliers.py) is regenerated manually
+after scrape_standings.py runs, not on every daily update.
 """
 
 import argparse

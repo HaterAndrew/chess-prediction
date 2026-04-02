@@ -150,14 +150,29 @@ def compute_multipliers(standings, summary):
 
 
 def compute_family_stats(rows):
-    """Compute per-family aggregate statistics from multiplier rows."""
+    """
+    Compute per-family aggregate statistics from multiplier rows.
+    Uses recency-weighted approach: only the most recent 3 years of data
+    per family, since walk-in rates have declined significantly over time
+    (1.68x in 2013 -> 1.23x in 2025).
+    """
     by_family = defaultdict(list)
     for r in rows:
-        by_family[r["family"]].append(r["walk_in_ratio"])
+        by_family[r["family"]].append((r["year"], r["walk_in_ratio"]))
+
+    # Walk-in rates have declined significantly (1.68x in 2013 -> 1.23x in 2025).
+    # Only use data from 2023+ to reflect current walk-in patterns.
+    MIN_DATA_YEAR = 2023
 
     stats = []
     for fam in sorted(by_family):
-        ratios = by_family[fam]
+        year_ratios = sorted(by_family[fam], key=lambda x: x[0], reverse=True)
+        recent = [(y, r) for y, r in year_ratios if y >= MIN_DATA_YEAR]
+        if not recent:
+            continue  # skip families with only pre-2023 data
+        ratios = [r for _, r in recent]
+        years_used = [y for y, _ in recent]
+
         n = len(ratios)
         med = statistics.median(ratios)
         mean = statistics.mean(ratios)
@@ -175,6 +190,7 @@ def compute_family_stats(rows):
             "max_ratio": round(max(ratios), 4),
             "cv": round(cv, 4),
             "tournament_type": "class" if is_class else "open",
+            "years_used": str(years_used),
         })
 
     return stats
@@ -207,7 +223,8 @@ def main():
     print(f"  {len(stats)} tournament families with walk-in data")
 
     stats_fields = ["family", "n_years", "median_ratio", "mean_ratio",
-                    "std_ratio", "min_ratio", "max_ratio", "cv", "tournament_type"]
+                    "std_ratio", "min_ratio", "max_ratio", "cv", "tournament_type",
+                    "years_used"]
     with open(FAMILY_STATS_CSV, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=stats_fields)
         writer.writeheader()

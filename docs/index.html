@@ -100386,9 +100386,10 @@ function renderDelta(t) {
   banner.className = 'delta-banner gold';
   icon.innerHTML = '&#9654;';
   main.textContent = `${t.family} — Registration in progress`;
+  const totalEst = t.total_estimate || t.point_estimate;
   sub.textContent = t.prediction_source === 'live_scrape'
-    ? `${fmt(t.current_count)} pre-registered online · event in progress · does not include on-site entries`
-    : `${fmt(t.current_count)} entries registered · ${t.days_remaining} days until event · predicted total: ${fmt(t.total_estimate || t.point_estimate)}`;
+    ? `${fmt(t.current_count)} online registrations · ${fmt(totalEst)} total with predicted on-site`
+    : `${fmt(t.current_count)} online registrations · ${t.days_remaining} days out · ${fmt(totalEst)} predicted total`;
   val.textContent = `T-${t.days_remaining}`;
   val.className = 'delta-value gold';
 }
@@ -100436,7 +100437,7 @@ function renderHero(t) {
   const ciHi = hasWalkin ? t.total_ci_upper : t.ci_upper;
   const walkinNote = hasWalkin ? ` <span style="opacity:.6;font-size:.7rem">incl. ~${Math.round((t.walkin_multiplier - 1) * 100)}% walk-ins</span>` : '';
   const ciText = isLiveScrape
-    ? `<span style="color:var(--orange);font-size:.78rem">&#9888; Online pre-registrations only — does not include on-site entries</span>`
+    ? `<span style="font-size:.78rem">${fmt(t.current_count)} online registrations · ${fmt(t.total_estimate || t.point_estimate)} total with predicted on-site</span>`
     : t.ci_lower === t.ci_upper
       ? `<span style="color:var(--text2)">${fmt(t.current_count)} total entries</span>${confBadge}`
       : `<span style="color:var(--text2);font-weight:600">${fmt(ciLo)}</span> <span style="opacity:.5">–</span> <span style="color:var(--text2);font-weight:600">${fmt(ciHi)}</span> <span style="opacity:.7">(${Math.round((t.ci_level || .8) * 100)}% CI)</span>${walkinNote}${confBadge}`;

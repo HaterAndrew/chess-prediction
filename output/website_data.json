@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-01",
-  "generated_time": "2026-04-01T15:19:18.566328-04:00",
+  "generated": "2026-04-02",
+  "generated_time": "2026-04-01T23:53:48.756974-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start (excludes on-site registrations from training curves; final counts still include on-site, so ratios capture the on-site multiplier). T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration.",
   "n_completed_in_training": 17,
@@ -14,13 +14,13 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 383,
-      "gross_count": 400,
-      "withdrawal_count": 17,
+      "current_count": 393,
+      "gross_count": 411,
+      "withdrawal_count": 18,
       "days_remaining": 0,
-      "point_estimate": 383,
-      "ci_lower": 383,
-      "ci_upper": 383,
+      "point_estimate": 393,
+      "ci_lower": 393,
+      "ci_upper": 393,
       "ci_level": 0.8,
       "historical": [
         {
@@ -276,7 +276,7 @@
         ],
         [
           148,
-          383
+          393
         ]
       ],
       "registration_curve": [
@@ -342,13 +342,13 @@
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 205,
-      "gross_count": 209,
+      "current_count": 208,
+      "gross_count": 212,
       "withdrawal_count": 4,
-      "days_remaining": 50,
+      "days_remaining": 49,
       "point_estimate": 900,
-      "ci_lower": 852,
-      "ci_upper": 952,
+      "ci_lower": 853,
+      "ci_upper": 949,
       "ci_level": 0.8,
       "historical": [
         {
@@ -468,7 +468,7 @@
         ],
         [
           62,
-          26
+          208
         ],
         [
           63,
@@ -645,7 +645,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 196,
+        "count_at_same_point": 201,
         "final": 899
       }
     },
@@ -661,10 +661,10 @@
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 65,
+      "days_remaining": 64,
       "point_estimate": 199,
-      "ci_lower": 112,
-      "ci_upper": 354,
+      "ci_lower": 113,
+      "ci_upper": 351,
       "ci_level": 0.8,
       "historical": [
         {
@@ -732,6 +732,10 @@
         ],
         [
           9,
+          5
+        ],
+        [
+          10,
           5
         ],
         [
@@ -809,10 +813,10 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 65,
+      "days_remaining": 64,
       "point_estimate": 206,
-      "ci_lower": 119,
-      "ci_upper": 357,
+      "ci_lower": 120,
+      "ci_upper": 352,
       "ci_level": 0.8,
       "historical": [
         {
@@ -880,6 +884,10 @@
         ],
         [
           9,
+          4
+        ],
+        [
+          10,
           4
         ],
         [
@@ -957,7 +965,7 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 79,
+      "days_remaining": 78,
       "point_estimate": 78,
       "ci_lower": 42,
       "ci_upper": 146,
@@ -1013,6 +1021,10 @@
         ],
         [
           9,
+          4
+        ],
+        [
+          10,
           4
         ]
       ],
@@ -1084,7 +1096,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 85,
+      "days_remaining": 84,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1158,7 +1170,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 86,
+      "days_remaining": 85,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1232,7 +1244,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 87,
+      "days_remaining": 86,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1306,7 +1318,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 91,
+      "days_remaining": 90,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1382,7 +1394,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 107,
+      "days_remaining": 106,
       "point_estimate": 268,
       "ci_lower": 156,
       "ci_upper": 461,
@@ -1454,6 +1466,10 @@
         [
           9,
           1
+        ],
+        [
+          10,
+          1
         ]
       ],
       "registration_curve": [
@@ -1508,7 +1524,11 @@
       ],
       "status": "live",
       "prediction_source": "model",
-      "prior_year_pace": null
+      "prior_year_pace": {
+        "year": 2025,
+        "count_at_same_point": 1,
+        "final": 294
+      }
     },
     {
       "family": "Pittsburgh Open",
@@ -1520,12 +1540,12 @@
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
       "current_count": 2,
-      "gross_count": 2,
+      "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 107,
+      "days_remaining": 106,
       "point_estimate": 168,
       "ci_lower": 99,
-      "ci_upper": 286,
+      "ci_upper": 285,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1593,6 +1613,10 @@
         ],
         [
           9,
+          2
+        ],
+        [
+          10,
           2
         ],
         [
@@ -1668,7 +1692,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 107,
+      "days_remaining": 106,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -1765,10 +1789,10 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 114,
+      "days_remaining": 113,
       "point_estimate": 261,
       "ci_lower": 159,
-      "ci_upper": 429,
+      "ci_upper": 428,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1836,6 +1860,10 @@
         ],
         [
           9,
+          3
+        ],
+        [
+          10,
           3
         ],
         [
@@ -1913,7 +1941,7 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 121,
+      "days_remaining": 120,
       "point_estimate": 382,
       "ci_lower": 233,
       "ci_upper": 626,
@@ -1984,6 +2012,10 @@
         ],
         [
           9,
+          4
+        ],
+        [
+          10,
           4
         ],
         [
@@ -2059,7 +2091,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 135,
+      "days_remaining": 134,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -2154,7 +2186,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 142,
+      "days_remaining": 141,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -2249,7 +2281,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 156,
+      "days_remaining": 155,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -2344,7 +2376,7 @@
       "regular_fee": 160.0,
       "onsite_fee": 160.0,
       "current_count": 0,
-      "days_remaining": 241,
+      "days_remaining": 240,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,

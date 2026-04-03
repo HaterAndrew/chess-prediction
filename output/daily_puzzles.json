@@ -1,152 +1,152 @@
 {
-  "date": "2026-04-02",
+  "date": "2026-04-03",
   "puzzles": [
     {
-      "id": "0SyvZ",
-      "fen": "8/8/Rpr2kp1/4p2p/1PP4P/4K1P1/8/8 b - - 1 46",
-      "moves": "c6e6 e3e4 e6d6 c4c5",
-      "rating": 2310,
+      "id": "0jUV1",
+      "fen": "8/6N1/1p6/1P1K4/5k2/4p1p1/5bB1/8 w - - 0 61",
+      "moves": "g7h5 f4g4 h5g3 g4g3",
+      "rating": 2080,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "endgame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0jUV1",
+      "game_url": "https://lichess.org/SahI8cbg#121"
+    },
+    {
+      "id": "12Fw1",
+      "fen": "3rk1nr/p4ppp/2pb4/4pP2/5P2/2B5/PPP3PP/3RR1K1 b k - 0 15",
+      "moves": "f7f6 d1d6 d8d6 f4e5 f6e5 c3e5 e8f7 e5d6",
+      "rating": 2359,
       "themes": [
         "advantage",
+        "middlegame",
+        "pin",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/12Fw1",
+      "game_url": "https://lichess.org/V3DkCQ1i/black#30"
+    },
+    {
+      "id": "0pJxd",
+      "fen": "8/6pk/3R3p/4Q3/1p2P3/PP6/KP3rq1/8 w - - 0 34",
+      "moves": "a3a4 f2f1 d6d7 g2g1 d7g7 g1g7",
+      "rating": 2084,
+      "themes": [
+        "crushing",
         "endgame",
-        "rookEndgame",
+        "long",
+        "quietMove"
+      ],
+      "url": "https://lichess.org/training/0pJxd",
+      "game_url": "https://lichess.org/wIM4iZZ7#67"
+    },
+    {
+      "id": "0lJ5J",
+      "fen": "1k1r1b1r/p1pq4/Ppn2R2/1N1p2p1/3Pp2p/2Q1P1Pb/1PP1N1BP/R1B3K1 b - - 2 18",
+      "moves": "h3g2 c3c6 d7c6 f6c6",
+      "rating": 2053,
+      "themes": [
+        "advantage",
+        "middlegame",
         "short"
       ],
-      "url": "https://lichess.org/training/0SyvZ",
-      "game_url": "https://lichess.org/vt7wGVmV/black#92"
+      "url": "https://lichess.org/training/0lJ5J",
+      "game_url": "https://lichess.org/o3R0a6ic/black#36"
     },
     {
-      "id": "0eglS",
-      "fen": "5k2/p2r2qp/6p1/5p2/2Qp4/P2R1P2/1P2r1PP/3R3K w - - 1 53",
-      "moves": "d3d4 g7d4 c4d4 d7d4",
-      "rating": 2079,
+      "id": "11iq4",
+      "fen": "8/p5p1/3k3p/8/P1P5/5K1P/8/8 w - - 2 46",
+      "moves": "f3g4 g7g6 g4f4 a7a5",
+      "rating": 2692,
       "themes": [
         "crushing",
+        "defensiveMove",
         "endgame",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0eglS",
-      "game_url": "https://lichess.org/Kjl7keJb#105"
-    },
-    {
-      "id": "0JUx0",
-      "fen": "r7/4n1pk/p7/2q1p3/8/7Q/P5PP/5R1K b - - 5 28",
-      "moves": "h7g6 h3g4 g6h7 g4e4 e7g6 e4a8",
-      "rating": 2180,
-      "themes": [
-        "crushing",
-        "endgame",
-        "exposedKing",
-        "fork",
-        "long"
-      ],
-      "url": "https://lichess.org/training/0JUx0",
-      "game_url": "https://lichess.org/ftKj3SdV/black#56"
-    },
-    {
-      "id": "0yoEL",
-      "fen": "8/p4kp1/2K3p1/2N5/P4Pn1/8/8/8 b - - 0 39",
-      "moves": "g4f2 a4a5 f2h3 c6b7",
-      "rating": 2781,
-      "themes": [
-        "crushing",
-        "endgame",
-        "knightEndgame",
-        "master",
+        "pawnEndgame",
         "quietMove",
         "short"
       ],
-      "url": "https://lichess.org/training/0yoEL",
-      "game_url": "https://lichess.org/mTLGMnWq/black#78"
+      "url": "https://lichess.org/training/11iq4",
+      "game_url": "https://lichess.org/cPjpEnRH#91"
     },
     {
-      "id": "0lsvg",
-      "fen": "5k1r/2n2ppp/pq2b3/3nR3/Q2N4/P7/1P3PPP/3R2K1 b - - 3 25",
-      "moves": "g7g6 d4e6 f7e6 a4d7 b6b2 e5e3",
-      "rating": 2785,
-      "themes": [
-        "crushing",
-        "long",
-        "middlegame"
-      ],
-      "url": "https://lichess.org/training/0lsvg",
-      "game_url": "https://lichess.org/RHAbEpgx/black#50"
-    },
-    {
-      "id": "0cj8S",
-      "fen": "2br1rk1/2q2ppp/p2p1b2/1p1PnN2/2pB1Q2/P4P2/1PP1B1PP/3RR1K1 b - - 4 22",
-      "moves": "e5g6 f5h6 g8h8 f4f6",
-      "rating": 2049,
-      "themes": [
-        "crushing",
-        "discoveredAttack",
-        "kingsideAttack",
-        "middlegame",
-        "pin",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0cj8S",
-      "game_url": "https://lichess.org/xN4EtLnv/black#44"
-    },
-    {
-      "id": "0rAue",
-      "fen": "6k1/6pp/p3b3/5pb1/P1pr4/4N3/2R2PPP/4R1K1 w - - 0 31",
-      "moves": "e1d1 g5e3 d1e1 e3h6",
-      "rating": 2381,
-      "themes": [
-        "crushing",
-        "defensiveMove",
-        "endgame",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0rAue",
-      "game_url": "https://lichess.org/cMZ1GQxc#61"
-    },
-    {
-      "id": "0Gfdg",
-      "fen": "3q1rk1/5ppp/1r2bn2/1p2p3/1N1bP3/P1NQ2PP/1P3PB1/R3K2R w KQ - 3 22",
-      "moves": "c3b5 b6b5 d3b5 d4f2 e1f2 d8d4",
-      "rating": 2800,
-      "themes": [
-        "attackingF2F7",
-        "attraction",
-        "crushing",
-        "long",
-        "middlegame",
-        "sacrifice"
-      ],
-      "url": "https://lichess.org/training/0Gfdg",
-      "game_url": "https://lichess.org/4yx6imrS#43"
-    },
-    {
-      "id": "0Ld9H",
-      "fen": "8/8/6p1/p3p1k1/Pp1pP3/8/1PP2KP1/8 w - - 2 38",
-      "moves": "f2g3 g5h5 g3f3 h5h4 f3f2 h4g4",
-      "rating": 2457,
-      "themes": [
-        "crushing",
-        "defensiveMove",
-        "endgame",
-        "long",
-        "pawnEndgame",
-        "zugzwang"
-      ],
-      "url": "https://lichess.org/training/0Ld9H",
-      "game_url": "https://lichess.org/UaKbOQwk#75"
-    },
-    {
-      "id": "05Wpi",
-      "fen": "r4rk1/1p3ppp/2nq1b1B/p1p1pPN1/P1P4P/3P4/1P3P2/R2QK1R1 b Q - 2 20",
-      "moves": "g8h8 d1h5 g7h6 h5h6 f6g5 h6d6",
-      "rating": 2570,
+      "id": "0PvOX",
+      "fen": "6k1/3b1pp1/3N4/2PQPP2/3K2P1/8/8/q7 w - - 3 41",
+      "moves": "d4e4 d7c6 d5c6 a1h1 e4d4 h1c6",
+      "rating": 2032,
       "themes": [
         "advantage",
+        "endgame",
         "long",
-        "middlegame",
-        "sacrifice"
+        "pin",
+        "sacrifice",
+        "skewer"
       ],
-      "url": "https://lichess.org/training/05Wpi",
-      "game_url": "https://lichess.org/8Wl671uy/black#40"
+      "url": "https://lichess.org/training/0PvOX",
+      "game_url": "https://lichess.org/MyKm1tkv#81"
+    },
+    {
+      "id": "124tw",
+      "fen": "r2q1rk1/3b1p1p/p2p3Q/1B1Pp3/8/1P6/1PP4P/R4RK1 b - - 0 22",
+      "moves": "d7b5 f1f3 g8h8 f3h3 f8g8 g1h1 g8g7 a1g1 d8f8 h6f6 h8g8 g1g7 f8g7 h3g3",
+      "rating": 2543,
+      "themes": [
+        "advantage",
+        "clearance",
+        "defensiveMove",
+        "middlegame",
+        "pin",
+        "quietMove",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/124tw",
+      "game_url": "https://lichess.org/r98Lllwm/black#44"
+    },
+    {
+      "id": "0fDXj",
+      "fen": "4r3/3R1p1k/Q1p2qpp/2P5/1P6/P7/5PPP/4rRK1 w - - 3 27",
+      "moves": "d7d6 f6a1 g2g3 e1f1 a6f1 e8e1 f1e1 a1e1",
+      "rating": 2161,
+      "themes": [
+        "crushing",
+        "endgame",
+        "pin",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/0fDXj",
+      "game_url": "https://lichess.org/5iBhnTAQ#53"
+    },
+    {
+      "id": "0thay",
+      "fen": "8/1pB5/p7/P2p1p2/1k1P4/1P2P1n1/2K5/8 b - - 3 65",
+      "moves": "g3f1 c2d3 b4b5 d3e2",
+      "rating": 2151,
+      "themes": [
+        "crushing",
+        "endgame",
+        "master",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0thay",
+      "game_url": "https://lichess.org/KxzWQzha/black#130"
+    },
+    {
+      "id": "0DKsN",
+      "fen": "rnbqk2r/pppp2pp/5P2/2b5/2B5/5p2/PPPP2PP/RNBQK2R w KQkq - 0 7",
+      "moves": "f6g7 d8h4 g2g3 f3f2 e1f1 h4h3 f1e2 h3g4",
+      "rating": 2550,
+      "themes": [
+        "advancedPawn",
+        "crushing",
+        "fork",
+        "opening",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/0DKsN",
+      "game_url": "https://lichess.org/OzK4Voyk#13"
     }
   ]
 }

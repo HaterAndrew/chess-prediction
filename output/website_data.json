@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-03",
-  "generated_time": "2026-04-03T00:02:59.181445-04:00",
+  "generated": "2026-04-04",
+  "generated_time": "2026-04-03T23:43:17.676255-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 17,
@@ -14,13 +14,13 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 398,
-      "gross_count": 421,
+      "current_count": 401,
+      "gross_count": 424,
       "withdrawal_count": 23,
       "days_remaining": 0,
-      "point_estimate": 398,
-      "ci_lower": 398,
-      "ci_upper": 398,
+      "point_estimate": 401,
+      "ci_lower": 401,
+      "ci_upper": 401,
       "ci_level": 0.8,
       "historical": [
         {
@@ -276,7 +276,7 @@
         ],
         [
           148,
-          398
+          401
         ]
       ],
       "registration_curve": [
@@ -334,9 +334,9 @@
       "prior_year_pace": null,
       "walkin_multiplier": 1.1,
       "walkin_source": "estimate",
-      "total_estimate": 438,
-      "total_ci_lower": 438,
-      "total_ci_upper": 438
+      "total_estimate": 441,
+      "total_ci_lower": 441,
+      "total_ci_upper": 441
     },
     {
       "family": "Chicago Open",
@@ -347,13 +347,13 @@
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 210,
-      "gross_count": 214,
+      "current_count": 214,
+      "gross_count": 218,
       "withdrawal_count": 4,
-      "days_remaining": 48,
+      "days_remaining": 47,
       "point_estimate": 898,
-      "ci_lower": 854,
-      "ci_upper": 945,
+      "ci_lower": 856,
+      "ci_upper": 942,
       "ci_level": 0.8,
       "historical": [
         {
@@ -481,7 +481,7 @@
         ],
         [
           64,
-          28
+          214
         ],
         [
           68,
@@ -650,14 +650,14 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 202,
+        "count_at_same_point": 206,
         "final": 899
       },
       "walkin_multiplier": 1.1,
       "walkin_source": "estimate",
       "total_estimate": 988,
-      "total_ci_lower": 939,
-      "total_ci_upper": 1040
+      "total_ci_lower": 942,
+      "total_ci_upper": 1036
     },
     {
       "family": "Hartford Open",
@@ -671,10 +671,10 @@
       "current_count": 8,
       "gross_count": 8,
       "withdrawal_count": 0,
-      "days_remaining": 63,
-      "point_estimate": 208,
+      "days_remaining": 62,
+      "point_estimate": 207,
       "ci_lower": 111,
-      "ci_upper": 388,
+      "ci_upper": 387,
       "ci_level": 0.8,
       "historical": [
         {
@@ -753,6 +753,10 @@
           8
         ],
         [
+          12,
+          8
+        ],
+        [
           66,
           1
         ]
@@ -811,14 +815,14 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 4,
+        "count_at_same_point": 5,
         "final": 189
       },
       "walkin_multiplier": 1.1,
       "walkin_source": "estimate",
-      "total_estimate": 229,
+      "total_estimate": 228,
       "total_ci_lower": 122,
-      "total_ci_upper": 427
+      "total_ci_upper": 426
     },
     {
       "family": "Cleveland Open",
@@ -832,10 +836,10 @@
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 63,
+      "days_remaining": 62,
       "point_estimate": 209,
-      "ci_lower": 118,
-      "ci_upper": 373,
+      "ci_lower": 119,
+      "ci_upper": 368,
       "ci_level": 0.8,
       "historical": [
         {
@@ -914,6 +918,10 @@
           5
         ],
         [
+          12,
+          5
+        ],
+        [
           67,
           1
         ]
@@ -978,8 +986,8 @@
       "walkin_multiplier": 1.1,
       "walkin_source": "estimate",
       "total_estimate": 230,
-      "total_ci_lower": 130,
-      "total_ci_upper": 410
+      "total_ci_lower": 131,
+      "total_ci_upper": 405
     },
     {
       "family": "New York State Open",
@@ -993,7 +1001,7 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 77,
+      "days_remaining": 76,
       "point_estimate": 78,
       "ci_lower": 42,
       "ci_upper": 146,
@@ -1057,6 +1065,10 @@
         ],
         [
           11,
+          4
+        ],
+        [
+          12,
           4
         ]
       ],
@@ -1133,7 +1145,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 83,
+      "days_remaining": 82,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1212,7 +1224,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 84,
+      "days_remaining": 83,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1291,7 +1303,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 85,
+      "days_remaining": 84,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1370,7 +1382,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 89,
+      "days_remaining": 88,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1451,7 +1463,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 105,
+      "days_remaining": 104,
       "point_estimate": 268,
       "ci_lower": 156,
       "ci_upper": 461,
@@ -1531,6 +1543,10 @@
         [
           11,
           1
+        ],
+        [
+          12,
+          1
         ]
       ],
       "registration_curve": [
@@ -1587,7 +1603,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 1,
+        "count_at_same_point": 2,
         "final": 294
       },
       "walkin_multiplier": 1.1,
@@ -1608,10 +1624,10 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 105,
+      "days_remaining": 104,
       "point_estimate": 174,
       "ci_lower": 94,
-      "ci_upper": 323,
+      "ci_upper": 322,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1690,6 +1706,10 @@
           3
         ],
         [
+          12,
+          3
+        ],
+        [
           99,
           1
         ]
@@ -1755,7 +1775,7 @@
       "walkin_source": "estimate",
       "total_estimate": 191,
       "total_ci_lower": 103,
-      "total_ci_upper": 355
+      "total_ci_upper": 354
     },
     {
       "family": "Southern Open",
@@ -1767,7 +1787,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 105,
+      "days_remaining": 104,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -1869,7 +1889,7 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 112,
+      "days_remaining": 111,
       "point_estimate": 261,
       "ci_lower": 159,
       "ci_upper": 428,
@@ -1948,6 +1968,10 @@
         ],
         [
           11,
+          3
+        ],
+        [
+          12,
           3
         ],
         [
@@ -2030,10 +2054,10 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 119,
-      "point_estimate": 382,
+      "days_remaining": 118,
+      "point_estimate": 381,
       "ci_lower": 233,
-      "ci_upper": 626,
+      "ci_upper": 625,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2112,6 +2136,10 @@
           4
         ],
         [
+          12,
+          4
+        ],
+        [
           126,
           2
         ]
@@ -2175,9 +2203,9 @@
       },
       "walkin_multiplier": 1.1,
       "walkin_source": "estimate",
-      "total_estimate": 420,
+      "total_estimate": 419,
       "total_ci_lower": 256,
-      "total_ci_upper": 689
+      "total_ci_upper": 688
     },
     {
       "family": "Central California Open",
@@ -2189,7 +2217,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 133,
+      "days_remaining": 132,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -2289,7 +2317,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 140,
+      "days_remaining": 139,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -2389,7 +2417,7 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 154,
+      "days_remaining": 153,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -2489,7 +2517,7 @@
       "regular_fee": 160.0,
       "onsite_fee": 160.0,
       "current_count": 0,
-      "days_remaining": 239,
+      "days_remaining": 238,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,

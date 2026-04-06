@@ -100702,12 +100702,17 @@ function renderChart(t) {
       'rgba(139,148,158,0.12)',
     ];
     const recent = t.historical.slice(-5); // show up to 5 years
+    // Only draw historical lines from where actual data starts
+    const actualStartDay = t.daily_data && t.daily_data.length > 0
+      ? (totalSpan - t.daily_data[0][0])  // T value of first actual data point
+      : 120;
     recent.forEach((h, i) => {
       const hData = [];
       const sorted = [...t.registration_curve].sort((a, b) => b.days_before - a.days_before);
       const pctFn = (pt) => pt.cumulative_pct !== undefined ? pt.cumulative_pct : (pt.pct || 0);
-      // Generate more data points for smoother dashed curves
-      for (let db = 120; db >= 0; db -= 2) {
+      // Generate data points starting from where actual data begins
+      const histStart = Math.min(actualStartDay, 120);
+      for (let db = histStart; db >= 0; db -= 2) {
         const pct = interpCurve(t.registration_curve, db);
         hData.push({ x: addDays(eventStart, -db), y: Math.round(h.count * pct) });
       }

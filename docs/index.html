@@ -1662,345 +1662,12 @@ footer a { color: var(--muted); }
 // TOURNAMENT DATA (embedded from model pipeline)
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
-  "generated": "2026-04-05",
-  "generated_time": "2026-04-05T00:10:41.933524-04:00",
+  "generated": "2026-04-06",
+  "generated_time": "2026-04-06T00:16:57.168192-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 17,
   "tournaments": [
-    {
-      "family": "Atlantic City Open",
-      "year": 2026,
-      "event_start": "2026-04-01",
-      "event_end": "2026-04-05",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 401,
-      "gross_count": 424,
-      "withdrawal_count": 23,
-      "days_remaining": 0,
-      "point_estimate": 401,
-      "ci_lower": 401,
-      "ci_upper": 401,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 415,
-          "family": "Open at Foxwoods"
-        },
-        {
-          "year": 2022,
-          "count": 472,
-          "family": "Open at Foxwoods"
-        },
-        {
-          "year": 2023,
-          "count": 445,
-          "family": "Open at Foxwoods"
-        },
-        {
-          "year": 2024,
-          "count": 465,
-          "family": "Open at Foxwoods"
-        },
-        {
-          "year": 2025,
-          "count": 574,
-          "family": "Princeton Open"
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          1
-        ],
-        [
-          30,
-          2
-        ],
-        [
-          47,
-          3
-        ],
-        [
-          49,
-          4
-        ],
-        [
-          59,
-          5
-        ],
-        [
-          61,
-          6
-        ],
-        [
-          72,
-          7
-        ],
-        [
-          73,
-          9
-        ],
-        [
-          76,
-          10
-        ],
-        [
-          82,
-          11
-        ],
-        [
-          83,
-          12
-        ],
-        [
-          87,
-          13
-        ],
-        [
-          89,
-          15
-        ],
-        [
-          91,
-          16
-        ],
-        [
-          93,
-          17
-        ],
-        [
-          94,
-          19
-        ],
-        [
-          95,
-          20
-        ],
-        [
-          97,
-          22
-        ],
-        [
-          100,
-          24
-        ],
-        [
-          102,
-          25
-        ],
-        [
-          103,
-          27
-        ],
-        [
-          104,
-          29
-        ],
-        [
-          109,
-          30
-        ],
-        [
-          114,
-          31
-        ],
-        [
-          116,
-          33
-        ],
-        [
-          117,
-          34
-        ],
-        [
-          118,
-          37
-        ],
-        [
-          119,
-          38
-        ],
-        [
-          120,
-          39
-        ],
-        [
-          121,
-          42
-        ],
-        [
-          122,
-          45
-        ],
-        [
-          123,
-          47
-        ],
-        [
-          124,
-          48
-        ],
-        [
-          125,
-          49
-        ],
-        [
-          126,
-          51
-        ],
-        [
-          127,
-          52
-        ],
-        [
-          128,
-          54
-        ],
-        [
-          129,
-          57
-        ],
-        [
-          130,
-          62
-        ],
-        [
-          131,
-          65
-        ],
-        [
-          132,
-          71
-        ],
-        [
-          133,
-          75
-        ],
-        [
-          134,
-          82
-        ],
-        [
-          135,
-          83
-        ],
-        [
-          136,
-          84
-        ],
-        [
-          137,
-          88
-        ],
-        [
-          138,
-          97
-        ],
-        [
-          139,
-          195
-        ],
-        [
-          140,
-          216
-        ],
-        [
-          141,
-          226
-        ],
-        [
-          142,
-          242
-        ],
-        [
-          143,
-          249
-        ],
-        [
-          144,
-          265
-        ],
-        [
-          145,
-          277
-        ],
-        [
-          146,
-          306
-        ],
-        [
-          147,
-          376
-        ],
-        [
-          148,
-          401
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.012
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0258
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0472
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.1011
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1807
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.2424
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3344
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.5
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.6985
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9087
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live",
-      "prediction_source": "live_scrape",
-      "prior_year_pace": null,
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 441,
-      "total_ci_lower": 441,
-      "total_ci_upper": 441
-    },
     {
       "family": "Chicago Open",
       "year": 2026,
@@ -2010,13 +1677,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 218,
-      "gross_count": 222,
+      "current_count": 221,
+      "gross_count": 225,
       "withdrawal_count": 4,
-      "days_remaining": 46,
-      "point_estimate": 898,
-      "ci_lower": 858,
-      "ci_upper": 940,
+      "days_remaining": 45,
+      "point_estimate": 897,
+      "ci_lower": 859,
+      "ci_upper": 937,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2149,6 +1816,10 @@ const TOURNAMENT_DATA = {
         [
           65,
           218
+        ],
+        [
+          66,
+          221
         ],
         [
           68,
@@ -2317,14 +1988,14 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 212,
+        "count_at_same_point": 215,
         "final": 899
       },
       "walkin_multiplier": 1.1,
       "walkin_source": "estimate",
-      "total_estimate": 988,
-      "total_ci_lower": 944,
-      "total_ci_upper": 1034
+      "total_estimate": 987,
+      "total_ci_lower": 945,
+      "total_ci_upper": 1031
     },
     {
       "family": "Hartford Open",
@@ -2338,10 +2009,10 @@ const TOURNAMENT_DATA = {
       "current_count": 9,
       "gross_count": 9,
       "withdrawal_count": 0,
-      "days_remaining": 61,
-      "point_estimate": 210,
+      "days_remaining": 60,
+      "point_estimate": 209,
       "ci_lower": 112,
-      "ci_upper": 392,
+      "ci_upper": 390,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2428,6 +2099,10 @@ const TOURNAMENT_DATA = {
           9
         ],
         [
+          14,
+          9
+        ],
+        [
           66,
           1
         ]
@@ -2491,9 +2166,9 @@ const TOURNAMENT_DATA = {
       },
       "walkin_multiplier": 1.1,
       "walkin_source": "estimate",
-      "total_estimate": 231,
+      "total_estimate": 230,
       "total_ci_lower": 123,
-      "total_ci_upper": 431
+      "total_ci_upper": 429
     },
     {
       "family": "Cleveland Open",
@@ -2507,10 +2182,10 @@ const TOURNAMENT_DATA = {
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 61,
+      "days_remaining": 60,
       "point_estimate": 208,
-      "ci_lower": 120,
-      "ci_upper": 363,
+      "ci_lower": 121,
+      "ci_upper": 357,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2597,6 +2272,10 @@ const TOURNAMENT_DATA = {
           5
         ],
         [
+          14,
+          5
+        ],
+        [
           67,
           1
         ]
@@ -2661,8 +2340,8 @@ const TOURNAMENT_DATA = {
       "walkin_multiplier": 1.1,
       "walkin_source": "estimate",
       "total_estimate": 229,
-      "total_ci_lower": 132,
-      "total_ci_upper": 399
+      "total_ci_lower": 133,
+      "total_ci_upper": 393
     },
     {
       "family": "New York State Open",
@@ -2676,7 +2355,7 @@ const TOURNAMENT_DATA = {
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 75,
+      "days_remaining": 74,
       "point_estimate": 80,
       "ci_lower": 43,
       "ci_upper": 150,
@@ -2748,6 +2427,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           13,
+          4
+        ],
+        [
+          14,
           4
         ]
       ],
@@ -2824,7 +2507,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 81,
+      "days_remaining": 80,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -2903,7 +2586,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 82,
+      "days_remaining": 81,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -2982,7 +2665,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 83,
+      "days_remaining": 82,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -3061,7 +2744,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 87,
+      "days_remaining": 86,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -3142,7 +2825,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 103,
+      "days_remaining": 102,
       "point_estimate": 268,
       "ci_lower": 156,
       "ci_upper": 461,
@@ -3230,6 +2913,10 @@ const TOURNAMENT_DATA = {
         [
           13,
           1
+        ],
+        [
+          14,
+          1
         ]
       ],
       "registration_curve": [
@@ -3307,8 +2994,8 @@ const TOURNAMENT_DATA = {
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 103,
-      "point_estimate": 174,
+      "days_remaining": 102,
+      "point_estimate": 173,
       "ci_lower": 93,
       "ci_upper": 322,
       "ci_level": 0.8,
@@ -3397,6 +3084,10 @@ const TOURNAMENT_DATA = {
           3
         ],
         [
+          14,
+          3
+        ],
+        [
           99,
           1
         ]
@@ -3460,7 +3151,7 @@ const TOURNAMENT_DATA = {
       },
       "walkin_multiplier": 1.1,
       "walkin_source": "estimate",
-      "total_estimate": 191,
+      "total_estimate": 190,
       "total_ci_lower": 102,
       "total_ci_upper": 354
     },
@@ -3474,7 +3165,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 103,
+      "days_remaining": 102,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -3576,7 +3267,7 @@ const TOURNAMENT_DATA = {
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 110,
+      "days_remaining": 109,
       "point_estimate": 261,
       "ci_lower": 159,
       "ci_upper": 427,
@@ -3666,6 +3357,10 @@ const TOURNAMENT_DATA = {
           3
         ],
         [
+          14,
+          3
+        ],
+        [
           105,
           1
         ]
@@ -3745,10 +3440,10 @@ const TOURNAMENT_DATA = {
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 117,
+      "days_remaining": 116,
       "point_estimate": 381,
       "ci_lower": 232,
-      "ci_upper": 625,
+      "ci_upper": 624,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3835,6 +3530,10 @@ const TOURNAMENT_DATA = {
           4
         ],
         [
+          14,
+          4
+        ],
+        [
           126,
           2
         ]
@@ -3900,7 +3599,7 @@ const TOURNAMENT_DATA = {
       "walkin_source": "estimate",
       "total_estimate": 419,
       "total_ci_lower": 255,
-      "total_ci_upper": 688
+      "total_ci_upper": 686
     },
     {
       "family": "Central California Open",
@@ -3912,7 +3611,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 131,
+      "days_remaining": 130,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -4012,7 +3711,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 138,
+      "days_remaining": 137,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -4112,7 +3811,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 152,
+      "days_remaining": 151,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -4212,7 +3911,7 @@ const TOURNAMENT_DATA = {
       "regular_fee": 160.0,
       "onsite_fee": 160.0,
       "current_count": 0,
-      "days_remaining": 237,
+      "days_remaining": 236,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -6020,6 +5719,339 @@ const TOURNAMENT_DATA = {
       "total_estimate": 541,
       "total_ci_lower": 541,
       "total_ci_upper": 541
+    },
+    {
+      "family": "Atlantic City Open",
+      "year": 2026,
+      "event_start": "2026-04-01",
+      "event_end": "2026-04-05",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 401,
+      "gross_count": 424,
+      "withdrawal_count": 23,
+      "days_remaining": 0,
+      "point_estimate": 401,
+      "ci_lower": 401,
+      "ci_upper": 401,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 415,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2022,
+          "count": 472,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2023,
+          "count": 445,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2024,
+          "count": 465,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2025,
+          "count": 574,
+          "family": "Princeton Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          1
+        ],
+        [
+          30,
+          2
+        ],
+        [
+          47,
+          3
+        ],
+        [
+          49,
+          4
+        ],
+        [
+          59,
+          5
+        ],
+        [
+          61,
+          6
+        ],
+        [
+          72,
+          7
+        ],
+        [
+          73,
+          9
+        ],
+        [
+          76,
+          10
+        ],
+        [
+          82,
+          11
+        ],
+        [
+          83,
+          12
+        ],
+        [
+          87,
+          13
+        ],
+        [
+          89,
+          15
+        ],
+        [
+          91,
+          16
+        ],
+        [
+          93,
+          17
+        ],
+        [
+          94,
+          19
+        ],
+        [
+          95,
+          20
+        ],
+        [
+          97,
+          22
+        ],
+        [
+          100,
+          24
+        ],
+        [
+          102,
+          25
+        ],
+        [
+          103,
+          27
+        ],
+        [
+          104,
+          29
+        ],
+        [
+          109,
+          30
+        ],
+        [
+          114,
+          31
+        ],
+        [
+          116,
+          33
+        ],
+        [
+          117,
+          34
+        ],
+        [
+          118,
+          37
+        ],
+        [
+          119,
+          38
+        ],
+        [
+          120,
+          39
+        ],
+        [
+          121,
+          42
+        ],
+        [
+          122,
+          45
+        ],
+        [
+          123,
+          47
+        ],
+        [
+          124,
+          48
+        ],
+        [
+          125,
+          49
+        ],
+        [
+          126,
+          51
+        ],
+        [
+          127,
+          52
+        ],
+        [
+          128,
+          54
+        ],
+        [
+          129,
+          57
+        ],
+        [
+          130,
+          62
+        ],
+        [
+          131,
+          65
+        ],
+        [
+          132,
+          71
+        ],
+        [
+          133,
+          75
+        ],
+        [
+          134,
+          82
+        ],
+        [
+          135,
+          83
+        ],
+        [
+          136,
+          84
+        ],
+        [
+          137,
+          88
+        ],
+        [
+          138,
+          97
+        ],
+        [
+          139,
+          195
+        ],
+        [
+          140,
+          216
+        ],
+        [
+          141,
+          226
+        ],
+        [
+          142,
+          242
+        ],
+        [
+          143,
+          249
+        ],
+        [
+          144,
+          265
+        ],
+        [
+          145,
+          277
+        ],
+        [
+          146,
+          306
+        ],
+        [
+          147,
+          376
+        ],
+        [
+          148,
+          401
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.012
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0258
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0472
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.1011
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1807
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.2424
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3344
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.5
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.6985
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9087
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 441,
+      "total_ci_lower": 441,
+      "total_ci_upper": 441
     },
     {
       "family": "Western Class Championships",
@@ -73561,157 +73593,154 @@ const TOURNAMENT_DATA = {
 // PUZZLE DATA (embedded from puzzle pipeline)
 // ══════════════════════════════════════════════════════════
 const PUZZLE_DATA = {
-  "date": "2026-04-05",
+  "date": "2026-04-06",
   "puzzles": [
     {
-      "id": "0OIHm",
-      "fen": "8/8/4p3/ppk1p3/4Pp1p/P2K1P1P/2P3P1/8 w - - 0 31",
-      "moves": "d3c3 a5a4 c3d3 b5b4 a3b4 c5b4",
-      "rating": 2055,
+      "id": "07Hgf",
+      "fen": "2r3k1/p4pp1/1p5p/1B1N4/3q2Pb/PQ1N1P1P/1P4K1/8 w - - 1 32",
+      "moves": "b5a6 c8c1 d3c1 d4f2",
+      "rating": 2187,
+      "themes": [
+        "crushing",
+        "middlegame",
+        "quietMove",
+        "sacrifice",
+        "short"
+      ],
+      "url": "https://lichess.org/training/07Hgf",
+      "game_url": "https://lichess.org/cEepwzsq#63"
+    },
+    {
+      "id": "0ziep",
+      "fen": "8/2p4k/8/1p2KP2/1P5p/2P5/8/8 w - - 0 45",
+      "moves": "f5f6 h7g8 e5f4 g8f7 f4g4 f7f6",
+      "rating": 2234,
       "themes": [
         "crushing",
         "endgame",
         "long",
-        "pawnEndgame",
-        "quietMove",
-        "zugzwang"
+        "pawnEndgame"
       ],
-      "url": "https://lichess.org/training/0OIHm",
-      "game_url": "https://lichess.org/xVeNGLBJ#61"
+      "url": "https://lichess.org/training/0ziep",
+      "game_url": "https://lichess.org/vnnmuN6Q#89"
     },
     {
-      "id": "0SAdI",
-      "fen": "6k1/5p2/4p1p1/1PNpP3/1Rnr1P2/8/7P/6K1 b - - 2 39",
-      "moves": "d4f4 b5b6 f4g4 g1h1 c4b6 b4g4",
-      "rating": 2372,
+      "id": "0YkXf",
+      "fen": "2r2rk1/5ppp/p2Pp2q/4P1R1/1p5P/1P3Q2/2p2PP1/2R3K1 b - - 0 27",
+      "moves": "h6h4 f3f6 h4g5 f6g5",
+      "rating": 2077,
       "themes": [
         "advantage",
-        "defensiveMove",
         "endgame",
-        "long"
+        "pin",
+        "short"
       ],
-      "url": "https://lichess.org/training/0SAdI",
-      "game_url": "https://lichess.org/lC00BiHY/black#78"
+      "url": "https://lichess.org/training/0YkXf",
+      "game_url": "https://lichess.org/82iG6LJ9/black#54"
     },
     {
-      "id": "0vc8M",
-      "fen": "8/8/B5P1/8/3k1K2/2p1rP2/1p6/2R5 w - - 0 65",
-      "moves": "c1b1 c3c2 b1b2 c2c1q b2b4 d4d5",
-      "rating": 2016,
+      "id": "0BiQ3",
+      "fen": "5rk1/6p1/4p2p/q3P3/b1BPQp2/prb2N1P/5PPB/2R3K1 b - - 1 31",
+      "moves": "c3b2 c4e6 g8h8 f3h4 a4e8 c1c8 b3b6 c8e8",
+      "rating": 2989,
       "themes": [
-        "advancedPawn",
         "crushing",
-        "defensiveMove",
+        "fork",
+        "middlegame",
+        "quietMove",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/0BiQ3",
+      "game_url": "https://lichess.org/KkGq2xHK/black#62"
+    },
+    {
+      "id": "0opSo",
+      "fen": "5r2/p2nk3/1pQN2p1/4q3/7p/4p2P/PPP3P1/1K1R4 b - - 0 30",
+      "moves": "e3e2 d6c8 f8c8 c6d7 e7f6 d1d6 e5d6 d7d6",
+      "rating": 2669,
+      "themes": [
+        "crushing",
+        "endgame",
+        "exposedKing",
+        "fork",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/0opSo",
+      "game_url": "https://lichess.org/1EneROuZ/black#60"
+    },
+    {
+      "id": "0iWvv",
+      "fen": "8/6kp/5rp1/8/P7/2Q4P/2P1pqP1/4R2K w - - 0 52",
+      "moves": "a4a5 f2e1 c3e1 f6f1",
+      "rating": 2037,
+      "themes": [
+        "clearance",
+        "crushing",
+        "endgame",
+        "sacrifice",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0iWvv",
+      "game_url": "https://lichess.org/c2VQm9vt#103"
+    },
+    {
+      "id": "0OQDD",
+      "fen": "5k2/2R5/4p1K1/6P1/p4P2/P7/2pr4/8 b - - 4 48",
+      "moves": "f8e8 g6f6 e8d8 c7c4 d2f2 f6e6",
+      "rating": 2572,
+      "themes": [
+        "advantage",
         "endgame",
         "long",
-        "promotion"
+        "master",
+        "rookEndgame"
       ],
-      "url": "https://lichess.org/training/0vc8M",
-      "game_url": "https://lichess.org/SKY6cHm5#129"
+      "url": "https://lichess.org/training/0OQDD",
+      "game_url": "https://lichess.org/BNfVKFl1/black#96"
     },
     {
-      "id": "0UR61",
-      "fen": "r4k2/7q/p3p1Rp/1p1pP2Q/2nP2P1/2P4N/PPn4P/7K w - - 3 29",
-      "moves": "g6h6 h7e4 h1g1 e4e1 g1g2 c2e3 g2f3 c4d2 f3f4 e1f1 h3f2 f1f2 f4g5 d2e4 g5g6 f2f7",
-      "rating": 2644,
+      "id": "0wsxz",
+      "fen": "r1b1r1k1/pppp1ppp/8/4Pq2/1B6/7P/PPP3P1/R2QR1K1 b - - 5 19",
+      "moves": "e8e5 d1d5 d7d6 e1e5 f5e5 a1e1 c8e6 e1e5 e6d5 e5d5",
+      "rating": 2648,
       "themes": [
-        "kingsideAttack",
-        "mate",
-        "mateIn5",
+        "advantage",
+        "attraction",
+        "clearance",
+        "intermezzo",
         "middlegame",
         "veryLong"
       ],
-      "url": "https://lichess.org/training/0UR61",
-      "game_url": "https://lichess.org/xOC0egRl#57"
+      "url": "https://lichess.org/training/0wsxz",
+      "game_url": "https://lichess.org/0askyfIW/black#38"
     },
     {
-      "id": "0hRXQ",
-      "fen": "1kr4r/1pp5/2R1p2p/p2q1p2/1Q1P1Pp1/3BP1P1/PP6/1KR5 w - - 0 25",
-      "moves": "b4c4 d5c6 c4c6 b7c6",
-      "rating": 2135,
+      "id": "0rJJw",
+      "fen": "3r3k/1p4p1/p5Bp/3P3Q/5q1b/7P/P3R3/7K b - - 4 33",
+      "moves": "f4g3 g6f5 d8f8 e2e8 h4e7 e8e7 g3f4 f5d3 f4c1 h1g2 c1d2 h5e2",
+      "rating": 2775,
+      "themes": [
+        "crushing",
+        "endgame",
+        "quietMove",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/0rJJw",
+      "game_url": "https://lichess.org/4aFceWjB/black#66"
+    },
+    {
+      "id": "134JR",
+      "fen": "r1bq1r2/1p2N1pk/p2p1p2/4bPB1/4P3/PQ5P/1PP3P1/R4RK1 w - - 1 22",
+      "moves": "e7c8 f6g5 c8b6 e5d4",
+      "rating": 2067,
       "themes": [
         "advantage",
+        "hangingPiece",
         "middlegame",
         "short"
       ],
-      "url": "https://lichess.org/training/0hRXQ",
-      "game_url": "https://lichess.org/FOCPzF3I#49"
-    },
-    {
-      "id": "0m9WW",
-      "fen": "r5k1/pp3ppp/2qb1n2/8/2p3Pr/1PNP3P/PBPQ2P1/R4RK1 w - - 0 18",
-      "moves": "d2f2 d6h2 g1h2 f6g4 h2g1 g4f2",
-      "rating": 2152,
-      "themes": [
-        "attraction",
-        "crushing",
-        "kingsideAttack",
-        "long",
-        "middlegame",
-        "pin",
-        "sacrifice"
-      ],
-      "url": "https://lichess.org/training/0m9WW",
-      "game_url": "https://lichess.org/IOfJP1Ej#35"
-    },
-    {
-      "id": "0HuR9",
-      "fen": "1b4k1/5pp1/1P4rp/2Pp1q2/3Pbn2/1Q3N1P/P4PP1/R4BRK w - - 1 28",
-      "moves": "a1e1 f4h3 g2h3 e4f3 b3f3 f5f3",
-      "rating": 2002,
-      "themes": [
-        "advantage",
-        "deflection",
-        "kingsideAttack",
-        "long",
-        "master",
-        "middlegame"
-      ],
-      "url": "https://lichess.org/training/0HuR9",
-      "game_url": "https://lichess.org/RxdaK0t1#55"
-    },
-    {
-      "id": "0gXxL",
-      "fen": "8/p7/8/P7/K5k1/1P4rp/1R6/8 w - - 0 46",
-      "moves": "b3b4 g3g2 b2b1 h3h2 b1h1 g4h3",
-      "rating": 2481,
-      "themes": [
-        "advancedPawn",
-        "crushing",
-        "defensiveMove",
-        "endgame",
-        "long",
-        "rookEndgame"
-      ],
-      "url": "https://lichess.org/training/0gXxL",
-      "game_url": "https://lichess.org/CBerFAje#91"
-    },
-    {
-      "id": "0fXwl",
-      "fen": "7k/p1p3pp/3b4/8/2P2p2/1P1KRQ1P/P5P1/3q4 w - - 0 33",
-      "moves": "d3c3 d1c1 c3d3 c1e3 f3e3 f4e3",
-      "rating": 2119,
-      "themes": [
-        "advantage",
-        "endgame",
-        "long"
-      ],
-      "url": "https://lichess.org/training/0fXwl",
-      "game_url": "https://lichess.org/ULkIWCeI#65"
-    },
-    {
-      "id": "121Xk",
-      "fen": "k2r4/1Rp2p2/2Pb1p2/q7/P6p/8/5PPP/1Q4K1 b - - 9 35",
-      "moves": "h4h3 b7b5 a5a7 b5a5",
-      "rating": 2063,
-      "themes": [
-        "advantage",
-        "endgame",
-        "pin",
-        "short"
-      ],
-      "url": "https://lichess.org/training/121Xk",
-      "game_url": "https://lichess.org/wsdCd34i/black#70"
+      "url": "https://lichess.org/training/134JR",
+      "game_url": "https://lichess.org/oEzUnE4z#43"
     }
   ]
 };
@@ -75662,7 +75691,7 @@ function interpCurve(curve, daysBefore) {
 // PERFORMANCE DATA (model blind test results)
 // ══════════════════════════════════════════════════════════
 const PERFORMANCE_DATA = {
-  "generated": "2026-04-05",
+  "generated": "2026-04-06",
   "model": "N5v4_Final",
   "n_tournaments": 12,
   "grade": "A",

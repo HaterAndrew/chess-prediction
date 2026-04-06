@@ -389,7 +389,9 @@ curves = build_template_curves(train, daily)
 # ── World Open: keep only Under 13, top 6, lower as separate families ──
 # All other WO sub-events are already in EXCLUDE_FAMILIES.
 # Exclude any remaining WO variants that slipped through naming differences.
-WO_KEEP = {'World Open Under 13', 'World Open top 6 sections', 'World Open lower sections'}
+WO_KEEP = {'World Open Under 13', 'World Open top 6 sections', 'World Open lower sections',
+           'World Open, top 6 sections', 'World Open, lower sections',
+           'World Open Under 13 Championship'}
 wo_extra_exclude = summary[
     (summary['family'].str.startswith('World Open')) &
     (~summary['family'].isin(WO_KEEP))
@@ -801,12 +803,36 @@ for _, row in historical_valid.iterrows():
     }
     tournaments_out.append(t_out)
 
-# ── Apply walk-in multiplier to ALL tournaments ──
+# ── Deduplicate tournaments with variant names (e.g. comma vs no comma) ──
+seen_keys = {}
+deduped = []
+for t_out in tournaments_out:
+    # Normalize: strip commas, lowercase for comparison
+    norm = t_out["family"].replace(",", "").lower().strip()
+    key = (norm, t_out["year"])
+    if key in seen_keys:
+        # Keep the one with more data (higher current_count)
+        existing = seen_keys[key]
+        if t_out["current_count"] > existing["current_count"]:
+            deduped.remove(existing)
+            seen_keys[key] = t_out
+            deduped.append(t_out)
+    else:
+        seen_keys[key] = t_out
+        deduped.append(t_out)
+if len(tournaments_out) != len(deduped):
+    print(f"\nDeduplication: {len(tournaments_out)} -> {len(deduped)} tournaments")
+tournaments_out = deduped
+
+# ── Apply walk-in multiplier — only for completed tournaments (after event start) ──
 from importlib import import_module
 _m04c = import_module("04c_final_model")
 _walkin_mults = _m04c.load_walkin_multipliers()
 _walkin_applied = 0
 for t_out in tournaments_out:
+    # Only apply walk-in estimates after the event has started
+    if t_out["status"] in ("live", "not_tracked"):
+        continue
     family = t_out["family"]
     tp, tl, th, ratio, wsource = _m04c.apply_walkin_multiplier(
         t_out["point_estimate"], t_out["ci_lower"], t_out["ci_upper"],
@@ -818,7 +844,7 @@ for t_out in tournaments_out:
         t_out["total_ci_lower"] = tl
         t_out["total_ci_upper"] = th
         _walkin_applied += 1
-print(f"\nWalk-in multiplier applied to {_walkin_applied}/{len(tournaments_out)} tournaments")
+print(f"\nWalk-in multiplier applied to {_walkin_applied} completed/historical tournaments")
 
 # Sort: live first (by days_remaining desc), then 2026 complete, then historical
 status_order = {'live': 0, 'complete': 1, 'historical': 2, 'unknown': 3}

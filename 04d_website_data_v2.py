@@ -524,24 +524,34 @@ for _, row in t2026.iterrows():
     # Daily data for chart
     tid_daily = daily[daily['tid'] == tid].sort_values('T', ascending=False)
     if len(tid_daily) > 0:
-        # Convert T (days before event) to days from first registration
         max_T = tid_daily['T'].max()
         daily_data = []
         for _, d in tid_daily.iterrows():
             day_from_start = int(max_T - d['T'])
             daily_data.append([day_from_start, int(d['cum_regs'])])
         daily_data.sort(key=lambda x: x[0])
-        # When scrape data overlaps with archive data, the archive has low
-        # counts (only timestamped registrations) while the scrape has the
-        # real total. Trim: once we see a big jump (scrape kicking in),
-        # drop any subsequent points that are lower (stale archive data).
-        if len(daily_data) > 1:
-            cleaned = [daily_data[0]]
-            for i in range(1, len(daily_data)):
-                if daily_data[i][1] >= cleaned[-1][1]:
-                    cleaned.append(daily_data[i])
-                # else: skip — stale archive point below the running high
-            daily_data = cleaned
+        # Deduplicate: keep higher count when both sources have same day
+        by_day = {}
+        for pt in daily_data:
+            d = pt[0]
+            if d not in by_day or pt[1] > by_day[d]:
+                by_day[d] = pt[1]
+        daily_data = [[d, c] for d, c in sorted(by_day.items())]
+        # Clean up mixed archive + scrape data:
+        # 1. Drop early archive points before a big jump (incomplete timestamps)
+        for i in range(len(daily_data) - 1, 0, -1):
+            if daily_data[i][1] > daily_data[i-1][1] * 3:
+                daily_data = daily_data[i:]
+                break
+        # 2. Drop any later points that fall below the running peak
+        #    (stale archive data that maps to days after the scrape window)
+        peak = 0
+        cleaned = []
+        for pt in daily_data:
+            if pt[1] >= peak:
+                peak = pt[1]
+                cleaned.append(pt)
+        daily_data = cleaned
     else:
         daily_data = [[0, current_count]]
 

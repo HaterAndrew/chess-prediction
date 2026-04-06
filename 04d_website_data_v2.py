@@ -525,26 +525,30 @@ for _, row in t2026.iterrows():
     tid_daily = daily[daily['tid'] == tid].sort_values('T', ascending=False)
     if len(tid_daily) > 0:
         max_T = tid_daily['T'].max()
-        daily_data = []
+        # Build daily_data: keep highest count at each T
+        by_T = {}
         for _, d in tid_daily.iterrows():
-            day_from_start = int(max_T - d['T'])
-            daily_data.append([day_from_start, int(d['cum_regs'])])
+            T = int(d['T'])
+            count = int(d['cum_regs'])
+            if T not in by_T or count > by_T[T]:
+                by_T[T] = count
+        daily_data = []
+        for T in sorted(by_T.keys(), reverse=True):
+            day_from_start = int(max_T - T)
+            daily_data.append([day_from_start, by_T[T]])
         daily_data.sort(key=lambda x: x[0])
-        # Deduplicate: keep higher count when both sources have same day
-        by_day = {}
-        for pt in daily_data:
-            d = pt[0]
-            if d not in by_day or pt[1] > by_day[d]:
-                by_day[d] = pt[1]
-        daily_data = [[d, c] for d, c in sorted(by_day.items())]
-        # Clean up mixed archive + scrape data:
-        # 1. Drop early archive points before a big jump (incomplete timestamps)
-        for i in range(len(daily_data) - 1, 0, -1):
-            if daily_data[i][1] > daily_data[i-1][1] * 3:
-                daily_data = daily_data[i:]
+        # Stitch archive + scrape: archive counts are from an earlier
+        # snapshot and undercount. When a >3x jump occurs (scrape start),
+        # scale the preceding archive points proportionally so the curve
+        # is smooth from registration open through today.
+        for i in range(1, len(daily_data)):
+            if daily_data[i][1] > daily_data[i-1][1] * 3 and daily_data[i][1] > 50:
+                # Scale all prior points by the ratio at the jump
+                scale = daily_data[i][1] / max(daily_data[i-1][1], 1)
+                for j in range(i):
+                    daily_data[j][1] = int(daily_data[j][1] * scale)
                 break
-        # 2. Drop any later points that fall below the running peak
-        #    (stale archive data that maps to days after the scrape window)
+        # Enforce monotonically non-decreasing
         peak = 0
         cleaned = []
         for pt in daily_data:

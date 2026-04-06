@@ -75,7 +75,7 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 243,2014 New York State Open,New York State Open,2014.0,68,False,0,,,False,False,False,,
 244,2014 World Open Women s Championship,World Open Womens Championship,2014.0,16,False,0,,,False,False,False,,
 250,2014 World Open Senior Amateur,World Open Senior Amateur,2014.0,45,False,0,,,False,False,False,,
-251,2014 World Open Under 13 Championship,World Open Under 13 Championship,2014.0,173,False,0,,,False,False,False,,
+251,2014 World Open Under 13 Championship,World Open Under 13,2014.0,173,False,0,,,False,False,False,,
 252,2014 World Open,World Open,2014.0,1014,False,0,,,False,False,False,,
 254,2014 Northeast Open,Northeast Open,2014.0,147,False,0,,,False,False,False,,
 258,2014 Pacific Coast Open,Pacific Coast Open,2014.0,194,False,0,,,False,False,False,,
@@ -117,7 +117,7 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 426,2015 New York State Open,New York State Open,2015.0,70,False,0,,,False,False,False,,
 430,2015 Northeast Open,Northeast Open,2015.0,189,False,0,,,False,False,False,,
 454,2016 World Open Womens Championship,World Open Womens Championship,2016.0,27,False,0,,,False,False,False,,
-455,2015 World Open Under 13 Championship,World Open Under 13 Championship,2015.0,244,False,0,,,False,False,False,,
+455,2015 World Open Under 13 Championship,World Open Under 13,2015.0,244,False,0,,,False,False,False,,
 474,2015 Chicago Class,Chicago Class,2015.0,291,False,0,,,False,False,False,,
 488,2015 Pacific Coast Open,Pacific Coast Open,2015.0,203,False,0,,,False,False,False,,
 489,2015 Bradley Open,Bradley Open,2015.0,169,False,0,,,False,False,False,,
@@ -157,7 +157,7 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 645,2016 World Open,World Open,2016.0,1137,False,0,,,False,False,False,,
 646,2016 Philadelphia International,Philadelphia International,2016.0,66,False,0,,,False,False,False,,
 647,2016 World Open Senior,World Open Senior,2016.0,43,False,0,,,False,False,False,,
-648,2016 World Open Under 13 Championship,World Open Under 13 Championship,2016.0,137,False,0,,,False,False,False,,
+648,2016 World Open Under 13 Championship,World Open Under 13,2016.0,137,False,0,,,False,False,False,,
 705,2016 Chicago Class,Chicago Class,2016.0,321,False,0,,,False,False,False,,
 706,2016 Manhattan Open,Manhattan Open,2016.0,438,False,0,,,False,False,False,,
 707,2016 Continental Open,Continental Open,2016.0,255,False,0,,,False,False,False,,
@@ -205,7 +205,7 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 906,2017 World Open Action,World Open Action,2017.0,36,False,0,,,False,False,False,,
 918,2017 Northeast Open,Northeast Open,2017.0,205,False,0,,,False,False,False,,
 919,2017 Continental Class Championships,Continental Class Championships,2017.0,219,False,0,,,False,False,False,,
-920,2017 World Open Under 13 Championship,World Open Under 13 Championship,2017.0,134,False,0,,,False,False,False,,
+920,2017 World Open Under 13 Championship,World Open Under 13,2017.0,134,False,0,,,False,False,False,,
 953,2018 Pittsburgh Open,Pittsburgh Open,2018.0,130,False,0,,,False,False,False,,
 956,2017 Pacific Coast Open,Pacific Coast Open,2017.0,232,False,0,,,False,False,False,,
 959,2017 Chicago Class,Chicago Class,2017.0,382,False,0,,,False,False,False,,
@@ -246,7 +246,7 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 1176,2018 World Open Senior Amateur,World Open Senior Amateur,2018.0,45,False,0,,,False,False,False,,
 1177,2018 World Open Womens Championship,World Open Womens Championship,2018.0,18,False,0,,,False,False,False,,
 1178,2018 World Open Action,World Open Action,2018.0,35,False,0,,,False,False,False,,
-1186,2018 World Open Under 13 Championship,World Open Under 13 Championship,2018.0,156,False,0,,,False,False,False,,
+1186,2018 World Open Under 13 Championship,World Open Under 13,2018.0,156,False,0,,,False,False,False,,
 1187,2018 Bill Little Memorial,Bill Little Memorial,2018.0,58,False,0,,,False,False,False,,
 1209,2018 Continental Class Championships,Continental Class Championships,2018.0,236,False,0,,,False,False,False,,
 1212,2018 Eastern Class Championships,Eastern Class Championships,2018.0,278,False,0,,,False,False,False,,
@@ -306,7 +306,7 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 1511,2019 Bradley Open,Bradley Open,2019.0,171,False,0,,,False,False,False,,
 1512,2019 Cleveland Open,Cleveland Open,2019.0,224,False,0,,,False,False,False,,
 1513,2019 Continental Open,Continental Open,2019.0,274,False,0,,,False,False,False,,
-1516,2019 World Open Under 13 Championship,World Open Under 13 Championship,2019.0,157,False,0,,,False,False,False,,
+1516,2019 World Open Under 13 Championship,World Open Under 13,2019.0,157,False,0,,,False,False,False,,
 1517,2019 World Open Action,World Open Action,2019.0,28,False,0,,,False,False,False,,
 1534,2019 Atlantic Open,Atlantic Open,2019.0,289,False,0,,,False,False,False,,
 1535,2019 Central California Open,Central California Open,2019.0,128,False,0,,,False,False,False,,
@@ -340,14 +340,13 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 1779,2020 Northeast Open,Northeast Open,2020.0,1,False,0,,,True,False,False,,
 1780,2020 Continental Class Championships,Continental Class Championships,2020.0,1,False,0,,,True,False,False,,
 1781,2020 Philadelphia International,Philadelphia International,2020.0,5,False,0,,,True,False,False,,
-1785,2020 World Open Under 13 Championship,World Open Under 13 Championship,2020.0,1,False,0,,,True,False,False,,
 1826,2020 Continental Chess June Rapid on ICC,Continental Chess June Rapid,2020.0,231,False,0,,,True,True,False,,
 1834,2020 Continental Chess June Quick on ICC,Continental Chess June Quick,2020.0,180,False,0,,,True,True,False,,
 1835,2020 CCA June Open on ICC,June Open,2020.0,185,False,0,,,True,True,False,,
 1836,2020 World Open Blitz on ICC,World Open Blitz,2020.0,191,False,0,,,True,True,False,,
 1837,2020 World Open G 45 on ICC,World Open G 45,2020.0,284,False,0,,,True,True,False,,
 1838,2020 World Open Action on ICC,World Open Action,2020.0,159,False,0,,,True,True,False,,
-1839,2020 World Open Under 13 Champ on ICC,World Open Under 13 Champ,2020.0,215,False,0,,,True,True,False,,
+1839,2020 World Open Under 13 Champ on ICC,World Open Under 13,2020.0,216,False,0,,,True,True,False,,
 1840,2020 World Open G 10 on ICC,World Open G 10,2020.0,151,False,0,,,True,True,False,,
 1841,2020 World Open Senior Amateur on ICC,World Open Senior Amateur,2020.0,58,False,0,,,True,True,False,,
 1842,2020 World Open on ICC,World Open,2020.0,1055,False,0,,,True,True,False,,
@@ -432,7 +431,7 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 2008,2021 World Open Warmup,World Open Warmup,2021.0,21,False,0,,,True,False,False,,
 2009,2021 Pacific Coast Open,Pacific Coast Open,2021.0,446,False,0,,,True,False,False,,
 2010,2021 World Open G7 Championship,World Open G7 Championship,2021.0,44,False,0,,,True,False,False,,
-2011,2021 World Open Under 13 Championship,World Open Under 13 Championship,2021.0,129,False,0,,,True,False,False,,
+2011,2021 World Open Under 13 Championship,World Open Under 13,2021.0,129,False,0,,,True,False,False,,
 2014,2021 Chicago Class,Chicago Class,2021.0,435,False,0,,,True,False,False,,
 2017,2021 Bradley Open,Bradley Open,2021.0,285,False,0,,,True,False,False,,
 2018,2021 Continental Open,Continental Open,2021.0,393,True,159,2021-08-02 09:47:34,2021-08-14 08:59:36,True,False,False,,0.0
@@ -493,7 +492,7 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 2305,2022 World Open,World Open,2022.0,1491,True,1423,2022-01-19 17:41:34,2022-07-02 09:40:43,False,False,False,65.0,0.7
 2306,2022 Philadelphia International,Philadelphia International,2022.0,88,True,76,2022-03-01 02:33:55,2022-06-24 02:08:31,False,False,False,66.0,2.0
 2307,2022 Philadelphia Open,Philadelphia Open,2022.0,281,True,270,2022-01-19 17:12:20,2022-06-25 11:32:44,False,False,False,71.0,4.0
-2308,2022 World Open Under 13 Championship,World Open Under 13 Championship,2022.0,129,True,123,2022-02-02 08:30:29,2022-06-22 19:51:51,False,False,False,69.0,2.7
+2308,2022 World Open Under 13 Championship,World Open Under 13,2022.0,129,True,123,2022-02-02 08:30:29,2022-06-22 19:51:51,False,False,False,69.0,2.7
 2309,2022 World Open Senior Amateur,World Open Senior Amateur,2022.0,41,True,41,2022-01-24 00:00:47,2022-06-23 09:26:48,False,False,False,68.0,2.0
 2310,2022 FIDE U2400 at Foxwoods,FIDE U2400 at Foxwoods,2022.0,12,True,10,2022-01-29 18:51:57,2022-04-15 21:37:34,False,False,False,61.0,1.0
 2312,2022 World Open FIDE U2200,World Open FIDE U2200,2022.0,24,True,23,2022-03-25 16:30:20,2022-06-22 20:05:50,False,False,False,67.0,1.0
@@ -573,10 +572,11 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 2667,2023 Cleveland Open,Cleveland Open,2023.0,226,True,221,2023-01-10 03:46:15,2023-06-10 08:31:43,False,False,False,65.0,1.0
 2668,2023 Chicago Open Blitz,Chicago Open Blitz,2023.0,130,True,130,2023-01-18 18:20:44,2023-05-28 21:01:55,False,False,False,,0.0
 2669,2023 Blitz at Foxwoods,Blitz at Foxwoods,2023.0,38,True,38,2023-02-25 08:40:24,2023-04-08 20:43:05,False,False,False,,0.0
-2670,2023 World Open  top 6 sections,World Open,2023.0,1473,True,1462,2023-01-01 16:46:58,2023-07-02 03:20:10,False,False,True,57.0,7.3
+2670,2023 World Open  top 6 sections,World Open top 6 sections,2023.0,1324,True,1316,2023-01-01 16:46:58,2023-07-02 03:20:10,False,False,True,57.0,7.3
+2672,2023 World Open  lower sections,World Open lower sections,2023.0,149,True,146,2023-01-09 14:30:17,2023-06-23 06:08:06,False,False,False,59.0,2.0
 2673,2023 Philadelphia International,Philadelphia International,2023.0,108,True,105,2023-01-11 11:58:30,2023-06-24 10:09:41,False,False,False,73.0,1.3
 2674,2023 Philadelphia Open,Philadelphia Open,2023.0,281,True,279,2023-01-11 17:23:24,2023-06-24 09:42:20,False,False,False,67.0,0.5
-2675,2023 World Open Under 13 Championship,World Open Under 13 Championship,2023.0,110,True,109,2023-01-10 13:02:00,2023-06-26 00:54:47,False,False,False,62.0,2.0
+2675,2023 World Open Under 13 Championship,World Open Under 13,2023.0,110,True,109,2023-01-10 13:02:00,2023-06-26 00:54:47,False,False,False,62.0,2.0
 2676,2023 World Open Amateur,World Open Amateur,2023.0,55,True,54,2023-01-10 12:19:57,2023-06-26 09:03:25,False,False,False,64.0,1.0
 2677,2023 World Open Junior Championship,World Open Junior Championship,2023.0,102,True,101,2023-01-10 13:03:48,2023-06-27 22:54:25,False,False,False,58.0,2.0
 2678,2023 World Open Action,World Open Action,2023.0,39,True,39,2023-01-01 22:41:38,2023-06-28 22:24:57,False,False,False,,0.0
@@ -648,10 +648,11 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 3288,2024 New York State Scholastic Championships WAITLIST,New York State Scholastic Championships WAITLIST,2024.0,174,True,174,2024-02-27 21:57:06,2024-03-05 09:25:47,False,False,False,,0.0
 3306,2024 New York State Open,New York State Open,2024.0,76,True,76,2024-04-04 06:39:34,2024-06-14 09:02:39,False,False,False,,0.0
 3307,2024 Philadelphia International,Philadelphia International,2024.0,143,True,143,2024-03-06 00:44:21,2024-06-27 16:33:43,False,False,False,72.0,2.0
-3309,2024 World Open  top 6 sections,World Open,2024.0,1346,True,1346,2024-03-06 12:32:54,2024-07-05 09:06:20,False,False,False,58.0,4.0
+3309,2024 World Open  top 6 sections,World Open top 6 sections,2024.0,1195,True,1195,2024-03-06 12:32:54,2024-07-05 09:06:20,False,False,False,58.0,4.0
+3310,2024 World Open  lower sections,World Open lower sections,2024.0,151,True,151,2024-03-26 19:16:39,2024-06-28 08:43:31,False,False,False,68.0,3.0
 3311,2024 Philadelphia Open,Philadelphia Open,2024.0,312,True,312,2024-03-16 21:03:16,2024-06-29 09:40:24,False,False,False,57.0,2.0
 3314,2024 CCA April Classic on ICC,April Classic,2024.0,41,True,41,2024-03-15 19:12:24,2024-04-13 11:53:37,False,True,False,,0.0
-3319,2024 World Open Under 13 Championship,World Open Under 13 Championship,2024.0,80,True,80,2024-04-03 21:09:04,2024-06-26 09:26:56,False,False,False,,0.0
+3319,2024 World Open Under 13 Championship,World Open Under 13,2024.0,80,True,80,2024-04-03 21:09:04,2024-06-26 09:26:56,False,False,False,,0.0
 3320,2024 World Open Senior Amateur,World Open Senior Amateur,2024.0,40,True,40,2024-04-08 10:04:44,2024-07-01 07:10:10,False,False,False,73.0,2.0
 3321,2024 World Open Womens Championship,World Open Womens Championship,2024.0,12,True,12,2024-05-20 23:54:37,2024-06-30 22:25:22,False,False,False,,0.0
 3322,2024 World Open Amateur,World Open Amateur,2024.0,47,True,47,2024-04-05 13:51:25,2024-07-01 08:36:05,False,False,False,65.0,1.0
@@ -691,7 +692,8 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 3666,2025 New York State High School Championship,New York State High School Championship,2025.0,219,True,219,2024-11-16 21:13:58,2025-03-14 15:51:07,False,False,True,58.0,5.0
 3684,2025 Southern Class,Southern Class,2025.0,170,True,170,2024-11-27 20:16:35,2025-03-08 08:47:30,False,False,False,70.0,0.7
 3686,2025 Philadelphia International,Philadelphia International,2025.0,126,True,126,2024-12-09 15:48:22,2025-06-26 11:06:41,False,False,False,57.0,2.0
-3687,2025 World Open  top 6 sections,World Open,2025.0,1300,True,1300,2024-11-11 21:28:00,2025-07-04 06:29:17,False,False,False,63.0,4.0
+3687,2025 World Open  top 6 sections,World Open top 6 sections,2025.0,1165,True,1165,2024-11-11 21:28:00,2025-07-04 06:29:17,False,False,False,63.0,4.0
+3688,2025 World Open  lower sections,World Open lower sections,2025.0,135,True,135,2024-12-17 17:50:41,2025-06-27 10:06:28,False,False,False,,0.0
 3720,2025 Niagara Falls Open,Niagara Falls Open,2025.0,123,True,123,2024-12-20 08:31:03,2025-05-02 22:28:25,False,False,False,62.0,2.0
 3731,2025 New York State Senior Championship  With Young Adult Mi,New York State Senior Championship With Young Adult Mi,2025.0,57,True,57,2025-01-13 13:23:38,2025-03-15 08:13:50,False,False,False,,0.0
 3751,2025 Philadelphia Open,Philadelphia Open,2025.0,325,True,325,2024-12-29 11:32:19,2025-06-28 09:54:10,False,False,False,64.0,2.0
@@ -706,7 +708,7 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 3862,2025 Continental Open,Continental Open,2025.0,265,True,265,2025-02-21 23:49:44,2025-08-15 22:27:59,False,False,False,,0.0
 3863,2025 Atlantic Open,Atlantic Open,2025.0,238,True,238,2025-03-23 12:52:33,2025-08-23 09:50:52,False,False,False,74.0,2.0
 3864,2025 New York State Championship,New York State Championship,2025.0,348,True,348,2025-02-27 17:24:41,2025-08-31 08:45:50,False,False,False,,0.0
-3874,2025 World Open Under 13 Championship,World Open Under 13 Championship,2025.0,76,True,76,2025-04-08 13:54:45,2025-06-30 08:24:32,False,False,False,56.0,1.0
+3874,2025 World Open Under 13 Championship,World Open Under 13,2025.0,76,True,76,2025-04-08 13:54:45,2025-06-30 08:24:32,False,False,False,56.0,1.0
 3875,2025 World Open Amateur,World Open Amateur,2025.0,54,True,54,2025-04-09 21:42:16,2025-06-30 07:41:09,False,False,False,58.0,2.0
 3876,2025 World Open Senior Amateur,World Open Senior Amateur,2025.0,45,True,45,2025-03-11 13:27:38,2025-06-29 14:19:21,False,False,False,58.0,1.0
 3877,2025 World Open Womens Championship,World Open Womens Championship,2025.0,15,True,15,2025-05-05 02:07:15,2025-06-30 00:25:11,False,False,False,,0.0
@@ -744,7 +746,8 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 4183,2026 New York State Scholastic Championships Grades K-8,New York State Scholastic Championships Grades K-8,2026.0,1753,True,1753,2025-10-11 13:01:01,2026-03-06 12:56:46,False,False,True,56.0,8.0
 4244,2026 Chicago Open,Chicago Open,2026.0,179,True,179,2025-11-26 10:20:11,2026-03-20 17:04:07,False,False,False,56.0,3.0
 4245,2026 Chicago Open Blitz,Chicago Open Blitz,2026.0,4,True,4,2025-11-26 10:14:59,2026-03-19 07:14:00,False,False,False,,0.0
-4248,2026 World Open  top 6 sections,World Open,2026.0,30,True,30,2025-11-26 11:26:59,2026-03-20 23:31:56,False,False,False,69.0,1.0
+4248,2026 World Open  top 6 sections,World Open top 6 sections,2026.0,28,True,28,2025-11-26 11:26:59,2026-03-20 23:31:56,False,False,False,69.0,1.0
+4249,2026 World Open  lower sections,World Open lower sections,2026.0,2,True,2,2026-02-05 14:30:03,2026-02-26 09:25:19,False,False,False,,0.0
 4284,2026 DC International,DC International,2026.0,5,True,5,2025-12-04 00:39:41,2026-02-19 00:02:48,False,False,False,,0.0
 4289,2026 Southern Class,Southern Class,2026.0,195,True,195,2025-12-15 13:05:36,2026-03-14 08:32:11,False,False,False,67.0,1.0
 4349,2026 New York State Open,New York State Open,2026.0,1,True,1,2026-03-19 11:29:59,2026-03-19 11:29:59,False,False,False,,0.0

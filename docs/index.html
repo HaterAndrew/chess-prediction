@@ -1663,7 +1663,7 @@ footer a { color: var(--muted); }
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
   "generated": "2026-04-06",
-  "generated_time": "2026-04-06T00:16:57.168192-04:00",
+  "generated_time": "2026-04-06T09:47:56.950921-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 17,
@@ -1775,7 +1775,7 @@ const TOURNAMENT_DATA = {
         ],
         [
           55,
-          182
+          183
         ],
         [
           56,
@@ -1823,115 +1823,115 @@ const TOURNAMENT_DATA = {
         ],
         [
           68,
-          29
+          221
         ],
         [
           69,
-          30
+          221
         ],
         [
           72,
-          31
+          221
         ],
         [
           74,
-          32
+          221
         ],
         [
           75,
-          34
+          221
         ],
         [
           79,
-          35
+          221
         ],
         [
           81,
-          37
+          221
         ],
         [
           83,
-          38
+          221
         ],
         [
           87,
-          39
+          221
         ],
         [
           90,
-          41
+          221
         ],
         [
           91,
-          44
+          221
         ],
         [
           92,
-          45
+          221
         ],
         [
           93,
-          47
+          221
         ],
         [
           95,
-          52
+          221
         ],
         [
           96,
-          54
+          221
         ],
         [
           97,
-          56
+          221
         ],
         [
           99,
-          59
+          221
         ],
         [
           100,
-          60
+          221
         ],
         [
           101,
-          62
+          221
         ],
         [
           102,
-          65
+          221
         ],
         [
           103,
-          66
+          221
         ],
         [
           104,
-          68
+          221
         ],
         [
           106,
-          73
+          221
         ],
         [
           107,
-          75
+          221
         ],
         [
           108,
-          77
+          221
         ],
         [
           109,
-          82
+          221
         ],
         [
           110,
-          90
+          221
         ],
         [
           111,
-          107
+          221
         ]
       ],
       "registration_curve": [
@@ -2104,7 +2104,7 @@ const TOURNAMENT_DATA = {
         ],
         [
           66,
-          1
+          9
         ]
       ],
       "registration_curve": [
@@ -2277,7 +2277,7 @@ const TOURNAMENT_DATA = {
         ],
         [
           67,
-          1
+          5
         ]
       ],
       "registration_curve": [
@@ -2492,7 +2492,7 @@ const TOURNAMENT_DATA = {
         "final": 83
       },
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 88,
       "total_ci_lower": 47,
       "total_ci_upper": 165
@@ -2977,7 +2977,7 @@ const TOURNAMENT_DATA = {
         "final": 294
       },
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 295,
       "total_ci_lower": 172,
       "total_ci_upper": 507
@@ -3089,7 +3089,7 @@ const TOURNAMENT_DATA = {
         ],
         [
           99,
-          1
+          3
         ]
       ],
       "registration_curve": [
@@ -3250,7 +3250,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "live",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 255,
       "total_ci_lower": 201,
       "total_ci_upper": 310
@@ -3362,7 +3362,7 @@ const TOURNAMENT_DATA = {
         ],
         [
           105,
-          1
+          3
         ]
       ],
       "registration_curve": [
@@ -3535,7 +3535,7 @@ const TOURNAMENT_DATA = {
         ],
         [
           126,
-          2
+          4
         ]
       ],
       "registration_curve": [
@@ -3696,7 +3696,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "live",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 193,
       "total_ci_lower": 158,
       "total_ci_upper": 223
@@ -7171,11 +7171,11 @@ const TOURNAMENT_DATA = {
       "status": "complete",
       "prediction_source": "final",
       "prior_year_pace": null,
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 67,
-      "total_ci_lower": 67,
-      "total_ci_upper": 67
+      "walkin_multiplier": 1.049,
+      "walkin_source": "family",
+      "total_estimate": 64,
+      "total_ci_lower": 64,
+      "total_ci_upper": 64
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -8069,7 +8069,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "final",
       "prior_year_pace": null,
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 215,
       "total_ci_lower": 215,
       "total_ci_upper": 215
@@ -13449,7 +13449,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 125,
       "total_ci_lower": 125,
       "total_ci_upper": 125
@@ -13537,7 +13537,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 101,
       "total_ci_lower": 101,
       "total_ci_upper": 101
@@ -13629,7 +13629,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 165,
       "total_ci_lower": 165,
       "total_ci_upper": 165
@@ -13725,7 +13725,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 141,
       "total_ci_lower": 141,
       "total_ci_upper": 141
@@ -13825,7 +13825,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 141,
       "total_ci_lower": 141,
       "total_ci_upper": 141
@@ -14101,7 +14101,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 207,
       "total_ci_lower": 207,
       "total_ci_upper": 207
@@ -14385,7 +14385,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 235,
       "total_ci_lower": 235,
       "total_ci_upper": 235
@@ -14637,7 +14637,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 186,
       "total_ci_lower": 186,
       "total_ci_upper": 186
@@ -14909,7 +14909,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 197,
       "total_ci_lower": 197,
       "total_ci_upper": 197
@@ -14993,7 +14993,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 67,
       "total_ci_lower": 67,
       "total_ci_upper": 67
@@ -15081,7 +15081,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 62,
       "total_ci_lower": 62,
       "total_ci_upper": 62
@@ -15173,7 +15173,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 63,
       "total_ci_lower": 63,
       "total_ci_upper": 63
@@ -15269,7 +15269,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 50,
       "total_ci_lower": 50,
       "total_ci_upper": 50
@@ -15369,7 +15369,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 44,
       "total_ci_lower": 44,
       "total_ci_upper": 44
@@ -15637,7 +15637,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 131,
       "total_ci_lower": 131,
       "total_ci_upper": 131
@@ -15881,7 +15881,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 153,
       "total_ci_lower": 153,
       "total_ci_upper": 153
@@ -15965,7 +15965,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 320,
       "total_ci_lower": 320,
       "total_ci_upper": 320
@@ -16053,7 +16053,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 353,
       "total_ci_lower": 353,
       "total_ci_upper": 353
@@ -16145,7 +16145,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 420,
       "total_ci_lower": 420,
       "total_ci_upper": 420
@@ -16241,7 +16241,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 371,
       "total_ci_lower": 371,
       "total_ci_upper": 371
@@ -16341,7 +16341,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 363,
       "total_ci_lower": 363,
       "total_ci_upper": 363
@@ -16609,7 +16609,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 371,
       "total_ci_lower": 371,
       "total_ci_upper": 371
@@ -16889,7 +16889,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 308,
       "total_ci_lower": 308,
       "total_ci_upper": 308
@@ -17197,7 +17197,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 297,
       "total_ci_lower": 297,
       "total_ci_upper": 297
@@ -17465,7 +17465,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 323,
       "total_ci_lower": 323,
       "total_ci_upper": 323
@@ -21677,7 +21677,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 218,
       "total_ci_lower": 218,
       "total_ci_upper": 218
@@ -22121,7 +22121,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 278,
       "total_ci_lower": 278,
       "total_ci_upper": 278
@@ -22209,7 +22209,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 280,
       "total_ci_lower": 280,
       "total_ci_upper": 280
@@ -22301,7 +22301,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 385,
       "total_ci_lower": 385,
       "total_ci_upper": 385
@@ -22397,7 +22397,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 321,
       "total_ci_lower": 321,
       "total_ci_upper": 321
@@ -22497,7 +22497,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 301,
       "total_ci_lower": 301,
       "total_ci_upper": 301
@@ -22777,7 +22777,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 353,
       "total_ci_lower": 353,
       "total_ci_upper": 353
@@ -23077,7 +23077,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 343,
       "total_ci_lower": 343,
       "total_ci_upper": 343
@@ -23317,7 +23317,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 268,
       "total_ci_lower": 268,
       "total_ci_upper": 268
@@ -23609,7 +23609,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 292,
       "total_ci_lower": 292,
       "total_ci_upper": 292
@@ -23777,7 +23777,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 128,
       "total_ci_lower": 128,
       "total_ci_upper": 128
@@ -23865,7 +23865,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 307,
       "total_ci_lower": 307,
       "total_ci_upper": 307
@@ -23957,7 +23957,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 440,
       "total_ci_lower": 440,
       "total_ci_upper": 440
@@ -24053,7 +24053,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 348,
       "total_ci_lower": 348,
       "total_ci_upper": 348
@@ -24153,7 +24153,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 384,
       "total_ci_lower": 384,
       "total_ci_upper": 384
@@ -24509,7 +24509,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 542,
       "total_ci_lower": 542,
       "total_ci_upper": 542
@@ -24845,7 +24845,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 580,
       "total_ci_lower": 580,
       "total_ci_upper": 580
@@ -25185,7 +25185,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 539,
       "total_ci_lower": 539,
       "total_ci_upper": 539
@@ -25561,7 +25561,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 536,
       "total_ci_lower": 536,
       "total_ci_upper": 536
@@ -25825,7 +25825,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 253,
       "total_ci_lower": 253,
       "total_ci_upper": 253
@@ -26101,7 +26101,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 283,
       "total_ci_lower": 283,
       "total_ci_upper": 283
@@ -26341,7 +26341,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 223,
       "total_ci_lower": 223,
       "total_ci_upper": 223
@@ -26601,7 +26601,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 215,
       "total_ci_lower": 215,
       "total_ci_upper": 215
@@ -48345,7 +48345,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 77,
       "total_ci_lower": 77,
       "total_ci_upper": 77
@@ -48433,7 +48433,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 110,
       "total_ci_lower": 110,
       "total_ci_upper": 110
@@ -48525,7 +48525,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 95,
       "total_ci_lower": 95,
       "total_ci_upper": 95
@@ -48737,7 +48737,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 84,
       "total_ci_lower": 84,
       "total_ci_upper": 84
@@ -48953,7 +48953,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 91,
       "total_ci_lower": 91,
       "total_ci_upper": 91
@@ -51896,11 +51896,11 @@ const TOURNAMENT_DATA = {
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 63,
-      "total_ci_lower": 63,
-      "total_ci_upper": 63
+      "walkin_multiplier": 1.049,
+      "walkin_source": "family",
+      "total_estimate": 60,
+      "total_ci_lower": 60,
+      "total_ci_upper": 60
     },
     {
       "family": "Niagara Falls Open",
@@ -65849,7 +65849,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 220,
       "total_ci_lower": 220,
       "total_ci_upper": 220
@@ -66169,7 +66169,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 290,
       "total_ci_lower": 290,
       "total_ci_upper": 290
@@ -66461,7 +66461,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 285,
       "total_ci_lower": 285,
       "total_ci_upper": 285
@@ -66729,7 +66729,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 187,
       "total_ci_lower": 187,
       "total_ci_upper": 187
@@ -67273,7 +67273,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 231,
       "total_ci_lower": 231,
       "total_ci_upper": 231
@@ -67361,7 +67361,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 223,
       "total_ci_lower": 223,
       "total_ci_upper": 223
@@ -67453,7 +67453,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 232,
       "total_ci_lower": 232,
       "total_ci_upper": 232
@@ -67549,7 +67549,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 254,
       "total_ci_lower": 254,
       "total_ci_upper": 254
@@ -67649,7 +67649,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 199,
       "total_ci_lower": 199,
       "total_ci_upper": 199
@@ -67969,7 +67969,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 293,
       "total_ci_lower": 293,
       "total_ci_upper": 293
@@ -68301,7 +68301,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 323,
       "total_ci_lower": 323,
       "total_ci_upper": 323
@@ -68573,7 +68573,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 254,
       "total_ci_lower": 254,
       "total_ci_upper": 254
@@ -68849,7 +68849,7 @@ const TOURNAMENT_DATA = {
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 207,
       "total_ci_lower": 207,
       "total_ci_upper": 207
@@ -73596,151 +73596,147 @@ const PUZZLE_DATA = {
   "date": "2026-04-06",
   "puzzles": [
     {
-      "id": "07Hgf",
-      "fen": "2r3k1/p4pp1/1p5p/1B1N4/3q2Pb/PQ1N1P1P/1P4K1/8 w - - 1 32",
-      "moves": "b5a6 c8c1 d3c1 d4f2",
-      "rating": 2187,
+      "id": "07W2i",
+      "fen": "q4rk1/1b1Q1ppp/1b6/4B3/P7/1P4P1/4PP1P/2R2RK1 w - - 1 24",
+      "moves": "d7b5 b7h1 c1c6 a8c6 b5c6 h1c6",
+      "rating": 2091,
       "themes": [
-        "crushing",
+        "advantage",
+        "long",
         "middlegame",
-        "quietMove",
-        "sacrifice",
-        "short"
+        "quietMove"
       ],
-      "url": "https://lichess.org/training/07Hgf",
-      "game_url": "https://lichess.org/cEepwzsq#63"
+      "url": "https://lichess.org/training/07W2i",
+      "game_url": "https://lichess.org/Q2oiFLyo#47"
     },
     {
-      "id": "0ziep",
-      "fen": "8/2p4k/8/1p2KP2/1P5p/2P5/8/8 w - - 0 45",
-      "moves": "f5f6 h7g8 e5f4 g8f7 f4g4 f7f6",
-      "rating": 2234,
+      "id": "10fPJ",
+      "fen": "5bk1/p4ppp/1qp5/8/1P6/P1Q2PP1/1B2rPKP/3R4 w - - 1 29",
+      "moves": "c3d4 c6c5 d4c4 e2b2",
+      "rating": 2008,
+      "themes": [
+        "advantage",
+        "endgame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/10fPJ",
+      "game_url": "https://lichess.org/z1nIt0If#57"
+    },
+    {
+      "id": "0ZU3A",
+      "fen": "8/1p6/p1p3k1/2Pp2pp/PP1P2P1/5KP1/8/8 b - - 1 45",
+      "moves": "h5h4 g3h4 g5h4 f3g2 a6a5 b4a5",
+      "rating": 2109,
       "themes": [
         "crushing",
         "endgame",
         "long",
         "pawnEndgame"
       ],
-      "url": "https://lichess.org/training/0ziep",
-      "game_url": "https://lichess.org/vnnmuN6Q#89"
+      "url": "https://lichess.org/training/0ZU3A",
+      "game_url": "https://lichess.org/Z1ebjDqL/black#90"
     },
     {
-      "id": "0YkXf",
-      "fen": "2r2rk1/5ppp/p2Pp2q/4P1R1/1p5P/1P3Q2/2p2PP1/2R3K1 b - - 0 27",
-      "moves": "h6h4 f3f6 h4g5 f6g5",
-      "rating": 2077,
-      "themes": [
-        "advantage",
-        "endgame",
-        "pin",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0YkXf",
-      "game_url": "https://lichess.org/82iG6LJ9/black#54"
-    },
-    {
-      "id": "0BiQ3",
-      "fen": "5rk1/6p1/4p2p/q3P3/b1BPQp2/prb2N1P/5PPB/2R3K1 b - - 1 31",
-      "moves": "c3b2 c4e6 g8h8 f3h4 a4e8 c1c8 b3b6 c8e8",
-      "rating": 2989,
+      "id": "0C6mU",
+      "fen": "8/8/4k1pp/4pp2/2K3PP/1P3P2/8/8 b - - 1 37",
+      "moves": "f5g4 f3g4 h6h5 g4g5",
+      "rating": 2199,
       "themes": [
         "crushing",
-        "fork",
-        "middlegame",
-        "quietMove",
-        "veryLong"
+        "defensiveMove",
+        "endgame",
+        "pawnEndgame",
+        "short"
       ],
-      "url": "https://lichess.org/training/0BiQ3",
-      "game_url": "https://lichess.org/KkGq2xHK/black#62"
+      "url": "https://lichess.org/training/0C6mU",
+      "game_url": "https://lichess.org/BDFQyTL7/black#74"
     },
     {
-      "id": "0opSo",
-      "fen": "5r2/p2nk3/1pQN2p1/4q3/7p/4p2P/PPP3P1/1K1R4 b - - 0 30",
-      "moves": "e3e2 d6c8 f8c8 c6d7 e7f6 d1d6 e5d6 d7d6",
-      "rating": 2669,
+      "id": "0pcl5",
+      "fen": "6k1/4qn2/Q1p1p1pP/4Pp2/5r2/7P/P1PR1NK1/8 w - - 0 35",
+      "moves": "f2d3 e7g5 g2h2 f4f3",
+      "rating": 2314,
       "themes": [
+        "crushing",
+        "endgame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0pcl5",
+      "game_url": "https://lichess.org/czIyaE0J#69"
+    },
+    {
+      "id": "0jPES",
+      "fen": "7k/2q1B1p1/5p1p/7P/4p3/3pQ1P1/3R1PK1/r7 w - - 0 51",
+      "moves": "e3e4 c7c1 g2h3 c1d2 e7f6 d2e1 f6g7 h8g7",
+      "rating": 2801,
+      "themes": [
+        "crushing",
+        "endgame",
+        "master",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/0jPES",
+      "game_url": "https://lichess.org/pPRZGFNG#101"
+    },
+    {
+      "id": "0OyQi",
+      "fen": "6k1/1p6/p2B1r2/2pP4/P3P1q1/3P3p/1P1Q2b1/4K1R1 w - - 1 35",
+      "moves": "d6e5 g4h4 e1d1 h4h5 d1c1 h5e5 g1g2 h3g2",
+      "rating": 2285,
+      "themes": [
+        "advancedPawn",
         "crushing",
         "endgame",
         "exposedKing",
         "fork",
-        "veryLong"
-      ],
-      "url": "https://lichess.org/training/0opSo",
-      "game_url": "https://lichess.org/1EneROuZ/black#60"
-    },
-    {
-      "id": "0iWvv",
-      "fen": "8/6kp/5rp1/8/P7/2Q4P/2P1pqP1/4R2K w - - 0 52",
-      "moves": "a4a5 f2e1 c3e1 f6f1",
-      "rating": 2037,
-      "themes": [
-        "clearance",
-        "crushing",
-        "endgame",
-        "sacrifice",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0iWvv",
-      "game_url": "https://lichess.org/c2VQm9vt#103"
-    },
-    {
-      "id": "0OQDD",
-      "fen": "5k2/2R5/4p1K1/6P1/p4P2/P7/2pr4/8 b - - 4 48",
-      "moves": "f8e8 g6f6 e8d8 c7c4 d2f2 f6e6",
-      "rating": 2572,
-      "themes": [
-        "advantage",
-        "endgame",
-        "long",
         "master",
-        "rookEndgame"
-      ],
-      "url": "https://lichess.org/training/0OQDD",
-      "game_url": "https://lichess.org/BNfVKFl1/black#96"
-    },
-    {
-      "id": "0wsxz",
-      "fen": "r1b1r1k1/pppp1ppp/8/4Pq2/1B6/7P/PPP3P1/R2QR1K1 b - - 5 19",
-      "moves": "e8e5 d1d5 d7d6 e1e5 f5e5 a1e1 c8e6 e1e5 e6d5 e5d5",
-      "rating": 2648,
-      "themes": [
-        "advantage",
-        "attraction",
-        "clearance",
-        "intermezzo",
-        "middlegame",
         "veryLong"
       ],
-      "url": "https://lichess.org/training/0wsxz",
-      "game_url": "https://lichess.org/0askyfIW/black#38"
+      "url": "https://lichess.org/training/0OyQi",
+      "game_url": "https://lichess.org/Y0tULpkI#69"
     },
     {
-      "id": "0rJJw",
-      "fen": "3r3k/1p4p1/p5Bp/3P3Q/5q1b/7P/P3R3/7K b - - 4 33",
-      "moves": "f4g3 g6f5 d8f8 e2e8 h4e7 e8e7 g3f4 f5d3 f4c1 h1g2 c1d2 h5e2",
-      "rating": 2775,
-      "themes": [
-        "crushing",
-        "endgame",
-        "quietMove",
-        "veryLong"
-      ],
-      "url": "https://lichess.org/training/0rJJw",
-      "game_url": "https://lichess.org/4aFceWjB/black#66"
-    },
-    {
-      "id": "134JR",
-      "fen": "r1bq1r2/1p2N1pk/p2p1p2/4bPB1/4P3/PQ5P/1PP3P1/R4RK1 w - - 1 22",
-      "moves": "e7c8 f6g5 c8b6 e5d4",
-      "rating": 2067,
+      "id": "0xeKH",
+      "fen": "8/p3p2k/1p1r2pb/2B2p1p/4pP1P/P1Pq2RP/1P3QRK/3r4 b - - 0 29",
+      "moves": "h6f4 f2f4 d3b1 c5g1 d1g1 g2g1",
+      "rating": 2201,
       "themes": [
         "advantage",
         "hangingPiece",
+        "long",
+        "master",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/0xeKH",
+      "game_url": "https://lichess.org/YsNqSFGu/black#58"
+    },
+    {
+      "id": "0sJTv",
+      "fen": "4r1r1/pp3p1k/1bpp3p/5p1N/2Q5/6P1/Pq3P1P/1R3R1K b - - 1 28",
+      "moves": "b2e5 b1e1 e5e1 c4f7",
+      "rating": 2825,
+      "themes": [
+        "advantage",
         "middlegame",
+        "sacrifice",
         "short"
       ],
-      "url": "https://lichess.org/training/134JR",
-      "game_url": "https://lichess.org/oEzUnE4z#43"
+      "url": "https://lichess.org/training/0sJTv",
+      "game_url": "https://lichess.org/g1xBjvKy/black#56"
+    },
+    {
+      "id": "14DJH",
+      "fen": "8/5Rp1/p5Q1/3kPr2/5P2/4q1K1/PP6/7R w - - 0 41",
+      "moves": "g3g4 e3f4 g4h3 f4f3 h3h2 f5h5 g6h5 f3h5",
+      "rating": 2006,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/14DJH",
+      "game_url": "https://lichess.org/YcDny0vf#81"
     }
   ]
 };

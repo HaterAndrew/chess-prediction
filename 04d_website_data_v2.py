@@ -531,11 +531,17 @@ for _, row in t2026.iterrows():
             day_from_start = int(max_T - d['T'])
             daily_data.append([day_from_start, int(d['cum_regs'])])
         daily_data.sort(key=lambda x: x[0])
-        # Enforce monotonically non-decreasing (scrape + archive data can overlap)
-        running_max = 0
-        for pt in daily_data:
-            running_max = max(running_max, pt[1])
-            pt[1] = running_max
+        # When scrape data overlaps with archive data, the archive has low
+        # counts (only timestamped registrations) while the scrape has the
+        # real total. Trim: once we see a big jump (scrape kicking in),
+        # drop any subsequent points that are lower (stale archive data).
+        if len(daily_data) > 1:
+            cleaned = [daily_data[0]]
+            for i in range(1, len(daily_data)):
+                if daily_data[i][1] >= cleaned[-1][1]:
+                    cleaned.append(daily_data[i])
+                # else: skip — stale archive point below the running high
+            daily_data = cleaned
     else:
         daily_data = [[0, current_count]]
 

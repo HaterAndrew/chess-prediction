@@ -531,6 +531,11 @@ for _, row in t2026.iterrows():
             day_from_start = int(max_T - d['T'])
             daily_data.append([day_from_start, int(d['cum_regs'])])
         daily_data.sort(key=lambda x: x[0])
+        # Enforce monotonically non-decreasing (scrape + archive data can overlap)
+        running_max = 0
+        for pt in daily_data:
+            running_max = max(running_max, pt[1])
+            pt[1] = running_max
     else:
         daily_data = [[0, current_count]]
 

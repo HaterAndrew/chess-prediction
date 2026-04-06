@@ -1,6 +1,6 @@
 {
   "generated": "2026-04-06",
-  "generated_time": "2026-04-06T09:50:56.163259-04:00",
+  "generated_time": "2026-04-06T10:02:34.990049-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 17,
@@ -50,54 +50,6 @@
         }
       ],
       "daily_data": [
-        [
-          0,
-          1
-        ],
-        [
-          19,
-          2
-        ],
-        [
-          20,
-          3
-        ],
-        [
-          21,
-          4
-        ],
-        [
-          23,
-          6
-        ],
-        [
-          25,
-          7
-        ],
-        [
-          36,
-          8
-        ],
-        [
-          37,
-          9
-        ],
-        [
-          38,
-          11
-        ],
-        [
-          45,
-          13
-        ],
-        [
-          46,
-          15
-        ],
-        [
-          48,
-          16
-        ],
         [
           52,
           180
@@ -5423,10 +5375,6 @@
         }
       ],
       "daily_data": [
-        [
-          0,
-          1
-        ],
         [
           3,
           6

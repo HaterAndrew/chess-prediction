@@ -1,9 +1,9 @@
 {
   "generated": "2026-04-13",
-  "generated_time": "2026-04-13T12:07:04.930234-04:00",
+  "generated_time": "2026-04-13T12:24:48.207150-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
-  "n_completed_in_training": 19,
+  "n_completed_in_training": 14,
   "tournaments": [
     {
       "family": "Chicago Open",
@@ -18,9 +18,9 @@
       "gross_count": 268,
       "withdrawal_count": 5,
       "days_remaining": 38,
-      "point_estimate": 907,
-      "ci_lower": 877,
-      "ci_upper": 938,
+      "point_estimate": 903,
+      "ci_lower": 872,
+      "ci_upper": 934,
       "ci_level": 0.8,
       "historical": [
         {
@@ -983,6 +983,82 @@
       "prior_year_pace": null
     },
     {
+      "family": "World Open G/50 Championship",
+      "year": 2026,
+      "event_start": "2026-06-25",
+      "event_end": "2026-06-25",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 73,
+      "point_estimate": 100,
+      "ci_lower": 70,
+      "ci_upper": 130,
+      "ci_level": 0.8,
+      "historical": [],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.012
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0261
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0472
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.1023
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1822
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.25
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3353
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.5
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7018
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9095
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live"
+    },
+    {
       "family": "DC Open",
       "year": 2026,
       "event_start": "2026-06-26",
@@ -1167,11 +1243,27 @@
       "gross_count": 59,
       "withdrawal_count": 3,
       "days_remaining": 74,
-      "point_estimate": 100,
-      "ci_lower": 70,
-      "ci_upper": 130,
+      "point_estimate": 145,
+      "ci_lower": 135,
+      "ci_upper": 151,
       "ci_level": 0.8,
-      "historical": [],
+      "historical": [
+        {
+          "year": 2023,
+          "count": 149,
+          "family": "World Open lower sections"
+        },
+        {
+          "year": 2024,
+          "count": 151,
+          "family": "World Open lower sections"
+        },
+        {
+          "year": 2025,
+          "count": 135,
+          "family": "World Open lower sections"
+        }
+      ],
       "daily_data": [
         [
           0,
@@ -1333,6 +1425,82 @@
       "status": "live"
     },
     {
+      "family": "World Open G/7 Championship",
+      "year": 2026,
+      "event_start": "2026-07-01",
+      "event_end": "2026-07-01",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 79,
+      "point_estimate": 100,
+      "ci_lower": 70,
+      "ci_upper": 130,
+      "ci_level": 0.8,
+      "historical": [],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.012
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0261
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0472
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.1023
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1822
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.25
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3353
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.5
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7018
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9095
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live"
+    },
+    {
       "family": "World Open, top 6 sections",
       "year": 2026,
       "event_start": "2026-07-01",
@@ -1345,6 +1513,108 @@
       "gross_count": 56,
       "withdrawal_count": 0,
       "days_remaining": 79,
+      "point_estimate": 1288,
+      "ci_lower": 1177,
+      "ci_upper": 1424,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 1269,
+          "family": "World Open"
+        },
+        {
+          "year": 2022,
+          "count": 1491,
+          "family": "World Open"
+        },
+        {
+          "year": 2023,
+          "count": 1324,
+          "family": "World Open top 6 sections"
+        },
+        {
+          "year": 2024,
+          "count": 1195,
+          "family": "World Open top 6 sections"
+        },
+        {
+          "year": 2025,
+          "count": 1165,
+          "family": "World Open top 6 sections"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          56
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.012
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0261
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0472
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.1023
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1822
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.25
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3353
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.5
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7018
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9095
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live"
+    },
+    {
+      "family": "World Open G/10 Championship",
+      "year": 2026,
+      "event_start": "2026-07-04",
+      "event_end": "2026-07-04",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 82,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -1353,7 +1623,7 @@
       "daily_data": [
         [
           0,
-          56
+          0
         ]
       ],
       "registration_curve": [
@@ -1422,8 +1692,8 @@
       "withdrawal_count": 0,
       "days_remaining": 95,
       "point_estimate": 269,
-      "ci_lower": 156,
-      "ci_upper": 462,
+      "ci_lower": 157,
+      "ci_upper": 463,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1615,7 +1885,7 @@
       "days_remaining": 95,
       "point_estimate": 173,
       "ci_lower": 93,
-      "ci_upper": 321,
+      "ci_upper": 322,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1907,9 +2177,9 @@
       "gross_count": 3,
       "withdrawal_count": 0,
       "days_remaining": 102,
-      "point_estimate": 260,
+      "point_estimate": 261,
       "ci_lower": 159,
-      "ci_upper": 427,
+      "ci_upper": 428,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2099,9 +2369,9 @@
       "gross_count": 4,
       "withdrawal_count": 0,
       "days_remaining": 109,
-      "point_estimate": 381,
-      "ci_lower": 232,
-      "ci_upper": 624,
+      "point_estimate": 382,
+      "ci_lower": 233,
+      "ci_upper": 626,
       "ci_level": 0.8,
       "historical": [
         {
@@ -4093,6 +4363,11 @@
       "ci_upper": 492,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2019,
+          "count": 385,
+          "family": "Southwest Class"
+        },
         {
           "year": 2022,
           "count": 397,
@@ -6607,6 +6882,11 @@
       "ci_upper": 195,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2019,
+          "count": 196,
+          "family": "Southern Class Championships"
+        },
         {
           "year": 2022,
           "count": 200,
@@ -24370,6 +24650,26 @@
       "ci_level": 0.8,
       "historical": [
         {
+          "year": 2015,
+          "count": 214
+        },
+        {
+          "year": 2016,
+          "count": 252
+        },
+        {
+          "year": 2017,
+          "count": 271
+        },
+        {
+          "year": 2018,
+          "count": 278
+        },
+        {
+          "year": 2019,
+          "count": 220
+        },
+        {
           "year": 2022,
           "count": 230
         }
@@ -24633,6 +24933,26 @@
       "ci_upper": 257,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 214
+        },
+        {
+          "year": 2016,
+          "count": 252
+        },
+        {
+          "year": 2017,
+          "count": 271
+        },
+        {
+          "year": 2018,
+          "count": 278
+        },
+        {
+          "year": 2019,
+          "count": 220
+        },
         {
           "year": 2022,
           "count": 230
@@ -24910,6 +25230,26 @@
       "ci_level": 0.8,
       "historical": [
         {
+          "year": 2015,
+          "count": 214
+        },
+        {
+          "year": 2016,
+          "count": 252
+        },
+        {
+          "year": 2017,
+          "count": 271
+        },
+        {
+          "year": 2018,
+          "count": 278
+        },
+        {
+          "year": 2019,
+          "count": 220
+        },
+        {
           "year": 2022,
           "count": 230
         },
@@ -25149,6 +25489,26 @@
       "ci_upper": 195,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 214
+        },
+        {
+          "year": 2016,
+          "count": 252
+        },
+        {
+          "year": 2017,
+          "count": 271
+        },
+        {
+          "year": 2018,
+          "count": 278
+        },
+        {
+          "year": 2019,
+          "count": 220
+        },
         {
           "year": 2022,
           "count": 230
@@ -64386,6 +64746,26 @@
       "ci_level": 0.8,
       "historical": [
         {
+          "year": 2015,
+          "count": 196
+        },
+        {
+          "year": 2016,
+          "count": 168
+        },
+        {
+          "year": 2017,
+          "count": 204
+        },
+        {
+          "year": 2018,
+          "count": 174
+        },
+        {
+          "year": 2019,
+          "count": 196
+        },
+        {
           "year": 2022,
           "count": 200
         }
@@ -64657,6 +65037,26 @@
       "ci_upper": 264,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 196
+        },
+        {
+          "year": 2016,
+          "count": 168
+        },
+        {
+          "year": 2017,
+          "count": 204
+        },
+        {
+          "year": 2018,
+          "count": 174
+        },
+        {
+          "year": 2019,
+          "count": 196
+        },
         {
           "year": 2022,
           "count": 200
@@ -64978,6 +65378,26 @@
       "ci_level": 0.8,
       "historical": [
         {
+          "year": 2015,
+          "count": 196
+        },
+        {
+          "year": 2016,
+          "count": 168
+        },
+        {
+          "year": 2017,
+          "count": 204
+        },
+        {
+          "year": 2018,
+          "count": 174
+        },
+        {
+          "year": 2019,
+          "count": 196
+        },
+        {
           "year": 2022,
           "count": 200
         },
@@ -65270,6 +65690,26 @@
       "ci_level": 0.8,
       "historical": [
         {
+          "year": 2015,
+          "count": 196
+        },
+        {
+          "year": 2016,
+          "count": 168
+        },
+        {
+          "year": 2017,
+          "count": 204
+        },
+        {
+          "year": 2018,
+          "count": 174
+        },
+        {
+          "year": 2019,
+          "count": 196
+        },
+        {
           "year": 2022,
           "count": 200
         },
@@ -65522,7 +65962,7 @@
       "total_ci_upper": 187
     },
     {
-      "family": "Southern Class Championships",
+      "family": "Southern Class",
       "year": 2015,
       "event_start": null,
       "event_end": null,
@@ -65600,13 +66040,13 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 216,
       "total_ci_lower": 216,
       "total_ci_upper": 216
     },
     {
-      "family": "Southern Class Championships",
+      "family": "Southern Class",
       "year": 2016,
       "event_start": null,
       "event_end": null,
@@ -65688,13 +66128,13 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 185,
       "total_ci_lower": 185,
       "total_ci_upper": 185
     },
     {
-      "family": "Southern Class Championships",
+      "family": "Southern Class",
       "year": 2017,
       "event_start": null,
       "event_end": null,
@@ -65780,13 +66220,13 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 224,
       "total_ci_lower": 224,
       "total_ci_upper": 224
     },
     {
-      "family": "Southern Class Championships",
+      "family": "Southern Class",
       "year": 2018,
       "event_start": null,
       "event_end": null,
@@ -65876,13 +66316,13 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 191,
       "total_ci_lower": 191,
       "total_ci_upper": 191
     },
     {
-      "family": "Southern Class Championships",
+      "family": "Southern Class",
       "year": 2019,
       "event_start": null,
       "event_end": null,
@@ -65976,7 +66416,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 216,
       "total_ci_lower": 216,
       "total_ci_upper": 216
@@ -67642,7 +68082,7 @@
       "total_ci_upper": 207
     },
     {
-      "family": "Southwest Class",
+      "family": "Southwest Class Championships",
       "year": 2015,
       "event_start": null,
       "event_end": null,
@@ -67726,7 +68166,7 @@
       "total_ci_upper": 285
     },
     {
-      "family": "Southwest Class",
+      "family": "Southwest Class Championships",
       "year": 2016,
       "event_start": null,
       "event_end": null,
@@ -67814,7 +68254,7 @@
       "total_ci_upper": 328
     },
     {
-      "family": "Southwest Class",
+      "family": "Southwest Class Championships",
       "year": 2017,
       "event_start": null,
       "event_end": null,
@@ -67906,7 +68346,7 @@
       "total_ci_upper": 361
     },
     {
-      "family": "Southwest Class",
+      "family": "Southwest Class Championships",
       "year": 2018,
       "event_start": null,
       "event_end": null,
@@ -68002,7 +68442,7 @@
       "total_ci_upper": 391
     },
     {
-      "family": "Southwest Class",
+      "family": "Southwest Class Championships",
       "year": 2019,
       "event_start": null,
       "event_end": null,
@@ -68117,6 +68557,26 @@
       "ci_upper": 397,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 259
+        },
+        {
+          "year": 2016,
+          "count": 298
+        },
+        {
+          "year": 2017,
+          "count": 328
+        },
+        {
+          "year": 2018,
+          "count": 355
+        },
+        {
+          "year": 2019,
+          "count": 385
+        },
         {
           "year": 2022,
           "count": 397
@@ -68425,6 +68885,26 @@
       "ci_upper": 426,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 259
+        },
+        {
+          "year": 2016,
+          "count": 298
+        },
+        {
+          "year": 2017,
+          "count": 328
+        },
+        {
+          "year": 2018,
+          "count": 355
+        },
+        {
+          "year": 2019,
+          "count": 385
+        },
         {
           "year": 2022,
           "count": 397
@@ -68762,6 +69242,26 @@
       "ci_level": 0.8,
       "historical": [
         {
+          "year": 2015,
+          "count": 259
+        },
+        {
+          "year": 2016,
+          "count": 298
+        },
+        {
+          "year": 2017,
+          "count": 328
+        },
+        {
+          "year": 2018,
+          "count": 355
+        },
+        {
+          "year": 2019,
+          "count": 385
+        },
+        {
           "year": 2022,
           "count": 397
         },
@@ -69089,6 +69589,26 @@
       "ci_upper": 488,
       "ci_level": 0.8,
       "historical": [
+        {
+          "year": 2015,
+          "count": 259
+        },
+        {
+          "year": 2016,
+          "count": 298
+        },
+        {
+          "year": 2017,
+          "count": 328
+        },
+        {
+          "year": 2018,
+          "count": 355
+        },
+        {
+          "year": 2019,
+          "count": 385
+        },
         {
           "year": 2022,
           "count": 397
@@ -73818,7 +74338,7 @@
       "total_ci_upper": 84
     },
     {
-      "family": "World Open lower sections",
+      "family": "World Open, lower sections",
       "year": 2023,
       "event_start": "2023-06-26",
       "event_end": null,
@@ -74074,7 +74594,7 @@
       "total_ci_upper": 164
     },
     {
-      "family": "World Open lower sections",
+      "family": "World Open, lower sections",
       "year": 2024,
       "event_start": "2024-06-26",
       "event_end": null,
@@ -74354,7 +74874,7 @@
       "total_ci_upper": 166
     },
     {
-      "family": "World Open lower sections",
+      "family": "World Open, lower sections",
       "year": 2025,
       "event_start": "2025-06-26",
       "event_end": null,
@@ -74634,7 +75154,7 @@
       "total_ci_upper": 148
     },
     {
-      "family": "World Open top 6 sections",
+      "family": "World Open, top 6 sections",
       "year": 2023,
       "event_start": "2023-07-04",
       "event_end": null,
@@ -75218,7 +75738,7 @@
       "total_ci_upper": 1456
     },
     {
-      "family": "World Open top 6 sections",
+      "family": "World Open, top 6 sections",
       "year": 2024,
       "event_start": "2024-07-04",
       "event_end": null,
@@ -75718,7 +76238,7 @@
       "total_ci_upper": 1314
     },
     {
-      "family": "World Open top 6 sections",
+      "family": "World Open, top 6 sections",
       "year": 2025,
       "event_start": "2025-07-04",
       "event_end": null,

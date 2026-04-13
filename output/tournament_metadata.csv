@@ -1,40 +1,40 @@
 family,year,start_date,end_date,early_bird_deadline,early_bird_fee,regular_fee,onsite_fee,venue_city,venue_state
-Chicago Open,2026,2026-05-21,2026-05-25,2026-03-19,207,227,250,Wheeling,IL
-Chicago Open,2025,2025-05-22,2025-05-26,2025-03-20,197,217,240,Wheeling,IL
-Chicago Open,2024,2024-05-23,2024-05-27,2024-03-21,189,209,230,Wheeling,IL
-Chicago Open,2023,2023-05-25,2023-05-29,2023-03-23,179,199,220,Wheeling,IL
-Chicago Open,2022,2022-05-26,2022-05-30,2022-03-24,169,189,210,Wheeling,IL
-World Open,2026,2026-07-01,2026-07-05,2026-05-15,318,328,350,Washington,DC
-World Open,2025,2025-07-02,2025-07-06,2025-05-16,308,318,340,Washington,DC
-World Open,2024,2024-07-03,2024-07-07,2024-05-17,298,308,330,Philadelphia,PA
-World Open,2023,2023-06-28,2023-07-02,2023-05-12,289,299,320,Philadelphia,PA
-World Open,2022,2022-06-29,2022-07-03,2022-05-13,279,289,310,Philadelphia,PA
-National Chess Congress,2026,2026-11-28,2026-11-30,2026-11-25,138,160,160,Philadelphia,PA
-National Chess Congress,2025,2025-11-28,2025-11-30,2025-11-25,128,150,150,Philadelphia,PA
-National Chess Congress,2024,2024-11-29,2024-12-01,2024-11-26,128,150,150,Philadelphia,PA
-National Chess Congress,2023,2023-11-24,2023-11-26,2023-11-21,118,140,140,Philadelphia,PA
-North American Open,2025,2025-12-26,2025-12-30,2025-12-23,198,218,240,Las Vegas,NV
-North American Open,2024,2024-12-26,2024-12-30,2024-12-23,188,208,230,Las Vegas,NV
-North American Open,2023,2023-12-26,2023-12-30,2023-12-23,179,199,220,Las Vegas,NV
+Chicago Open,2026,2026-05-21,2026-05-25,2026-03-19,207.0,227.0,250.0,Wheeling,IL
+Chicago Open,2025,2025-05-22,2025-05-26,2025-03-20,197.0,217.0,240.0,Wheeling,IL
+Chicago Open,2024,2024-05-23,2024-05-27,2024-03-21,189.0,209.0,230.0,Wheeling,IL
+Chicago Open,2023,2023-05-25,2023-05-29,2023-03-23,179.0,199.0,220.0,Wheeling,IL
+Chicago Open,2022,2022-05-26,2022-05-30,2022-03-24,169.0,189.0,210.0,Wheeling,IL
+World Open,2026,2026-07-01,2026-07-05,2026-05-15,318.0,328.0,350.0,Washington,DC
+World Open,2025,2025-07-02,2025-07-06,2025-05-16,308.0,318.0,340.0,Washington,DC
+World Open,2024,2024-07-03,2024-07-07,2024-05-17,298.0,308.0,330.0,Philadelphia,PA
+World Open,2023,2023-06-28,2023-07-02,2023-05-12,289.0,299.0,320.0,Philadelphia,PA
+World Open,2022,2022-06-29,2022-07-03,2022-05-13,279.0,289.0,310.0,Philadelphia,PA
+National Chess Congress,2026,2026-11-28,2026-11-30,2026-11-25,138.0,160.0,160.0,Philadelphia,PA
+National Chess Congress,2025,2025-11-28,2025-11-30,2025-11-25,128.0,150.0,150.0,Philadelphia,PA
+National Chess Congress,2024,2024-11-29,2024-12-01,2024-11-26,128.0,150.0,150.0,Philadelphia,PA
+National Chess Congress,2023,2023-11-24,2023-11-26,2023-11-21,118.0,140.0,140.0,Philadelphia,PA
+North American Open,2025,2025-12-26,2025-12-30,2025-12-23,198.0,218.0,240.0,Las Vegas,NV
+North American Open,2024,2024-12-26,2024-12-30,2024-12-23,188.0,208.0,230.0,Las Vegas,NV
+North American Open,2023,2023-12-26,2023-12-30,2023-12-23,179.0,199.0,220.0,Las Vegas,NV
 Atlantic Open,2026,2026-08-21,2026-08-23,,,,,Atlantic City,NJ
-Atlantic Open,2025,2025-03-26,2025-03-30,2025-03-23,208,228,240,Atlantic City,NJ
-Atlantic Open,2024,2024-03-27,2024-03-31,2024-03-24,198,218,230,Atlantic City,NJ
-Liberty Bell Open,2026,2026-01-16,2026-01-19,2026-01-13,138,158,170,Philadelphia,PA
-Liberty Bell Open,2025,2025-01-17,2025-01-20,2025-01-14,128,148,160,Philadelphia,PA
-Liberty Bell Open,2024,2024-01-12,2024-01-15,2024-01-09,128,148,160,Philadelphia,PA
-Mid-America Open,2026,2026-03-20,2026-03-22,2026-03-17,123,140,140,St. Louis,MO
-Mid-America Open,2025,2025-03-21,2025-03-23,2025-03-18,118,135,135,St. Louis,MO
-Mid-America Open,2024,2024-03-22,2024-03-24,2024-03-19,113,130,130,St. Louis,MO
-Cleveland Open,2026,2026-06-05,2026-06-07,2026-06-02,93,110,110,Independence,OH
-Cleveland Open,2025,2025-06-06,2025-06-08,2025-06-03,88,105,105,Independence,OH
-Pittsburgh Open,2026,2026-07-17,2026-07-19,2026-04-21,93,110,110,Pittsburgh,PA
-Pittsburgh Open,2025,2025-04-25,2025-04-27,2025-04-22,88,105,105,Pittsburgh,PA
-Chicago Class,2026,2026-07-17,2026-07-19,2026-11-10,118,138,150,Wheeling,IL
-Chicago Class,2025,2025-11-14,2025-11-16,2025-11-11,108,128,140,Wheeling,IL
-Pacific Coast Open,2026,2026-07-31,2026-08-02,2026-08-25,123,143,155,Los Angeles,CA
-Pacific Coast Open,2025,2025-08-29,2025-08-31,2025-08-26,118,138,150,Los Angeles,CA
-Golden State Open,2026,2026-02-13,2026-02-16,2026-02-10,118,138,150,Los Angeles,CA
-Golden State Open,2025,2025-02-14,2025-02-17,2025-02-11,108,128,140,Los Angeles,CA
+Atlantic Open,2025,2025-03-26,2025-03-30,2025-03-23,208.0,228.0,240.0,Atlantic City,NJ
+Atlantic Open,2024,2024-03-27,2024-03-31,2024-03-24,198.0,218.0,230.0,Atlantic City,NJ
+Liberty Bell Open,2026,2026-01-16,2026-01-19,2026-01-13,138.0,158.0,170.0,Philadelphia,PA
+Liberty Bell Open,2025,2025-01-17,2025-01-20,2025-01-14,128.0,148.0,160.0,Philadelphia,PA
+Liberty Bell Open,2024,2024-01-12,2024-01-15,2024-01-09,128.0,148.0,160.0,Philadelphia,PA
+Mid-America Open,2026,2026-03-20,2026-03-22,2026-03-17,123.0,140.0,140.0,St. Louis,MO
+Mid-America Open,2025,2025-03-21,2025-03-23,2025-03-18,118.0,135.0,135.0,St. Louis,MO
+Mid-America Open,2024,2024-03-22,2024-03-24,2024-03-19,113.0,130.0,130.0,St. Louis,MO
+Cleveland Open,2026,2026-06-05,2026-06-07,2026-06-02,93.0,110.0,110.0,Independence,OH
+Cleveland Open,2025,2025-06-06,2025-06-08,2025-06-03,88.0,105.0,105.0,Independence,OH
+Pittsburgh Open,2026,2026-07-17,2026-07-19,2026-04-21,93.0,110.0,110.0,Pittsburgh,PA
+Pittsburgh Open,2025,2025-04-25,2025-04-27,2025-04-22,88.0,105.0,105.0,Pittsburgh,PA
+Chicago Class,2026,2026-07-17,2026-07-19,2026-11-10,118.0,138.0,150.0,Wheeling,IL
+Chicago Class,2025,2025-11-14,2025-11-16,2025-11-11,108.0,128.0,140.0,Wheeling,IL
+Pacific Coast Open,2026,2026-07-31,2026-08-02,2026-08-25,123.0,143.0,155.0,Los Angeles,CA
+Pacific Coast Open,2025,2025-08-29,2025-08-31,2025-08-26,118.0,138.0,150.0,Los Angeles,CA
+Golden State Open,2026,2026-02-13,2026-02-16,2026-02-10,118.0,138.0,150.0,Los Angeles,CA
+Golden State Open,2025,2025-02-14,2025-02-17,2025-02-11,108.0,128.0,140.0,Los Angeles,CA
 Atlantic City Open,2026,2026-04-01,2026-04-05,,,,,Atlantic City,NJ
 Hartford Open,2026,2026-06-05,2026-06-07,,,,,,CT
 New York State Open,2026,2026-06-19,2026-06-21,,,,,,NY
@@ -54,3 +54,8 @@ World Open Under 13 Championship,2026,2026-06-29,2026-06-30,,,,,,District Of Col
 Central California Open,2026,2026-08-14,2026-08-16,,,,,,California
 New York State Championship,2026,2026-09-04,2026-09-07,,,,,,New York
 Continental Open,2026,2026-08-13,2026-08-16,,,,,,Massachusetts
+World Open lower sections,2026,2026-06-26,2026-06-28,,,,,,District Of Columbia
+World Open top 6 sections,2026,2026-07-01,2026-07-05,,,,,,District Of Columbia
+World Open G7 Championship,2026,2026-07-01,2026-07-01,,,,,,District Of Columbia
+World Open G 10 Championship,2026,2026-07-04,2026-07-04,,,,,,District Of Columbia
+World Open G 50 Championship,2026,2026-06-25,2026-06-25,,,,,,District Of Columbia

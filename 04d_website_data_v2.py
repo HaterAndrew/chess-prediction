@@ -106,10 +106,12 @@ enrichment_lookup = m04c.build_enrichment_lookup(hist_enrich)
 # Filter exclusions: online, COVID, sub-events we don't want
 # Use regex to catch name variants (G/50 vs G 50, Women's vs Womens, etc.)
 _WO_EXCLUDE_PATTERN = re.compile(
-    r'World Open\s+(G[\s/]\d+|Action|Womens?|Women.s|Senior|Junior|Amateur|Blitz)',
+    r'World Open\s+(G[\s/]?\d+|Action|Womens?|Women.s|Senior|Junior|Amateur|Blitz|Warmup|FIDE)',
     re.IGNORECASE
 )
-EXCLUDE_FAMILIES = [fam for fam in summary['family'].unique() if _WO_EXCLUDE_PATTERN.search(fam)]
+# Scan both summary AND metadata families so exclusions apply everywhere
+_all_families = set(summary['family'].unique()) | set(meta['family'].unique())
+EXCLUDE_FAMILIES = [fam for fam in _all_families if _WO_EXCLUDE_PATTERN.search(fam)]
 EXCLUDE_FAMILIES.extend([
     # The old combined "World Open" family (pre-2023) — superseded by
     # top-6/lower split; exclude to avoid double-counting

@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-06",
-  "generated_time": "2026-04-06T15:43:15.870951-04:00",
+  "generated": "2026-04-13",
+  "generated_time": "2026-04-13T12:07:04.930234-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 19,
@@ -14,13 +14,13 @@
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 221,
-      "gross_count": 225,
-      "withdrawal_count": 4,
-      "days_remaining": 45,
-      "point_estimate": 901,
-      "ci_lower": 863,
-      "ci_upper": 940,
+      "current_count": 263,
+      "gross_count": 268,
+      "withdrawal_count": 5,
+      "days_remaining": 38,
+      "point_estimate": 907,
+      "ci_lower": 877,
+      "ci_upper": 938,
       "ci_level": 0.8,
       "historical": [
         {
@@ -153,6 +153,34 @@
         [
           66,
           221
+        ],
+        [
+          67,
+          226
+        ],
+        [
+          68,
+          234
+        ],
+        [
+          69,
+          237
+        ],
+        [
+          70,
+          244
+        ],
+        [
+          71,
+          247
+        ],
+        [
+          72,
+          257
+        ],
+        [
+          73,
+          263
         ]
       ],
       "registration_curve": [
@@ -209,7 +237,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 215,
+        "count_at_same_point": 232,
         "final": 899
       }
     },
@@ -222,13 +250,13 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 9,
-      "gross_count": 9,
+      "current_count": 12,
+      "gross_count": 12,
       "withdrawal_count": 0,
-      "days_remaining": 60,
-      "point_estimate": 209,
-      "ci_lower": 112,
-      "ci_upper": 390,
+      "days_remaining": 53,
+      "point_estimate": 220,
+      "ci_lower": 134,
+      "ci_upper": 361,
       "ci_level": 0.8,
       "historical": [
         {
@@ -317,6 +345,34 @@
         [
           14,
           9
+        ],
+        [
+          15,
+          9
+        ],
+        [
+          16,
+          9
+        ],
+        [
+          17,
+          11
+        ],
+        [
+          18,
+          11
+        ],
+        [
+          19,
+          11
+        ],
+        [
+          20,
+          12
+        ],
+        [
+          21,
+          12
         ]
       ],
       "registration_curve": [
@@ -373,7 +429,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 5,
+        "count_at_same_point": 6,
         "final": 189
       }
     },
@@ -386,13 +442,13 @@
       "early_bird_fee": 93.0,
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
-      "current_count": 5,
-      "gross_count": 5,
+      "current_count": 7,
+      "gross_count": 7,
       "withdrawal_count": 0,
-      "days_remaining": 60,
-      "point_estimate": 207,
-      "ci_lower": 121,
-      "ci_upper": 356,
+      "days_remaining": 53,
+      "point_estimate": 205,
+      "ci_lower": 125,
+      "ci_upper": 336,
       "ci_level": 0.8,
       "historical": [
         {
@@ -481,6 +537,34 @@
         [
           14,
           5
+        ],
+        [
+          15,
+          5
+        ],
+        [
+          16,
+          6
+        ],
+        [
+          17,
+          6
+        ],
+        [
+          18,
+          6
+        ],
+        [
+          19,
+          7
+        ],
+        [
+          20,
+          7
+        ],
+        [
+          21,
+          7
         ]
       ],
       "registration_curve": [
@@ -550,10 +634,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 4,
-      "gross_count": 4,
+      "current_count": 6,
+      "gross_count": 6,
       "withdrawal_count": 0,
-      "days_remaining": 74,
+      "days_remaining": 67,
       "point_estimate": 80,
       "ci_lower": 43,
       "ci_upper": 149,
@@ -630,6 +714,34 @@
         [
           14,
           4
+        ],
+        [
+          15,
+          5
+        ],
+        [
+          16,
+          5
+        ],
+        [
+          17,
+          6
+        ],
+        [
+          18,
+          6
+        ],
+        [
+          19,
+          6
+        ],
+        [
+          20,
+          6
+        ],
+        [
+          21,
+          6
         ]
       ],
       "registration_curve": [
@@ -686,7 +798,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 1,
+        "count_at_same_point": 2,
         "final": 83
       }
     },
@@ -699,17 +811,121 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 80,
-      "point_estimate": 100,
-      "ci_lower": 70,
+      "current_count": 7,
+      "gross_count": 8,
+      "withdrawal_count": 1,
+      "days_remaining": 73,
+      "point_estimate": 116,
+      "ci_lower": 103,
       "ci_upper": 130,
       "ci_level": 0.8,
-      "historical": [],
+      "historical": [
+        {
+          "year": 2019,
+          "count": 147,
+          "family": "Philadelphia International"
+        },
+        {
+          "year": 2022,
+          "count": 88,
+          "family": "Philadelphia International"
+        },
+        {
+          "year": 2023,
+          "count": 108,
+          "family": "Philadelphia International"
+        },
+        {
+          "year": 2024,
+          "count": 143,
+          "family": "Philadelphia International"
+        },
+        {
+          "year": 2025,
+          "count": 126,
+          "family": "Philadelphia International"
+        }
+      ],
       "daily_data": [
         [
           0,
-          0
+          5
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          9,
+          5
+        ],
+        [
+          10,
+          6
+        ],
+        [
+          11,
+          6
+        ],
+        [
+          12,
+          6
+        ],
+        [
+          13,
+          6
+        ],
+        [
+          14,
+          6
+        ],
+        [
+          15,
+          7
+        ],
+        [
+          16,
+          7
+        ],
+        [
+          17,
+          7
+        ],
+        [
+          18,
+          7
+        ],
+        [
+          19,
+          8
         ]
       ],
       "registration_curve": [
@@ -762,115 +978,9 @@
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
-    },
-    {
-      "family": "World Open lower sections",
-      "year": 2026,
-      "event_start": "2026-06-26",
-      "event_end": null,
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
-      "current_count": 2,
-      "gross_count": 2,
-      "withdrawal_count": 0,
-      "days_remaining": 81,
-      "point_estimate": 134,
-      "ci_lower": 73,
-      "ci_upper": 249,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 1269,
-          "family": "World Open"
-        },
-        {
-          "year": 2022,
-          "count": 1491,
-          "family": "World Open"
-        },
-        {
-          "year": 2023,
-          "count": 149,
-          "family": "World Open lower sections"
-        },
-        {
-          "year": 2024,
-          "count": 151,
-          "family": "World Open lower sections"
-        },
-        {
-          "year": 2025,
-          "count": 135,
-          "family": "World Open lower sections"
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          1
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.02
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0223
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0568
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.1029
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.1825
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.363
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.4815
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.6074
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.7037
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.8254
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9237
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
       "status": "live",
       "prediction_source": "model",
-      "prior_year_pace": {
-        "year": 2025,
-        "count_at_same_point": 2,
-        "final": 135
-      }
+      "prior_year_pace": null
     },
     {
       "family": "DC Open",
@@ -881,8 +991,182 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 81,
+      "current_count": 2,
+      "gross_count": 3,
+      "withdrawal_count": 1,
+      "days_remaining": 74,
+      "point_estimate": 299,
+      "ci_lower": 248,
+      "ci_upper": 362,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 231,
+          "family": "Philadelphia Open"
+        },
+        {
+          "year": 2022,
+          "count": 281,
+          "family": "Philadelphia Open"
+        },
+        {
+          "year": 2023,
+          "count": 281,
+          "family": "Philadelphia Open"
+        },
+        {
+          "year": 2024,
+          "count": 312,
+          "family": "Philadelphia Open"
+        },
+        {
+          "year": 2025,
+          "count": 325,
+          "family": "Philadelphia Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          11,
+          2
+        ],
+        [
+          12,
+          2
+        ],
+        [
+          13,
+          2
+        ],
+        [
+          14,
+          2
+        ],
+        [
+          15,
+          3
+        ],
+        [
+          16,
+          3
+        ],
+        [
+          17,
+          3
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.012
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0261
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0472
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.1023
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1822
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.25
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3353
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.5
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7018
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9095
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "prediction_source": "model",
+      "prior_year_pace": null
+    },
+    {
+      "family": "World Open, lower sections",
+      "year": 2026,
+      "event_start": "2026-06-26",
+      "event_end": "2026-06-28",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 56,
+      "gross_count": 59,
+      "withdrawal_count": 3,
+      "days_remaining": 74,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -891,7 +1175,7 @@
       "daily_data": [
         [
           0,
-          0
+          56
         ]
       ],
       "registration_curve": [
@@ -955,17 +1239,45 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 84,
-      "point_estimate": 100,
-      "ci_lower": 70,
-      "ci_upper": 130,
+      "current_count": 2,
+      "gross_count": 2,
+      "withdrawal_count": 0,
+      "days_remaining": 77,
+      "point_estimate": 110,
+      "ci_lower": 77,
+      "ci_upper": 145,
       "ci_level": 0.8,
-      "historical": [],
+      "historical": [
+        {
+          "year": 2019,
+          "count": 157,
+          "family": "World Open Under 13"
+        },
+        {
+          "year": 2022,
+          "count": 129,
+          "family": "World Open Under 13"
+        },
+        {
+          "year": 2023,
+          "count": 110,
+          "family": "World Open Under 13"
+        },
+        {
+          "year": 2024,
+          "count": 80,
+          "family": "World Open Under 13"
+        },
+        {
+          "year": 2025,
+          "count": 76,
+          "family": "World Open Under 13"
+        }
+      ],
       "daily_data": [
         [
           0,
-          0
+          2
         ]
       ],
       "registration_curve": [
@@ -1021,184 +1333,80 @@
       "status": "live"
     },
     {
-      "family": "World Open top 6 sections",
+      "family": "World Open, top 6 sections",
       "year": 2026,
-      "event_start": "2026-07-04",
-      "event_end": null,
+      "event_start": "2026-07-01",
+      "event_end": "2026-07-05",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 28,
-      "gross_count": 28,
+      "current_count": 56,
+      "gross_count": 56,
       "withdrawal_count": 0,
-      "days_remaining": 89,
-      "point_estimate": 1095,
-      "ci_lower": 668,
-      "ci_upper": 1796,
+      "days_remaining": 79,
+      "point_estimate": 100,
+      "ci_lower": 70,
+      "ci_upper": 130,
       "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 1269,
-          "family": "World Open"
-        },
-        {
-          "year": 2022,
-          "count": 1491,
-          "family": "World Open"
-        },
-        {
-          "year": 2023,
-          "count": 1324,
-          "family": "World Open top 6 sections"
-        },
-        {
-          "year": 2024,
-          "count": 1195,
-          "family": "World Open top 6 sections"
-        },
-        {
-          "year": 2025,
-          "count": 1165,
-          "family": "World Open top 6 sections"
-        }
-      ],
+      "historical": [],
       "daily_data": [
         [
           0,
-          1
-        ],
-        [
-          25,
-          4
-        ],
-        [
-          31,
-          5
-        ],
-        [
-          34,
-          6
-        ],
-        [
-          35,
-          7
-        ],
-        [
-          37,
-          8
-        ],
-        [
-          45,
-          9
-        ],
-        [
-          49,
-          10
-        ],
-        [
-          51,
-          11
-        ],
-        [
-          62,
-          12
-        ],
-        [
-          67,
-          13
-        ],
-        [
-          79,
-          14
-        ],
-        [
-          85,
-          16
-        ],
-        [
-          88,
-          17
-        ],
-        [
-          91,
-          18
-        ],
-        [
-          95,
-          19
-        ],
-        [
-          102,
-          22
-        ],
-        [
-          105,
-          24
-        ],
-        [
-          112,
-          25
+          56
         ]
       ],
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.0089
+          "cumulative_pct": 0.0
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.04
+          "cumulative_pct": 0.012
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0694
+          "cumulative_pct": 0.0261
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.1136
+          "cumulative_pct": 0.0472
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.353
+          "cumulative_pct": 0.1023
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.4129
+          "cumulative_pct": 0.1822
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.4617
+          "cumulative_pct": 0.25
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.5466
+          "cumulative_pct": 0.3353
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.6714
+          "cumulative_pct": 0.5
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.8971
+          "cumulative_pct": 0.7018
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9527
+          "cumulative_pct": 0.9095
         },
         {
           "days_before": 0,
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live",
-      "prediction_source": "model",
-      "prior_year_pace": {
-        "year": 2025,
-        "count_at_same_point": 36,
-        "final": 1165
-      }
+      "status": "live"
     },
     {
       "family": "Chicago Class",
@@ -1212,10 +1420,10 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 102,
+      "days_remaining": 95,
       "point_estimate": 269,
-      "ci_lower": 157,
-      "ci_upper": 463,
+      "ci_lower": 156,
+      "ci_upper": 462,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1304,6 +1512,34 @@
         [
           14,
           1
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          17,
+          1
+        ],
+        [
+          18,
+          1
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          20,
+          1
+        ],
+        [
+          21,
+          1
         ]
       ],
       "registration_curve": [
@@ -1376,10 +1612,10 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 102,
-      "point_estimate": 174,
-      "ci_lower": 94,
-      "ci_upper": 323,
+      "days_remaining": 95,
+      "point_estimate": 173,
+      "ci_lower": 93,
+      "ci_upper": 321,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1468,6 +1704,34 @@
         [
           14,
           3
+        ],
+        [
+          15,
+          3
+        ],
+        [
+          16,
+          3
+        ],
+        [
+          17,
+          3
+        ],
+        [
+          18,
+          3
+        ],
+        [
+          19,
+          3
+        ],
+        [
+          20,
+          3
+        ],
+        [
+          21,
+          3
         ]
       ],
       "registration_curve": [
@@ -1538,7 +1802,9 @@
       "regular_fee": null,
       "onsite_fee": null,
       "current_count": 0,
-      "days_remaining": 102,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 95,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -1546,23 +1812,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 181
+          "count": 181,
+          "family": "Southern Open"
         },
         {
           "year": 2022,
-          "count": 266
+          "count": 266,
+          "family": "Southern Open"
         },
         {
           "year": 2023,
-          "count": 294
+          "count": 294,
+          "family": "Southern Open"
         },
         {
           "year": 2024,
-          "count": 231
+          "count": 231,
+          "family": "Southern Open"
         },
         {
           "year": 2025,
-          "count": 188
+          "count": 188,
+          "family": "Southern Open"
         }
       ],
       "daily_data": [
@@ -1635,10 +1906,10 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 109,
-      "point_estimate": 262,
-      "ci_lower": 160,
-      "ci_upper": 429,
+      "days_remaining": 102,
+      "point_estimate": 260,
+      "ci_lower": 159,
+      "ci_upper": 427,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1727,6 +1998,34 @@
         [
           14,
           3
+        ],
+        [
+          15,
+          3
+        ],
+        [
+          16,
+          3
+        ],
+        [
+          17,
+          3
+        ],
+        [
+          18,
+          3
+        ],
+        [
+          19,
+          3
+        ],
+        [
+          20,
+          3
+        ],
+        [
+          21,
+          3
         ]
       ],
       "registration_curve": [
@@ -1783,7 +2082,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 1,
+        "count_at_same_point": 2,
         "final": 246
       }
     },
@@ -1799,10 +2098,10 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 116,
-      "point_estimate": 382,
-      "ci_lower": 233,
-      "ci_upper": 627,
+      "days_remaining": 109,
+      "point_estimate": 381,
+      "ci_lower": 232,
+      "ci_upper": 624,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1891,6 +2190,34 @@
         [
           14,
           4
+        ],
+        [
+          15,
+          4
+        ],
+        [
+          16,
+          4
+        ],
+        [
+          17,
+          4
+        ],
+        [
+          18,
+          4
+        ],
+        [
+          19,
+          4
+        ],
+        [
+          20,
+          4
+        ],
+        [
+          21,
+          4
         ]
       ],
       "registration_curve": [
@@ -1952,6 +2279,108 @@
       }
     },
     {
+      "family": "Continental Open",
+      "year": 2026,
+      "event_start": "2026-08-13",
+      "event_end": "2026-08-16",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 122,
+      "point_estimate": 283,
+      "ci_lower": 252,
+      "ci_upper": 317,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 274,
+          "family": "Continental Open"
+        },
+        {
+          "year": 2022,
+          "count": 321,
+          "family": "Continental Open"
+        },
+        {
+          "year": 2023,
+          "count": 312,
+          "family": "Continental Open"
+        },
+        {
+          "year": 2024,
+          "count": 244,
+          "family": "Continental Open"
+        },
+        {
+          "year": 2025,
+          "count": 265,
+          "family": "Continental Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0053
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0107
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0152
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0322
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0635
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1039
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.1362
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.222
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.3538
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.5279
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9377
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live"
+    },
+    {
       "family": "Central California Open",
       "year": 2026,
       "event_start": "2026-08-14",
@@ -1960,8 +2389,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 130,
+      "current_count": 1,
+      "gross_count": 1,
+      "withdrawal_count": 0,
+      "days_remaining": 123,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -1969,29 +2400,34 @@
       "historical": [
         {
           "year": 2019,
-          "count": 128
+          "count": 128,
+          "family": "Central California Open"
         },
         {
           "year": 2022,
-          "count": 188
+          "count": 188,
+          "family": "Central California Open"
         },
         {
           "year": 2023,
-          "count": 214
+          "count": 214,
+          "family": "Central California Open"
         },
         {
           "year": 2024,
-          "count": 169
+          "count": 169,
+          "family": "Central California Open"
         },
         {
           "year": 2025,
-          "count": 179
+          "count": 179,
+          "family": "Central California Open"
         }
       ],
       "daily_data": [
         [
           0,
-          0
+          1
         ]
       ],
       "registration_curve": [
@@ -2055,8 +2491,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 137,
+      "current_count": 1,
+      "gross_count": 1,
+      "withdrawal_count": 0,
+      "days_remaining": 130,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -2064,29 +2502,34 @@
       "historical": [
         {
           "year": 2019,
-          "count": 289
+          "count": 289,
+          "family": "Atlantic Open"
         },
         {
           "year": 2022,
-          "count": 412
+          "count": 412,
+          "family": "Atlantic Open"
         },
         {
           "year": 2023,
-          "count": 371
+          "count": 371,
+          "family": "Atlantic Open"
         },
         {
           "year": 2024,
-          "count": 272
+          "count": 272,
+          "family": "Atlantic Open"
         },
         {
           "year": 2025,
-          "count": 238
+          "count": 238,
+          "family": "Atlantic Open"
         }
       ],
       "daily_data": [
         [
           0,
-          0
+          1
         ]
       ],
       "registration_curve": [
@@ -2150,8 +2593,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 0,
-      "days_remaining": 151,
+      "current_count": 3,
+      "gross_count": 3,
+      "withdrawal_count": 0,
+      "days_remaining": 144,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -2159,29 +2604,34 @@
       "historical": [
         {
           "year": 2019,
-          "count": 185
+          "count": 185,
+          "family": "New York State Championship"
         },
         {
           "year": 2022,
-          "count": 316
+          "count": 316,
+          "family": "New York State Championship"
         },
         {
           "year": 2023,
-          "count": 347
+          "count": 347,
+          "family": "New York State Championship"
         },
         {
           "year": 2024,
-          "count": 326
+          "count": 326,
+          "family": "New York State Championship"
         },
         {
           "year": 2025,
-          "count": 348
+          "count": 348,
+          "family": "New York State Championship"
         }
       ],
       "daily_data": [
         [
           0,
-          0
+          3
         ]
       ],
       "registration_curve": [
@@ -2246,7 +2696,9 @@
       "regular_fee": 160.0,
       "onsite_fee": 160.0,
       "current_count": 0,
-      "days_remaining": 236,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 229,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -2254,23 +2706,28 @@
       "historical": [
         {
           "year": 2019,
-          "count": 550
+          "count": 550,
+          "family": "National Chess Congress"
         },
         {
           "year": 2022,
-          "count": 606
+          "count": 606,
+          "family": "National Chess Congress"
         },
         {
           "year": 2023,
-          "count": 636
+          "count": 636,
+          "family": "National Chess Congress"
         },
         {
           "year": 2024,
-          "count": 621
+          "count": 621,
+          "family": "National Chess Congress"
         },
         {
           "year": 2025,
-          "count": 705
+          "count": 705,
+          "family": "National Chess Congress"
         }
       ],
       "daily_data": [

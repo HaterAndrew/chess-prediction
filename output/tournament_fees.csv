@@ -1,6 +1,7 @@
 tournament_name,year,early_bird_fee,early_bird_deadline,regular_fee,regular_deadline,onsite_fee,prize_fund,url
 chio25,2025,227,2025-05-21,,,,,https://www.chesstour.com/chio25.htm
 chio26,2026,227,2026-05-19,,,,,https://www.chesstour.com/chio26.htm
+dci26,2026,175,2026-06-23,225,2026-06-24,825,6000,https://www.chesstour.com/dci26.htm
 NORTH AMERICAN OPEN CHESS TOURNAMENT,2022,245,2022-09-20,275,2022-12-23,,125000,https://www.chesstour.com/nao22.htm
 NORTH AMERICAN OPEN CHESS TOURNAMENT,2023,245,2023-09-20,275,2023-12-23,,130000,https://www.chesstour.com/nao23.htm
 nao24,2024,245,2024-09-20,275,2024-12-23,,800,https://www.chesstour.com/nao24.htm
@@ -12,3 +13,9 @@ nyso26,2026,,,,,100,,https://www.chesstour.com/nyso26.htm
 2023 WORLD OPEN CHESS TOURNAMENT,2023,318,2023-05-15,328,2023-06-27,,208000,https://www.chesstour.com/wo23.htm
 wo24,2024,318,2024-05-15,328,2024-06-29,,208000,https://www.chesstour.com/wo24.htm
 wo25,2025,318,2025-05-15,328,2025-06-28,,208000,https://www.chesstour.com/wo25.htm
+wo26,2026,318,2026-05-15,328,2026-06-29,,208000,https://www.chesstour.com/wo26.htm
+woac26,2026,65,2026-06-29,,,,,https://www.chesstour.com/woac26.htm
+wog5026,2026,40,2026-06-22,,,,,https://www.chesstour.com/wog5026.htm
+wolower26,2026,118,2026-05-15,128,2026-06-23,228,17000,https://www.chesstour.com/wolower26.htm
+woq26,2026,40,2026-07-03,,,,,https://www.chesstour.com/woq26.htm
+woseven26,2026,40,2026-06-30,,,,,https://www.chesstour.com/woseven26.htm

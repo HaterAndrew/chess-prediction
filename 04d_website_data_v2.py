@@ -431,8 +431,12 @@ for _, row in t2026.iterrows():
     if current_count < 1:
         continue
     # Skip completed tournaments with very few registrations (likely sub-events or data issues)
+    # Expand family aliases so renamed tournaments (e.g. DC Open ↔ Philadelphia Open) find their history
+    hist_families = [family]
+    if hasattr(m04c, 'FAMILY_ALIASES') and family in m04c.FAMILY_ALIASES:
+        hist_families.extend(m04c.FAMILY_ALIASES[family])
     hist_check = summary[
-        (summary['family'] == family) &
+        (summary['family'].isin(hist_families)) &
         (~summary['is_online'].fillna(False)) &
         (~summary['is_covid'].fillna(False)) &
         (summary['tournament_year'] < 2026) &
@@ -634,6 +638,17 @@ for _, row in t2026.iterrows():
     tournaments_out.append(t_out)
 
 # Add tournaments from metadata that have no registrations yet
+# Build scrape lookup so metadata-only tournaments can pick up live entry counts
+_scrape_lookup = {}
+if os.path.exists(scrape_path):
+    for _, s in latest_scrape.iterrows():
+        sn = s['tournament_name']
+        fam = sn.replace('2026 ', '', 1) if sn.startswith('2026 ') else sn
+        net = int(s['active_count']) if pd.notna(s['active_count']) and s['active_count'] > 0 else int(s['entry_count'])
+        gross = int(s.get('entry_count', 0))
+        wd = int(s.get('withdrawal_count', 0)) if pd.notna(s.get('withdrawal_count')) else 0
+        _scrape_lookup[fam] = {'net': net, 'gross': gross, 'wd': wd}
+
 existing_families = {t['family'] for t in tournaments_out}
 for _, mrow in meta[meta['year'] == 2026].iterrows():
     mfamily = mrow['family']
@@ -645,21 +660,30 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
     days_remaining = (event_date - TODAY).days
     if days_remaining > 300:
         continue
-    # Historical data
+    # Pick up live entry count from scrape data if available
+    scrape_info = _scrape_lookup.get(mfamily, {})
+    current_count = scrape_info.get('net', 0)
+    gross_count = scrape_info.get('gross', current_count)
+    withdrawal_count = scrape_info.get('wd', 0)
+    # Historical data (expand aliases for renamed tournaments)
+    hist_families = [mfamily]
+    if hasattr(m04c, 'FAMILY_ALIASES') and mfamily in m04c.FAMILY_ALIASES:
+        hist_families.extend(m04c.FAMILY_ALIASES[mfamily])
     hist = summary[
-        (summary['family'] == mfamily) &
+        (summary['family'].isin(hist_families)) &
         (~summary['is_online'].fillna(False)) &
         (~summary['is_covid'].fillna(False)) &
         (summary['tournament_year'] < 2026) &
         (summary['tournament_year'] >= 2019)
     ].sort_values('tournament_year')
-    historical = [{"year": int(h['tournament_year']), "count": int(h['final_count'])}
+    historical = [{"year": int(h['tournament_year']), "count": int(h['final_count']),
+                   "family": h['family']}
                   for _, h in hist.iterrows()]
     # Predict from historical data with proper variance-based CI
     hist_counts = [h['count'] for h in historical]
     hist_mean = np.mean(hist_counts) if hist_counts else 100
     # Sanity check: 0 registrations close to event = likely cancelled/not tracked
-    if days_remaining < 30:
+    if days_remaining < 30 and current_count == 0:
         status_label = "not_tracked"
     else:
         status_label = "live"
@@ -691,19 +715,21 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
         "early_bird_fee": eb_fee,
         "regular_fee": reg_fee,
         "onsite_fee": onsite_fee,
-        "current_count": 0,
+        "current_count": int(current_count),
+        "gross_count": int(gross_count),
+        "withdrawal_count": int(withdrawal_count),
         "days_remaining": int(days_remaining),
         "point_estimate": int(hist_mean),
         "ci_lower": ci_lo,
         "ci_upper": ci_hi,
         "ci_level": 0.80,
         "historical": historical,
-        "daily_data": [[0, 0]],
+        "daily_data": [[0, current_count]],
         "registration_curve": reg_curve,
         "status": status_label,
     }
     tournaments_out.append(t_out)
-    print(f"  Added from metadata: {mfamily} (event {event_date.strftime('%Y-%m-%d')}, {days_remaining} days out, status={status_label})")
+    print(f"  Added from metadata: {mfamily} (event {event_date.strftime('%Y-%m-%d')}, {days_remaining} days out, entries={current_count}, status={status_label})")
 
 # ── Build reverse alias map for 2026 families ──
 # If "DC International" is a 2026 family with alias "Philadelphia International",
@@ -875,3 +901,32 @@ out_path = os.path.join(OUTPUT_DIR, "website_data.json")
 with open(out_path, 'w') as f:
     json.dump(output, f, indent=2, default=str)
 print(f"\nSaved to {out_path}")
+
+# ── Data linking validation ──────────────────────────────────────────────
+# Compare scrape counts to website output. Flag any tournament where the
+# scrape has entries but the website shows 0 — that's a linking failure.
+if os.path.exists(scrape_path):
+    all_2026 = {t['family']: t['current_count'] for t in tournaments_out if t.get('year') == 2026}
+    live_2026 = {t['family']: t['current_count'] for t in tournaments_out if t.get('year') == 2026 and t.get('status') == 'live'}
+    # Tournaments that are intentionally excluded (completed, blitz, WO sub-events, etc.)
+    excluded_or_complete = set(EXCLUDE_FAMILIES)
+    excluded_or_complete.update(t['family'] for t in tournaments_out if t.get('year') == 2026 and t.get('status') in ('complete', 'in_progress'))
+    link_warnings = []
+    for _, s in latest_scrape.iterrows():
+        sn = s['tournament_name']
+        fam = sn.replace('2026 ', '', 1) if sn.startswith('2026 ') else sn
+        if fam in excluded_or_complete:
+            continue
+        scrape_count = int(s['active_count']) if pd.notna(s['active_count']) and s['active_count'] > 0 else int(s['entry_count'])
+        if scrape_count > 0 and fam in live_2026 and live_2026[fam] == 0:
+            link_warnings.append(f"  ⚠ {fam}: scrape={scrape_count}, website=0")
+        elif scrape_count > 0 and fam not in all_2026:
+            link_warnings.append(f"  ⚠ {fam}: scrape={scrape_count}, NOT IN OUTPUT")
+    if link_warnings:
+        print(f"\n{'!'*60}")
+        print(f"  DATA LINKING WARNINGS — {len(link_warnings)} tournaments with scrape data not reflected in output:")
+        for w in link_warnings:
+            print(w)
+        print(f"{'!'*60}")
+    else:
+        print(f"\n✓ Data linking check passed: all scraped tournaments reflected in output")

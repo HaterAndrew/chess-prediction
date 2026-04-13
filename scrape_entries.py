@@ -41,13 +41,8 @@ TODAY = date.today().isoformat()
 # World Open sub-events to KEEP as separate rows
 WO_KEEP_PATTERNS = re.compile(r'under\s*13|top\s+6\s+sections|lower\s+sections', re.IGNORECASE)
 
-# CCA name -> canonical family name (for cases where CCA renamed a tournament)
-# NOTE: DC Open/International are NOT aliased to Philadelphia here.
-# They are the same family (DC when in DC, Philly when in Philly).
-# The model handles history pooling via FAMILY_ALIASES in 04c_final_model.py.
-CCA_FAMILY_ALIASES = {
-    'Atlantic City Open': 'Atlantic Open',
-}
+# CCA name -> canonical family name: single source of truth in tournament_aliases.py
+from tournament_aliases import CCA_CANONICALIZE as CCA_FAMILY_ALIASES
 
 def to_family(name):
     """Strip year prefix from CCA tournament name and apply canonical aliases."""
@@ -220,6 +215,24 @@ def scrape_withdrawals(tournaments, year=2026):
         except requests.RequestException:
             fetched_cache[code] = (t['entry_count'], 0)
             continue
+
+    # ── Invariant validation ──
+    # Ensure active_count <= entry_count and active + withdrawn == entry
+    repaired = 0
+    for t in tournaments:
+        ec, ac, wd = t['entry_count'], t['active_count'], t['withdrawal_count']
+        if ac > ec:
+            # Withdrawal scraper returned aggregate totals for a shared page;
+            # revert to index-page gross count as the per-event truth.
+            t['active_count'] = ec
+            t['withdrawal_count'] = 0
+            repaired += 1
+        elif ec > 0 and ac + wd != ec:
+            # Recompute withdrawal as the difference
+            t['withdrawal_count'] = ec - ac
+            repaired += 1
+    if repaired:
+        print(f"  Repaired {repaired} count invariant violations (active + wd != gross)")
 
     total_wd = sum(t['withdrawal_count'] for t in tournaments)
     print(f"  Total withdrawals found: {total_wd}")

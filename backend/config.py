@@ -28,7 +28,7 @@ class Settings(BaseSettings):
 
     # App
     app_env: str = "development"   # development | production
-    secret_key: str = "change-me-in-production"
+    secret_key: str = ""  # MUST be set via env var in production
     log_level: str = "INFO"
 
     # CCA day boundary — CCA resets daily counts at 2000 ET.

@@ -9,6 +9,7 @@ from scipy.interpolate import interp1d
 from scipy.stats import lognorm  # used by legacy predict_with_lognormal_ci fallback
 import json
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -22,6 +23,8 @@ TODAY = pd.Timestamp.now().normalize()
 
 # Load data
 summary = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_summary.csv"))
+# Coerce tournament_year: fill NaN with 0, convert to int for clean comparisons
+summary['tournament_year'] = pd.to_numeric(summary['tournament_year'], errors='coerce').fillna(0).astype(int)
 daily = pd.read_csv(os.path.join(OUTPUT_DIR, "daily_registration_counts.csv"))
 meta = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_metadata.csv"))
 meta['start_date'] = pd.to_datetime(meta['start_date'])
@@ -101,21 +104,19 @@ hist_enrich = pd.read_csv(hist_path) if os.path.exists(hist_path) else pd.DataFr
 enrichment_lookup = m04c.build_enrichment_lookup(hist_enrich)
 
 # Filter exclusions: online, COVID, sub-events we don't want
-EXCLUDE_FAMILIES = [
-    # World Open sub-events we don't want (keep only Under 13, top 6, lower)
-    'World Open G 50 Championship', 'World Open G/50 Championship',
-    'World Open G7 Championship', 'World Open G/7 Championship',
-    'World Open G 10 Championship', 'World Open G/10 Championship',
-    'World Open Action',
-    'World Open Womens Championship', "World Open Women's Championship",
-    'World Open Senior', 'World Open Senior Amateur',
-    'World Open Junior Championship', 'World Open Junior Octos',
+# Use regex to catch name variants (G/50 vs G 50, Women's vs Womens, etc.)
+_WO_EXCLUDE_PATTERN = re.compile(
+    r'World Open\s+(G[\s/]\d+|Action|Womens?|Women.s|Senior|Junior|Amateur|Blitz)',
+    re.IGNORECASE
+)
+EXCLUDE_FAMILIES = [fam for fam in summary['family'].unique() if _WO_EXCLUDE_PATTERN.search(fam)]
+EXCLUDE_FAMILIES.extend([
     # The old combined "World Open" family (pre-2023) — superseded by
     # top-6/lower split; exclude to avoid double-counting
     'World Open',
     # Tiny side events with 1-6 registrants, not real tournaments
     'George Washington Saturday Octos', 'George Washington Sunday Octos',
-]
+])
 
 # Exclude all blitz/rapid side events (not useful for logistical planning)
 blitz_families = summary[summary['family'].str.contains(

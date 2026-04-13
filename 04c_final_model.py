@@ -38,28 +38,8 @@ warnings.filterwarnings('ignore')
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 CHOP_POINTS = [90, 60, 42, 28, 21, 14, 10, 7, 5, 3, 1]
 
-# Family aliases: map new/unknown families to comparable historical families.
-# Ratios from ALL alias families are pooled together for prediction.
-FAMILY_ALIASES = {
-    'Atlantic City Open': ['Open at Foxwoods', 'Princeton Open', 'Foxwoods Open'],
-    'Princeton Open': ['Open at Foxwoods', 'Atlantic City Open', 'Foxwoods Open'],
-    'Western Class': ['Western Class Championships'],
-    'Western Class Championships': ['Western Class'],
-    # World Open sub-event name variants (only Under 13, top 6, lower tracked)
-    'World Open Under 13': ['World Open Under 13 Championship', 'World Open Under 13 Champ'],
-    'World Open Under 13 Champ': ['World Open Under 13 Championship', 'World Open Under 13'],
-    'World Open Under 13 Championship': ['World Open Under 13', 'World Open Under 13 Champ'],
-    'World Open top 6 sections': ['World Open'],
-    'World Open lower sections': ['World Open'],
-    # NY State Scholastic name variants
-    'New York State Scholastic Championships Grades K-8': ['New York State Scholastic Championships'],
-    'New York State Scholastic Championships': ['New York State Scholastic Championships Grades K-8'],
-    # DC tournaments are relocated Philadelphia tournaments (same events, new city)
-    'DC Open': ['Philadelphia Open'],
-    'DC International': ['Philadelphia International'],
-    'Philadelphia Open': ['DC Open'],
-    'Philadelphia International': ['DC International'],
-}
+# Family aliases: single source of truth in tournament_aliases.py
+from tournament_aliases import FAMILY_ALIASES
 T_GRID = np.arange(0, 121)
 TODAY = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 # Default offset: days between event_start and last_reg for tournaments
@@ -337,6 +317,13 @@ class N5v4_Final:
             All other 2026 tournaments are excluded.
         """
         self.enrichment = enrichment_lookup or {}
+
+        # Auto-populate BLITZ_FAMILIES from data: any family matching the pattern
+        _blitz_pat = re.compile(r'Blitz|Rapid|Bullet|Bughouse|Armageddon|Action|G/\d+|G \d+', re.IGNORECASE)
+        for fam in summary['family'].unique():
+            if _blitz_pat.search(fam):
+                self.BLITZ_FAMILIES.add(fam)
+
         valid = summary[
             (summary['has_timestamps']) &
             (~summary.get('is_online', pd.Series(False)).fillna(False)) &
@@ -688,7 +675,8 @@ class N5v4_Final:
     }
 
     # Blitz/action events: massive day-of registration (100-300% growth at T<=1)
-    # Standard ratio models vastly underpredict these
+    # Standard ratio models vastly underpredict these.
+    # Auto-populated from data during fit(); seeded with known families.
     BLITZ_FAMILIES = {
         'World Open Blitz Championship',
         'North American Blitz Championship',
@@ -704,6 +692,12 @@ class N5v4_Final:
         Training T is anchored to event_start after reanchor_daily_to_event_start().
         Prediction includes expected on-site registrations (baked into ratios).
         """
+        # Guard: event already started or no data
+        if days_remaining < 0:
+            return current_count, current_count, current_count
+        if current_count <= 0:
+            return None, None, None
+
         # Late-surge families: dampen ratio extrapolation to avoid over-prediction
         # These events get bulk registrations in the last 1-3 days
         is_late_surge = family in self.LATE_SURGE_FAMILIES
@@ -912,9 +906,13 @@ class N5v4_Final:
             low = np.exp(np.log(point) - log_half_w)
             high = np.exp(np.log(point) + log_half_w)
         else:
-            ci_half_width = (high - low) / 2
+            ci_half_width = max((high - low) / 2, 1)
             low = point - ci_half_width
             high = point + ci_half_width
+
+        # Guard against NaN from any upstream calculation
+        if any(np.isnan(x) for x in (point, low, high)):
+            return current_count, current_count, current_count
 
         # Growth trend adjustment: shift prediction for growing/declining families
         # e.g., if a tournament grows ~5%/year, nudge prediction up for current year

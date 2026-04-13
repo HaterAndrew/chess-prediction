@@ -43,7 +43,7 @@ jobs:
         run: |
           git config user.name "CCA Bot"
           git config user.email "bot@users.noreply.github.com"
-          git add output/daily_scrape.csv output/website_data.json output/daily_puzzles.json output/performance_data.json docs/index.html output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv
+          git add output/daily_scrape.csv output/website_data.json output/daily_puzzles.json output/performance_data.json docs/index.html output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv output/tournament_metadata.csv
           git diff --cached --quiet || git commit -m "Daily update: $(date +%Y-%m-%d)"
-          git pull --rebase || true
+          git pull --rebase || git pull --no-rebase
           git push

@@ -176,8 +176,15 @@ def scrape_withdrawals(tournaments, year=2026):
             if not is_kept:
                 continue
 
-        # Use cache if we already fetched this code
+        # Use cache if we already fetched this code.
+        # Exception: World Open sub-events share entry list code "WO" but the
+        # page shows aggregate totals across ALL sections. Applying that total
+        # to individual sub-events (Under 13, top 6, lower) overwrites their
+        # per-section entry_count. Skip cache for WO sub-events and keep the
+        # index page's per-section count as-is.
         if code in fetched_cache:
+            if 'world open' in name_lower:
+                continue  # keep per-section entry_count from index page
             active, withdrawn = fetched_cache[code]
             t['withdrawal_count'] = withdrawn
             t['active_count'] = active

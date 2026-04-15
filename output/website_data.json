@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-14",
-  "generated_time": "2026-04-14T00:19:28.527078-04:00",
+  "generated": "2026-04-15",
+  "generated_time": "2026-04-15T00:17:27.981284-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 14,
@@ -14,13 +14,13 @@
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 265,
-      "gross_count": 270,
+      "current_count": 272,
+      "gross_count": 277,
       "withdrawal_count": 5,
-      "days_remaining": 37,
-      "point_estimate": 901,
-      "ci_lower": 871,
-      "ci_upper": 931,
+      "days_remaining": 36,
+      "point_estimate": 902,
+      "ci_lower": 872,
+      "ci_upper": 932,
       "ci_level": 0.8,
       "historical": [
         {
@@ -185,6 +185,10 @@
         [
           74,
           265
+        ],
+        [
+          75,
+          272
         ]
       ],
       "registration_curve": [
@@ -241,7 +245,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 239,
+        "count_at_same_point": 244,
         "final": 899
       }
     },
@@ -257,10 +261,10 @@
       "current_count": 12,
       "gross_count": 12,
       "withdrawal_count": 0,
-      "days_remaining": 52,
-      "point_estimate": 218,
-      "ci_lower": 133,
-      "ci_upper": 357,
+      "days_remaining": 51,
+      "point_estimate": 219,
+      "ci_lower": 134,
+      "ci_upper": 359,
       "ci_level": 0.8,
       "historical": [
         {
@@ -381,6 +385,10 @@
         [
           22,
           12
+        ],
+        [
+          23,
+          12
         ]
       ],
       "registration_curve": [
@@ -437,7 +445,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 6,
+        "count_at_same_point": 7,
         "final": 189
       }
     },
@@ -450,13 +458,13 @@
       "early_bird_fee": 93.0,
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
-      "current_count": 7,
-      "gross_count": 7,
+      "current_count": 8,
+      "gross_count": 8,
       "withdrawal_count": 0,
-      "days_remaining": 52,
-      "point_estimate": 203,
-      "ci_lower": 124,
-      "ci_upper": 333,
+      "days_remaining": 51,
+      "point_estimate": 209,
+      "ci_lower": 127,
+      "ci_upper": 342,
       "ci_level": 0.8,
       "historical": [
         {
@@ -577,6 +585,10 @@
         [
           22,
           7
+        ],
+        [
+          23,
+          8
         ]
       ],
       "registration_curve": [
@@ -633,7 +645,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 2,
+        "count_at_same_point": 4,
         "final": 199
       }
     },
@@ -649,7 +661,7 @@
       "current_count": 6,
       "gross_count": 6,
       "withdrawal_count": 0,
-      "days_remaining": 66,
+      "days_remaining": 65,
       "point_estimate": 80,
       "ci_lower": 43,
       "ci_upper": 149,
@@ -758,6 +770,10 @@
         [
           22,
           6
+        ],
+        [
+          23,
+          6
         ]
       ],
       "registration_curve": [
@@ -830,10 +846,10 @@
       "current_count": 7,
       "gross_count": 8,
       "withdrawal_count": 1,
-      "days_remaining": 72,
-      "point_estimate": 114,
-      "ci_lower": 102,
-      "ci_upper": 128,
+      "days_remaining": 71,
+      "point_estimate": 113,
+      "ci_lower": 100,
+      "ci_upper": 126,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1010,9 +1026,9 @@
       "current_count": 2,
       "gross_count": 3,
       "withdrawal_count": 1,
-      "days_remaining": 73,
+      "days_remaining": 72,
       "point_estimate": 299,
-      "ci_lower": 247,
+      "ci_lower": 246,
       "ci_upper": 363,
       "ci_level": 0.8,
       "historical": [
@@ -1179,10 +1195,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 56,
-      "gross_count": 59,
+      "current_count": 57,
+      "gross_count": 60,
       "withdrawal_count": 3,
-      "days_remaining": 73,
+      "days_remaining": 72,
       "point_estimate": 145,
       "ci_lower": 135,
       "ci_upper": 151,
@@ -1207,7 +1223,7 @@
       "daily_data": [
         [
           0,
-          56
+          57
         ]
       ],
       "registration_curve": [
@@ -1271,10 +1287,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 2,
-      "gross_count": 2,
+      "current_count": 3,
+      "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 76,
+      "days_remaining": 75,
       "point_estimate": 110,
       "ci_lower": 77,
       "ci_upper": 145,
@@ -1309,7 +1325,7 @@
       "daily_data": [
         [
           0,
-          2
+          3
         ]
       ],
       "registration_curve": [
@@ -1373,10 +1389,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 56,
-      "gross_count": 56,
+      "current_count": 57,
+      "gross_count": 57,
       "withdrawal_count": 0,
-      "days_remaining": 78,
+      "days_remaining": 77,
       "point_estimate": 1288,
       "ci_lower": 1177,
       "ci_upper": 1424,
@@ -1411,7 +1427,7 @@
       "daily_data": [
         [
           0,
-          56
+          57
         ]
       ],
       "registration_curve": [
@@ -1478,7 +1494,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 94,
+      "days_remaining": 93,
       "point_estimate": 269,
       "ci_lower": 157,
       "ci_upper": 463,
@@ -1602,6 +1618,10 @@
         [
           22,
           1
+        ],
+        [
+          23,
+          1
         ]
       ],
       "registration_curve": [
@@ -1674,7 +1694,7 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 94,
+      "days_remaining": 93,
       "point_estimate": 190,
       "ci_lower": 100,
       "ci_upper": 361,
@@ -1798,6 +1818,10 @@
         [
           22,
           3
+        ],
+        [
+          23,
+          3
         ]
       ],
       "registration_curve": [
@@ -1870,7 +1894,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 94,
+      "days_remaining": 93,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -1972,7 +1996,7 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 101,
+      "days_remaining": 100,
       "point_estimate": 261,
       "ci_lower": 159,
       "ci_upper": 428,
@@ -2096,6 +2120,10 @@
         [
           22,
           3
+        ],
+        [
+          23,
+          3
         ]
       ],
       "registration_curve": [
@@ -2168,10 +2196,10 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 108,
-      "point_estimate": 382,
+      "days_remaining": 107,
+      "point_estimate": 381,
       "ci_lower": 233,
-      "ci_upper": 626,
+      "ci_upper": 625,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2292,6 +2320,10 @@
         [
           22,
           4
+        ],
+        [
+          23,
+          4
         ]
       ],
       "registration_curve": [
@@ -2364,7 +2396,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 121,
+      "days_remaining": 120,
       "point_estimate": 283,
       "ci_lower": 252,
       "ci_upper": 317,
@@ -2466,7 +2498,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 122,
+      "days_remaining": 121,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -2568,7 +2600,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 129,
+      "days_remaining": 128,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -2670,7 +2702,7 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 143,
+      "days_remaining": 142,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -2772,7 +2804,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 228,
+      "days_remaining": 227,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,

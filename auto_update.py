@@ -20,7 +20,13 @@ import sys
 import json
 import csv
 import subprocess
+import time
 from datetime import datetime
+
+from validate_scraped_data import validate_all
+from verify_checksums import generate_manifest
+from scrape_health import log_scrape_attempt, generate_health_html
+from alerts import compute_pace_alerts, inject_alerts
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
@@ -263,6 +269,29 @@ def step_log_run():
     print(f"  Logged {lines_logged} predictions to {UPDATE_LOG}")
 
 
+def _stamp_stale_flag(is_stale):
+    """Add/update last_updated and is_stale fields in website_data.json.
+
+    Preserves existing predictions when the scrape fails so stale data
+    can still be served with a warning banner.
+    """
+    if not os.path.exists(WEBSITE_JSON):
+        print(f"  WARNING: {WEBSITE_JSON} not found — cannot stamp stale flag")
+        return
+
+    with open(WEBSITE_JSON, 'r') as f:
+        data = json.load(f)
+
+    data['last_updated'] = RUN_TS
+    data['is_stale'] = is_stale
+
+    with open(WEBSITE_JSON, 'w') as f:
+        json.dump(data, f, indent=2)
+
+    flag = "STALE" if is_stale else "FRESH"
+    print(f"  Stamped website_data.json — is_stale={is_stale} ({flag}), last_updated={RUN_TS}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Auto-update pipeline")
     parser.add_argument('--skip-scrape', action='store_true',
@@ -273,29 +302,117 @@ def main():
     print(f"  AUTO-UPDATE PIPELINE — {RUN_TS}")
     print(f"{'='*60}")
 
-    try:
-        if args.skip_scrape:
-            print("\n  Skipping scrape step (--skip-scrape)")
-        else:
-            step_scrape()
-        step_update_model()
-        step_performance()
+    t_start = time.time()
+    scrape_ok = True
+    validation_errors = 0
+    validation_warnings = 0
+    row_count = 0
 
-        # Puzzles are non-critical — don't let a Lichess outage block the pipeline
+    # --- Scrape phase (failures are non-fatal) ---
+    if args.skip_scrape:
+        print("\n  Skipping scrape step (--skip-scrape)")
+    else:
         try:
-            step_update_puzzles()
-        except Exception as e:
-            print(f"\n  ⚠ Puzzle step failed (non-fatal): {e}")
-            print(f"  Continuing with existing puzzle data…")
+            step_scrape()
 
+            # Validate scraped data before proceeding
+            print(f"\n{'─'*60}")
+            print(f"  STEP: Validate scraped data")
+            print(f"{'─'*60}")
+            report = validate_all()
+            validation_errors = len(report.errors)
+            validation_warnings = len(report.warnings)
+            print(report.summary())
+            if not report.passed:
+                raise RuntimeError("Data validation failed (see errors above)")
+
+            # Count rows scraped today
+            today = datetime.now().strftime('%Y-%m-%d')
+            if os.path.exists(SCRAPE_CSV):
+                with open(SCRAPE_CSV, 'r') as f:
+                    reader = csv.DictReader(f)
+                    row_count = sum(1 for r in reader if r.get('date') == today)
+        except Exception as e:
+            scrape_ok = False
+            print(f"\n{'!'*60}")
+            print(f"  SCRAPE FAILED (graceful degradation): {e}")
+            print(f"  Serving stale predictions with warning banner.")
+            print(f"{'!'*60}")
+
+    try:
+        if scrape_ok:
+            # Fresh data — regenerate model + predictions
+            step_update_model()
+            step_performance()
+
+            # Puzzles are non-critical — don't let a Lichess outage block the pipeline
+            try:
+                step_update_puzzles()
+            except Exception as e:
+                print(f"\n  Warning: Puzzle step failed (non-fatal): {e}")
+                print(f"  Continuing with existing puzzle data...")
+
+            _stamp_stale_flag(is_stale=False)
+        else:
+            # Stale path — skip model regen, keep existing JSON, stamp stale
+            print(f"\n{'─'*60}")
+            print(f"  STEP: Skip model regeneration (stale mode)")
+            print(f"{'─'*60}")
+            print(f"  Keeping existing {WEBSITE_JSON} intact")
+            _stamp_stale_flag(is_stale=True)
+
+        # Compute and inject pace alerts
+        if os.path.exists(WEBSITE_JSON):
+            print(f"\n{'─'*60}")
+            print(f"  STEP: Compute pace alerts")
+            print(f"{'─'*60}")
+            with open(WEBSITE_JSON, 'r') as f:
+                wd = json.load(f)
+            alerts = compute_pace_alerts(wd)
+            inject_alerts(wd, alerts)
+            with open(WEBSITE_JSON, 'w') as f:
+                json.dump(wd, f, indent=2)
+            n_alerts = sum(1 for a in alerts if a['status'] != 'on_pace')
+            print(f"  {len(alerts)} tournaments checked, {n_alerts} pace alert(s)")
+
+        # Always update HTML so the stale flag gets embedded in the page
         step_update_html()
         step_log_run()
 
+        # Generate SHA-256 checksums for all output CSVs
+        print(f"\n{'─'*60}")
+        print(f"  STEP: Generate output checksums")
+        print(f"{'─'*60}")
+        generate_manifest(OUTPUT_DIR)
+
+        # Log health and generate dashboard
+        duration = time.time() - t_start
+        log_scrape_attempt(
+            success=scrape_ok,
+            row_count=row_count,
+            validation_errors=validation_errors,
+            validation_warnings=validation_warnings,
+            duration_seconds=duration,
+        )
+        generate_health_html()
+
+        status = "COMPLETE" if scrape_ok else "COMPLETE (STALE)"
         print(f"\n{'='*60}")
-        print(f"  PIPELINE COMPLETE — {RUN_TS}")
+        print(f"  PIPELINE {status} — {RUN_TS}")
         print(f"{'='*60}")
 
     except Exception as e:
+        # Log failure to health tracker
+        duration = time.time() - t_start
+        log_scrape_attempt(
+            success=False,
+            row_count=0,
+            validation_errors=validation_errors,
+            validation_warnings=validation_warnings,
+            duration_seconds=duration,
+        )
+        generate_health_html()
+
         print(f"\n{'!'*60}")
         print(f"  PIPELINE FAILED: {e}")
         print(f"{'!'*60}")

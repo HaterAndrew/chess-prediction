@@ -1,0 +1,11 @@
+tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,first_reg,last_reg,is_covid,is_online,early_bird_spike,spike_day,spike_magnitude
+5,2012 Atlantic Open,Atlantic Open,2012.0,267,False,0,,,False,False,False,,
+6,2012 Indianapolis Open,Indianapolis Open,2012.0,161,False,0,,,False,False,False,,
+7,2012 Manhattan Open,Manhattan Open,2012.0,281,False,0,,,False,False,False,,
+2018,2022 Chicago Open,Chicago Open,2022.0,860,True,860,2021-12-01,2022-05-30,False,False,True,2022-03-20,42
+2019,2023 Chicago Open,Chicago Open,2023.0,903,True,903,2022-12-08,2023-05-29,False,False,True,2023-03-23,55
+2020,2024 Chicago Open,Chicago Open,2024.0,925,True,925,2023-11-15,2024-05-27,False,False,True,2024-03-21,48
+2021,2025 Chicago Open,Chicago Open,2025.0,960,True,960,2024-12-02,2025-05-26,False,False,True,2025-03-20,50
+3001,2026 Chicago Open,Chicago Open,2026.0,180,True,180,2025-12-10,2026-03-23,False,False,False,,
+3002,2026 Atlantic City Open,Atlantic City Open,2026.0,242,True,242,2025-11-01,2026-03-23,False,False,False,,
+3003,2026 World Open,World Open,2026.0,31,True,31,2026-01-15,2026-03-23,False,False,False,,

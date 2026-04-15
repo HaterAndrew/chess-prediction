@@ -502,7 +502,8 @@ for _, row in t2026.iterrows():
     elif status == 'live' and days_remaining > 0:
         point, ci_lo, ci_hi = prod_model.predict_nowcast(
             current_count, days_remaining, family,
-            early_bird_deadline=eb_deadline)
+            early_bird_deadline=eb_deadline,
+            event_start_date=event_date)
         if point is None:
             point, ci_lo, ci_hi = predict_with_lognormal_ci(current_count, days_remaining, family, ratios)
 

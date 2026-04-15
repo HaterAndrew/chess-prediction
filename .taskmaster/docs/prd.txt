@@ -1,0 +1,135 @@
+# CCA Entry Predictor — Product Requirements Document
+# Version: 1.0 | Date: 15 April 2026
+# Owner: Andrew Hater
+
+## 1. OVERVIEW
+
+The CCA Entry Predictor is a chess tournament registration forecasting system that predicts entry counts for Chess Club of America tournaments. It uses historical registration patterns from 192K CCA records to provide point estimates and 80% confidence intervals for tournament directors.
+
+Current state: the system is production-ready with a fully automated daily pipeline (GitHub Actions scrapes CCA data nightly at 20:15 EST, regenerates predictions, and pushes to GitHub Pages). The web app is an 80K-line single-file dark-themed SPA (docs/index.html) with 6 tabs: Predictions, Data Entry, Email, Performance, About the Model, and Puzzles. The prediction model (N5v4_Final) uses historical ratio nowcasting with LOO-calibrated lognormal confidence intervals. A naive baseline (M1: 3-year rolling mean) provides pre-registration forecasts.
+
+The project is in the iteration/enhancement phase — core prediction and automation are working. Work is focused on model accuracy improvements, UX polish, new features for tournament directors, and hardening the data pipeline.
+
+## 2. GOALS
+
+G1: Improve prediction accuracy — reduce MAPE and tighten CI bands while maintaining 80% coverage.
+G2: Enhance the web app UX — mobile responsiveness, accessibility, performance optimization.
+G3: Add tournament director tools — alerts, comparisons, bulk export, planning features.
+G4: Harden the data pipeline — error recovery, monitoring, data quality checks.
+G5: Expand data sources — fees, standings, player demographics, weather, competing events.
+G6: Add user personalization — favorite tournaments, custom alerts, saved views.
+
+## 3. WORK STREAMS
+
+### WS1: Model Accuracy Improvements [G1]
+Priority: HIGH — core value proposition.
+
+Tasks:
+- Add feature engineering: day-of-week effects, holiday proximity, early-bird deadline distance
+- Implement tournament-size segmentation (small <50, medium 50-200, large 200+) with segment-specific models
+- Add weather/season adjustment for outdoor-adjacent events
+- Implement competing-event detection (tournaments on same weekend cannibalize entries)
+- Add early-bird spike detection and modeling (many tournaments see 30-50% of entries in final 48 hours before early-bird deadline)
+- Build ensemble model combining N5v4_Final with gradient-boosted baseline
+- Add tournament fee as a predictive feature (scrape_fees.py already collects this data)
+- Implement dynamic CI width based on tournament volatility (high-variance families get wider bands)
+- Add "similar tournament" pooling for new/low-history families (fewer than 3 editions)
+- Track and visualize model drift over time via recalibrate.py output
+- Create automated A/B testing framework: run multiple models in parallel, log predictions for all, compare after completion
+
+### WS2: Web App UX & Performance [G2]
+Priority: HIGH — user-facing quality.
+
+Tasks:
+- Mobile responsiveness audit and fixes (current layout breaks below 768px on chart panels)
+- Reduce index.html from 80K lines — extract CSS, JS, and data into separate files with cache-busting
+- Add loading skeleton states for chart rendering
+- Implement virtual scrolling for the historical tournament dropdown (currently renders all 500+ items)
+- Add keyboard navigation for tournament selection (arrow keys, type-to-search)
+- Improve chart interactivity — hover tooltips with richer context, click to drill into daily registration curve
+- Add dark/light theme toggle (currently dark-only)
+- Progressive Web App (PWA) support — offline access to last-loaded predictions, service worker caching
+- Optimize splash screen — skip on return visits (localStorage flag)
+- Add URL-based deep linking to specific tournaments (hash routing)
+- Improve accessibility: ARIA labels on charts, screen reader announcements for prediction updates, keyboard-operable puzzle board
+
+### WS3: Tournament Director Tools [G3]
+Priority: MEDIUM-HIGH — expands user base beyond casual viewers.
+
+Tasks:
+- Add "My Tournaments" feature — directors can favorite tournaments and see a personalized dashboard
+- Tournament comparison view — side-by-side registration curves for 2-3 tournaments
+- Registration pace alerts — email/webhook notification when registrations are significantly above/below historical pace
+- Bulk CSV export of predictions and historical data for all tournaments in a category
+- "What-if" scenario tool — "If we move the early-bird deadline 2 weeks earlier, how does that affect final count?"
+- Add tournament ROI calculator — estimate revenue based on predicted entries and fee structure
+- Weekly email digest for tournament directors with predictions for their upcoming events
+- Add "Registration Health" indicator per tournament — green/yellow/red based on pace vs. historical
+- Print-friendly prediction summary card per tournament (for board meetings)
+- Add historical tournament search with filters (year range, entry count range, family, state)
+
+### WS4: Data Pipeline Hardening [G4]
+Priority: MEDIUM — prevents silent failures.
+
+Tasks:
+- Add Selenium retry logic with exponential backoff in scrape_entries.py (currently fails silently on CCA site changes)
+- Add data validation step after scrape: check for null counts, duplicate entries, impossible values (negative, >10000)
+- Add GitHub Actions failure notifications (email or Slack webhook on scrape failure)
+- Add scrape health dashboard — track daily scrape success rate, data freshness, last successful run
+- Implement graceful degradation — if scrape fails, serve stale predictions with "last updated" warning
+- Add checksums/hashes to output CSVs to detect corruption
+- Add integration test: run full pipeline on a frozen test dataset and compare output to known-good baseline
+- Add monitoring for CCA website structure changes (detect when scraper needs updating)
+- Create a data backfill script for recovering from multi-day scrape failures
+- Add rate limiting and polite crawling headers to all scrapers
+
+### WS5: Data Source Expansion [G5]
+Priority: MEDIUM — enriches predictions over time.
+
+Tasks:
+- Integrate tournament fee data from scrape_fees.py into the prediction model (data already collected but not used as a feature)
+- Scrape player count per section (not just total entries) for section-level predictions
+- Add USCF rating distribution per tournament (from scrape_standings.py data) as a feature
+- Integrate weather forecast data for events with outdoor components
+- Detect and flag multi-site events (e.g., National Open + side events)
+- Add historical cancellation/postponement data
+- Scrape tournament location (city/state) and use geographic features (population density, chess club proximity)
+- Track social media mentions/buzz as a leading indicator for major events
+- Add Google Trends data for tournament name search volume
+
+### WS6: Puzzles & Engagement [Bonus]
+Priority: LOW — engagement feature, not core.
+
+Tasks:
+- Add puzzle difficulty progression (start easy, increase based on solve rate)
+- Track puzzle stats across sessions (localStorage): solve rate, average time, streak
+- Add puzzle categories filter (tactics, endgame, opening, checkmate-in-N)
+- Add daily puzzle challenge with shareable results (Wordle-style)
+- Integrate puzzle rating with Lichess/chess.com puzzle databases for more variety
+- Add multi-move puzzles with move tree visualization
+
+## 4. TECHNICAL CONSTRAINTS
+
+- Single-file SPA: docs/index.html is the production artifact. GitHub Pages serves the docs/ directory directly. Any file splitting must maintain this deploy model or migrate to a build step.
+- GitHub Actions CI: daily_update.yml and enrichment_scrapers.yml are the automation backbone. Changes must not break the daily pipeline.
+- Selenium dependency: scrape_entries.py requires Chrome + Selenium. GitHub Actions uses browser-actions/setup-chrome.
+- Data embedded in HTML: TOURNAMENT_DATA, PUZZLE_DATA, CHESS_HISTORY, and PERFORMANCE_DATA are injected into index.html by auto_update.py. The brace-matching replacement logic is fragile — do not nest additional JSON blocks without updating the parser.
+- No backend: the app is fully static. Any "personalization" features must use localStorage or a lightweight external service (e.g., Cloudflare Workers KV).
+- Model files: 04c_final_model.py is the production model. Changes to the model signature or output schema must be reflected in 04d_website_data_v2.py and auto_update.py.
+- Output directory: all generated data lives in output/. The .gitignore excludes large files — check before adding new outputs.
+
+## 5. SUCCESS CRITERIA
+
+S1: Model accuracy — MAPE below 15% for tournaments with 3+ historical editions. 80% CI coverage between 75-90%.
+S2: Web performance — Lighthouse score above 80 on mobile. First contentful paint under 2 seconds.
+S3: Pipeline reliability — daily scrape success rate above 95% over any 30-day window.
+S4: User engagement — average session duration above 2 minutes (currently unmeasured — need to add basic analytics).
+S5: Tournament director adoption — at least 5 tournament directors using the tool for planning (qualitative feedback).
+S6: Code quality — index.html under 40K lines after refactoring (currently 80K). All Python scripts pass pylint with score > 8.
+
+## 6. TIMELINE
+
+Phase 1 (Immediate — this sprint): WS4 pipeline hardening (retry logic, validation, failure alerts), WS2 quick wins (mobile fixes, splash skip, deep linking)
+Phase 2 (Short-term — 2 weeks): WS1 model improvements (feature engineering, early-bird modeling, ensemble), WS2 file splitting/performance
+Phase 3 (Medium-term — 1-2 months): WS3 tournament director tools (comparison view, alerts, export), WS5 fee integration into model
+Phase 4 (Ongoing): WS1 continuous model tuning via recalibrate.py, WS6 puzzle enhancements, WS5 new data sources

@@ -1,0 +1,366 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": "1",
+        "title": "Add Selenium retry logic with exponential backoff",
+        "description": "Implement robust retry mechanism in scrape_entries.py to handle CCA website changes and transient failures gracefully",
+        "details": "Add exponential backoff retry logic (3-5 attempts with 2^n second delays) to scrape_entries.py. Catch Selenium exceptions (TimeoutException, NoSuchElementException, StaleElementReferenceException) and retry with fresh browser instance. Log retry attempts and final failure status. Use max_retries=5, base_delay=2 seconds. Implement circuit breaker pattern to avoid hammering the CCA site if it's down.",
+        "testStrategy": "Unit test with mocked Selenium exceptions at different retry stages. Integration test with real CCA site (rate-limited). Verify exponential backoff timing. Test circuit breaker activation after N consecutive failures.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:39:46.022Z"
+      },
+      {
+        "id": "2",
+        "title": "Implement data validation step after scrape",
+        "description": "Add validation checks to detect null counts, duplicates, impossible values, and data corruption after scraping",
+        "details": "Create validate_scraped_data.py module. Check for: null/NaN entry counts, duplicate tournament entries (same name+date), impossible values (negative counts, >10000 entries), malformed dates, missing required fields. Log validation errors with tournament ID and field name. Implement severity levels (error=fail, warning=log). Return validation report with pass/fail status and detailed error list.",
+        "testStrategy": "Unit test with synthetic invalid datasets (nulls, duplicates, out-of-range values). Test with real historical data. Verify error messages are actionable. Test that valid data passes all checks.",
+        "priority": "high",
+        "dependencies": [
+          "1"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:43:55.214Z"
+      },
+      {
+        "id": "3",
+        "title": "Add GitHub Actions failure notifications",
+        "description": "Configure email or Slack webhook notifications when daily scrape pipeline fails",
+        "details": "Update daily_update.yml and enrichment_scrapers.yml to send notifications on failure. Implement two options: (1) GitHub Actions native email to repo owner, (2) Slack webhook via secrets. Add step after scrape job that checks exit code and sends notification if non-zero. Include error logs, timestamp, and retry instructions in notification. Use GitHub Actions context variables (github.run_id, github.run_number) for traceability.",
+        "testStrategy": "Test workflow file syntax with act (local GitHub Actions runner). Manually trigger workflow failure and verify notification delivery. Test both email and Slack paths. Verify notification includes relevant context.",
+        "priority": "high",
+        "dependencies": [
+          "2"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:45:27.920Z"
+      },
+      {
+        "id": "4",
+        "title": "Build scrape health dashboard",
+        "description": "Create monitoring dashboard tracking daily scrape success rate, data freshness, and last successful run",
+        "details": "Create scrape_health.py that logs each scrape attempt with timestamp, success/failure status, row count, and validation results. Store logs in output/scrape_health.json (append-only). Generate HTML dashboard (scrape_health.html) showing: 30-day success rate, last 10 scrape results, data freshness (hours since last successful scrape), trend chart. Embed in main app as new tab or standalone. Update daily via auto_update.py.",
+        "testStrategy": "Unit test scrape_health.py with synthetic log entries. Verify JSON structure and append logic. Test dashboard rendering with various success/failure patterns. Verify 30-day rolling calculation accuracy.",
+        "priority": "high",
+        "dependencies": [
+          "2",
+          "3"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:47:57.716Z"
+      },
+      {
+        "id": "5",
+        "title": "Implement graceful degradation for stale predictions",
+        "description": "Serve stale predictions with warning banner when scrape fails, instead of showing error",
+        "details": "Modify auto_update.py to detect scrape failure and skip prediction regeneration. Keep previous output/predictions.json intact. Add 'last_updated' timestamp and 'is_stale' flag to prediction JSON. In index.html, detect stale flag and display warning banner: 'Predictions last updated X hours ago. Live data unavailable.' Banner should be dismissible but reappear on page reload. Stale predictions remain fully functional.",
+        "testStrategy": "Test with simulated scrape failure (skip scrape step). Verify stale predictions load correctly. Test warning banner visibility and dismissal. Verify banner reappears on reload. Test that all features work with stale data.",
+        "priority": "high",
+        "dependencies": [
+          "2",
+          "3"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:47:49.700Z"
+      },
+      {
+        "id": "6",
+        "title": "Add checksums/hashes to output CSVs",
+        "description": "Generate and verify SHA-256 checksums for output CSV files to detect corruption",
+        "details": "Modify auto_update.py to compute SHA-256 hash of each output CSV (predictions.csv, historical_data.csv, etc.) and append hash to a manifest file (output/checksums.json). Format: {filename: hash, timestamp, row_count}. Add verify_checksums.py script to validate integrity on load. Include checksum verification in GitHub Actions workflow before deploying to GitHub Pages. Log checksum mismatches as critical errors.",
+        "testStrategy": "Unit test hash generation and verification. Test with valid and corrupted CSV files. Verify manifest JSON structure. Test workflow integration. Simulate corruption and verify detection.",
+        "priority": "medium",
+        "dependencies": [
+          "2"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:45:54.366Z"
+      },
+      {
+        "id": "7",
+        "title": "Create integration test for full pipeline",
+        "description": "Build integration test running full pipeline on frozen test dataset with known-good baseline comparison",
+        "details": "Create test_pipeline_integration.py using pytest. Freeze a small test dataset (50 tournaments, 2 years history) in tests/fixtures/. Run full pipeline: scrape (mock), validate, predict, generate website data. Compare output predictions against known-good baseline (tests/fixtures/expected_output.json). Check: prediction values within 1% tolerance, CI bounds correct, JSON schema valid, CSV row counts match. Run as part of GitHub Actions CI on every push.",
+        "testStrategy": "Use pytest with fixtures. Mock Selenium scraper to return frozen data. Compare predictions numerically (within tolerance). Validate JSON schema. Check file existence and format. Run on every commit to catch regressions.",
+        "priority": "high",
+        "dependencies": [
+          "2",
+          "4"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:49:32.856Z"
+      },
+      {
+        "id": "8",
+        "title": "Add monitoring for CCA website structure changes",
+        "description": "Detect when CCA website structure changes and alert developers to update scraper",
+        "details": "Add structure_monitor.py that scrapes CCA site and compares DOM structure (CSS selectors, element counts, text patterns) against baseline. Store baseline in tests/fixtures/cca_structure_baseline.json. On each scrape, check for: missing selectors, changed element counts, unexpected text patterns. Log warnings if structure deviates. Add GitHub Actions step to run monitor and fail workflow if critical changes detected. Include suggestions for selector updates in error message.",
+        "testStrategy": "Unit test with mocked HTML responses (valid and changed structures). Test baseline comparison logic. Verify alerts trigger on structural changes. Test with real CCA site (rate-limited). Verify error messages are actionable.",
+        "priority": "medium",
+        "dependencies": [
+          "1",
+          "2"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:47:08.914Z"
+      },
+      {
+        "id": "9",
+        "title": "Create data backfill script for multi-day scrape failures",
+        "description": "Implement script to recover from multi-day scrape failures by backfilling missing data",
+        "details": "Create backfill_missing_data.py that: (1) identifies gaps in output/historical_data.csv (missing dates), (2) queries CCA API or archive for missing dates, (3) validates backfilled data, (4) merges into historical dataset, (5) regenerates predictions. Include manual trigger via GitHub Actions workflow_dispatch. Log all backfill operations with source and validation status. Preserve original data integrity (don't overwrite existing entries).",
+        "testStrategy": "Unit test with synthetic gaps in historical data. Test merge logic with overlapping dates. Verify validation runs on backfilled data. Test workflow_dispatch trigger. Verify predictions regenerate correctly after backfill.",
+        "priority": "medium",
+        "dependencies": [
+          "2",
+          "7"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:51:33.457Z"
+      },
+      {
+        "id": "10",
+        "title": "Add rate limiting and polite crawling headers",
+        "description": "Implement rate limiting and proper HTTP headers in all scrapers to be respectful to CCA servers",
+        "details": "Update scrape_entries.py, scrape_fees.py, scrape_standings.py to include: User-Agent header (identify as CCA Entry Predictor bot), delay between requests (1-2 seconds), request timeout (30 seconds), retry-after handling. Use requests library with Session object for connection pooling. Add rate limiter using time.sleep() or ratelimit library. Log request timing. Respect robots.txt if available. Add configuration file (config/scraper_config.json) for rate limits and headers.",
+        "testStrategy": "Unit test rate limiter with timing assertions. Test User-Agent header presence. Verify delays between requests. Test timeout handling. Integration test with real CCA site (verify no 429 errors). Check logs for request timing.",
+        "priority": "medium",
+        "dependencies": [
+          "1"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:42:25.626Z"
+      },
+      {
+        "id": "11",
+        "title": "Mobile responsiveness audit and fixes",
+        "description": "Fix layout breakage below 768px on chart panels and ensure mobile-friendly design",
+        "details": "Audit index.html CSS for responsive design issues. Fix chart panels that break below 768px using CSS media queries. Implement: (1) responsive grid layout (CSS Grid or Flexbox), (2) font scaling, (3) touch-friendly button sizes (min 44px), (4) collapsible navigation for mobile, (5) responsive chart sizing (use container queries or viewport-relative units). Test on actual mobile devices (iOS Safari, Chrome Android) and emulators. Use CSS variables for breakpoints (320px, 768px, 1024px).",
+        "testStrategy": "Manual testing on mobile devices (iPhone, Android). Browser DevTools device emulation. Lighthouse mobile audit. Test all tabs and interactive elements on small screens. Verify touch interactions work. Check font readability.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:40:07.598Z"
+      },
+      {
+        "id": "12",
+        "title": "Reduce index.html size and extract assets",
+        "description": "Split 80K-line index.html into separate CSS, JS, and data files with cache-busting",
+        "details": "Extract CSS into docs/styles.css, JavaScript into docs/app.js, and data into docs/data.json. Implement cache-busting using content hash: docs/styles.css?v=abc123, docs/app.js?v=def456. Update auto_update.py to inject data.json with hash. Maintain GitHub Pages deployment (docs/ directory). Use build script (build.sh) to combine files if needed, or keep separate for better caching. Target: index.html under 40K lines. Use minification for CSS/JS in production.",
+        "testStrategy": "Verify file splitting doesn't break functionality. Test cache-busting (clear cache, verify new version loads). Test on slow network (DevTools throttling). Measure file sizes before/after. Verify Lighthouse performance score improves.",
+        "priority": "high",
+        "dependencies": [
+          "11"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:46:04.604Z"
+      },
+      {
+        "id": "13",
+        "title": "Add loading skeleton states for chart rendering",
+        "description": "Implement skeleton loaders for chart panels to improve perceived performance",
+        "details": "Create CSS skeleton styles (gray placeholder boxes matching chart dimensions). Add skeleton HTML to each chart container. On page load, show skeletons while data loads. Use JavaScript to swap skeleton for actual chart once data is ready. Implement for: Predictions tab (main chart), Performance tab (accuracy chart), Data Entry tab (historical dropdown). Use CSS animations (pulse effect) for skeleton. Target: skeleton visible for <500ms on fast networks, up to 2 seconds on slow networks.",
+        "testStrategy": "Test skeleton visibility on page load. Verify skeleton swaps to chart correctly. Test with DevTools network throttling (slow 3G). Measure time-to-interactive. Verify no layout shift when skeleton swaps.",
+        "priority": "medium",
+        "dependencies": [
+          "12"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:47:29.176Z"
+      },
+      {
+        "id": "14",
+        "title": "Implement virtual scrolling for tournament dropdown",
+        "description": "Add virtual scrolling to historical tournament dropdown (500+ items) for performance",
+        "details": "Replace standard HTML select or list with virtual scrolling component. Use library like Clusterize.js or implement custom virtual scroll (render only visible items). Dropdown should: (1) render only 10-15 visible items at a time, (2) update DOM as user scrolls, (3) support keyboard navigation, (4) maintain scroll position. Implement search/filter to reduce visible items. Test with 500+ tournaments. Measure rendering time and memory usage.",
+        "testStrategy": "Unit test virtual scroll logic (visible range calculation). Test with 500+ items. Measure DOM node count (should be ~15 max). Test keyboard navigation. Verify scroll performance (60 FPS). Test search/filter integration.",
+        "priority": "medium",
+        "dependencies": [
+          "12"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:49:53.486Z"
+      },
+      {
+        "id": "15",
+        "title": "Add keyboard navigation for tournament selection",
+        "description": "Implement arrow keys and type-to-search for tournament dropdown navigation",
+        "details": "Add keyboard event listeners to tournament dropdown: (1) Arrow Up/Down to navigate items, (2) Enter to select, (3) Escape to close, (4) Type to search (filter items by name). Highlight current selection. Update ARIA attributes for screen readers. Implement debounced search (300ms). Clear search on Escape. Test with keyboard-only navigation (no mouse).",
+        "testStrategy": "Unit test keyboard event handlers. Test arrow key navigation (up/down/wrap-around). Test type-to-search with debouncing. Test Enter/Escape behavior. Manual keyboard-only navigation test. Verify ARIA labels update correctly.",
+        "priority": "medium",
+        "dependencies": [
+          "14"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:52:27.750Z"
+      },
+      {
+        "id": "16",
+        "title": "Improve chart interactivity with hover tooltips",
+        "description": "Add rich hover tooltips to charts and implement click-to-drill functionality",
+        "details": "Enhance chart tooltips to show: tournament name, date, predicted entries, CI bounds, actual entries (if available), registration pace. Implement click handler on chart points to drill into daily registration curve (new modal or expanded view). Use Chart.js plugins or custom canvas rendering. Tooltip should follow mouse, show relevant data point info. Drill-down view shows: daily registration counts, cumulative curve, early-bird deadline marker, pace vs. historical average.",
+        "testStrategy": "Test tooltip rendering on hover. Verify tooltip content accuracy. Test click handler and drill-down modal. Test on touch devices (long-press for tooltip). Verify tooltip positioning (doesn't go off-screen). Test with various data ranges.",
+        "priority": "medium",
+        "dependencies": [
+          "12"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:50:42.648Z"
+      },
+      {
+        "id": "17",
+        "title": "Add dark/light theme toggle",
+        "description": "Implement theme switcher to allow users to choose between dark and light modes",
+        "details": "Create CSS custom properties (variables) for colors: --bg-primary, --text-primary, --border-color, etc. Define light and dark theme values. Add theme toggle button in header. Store user preference in localStorage (key: 'theme'). Apply theme on page load based on localStorage or system preference (prefers-color-scheme). Update all colors to use CSS variables. Ensure sufficient contrast in both themes (WCAG AA). Test with color blindness simulators.",
+        "testStrategy": "Test theme toggle functionality. Verify localStorage persistence. Test system preference detection. Verify contrast ratios (WCAG AA). Test all UI elements in both themes. Test with color blindness simulators.",
+        "priority": "medium",
+        "dependencies": [
+          "11"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:41:19.828Z"
+      },
+      {
+        "id": "18",
+        "title": "Implement Progressive Web App (PWA) support",
+        "description": "Add service worker caching and offline access to last-loaded predictions",
+        "details": "Create service worker (docs/sw.js) with cache-first strategy for static assets (CSS, JS, images) and network-first for data. Cache prediction data on successful load. Implement offline fallback page. Add manifest.json for PWA metadata (name, icons, theme color). Register service worker in index.html. Test offline functionality: load app, go offline, verify cached predictions load. Implement cache versioning for updates.",
+        "testStrategy": "Test service worker registration. Verify cache creation and updates. Test offline mode (DevTools offline). Verify cached predictions load. Test cache invalidation on new version. Test on real mobile device (add to home screen).",
+        "priority": "medium",
+        "dependencies": [
+          "12"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:47:39.315Z"
+      },
+      {
+        "id": "19",
+        "title": "Optimize splash screen with localStorage flag",
+        "description": "Skip splash screen on return visits using localStorage flag",
+        "details": "Add localStorage flag 'has_visited' set to true on first visit. On page load, check flag: if true, skip splash screen; if false, show splash and set flag. Splash screen should be skippable (click/ESC). Add option to reset flag (in About tab) to see splash again. Measure: splash screen should add <100ms to first visit, 0ms to return visits.",
+        "testStrategy": "Test localStorage flag persistence. Verify splash skipped on return visits. Test flag reset. Measure page load time (first vs. return). Test on multiple browsers/devices.",
+        "priority": "low",
+        "dependencies": [
+          "12"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:50:13.638Z"
+      },
+      {
+        "id": "20",
+        "title": "Add URL-based deep linking with hash routing",
+        "description": "Implement hash-based routing to allow direct links to specific tournaments and tabs",
+        "details": "Add hash routing: #/predictions/tournament-id, #/data-entry/tournament-id, #/performance, etc. Parse hash on page load and navigate to correct tab/tournament. Update hash on user navigation. Implement using window.location.hash and hashchange event. Support bookmarking and sharing links. Preserve state (selected tournament, date range) in URL. Test with browser back/forward buttons.",
+        "testStrategy": "Test hash parsing and navigation. Test bookmarking links. Test browser back/forward. Verify state preservation. Test with various hash formats. Test on mobile browsers.",
+        "priority": "medium",
+        "dependencies": [
+          "12"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:50:13.643Z"
+      },
+      {
+        "id": "21",
+        "title": "Improve accessibility with ARIA labels and screen reader support",
+        "description": "Add ARIA labels to charts, screen reader announcements, and keyboard-operable puzzle board",
+        "details": "Add ARIA labels to all interactive elements: buttons, dropdowns, charts. Implement live regions (aria-live) for prediction updates. Add alt text to images. Make puzzle board keyboard-operable: arrow keys to move, Enter to select square, number keys for moves. Test with screen readers (NVDA, JAWS, VoiceOver). Ensure all functionality accessible via keyboard. Add skip-to-content link. Test with accessibility audit tools (axe, Lighthouse).",
+        "testStrategy": "Test with screen readers (NVDA, VoiceOver). Keyboard-only navigation test. Lighthouse accessibility audit. axe DevTools scan. Test puzzle board keyboard controls. Verify ARIA labels read correctly.",
+        "priority": "high",
+        "dependencies": [
+          "11",
+          "17"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:51:19.534Z"
+      },
+      {
+        "id": "22",
+        "title": "Add 'My Tournaments' feature with personalized dashboard",
+        "description": "Allow tournament directors to favorite tournaments and view personalized dashboard",
+        "details": "Add heart/star icon to each tournament in Predictions tab. Store favorites in localStorage (key: 'favorite_tournaments', value: array of tournament IDs). Create 'My Tournaments' tab showing only favorited tournaments. Display: predictions, registration pace, alerts status. Add quick-add button to add tournaments. Implement sync option (future: cloud sync via Cloudflare Workers KV). Show count of favorites in tab label.",
+        "testStrategy": "Test favorite toggle (add/remove). Verify localStorage persistence. Test 'My Tournaments' tab display. Test with 0, 1, 10+ favorites. Test quick-add functionality. Verify tab label count updates.",
+        "priority": "medium",
+        "dependencies": [
+          "20"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:53:41.078Z"
+      },
+      {
+        "id": "23",
+        "title": "Build tournament comparison view",
+        "description": "Create side-by-side registration curve comparison for 2-3 tournaments",
+        "details": "Add 'Compare' button to Predictions tab. Allow user to select 2-3 tournaments. Display side-by-side charts: registration curves (daily counts), cumulative entries, pace vs. historical average. Show table with: tournament name, predicted final count, CI bounds, current count, days to deadline. Highlight differences (e.g., 'Tournament A is 20% ahead of pace'). Export comparison as PNG/PDF. Support URL deep linking to comparison view.",
+        "testStrategy": "Test tournament selection (2-3 tournaments). Verify chart rendering. Test data accuracy in comparison table. Test export to PNG/PDF. Test URL deep linking. Test with various tournament sizes.",
+        "priority": "medium",
+        "dependencies": [
+          "20",
+          "22"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:57:20.312Z"
+      },
+      {
+        "id": "24",
+        "title": "Implement registration pace alerts",
+        "description": "Add email/webhook notifications when registrations are significantly above/below historical pace",
+        "details": "Create alerts.py module that: (1) calculates expected registrations for today based on historical pace, (2) compares actual to expected, (3) triggers alert if deviation > threshold (e.g., ±20%), (4) sends email or webhook. Implement alert configuration: tournament selection, threshold, notification method (email/webhook). Store alert settings in localStorage (client-side) or external service (Cloudflare Workers KV). Add 'Alerts' tab to web app for management. Test with synthetic data.",
+        "testStrategy": "Unit test pace calculation and deviation detection. Test alert triggering logic. Test email/webhook sending (mock). Test alert configuration storage. Test with various pace scenarios (ahead, behind, on-pace).",
+        "priority": "medium",
+        "dependencies": [
+          "22"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T19:10:05.656Z"
+      },
+      {
+        "id": "25",
+        "title": "Add feature engineering for day-of-week and holiday effects",
+        "description": "Implement feature engineering for day-of-week, holiday proximity, and early-bird deadline distance",
+        "details": "Modify 04c_final_model.py to extract features: (1) day-of-week (0-6), (2) days until/since holiday (Thanksgiving, Christmas, New Year, Presidents Day, etc.), (3) days until early-bird deadline, (4) is_weekend flag, (5) is_holiday_week flag. Use one-hot encoding for day-of-week. Normalize distance features. Add features to training data. Retrain model and measure MAPE improvement. Log feature importance. Update 04d_website_data_v2.py to compute features for predictions.",
+        "testStrategy": "Unit test feature extraction (verify correct day-of-week, holiday detection). Test with known dates (e.g., 2024-12-25 is Christmas). Verify feature normalization. Measure MAPE before/after. Test feature importance calculation. Verify predictions use new features.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-04-15T16:41:39.702Z"
+      }
+    ],
+    "metadata": {
+      "version": "1.0.0",
+      "lastModified": "2026-04-15T19:10:05.657Z",
+      "taskCount": 25,
+      "completedCount": 25,
+      "tags": [
+        "master"
+      ]
+    }
+  }
+}

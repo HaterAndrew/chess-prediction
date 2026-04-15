@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   scrape-and-update:
@@ -30,16 +31,19 @@ jobs:
           pip install pandas numpy scipy scikit-learn selenium zstandard requests beautifulsoup4
 
       - name: Run scraper
+        id: scrape
         run: |
           cd $GITHUB_WORKSPACE
           python scrape_entries.py
 
       - name: Update predictions
+        id: predict
         run: |
           cd $GITHUB_WORKSPACE
           python auto_update.py --skip-scrape
 
       - name: Commit and push changes
+        id: commit
         run: |
           git config user.name "CCA Bot"
           git config user.email "bot@users.noreply.github.com"
@@ -47,3 +51,35 @@ jobs:
           git diff --cached --quiet || git commit -m "Daily update: $(date +%Y-%m-%d)"
           git pull --rebase || git pull --no-rebase
           git push
+
+      - name: Pipeline summary
+        if: always()
+        run: |
+          echo "## Daily Scrape & Update — $(date +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Scrape entries | ${{ steps.scrape.outcome || '—' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Update predictions | ${{ steps.predict.outcome || '—' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit & push | ${{ steps.commit.outcome || '—' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f output/daily_scrape.csv ]; then
+            ROWS=$(wc -l < output/daily_scrape.csv)
+            echo "**Scrape output**: $((ROWS - 1)) tournament entries" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -f output/website_data.json ]; then
+            echo "**Predictions**: website_data.json updated" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Create failure issue
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Pipeline failure: ${context.workflow} — ${new Date().toISOString().split('T')[0]}`,
+              body: `## Pipeline Failure\n\n- **Workflow**: ${context.workflow}\n- **Run**: ${context.runNumber}\n- **URL**: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n- **Triggered**: ${context.eventName}\n\nPlease investigate.`,
+              labels: ['bug', 'pipeline']
+            });

@@ -901,7 +901,6 @@ function initPuzzles() {
 function dismissSplash() {
   document.getElementById('splash').classList.add('hidden');
   setTimeout(() => document.getElementById('mainContent').classList.add('visible'), 100);
-  localStorage.setItem('cca_has_visited', 'true');
 }
 
 function showSplash() {
@@ -2945,13 +2944,8 @@ function init() {
   }
 
   document.getElementById('lastUpdated').textContent = fmtDateLong(TOURNAMENT_DATA.generated);
-  // Part A: Skip splash on return visits
-  if (localStorage.getItem('cca_has_visited')) {
-    document.getElementById('splash').classList.add('hidden');
-    document.getElementById('mainContent').classList.add('visible');
-  } else {
-    initSplash();
-  }
+  // Always show splash on load
+  initSplash();
 
   // Logo click re-shows splash
   const logo = document.querySelector('.logo');

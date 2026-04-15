@@ -24,6 +24,7 @@ import re
 import sys
 import time
 import csv
+import logging
 from datetime import date, datetime, timedelta
 
 import requests
@@ -31,6 +32,43 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import (
+    TimeoutException,
+    NoSuchElementException,
+    StaleElementReferenceException,
+    WebDriverException,
+)
+
+from scraper_utils import rate_limit
+
+# ---------------------------------------------------------------------------
+# Logging
+# ---------------------------------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+logger = logging.getLogger(__name__)
+
+# Selenium exceptions worth retrying on
+RETRY_EXCEPTIONS = (
+    TimeoutException,
+    NoSuchElementException,
+    StaleElementReferenceException,
+    WebDriverException,
+    ValueError,  # raised when regex matches 0 tournaments
+)
+
+# ---------------------------------------------------------------------------
+# Retry / circuit-breaker settings
+# ---------------------------------------------------------------------------
+MAX_RETRY_ATTEMPTS = 5
+RETRY_BASE_DELAY = 2          # seconds; delays: 2, 4, 8, 16, 32
+CIRCUIT_BREAKER_THRESHOLD = 3  # consecutive full-pipeline failures before exit
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
@@ -240,11 +278,15 @@ def scrape_withdrawals(tournaments, year=2026):
 
 
 def init_driver():
-    """Set up headless Chrome."""
+    """Set up headless Chrome with polite identification and timeouts."""
     opts = Options()
     opts.add_argument('--headless')
     opts.add_argument('--no-sandbox')
     opts.add_argument('--disable-dev-shm-usage')
+    opts.add_argument(
+        '--user-agent=CCA-Entry-Predictor/1.0 '
+        '(chess tournament prediction tool; contact: github.com/HaterAndrew)'
+    )
     # Only set binary_location if the local path exists; on GitHub Actions
     # the browser-actions/setup-chrome action puts chrome on PATH instead.
     local_chrome = '/usr/bin/google-chrome'
@@ -252,6 +294,7 @@ def init_driver():
         opts.binary_location = local_chrome
     driver = webdriver.Chrome(options=opts)
     driver.set_page_load_timeout(30)
+    driver.implicitly_wait(10)
     return driver
 
 
@@ -274,6 +317,7 @@ def scrape_index(driver, max_retries=3, backoff=15):
 
     for attempt in range(1, max_retries + 1):
         try:
+            rate_limit(min_delay=1.0, max_delay=2.0)
             print(f"Loading CCA index (attempt {attempt}/{max_retries}): {url}")
             driver.get(url)
             print("Waiting 10s for AJAX content...")
@@ -496,46 +540,88 @@ def print_comparison(all_rows):
     print()
 
 
-def main():
+def run_scrape_pipeline():
+    """
+    Execute the full scrape-consolidate-save pipeline once.
+    Returns normally on success; raises on any failure.
+    """
     driver = None
     try:
         driver = init_driver()
-        print(f"Scraping CCA tournaments for {TODAY}...")
+        logger.info("Scraping CCA tournaments for %s ...", TODAY)
 
         # Step 1: Extract all data from index page (single page load)
         tournaments = scrape_index(driver)
         if not tournaments:
-            print("WARNING: No 2026 tournaments found on CCA index page.")
-            print("Site may be down or page structure changed.")
-            sys.exit(1)
+            raise ValueError("No 2026 tournaments found on CCA index page.")
 
         for t in tournaments:
-            print(f"  {t['name']:<45s} {t['start_date']} - {t['end_date']}  [{t['entry_count']}]")
+            logger.info("  %s  %s - %s  [%d]",
+                        t['name'].ljust(45), t['start_date'], t['end_date'], t['entry_count'])
 
         # Step 2: Scrape withdrawal counts from entry list pages
         scrape_withdrawals(tournaments)
 
         # Step 3: Filter World Open to only Under 13, top 6, lower sections
         consolidated = consolidate_world_open(tournaments)
-        print(f"\nFiltered to {len(consolidated)} rows (kept 3 WO sub-events, dropped others)")
+        logger.info("Filtered to %d rows (kept 3 WO sub-events, dropped others)", len(consolidated))
 
         # Step 4: Update daily_scrape.csv (idempotent)
         all_rows = update_csv(consolidated)
-        print(f"Saved to {CSV_PATH}")
+        logger.info("Saved to %s", CSV_PATH)
 
         # Step 5: Sync dates to tournament_metadata.csv
-        print(f"\n── Metadata sync ──")
+        logger.info("── Metadata sync ──")
         sync_metadata(consolidated)
 
         # Step 6: Print comparison
         print_comparison(all_rows)
 
-    except Exception as e:
-        print(f"FATAL ERROR: {e}")
-        sys.exit(1)
     finally:
         if driver:
             driver.quit()
+
+
+def main():
+    consecutive_failures = 0
+
+    for attempt in range(1, MAX_RETRY_ATTEMPTS + 1):
+        try:
+            logger.info("Pipeline attempt %d/%d", attempt, MAX_RETRY_ATTEMPTS)
+            run_scrape_pipeline()
+            logger.info("Pipeline succeeded on attempt %d", attempt)
+            return  # success — exit
+
+        except RETRY_EXCEPTIONS as exc:
+            consecutive_failures += 1
+            delay = RETRY_BASE_DELAY * (2 ** (attempt - 1))
+            logger.warning(
+                "Attempt %d/%d failed (%s: %s). Retrying in %ds...",
+                attempt, MAX_RETRY_ATTEMPTS, type(exc).__name__, exc, delay,
+            )
+
+            # Circuit breaker check
+            if consecutive_failures >= CIRCUIT_BREAKER_THRESHOLD:
+                logger.critical(
+                    "CIRCUIT BREAKER: %d consecutive pipeline failures. "
+                    "Aborting to avoid repeated load on target site.",
+                    consecutive_failures,
+                )
+                sys.exit(2)
+
+            if attempt < MAX_RETRY_ATTEMPTS:
+                time.sleep(delay)
+
+        except Exception as exc:
+            # Non-retryable error — fail immediately
+            logger.error("Non-retryable error: %s: %s", type(exc).__name__, exc)
+            sys.exit(1)
+
+    # Exhausted all retries
+    logger.error(
+        "All %d retry attempts exhausted. Scrape failed.", MAX_RETRY_ATTEMPTS
+    )
+    sys.exit(1)
 
 
 if __name__ == '__main__':

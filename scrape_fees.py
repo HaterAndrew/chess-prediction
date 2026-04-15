@@ -21,6 +21,8 @@ from urllib.parse import urljoin
 import requests
 from bs4 import BeautifulSoup
 
+from scraper_utils import polite_session, respectful_get, DEFAULT_TIMEOUT
+
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 CSV_PATH = os.path.join(OUTPUT_DIR, "tournament_fees.csv")
@@ -31,9 +33,6 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 log = logging.getLogger(__name__)
-
-# Rate-limit delay between HTTP requests (seconds)
-REQUEST_DELAY = 0.5
 
 # Common CCA tournament codes and the year suffixes to try
 TOURNAMENT_CODES = [
@@ -54,26 +53,17 @@ TOURNAMENT_CODES = [
 ]
 YEAR_SUFFIXES = ["22", "23", "24", "25", "26"]
 
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
-    ),
-}
-
 # ---------------------------------------------------------------------------
 # HTTP helper
 # ---------------------------------------------------------------------------
 
-_session = requests.Session()
-_session.headers.update(HEADERS)
+_session = polite_session()
 
 
-def fetch(url, timeout=15):
-    """GET a URL; return (response, True) or (None, False)."""
+def fetch(url, timeout=DEFAULT_TIMEOUT):
+    """GET a URL with rate limiting; return (response, True) or (None, False)."""
     try:
-        resp = _session.get(url, timeout=timeout)
-        time.sleep(REQUEST_DELAY)
+        resp = respectful_get(_session, url, timeout=timeout)
         if resp.status_code == 200:
             return resp, True
         log.debug("HTTP %s for %s", resp.status_code, url)

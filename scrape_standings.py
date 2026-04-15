@@ -23,21 +23,14 @@ from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 
+from scraper_utils import polite_session, respectful_get, DEFAULT_TIMEOUT
+
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 OUTPUT_CSV = os.path.join(OUTPUT_DIR, "historical_standings.csv")
 
-# Rate limit between HTTP requests (seconds)
-REQUEST_DELAY = 0.5
-
-# Session with sensible defaults
-SESSION = requests.Session()
-SESSION.headers.update({
-    "User-Agent": (
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    )
-})
+# Session with polite headers and retry logic
+SESSION = polite_session()
 
 # Known major CCA tournament slugs to try across all years.
 # Includes common URL-naming variations.
@@ -129,10 +122,9 @@ ARCHIVE_BASE = "https://archive.chessevents.com"
 
 
 def fetch(url):
-    """GET a URL, return (response, soup) or (None, None) on failure."""
+    """GET a URL with rate limiting, return (response, soup) or (None, None) on failure."""
     try:
-        resp = SESSION.get(url, timeout=20)
-        time.sleep(REQUEST_DELAY)
+        resp = respectful_get(SESSION, url, timeout=DEFAULT_TIMEOUT)
         if resp.status_code == 200:
             # Detect redirects to the tournament list page (not an event page)
             if resp.url.rstrip("/").endswith("/tournaments"):

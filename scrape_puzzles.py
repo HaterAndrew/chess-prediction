@@ -26,6 +26,8 @@ from pathlib import Path
 import requests
 import zstandard as zstd
 
+from scraper_utils import polite_session, DEFAULT_TIMEOUT
+
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
@@ -35,7 +37,6 @@ PUZZLE_BANK = OUTPUT_DIR / "puzzle_bank.csv"
 DAILY_JSON = OUTPUT_DIR / "daily_puzzles.json"
 
 LICHESS_DB_URL = "https://database.lichess.org/lichess_db_puzzle.csv.zst"
-USER_AGENT = "chess-prediction/1.0 (batch puzzle fetch)"
 
 MIN_RATING = 2000
 MIN_PLAYS = 1000
@@ -78,8 +79,7 @@ def build_puzzle_bank() -> None:
     log.info("Downloading Lichess puzzle database (streaming) …")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    session = requests.Session()
-    session.headers.update({"User-Agent": USER_AGENT})
+    session = polite_session()
 
     try:
         resp = session.get(LICHESS_DB_URL, stream=True, timeout=120)

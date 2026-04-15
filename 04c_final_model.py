@@ -32,6 +32,7 @@ import sys
 import warnings
 from datetime import datetime, timedelta
 from sklearn.linear_model import HuberRegressor
+from feature_engineering import compute_all_features, compute_adjustment_factor
 
 warnings.filterwarnings('ignore')
 
@@ -969,19 +970,19 @@ class N5v4_Final:
             low *= (1 - wd_rate)
             high *= (1 - wd_rate)
 
-        # Fee deadline surge: if early bird deadline is within 7 days,
-        # boost remaining-to-register estimate by 10%
+        # Feature-engineered adjustments: day-of-week, holiday proximity,
+        # early-bird deadline distance. These apply small multiplicative
+        # corrections to the point estimate and CI bounds.
         eb_deadline = kwargs.get('early_bird_deadline')
-        if eb_deadline and days_remaining > 0:
+        event_start = kwargs.get('event_start_date')
+        if event_start and days_remaining > 0:
             try:
-                if isinstance(eb_deadline, str):
-                    eb_deadline = pd.to_datetime(eb_deadline)
-                days_to_eb = (eb_deadline - TODAY).days
-                if 0 < days_to_eb <= 7:
-                    remaining_est = point - current_count
-                    if remaining_est > 0:
-                        point = current_count + remaining_est * 1.10
-                        high = high + remaining_est * 0.10  # widen upper CI slightly
+                features = compute_all_features(TODAY, event_start, eb_deadline)
+                feat_adj = compute_adjustment_factor(features, days_remaining)
+                if feat_adj != 1.0:
+                    point *= feat_adj
+                    low *= feat_adj
+                    high *= feat_adj
             except (ValueError, TypeError):
                 pass
 

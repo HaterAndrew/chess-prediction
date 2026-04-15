@@ -34,6 +34,8 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+from scraper_utils import polite_session, rate_limit as _rate_limit, DEFAULT_TIMEOUT
+
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -42,8 +44,6 @@ BASE_URL = "https://www.chessaction.com"
 COMPLETED_URL = f"{BASE_URL}/ajaxFrontGetCompletedTourListForAllNew.php"
 ENTRY_LIST_TEMPLATE = f"{BASE_URL}/tournaments/advlists/CCA/CCA_{{code}}{{yy}}/CCA_{{code}}{{yy}}_alp_n.html"
 REALTIME_URL = f"{BASE_URL}/tournaments/ajax_get_adv_params.php"
-
-RATE_LIMIT = 0.5  # seconds between requests
 
 # ── Tournament code mapping ──────────────────────────────────────────────
 # CCA uses short codes in their entry list URLs. This maps known tournament
@@ -94,20 +94,11 @@ KNOWN_CODES = {
 
 
 def create_session():
-    """Create a requests session with retry logic."""
-    session = requests.Session()
-    retries = Retry(
-        total=3,
-        backoff_factor=1.0,
-        status_forcelist=[500, 502, 503, 504],
-    )
-    adapter = HTTPAdapter(max_retries=retries)
-    session.mount("https://", adapter)
-    session.mount("http://", adapter)
+    """Create a requests session with polite headers and retry logic."""
+    session = polite_session()
+    # CCA AJAX endpoints need these extra headers
     session.headers.update({
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
         "Accept": "application/json, text/javascript, */*; q=0.01",
-        "Accept-Language": "en-US,en;q=0.9",
         "X-Requested-With": "XMLHttpRequest",
         "Referer": "https://www.chessaction.com/tournaments/",
         "Origin": "https://www.chessaction.com",
@@ -118,10 +109,11 @@ def create_session():
 def fetch_completed_tournaments(session):
     """POST to CCA API to get JSON of all completed tournaments."""
     print("Fetching completed tournament list from CCA...")
+    _rate_limit()
     resp = session.post(
         COMPLETED_URL,
         data={"vendor_search": "3", "length": "-1"},
-        timeout=60,
+        timeout=DEFAULT_TIMEOUT,
     )
     resp.raise_for_status()
 
@@ -277,7 +269,8 @@ def fetch_entry_list_html(session, code, yy):
     """
     url = ENTRY_LIST_TEMPLATE.format(code=code, yy=yy)
     try:
-        resp = session.get(url, timeout=15)
+        _rate_limit()
+        resp = session.get(url, timeout=DEFAULT_TIMEOUT)
         if resp.status_code == 200 and len(resp.text) > 200:
             return resp.text
         return None
@@ -294,10 +287,11 @@ def fetch_realtime_count(session, tid):
     if not tid:
         return None
     try:
+        _rate_limit()
         resp = session.get(
             REALTIME_URL,
             params={"tid": tid, "met": "0"},
-            timeout=10,
+            timeout=DEFAULT_TIMEOUT,
         )
         if resp.status_code != 200:
             return None
@@ -462,11 +456,9 @@ def process_tournament(session, record_info):
     html_data = None
     if code and yy:
         html_data = fetch_entry_list_html(session, code, yy)
-        time.sleep(RATE_LIMIT)
 
     # Fetch real-time count
     rt_data = fetch_realtime_count(session, tid)
-    time.sleep(RATE_LIMIT)
 
     # If realtime data has a total, prefer it over the listing total
     if rt_data and rt_data.get("total", 0) > 0:

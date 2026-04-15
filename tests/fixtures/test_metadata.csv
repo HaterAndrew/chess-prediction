@@ -1,0 +1,8 @@
+family,year,start_date,end_date,early_bird_deadline,early_bird_fee,regular_fee,onsite_fee,venue_city,venue_state
+Chicago Open,2026,2026-05-21,2026-05-25,2026-03-19,207,227,250,Wheeling,IL
+Chicago Open,2025,2025-05-22,2025-05-26,2025-03-20,197,217,240,Wheeling,IL
+Chicago Open,2024,2024-05-23,2024-05-27,2024-03-21,189,209,230,Wheeling,IL
+Chicago Open,2023,2023-05-25,2023-05-29,2023-03-23,179,199,220,Wheeling,IL
+Chicago Open,2022,2022-05-26,2022-05-30,2022-03-24,169,189,210,Wheeling,IL
+World Open,2026,2026-07-01,2026-07-05,2026-05-15,318,328,350,Washington,DC
+Atlantic City Open,2026,2026-04-01,2026-04-05,,,,, ,

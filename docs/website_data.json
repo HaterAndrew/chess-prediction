@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-13",
-  "generated_time": "2026-04-13T12:29:44.150577-04:00",
+  "generated": "2026-04-15",
+  "generated_time": "2026-04-15T17:23:08.386912-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 14,
@@ -14,13 +14,13 @@
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 263,
-      "gross_count": 268,
+      "current_count": 272,
+      "gross_count": 277,
       "withdrawal_count": 5,
-      "days_remaining": 38,
-      "point_estimate": 903,
-      "ci_lower": 872,
-      "ci_upper": 934,
+      "days_remaining": 36,
+      "point_estimate": 884,
+      "ci_lower": 855,
+      "ci_upper": 913,
       "ci_level": 0.8,
       "historical": [
         {
@@ -181,6 +181,14 @@
         [
           73,
           263
+        ],
+        [
+          74,
+          265
+        ],
+        [
+          75,
+          272
         ]
       ],
       "registration_curve": [
@@ -237,8 +245,16 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 232,
+        "count_at_same_point": 244,
         "final": 899
+      },
+      "pace_alert": {
+        "family": "Chicago Open",
+        "status": "on_pace",
+        "actual": 272,
+        "expected": 290,
+        "deviation_pct": -6.1,
+        "message": "Registrations are tracking within normal range (-6%)"
       }
     },
     {
@@ -253,10 +269,10 @@
       "current_count": 12,
       "gross_count": 12,
       "withdrawal_count": 0,
-      "days_remaining": 53,
-      "point_estimate": 220,
+      "days_remaining": 51,
+      "point_estimate": 219,
       "ci_lower": 134,
-      "ci_upper": 361,
+      "ci_upper": 359,
       "ci_level": 0.8,
       "historical": [
         {
@@ -373,6 +389,14 @@
         [
           21,
           12
+        ],
+        [
+          22,
+          12
+        ],
+        [
+          23,
+          12
         ]
       ],
       "registration_curve": [
@@ -429,8 +453,16 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 6,
+        "count_at_same_point": 7,
         "final": 189
+      },
+      "pace_alert": {
+        "family": "Hartford Open",
+        "status": "above_pace",
+        "actual": 12,
+        "expected": 9,
+        "deviation_pct": 33.9,
+        "message": "Registrations are 33.9% above historical pace"
       }
     },
     {
@@ -442,13 +474,13 @@
       "early_bird_fee": 93.0,
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
-      "current_count": 7,
-      "gross_count": 7,
+      "current_count": 8,
+      "gross_count": 8,
       "withdrawal_count": 0,
-      "days_remaining": 53,
-      "point_estimate": 205,
-      "ci_lower": 125,
-      "ci_upper": 336,
+      "days_remaining": 51,
+      "point_estimate": 209,
+      "ci_lower": 127,
+      "ci_upper": 342,
       "ci_level": 0.8,
       "historical": [
         {
@@ -565,6 +597,14 @@
         [
           21,
           7
+        ],
+        [
+          22,
+          7
+        ],
+        [
+          23,
+          8
         ]
       ],
       "registration_curve": [
@@ -621,8 +661,16 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 2,
+        "count_at_same_point": 4,
         "final": 199
+      },
+      "pace_alert": {
+        "family": "Cleveland Open",
+        "status": "below_pace",
+        "actual": 8,
+        "expected": 22,
+        "deviation_pct": -63.3,
+        "message": "Registrations are 63.3% below historical pace"
       }
     },
     {
@@ -637,7 +685,7 @@
       "current_count": 6,
       "gross_count": 6,
       "withdrawal_count": 0,
-      "days_remaining": 67,
+      "days_remaining": 65,
       "point_estimate": 80,
       "ci_lower": 43,
       "ci_upper": 149,
@@ -742,6 +790,14 @@
         [
           21,
           6
+        ],
+        [
+          22,
+          6
+        ],
+        [
+          23,
+          6
         ]
       ],
       "registration_curve": [
@@ -800,6 +856,14 @@
         "year": 2025,
         "count_at_same_point": 2,
         "final": 83
+      },
+      "pace_alert": {
+        "family": "New York State Open",
+        "status": "above_pace",
+        "actual": 6,
+        "expected": 4,
+        "deviation_pct": 68.8,
+        "message": "Registrations are 68.8% above historical pace"
       }
     },
     {
@@ -814,10 +878,10 @@
       "current_count": 7,
       "gross_count": 8,
       "withdrawal_count": 1,
-      "days_remaining": 73,
-      "point_estimate": 116,
-      "ci_lower": 103,
-      "ci_upper": 130,
+      "days_remaining": 71,
+      "point_estimate": 111,
+      "ci_lower": 99,
+      "ci_upper": 125,
       "ci_level": 0.8,
       "historical": [
         {
@@ -980,7 +1044,15 @@
       ],
       "status": "live",
       "prediction_source": "model",
-      "prior_year_pace": null
+      "prior_year_pace": null,
+      "pace_alert": {
+        "family": "DC International",
+        "status": "above_pace",
+        "actual": 7,
+        "expected": 4,
+        "deviation_pct": 80.3,
+        "message": "Registrations are 80.3% above historical pace"
+      }
     },
     {
       "family": "DC Open",
@@ -994,10 +1066,10 @@
       "current_count": 2,
       "gross_count": 3,
       "withdrawal_count": 1,
-      "days_remaining": 74,
-      "point_estimate": 299,
-      "ci_lower": 248,
-      "ci_upper": 362,
+      "days_remaining": 72,
+      "point_estimate": 296,
+      "ci_lower": 244,
+      "ci_upper": 359,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1152,7 +1224,15 @@
       ],
       "status": "live",
       "prediction_source": "model",
-      "prior_year_pace": null
+      "prior_year_pace": null,
+      "pace_alert": {
+        "family": "DC Open",
+        "status": "below_pace",
+        "actual": 2,
+        "expected": 9,
+        "deviation_pct": -76.9,
+        "message": "Registrations are 76.9% below historical pace"
+      }
     },
     {
       "family": "World Open, lower sections",
@@ -1163,10 +1243,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 56,
-      "gross_count": 59,
+      "current_count": 57,
+      "gross_count": 60,
       "withdrawal_count": 3,
-      "days_remaining": 74,
+      "days_remaining": 72,
       "point_estimate": 145,
       "ci_lower": 135,
       "ci_upper": 151,
@@ -1191,7 +1271,7 @@
       "daily_data": [
         [
           0,
-          56
+          57
         ]
       ],
       "registration_curve": [
@@ -1244,7 +1324,15 @@
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "World Open, lower sections",
+        "status": "above_pace",
+        "actual": 57,
+        "expected": 4,
+        "deviation_pct": 1196.5,
+        "message": "Registrations are 1196.5% above historical pace"
+      }
     },
     {
       "family": "World Open Under 13 Championship",
@@ -1255,10 +1343,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 2,
-      "gross_count": 2,
+      "current_count": 3,
+      "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 77,
+      "days_remaining": 75,
       "point_estimate": 110,
       "ci_lower": 77,
       "ci_upper": 145,
@@ -1293,7 +1381,7 @@
       "daily_data": [
         [
           0,
-          2
+          3
         ]
       ],
       "registration_curve": [
@@ -1346,7 +1434,15 @@
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "World Open Under 13 Championship",
+        "status": "on_pace",
+        "actual": 3,
+        "expected": 3,
+        "deviation_pct": 4.1,
+        "message": "Registrations are tracking within normal range (+4%)"
+      }
     },
     {
       "family": "World Open, top 6 sections",
@@ -1357,10 +1453,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 56,
-      "gross_count": 56,
+      "current_count": 57,
+      "gross_count": 57,
       "withdrawal_count": 0,
-      "days_remaining": 79,
+      "days_remaining": 77,
       "point_estimate": 1288,
       "ci_lower": 1177,
       "ci_upper": 1424,
@@ -1395,7 +1491,7 @@
       "daily_data": [
         [
           0,
-          56
+          57
         ]
       ],
       "registration_curve": [
@@ -1448,7 +1544,15 @@
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "World Open, top 6 sections",
+        "status": "above_pace",
+        "actual": 57,
+        "expected": 31,
+        "deviation_pct": 82.6,
+        "message": "Registrations are 82.6% above historical pace"
+      }
     },
     {
       "family": "Chicago Class",
@@ -1462,7 +1566,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 95,
+      "days_remaining": 93,
       "point_estimate": 269,
       "ci_lower": 157,
       "ci_upper": 463,
@@ -1582,6 +1686,14 @@
         [
           21,
           1
+        ],
+        [
+          22,
+          1
+        ],
+        [
+          23,
+          1
         ]
       ],
       "registration_curve": [
@@ -1640,6 +1752,14 @@
         "year": 2025,
         "count_at_same_point": 2,
         "final": 294
+      },
+      "pace_alert": {
+        "family": "Chicago Class",
+        "status": "below_pace",
+        "actual": 1,
+        "expected": 3,
+        "deviation_pct": -67.5,
+        "message": "Registrations are 67.5% below historical pace"
       }
     },
     {
@@ -1654,10 +1774,10 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 95,
-      "point_estimate": 173,
-      "ci_lower": 93,
-      "ci_upper": 322,
+      "days_remaining": 93,
+      "point_estimate": 177,
+      "ci_lower": 95,
+      "ci_upper": 328,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1774,6 +1894,14 @@
         [
           21,
           3
+        ],
+        [
+          22,
+          3
+        ],
+        [
+          23,
+          3
         ]
       ],
       "registration_curve": [
@@ -1832,6 +1960,14 @@
         "year": 2025,
         "count_at_same_point": 1,
         "final": 152
+      },
+      "pace_alert": {
+        "family": "Pittsburgh Open",
+        "status": "above_pace",
+        "actual": 3,
+        "expected": 2,
+        "deviation_pct": 52.9,
+        "message": "Registrations are 52.9% above historical pace"
       }
     },
     {
@@ -1846,7 +1982,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 95,
+      "days_remaining": 93,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -1934,7 +2070,15 @@
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "Southern Open",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 3,
+        "deviation_pct": -100.0,
+        "message": "Registrations are 100.0% below historical pace"
+      }
     },
     {
       "family": "Bradley Open",
@@ -1948,7 +2092,7 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 102,
+      "days_remaining": 100,
       "point_estimate": 261,
       "ci_lower": 159,
       "ci_upper": 428,
@@ -2068,6 +2212,14 @@
         [
           21,
           3
+        ],
+        [
+          22,
+          3
+        ],
+        [
+          23,
+          3
         ]
       ],
       "registration_curve": [
@@ -2126,6 +2278,14 @@
         "year": 2025,
         "count_at_same_point": 2,
         "final": 246
+      },
+      "pace_alert": {
+        "family": "Bradley Open",
+        "status": "above_pace",
+        "actual": 3,
+        "expected": 2,
+        "deviation_pct": 70.2,
+        "message": "Registrations are 70.2% above historical pace"
       }
     },
     {
@@ -2140,10 +2300,10 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 109,
-      "point_estimate": 382,
+      "days_remaining": 107,
+      "point_estimate": 381,
       "ci_lower": 233,
-      "ci_upper": 626,
+      "ci_upper": 625,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2260,6 +2420,14 @@
         [
           21,
           4
+        ],
+        [
+          22,
+          4
+        ],
+        [
+          23,
+          4
         ]
       ],
       "registration_curve": [
@@ -2318,6 +2486,14 @@
         "year": 2025,
         "count_at_same_point": 2,
         "final": 391
+      },
+      "pace_alert": {
+        "family": "Pacific Coast Open",
+        "status": "above_pace",
+        "actual": 4,
+        "expected": 3,
+        "deviation_pct": 59.8,
+        "message": "Registrations are 59.8% above historical pace"
       }
     },
     {
@@ -2332,7 +2508,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 122,
+      "days_remaining": 120,
       "point_estimate": 283,
       "ci_lower": 252,
       "ci_upper": 317,
@@ -2420,7 +2596,15 @@
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "Continental Open",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 2,
+        "deviation_pct": -100.0,
+        "message": "Registrations are 100.0% below historical pace"
+      }
     },
     {
       "family": "Central California Open",
@@ -2434,7 +2618,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 123,
+      "days_remaining": 121,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -2536,7 +2720,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 130,
+      "days_remaining": 128,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -2624,7 +2808,15 @@
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "Atlantic Open",
+        "status": "above_pace",
+        "actual": 1,
+        "expected": 1,
+        "deviation_pct": 43.7,
+        "message": "Registrations are 43.7% above historical pace"
+      }
     },
     {
       "family": "New York State Championship",
@@ -2638,7 +2830,7 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 144,
+      "days_remaining": 142,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -2726,7 +2918,15 @@
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "New York State Championship",
+        "status": "above_pace",
+        "actual": 3,
+        "expected": 1,
+        "deviation_pct": 119.0,
+        "message": "Registrations are 119.0% above historical pace"
+      }
     },
     {
       "family": "National Chess Congress",
@@ -2740,7 +2940,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 229,
+      "days_remaining": 227,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -2828,7 +3028,15 @@
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "National Chess Congress",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 4,
+        "deviation_pct": -100.0,
+        "message": "Registrations are 100.0% below historical pace"
+      }
     },
     {
       "family": "Boston Chess Congress",
@@ -76548,6 +76756,154 @@
       "total_estimate": 1282,
       "total_ci_lower": 1282,
       "total_ci_upper": 1282
+    }
+  ],
+  "last_updated": "2026-04-15 23:22:25",
+  "is_stale": false,
+  "alerts": [
+    {
+      "family": "Chicago Open",
+      "status": "on_pace",
+      "actual": 272,
+      "expected": 290,
+      "deviation_pct": -6.1,
+      "message": "Registrations are tracking within normal range (-6%)"
+    },
+    {
+      "family": "Hartford Open",
+      "status": "above_pace",
+      "actual": 12,
+      "expected": 9,
+      "deviation_pct": 33.9,
+      "message": "Registrations are 33.9% above historical pace"
+    },
+    {
+      "family": "Cleveland Open",
+      "status": "below_pace",
+      "actual": 8,
+      "expected": 22,
+      "deviation_pct": -63.3,
+      "message": "Registrations are 63.3% below historical pace"
+    },
+    {
+      "family": "New York State Open",
+      "status": "above_pace",
+      "actual": 6,
+      "expected": 4,
+      "deviation_pct": 68.8,
+      "message": "Registrations are 68.8% above historical pace"
+    },
+    {
+      "family": "DC International",
+      "status": "above_pace",
+      "actual": 7,
+      "expected": 4,
+      "deviation_pct": 80.3,
+      "message": "Registrations are 80.3% above historical pace"
+    },
+    {
+      "family": "DC Open",
+      "status": "below_pace",
+      "actual": 2,
+      "expected": 9,
+      "deviation_pct": -76.9,
+      "message": "Registrations are 76.9% below historical pace"
+    },
+    {
+      "family": "World Open, lower sections",
+      "status": "above_pace",
+      "actual": 57,
+      "expected": 4,
+      "deviation_pct": 1196.5,
+      "message": "Registrations are 1196.5% above historical pace"
+    },
+    {
+      "family": "World Open Under 13 Championship",
+      "status": "on_pace",
+      "actual": 3,
+      "expected": 3,
+      "deviation_pct": 4.1,
+      "message": "Registrations are tracking within normal range (+4%)"
+    },
+    {
+      "family": "World Open, top 6 sections",
+      "status": "above_pace",
+      "actual": 57,
+      "expected": 31,
+      "deviation_pct": 82.6,
+      "message": "Registrations are 82.6% above historical pace"
+    },
+    {
+      "family": "Chicago Class",
+      "status": "below_pace",
+      "actual": 1,
+      "expected": 3,
+      "deviation_pct": -67.5,
+      "message": "Registrations are 67.5% below historical pace"
+    },
+    {
+      "family": "Pittsburgh Open",
+      "status": "above_pace",
+      "actual": 3,
+      "expected": 2,
+      "deviation_pct": 52.9,
+      "message": "Registrations are 52.9% above historical pace"
+    },
+    {
+      "family": "Southern Open",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 3,
+      "deviation_pct": -100.0,
+      "message": "Registrations are 100.0% below historical pace"
+    },
+    {
+      "family": "Bradley Open",
+      "status": "above_pace",
+      "actual": 3,
+      "expected": 2,
+      "deviation_pct": 70.2,
+      "message": "Registrations are 70.2% above historical pace"
+    },
+    {
+      "family": "Pacific Coast Open",
+      "status": "above_pace",
+      "actual": 4,
+      "expected": 3,
+      "deviation_pct": 59.8,
+      "message": "Registrations are 59.8% above historical pace"
+    },
+    {
+      "family": "Continental Open",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 2,
+      "deviation_pct": -100.0,
+      "message": "Registrations are 100.0% below historical pace"
+    },
+    {
+      "family": "Atlantic Open",
+      "status": "above_pace",
+      "actual": 1,
+      "expected": 1,
+      "deviation_pct": 43.7,
+      "message": "Registrations are 43.7% above historical pace"
+    },
+    {
+      "family": "New York State Championship",
+      "status": "above_pace",
+      "actual": 3,
+      "expected": 1,
+      "deviation_pct": 119.0,
+      "message": "Registrations are 119.0% above historical pace"
+    },
+    {
+      "family": "National Chess Congress",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 4,
+      "deviation_pct": -100.0,
+      "message": "Registrations are 100.0% below historical pace"
     }
   ]
 }

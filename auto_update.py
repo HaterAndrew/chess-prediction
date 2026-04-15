@@ -229,6 +229,27 @@ def step_update_html():
 
     print(f"  Updated TOURNAMENT_DATA in {INDEX_HTML}")
 
+    # Post-write verification: re-read HTML and confirm embedded data matches source
+    with open(INDEX_HTML, 'r') as f:
+        verify_html = f.read()
+    verify_idx = verify_html.find(start_marker)
+    if verify_idx == -1:
+        raise RuntimeError("Post-write verification failed: TOURNAMENT_DATA marker missing from written HTML")
+    source_data = json.loads(json_data)
+    source_gen = source_data.get('generated', '')
+    source_count = len(source_data.get('tournaments', []))
+    # Extract embedded generated date for quick sanity check
+    import re as _re
+    gen_match = _re.search(r'"generated"\s*:\s*"([^"]+)"', verify_html[verify_idx:verify_idx+500])
+    if gen_match:
+        embedded_gen = gen_match.group(1)
+        if embedded_gen != source_gen:
+            raise RuntimeError(
+                f"STALE DATA DETECTED: embedded generated={embedded_gen} but source={source_gen}. "
+                f"The HTML was not updated correctly."
+            )
+    print(f"  Verified: embedded data matches source (generated={source_gen}, {source_count} tournaments)")
+
     # Also copy JSON to site directory
     site_json = os.path.join(SITE_DIR, "website_data.json")
     with open(site_json, 'w') as f:

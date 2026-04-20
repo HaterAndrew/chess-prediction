@@ -64,10 +64,13 @@ def polite_session(retries=3, backoff_factor=1.0,
 _last_request_time = 0.0
 
 
-def rate_limit(min_delay=1.0, max_delay=2.0):
+def rate_limit(min_delay=3.0, max_delay=5.0):
     """
     Sleep enough to ensure at least *min_delay* seconds since the last
     request, adding random jitter up to *max_delay*.
+
+    Defaults raised from 1-2s to 3-5s after observing origin rate-limits
+    on chessevents.com trip within ~15 requests from GitHub-hosted runners.
     """
     global _last_request_time
     now = time.monotonic()
@@ -122,7 +125,7 @@ class DeadHostError(requests.ConnectionError):
     """Raised when a request targets a host the circuit breaker has opened."""
 
 
-def respectful_get(session, url, min_delay=1.0, max_delay=2.0,
+def respectful_get(session, url, min_delay=3.0, max_delay=5.0,
                    timeout=DEFAULT_TIMEOUT, **kwargs):
     """
     GET *url* through *session* with rate limiting, timing log, and a

@@ -94,9 +94,11 @@ START_TIME = time.monotonic()
 def budget_exceeded():
     return (time.monotonic() - START_TIME) >= TIME_BUDGET_SEC
 
-# Base URLs to try (main site and archive)
+# Base URLs to try. Only the archive is kept — the main chessevents.com domain
+# retired the /event/<slug>/<year> URL scheme, and every such request now 302s
+# to /tournaments (empty tournament list). Including it doubled request count
+# for zero data, making rate-limit trips likelier on CI runners.
 BASE_URLS = [
-    "https://chessevents.com",
     "https://archive.chessevents.com",
 ]
 

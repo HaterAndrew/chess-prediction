@@ -85,6 +85,15 @@ SLUG_DISPLAY = {
 
 YEAR_RANGE = range(2003, 2027)
 
+# Wall-clock budget (seconds). Exit cleanly before the CI step timeout so any
+# partial data can still be committed. Overridable via env var for local runs.
+TIME_BUDGET_SEC = int(os.environ.get("SCRAPE_TIME_BUDGET_SEC", 50 * 60))
+START_TIME = time.monotonic()
+
+
+def budget_exceeded():
+    return (time.monotonic() - START_TIME) >= TIME_BUDGET_SEC
+
 # Base URLs to try (main site and archive)
 BASE_URLS = [
     "https://chessevents.com",
@@ -422,6 +431,10 @@ def scrape_archive_tournaments(results, scraped):
     print("=" * 60)
 
     for archive_slug in ARCHIVE_SLUGS:
+        if budget_exceeded():
+            print(f"\n[BUDGET] Wall-clock budget ({TIME_BUDGET_SEC}s) exceeded in Phase 3 — stopping early", flush=True)
+            break
+
         canonical = _archive_canonical_name(archive_slug)
         index_url = f"{ARCHIVE_BASE}/{archive_slug}/"
         print(f"\n[ARCHIVE] {canonical} — {index_url}")
@@ -587,6 +600,10 @@ def scrape_all():
     sorted_combos = sorted(all_combos, key=lambda x: (x[1], x[2], x[0]))
 
     for base_url, slug, year in sorted_combos:
+        if budget_exceeded():
+            print(f"\n[BUDGET] Wall-clock budget ({TIME_BUDGET_SEC}s) exceeded in Phase 2 — stopping early", flush=True)
+            break
+
         # Check if we already have this tournament/year via a different slug variant
         canonical = SLUG_DISPLAY.get(slug, slug.replace("-", " ").title())
         if (canonical, year) in scraped:

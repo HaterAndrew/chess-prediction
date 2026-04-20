@@ -34,7 +34,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from scraper_utils import polite_session, rate_limit as _rate_limit, DEFAULT_TIMEOUT
+from scraper_utils import polite_session, rate_limit as _rate_limit, respectful_get, DEFAULT_TIMEOUT
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
@@ -269,8 +269,7 @@ def fetch_entry_list_html(session, code, yy):
     """
     url = ENTRY_LIST_TEMPLATE.format(code=code, yy=yy)
     try:
-        _rate_limit()
-        resp = session.get(url, timeout=DEFAULT_TIMEOUT)
+        resp = respectful_get(session, url, timeout=DEFAULT_TIMEOUT)
         if resp.status_code == 200 and len(resp.text) > 200:
             return resp.text
         return None
@@ -287,8 +286,8 @@ def fetch_realtime_count(session, tid):
     if not tid:
         return None
     try:
-        _rate_limit()
-        resp = session.get(
+        resp = respectful_get(
+            session,
             REALTIME_URL,
             params={"tid": tid, "met": "0"},
             timeout=DEFAULT_TIMEOUT,

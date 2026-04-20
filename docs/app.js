@@ -34,6 +34,15 @@ function fmtDateLong(s) {
   const d = new Date(s + 'T00:00:00');
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
+function fmtDateTimeLong(iso) {
+  if (!iso) return '–';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '–';
+  return d.toLocaleString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit'
+  });
+}
 function addDays(dateStr, days) {
   const d = new Date(dateStr + 'T00:00:00');
   d.setDate(d.getDate() + days);
@@ -100,6 +109,8 @@ function switchPageTab(tab, skipHash) {
   if (tab === 'dataentry') renderDataEntry();
   if (tab === 'email') initEmailTab();
   if (tab === 'performance') initPerformanceTab();
+  if (tab === 'favorites') renderFavoritesTab();
+  if (tab === 'compare') renderCompareTab();
   // Focus management: move focus to new panel for screen readers
   panel.setAttribute('tabindex', '-1');
   panel.focus({ preventScroll: true });
@@ -110,6 +121,7 @@ function switchPageTab(tab, skipHash) {
 // EMAIL GENERATOR
 // ══════════════════════════════════════════════════════════
 let emailLength = 'medium';
+let emailFormat = 'plain';
 let emailLive = [];
 let emailInited = false;
 
@@ -123,15 +135,15 @@ function initEmailTab() {
   grid.innerHTML = '';
   emailLive.forEach((t, i) => {
     const lbl = document.createElement('label');
-    lbl.style.cssText = 'display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;user-select:none;font-size:.88rem';
-    lbl.onmouseover = () => lbl.style.background = 'var(--surface2)';
-    lbl.onmouseout = () => lbl.style.background = '';
     const defaultOn = t.days_remaining <= 60;
-    lbl.innerHTML = `<input type="checkbox" data-eidx="${i}" ${defaultOn ? 'checked' : ''} style="accent-color:var(--gold);width:15px;height:15px;cursor:pointer">
-      <span>${t.family}</span>
-      <span style="font-size:.72rem;color:var(--muted);margin-left:auto">${t.days_remaining}d</span>`;
+    lbl.innerHTML = `<input type="checkbox" data-eidx="${i}" ${defaultOn ? 'checked' : ''}>
+      <span>${esc(t.family)}</span>
+      <span class="email-tourn-days">${t.days_remaining}d</span>`;
     grid.appendChild(lbl);
   });
+  // Auto-suggest subject line on first init
+  const subj = document.getElementById('emailSubject');
+  if (subj && !subj.value) subj.placeholder = emailAutoSubject(emailGetSelected());
 }
 
 function emailGetSelected() {
@@ -148,15 +160,36 @@ function emailSelectClose() {
     cb.checked = emailLive[parseInt(cb.dataset.eidx)].days_remaining <= 60;
   });
 }
+function emailSelectLiveOnly() {
+  // All emailLive are already live; this just re-checks all (alias for All within live set)
+  document.querySelectorAll('#emailGrid input').forEach(cb => cb.checked = true);
+}
 
 function setEmailLength(len) {
   emailLength = len;
   document.querySelectorAll('#emailLenToggle button').forEach(b => {
-    const active = b.dataset.len === len;
-    b.style.background = active ? 'var(--gold)' : 'var(--surface2)';
-    b.style.color = active ? '#000' : 'var(--text2)';
-    b.style.fontWeight = active ? '600' : '400';
+    b.classList.toggle('active', b.dataset.len === len);
   });
+}
+
+function setEmailFormat(fmt) {
+  emailFormat = fmt;
+  document.querySelectorAll('#emailFormatToggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.fmt === fmt);
+  });
+  // Toggle output mode styling + preview visibility
+  const out = document.getElementById('emailOutput');
+  const pv = document.getElementById('emailPreview');
+  const copyHtmlBtn = document.getElementById('emailCopyHtmlBtn');
+  if (fmt === 'html') {
+    out.classList.add('mode-html');
+    pv.style.display = '';
+    if (copyHtmlBtn) copyHtmlBtn.style.display = '';
+  } else {
+    out.classList.remove('mode-html');
+    pv.style.display = 'none';
+    if (copyHtmlBtn) copyHtmlBtn.style.display = 'none';
+  }
 }
 
 function emailLastYear(t) {
@@ -283,44 +316,238 @@ function emailOverallTheme(selected) {
   return 'The overall theme today is there has been some improvement, but we are still lagging.';
 }
 
+// ── Highlights: biggest mover, fastest pace, behind-pace flags ──
+function emailComputeHighlights(selected) {
+  const h = { biggestUp: null, biggestDown: null, fastestPace: null, behindPace: [] };
+  selected.forEach(t => {
+    const ly = emailLastYear(t);
+    if (ly && ly.count > 0 && t.point_estimate) {
+      const pct = (t.point_estimate - ly.count) / ly.count;
+      if (!h.biggestUp || pct > h.biggestUp.pct) h.biggestUp = { t, pct };
+      if (!h.biggestDown || pct < h.biggestDown.pct) h.biggestDown = { t, pct };
+    }
+    const pa = getPaceAlert(t);
+    if (pa) {
+      if (pa.status === 'above_pace' && (!h.fastestPace || pa.deviation_pct > h.fastestPace.pct)) {
+        h.fastestPace = { t, pct: pa.deviation_pct };
+      }
+      if (pa.status === 'below_pace') h.behindPace.push({ t, pct: pa.deviation_pct });
+    }
+  });
+  return h;
+}
+
+function emailHighlightBullets(h) {
+  const lines = [];
+  if (h.biggestUp && h.biggestUp.pct > 0.05) {
+    lines.push(`${h.biggestUp.t.family} is the biggest mover — projecting +${Math.round(h.biggestUp.pct * 100)}% vs last year.`);
+  }
+  if (h.biggestDown && h.biggestDown.pct < -0.05 && (!h.biggestUp || h.biggestDown.t.family !== h.biggestUp.t.family)) {
+    lines.push(`${h.biggestDown.t.family} is tracking lowest — projecting ${Math.round(h.biggestDown.pct * 100)}% vs last year.`);
+  }
+  if (h.fastestPace) {
+    lines.push(`${h.fastestPace.t.family} is running ${h.fastestPace.pct > 0 ? '+' : ''}${h.fastestPace.pct}% vs historical pace.`);
+  }
+  if (h.behindPace.length) {
+    const names = h.behindPace.map(x => x.t.family).join(', ');
+    lines.push(`Behind pace: ${names}.`);
+  }
+  return lines;
+}
+
+// ── Auto subject line ──
+function emailAutoSubject(selected) {
+  const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const n = selected.length;
+  if (n === 0) return `CCA Entries Update — ${today}`;
+  if (n === 1) return `CCA Entries Update — ${selected[0].family} (${today})`;
+  return `CCA Entries Update — ${n} events (${today})`;
+}
+
+// ── HTML email formatter (email-client-safe: tables + inline styles, no flex/grid) ──
+const EM = {
+  bg: '#ffffff', text: '#1a1a1a', muted: '#6a6a6a',
+  border: '#d9d9d9', accent: '#c99000',
+  green: '#2ca444', red: '#c44646', blue: '#1a6fbc',
+  surface: '#f9f7f0',
+};
+
+function emailHTMLTable(headers, rows) {
+  const th = headers.map(h => `<th style="text-align:left;padding:6px 12px;border-bottom:1px solid ${EM.border};text-transform:uppercase;font-size:11px;letter-spacing:.05em;color:${EM.muted};font-weight:700">${esc(String(h))}</th>`).join('');
+  const tr = rows.map(r => {
+    const tds = r.map(c => `<td style="padding:6px 12px;border-bottom:1px solid ${EM.border};font-size:14px">${c === '' || c == null ? '&nbsp;' : esc(String(c))}</td>`).join('');
+    return `<tr>${tds}</tr>`;
+  }).join('');
+  return `<table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:8px 0 14px;font-family:Arial,Helvetica,sans-serif;border:1px solid ${EM.border}"><thead><tr>${th}</tr></thead><tbody>${tr}</tbody></table>`;
+}
+
+function emailHTMLTournament(t, len) {
+  const ly = emailLastYear(t);
+  const avg = emailHistAvg(t);
+  const pace = t.prior_year_pace;
+  const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
+  const parts = [];
+  const name = esc(t.family);
+  const B = v => `<strong style="color:${EM.text}">${esc(String(v))}</strong>`;
+  const colorFor = pct => pct > 0 ? EM.green : pct < 0 ? EM.red : EM.text;
+
+  parts.push(`<h3 style="margin:22px 0 6px;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:${EM.text}">${name}</h3>`);
+  parts.push(`<p style="margin:0 0 8px;font-size:14px;line-height:1.55;color:${EM.text}">We are at ${B(t.current_count)} entries which projects to ${B(t.point_estimate)} with a range of ${B(t.ci_lower)}&ndash;${B(t.ci_upper)}.</p>`);
+
+  if (ly) {
+    const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
+    let verdict;
+    if (len === 'short') verdict = '';
+    else if (pct > 15) verdict = ', so the projection has us well ahead.';
+    else if (pct > 5) verdict = ', so we are tracking ahead.';
+    else if (pct > -5) verdict = ', so we are in the same neighborhood.';
+    else if (pct > -15) verdict = ', so we are still a bit behind.';
+    else verdict = ', so we are lagging.';
+    parts.push(`<p style="margin:0 0 8px;font-size:14px;line-height:1.55;color:${EM.text}">Last year was ${B(ly.count)}${verdict}</p>`);
+  }
+
+  if (pace) {
+    const d = t.current_count - pace.count_at_same_point;
+    const col = d > 0 ? EM.green : d < 0 ? EM.red : EM.text;
+    const suffix = d > 0 ? `, so we are <span style="color:${col};font-weight:600">ahead of pace</span>.`
+                 : d < 0 ? `, so we are <span style="color:${col};font-weight:600">a bit behind</span>.`
+                 : '.';
+    parts.push(`<p style="margin:0 0 8px;font-size:14px;line-height:1.55;color:${EM.text}">At this point last year we were at ${B(pace.count_at_same_point)} and finished at ${B(pace.final)}${suffix}</p>`);
+  }
+
+  if (len === 'long' && avg && sorted.length >= 3) {
+    const pct = Math.round((t.point_estimate - avg) / avg * 100);
+    if (pct < -10) parts.push(`<p style="margin:0 0 8px;font-size:14px;color:${EM.text}">The historical average is ${B(avg)}, so we are still below the norm.</p>`);
+    else if (pct > 10) parts.push(`<p style="margin:0 0 8px;font-size:14px;color:${EM.text}">The historical average is ${B(avg)}, so we are trending above average.</p>`);
+  }
+
+  if (len === 'long' && sorted.length >= 3) {
+    const counts = sorted.map(h => h.count);
+    const worst = Math.min(...counts);
+    const best = Math.max(...counts);
+    const worstYr = sorted.find(h => h.count === worst).year;
+    const bestYr = sorted.find(h => h.count === best).year;
+    if (t.point_estimate < worst) parts.push(`<p style="margin:0 0 8px;font-size:14px;color:${EM.text}">The last time we were this low was ${worstYr} when we got ${B(worst)}.</p>`);
+    else if (t.point_estimate > best) parts.push(`<p style="margin:0 0 8px;font-size:14px;color:${EM.text}">If we hit the projection, it would be the best year since at least ${bestYr} (${B(best)}).</p>`);
+  }
+
+  if (len !== 'short' && sorted.length >= 2) {
+    const hdrs = len === 'long' ? ['Year', 'Entries', 'Projection', 'Range', 'Final'] : ['Year', 'Entries', 'Projection', 'Final'];
+    const rows = [];
+    if (len === 'long') {
+      rows.push([2026, t.current_count, t.point_estimate, `${t.ci_lower}\u2013${t.ci_upper}`, '']);
+      sorted.forEach(h => rows.push([h.year, '', '', '', h.count]));
+    } else {
+      rows.push([2026, t.current_count, t.point_estimate, '']);
+      sorted.forEach(h => rows.push([h.year, '', '', h.count]));
+    }
+    parts.push(emailHTMLTable(hdrs, rows));
+  }
+
+  return parts.join('\n');
+}
+
+function emailBuildHTML(subject, intro, selected, len, highlights) {
+  const theme = selected.length > 1 ? emailOverallTheme(selected) : '';
+  const bullets = emailHighlightBullets(highlights);
+  const greeting = intro && intro.trim() ? esc(intro.trim()) : 'Team,';
+
+  const highlightBlock = bullets.length
+    ? `<table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;background:${EM.surface};border-left:4px solid ${EM.accent};margin:14px 0;width:100%"><tr><td style="padding:12px 16px;font-family:Arial,Helvetica,sans-serif">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:${EM.muted};font-weight:700;margin-bottom:6px">Highlights</div>
+        ${bullets.map(b => `<div style="font-size:14px;line-height:1.5;color:${EM.text};margin:2px 0">&bull; ${esc(b)}</div>`).join('')}
+      </td></tr></table>`
+    : '';
+
+  const themeBlock = (len !== 'short' && theme)
+    ? `<p style="margin:10px 0;font-size:14px;line-height:1.55;color:${EM.text}">${esc(theme)}</p>`
+    : '';
+
+  const body = selected.map(t => emailHTMLTournament(t, len)).join('\n');
+
+  return `<div style="font-family:Arial,Helvetica,sans-serif;color:${EM.text};background:${EM.bg};padding:16px 18px;max-width:720px;margin:0 auto">
+  <p style="margin:0 0 10px;font-size:14px;color:${EM.text}">${greeting}</p>
+  ${highlightBlock}
+  ${themeBlock}
+  ${body}
+  <p style="margin:20px 0 0;font-size:14px;color:${EM.text}">Dave</p>
+</div>`;
+}
+
 function generateEmail() {
   const selected = emailGetSelected();
   const out = document.getElementById('emailOutput');
-  if (!selected.length) { out.textContent = 'No tournaments selected.'; return; }
+  const pv = document.getElementById('emailPreview');
+  const subjField = document.getElementById('emailSubject');
+  const introField = document.getElementById('emailIntro');
+
+  if (!selected.length) { out.textContent = 'No tournaments selected.'; if (pv) { pv.srcdoc = ''; } return; }
+
+  // Auto-fill subject placeholder so user sees what it'll default to if empty
+  if (subjField) subjField.placeholder = emailAutoSubject(selected);
+
   const len = emailLength;
-  const sections = [];
-  sections.push('Team');
-  if (len !== 'short' && selected.length > 1) {
-    sections.push(emailOverallTheme(selected));
+  const highlights = emailComputeHighlights(selected);
+
+  if (emailFormat === 'html') {
+    const subject = (subjField && subjField.value) || emailAutoSubject(selected);
+    const intro = introField ? introField.value : '';
+    const html = emailBuildHTML(subject, intro, selected, len, highlights);
+    out.textContent = html;
+    if (pv) pv.srcdoc = `<!doctype html><html><head><meta charset="utf-8"><title>${esc(subject)}</title></head><body style="margin:0;background:#f1f1f1">${html}</body></html>`;
+  } else {
+    // Plain text (original behavior + optional intro + highlight lines)
+    const sections = [];
+    const intro = introField && introField.value.trim() ? introField.value.trim() : 'Team';
+    sections.push(intro + (intro.endsWith(',') ? '' : ''));
+
+    const bullets = emailHighlightBullets(highlights);
+    if (bullets.length && len !== 'short') {
+      sections.push('HIGHLIGHTS\n' + bullets.map(b => `  \u2022 ${b}`).join('\n'));
+    }
+
+    if (len !== 'short' && selected.length > 1) {
+      sections.push(emailOverallTheme(selected));
+    }
+    selected.forEach(t => { sections.push(emailFormatTournament(t, len)); });
+    sections.push('Dave');
+    out.textContent = sections.join('\n\n');
   }
-  selected.forEach(t => {
-    sections.push(emailFormatTournament(t, len));
-  });
-  sections.push('Dave');
-  out.textContent = sections.join('\n\n');
+
   const btn = document.getElementById('emailCopyBtn');
-  btn.textContent = 'Copy to clipboard';
-  btn.style.background = 'var(--surface2)';
-  btn.style.borderColor = 'var(--border)';
-  btn.style.color = 'var(--text)';
+  btn.textContent = 'Copy';
+  btn.classList.remove('copied');
+}
+
+function _emailCopyFeedback(btn, label = 'Copy') {
+  const orig = label;
+  btn.textContent = 'Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
 }
 
 function copyEmail() {
   const text = document.getElementById('emailOutput').textContent;
   if (!text) return;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('emailCopyBtn');
-    btn.textContent = 'Copied!';
-    btn.style.background = 'var(--green)';
-    btn.style.borderColor = 'var(--green)';
-    btn.style.color = '#000';
-    setTimeout(() => {
-      btn.textContent = 'Copy to clipboard';
-      btn.style.background = 'var(--surface2)';
-      btn.style.borderColor = 'var(--border)';
-      btn.style.color = 'var(--text)';
-    }, 2000);
-  });
+  const btn = document.getElementById('emailCopyBtn');
+  navigator.clipboard.writeText(text).then(() => _emailCopyFeedback(btn, 'Copy'));
+}
+
+function copyEmailHTML() {
+  // Copy the rendered HTML as rich text (text/html) so pasting into Outlook keeps formatting
+  const html = document.getElementById('emailOutput').textContent;
+  if (!html) return;
+  const btn = document.getElementById('emailCopyHtmlBtn');
+  const plain = document.getElementById('emailPreview')?.contentDocument?.body?.innerText || html.replace(/<[^>]+>/g, '');
+  if (window.ClipboardItem && navigator.clipboard.write) {
+    const item = new ClipboardItem({
+      'text/html': new Blob([html], { type: 'text/html' }),
+      'text/plain': new Blob([plain], { type: 'text/plain' }),
+    });
+    navigator.clipboard.write([item]).then(() => _emailCopyFeedback(btn, 'Copy HTML'));
+  } else {
+    navigator.clipboard.writeText(html).then(() => _emailCopyFeedback(btn, 'Copy HTML'));
+  }
 }
 
 // ══════════════════════════════════════════════════════════
@@ -916,7 +1143,7 @@ function initSplash() {
   document.getElementById('ss-live').textContent = live;
   document.getElementById('ss-total').textContent = ts.length;
   document.getElementById('ss-years').textContent = yearSpan;
-  document.getElementById('splashScrapeDate').textContent = 'Last scrape: ' + fmtDateLong(TOURNAMENT_DATA.generated);
+  document.getElementById('splashScrapeDate').textContent = 'Last scrape: ' + fmtDateTimeLong(TOURNAMENT_DATA.generated_time || TOURNAMENT_DATA.generated);
 
   // Auto-animate numbers
   animateNum('ss-live', 0, live, 800);
@@ -2465,10 +2692,12 @@ function renderHistorical(t) {
   }).join('');
 
   wrap.innerHTML = `
+    <div class="comp-table-wrap">
     <table class="comp-table">
       <thead><tr><th>Year</th><th>Count</th><th title="Year-over-Year">YoY</th><th>Change</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
+    </div>
   `;
 }
 
@@ -2883,6 +3112,8 @@ function selectTournament(index, skipHash) {
   dot.style.display = t.status === 'live' ? '' : 'none';
   document.getElementById('tournLabel').textContent = `${t.family} ${t.year}`;
   document.title = `${t.family} ${t.year} — CCA Entry Predictor`;
+  updateFavButton(t.family);
+  updateCompareBtn();
 
   // Staggered fade-in for visual polish
   const sections = document.querySelectorAll('.delta-banner, .chart-card, .kpi-row, .progress-row, .grid-2');
@@ -2943,7 +3174,7 @@ function init() {
     }
   }
 
-  document.getElementById('lastUpdated').textContent = fmtDateLong(TOURNAMENT_DATA.generated);
+  document.getElementById('lastUpdated').textContent = fmtDateTimeLong(TOURNAMENT_DATA.generated_time || TOURNAMENT_DATA.generated);
   // Always show splash on load
   initSplash();
 
@@ -3102,6 +3333,393 @@ function applyOverrides() {
 }
 
 // Apply any saved overrides on load
+// ══════════════════════════════════════════════════════════
+// FAVORITES (My Tournaments)
+// ══════════════════════════════════════════════════════════
+const FAV_KEY = 'cca_favorites';
+
+function getFavorites() {
+  try {
+    const raw = localStorage.getItem(FAV_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) { return []; }
+}
+
+function saveFavorites(favs) {
+  localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+}
+
+function isFavorite(family) {
+  return getFavorites().includes(family);
+}
+
+function toggleFavorite(family) {
+  const favs = getFavorites();
+  const idx = favs.indexOf(family);
+  if (idx >= 0) favs.splice(idx, 1);
+  else favs.push(family);
+  saveFavorites(favs);
+  updateFavButton(family);
+  // Refresh favorites tab if it's currently visible
+  if (_currentTab === 'favorites') renderFavoritesTab();
+}
+
+function toggleFavoriteSelected() {
+  const t = TOURNAMENT_DATA.tournaments[selectedIndex];
+  if (t) toggleFavorite(t.family);
+}
+
+function updateFavButton(family) {
+  const btn = document.getElementById('favToggle');
+  if (!btn) return;
+  const fav = isFavorite(family);
+  btn.innerHTML = fav ? '&#9733;' : '&#9734;';
+  btn.classList.toggle('fav-active', fav);
+  btn.title = fav ? 'Remove from My Tournaments' : 'Add to My Tournaments';
+}
+
+function renderFavoritesTab() {
+  const el = document.getElementById('favoritesContent');
+  if (!el) return;
+  const favs = getFavorites();
+
+  if (favs.length === 0) {
+    el.innerHTML = `<div class="fav-empty">
+      <div style="font-size:2.5rem;margin-bottom:12px">&#9734;</div>
+      <div style="font-size:1rem;font-weight:600;margin-bottom:6px">No favorites yet</div>
+      <div style="font-size:.82rem;color:var(--muted)">Click &#9733; on any tournament to add it here</div>
+    </div>`;
+    return;
+  }
+
+  const cards = favs.map(family => {
+    const t = TOURNAMENT_DATA.tournaments.find(x => x.family === family);
+    if (!t) return '';
+    const i = TOURNAMENT_DATA.tournaments.indexOf(t);
+    const isLive = t.status === 'live';
+    const isComplete = t.status === 'complete';
+    const statusLabel = isLive ? 'Live' : isComplete ? 'Complete' : 'Upcoming';
+    const statusClass = isLive ? 'badge-live' : isComplete ? 'badge-complete' : 'badge-upcoming';
+    const daysInfo = isLive ? `${t.days_remaining}d remaining` : isComplete ? 'Finished' : t.days_remaining != null ? `Starts in ${t.days_remaining}d` : '';
+    const ciRange = t.ci_lower && t.ci_upper ? `${fmt(t.ci_lower)} – ${fmt(t.ci_upper)}` : '—';
+
+    return `<div class="fav-card" onclick="switchPageTab('predictions');selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})" tabindex="0" onkeydown="if(event.key==='Enter'){switchPageTab('predictions');selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})}">
+      <div class="fav-card-header">
+        <span class="fav-card-name">${esc(t.family)} ${t.year}</span>
+        <button class="fav-btn fav-active fav-remove" onclick="event.stopPropagation();toggleFavorite('${esc(t.family).replace(/'/g, "\\'")}')" title="Remove from favorites">&#9733;</button>
+      </div>
+      <div class="fav-card-status">
+        <span class="mini-badge ${statusClass}">${isLive ? '<span class="live-dot" style="width:5px;height:5px"></span>' : ''}${statusLabel}</span>
+        <span style="color:var(--muted);font-size:.75rem">${daysInfo}</span>
+      </div>
+      <div class="fav-card-stats">
+        <div class="fav-stat">
+          <span class="fav-stat-label">Predicted</span>
+          <span class="fav-stat-value" style="color:var(--gold)">${fmt(t.point_estimate)}</span>
+        </div>
+        <div class="fav-stat">
+          <span class="fav-stat-label">CI Range</span>
+          <span class="fav-stat-value">${ciRange}</span>
+        </div>
+        <div class="fav-stat">
+          <span class="fav-stat-label">Current</span>
+          <span class="fav-stat-value" style="color:var(--blue)">${fmt(t.current_count)}</span>
+        </div>
+      </div>
+      ${(() => { const pa = getPaceAlert(t); if (!pa) return ''; const cls = pa.status === 'above_pace' ? 'above' : pa.status === 'below_pace' ? 'below' : 'on'; const label = pa.status === 'above_pace' ? 'Above pace' : pa.status === 'below_pace' ? 'Below pace' : 'On pace'; return `<div class="fav-pace-row"><span class="fav-pace-dot ${cls}"></span><span style="color:var(--${cls === 'above' ? 'green' : cls === 'below' ? 'red' : 'blue'})">${label}</span><span style="color:var(--muted)">${pa.deviation_pct > 0 ? '+' : ''}${pa.deviation_pct}% vs historical</span></div>`; })()}
+    </div>`;
+  }).filter(Boolean).join('');
+
+  el.innerHTML = `
+    <div style="margin:18px 0 16px">
+      <h2 style="font-size:1.3rem;font-weight:800;color:var(--gold);margin-bottom:4px">&#9733; My Tournaments</h2>
+      <p style="font-size:.78rem;color:var(--muted)">${favs.length} tournament${favs.length !== 1 ? 's' : ''} saved</p>
+    </div>
+    <div class="fav-grid">${cards}</div>`;
+}
+
+// ══════════════════════════════════════════════════════════
+// COMPARE (side-by-side tournament comparison)
+// ══════════════════════════════════════════════════════════
+const COMPARE_KEY = 'cca_compare';
+const COMPARE_COLORS = ['#58a6ff', '#f0c040', '#3fb950'];
+const COMPARE_COLORS_DIM = ['rgba(88,166,255,0.15)', 'rgba(240,192,64,0.15)', 'rgba(63,185,80,0.15)'];
+let _compareSlots = [];
+let _compareChart = null;
+
+function getCompareSlots() {
+  try {
+    const raw = localStorage.getItem(COMPARE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) { return []; }
+}
+function saveCompareSlots(slots) {
+  localStorage.setItem(COMPARE_KEY, JSON.stringify(slots));
+}
+
+function addToCompare(idx) {
+  _compareSlots = getCompareSlots();
+  if (_compareSlots.includes(idx)) return;
+  if (_compareSlots.length >= 3) {
+    alert('Compare supports up to 3 tournaments. Remove one first.');
+    return;
+  }
+  _compareSlots.push(idx);
+  saveCompareSlots(_compareSlots);
+  updateCompareBtn();
+  if (_compareSlots.length >= 2) {
+    switchPageTab('compare');
+  }
+}
+
+function removeFromCompare(idx) {
+  _compareSlots = getCompareSlots();
+  const pos = _compareSlots.indexOf(idx);
+  if (pos >= 0) _compareSlots.splice(pos, 1);
+  saveCompareSlots(_compareSlots);
+  updateCompareBtn();
+  if (_currentTab === 'compare') renderCompareTab();
+}
+
+function addToCompareSelected() {
+  if (selectedIndex != null) addToCompare(selectedIndex);
+}
+
+function updateCompareBtn() {
+  const btn = document.getElementById('compareAddBtn');
+  if (!btn) return;
+  _compareSlots = getCompareSlots();
+  const inCompare = selectedIndex != null && _compareSlots.includes(selectedIndex);
+  btn.classList.toggle('compare-active', inCompare);
+  btn.title = inCompare ? 'Remove from Compare' : 'Add to Compare';
+  if (inCompare) {
+    btn.onclick = function() { removeFromCompare(selectedIndex); };
+  } else {
+    btn.onclick = function() { addToCompareSelected(); };
+  }
+}
+
+function renderCompareTab() {
+  const el = document.getElementById('compareContent');
+  if (!el) return;
+  _compareSlots = getCompareSlots();
+  const tournaments = TOURNAMENT_DATA.tournaments;
+
+  // Build selector UI
+  let selectorHTML = '<div class="compare-selectors">';
+  for (let s = 0; s < 3; s++) {
+    const currentIdx = _compareSlots[s];
+    const colorDot = `<span class="compare-color-dot" style="background:${COMPARE_COLORS[s]}"></span>`;
+    selectorHTML += `<div class="compare-selector">
+      ${colorDot}
+      <select class="compare-dropdown" onchange="compareSlotChanged(${s}, this.value)">
+        <option value="">— Select tournament —</option>
+        ${tournaments.map((t, i) => {
+          const sel = i === currentIdx ? 'selected' : '';
+          const label = esc(t.family) + ' ' + t.year;
+          return `<option value="${i}" ${sel}>${label}</option>`;
+        }).join('')}
+      </select>
+      ${currentIdx != null ? `<button class="compare-remove-btn" onclick="compareSlotRemove(${s})" title="Remove">&#10005;</button>` : ''}
+    </div>`;
+  }
+  selectorHTML += '</div>';
+
+  // Build stat table if 2+ selected
+  const selected = _compareSlots.map(i => ({ idx: i, t: tournaments[i] })).filter(x => x.t);
+  let statsHTML = '';
+  let chartHTML = '';
+  let insightHTML = '';
+
+  if (selected.length >= 2) {
+    statsHTML = '<div class="compare-table-wrap"><table class="compare-table"><thead><tr><th>Stat</th>';
+    selected.forEach((s, ci) => {
+      statsHTML += `<th style="color:${COMPARE_COLORS[ci]}">${esc(s.t.family)} ${s.t.year}</th>`;
+    });
+    statsHTML += '</tr></thead><tbody>';
+
+    const rows = [
+      { label: 'Status', fn: t => {
+        const s = t.status === 'live' ? 'Live' : t.status === 'complete' ? 'Complete' : 'Upcoming';
+        return `<span class="mini-badge badge-${t.status === 'live' ? 'live' : t.status === 'complete' ? 'complete' : 'upcoming'}">${s}</span>`;
+      }},
+      { label: 'Current Count', fn: t => fmt(t.current_count) },
+      { label: 'Predicted Final', fn: t => fmt(t.point_estimate) },
+      { label: 'CI Range', fn: t => t.ci_lower && t.ci_upper ? `${fmt(t.ci_lower)} – ${fmt(t.ci_upper)}` : '—' },
+      { label: 'Days Remaining', fn: t => t.days_remaining != null ? t.days_remaining : '—' },
+      { label: 'Historical Avg', fn: t => t.historical && t.historical.length > 0 ? fmt(Math.round(t.historical.reduce((s, h) => s + h.count, 0) / t.historical.length)) : '—' },
+      { label: 'Event Date', fn: t => t.event_date ? fmtDate(t.event_date) : '—' },
+    ];
+
+    rows.forEach(row => {
+      statsHTML += `<tr><td class="compare-stat-label">${row.label}</td>`;
+      selected.forEach(s => { statsHTML += `<td>${row.fn(s.t)}</td>`; });
+      statsHTML += '</tr>';
+    });
+    statsHTML += '</tbody></table></div>';
+
+    // Insight: compare predicted finals
+    const preds = selected.map(s => ({ name: s.t.family, pred: s.t.point_estimate || 0 }));
+    const maxPred = preds.reduce((a, b) => a.pred > b.pred ? a : b);
+    const insights = [];
+    preds.forEach(p => {
+      if (p.name !== maxPred.name && maxPred.pred > 0 && p.pred > 0) {
+        const pctAhead = ((maxPred.pred - p.pred) / p.pred * 100).toFixed(0);
+        insights.push(`<strong>${esc(maxPred.name)}</strong> is predicted ${pctAhead}% higher than <strong>${esc(p.name)}</strong>`);
+      }
+    });
+    if (insights.length > 0) {
+      insightHTML = `<div class="compare-insights">${insights.map(i => `<div class="compare-insight">${i}</div>`).join('')}</div>`;
+    }
+
+    // Chart container
+    chartHTML = `<div class="compare-chart-wrap"><canvas id="compareChart"></canvas></div>`;
+  } else if (selected.length < 2) {
+    statsHTML = `<div class="compare-empty">
+      <div style="font-size:2.5rem;margin-bottom:12px">&#9878;</div>
+      <div style="font-size:1rem;font-weight:600;margin-bottom:6px">Select at least 2 tournaments to compare</div>
+      <div style="font-size:.82rem;color:var(--muted)">Use the dropdowns above or click &#9878; on any tournament in the Predictions tab</div>
+    </div>`;
+  }
+
+  el.innerHTML = selectorHTML + insightHTML + statsHTML + chartHTML;
+
+  // Render chart if 2+
+  if (selected.length >= 2) renderCompareChart(selected);
+}
+
+function compareSlotChanged(slotIdx, val) {
+  _compareSlots = getCompareSlots();
+  const idx = val !== '' ? parseInt(val, 10) : null;
+  // Remove if already in another slot
+  if (idx != null) _compareSlots = _compareSlots.filter(i => i !== idx);
+  // Set or clear the slot
+  while (_compareSlots.length <= slotIdx) _compareSlots.push(null);
+  _compareSlots[slotIdx] = idx;
+  // Compact: remove trailing nulls
+  _compareSlots = _compareSlots.filter(i => i != null);
+  saveCompareSlots(_compareSlots);
+  updateCompareBtn();
+  renderCompareTab();
+}
+
+function compareSlotRemove(slotIdx) {
+  _compareSlots = getCompareSlots();
+  if (slotIdx < _compareSlots.length) _compareSlots.splice(slotIdx, 1);
+  saveCompareSlots(_compareSlots);
+  updateCompareBtn();
+  renderCompareTab();
+}
+
+function renderCompareChart(selected) {
+  if (_compareChart) { _compareChart.destroy(); _compareChart = null; }
+  const canvas = document.getElementById('compareChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // Build datasets from registration curves
+  const datasets = [];
+  selected.forEach((s, ci) => {
+    const t = s.t;
+    if (!t.registration_curve || t.registration_curve.length === 0) return;
+    const sorted = [...t.registration_curve].sort((a, b) => b.days_before - a.days_before);
+    const data = sorted.map(pt => ({
+      x: pt.days_before,
+      y: pt.cumulative_pct !== undefined ? (pt.cumulative_pct * 100) : ((pt.pct || 0) * 100)
+    }));
+
+    datasets.push({
+      label: `${t.family} ${t.year}`,
+      data,
+      borderColor: COMPARE_COLORS[ci],
+      backgroundColor: COMPARE_COLORS_DIM[ci],
+      fill: true,
+      borderWidth: 2,
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      tension: 0.4
+    });
+
+    // Add "today" marker for live tournaments
+    if (t.status === 'live' && t.days_remaining != null) {
+      const todayPct = interpCurve(t.registration_curve, t.days_remaining) * 100;
+      datasets.push({
+        label: `${t.family} — Today`,
+        data: [{ x: t.days_remaining, y: todayPct }],
+        borderColor: COMPARE_COLORS[ci],
+        backgroundColor: COMPARE_COLORS[ci],
+        pointRadius: 6,
+        pointStyle: 'circle',
+        pointBorderWidth: 2,
+        pointBorderColor: '#fff',
+        showLine: false
+      });
+    }
+  });
+
+  if (datasets.length === 0) return;
+
+  _compareChart = new Chart(ctx, {
+    type: 'line',
+    data: { datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          type: 'linear',
+          reverse: true,
+          title: { display: true, text: 'Days Before Event', color: 'rgba(139,148,158,0.8)', font: { size: 11 } },
+          ticks: { color: 'rgba(139,148,158,0.6)', font: { size: 10 },
+            callback(v) { return v === 0 ? 'Event' : v + 'd'; }
+          },
+          grid: { color: 'rgba(48,54,61,0.4)' }
+        },
+        y: {
+          title: { display: true, text: '% of Final Entries', color: 'rgba(139,148,158,0.8)', font: { size: 11 } },
+          ticks: { color: 'rgba(139,148,158,0.6)', font: { size: 10 },
+            callback(v) { return v + '%'; }
+          },
+          grid: { color: 'rgba(48,54,61,0.4)' },
+          min: 0
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            color: '#c9d1d9',
+            font: { size: 11 },
+            filter(item) { return !item.text.includes('— Today'); },
+            usePointStyle: true, pointStyle: 'line'
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(13,17,23,0.95)',
+          borderColor: 'rgba(48,54,61,0.8)',
+          borderWidth: 1,
+          titleColor: '#e6edf3',
+          bodyColor: '#c9d1d9',
+          padding: 12,
+          cornerRadius: 8,
+          callbacks: {
+            title(items) {
+              if (!items.length) return '';
+              const db = items[0].parsed.x;
+              return db === 0 ? 'Event Day' : `T-${db} (${db} days before)`;
+            },
+            label(item) {
+              return ` ${item.dataset.label}: ${item.parsed.y.toFixed(1)}%`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+
+
 applyOverrides();
 
 init();

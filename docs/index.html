@@ -72,6 +72,7 @@
       <div class="header-tourn-label" id="headerTournLabel">
         <span class="live-dot" id="tournDot" style="display:none"></span>
         <span id="tournLabel" style="font-weight:700;font-size:.88rem">Loading...</span>
+        <button class="compare-add-btn" id="compareAddBtn" onclick="addToCompareSelected()" title="Add to Compare">&#9878;</button>
       </div>
       <span style="width:1px;height:18px;background:var(--border);margin:0 4px"></span>
       <div class="header-meta">Updated: <span id="lastUpdated"></span></div>
@@ -85,6 +86,7 @@
   <div class="page-tabs" role="tablist">
     <button class="page-tab active" onclick="switchPageTab('predictions')" role="tab" aria-selected="true" aria-controls="panel-predictions" id="ptab-predictions">Predictions</button>
     <button class="page-tab" onclick="switchPageTab('dataentry')" role="tab" aria-selected="false" aria-controls="panel-dataentry" id="ptab-dataentry">Data Entry</button>
+    <button class="page-tab" onclick="switchPageTab('compare')" role="tab" aria-selected="false" aria-controls="panel-compare" id="ptab-compare">&#9878; Compare</button>
     <button class="page-tab" onclick="switchPageTab('email')" role="tab" aria-selected="false" aria-controls="panel-email" id="ptab-email">&#9993; Email</button>
     <button class="page-tab" onclick="switchPageTab('performance')" role="tab" aria-selected="false" aria-controls="panel-performance" id="ptab-performance">&#9733; Performance</button>
     <button class="page-tab" onclick="switchPageTab('about')" role="tab" aria-selected="false" aria-controls="panel-about" id="ptab-about">&#9881; About the Model</button>
@@ -123,18 +125,18 @@
     <div class="skeleton skeleton-text"></div>
   </div>
 
-  <!-- ── Hero KPI (compact) ── -->
-  <div style="display:flex;align-items:stretch;gap:20px;padding:16px 0 8px" id="heroSection" aria-live="polite" aria-atomic="true">
-    <div style="flex:0 0 auto">
+  <!-- ── Hero KPI ── -->
+  <div class="hero" id="heroSection" aria-live="polite" aria-atomic="true">
+    <div class="hero-primary">
       <div class="hero-label" id="heroLabel">Predicted Final Entries</div>
-      <div class="hero-number" id="heroNumber" style="font-size:3.2rem"></div>
+      <div class="hero-number" id="heroNumber"></div>
       <div class="hero-ci" id="heroCi"></div>
     </div>
-    <div id="weekBreakdown" style="display:none;flex:1 1 0;min-width:0">
-      <div style="font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Last 7 Days</div>
-      <div id="weekBars" style="display:flex;flex-direction:column;gap:2px;justify-content:center;height:calc(100% - 18px)"></div>
+    <div id="weekBreakdown" class="hero-week" style="display:none">
+      <div class="hero-week-label">Last 7 Days</div>
+      <div id="weekBars" class="hero-week-bars"></div>
     </div>
-    <div style="display:flex;gap:10px;flex:0 0 auto;align-items:stretch">
+    <div class="hero-kpis">
       <div class="kpi-card" id="kpiCurrent"></div>
       <div class="kpi-card" id="kpiDays"></div>
       <div class="kpi-card" id="kpiPace"></div>
@@ -318,36 +320,60 @@
 
   <!-- ══════ EMAIL TAB ══════ -->
   <div class="page-tab-panel" id="panel-email" role="tabpanel" aria-labelledby="ptab-email">
-    <div style="font-size:.72rem;color:var(--muted);margin:12px 0 16px">
-      Generate prediction update emails. Select tournaments, pick a length, and copy the output.
+    <div class="email-hint">
+      Generate prediction update emails for CCA staff. Auto-fills subject, highlights, and per-tournament summaries.
+    </div>
+
+    <!-- Subject + intro -->
+    <div class="email-meta">
+      <label class="email-meta-row">
+        <span class="email-meta-label">Subject</span>
+        <input id="emailSubject" type="text" class="email-meta-input" placeholder="CCA Entries Update" />
+      </label>
+      <label class="email-meta-row">
+        <span class="email-meta-label">Intro (optional)</span>
+        <input id="emailIntro" type="text" class="email-meta-input" placeholder="Leave blank to use default 'Team,'" />
+      </label>
     </div>
 
     <!-- Tournament selector -->
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
-      <span style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Tournaments</span>
-      <button onclick="emailSelectAll()" style="font-size:.72rem;color:var(--blue);background:none;border:none;cursor:pointer;text-decoration:underline">Select all</button>
-      <button onclick="emailSelectNone()" style="font-size:.72rem;color:var(--blue);background:none;border:none;cursor:pointer;text-decoration:underline">Clear</button>
-      <button onclick="emailSelectClose()" style="font-size:.72rem;color:var(--blue);background:none;border:none;cursor:pointer;text-decoration:underline">Next 60 days</button>
+    <div class="email-toolbar">
+      <span class="email-toolbar-label">Tournaments</span>
+      <button onclick="emailSelectAll()" class="email-link-btn">All</button>
+      <button onclick="emailSelectNone()" class="email-link-btn">Clear</button>
+      <button onclick="emailSelectLiveOnly()" class="email-link-btn">Live only</button>
+      <button onclick="emailSelectClose()" class="email-link-btn">Next 60 days</button>
     </div>
-    <div id="emailGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin-bottom:20px"></div>
+    <div id="emailGrid" class="email-grid"></div>
 
-    <!-- Length + generate -->
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
-      <span style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Length</span>
-      <div class="email-len-toggle" id="emailLenToggle" style="display:inline-flex;border-radius:6px;overflow:hidden;border:1px solid var(--border)">
-        <button data-len="short" onclick="setEmailLength('short')" style="padding:5px 14px;font-size:.82rem;background:var(--surface2);color:var(--text2);border:none;cursor:pointer">Short</button>
-        <button data-len="medium" onclick="setEmailLength('medium')" style="padding:5px 14px;font-size:.82rem;background:var(--gold);color:#000;font-weight:600;border:none;cursor:pointer;border-left:1px solid var(--border);border-right:1px solid var(--border)">Medium</button>
-        <button data-len="long" onclick="setEmailLength('long')" style="padding:5px 14px;font-size:.82rem;background:var(--surface2);color:var(--text2);border:none;cursor:pointer">Long</button>
+    <!-- Length + format + generate -->
+    <div class="email-toolbar">
+      <span class="email-toolbar-label">Length</span>
+      <div class="email-seg" id="emailLenToggle">
+        <button data-len="short" onclick="setEmailLength('short')">Short</button>
+        <button data-len="medium" onclick="setEmailLength('medium')" class="active">Medium</button>
+        <button data-len="long" onclick="setEmailLength('long')">Long</button>
       </div>
-      <button onclick="generateEmail()" style="padding:6px 18px;border-radius:6px;font-size:.82rem;font-weight:600;background:var(--blue);color:#fff;border:none;cursor:pointer">Generate</button>
+      <span class="email-toolbar-label">Format</span>
+      <div class="email-seg" id="emailFormatToggle">
+        <button data-fmt="plain" onclick="setEmailFormat('plain')" class="active">Plain text</button>
+        <button data-fmt="html" onclick="setEmailFormat('html')">HTML</button>
+      </div>
+      <button onclick="generateEmail()" class="email-generate-btn">Generate</button>
     </div>
 
-    <!-- Output -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-      <span style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Output</span>
-      <button id="emailCopyBtn" onclick="copyEmail()" style="padding:5px 14px;border-radius:6px;font-size:.78rem;font-weight:600;background:var(--surface2);color:var(--text);border:1px solid var(--border);cursor:pointer">Copy to clipboard</button>
+    <!-- Output area: split source + preview (preview hidden when plain) -->
+    <div class="email-output-header">
+      <span class="email-toolbar-label">Output</span>
+      <div class="email-copy-row">
+        <button id="emailCopyBtn" onclick="copyEmail()" class="email-copy-btn">Copy</button>
+        <button id="emailCopyHtmlBtn" onclick="copyEmailHTML()" class="email-copy-btn" style="display:none">Copy HTML</button>
+      </div>
     </div>
-    <div id="emailOutput" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;white-space:pre-wrap;tab-size:16;-moz-tab-size:16;font-family:-apple-system,'Segoe UI',system-ui,Roboto,sans-serif;font-size:.9rem;line-height:1.6;min-height:180px;color:var(--text2)"></div>
+    <div class="email-split" id="emailSplit">
+      <div id="emailOutput" class="email-output"></div>
+      <iframe id="emailPreview" class="email-preview" title="Email preview" sandbox="allow-same-origin" style="display:none"></iframe>
+    </div>
   </div><!-- /panel-email -->
 
   <!-- ══════ PERFORMANCE TAB ══════ -->
@@ -723,6 +749,10 @@
 
   </div><!-- /panel-about -->
 
+  <!-- ══════ COMPARE TAB ══════ -->
+  <div class="page-tab-panel" id="panel-compare" role="tabpanel" aria-labelledby="ptab-compare">
+    <div id="compareContent"></div>
+  </div>
 
 </main>
 

@@ -15,6 +15,14 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from importlib import import_module
 m04c = import_module("04c_final_model")
+from tournament_aliases import canonicalize_family
+
+
+def _fam_eq(series, name):
+    """Family equality that tolerates comma/whitespace variants via aliases."""
+    canon = canonicalize_family(name)
+    return series.map(canonicalize_family) == canon
+
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 CHOP_POINTS = [120, 90, 60, 42, 28, 14, 7, 3, 1, 0]
@@ -53,7 +61,7 @@ if os.path.exists(scrape_path):
         # Match by family name (strip year prefix "2026 " from scrape name)
         scrape_name = s['tournament_name']
         family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
-        mask = (summary['family'] == family_name) & (summary['tournament_year'] == 2026)
+        mask = _fam_eq(summary['family'], family_name) & (summary['tournament_year'] == 2026)
         # Use active_count (net) for predictions; fall back to entry_count if 0
         net_count = int(s['active_count']) if s['active_count'] > 0 else int(s['entry_count'])
         if mask.any() and net_count > 0:
@@ -69,12 +77,12 @@ if os.path.exists(scrape_path):
     for _, s in scrape.iterrows():
         scrape_name = s['tournament_name']
         family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
-        tid_match = summary[(summary['family'] == family_name) & (summary['tournament_year'] == 2026)]
+        tid_match = summary[_fam_eq(summary['family'], family_name) & (summary['tournament_year'] == 2026)]
         if len(tid_match) == 0:
             continue
         tid = tid_match.iloc[0]['tid']
         last_reg = tid_match.iloc[0].get('last_reg')
-        meta_row = meta[(meta['family'] == family_name) & (meta['year'] == 2026)]
+        meta_row = meta[_fam_eq(meta['family'], family_name) & (meta['year'] == 2026)]
         if len(meta_row) == 0:
             meta_row = meta[(meta['year'] == 2026) & (meta['start_date'] > pd.Timestamp.now())]
             meta_row = meta_row[meta_row['family'].str.contains(family_name.split()[0], case=False, na=False)]
@@ -276,12 +284,12 @@ def build_template_curves(train_summary, train_daily):
 
 def get_event_date(family, year):
     """Get event start date from metadata, or estimate from historical data."""
-    match = meta[(meta['family'] == family) & (meta['year'] == year)]
+    match = meta[_fam_eq(meta['family'], family) & (meta['year'] == year)]
     if len(match) > 0:
         return match.iloc[0]['start_date']
 
     # Estimate from historical last_reg dates for this family
-    fam = summary[(summary['family'] == family) & (~summary['is_online'].fillna(False))]
+    fam = summary[_fam_eq(summary['family'], family) & (~summary['is_online'].fillna(False))]
     hist_dates = pd.to_datetime(fam['last_reg'], errors='coerce').dropna()
     if len(hist_dates) > 0:
         avg_month = int(hist_dates.dt.month.median())
@@ -295,7 +303,7 @@ def get_event_date(family, year):
 
 def get_event_end_date(family, year):
     """Get event end date from metadata."""
-    match = meta[(meta['family'] == family) & (meta['year'] == year)]
+    match = meta[_fam_eq(meta['family'], family) & (meta['year'] == year)]
     if len(match) > 0 and pd.notna(match.iloc[0].get('end_date')):
         return pd.to_datetime(match.iloc[0]['end_date'])
     return None
@@ -347,7 +355,7 @@ for _, row in completed_2026.iterrows():
     if pd.isna(lr) or lr > TODAY:
         continue
     # Check metadata — if event_start is in the future, it's still live
-    m_row = meta[(meta['family'] == family) & (meta['year'] == 2026)]
+    m_row = meta[_fam_eq(meta['family'], family) & (meta['year'] == 2026)]
     if len(m_row) > 0 and pd.notna(m_row.iloc[0]['start_date']) and m_row.iloc[0]['start_date'] > TODAY:
         continue
     completed_tids.add(row['tid'])
@@ -465,7 +473,7 @@ for _, row in t2026.iterrows():
     # event_start after reanchor_daily_to_event_start(), so pass directly.
 
     # Get metadata
-    m = meta[(meta['family'] == family) & (meta['year'] == 2026)]
+    m = meta[_fam_eq(meta['family'], family) & (meta['year'] == 2026)]
     eb_deadline = m.iloc[0]['early_bird_deadline'] if len(m) > 0 and pd.notna(m.iloc[0].get('early_bird_deadline')) else None
     eb_fee = float(m.iloc[0]['early_bird_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('early_bird_fee')) else None
     reg_fee = float(m.iloc[0]['regular_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('regular_fee')) else None
@@ -583,10 +591,11 @@ for _, row in t2026.iterrows():
     prior_year_pace = None
     if status == 'live' and days_remaining > 0:
         # Find most recent prior year's tournament for this family
+        _fam_mask = _fam_eq(summary['family'], family)
         prior_hist = summary[
-            (summary['family'] == family) &
+            _fam_mask &
             (summary['tournament_year'] == summary[
-                (summary['family'] == family) &
+                _fam_mask &
                 (summary['tournament_year'] < 2026)
             ]['tournament_year'].max())
         ]
@@ -910,21 +919,22 @@ print(f"\nSaved to {out_path}")
 # Compare scrape counts to website output. Flag any tournament where the
 # scrape has entries but the website shows 0 — that's a linking failure.
 if os.path.exists(scrape_path):
-    all_2026 = {t['family']: t['current_count'] for t in tournaments_out if t.get('year') == 2026}
-    live_2026 = {t['family']: t['current_count'] for t in tournaments_out if t.get('year') == 2026 and t.get('status') == 'live'}
+    all_2026 = {canonicalize_family(t['family']): t['current_count'] for t in tournaments_out if t.get('year') == 2026}
+    live_2026 = {canonicalize_family(t['family']): t['current_count'] for t in tournaments_out if t.get('year') == 2026 and t.get('status') == 'live'}
     # Tournaments that are intentionally excluded (completed, blitz, WO sub-events, etc.)
-    excluded_or_complete = set(EXCLUDE_FAMILIES)
-    excluded_or_complete.update(t['family'] for t in tournaments_out if t.get('year') == 2026 and t.get('status') in ('complete', 'in_progress'))
+    excluded_or_complete = {canonicalize_family(f) for f in EXCLUDE_FAMILIES}
+    excluded_or_complete.update(canonicalize_family(t['family']) for t in tournaments_out if t.get('year') == 2026 and t.get('status') in ('complete', 'in_progress'))
     link_warnings = []
     for _, s in latest_scrape.iterrows():
         sn = s['tournament_name']
         fam = sn.replace('2026 ', '', 1) if sn.startswith('2026 ') else sn
-        if fam in excluded_or_complete:
+        fam_canon = canonicalize_family(fam)
+        if fam_canon in excluded_or_complete:
             continue
         scrape_count = int(s['active_count']) if pd.notna(s['active_count']) and s['active_count'] > 0 else int(s['entry_count'])
-        if scrape_count > 0 and fam in live_2026 and live_2026[fam] == 0:
+        if scrape_count > 0 and fam_canon in live_2026 and live_2026[fam_canon] == 0:
             link_warnings.append(f"  ⚠ {fam}: scrape={scrape_count}, website=0")
-        elif scrape_count > 0 and fam not in all_2026:
+        elif scrape_count > 0 and fam_canon not in all_2026:
             link_warnings.append(f"  ⚠ {fam}: scrape={scrape_count}, NOT IN OUTPUT")
     if link_warnings:
         print(f"\n{'!'*60}")

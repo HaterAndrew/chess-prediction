@@ -53,3 +53,28 @@ CCA_CANONICALIZE = {
     'World Open, top 6 sections': 'World Open, top 6 sections',
     'World Open, lower sections': 'World Open, lower sections',
 }
+
+
+def canonicalize_family(name):
+    """Return the canonical family string for equality comparison.
+
+    Matching is comma- and whitespace-insensitive. If the name is a variant
+    listed in any FAMILY_GROUPS entry, returns the group's canonical (first)
+    name. Otherwise returns the original name unchanged.
+
+    Intended for unifying CSV/scrape/meta joins where historical data uses
+    `World Open top 6 sections` (no comma) but CCA emits `World Open, top 6
+    sections` (with comma). Pre-split `World Open` pre-2023 is treated as top
+    6 per FAMILY_GROUPS.
+    """
+    if not isinstance(name, str):
+        return name
+
+    def _norm(s):
+        return ' '.join(s.strip().replace(',', '').split())
+
+    target = _norm(name)
+    for group in FAMILY_GROUPS:
+        if any(_norm(v) == target for v in group):
+            return group[0]
+    return name

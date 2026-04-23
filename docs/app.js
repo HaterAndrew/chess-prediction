@@ -1865,9 +1865,16 @@ function renderHero(t) {
       const maxNew = Math.max(...days, 1);
       const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
       const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      const today = new Date();
+      // Anchor bar labels to the server-side scrape date. The cron runs at
+      // ~00:20 EDT, so the delta captured by scrape N vs scrape N-1 reflects
+      // registrations during the calendar day BEFORE scrape N — shift back 1
+      // day so each bar's date matches when players actually registered.
+      const genStr = (typeof TOURNAMENT_DATA !== 'undefined' && TOURNAMENT_DATA.generated) ? TOURNAMENT_DATA.generated : null;
+      const anchor = genStr ? new Date(genStr + 'T00:00:00') : new Date();
+      const lastBarDay = new Date(anchor);
+      lastBarDay.setDate(lastBarDay.getDate() - 1);
       barsEl.innerHTML = days.slice(-7).map((n, i, arr) => {
-        const d = new Date(today);
+        const d = new Date(lastBarDay);
         d.setDate(d.getDate() - (arr.length - 1 - i));
         const label = `${dayNames[d.getDay()]} ${months[d.getMonth()]} ${d.getDate()}`;
         const pct = Math.max((n / maxNew) * 100, 2);

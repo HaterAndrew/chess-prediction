@@ -1,6 +1,6 @@
 {
-  "generated": "2026-04-23",
-  "generated_time": "2026-04-23T15:23:28.127288-04:00",
+  "generated": "2026-04-24",
+  "generated_time": "2026-04-24T00:26:50.088574-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 14,
@@ -14,13 +14,13 @@
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 313,
-      "gross_count": 321,
+      "current_count": 317,
+      "gross_count": 325,
       "withdrawal_count": 8,
-      "days_remaining": 28,
-      "point_estimate": 888,
-      "ci_lower": 859,
-      "ci_upper": 918,
+      "days_remaining": 27,
+      "point_estimate": 885,
+      "ci_lower": 855,
+      "ci_upper": 915,
       "ci_level": 0.8,
       "historical": [
         {
@@ -221,6 +221,10 @@
         [
           83,
           313
+        ],
+        [
+          84,
+          317
         ]
       ],
       "registration_curve": [
@@ -277,16 +281,16 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 279,
+        "count_at_same_point": 282,
         "final": 899
       },
       "pace_alert": {
         "family": "Chicago Open",
         "status": "on_pace",
-        "actual": 313,
-        "expected": 336,
-        "deviation_pct": -6.9,
-        "message": "Registrations are tracking within normal range (-7%)"
+        "actual": 317,
+        "expected": 343,
+        "deviation_pct": -7.5,
+        "message": "Registrations are tracking within normal range (-8%)"
       }
     },
     {
@@ -301,10 +305,10 @@
       "current_count": 13,
       "gross_count": 13,
       "withdrawal_count": 0,
-      "days_remaining": 43,
-      "point_estimate": 207,
-      "ci_lower": 126,
-      "ci_upper": 339,
+      "days_remaining": 42,
+      "point_estimate": 205,
+      "ci_lower": 125,
+      "ci_upper": 337,
       "ci_level": 0.8,
       "historical": [
         {
@@ -461,6 +465,10 @@
         [
           31,
           13
+        ],
+        [
+          32,
+          13
         ]
       ],
       "registration_curve": [
@@ -525,8 +533,8 @@
         "status": "on_pace",
         "actual": 13,
         "expected": 12,
-        "deviation_pct": 12.1,
-        "message": "Registrations are tracking within normal range (+12%)"
+        "deviation_pct": 9.0,
+        "message": "Registrations are tracking within normal range (+9%)"
       }
     },
     {
@@ -541,10 +549,10 @@
       "current_count": 13,
       "gross_count": 13,
       "withdrawal_count": 0,
-      "days_remaining": 43,
-      "point_estimate": 211,
-      "ci_lower": 129,
-      "ci_upper": 346,
+      "days_remaining": 42,
+      "point_estimate": 209,
+      "ci_lower": 127,
+      "ci_upper": 342,
       "ci_level": 0.8,
       "historical": [
         {
@@ -701,6 +709,10 @@
         [
           31,
           13
+        ],
+        [
+          32,
+          13
         ]
       ],
       "registration_curve": [
@@ -764,9 +776,9 @@
         "family": "Cleveland Open",
         "status": "below_pace",
         "actual": 13,
-        "expected": 31,
-        "deviation_pct": -58.2,
-        "message": "Registrations are 58.2% below historical pace"
+        "expected": 32,
+        "deviation_pct": -59.7,
+        "message": "Registrations are 59.7% below historical pace"
       }
     },
     {
@@ -781,10 +793,10 @@
       "current_count": 11,
       "gross_count": 11,
       "withdrawal_count": 0,
-      "days_remaining": 57,
-      "point_estimate": 104,
-      "ci_lower": 59,
-      "ci_upper": 186,
+      "days_remaining": 56,
+      "point_estimate": 103,
+      "ci_lower": 58,
+      "ci_upper": 183,
       "ci_level": 0.8,
       "historical": [
         {
@@ -926,6 +938,10 @@
         [
           31,
           11
+        ],
+        [
+          32,
+          11
         ]
       ],
       "registration_curve": [
@@ -989,9 +1005,9 @@
         "family": "New York State Open",
         "status": "above_pace",
         "actual": 11,
-        "expected": 5,
-        "deviation_pct": 103.1,
-        "message": "Registrations are 103.1% above historical pace"
+        "expected": 6,
+        "deviation_pct": 87.6,
+        "message": "Registrations are 87.6% above historical pace"
       }
     },
     {
@@ -1006,10 +1022,10 @@
       "current_count": 9,
       "gross_count": 10,
       "withdrawal_count": 1,
-      "days_remaining": 63,
-      "point_estimate": 105,
-      "ci_lower": 95,
-      "ci_upper": 115,
+      "days_remaining": 62,
+      "point_estimate": 103,
+      "ci_lower": 94,
+      "ci_upper": 113,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1146,6 +1162,10 @@
         [
           31,
           9
+        ],
+        [
+          32,
+          9
         ]
       ],
       "registration_curve": [
@@ -1210,8 +1230,8 @@
         "status": "above_pace",
         "actual": 9,
         "expected": 5,
-        "deviation_pct": 70.6,
-        "message": "Registrations are 70.6% above historical pace"
+        "deviation_pct": 65.2,
+        "message": "Registrations are 65.2% above historical pace"
       }
     },
     {
@@ -1226,7 +1246,7 @@
       "current_count": 81,
       "gross_count": 81,
       "withdrawal_count": 0,
-      "days_remaining": 64,
+      "days_remaining": 63,
       "point_estimate": 142,
       "ci_lower": 99,
       "ci_upper": 204,
@@ -1348,6 +1368,10 @@
         [
           26,
           81
+        ],
+        [
+          27,
+          81
         ]
       ],
       "registration_curve": [
@@ -1412,8 +1436,8 @@
         "status": "above_pace",
         "actual": 81,
         "expected": 14,
-        "deviation_pct": 498.4,
-        "message": "Registrations are 498.4% above historical pace"
+        "deviation_pct": 479.7,
+        "message": "Registrations are 479.7% above historical pace"
       }
     },
     {
@@ -1425,13 +1449,13 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 2,
-      "gross_count": 3,
+      "current_count": 3,
+      "gross_count": 4,
       "withdrawal_count": 1,
-      "days_remaining": 64,
+      "days_remaining": 63,
       "point_estimate": 294,
-      "ci_lower": 238,
-      "ci_upper": 363,
+      "ci_lower": 237,
+      "ci_upper": 364,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1532,6 +1556,10 @@
         [
           17,
           3
+        ],
+        [
+          32,
+          3
         ]
       ],
       "registration_curve": [
@@ -1594,10 +1622,10 @@
       "pace_alert": {
         "family": "DC Open",
         "status": "below_pace",
-        "actual": 2,
+        "actual": 3,
         "expected": 12,
-        "deviation_pct": -83.2,
-        "message": "Registrations are 83.2% below historical pace"
+        "deviation_pct": -75.7,
+        "message": "Registrations are 75.7% below historical pace"
       }
     },
     {
@@ -1612,7 +1640,7 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 67,
+      "days_remaining": 66,
       "point_estimate": 110,
       "ci_lower": 77,
       "ci_upper": 145,
@@ -1706,8 +1734,8 @@
         "status": "on_pace",
         "actual": 4,
         "expected": 4,
-        "deviation_pct": -3.4,
-        "message": "Registrations are tracking within normal range (-3%)"
+        "deviation_pct": -6.9,
+        "message": "Registrations are tracking within normal range (-7%)"
       }
     },
     {
@@ -1722,10 +1750,10 @@
       "current_count": 81,
       "gross_count": 81,
       "withdrawal_count": 0,
-      "days_remaining": 69,
-      "point_estimate": 1113,
-      "ci_lower": 880,
-      "ci_upper": 1409,
+      "days_remaining": 68,
+      "point_estimate": 1106,
+      "ci_lower": 874,
+      "ci_upper": 1400,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1858,6 +1886,10 @@
         [
           43,
           81
+        ],
+        [
+          44,
+          81
         ]
       ],
       "registration_curve": [
@@ -1914,16 +1946,16 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 67,
+        "count_at_same_point": 70,
         "final": 1165
       },
       "pace_alert": {
         "family": "World Open top 6 sections",
         "status": "below_pace",
         "actual": 81,
-        "expected": 112,
-        "deviation_pct": -27.8,
-        "message": "Registrations are 27.8% below historical pace"
+        "expected": 116,
+        "deviation_pct": -30.2,
+        "message": "Registrations are 30.2% below historical pace"
       }
     },
     {
@@ -1938,8 +1970,8 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 85,
-      "point_estimate": 268,
+      "days_remaining": 84,
+      "point_estimate": 267,
       "ci_lower": 156,
       "ci_upper": 460,
       "ci_level": 0.8,
@@ -2098,6 +2130,10 @@
         [
           31,
           1
+        ],
+        [
+          32,
+          1
         ]
       ],
       "registration_curve": [
@@ -2162,8 +2198,8 @@
         "status": "below_pace",
         "actual": 1,
         "expected": 4,
-        "deviation_pct": -74.1,
-        "message": "Registrations are 74.1% below historical pace"
+        "deviation_pct": -74.7,
+        "message": "Registrations are 74.7% below historical pace"
       }
     },
     {
@@ -2178,10 +2214,10 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 85,
+      "days_remaining": 84,
       "point_estimate": 166,
       "ci_lower": 93,
-      "ci_upper": 298,
+      "ci_upper": 295,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2338,6 +2374,10 @@
         [
           31,
           3
+        ],
+        [
+          32,
+          3
         ]
       ],
       "registration_curve": [
@@ -2402,8 +2442,8 @@
         "status": "on_pace",
         "actual": 3,
         "expected": 3,
-        "deviation_pct": 19.2,
-        "message": "Registrations are tracking within normal range (+19%)"
+        "deviation_pct": 16.1,
+        "message": "Registrations are tracking within normal range (+16%)"
       }
     },
     {
@@ -2418,7 +2458,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 85,
+      "days_remaining": 84,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -2528,7 +2568,7 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 92,
+      "days_remaining": 91,
       "point_estimate": 265,
       "ci_lower": 152,
       "ci_upper": 462,
@@ -2688,6 +2728,10 @@
         [
           31,
           4
+        ],
+        [
+          32,
+          4
         ]
       ],
       "registration_curve": [
@@ -2751,9 +2795,9 @@
         "family": "Bradley Open",
         "status": "above_pace",
         "actual": 4,
-        "expected": 2,
-        "deviation_pct": 62.1,
-        "message": "Registrations are 62.1% above historical pace"
+        "expected": 3,
+        "deviation_pct": 56.5,
+        "message": "Registrations are 56.5% above historical pace"
       }
     },
     {
@@ -2768,7 +2812,7 @@
       "current_count": 7,
       "gross_count": 7,
       "withdrawal_count": 0,
-      "days_remaining": 99,
+      "days_remaining": 98,
       "point_estimate": 394,
       "ci_lower": 235,
       "ci_upper": 661,
@@ -2928,6 +2972,10 @@
         [
           31,
           7
+        ],
+        [
+          32,
+          7
         ]
       ],
       "registration_curve": [
@@ -2984,7 +3032,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 3,
+        "count_at_same_point": 4,
         "final": 391
       },
       "pace_alert": {
@@ -2992,8 +3040,8 @@
         "status": "above_pace",
         "actual": 7,
         "expected": 4,
-        "deviation_pct": 73.2,
-        "message": "Registrations are 73.2% above historical pace"
+        "deviation_pct": 65.3,
+        "message": "Registrations are 65.3% above historical pace"
       }
     },
     {
@@ -3008,7 +3056,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 112,
+      "days_remaining": 111,
       "point_estimate": 283,
       "ci_lower": 252,
       "ci_upper": 317,
@@ -3102,8 +3150,8 @@
         "status": "below_pace",
         "actual": 1,
         "expected": 2,
-        "deviation_pct": -47.6,
-        "message": "Registrations are 47.6% below historical pace"
+        "deviation_pct": -49.0,
+        "message": "Registrations are 49.0% below historical pace"
       }
     },
     {
@@ -3118,7 +3166,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 113,
+      "days_remaining": 112,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -3212,8 +3260,8 @@
         "status": "above_pace",
         "actual": 1,
         "expected": 1,
-        "deviation_pct": 62.7,
-        "message": "Registrations are 62.7% above historical pace"
+        "deviation_pct": 42.4,
+        "message": "Registrations are 42.4% above historical pace"
       }
     },
     {
@@ -3228,7 +3276,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 120,
+      "days_remaining": 119,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -3322,8 +3370,8 @@
         "status": "above_pace",
         "actual": 1,
         "expected": 1,
-        "deviation_pct": 43.7,
-        "message": "Registrations are 43.7% above historical pace"
+        "deviation_pct": 24.8,
+        "message": "Registrations are 24.8% above historical pace"
       }
     },
     {
@@ -3338,7 +3386,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 120,
+      "days_remaining": 119,
       "point_estimate": 186,
       "ci_lower": 175,
       "ci_upper": 198,
@@ -3426,7 +3474,15 @@
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "Indianapolis Open",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 0,
+        "deviation_pct": -100.0,
+        "message": "Registrations are 100.0% below historical pace"
+      }
     },
     {
       "family": "New York State Championship",
@@ -3440,7 +3496,7 @@
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 134,
+      "days_remaining": 133,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -3550,7 +3606,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 169,
+      "days_remaining": 168,
       "point_estimate": 313,
       "ci_lower": 296,
       "ci_upper": 338,
@@ -3657,10 +3713,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 0,
-      "gross_count": 0,
+      "current_count": 1,
+      "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 176,
+      "days_remaining": 175,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -3669,7 +3725,7 @@
       "daily_data": [
         [
           0,
-          0
+          1
         ]
       ],
       "registration_curve": [
@@ -3733,10 +3789,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 0,
-      "gross_count": 0,
+      "current_count": 1,
+      "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 183,
+      "days_remaining": 182,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -3745,7 +3801,7 @@
       "daily_data": [
         [
           0,
-          0
+          1
         ]
       ],
       "registration_curve": [
@@ -3812,7 +3868,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 219,
+      "days_remaining": 218,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -4579,10 +4635,10 @@
       "prediction_source": "final",
       "prior_year_pace": null,
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 620,
-      "total_ci_lower": 598,
-      "total_ci_upper": 643
+      "total_ci_lower": 620,
+      "total_ci_upper": 620
     },
     {
       "family": "Golden State Open",
@@ -7085,11 +7141,11 @@
       "status": "complete",
       "prediction_source": "final",
       "prior_year_pace": null,
-      "walkin_multiplier": 1.049,
-      "walkin_source": "family",
-      "total_estimate": 64,
-      "total_ci_lower": 64,
-      "total_ci_upper": 64
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 67,
+      "total_ci_lower": 67,
+      "total_ci_upper": 67
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -7988,7 +8044,7 @@
       "prediction_source": "final",
       "prior_year_pace": null,
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 215,
       "total_ci_lower": 215,
       "total_ci_upper": 215
@@ -13368,7 +13424,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 125,
       "total_ci_lower": 125,
       "total_ci_upper": 125
@@ -13456,7 +13512,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 101,
       "total_ci_lower": 101,
       "total_ci_upper": 101
@@ -13548,7 +13604,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 165,
       "total_ci_lower": 165,
       "total_ci_upper": 165
@@ -13644,7 +13700,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 141,
       "total_ci_lower": 141,
       "total_ci_upper": 141
@@ -13744,7 +13800,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 141,
       "total_ci_lower": 141,
       "total_ci_upper": 141
@@ -14020,7 +14076,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 207,
       "total_ci_lower": 207,
       "total_ci_upper": 207
@@ -14304,7 +14360,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 235,
       "total_ci_lower": 235,
       "total_ci_upper": 235
@@ -14556,7 +14612,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 186,
       "total_ci_lower": 186,
       "total_ci_upper": 186
@@ -14828,7 +14884,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 197,
       "total_ci_lower": 197,
       "total_ci_upper": 197
@@ -14912,7 +14968,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 67,
       "total_ci_lower": 67,
       "total_ci_upper": 67
@@ -15000,7 +15056,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 62,
       "total_ci_lower": 62,
       "total_ci_upper": 62
@@ -15092,7 +15148,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 63,
       "total_ci_lower": 63,
       "total_ci_upper": 63
@@ -15188,7 +15244,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 50,
       "total_ci_lower": 50,
       "total_ci_upper": 50
@@ -15288,7 +15344,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 44,
       "total_ci_lower": 44,
       "total_ci_upper": 44
@@ -15556,7 +15612,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 131,
       "total_ci_lower": 131,
       "total_ci_upper": 131
@@ -15800,7 +15856,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 153,
       "total_ci_lower": 153,
       "total_ci_upper": 153
@@ -15884,7 +15940,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 320,
       "total_ci_lower": 320,
       "total_ci_upper": 320
@@ -15972,7 +16028,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 353,
       "total_ci_lower": 353,
       "total_ci_upper": 353
@@ -16064,7 +16120,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 420,
       "total_ci_lower": 420,
       "total_ci_upper": 420
@@ -16160,7 +16216,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 371,
       "total_ci_lower": 371,
       "total_ci_upper": 371
@@ -16260,7 +16316,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 363,
       "total_ci_lower": 363,
       "total_ci_upper": 363
@@ -16528,7 +16584,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 371,
       "total_ci_lower": 371,
       "total_ci_upper": 371
@@ -16808,7 +16864,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 308,
       "total_ci_lower": 308,
       "total_ci_upper": 308
@@ -17116,7 +17172,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 297,
       "total_ci_lower": 297,
       "total_ci_upper": 297
@@ -17384,7 +17440,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 323,
       "total_ci_lower": 323,
       "total_ci_upper": 323
@@ -17467,11 +17523,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.082,
-      "walkin_source": "family",
-      "total_estimate": 838,
-      "total_ci_lower": 823,
-      "total_ci_upper": 852
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 851,
+      "total_ci_lower": 851,
+      "total_ci_upper": 851
     },
     {
       "family": "Chicago Open",
@@ -17555,11 +17611,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.082,
-      "walkin_source": "family",
-      "total_estimate": 864,
-      "total_ci_lower": 849,
-      "total_ci_upper": 879
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 878,
+      "total_ci_lower": 878,
+      "total_ci_upper": 878
     },
     {
       "family": "Chicago Open",
@@ -17647,11 +17703,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.082,
-      "walkin_source": "family",
-      "total_estimate": 956,
-      "total_ci_lower": 939,
-      "total_ci_upper": 972
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 971,
+      "total_ci_lower": 971,
+      "total_ci_upper": 971
     },
     {
       "family": "Chicago Open",
@@ -17743,11 +17799,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.082,
-      "walkin_source": "family",
-      "total_estimate": 897,
-      "total_ci_lower": 882,
-      "total_ci_upper": 913
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 912,
+      "total_ci_lower": 912,
+      "total_ci_upper": 912
     },
     {
       "family": "Chicago Open",
@@ -17843,11 +17899,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.082,
-      "walkin_source": "family",
-      "total_estimate": 912,
-      "total_ci_lower": 897,
-      "total_ci_upper": 928
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 927,
+      "total_ci_lower": 927,
+      "total_ci_upper": 927
     },
     {
       "family": "Chicago Open",
@@ -18331,11 +18387,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.082,
-      "walkin_source": "family",
-      "total_estimate": 1022,
-      "total_ci_lower": 1004,
-      "total_ci_upper": 1039
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 1038,
+      "total_ci_lower": 1038,
+      "total_ci_upper": 1038
     },
     {
       "family": "Chicago Open",
@@ -18879,11 +18935,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.082,
-      "walkin_source": "family",
-      "total_estimate": 1039,
-      "total_ci_lower": 1021,
-      "total_ci_upper": 1057
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 1056,
+      "total_ci_lower": 1056,
+      "total_ci_upper": 1056
     },
     {
       "family": "Chicago Open",
@@ -19391,11 +19447,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.082,
-      "walkin_source": "family",
-      "total_estimate": 931,
-      "total_ci_lower": 915,
-      "total_ci_upper": 947
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 946,
+      "total_ci_lower": 946,
+      "total_ci_upper": 946
     },
     {
       "family": "Chicago Open",
@@ -19919,11 +19975,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.082,
-      "walkin_source": "family",
-      "total_estimate": 973,
-      "total_ci_lower": 956,
-      "total_ci_upper": 990
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 989,
+      "total_ci_lower": 989,
+      "total_ci_upper": 989
     },
     {
       "family": "Cleveland Open",
@@ -21596,7 +21652,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 218,
       "total_ci_lower": 218,
       "total_ci_upper": 218
@@ -22040,7 +22096,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 278,
       "total_ci_lower": 278,
       "total_ci_upper": 278
@@ -22128,7 +22184,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 280,
       "total_ci_lower": 280,
       "total_ci_upper": 280
@@ -22220,7 +22276,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 385,
       "total_ci_lower": 385,
       "total_ci_upper": 385
@@ -22316,7 +22372,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 321,
       "total_ci_lower": 321,
       "total_ci_upper": 321
@@ -22416,7 +22472,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 301,
       "total_ci_lower": 301,
       "total_ci_upper": 301
@@ -22696,7 +22752,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 353,
       "total_ci_lower": 353,
       "total_ci_upper": 353
@@ -22996,7 +23052,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 343,
       "total_ci_lower": 343,
       "total_ci_upper": 343
@@ -23236,7 +23292,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 268,
       "total_ci_lower": 268,
       "total_ci_upper": 268
@@ -23528,7 +23584,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 292,
       "total_ci_lower": 292,
       "total_ci_upper": 292
@@ -23696,7 +23752,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 128,
       "total_ci_lower": 128,
       "total_ci_upper": 128
@@ -23784,7 +23840,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 307,
       "total_ci_lower": 307,
       "total_ci_upper": 307
@@ -23876,7 +23932,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 440,
       "total_ci_lower": 440,
       "total_ci_upper": 440
@@ -23972,7 +24028,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 348,
       "total_ci_lower": 348,
       "total_ci_upper": 348
@@ -24072,7 +24128,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 384,
       "total_ci_lower": 384,
       "total_ci_upper": 384
@@ -24428,7 +24484,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 542,
       "total_ci_lower": 542,
       "total_ci_upper": 542
@@ -24764,7 +24820,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 580,
       "total_ci_lower": 580,
       "total_ci_upper": 580
@@ -25104,7 +25160,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 539,
       "total_ci_lower": 539,
       "total_ci_upper": 539
@@ -25480,7 +25536,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 536,
       "total_ci_lower": 536,
       "total_ci_upper": 536
@@ -25764,7 +25820,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 253,
       "total_ci_lower": 253,
       "total_ci_upper": 253
@@ -26060,7 +26116,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 283,
       "total_ci_lower": 283,
       "total_ci_upper": 283
@@ -26320,7 +26376,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 223,
       "total_ci_lower": 223,
       "total_ci_upper": 223
@@ -26600,7 +26656,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 215,
       "total_ci_lower": 215,
       "total_ci_upper": 215
@@ -36648,10 +36704,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 373,
-      "total_ci_lower": 360,
-      "total_ci_upper": 387
+      "total_ci_lower": 373,
+      "total_ci_upper": 373
     },
     {
       "family": "Liberty Bell Open",
@@ -36736,10 +36792,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 359,
-      "total_ci_lower": 346,
-      "total_ci_upper": 372
+      "total_ci_lower": 359,
+      "total_ci_upper": 359
     },
     {
       "family": "Liberty Bell Open",
@@ -36828,10 +36884,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 370,
-      "total_ci_lower": 356,
-      "total_ci_upper": 383
+      "total_ci_lower": 370,
+      "total_ci_upper": 370
     },
     {
       "family": "Liberty Bell Open",
@@ -36924,10 +36980,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 367,
-      "total_ci_lower": 354,
-      "total_ci_upper": 381
+      "total_ci_lower": 367,
+      "total_ci_upper": 367
     },
     {
       "family": "Liberty Bell Open",
@@ -37024,10 +37080,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 316,
-      "total_ci_lower": 304,
-      "total_ci_upper": 327
+      "total_ci_lower": 316,
+      "total_ci_upper": 316
     },
     {
       "family": "Liberty Bell Open",
@@ -37320,10 +37376,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 398,
-      "total_ci_lower": 384,
-      "total_ci_upper": 413
+      "total_ci_lower": 398,
+      "total_ci_upper": 398
     },
     {
       "family": "Liberty Bell Open",
@@ -37644,10 +37700,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 520,
-      "total_ci_lower": 502,
-      "total_ci_upper": 540
+      "total_ci_lower": 520,
+      "total_ci_upper": 520
     },
     {
       "family": "Liberty Bell Open",
@@ -37932,10 +37988,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 529,
-      "total_ci_lower": 510,
-      "total_ci_upper": 549
+      "total_ci_lower": 529,
+      "total_ci_upper": 529
     },
     {
       "family": "Liberty Bell Open",
@@ -38284,10 +38340,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 583,
-      "total_ci_lower": 562,
-      "total_ci_upper": 605
+      "total_ci_lower": 583,
+      "total_ci_upper": 583
     },
     {
       "family": "Los Angeles Open",
@@ -44291,11 +44347,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.013,
-      "walkin_source": "family",
-      "total_estimate": 581,
-      "total_ci_lower": 579,
-      "total_ci_upper": 584
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 631,
+      "total_ci_lower": 631,
+      "total_ci_upper": 631
     },
     {
       "family": "National Chess Congress",
@@ -44379,11 +44435,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.013,
-      "walkin_source": "family",
-      "total_estimate": 603,
-      "total_ci_lower": 600,
-      "total_ci_upper": 605
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 654,
+      "total_ci_lower": 654,
+      "total_ci_upper": 654
     },
     {
       "family": "National Chess Congress",
@@ -44471,11 +44527,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.013,
-      "walkin_source": "family",
-      "total_estimate": 653,
-      "total_ci_lower": 650,
-      "total_ci_upper": 656
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 710,
+      "total_ci_lower": 710,
+      "total_ci_upper": 710
     },
     {
       "family": "National Chess Congress",
@@ -44567,11 +44623,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.013,
-      "walkin_source": "family",
-      "total_estimate": 530,
-      "total_ci_lower": 527,
-      "total_ci_upper": 532
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 575,
+      "total_ci_lower": 575,
+      "total_ci_upper": 575
     },
     {
       "family": "National Chess Congress",
@@ -44667,11 +44723,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.013,
-      "walkin_source": "family",
-      "total_estimate": 557,
-      "total_ci_lower": 555,
-      "total_ci_upper": 560
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 605,
+      "total_ci_lower": 605,
+      "total_ci_upper": 605
     },
     {
       "family": "National Chess Congress",
@@ -45043,11 +45099,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.013,
-      "walkin_source": "family",
-      "total_estimate": 614,
-      "total_ci_lower": 611,
-      "total_ci_upper": 617
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 667,
+      "total_ci_lower": 667,
+      "total_ci_upper": 667
     },
     {
       "family": "National Chess Congress",
@@ -45439,11 +45495,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.013,
-      "walkin_source": "family",
-      "total_estimate": 644,
-      "total_ci_lower": 641,
-      "total_ci_upper": 647
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 700,
+      "total_ci_lower": 700,
+      "total_ci_upper": 700
     },
     {
       "family": "National Chess Congress",
@@ -45839,11 +45895,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.013,
-      "walkin_source": "family",
-      "total_estimate": 629,
-      "total_ci_lower": 626,
-      "total_ci_upper": 632
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 683,
+      "total_ci_lower": 683,
+      "total_ci_upper": 683
     },
     {
       "family": "National Chess Congress",
@@ -46227,11 +46283,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.013,
-      "walkin_source": "family",
-      "total_estimate": 714,
-      "total_ci_lower": 711,
-      "total_ci_upper": 717
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 776,
+      "total_ci_lower": 776,
+      "total_ci_upper": 776
     },
     {
       "family": "New York State Championship",
@@ -48344,7 +48400,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 77,
       "total_ci_lower": 77,
       "total_ci_upper": 77
@@ -48432,7 +48488,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 110,
       "total_ci_lower": 110,
       "total_ci_upper": 110
@@ -48524,7 +48580,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 95,
       "total_ci_lower": 95,
       "total_ci_upper": 95
@@ -48736,7 +48792,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 84,
       "total_ci_lower": 84,
       "total_ci_upper": 84
@@ -48952,7 +49008,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 91,
       "total_ci_lower": 91,
       "total_ci_upper": 91
@@ -51895,11 +51951,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.049,
-      "walkin_source": "family",
-      "total_estimate": 60,
-      "total_ci_lower": 60,
-      "total_ci_upper": 60
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 63,
+      "total_ci_lower": 63,
+      "total_ci_upper": 63
     },
     {
       "family": "Niagara Falls Open",
@@ -65868,7 +65924,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 220,
       "total_ci_lower": 220,
       "total_ci_upper": 220
@@ -66208,7 +66264,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 290,
       "total_ci_lower": 290,
       "total_ci_upper": 290
@@ -66520,7 +66576,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 285,
       "total_ci_lower": 285,
       "total_ci_upper": 285
@@ -66808,7 +66864,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 187,
       "total_ci_lower": 187,
       "total_ci_upper": 187
@@ -66892,7 +66948,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 216,
       "total_ci_lower": 216,
       "total_ci_upper": 216
@@ -66980,7 +67036,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 185,
       "total_ci_lower": 185,
       "total_ci_upper": 185
@@ -67072,7 +67128,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 224,
       "total_ci_lower": 224,
       "total_ci_upper": 224
@@ -67168,7 +67224,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 191,
       "total_ci_lower": 191,
       "total_ci_upper": 191
@@ -67268,7 +67324,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 216,
       "total_ci_lower": 216,
       "total_ci_upper": 216
@@ -67352,7 +67408,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 231,
       "total_ci_lower": 231,
       "total_ci_upper": 231
@@ -67440,7 +67496,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 223,
       "total_ci_lower": 223,
       "total_ci_upper": 223
@@ -67532,7 +67588,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 232,
       "total_ci_lower": 232,
       "total_ci_upper": 232
@@ -67628,7 +67684,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 254,
       "total_ci_lower": 254,
       "total_ci_upper": 254
@@ -67728,7 +67784,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 199,
       "total_ci_lower": 199,
       "total_ci_upper": 199
@@ -68048,7 +68104,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 293,
       "total_ci_lower": 293,
       "total_ci_upper": 293
@@ -68380,7 +68436,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 323,
       "total_ci_lower": 323,
       "total_ci_upper": 323
@@ -68652,7 +68708,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 254,
       "total_ci_lower": 254,
       "total_ci_upper": 254
@@ -68928,7 +68984,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "family",
+      "walkin_source": "estimate",
       "total_estimate": 207,
       "total_ci_lower": 207,
       "total_ci_upper": 207
@@ -77630,96 +77686,96 @@
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-04-23 21:22:35",
+  "last_updated": "2026-04-24 04:26:21",
   "is_stale": false,
   "alerts": [
     {
       "family": "Chicago Open",
       "status": "on_pace",
-      "actual": 313,
-      "expected": 336,
-      "deviation_pct": -6.9,
-      "message": "Registrations are tracking within normal range (-7%)"
+      "actual": 317,
+      "expected": 343,
+      "deviation_pct": -7.5,
+      "message": "Registrations are tracking within normal range (-8%)"
     },
     {
       "family": "Hartford Open",
       "status": "on_pace",
       "actual": 13,
       "expected": 12,
-      "deviation_pct": 12.1,
-      "message": "Registrations are tracking within normal range (+12%)"
+      "deviation_pct": 9.0,
+      "message": "Registrations are tracking within normal range (+9%)"
     },
     {
       "family": "Cleveland Open",
       "status": "below_pace",
       "actual": 13,
-      "expected": 31,
-      "deviation_pct": -58.2,
-      "message": "Registrations are 58.2% below historical pace"
+      "expected": 32,
+      "deviation_pct": -59.7,
+      "message": "Registrations are 59.7% below historical pace"
     },
     {
       "family": "New York State Open",
       "status": "above_pace",
       "actual": 11,
-      "expected": 5,
-      "deviation_pct": 103.1,
-      "message": "Registrations are 103.1% above historical pace"
+      "expected": 6,
+      "deviation_pct": 87.6,
+      "message": "Registrations are 87.6% above historical pace"
     },
     {
       "family": "DC International",
       "status": "above_pace",
       "actual": 9,
       "expected": 5,
-      "deviation_pct": 70.6,
-      "message": "Registrations are 70.6% above historical pace"
+      "deviation_pct": 65.2,
+      "message": "Registrations are 65.2% above historical pace"
     },
     {
       "family": "World Open lower sections",
       "status": "above_pace",
       "actual": 81,
       "expected": 14,
-      "deviation_pct": 498.4,
-      "message": "Registrations are 498.4% above historical pace"
+      "deviation_pct": 479.7,
+      "message": "Registrations are 479.7% above historical pace"
     },
     {
       "family": "DC Open",
       "status": "below_pace",
-      "actual": 2,
+      "actual": 3,
       "expected": 12,
-      "deviation_pct": -83.2,
-      "message": "Registrations are 83.2% below historical pace"
+      "deviation_pct": -75.7,
+      "message": "Registrations are 75.7% below historical pace"
     },
     {
       "family": "World Open Under 13 Championship",
       "status": "on_pace",
       "actual": 4,
       "expected": 4,
-      "deviation_pct": -3.4,
-      "message": "Registrations are tracking within normal range (-3%)"
+      "deviation_pct": -6.9,
+      "message": "Registrations are tracking within normal range (-7%)"
     },
     {
       "family": "World Open top 6 sections",
       "status": "below_pace",
       "actual": 81,
-      "expected": 112,
-      "deviation_pct": -27.8,
-      "message": "Registrations are 27.8% below historical pace"
+      "expected": 116,
+      "deviation_pct": -30.2,
+      "message": "Registrations are 30.2% below historical pace"
     },
     {
       "family": "Chicago Class",
       "status": "below_pace",
       "actual": 1,
       "expected": 4,
-      "deviation_pct": -74.1,
-      "message": "Registrations are 74.1% below historical pace"
+      "deviation_pct": -74.7,
+      "message": "Registrations are 74.7% below historical pace"
     },
     {
       "family": "Pittsburgh Open",
       "status": "on_pace",
       "actual": 3,
       "expected": 3,
-      "deviation_pct": 19.2,
-      "message": "Registrations are tracking within normal range (+19%)"
+      "deviation_pct": 16.1,
+      "message": "Registrations are tracking within normal range (+16%)"
     },
     {
       "family": "Southern Open",
@@ -77733,41 +77789,49 @@
       "family": "Bradley Open",
       "status": "above_pace",
       "actual": 4,
-      "expected": 2,
-      "deviation_pct": 62.1,
-      "message": "Registrations are 62.1% above historical pace"
+      "expected": 3,
+      "deviation_pct": 56.5,
+      "message": "Registrations are 56.5% above historical pace"
     },
     {
       "family": "Pacific Coast Open",
       "status": "above_pace",
       "actual": 7,
       "expected": 4,
-      "deviation_pct": 73.2,
-      "message": "Registrations are 73.2% above historical pace"
+      "deviation_pct": 65.3,
+      "message": "Registrations are 65.3% above historical pace"
     },
     {
       "family": "Continental Open",
       "status": "below_pace",
       "actual": 1,
       "expected": 2,
-      "deviation_pct": -47.6,
-      "message": "Registrations are 47.6% below historical pace"
+      "deviation_pct": -49.0,
+      "message": "Registrations are 49.0% below historical pace"
     },
     {
       "family": "Central California Open",
       "status": "above_pace",
       "actual": 1,
       "expected": 1,
-      "deviation_pct": 62.7,
-      "message": "Registrations are 62.7% above historical pace"
+      "deviation_pct": 42.4,
+      "message": "Registrations are 42.4% above historical pace"
     },
     {
       "family": "Atlantic Open",
       "status": "above_pace",
       "actual": 1,
       "expected": 1,
-      "deviation_pct": 43.7,
-      "message": "Registrations are 43.7% above historical pace"
+      "deviation_pct": 24.8,
+      "message": "Registrations are 24.8% above historical pace"
+    },
+    {
+      "family": "Indianapolis Open",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 0,
+      "deviation_pct": -100.0,
+      "message": "Registrations are 100.0% below historical pace"
     },
     {
       "family": "New York State Championship",

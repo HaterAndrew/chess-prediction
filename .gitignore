@@ -18,6 +18,8 @@ output/*.csv
 output/*.pkl
 output/*.png
 output/*.js
+output/*.pdf
+output/chess_history.json
 
 # But keep these tracked (needed for CI and model training)
 !output/daily_scrape.csv

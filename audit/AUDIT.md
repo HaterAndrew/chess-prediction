@@ -63,21 +63,21 @@ Trigger: stakeholder caught ACO 2026 displaying `final=184` (real: 424). Root ca
 
 ## Cat E — Operational reliability (Tier 2)
 
-| ID | Status | Item |
-|----|--------|------|
-| E1 | open | `daily_update.yml` predict-on-scrape-failure intentionality + failure issue creation. |
-| E2 | open | `output/auto_update.log` rotation. |
-| E3 | open | `output/checksums.json` use case — keep + document, or delete. |
-| E4 | open | Service worker `is_stale` propagation under aggressive caches. |
+| ID | Status | Item | Fix |
+|----|--------|------|-----|
+| E1 | fixed | `daily_update.yml` predict-on-scrape-failure logic. | Verified: scrape failure causes workflow failure, opens GitHub issue. Added `walk_in_*.csv`, `tournament_summary.csv`, `daily_registration_counts.csv`, `update_log.csv`, `checksums.json` to the daily commit list (previously incomplete — these were generated but not pushed). |
+| E2 | fixed | `output/auto_update.log` rotation. | `auto_update.sh` now rotates when log exceeds 5MB, keeping last 3 archives. |
+| E3 | fixed | `output/checksums.json` purpose. | Confirmed: integrity manifest written every run by `verify_checksums.generate_manifest()`. Used by `verify_checksums.py verify` for manual integrity check. Documented; kept. |
+| E4 | fixed | SW cache stale-banner propagation. | Verified: `docs/sw.js` is network-first; live fetch always retrieves fresh `website_data.json` so `is_stale` reaches the frontend within one navigation. Banner DOM + JS test in `test_audit_fixes.test_stale_flag_propagates_to_website_data`. |
 
 ## Cat F — Code hygiene (Tier 3)
 
-| ID | Status | Item |
-|----|--------|------|
-| F1 | open | Delete dead exploratory scripts (03_models, 04_improvements, 04b_fix_ci, 02_curve_templates, 03_blind_test, expanded_blind_test). |
-| F2 | open | One-line "stale clone" note in `~/chess-prediction` + `~/Desktop/chess-entry-predictor`. |
-| F3 | open | `model_whitepaper.py` — referenced anywhere? Delete or relocate to `docs/`. |
-| F4 | open | gitignore `output/scrape_health.{html,json}` (or commit, not both). |
+| ID | Status | Item | Fix |
+|----|--------|------|-----|
+| F1 | fixed | Dead exploratory scripts. | Deleted: `03_models.py`, `04_improvements.py`, `04b_fix_ci.py`, `02_curve_templates.py`, `03_blind_test.py`, `expanded_blind_test.py`, `test_alternatives.py`, `test_lognormal_blind.py`. All confirmed unreferenced via grep. |
+| F2 | wont-fix | Stale duplicate clones. | Out of audit scope (plan §Out of scope). User-side housekeeping. |
+| F3 | wont-fix | `model_whitepaper.py`. | Confirmed: not imported anywhere, but produces `output/CCA_Prediction_Model.pdf` which is referenced from the live site's docs link. Manual-use documentation tool — keep as-is. |
+| F4 | fixed | `output/scrape_health.{html,json}` tracking inconsistency. | Added to `.gitignore` (alongside `chess_history.json`) — auto-generated diagnostic outputs, not part of source-of-truth pipeline. |
 
 ---
 

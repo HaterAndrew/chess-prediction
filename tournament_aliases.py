@@ -47,9 +47,17 @@ for group in FAMILY_GROUPS:
 # ── CCA name → canonical family name ─────────────────────────────────────
 # Applied after stripping "2026 " prefix from scraped tournament names.
 # Only needed when CCA's name differs from the canonical family name.
+#
+# IMPORTANT: do NOT rename "Atlantic City Open" → "Atlantic Open" here.
+# CCA tracks them as separate events with separate tids in daily_scrape.csv,
+# 01_data_prep.py treats ACO as a NEW tournament (its own family), and the
+# model pools history via FAMILY_ALIASES (lineage with Foxwoods/Princeton,
+# not Atlantic Open). Renaming here corrupts metadata sync and breaks the
+# tournament_name join used by reconciliation.
 CCA_CANONICALIZE = {
-    'Atlantic City Open': 'Atlantic Open',
-    # CCA uses comma format; canonical uses space format
+    # CCA uses comma format; canonical uses comma format too (kept here as
+    # an explicit no-op so the dict documents which names are intentionally
+    # unchanged vs. simply not in the map).
     'World Open, top 6 sections': 'World Open, top 6 sections',
     'World Open, lower sections': 'World Open, lower sections',
 }
@@ -78,3 +86,41 @@ def canonicalize_family(name):
         if any(_norm(v) == target for v in group):
             return group[0]
     return name
+
+
+# ── World Open exclusion — single source of truth ────────────────────────
+# Sub-events that should NOT be predicted/graded as standalone tournaments.
+# Used by both 04d_website_data_v2.py (filter web display) and
+# 04e_performance_data.py (filter performance eval).
+#
+# Approach: keep an explicit allowlist of WO main events, and a regex of
+# patterns to exclude. Any "World Open …" not in WO_KEEP and matching
+# WO_EXCLUDE_PATTERN is dropped. New CCA variants automatically excluded
+# without needing to update both call sites.
+import re as _re
+
+WO_KEEP = {
+    'World Open Under 13', 'World Open Under 13 Championship',
+    'World Open top 6 sections', 'World Open, top 6 sections',
+    'World Open lower sections', 'World Open, lower sections',
+}
+
+# Names matching this pattern are excluded from prediction/eval. The bare
+# "World Open" pre-2023 family is also excluded (superseded by top-6/lower
+# split in 2023).
+WO_EXCLUDE_PATTERN = _re.compile(
+    r'World Open\s+(G[\s/]?\d+|Action|Womens?|Women.s|Senior|Junior|'
+    r'Amateur|Blitz|Warmup|FIDE|Octos?)',
+    _re.IGNORECASE,
+)
+
+
+def is_wo_excluded(family_name):
+    """True if the family is a WO sub-event that shouldn't be predicted/graded."""
+    if not isinstance(family_name, str):
+        return False
+    if family_name in WO_KEEP:
+        return False
+    if family_name == 'World Open':
+        return True  # pre-2023 combined family, superseded by split
+    return bool(WO_EXCLUDE_PATTERN.search(family_name))

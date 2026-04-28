@@ -169,8 +169,36 @@ def format_results(tournament_results):
     return out
 
 
+def assert_truth_label_freshness(summary, tolerance=5):
+    """Abort if daily_scrape recorded a higher entry_count than summary.final_count.
+
+    Defense-in-depth: 01_data_prep.py reconciles these values, so this should
+    never fire under normal operation. If it does, the snapshot pipeline is
+    out of sync with the live scrape and the model would be graded against
+    stale truth labels (the bug that produced ACO 2026 final=184 vs real 424).
+    Tolerance absorbs small timing differences between snapshot and scrape.
+    """
+    scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
+    if not os.path.exists(scrape_path):
+        return
+    scrape = pd.read_csv(scrape_path)
+    peak = (scrape.groupby('tournament_name')['entry_count']
+                  .max().reset_index()
+                  .rename(columns={'entry_count': 'scrape_peak'}))
+    merged = summary.merge(peak, on='tournament_name', how='inner')
+    stale = merged[merged['scrape_peak'] > merged['final_count'] + tolerance]
+    if len(stale) > 0:
+        lines = ["STALE TRUTH LABELS — refusing to grade against snapshot data."]
+        lines.append("daily_scrape.csv recorded higher entry_count than tournament_summary.final_count for:")
+        for _, r in stale.iterrows():
+            lines.append(f"  {r['tournament_name']:<55} summary={int(r['final_count']):>5}  scrape_peak={int(r['scrape_peak']):>5}  delta=+{int(r['scrape_peak'] - r['final_count'])}")
+        lines.append("Re-run 01_data_prep.py to reconcile, then retry.")
+        raise RuntimeError("\n".join(lines))
+
+
 def main():
     summary, daily, meta, hist_enrich = m04c.load_data()
+    assert_truth_label_freshness(summary)
     enrichment_lookup = m04c.build_enrichment_lookup(hist_enrich)
     meta['start_date'] = pd.to_datetime(meta['start_date'])
 
@@ -186,22 +214,40 @@ def main():
     # ── Exclude World Open sub-events that can't be predicted from history ──
     # These are small side events or post-2023 splits that inherit the wrong
     # family history (combined "World Open" ~1100 entries vs sub-event ~60-150).
-    WO_EXCLUDE = [
-        'World Open lower sections',   # split from combined WO in 2023; predicted 1124 vs actual 149
-        'World Open Amateur', 'World Open Junior Championship',
-        'World Open Junior Octos', 'World Open Senior', 'World Open Senior Amateur',
-        'World Open Womens Championship', 'World Open Warmup', 'World Open Action',
-        'World Open G7 Championship', 'World Open G 10 Championship',
-        'World Open G 10', 'World Open G 45', 'World Open G 50 Championship',
-        'World Open FIDE U2200', 'World Open FIDE U2400',
-    ]
-    wo_mask = summary['family'].isin(WO_EXCLUDE)
+    # Uses tournament_aliases.is_wo_excluded — same logic as 04d.
+    # Special case: 'World Open lower sections' was originally added with note
+    # "predicted 1124 vs actual 149"; keep it excluded from perf eval here even
+    # though display layer keeps it visible. Override via wo_perf_extra.
+    from tournament_aliases import is_wo_excluded
+    wo_perf_extra = {'World Open lower sections', 'World Open, lower sections'}
+    wo_mask = summary['family'].apply(
+        lambda f: is_wo_excluded(f) or f in wo_perf_extra
+    )
     wo_excluded = summary[wo_mask]['family'].unique()
     if len(wo_excluded) > 0:
         print(f"  Excluding {len(wo_excluded)} World Open sub-events from perf eval")
     summary = summary[~wo_mask].copy()
 
     # ── Identify completed 2026 tournaments ──
+    # Scrape-coverage gate: only required for events that ended AFTER the
+    # snapshot was taken. For events that ended BEFORE the snapshot, the
+    # snapshot's final_count is authoritative (registrations were already
+    # closed when the snapshot was exported). Without this distinction the
+    # gate would exclude every event that completed before the scraper
+    # started polling — losing most of the cohort.
+    scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
+    scraped_names = set()
+    snapshot_date = None
+    if os.path.exists(scrape_path):
+        sc = pd.read_csv(scrape_path)
+        sc = sc[sc['entry_count'] > 0]
+        scraped_names = set(sc['tournament_name'].unique())
+
+    # Infer snapshot cutoff: max last_reg across all summary rows (proxy for
+    # the manual export's data horizon).
+    summary_lr = pd.to_datetime(summary['last_reg'], errors='coerce')
+    snapshot_date = summary_lr.max() if summary_lr.notna().any() else None
+
     completed_2026_all = summary[
         (summary['tournament_year'] == 2026) &
         (~summary['is_online'].fillna(False)) &
@@ -209,15 +255,32 @@ def main():
     ].copy()
     completed_2026_all['last_reg'] = pd.to_datetime(completed_2026_all['last_reg'])
     completed_2026_tids = set()
+    no_scrape_skipped = []
     for _, row in completed_2026_all.iterrows():
         lr = row['last_reg']
         if pd.isna(lr) or lr > TODAY:
             continue
         family = row['family']
         m_row = meta[(meta['family'] == family) & (meta['year'] == 2026)]
+        end_date = m_row.iloc[0]['end_date'] if len(m_row) > 0 else pd.NaT
         if len(m_row) > 0 and pd.notna(m_row.iloc[0]['start_date']) and m_row.iloc[0]['start_date'] > TODAY:
             continue
+        # Scrape-coverage required only when event ended after snapshot —
+        # otherwise the snapshot was taken when registration was closed.
+        ended_after_snapshot = (
+            snapshot_date is not None
+            and pd.notna(end_date)
+            and pd.to_datetime(end_date) > snapshot_date
+        )
+        if ended_after_snapshot and scraped_names and row['tournament_name'] not in scraped_names:
+            no_scrape_skipped.append(row['tournament_name'])
+            continue
         completed_2026_tids.add(row['tid'])
+    if no_scrape_skipped:
+        print(f"  Excluded {len(no_scrape_skipped)} 2026 tournament(s) (event ended after "
+              f"snapshot but no daily_scrape.csv coverage — truth unverifiable):")
+        for n in no_scrape_skipped:
+            print(f"    {n}")
 
     # ── Evaluate each year ──
     year_results = {}

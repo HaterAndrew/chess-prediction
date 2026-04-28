@@ -89,6 +89,28 @@ def step_update_puzzles():
         print("  Skipping puzzles (scrape_puzzles.py not found)")
 
 
+def step_data_prep():
+    """Refresh tournament_summary.csv from the registrations snapshot + live scrape.
+
+    Without this step, tournament_summary.csv goes stale whenever
+    ~/Downloads/all_registrations.csv goes stale, and the model grades itself
+    against a low-water snapshot (see ACO 2026: snapshot 184 vs real 424).
+    01_data_prep.py reconciles snapshot final_count with daily_scrape.csv peak,
+    so this step is safe to run even when the manual export is days old.
+    """
+    src = os.path.expanduser("~/Downloads/all_registrations.csv")
+    if not os.path.exists(src):
+        print(f"\n{'─'*60}")
+        print(f"  STEP: Refresh tournament summary (SKIPPED)")
+        print(f"{'─'*60}")
+        print(f"  {src} not found — keeping existing tournament_summary.csv.")
+        print(f"  04e_performance_data.py freshness assertion will abort if grading "
+              f"would be against stale truth.")
+        return
+    run_step("Refresh tournament summary (01_data_prep.py)",
+             [sys.executable, "01_data_prep.py"])
+
+
 def step_update_model():
     """Re-run the prediction model and website data generator."""
     # 04d_website_data_v2.py imports and runs 04c_final_model internally
@@ -362,7 +384,8 @@ def main():
 
     try:
         if scrape_ok:
-            # Fresh data — regenerate model + predictions
+            # Fresh data — refresh summary from snapshot+scrape, then regenerate model
+            step_data_prep()
             step_update_model()
             step_performance()
 

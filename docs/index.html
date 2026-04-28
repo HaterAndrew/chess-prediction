@@ -91,6 +91,7 @@
     <button class="page-tab" onclick="switchPageTab('performance')" role="tab" aria-selected="false" aria-controls="panel-performance" id="ptab-performance">&#9733; Performance</button>
     <button class="page-tab" onclick="switchPageTab('about')" role="tab" aria-selected="false" aria-controls="panel-about" id="ptab-about">&#9881; About the Model</button>
     <button class="page-tab" onclick="switchPageTab('puzzles')" role="tab" aria-selected="false" aria-controls="panel-puzzles" id="ptab-puzzles">&#9822; Puzzles</button>
+    <button class="page-tab" onclick="switchPageTab('play')" role="tab" aria-selected="false" aria-controls="panel-play" id="ptab-play">&#9812; Play</button>
   </div>
 
   <!-- ══════ PREDICTIONS TAB ══════ -->
@@ -428,6 +429,19 @@
     <div style="margin:18px 0 28px">
       <h2 style="font-size:1.5rem;font-weight:800;color:var(--gold);margin-bottom:4px">CCA Tournament Entry Prediction Model</h2>
       <p style="font-size:.82rem;color:var(--muted)">A plain-English explanation of how the model works, how it was tested, and where it falls short.</p>
+    </div>
+
+    <!-- Model Health (audit-derived telemetry) — populated by renderModelHealth() at init -->
+    <div id="modelHealthPanel" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+        <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin:0">Model Health <span style="font-weight:400;color:var(--muted);font-size:.78rem">— last pipeline run, calibration vs claim, fallback rates</span></h3>
+        <span id="mh-updated" style="font-size:.72rem;color:var(--muted)"></span>
+      </div>
+      <div id="mh-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:14px"></div>
+      <div id="mh-warnings"></div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:10px;line-height:1.6">
+        Source of truth: <a href="audit/AUDIT.md" style="color:var(--gold);text-decoration:none" target="_blank" rel="noopener">audit/AUDIT.md</a> on the repo. Every metric below is computed by the daily pipeline; the underlying JSON lives at <code style="color:var(--text2);background:var(--surface);padding:1px 4px;border-radius:3px">output/audit_warnings.json</code>, <code style="color:var(--text2);background:var(--surface);padding:1px 4px;border-radius:3px">output/performance_data.json</code>, and <code style="color:var(--text2);background:var(--surface);padding:1px 4px;border-radius:3px">output/website_data.json</code>.
+      </div>
     </div>
 
     <!-- The Core Idea -->
@@ -775,7 +789,7 @@
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
   "generated": "2026-04-28",
-  "generated_time": "2026-04-28T16:28:10.535773-04:00",
+  "generated_time": "2026-04-28T16:47:40.052679-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 14,
@@ -78853,7 +78867,7 @@ const TOURNAMENT_DATA = {
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-04-28 22:26:45",
+  "last_updated": "2026-04-28 22:46:28",
   "is_stale": false,
   "alerts": [
     {

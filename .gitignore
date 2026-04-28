@@ -35,6 +35,7 @@ output/scrape_health.json
 !output/update_log.csv
 !output/walk_in_family_stats.csv
 !output/walk_in_multipliers.csv
+!output/audit_warnings.json
 
 # Data (local dev DB)
 *.db

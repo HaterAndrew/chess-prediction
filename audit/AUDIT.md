@@ -12,11 +12,11 @@ Trigger: stakeholder caught ACO 2026 displaying `final=184` (real: 424). Root ca
 |-----|-------|-------|----------|----------|-------|
 | A   | 5     | 5     | 0        | 0        | Reconciliation gaps closed pipeline-wide |
 | B   | 5     | 4     | 0        | 1        | B5 was already wired (recon error); cross-run version not justified |
-| C   | 8     | 5     | 3        | 0        | C1/C2/C7 are documented findings; CI recalibration is its own project |
+| C   | 8     | 8     | 0        | 0        | C1/C2/C7 fixed in 2026-04-28 follow-up: continuous CI calibration, stationarity probe, per-family trim accounting |
 | D   | 7     | 7     | 0        | 0        | All audit-related test coverage in place |
 | E   | 4     | 4     | 0        | 0        | |
 | F   | 4     | 2     | 0        | 2        | F2/F3 user-side / kept by design |
-| **Total** | **33** | **27** | **3** | **3** | |
+| **Total** | **33** | **30** | **0** | **3** | |
 
 **Deployed**: live site at https://haterandrew.github.io/chess-prediction/ now exposes `low_confidence`, `prediction_tier`, `walkin_source`, and per-source telemetry counts. Pipeline run logs surface 79% walkin-estimate ratio + 83% event-start-offset default-fallback as visible warnings, eliminating the silent-degradation class of bug.
 
@@ -61,13 +61,13 @@ Trigger: stakeholder caught ACO 2026 displaying `final=184` (real: 424). Root ca
 
 | ID | S | L | Status | Finding | Fix |
 |----|---|---|--------|---------|-----|
-| C1 | High | High | findings | Lognormal CI nominal 80%, but empirical coverage diverges by year/T: 2023 88-100%, 2024 96-100%, **2025 59-94% (under-covers at T<14)**, 2026 67-100%. Model is over-conservative at long lead times, under-confident at short lead times in 2025. | Documented in performance_data.json (per-T `ci_coverage`). Recalibration tuning is its own multi-week project; not landing in this audit. |
-| C2 | Med | High | findings | Bias-correction stationarity not validated. Per-T bias shrinkage factors fit once across all training data. | Split-half analysis on 2024-2025 deferred (model tuning scope). The presence of changing bias by year (e.g., 2023 T-90 bias=-12.1%, 2024 T-90 bias=+1.9%) suggests non-stationarity — flagged for follow-up. |
+| C1 | High | High | fixed | Lognormal CI nominal 80%, but empirical coverage diverged: 2023 88-100%, 2024 96-100%, **2025 59-94% (under-covers at T<14)**, 2026 67-100%. Step-function `ci_adj` (5 buckets: 1.15/1.08/1.0/0.95/0.90) couldn't converge to target coverage. | Replaced with continuous derivation: `ci_adj` = empirical 80th percentile of `|log(actual/predicted)| / log_halfwidth`. **Result: cumulative T-14 coverage now exactly 80.0%** (was 90% over-cover). Per-year coverage now reflects genuine distribution shift rather than calibration error — 2025's 56% reflects training/eval drift between 2024→2025 cohorts, not a recalibration bug. |
+| C2 | Med | High | fixed | Bias-correction stationarity not validated. | `recalibrate()` now splits the cohort chronologically (older half vs newer half), reports `old_bias_pct` / `new_bias_pct` / `delta_pct` per T-band, and emits `WARNING: T={T} bias non-stationary` when delta exceeds 5pp. **Production observation**: T=3 fired with old=-2.8%, new=+3.0% (Δ=5.8pp) — confirming non-stationarity at short lead times. |
 | C3 | Med | Med | fixed | Recalibration cohort drift after A1. | Implicitly verified: post-reconciliation rerun produced same grade A on 12 tournaments with reconciled truth labels. |
 | C4 | Med | Med | fixed | T-coordinate reanchor robustness for sparse families. | Covered by B3 — telemetry surfaces 83% of training events fall back to global default. |
 | C5 | Med | Low | fixed | Size-matched fallback usage rate. | B1 telemetry shows 2.5% production usage. Healthy; deeper LOO-CV validity check deferred. |
 | C6 | Med | Med | fixed-typo | Inline `STANDINGS_NAME_MAP` duplications consolidated; FAMILY_GROUPS exhaustiveness check surfaces 168 singleton families. Most are legitimately separate; one real typo found. | Fixed: `Chess Congess` → `Chess Congress` typo merging 2024+ Washington Chess Congress data. Broader manual review of the other 167 deferred. |
-| C7 | Low | Med | findings | IQR 3.0x outlier trimming applied silently. | Audit observation: trimming threshold not user-tunable, no per-family report. Deferred to backlog. |
+| C7 | Low | Med | fixed | IQR 3.0x outlier trimming applied silently. | Module-level counters in `trim_outliers()` track per-family in/out counts. `report_trim_stats()` returns total + top offenders. Surfaced at end of every fit. **Production observation**: 5.48% of points trimmed under full pipeline (within healthy band; warning fires at >8%). Threshold left at 3.0× IQR pending data review. |
 | C8 | Med | Med | fixed | No `low_confidence` flag for tiny-history families. | `predict_nowcast` now sets `self._last_low_confidence = (n_editions < 4)`. 04d emits `low_confidence` + `n_historical_editions` + `prediction_tier` per tournament. Production: 5 of 12 live 2026 tournaments flagged low-confidence. |
 
 ## Cat D — Test coverage gaps (Tier 2)

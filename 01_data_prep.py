@@ -169,6 +169,64 @@ print(f"  {summary['has_timestamps'].sum()} with timestamps")
 print(f"  {summary['family'].nunique()} unique families")
 print(f"  Years: {summary['tournament_year'].min()}-{summary['tournament_year'].max()}")
 
+# ── Reconcile final_count against live scrape ──────────────────────────────
+# all_registrations.csv is a manual snapshot and goes stale between exports.
+# daily_scrape.csv is refreshed by auto_update.py and tracks the live entry
+# count through tournament close. Whichever source records the higher number
+# is closer to truth — use it. This prevents the model from being graded
+# against a stale low-water snapshot (see ACO 2026: snapshot 184 vs final 424).
+scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
+_rebased_tids = set()  # filled below; consumed when extending daily_counts
+_scrape_for_extension = None
+if os.path.exists(scrape_path):
+    print("\nReconciling final_count + last_reg against daily_scrape.csv...")
+    scrape = pd.read_csv(scrape_path)
+    scrape['date'] = pd.to_datetime(scrape['date'])
+    # Peak entry_count per tournament_name (gross, includes withdrawn —
+    # matches the row-count semantics of all_registrations.csv).
+    scrape_peak = (scrape.groupby('tournament_name')['entry_count']
+                          .max()
+                          .reset_index()
+                          .rename(columns={'entry_count': 'scrape_peak'}))
+    # Latest scrape date with non-zero entries — used to rebase last_reg
+    # so the cumulative-curve T axis covers the late-registration tail.
+    scrape_latest = (scrape[scrape['entry_count'] > 0]
+                     .groupby('tournament_name')['date'].max()
+                     .reset_index()
+                     .rename(columns={'date': 'scrape_last_date'}))
+    summary = summary.merge(scrape_peak, on='tournament_name', how='left')
+    summary = summary.merge(scrape_latest, on='tournament_name', how='left')
+
+    # 1) Reconcile final_count
+    pre_count = summary['final_count'].copy()
+    summary['final_count'] = summary[['final_count', 'scrape_peak']].max(axis=1)
+    summary['final_count'] = summary['final_count'].astype(int)
+    bumped = summary[summary['final_count'] > pre_count].copy()
+    if len(bumped) > 0:
+        bumped['delta'] = bumped['final_count'] - pre_count[bumped.index]
+        print(f"  Reconciled final_count for {len(bumped)} tournament(s):")
+        for _, r in bumped.sort_values('delta', ascending=False).iterrows():
+            print(f"    {r['tournament_name']:<55} snapshot={pre_count[r.name]:>5} → scrape={r['final_count']:>5} (+{r['delta']})")
+    else:
+        print("  No final_count reconciliation needed.")
+
+    # 2) Rebase last_reg where scrape extends past snapshot
+    summary['last_reg'] = pd.to_datetime(summary['last_reg'])
+    rebase_mask = (summary['scrape_last_date'].notna() &
+                   (summary['scrape_last_date'] > summary['last_reg']))
+    rebased = summary[rebase_mask].copy()
+    if len(rebased) > 0:
+        print(f"  Rebasing last_reg for {len(rebased)} tournament(s) with post-snapshot scrape data:")
+        for _, r in rebased.iterrows():
+            print(f"    {r['tournament_name']:<55} {r['last_reg'].date()} → {r['scrape_last_date'].date()}")
+        summary.loc[rebase_mask, 'last_reg'] = summary.loc[rebase_mask, 'scrape_last_date']
+        _rebased_tids = set(summary.loc[rebase_mask, 'tid'].tolist())
+        _scrape_for_extension = scrape  # consumed below to extend daily_counts
+    summary = summary.drop(columns=['scrape_peak', 'scrape_last_date'])
+else:
+    print(f"\n  WARN: {scrape_path} not found — skipping reconciliation. "
+          "final_count may be stale.")
+
 # ── Compute Days-Before-Event ───────────────────────────────────────────────
 # Use last_reg as proxy for event date (last registration ≈ day 1 of tournament)
 print("\nComputing days-before-event for timestamped registrations...")
@@ -215,6 +273,64 @@ if _tid_merge_map:
     tid_totals = daily_counts.groupby('tid')['daily_regs'].transform('sum')
     daily_counts['cum_pct'] = daily_counts['cum_regs'] / tid_totals
     print(f"  Consolidated daily data for {len(_tid_merge_map)} merged sub-events")
+
+# ── Extend curve with scrape data for rebased tournaments ─────────────────
+# Snapshot timestamps end at the manual export date. For tournaments whose
+# registrations continued past that date, the curve is missing its tail —
+# which is exactly the window the model's short-lead-time predictions
+# (T-14, T-7, T-3) need. Inject scrape rows so cum_regs at every T reflects
+# reality, not the truncated snapshot.
+if _rebased_tids and _scrape_for_extension is not None:
+    print(f"\nExtending daily curve with scrape data for {len(_rebased_tids)} rebased tournament(s)...")
+    rebased_summary = summary[summary['tid'].isin(_rebased_tids)][['tid', 'tournament_name', 'last_reg', 'final_count']]
+    extension_rows = []
+    for _, r in rebased_summary.iterrows():
+        sc_rows = _scrape_for_extension[_scrape_for_extension['tournament_name'] == r['tournament_name']].copy()
+        if len(sc_rows) == 0:
+            continue
+        sc_rows = sc_rows.sort_values('date')
+        sc_rows['T'] = (r['last_reg'] - sc_rows['date']).dt.days
+        # Drop scrape rows past the new last_reg (negative T) and zero-entry rows
+        sc_rows = sc_rows[(sc_rows['T'] >= 0) & (sc_rows['entry_count'] > 0)]
+        for _, sr in sc_rows.iterrows():
+            extension_rows.append({
+                'tid': r['tid'], 'T': int(sr['T']),
+                'cum_regs': int(sr['entry_count']),
+                'source': 'scrape',
+            })
+
+    if extension_rows:
+        ext_df = pd.DataFrame(extension_rows)
+        # Combine archive + scrape, take running max of cum_regs per tid in
+        # chronological order (T descending), then derive daily_regs.
+        archive_view = daily_counts[daily_counts['tid'].isin(_rebased_tids)][['tid', 'T', 'cum_regs']].copy()
+        archive_view['source'] = 'archive'
+        combined = pd.concat([archive_view, ext_df], ignore_index=True)
+        # When archive and scrape have the same T, prefer scrape (it includes
+        # late registrations the archive's individual timestamps may have missed).
+        combined = combined.sort_values(['tid', 'T', 'source'], ascending=[True, False, True])
+        combined = combined.drop_duplicates(subset=['tid', 'T'], keep='last')
+        # Running max of cum_regs in chronological order (largest T first → smallest)
+        combined = combined.sort_values(['tid', 'T'], ascending=[True, False])
+        combined['cum_regs'] = combined.groupby('tid')['cum_regs'].cummax()
+        combined['daily_regs'] = combined.groupby('tid')['cum_regs'].diff().fillna(combined['cum_regs']).astype(int)
+        combined['cum_regs'] = combined['cum_regs'].astype(int)
+        combined = combined[['tid', 'T', 'daily_regs', 'cum_regs']]
+
+        # Replace rebased tids' rows in daily_counts with the merged version
+        daily_counts = pd.concat([
+            daily_counts[~daily_counts['tid'].isin(_rebased_tids)],
+            combined,
+        ], ignore_index=True)
+        # Recompute cum_pct using reconciled final_count as the tournament total
+        finals = summary.set_index('tid')['final_count']
+        daily_counts['cum_pct'] = daily_counts.apply(
+            lambda r: r['cum_regs'] / finals[r['tid']] if r['tid'] in finals.index and finals[r['tid']] > 0 else 0.0,
+            axis=1,
+        )
+        added = sum(1 for _ in extension_rows)
+        print(f"  Injected {added} scrape rows; combined curves now span "
+              f"T=[{combined['T'].min()}..{combined['T'].max()}]")
 
 # ── Detect Early-Bird Spikes ────────────────────────────────────────────────
 print("\nDetecting early-bird spikes...")

@@ -112,18 +112,12 @@ hist_enrich = pd.read_csv(hist_path) if os.path.exists(hist_path) else pd.DataFr
 enrichment_lookup = m04c.build_enrichment_lookup(hist_enrich)
 
 # Filter exclusions: online, COVID, sub-events we don't want
-# Use regex to catch name variants (G/50 vs G 50, Women's vs Womens, etc.)
-_WO_EXCLUDE_PATTERN = re.compile(
-    r'World Open\s+(G[\s/]?\d+|Action|Womens?|Women.s|Senior|Junior|Amateur|Blitz|Warmup|FIDE)',
-    re.IGNORECASE
-)
-# Scan both summary AND metadata families so exclusions apply everywhere
+# WO exclusion logic lives in tournament_aliases.is_wo_excluded — single
+# source of truth shared with 04e_performance_data.py.
+from tournament_aliases import is_wo_excluded
 _all_families = set(summary['family'].unique()) | set(meta['family'].unique())
-EXCLUDE_FAMILIES = [fam for fam in _all_families if _WO_EXCLUDE_PATTERN.search(fam)]
+EXCLUDE_FAMILIES = [fam for fam in _all_families if is_wo_excluded(fam)]
 EXCLUDE_FAMILIES.extend([
-    # The old combined "World Open" family (pre-2023) — superseded by
-    # top-6/lower split; exclude to avoid double-counting
-    'World Open',
     # Tiny side events with 1-6 registrants, not real tournaments
     'George Washington Saturday Octos', 'George Washington Sunday Octos',
 ])

@@ -254,11 +254,24 @@ def test_stale_flag_propagates_to_website_data(tmp_path):
 
 
 # ── D7 — Tiny-family fit emits low_confidence flag ──────────────────────
-# Note: this test will fail until the low_confidence feature is added to
-# 04c_final_model.predict_nowcast. See AUDIT.md C8.
-@pytest.mark.skip(reason="C8 not yet implemented — add low_confidence flag for n<4 families")
-def test_tiny_family_emits_low_confidence():
-    pass
+def test_tiny_family_emits_low_confidence(summary_df, daily_df):
+    """Predictions for families with <4 historical editions must set
+    self._last_low_confidence=True. AUDIT.md C8."""
+    from importlib import import_module
+    sys.path.insert(0, PROJECT_DIR)
+    m04c = import_module("04c_final_model")
+
+    model = m04c.N5v4_Final()
+    model.fit(summary_df, daily_df)
+
+    # Force a never-seen family — no editions
+    model.predict_nowcast(50, 14, 'Definitely Not A Real Family')
+    assert model._last_low_confidence is True
+
+    # Compare with a well-established family — Chicago Open has many editions
+    model.predict_nowcast(300, 14, 'Chicago Open')
+    if model.family_n_editions.get('Chicago Open', 0) >= 4:
+        assert model._last_low_confidence is False
 
 
 # ── B1 — Prediction tier counter is populated ────────────────────────────

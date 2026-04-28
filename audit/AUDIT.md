@@ -4,6 +4,27 @@ Started: 2026-04-28
 Scope: `/home/dale/chess_prediction` only (stale duplicate clones at `~/chess-prediction`, `~/Desktop/chess-entry-predictor` get a one-line note in F2).
 Trigger: stakeholder caught ACO 2026 displaying `final=184` (real: 424). Root cause shipped in commit `c5c516d` — this audit hunts the rest of the same defect class plus other Tier-1 risks.
 
+## Status (2026-04-28)
+
+**All Tier-1 + Tier-2 items closed. Audit complete.**
+
+| Cat | Items | Fixed | Findings | Wont-fix | Notes |
+|-----|-------|-------|----------|----------|-------|
+| A   | 5     | 5     | 0        | 0        | Reconciliation gaps closed pipeline-wide |
+| B   | 5     | 4     | 0        | 1        | B5 was already wired (recon error); cross-run version not justified |
+| C   | 8     | 5     | 3        | 0        | C1/C2/C7 are documented findings; CI recalibration is its own project |
+| D   | 7     | 7     | 0        | 0        | All audit-related test coverage in place |
+| E   | 4     | 4     | 0        | 0        | |
+| F   | 4     | 2     | 0        | 2        | F2/F3 user-side / kept by design |
+| **Total** | **33** | **27** | **3** | **3** | |
+
+**Deployed**: live site at https://haterandrew.github.io/chess-prediction/ now exposes `low_confidence`, `prediction_tier`, `walkin_source`, and per-source telemetry counts. Pipeline run logs surface 79% walkin-estimate ratio + 83% event-start-offset default-fallback as visible warnings, eliminating the silent-degradation class of bug.
+
+**Live verification** (2026-04-28 20:34 UTC):
+- 10 tournaments flagged `low_confidence: true`
+- Walk-in source distribution: 265 family / 112 estimate (was 0/377 before A1 fix)
+- Prediction tier on live cohort: 10 family-direct, 2 family-alias
+
 ## Severity rubric
 
 - **High** — wrong numbers shown publicly to stakeholders (ACO-class)

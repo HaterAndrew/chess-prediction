@@ -383,8 +383,9 @@ if len(recal_data) >= 5:
     n_older = len(recal_data) - n_2026
     print(f"  Recalibration from {len(recal_data)} tournaments ({n_older} from 2024-25, {n_2026} from 2026):")
     for T, d in sorted(recal_diag.items()):
+        cov = d.get('coverage_before', d.get('coverage', 0))
         print(f"    T-{T:>2}: bias {d['mean_bias']:>+5.1f}% → factor {d['bias_factor']:.3f}, "
-              f"CI cov {d['coverage']:>3.0f}% → adj {d['ci_adj']:.3f} (n={d['n']})")
+              f"CI cov {cov:>3.0f}% → adj {d['ci_adj']:.3f} (n={d['n']})")
 else:
     print(f"  Recalibration skipped: need ≥5 completed tournaments, have {len(recal_data)}")
 

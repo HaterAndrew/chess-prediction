@@ -235,22 +235,81 @@ def is_complete(row):
     return False
 
 
-def trim_outliers(values, iqr_factor=3.0):
-    """Remove extreme outliers beyond iqr_factor * IQR from median."""
+# AUDIT.md C7 — module-level counters track silent IQR trimming so the
+# rate of trimmed points becomes visible at end of fit.
+from collections import defaultdict as _defaultdict
+_TRIM_STATS = {'total_in': 0, 'total_out': 0, 'by_label': _defaultdict(lambda: [0, 0])}
+
+
+def reset_trim_stats():
+    """Clear aggregated trim counters. Called at start of each fit."""
+    _TRIM_STATS['total_in'] = 0
+    _TRIM_STATS['total_out'] = 0
+    _TRIM_STATS['by_label'].clear()
+
+
+def trim_outliers(values, iqr_factor=3.0, label=None):
+    """Remove extreme outliers beyond iqr_factor * IQR from median.
+
+    Optional `label` (e.g. family name) accumulates a per-label tally in
+    _TRIM_STATS so callers can audit which families lose the most points.
+    AUDIT.md C7.
+    """
     if len(values) < 4:
+        if label is not None:
+            _TRIM_STATS['by_label'][label][0] += len(values)
+            _TRIM_STATS['by_label'][label][1] += len(values)
+        _TRIM_STATS['total_in'] += len(values)
+        _TRIM_STATS['total_out'] += len(values)
         return values
     arr = np.array(values)
     q1, q3 = np.percentile(arr, [25, 75])
     iqr = q3 - q1
     if iqr == 0:
+        if label is not None:
+            _TRIM_STATS['by_label'][label][0] += len(values)
+            _TRIM_STATS['by_label'][label][1] += len(values)
+        _TRIM_STATS['total_in'] += len(values)
+        _TRIM_STATS['total_out'] += len(values)
         return values
     lo = q1 - iqr_factor * iqr
     hi = q3 + iqr_factor * iqr
     trimmed = arr[(arr >= lo) & (arr <= hi)]
-    return trimmed if len(trimmed) >= 2 else values
+    result = trimmed if len(trimmed) >= 2 else values
+    if label is not None:
+        _TRIM_STATS['by_label'][label][0] += len(values)
+        _TRIM_STATS['by_label'][label][1] += len(result)
+    _TRIM_STATS['total_in'] += len(values)
+    _TRIM_STATS['total_out'] += len(result)
+    return result
 
 
-def lognormal_ci(ratio_values, level=0.80, global_sigma=None):
+def report_trim_stats(top_n=5):
+    """Return a dict summarizing trim activity, suitable for printing.
+
+    AUDIT.md C7 — surfaces per-family trim rates so we know whether the
+    IQR 3.0x threshold is silently dropping legitimate variation.
+    """
+    total_in = _TRIM_STATS['total_in']
+    total_out = _TRIM_STATS['total_out']
+    if total_in == 0:
+        return {'total_in': 0, 'total_out': 0, 'pct_trimmed': 0.0, 'top_offenders': []}
+    pct = (total_in - total_out) / total_in * 100
+    # Top families by trim rate (require at least 5 input points to be meaningful)
+    by_rate = []
+    for label, (n_in, n_kept) in _TRIM_STATS['by_label'].items():
+        if n_in >= 5:
+            by_rate.append((label, n_in - n_kept, n_in, (n_in - n_kept) / n_in * 100))
+    by_rate.sort(key=lambda x: -x[3])
+    return {
+        'total_in': total_in,
+        'total_out': total_out,
+        'pct_trimmed': round(pct, 2),
+        'top_offenders': by_rate[:top_n],
+    }
+
+
+def lognormal_ci(ratio_values, level=0.80, global_sigma=None, label=None):
     """
     Fit a lognormal to ratio values, return (median, lower, upper).
 
@@ -258,12 +317,15 @@ def lognormal_ci(ratio_values, level=0.80, global_sigma=None):
     nonparametric quantiles directly. For smaller n, uses t-based
     prediction interval with empirical Bayes sigma shrinkage toward
     a global estimate.
+
+    Optional `label` (e.g. family name) is forwarded to trim_outliers
+    so the per-label trim audit (AUDIT.md C7) attributes correctly.
     """
     if len(ratio_values) < 2:
         med = ratio_values[0] if len(ratio_values) == 1 else 1.0
         return med, med * 0.7, med * 1.4
 
-    arr = np.array(trim_outliers(ratio_values))
+    arr = np.array(trim_outliers(ratio_values, label=label))
     n = len(arr)
     alpha = 1 - level
 
@@ -341,6 +403,10 @@ class N5v4_Final:
             All other 2026 tournaments are excluded.
         """
         self.enrichment = enrichment_lookup or {}
+
+        # AUDIT.md C7 — reset trim counters at start of every fit so reports
+        # reflect this fit only, not accumulated across calls.
+        reset_trim_stats()
 
         # Auto-populate BLITZ_FAMILIES from data: any family matching the pattern
         _blitz_pat = re.compile(r'Blitz|Rapid|Bullet|Bughouse|Armageddon|Action|G/\d+|G \d+', re.IGNORECASE)
@@ -552,6 +618,24 @@ class N5v4_Final:
                     setattr(self, attr, np.array([hub.coef_[0], hub.coef_[1], hub.intercept_]))
                 except Exception:
                     pass
+
+        # AUDIT.md C7 — surface IQR outlier trim activity at end of fit so
+        # silent point dropping is visible. Threshold of 5% pct_trimmed flagged
+        # as a warning since IQR 3.0x should normally trim very little.
+        ts = report_trim_stats(top_n=5)
+        if ts['total_in'] > 0:
+            print(f"  IQR outlier trim: {ts['total_in'] - ts['total_out']}/{ts['total_in']} "
+                  f"points trimmed ({ts['pct_trimmed']}%)")
+            if ts['top_offenders']:
+                print(f"  Top families by trim rate:")
+                for label, dropped, n_in, pct in ts['top_offenders']:
+                    print(f"    {label:<45} {dropped:>3}/{n_in:<3}  ({pct:>4.1f}%)")
+            # Warn only when materially elevated. Healthy production runs sit
+            # around 5-6% because ratios have heavy tails by nature; 8% means
+            # something noisy entered training.
+            if ts['pct_trimmed'] > 8.0:
+                print(f"  WARNING: {ts['pct_trimmed']}% of points trimmed (>8% threshold). "
+                      f"IQR factor 3.0 may be dropping legitimate variation; check top offenders.")
 
     def _calibrate(self, valid, daily, cal_max_year=None):
         """LOO calibration to find CI scale factors per T via binary search.
@@ -789,8 +873,8 @@ class N5v4_Final:
             g_sigma_below = self.global_log_sigma.get(T_below)
             g_sigma_above = self.global_log_sigma.get(T_above)
 
-            med_b, lo_b, hi_b = lognormal_ci(rats_below, level=0.80, global_sigma=g_sigma_below)
-            med_a, lo_a, hi_a = lognormal_ci(rats_above, level=0.80, global_sigma=g_sigma_above)
+            med_b, lo_b, hi_b = lognormal_ci(rats_below, level=0.80, global_sigma=g_sigma_below, label=family)
+            med_a, lo_a, hi_a = lognormal_ci(rats_above, level=0.80, global_sigma=g_sigma_above, label=family)
 
             # Blend in log space for ratios
             med = np.exp(w_below * np.log(med_b) + w_above * np.log(med_a))
@@ -806,7 +890,7 @@ class N5v4_Final:
             if not ratio_list:
                 return None, None, None
             g_sigma = self.global_log_sigma.get(closest_T)
-            med, lo_r, hi_r = lognormal_ci(ratio_list, level=0.80, global_sigma=g_sigma)
+            med, lo_r, hi_r = lognormal_ci(ratio_list, level=0.80, global_sigma=g_sigma, label=family)
             scale = self.ci_scale.get(closest_T, 1.0)
 
         # Apply calibration scaling (scale already set above for interpolated path)
@@ -1083,20 +1167,33 @@ class N5v4_Final:
 
         return (point, low, high)
 
-    def recalibrate(self, completed_tournaments, daily, T_points=None):
+    def recalibrate(self, completed_tournaments, daily, T_points=None,
+                    target_coverage=0.80, ci_min_scale=0.5, ci_max_scale=1.8):
         """Automated recalibration from completed tournament results.
 
         Computes per-T bias correction and CI width adjustment factors
         by comparing model predictions to actual final counts.
 
+        AUDIT.md C1: ci_adj derived from log-residual quantile rather than
+        a 5-bucket step function, so empirical coverage actually converges
+        to target_coverage=80% rather than landing in a "close enough" band.
+
+        AUDIT.md C2: stationarity diagnostic — fits bias on the older half
+        of completed tournaments and evaluates on the newer half. Logs both
+        if they materially diverge so the user knows the per-T bias factors
+        are time-dependent.
+
         completed_tournaments: DataFrame with completed tournaments
             (must have tid, family, final_count columns)
         daily: daily registration counts DataFrame
         T_points: list of T values to calibrate at (default: CHOP_POINTS)
+        target_coverage: desired empirical CI coverage (default 0.80)
+        ci_min_scale, ci_max_scale: clamp range for ci_adj
 
-        Sets self._recal_bias and self._recal_ci dicts.
+        Sets self._recal_bias, self._recal_ci, self._recal_n dicts.
         Returns dict with calibration diagnostics.
         """
+        from scipy.stats import norm
         if T_points is None:
             T_points = [90, 60, 42, 28, 14, 7, 3, 1]
 
@@ -1107,16 +1204,30 @@ class N5v4_Final:
 
         self._recal_bias = {}
         self._recal_ci = {}
+        self._recal_n = {}
         diagnostics = {}
 
-        for T in T_points:
-            errors = []   # (predicted - actual) / actual
-            ci_hits = []  # 1 if actual in CI, else 0
+        # AUDIT.md C2 — order tournaments chronologically for stationarity check
+        if 'last_reg' in completed_tournaments.columns:
+            completed_sorted = completed_tournaments.copy()
+            completed_sorted['_lr'] = pd.to_datetime(
+                completed_sorted['last_reg'], errors='coerce')
+            completed_sorted = completed_sorted.sort_values('_lr', na_position='last')
+        else:
+            completed_sorted = completed_tournaments
 
-            for _, row in completed_tournaments.iterrows():
+        # Standard normal quantile for the target coverage level (two-sided)
+        z_target = norm.ppf(0.5 + target_coverage / 2.0)
+
+        for T in T_points:
+            # Records: (residual_pct, log_residual_over_halfwidth, ci_hit, last_reg)
+            records = []
+
+            for _, row in completed_sorted.iterrows():
                 tid = row['tid']
                 family = row['family']
                 actual = row['final_count']
+                lr = row.get('_lr', pd.NaT) if '_lr' in row else pd.NaT
 
                 td = daily[daily['tid'] == tid].sort_values('T', ascending=False)
                 if len(td) == 0:
@@ -1141,52 +1252,83 @@ class N5v4_Final:
                 self._recal_bias = old_bias
                 self._recal_ci = old_ci
 
-                if point is None:
+                if point is None or point <= 0 or lo <= 0 or hi <= 0:
                     continue
 
-                errors.append((point - actual) / actual)
-                ci_hits.append(1 if lo <= actual <= hi else 0)
+                err_pct = (point - actual) / actual
+                # Half-width in log space (the lognormal CI's natural unit)
+                log_halfw = (np.log(max(hi, 1)) - np.log(max(lo, 1))) / 2.0
+                if log_halfw <= 0:
+                    continue
+                log_residual = abs(np.log(max(actual, 1)) - np.log(max(point, 1)))
+                # Normalized residual: 1.0 means residual exactly equals half-width
+                norm_residual = log_residual / log_halfw
+                ci_hit = 1 if lo <= actual <= hi else 0
+                records.append((err_pct, norm_residual, ci_hit, lr))
 
-            if len(errors) < 3:
+            if len(records) < 3:
                 continue
 
+            # ── Bias correction (with C2 stationarity check) ────────────
+            err_arr = np.array([r[0] for r in records])
             # Trim extreme outliers (>2× IQR) before computing bias
-            err_arr = np.array(errors)
             q1, q3 = np.percentile(err_arr, [25, 75])
             iqr = q3 - q1
             mask = (err_arr >= q1 - 2 * iqr) & (err_arr <= q3 + 2 * iqr)
             trimmed = err_arr[mask]
             if len(trimmed) < 3:
-                trimmed = err_arr  # not enough after trimming, use all
+                trimmed = err_arr
 
-            # Bias correction: if model over-predicts by X%, multiply by 1/(1+X)
-            mean_bias = np.mean(trimmed)
+            mean_bias = float(np.mean(trimmed))
             bias_factor = 1.0 / (1.0 + mean_bias)
-            # Clamp: don't over-correct (max ±20% adjustment)
             bias_factor = max(0.80, min(1.20, bias_factor))
 
-            # CI adjustment: if coverage is below/above 80% target, widen/narrow
-            coverage = np.mean(ci_hits)
-            if coverage < 0.70:
-                ci_adj = 1.15  # widen CIs by 15%
-            elif coverage < 0.75:
-                ci_adj = 1.08  # widen by 8%
-            elif coverage > 0.90:
-                ci_adj = 0.90  # narrow by 10%
-            elif coverage > 0.85:
-                ci_adj = 0.95  # narrow by 5%
-            else:
-                ci_adj = 1.0   # on target
+            # Stationarity probe: split records chronologically (older half vs newer half)
+            stationarity = None
+            if len(records) >= 6:
+                mid = len(records) // 2
+                old_half = err_arr[:mid]
+                new_half = err_arr[mid:]
+                stationarity = {
+                    'old_bias_pct': round(float(np.mean(old_half)) * 100, 1),
+                    'new_bias_pct': round(float(np.mean(new_half)) * 100, 1),
+                    'delta_pct': round((float(np.mean(new_half)) - float(np.mean(old_half))) * 100, 1),
+                }
+
+            # ── CI scale (continuous derivation, AUDIT.md C1) ───────────
+            # Empirical 80th percentile of normalized residual tells us the scale
+            # needed to make the 80% CI actually cover 80% of cases. If it's > 1,
+            # widen; if < 1, narrow.
+            norm_residuals = np.array([r[1] for r in records])
+            empirical_q = float(np.percentile(norm_residuals, target_coverage * 100))
+            # The CI width corresponds to z_target log-sigmas. The empirical_q is
+            # already in units of half-width, so it IS the scale we need to apply.
+            ci_adj = empirical_q
+            ci_adj = max(ci_min_scale, min(ci_max_scale, ci_adj))
+
+            current_coverage = float(np.mean([r[2] for r in records]))
 
             self._recal_bias[T] = bias_factor
             self._recal_ci[T] = ci_adj
-            diagnostics[T] = {
-                'n': len(errors),
+            self._recal_n[T] = len(records)
+            diag = {
+                'n': len(records),
                 'mean_bias': round(mean_bias * 100, 1),
-                'coverage': round(coverage * 100, 0),
+                'coverage_before': round(current_coverage * 100, 0),
                 'bias_factor': round(bias_factor, 3),
                 'ci_adj': round(ci_adj, 3),
+                'target_coverage': int(target_coverage * 100),
             }
+            if stationarity:
+                diag['stationarity'] = stationarity
+                # Loud warning when bias materially differs across halves
+                if abs(stationarity['delta_pct']) > 5.0:
+                    print(f"  WARNING: T={T} bias non-stationary "
+                          f"(old half: {stationarity['old_bias_pct']}%, "
+                          f"new half: {stationarity['new_bias_pct']}%, "
+                          f"Δ={stationarity['delta_pct']}pp). "
+                          f"Recent-cohort recalibration recommended.")
+            diagnostics[T] = diag
 
         return diagnostics
 

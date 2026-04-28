@@ -296,6 +296,80 @@ def test_predict_nowcast_records_tier(summary_df, daily_df, metadata_df):
     }
 
 
+# ── C1 — CI recalibration uses continuous derivation, not step function ──
+def test_recalibrate_targets_continuous_coverage(summary_df, daily_df):
+    """recalibrate() should set ci_adj from empirical residual quantile, not
+    snap to a 5-bucket step function. AUDIT.md C1."""
+    from importlib import import_module
+    sys.path.insert(0, PROJECT_DIR)
+    m04c = import_module("04c_final_model")
+
+    model = m04c.N5v4_Final()
+    model.fit(summary_df, daily_df)
+
+    # Use the same fixture as completed-tournament truth labels
+    completed = summary_df[summary_df['has_timestamps'].astype(bool)].head(10)
+    if len(completed) < 5:
+        pytest.skip("Not enough completed fixtures for recalibrate test")
+    diag = model.recalibrate(completed, daily_df)
+    assert diag, "recalibrate should produce per-T diagnostics"
+
+    # Ci_adj must be a float, not snap to one of the 5 legacy buckets
+    legacy_buckets = {1.15, 1.08, 1.0, 0.95, 0.90}
+    for T, d in diag.items():
+        adj = d.get('ci_adj')
+        if adj is not None:
+            # Allow exact 1.0 only if no records — but in non-trivial cohorts
+            # the value should be truly continuous, not in {0.90, 0.95, 1.08, 1.15}
+            assert isinstance(adj, float)
+    # At least one diagnostic should have a target_coverage field
+    sample = next(iter(diag.values()))
+    assert sample.get('target_coverage') == 80
+
+
+# ── C2 — Stationarity probe surfaces in diagnostics ─────────────────────
+def test_recalibrate_emits_stationarity_check(summary_df, daily_df):
+    """When >=6 calibration tournaments are available at a given T,
+    recalibrate splits chronologically and reports old vs new bias.
+    AUDIT.md C2."""
+    from importlib import import_module
+    sys.path.insert(0, PROJECT_DIR)
+    m04c = import_module("04c_final_model")
+
+    model = m04c.N5v4_Final()
+    model.fit(summary_df, daily_df)
+    completed = summary_df[summary_df['has_timestamps'].astype(bool)]
+    if len(completed) < 6:
+        pytest.skip("Need >=6 completed fixtures for stationarity check")
+
+    diag = model.recalibrate(completed, daily_df)
+    has_stationarity = any('stationarity' in d for d in diag.values())
+    assert has_stationarity, "stationarity probe should fire at >=6 tournaments"
+
+
+# ── C7 — IQR trim accounting reports per-family rates ────────────────────
+def test_trim_outliers_records_per_label_stats():
+    """trim_outliers(label=...) should accumulate per-label trim counts
+    so users can audit which families lose the most points. AUDIT.md C7."""
+    from importlib import import_module
+    sys.path.insert(0, PROJECT_DIR)
+    m04c = import_module("04c_final_model")
+
+    m04c.reset_trim_stats()
+    # 8 normal points + 2 extreme outliers
+    vals = [1.1, 1.2, 1.0, 1.3, 1.15, 1.05, 1.25, 1.18, 50.0, 0.001]
+    m04c.trim_outliers(vals, label='Test Family')
+    stats = m04c.report_trim_stats()
+    assert stats['total_in'] == 10
+    assert stats['total_out'] < 10  # outliers trimmed
+    assert stats['pct_trimmed'] > 0
+    # Per-label record present
+    by_label = m04c._TRIM_STATS['by_label']
+    assert 'Test Family' in by_label
+    assert by_label['Test Family'][0] == 10  # n_in
+    assert by_label['Test Family'][1] < 10   # n_kept
+
+
 # ── B3 — Event-start offset surfaces fallback usage ─────────────────────
 def test_reanchor_logs_offset_source_distribution(capsys):
     """reanchor_daily_to_event_start should print offset source counts

@@ -248,39 +248,38 @@ def reset_trim_stats():
     _TRIM_STATS['by_label'].clear()
 
 
-def trim_outliers(values, iqr_factor=3.0, label=None):
+def trim_outliers(values, iqr_factor=3.0, label=None, count_stats=True):
     """Remove extreme outliers beyond iqr_factor * IQR from median.
 
     Optional `label` (e.g. family name) accumulates a per-label tally in
     _TRIM_STATS so callers can audit which families lose the most points.
+    Set `count_stats=False` for internal calibration calls that may evaluate
+    the same ratio list many times.
     AUDIT.md C7.
     """
-    if len(values) < 4:
+    def _record(n_in, n_kept):
+        if not count_stats:
+            return
         if label is not None:
-            _TRIM_STATS['by_label'][label][0] += len(values)
-            _TRIM_STATS['by_label'][label][1] += len(values)
-        _TRIM_STATS['total_in'] += len(values)
-        _TRIM_STATS['total_out'] += len(values)
+            _TRIM_STATS['by_label'][label][0] += n_in
+            _TRIM_STATS['by_label'][label][1] += n_kept
+        _TRIM_STATS['total_in'] += n_in
+        _TRIM_STATS['total_out'] += n_kept
+
+    if len(values) < 4:
+        _record(len(values), len(values))
         return values
     arr = np.array(values)
     q1, q3 = np.percentile(arr, [25, 75])
     iqr = q3 - q1
     if iqr == 0:
-        if label is not None:
-            _TRIM_STATS['by_label'][label][0] += len(values)
-            _TRIM_STATS['by_label'][label][1] += len(values)
-        _TRIM_STATS['total_in'] += len(values)
-        _TRIM_STATS['total_out'] += len(values)
+        _record(len(values), len(values))
         return values
     lo = q1 - iqr_factor * iqr
     hi = q3 + iqr_factor * iqr
     trimmed = arr[(arr >= lo) & (arr <= hi)]
     result = trimmed if len(trimmed) >= 2 else values
-    if label is not None:
-        _TRIM_STATS['by_label'][label][0] += len(values)
-        _TRIM_STATS['by_label'][label][1] += len(result)
-    _TRIM_STATS['total_in'] += len(values)
-    _TRIM_STATS['total_out'] += len(result)
+    _record(len(values), len(result))
     return result
 
 
@@ -298,8 +297,9 @@ def report_trim_stats(top_n=5):
     # Top families by trim rate (require at least 5 input points to be meaningful)
     by_rate = []
     for label, (n_in, n_kept) in _TRIM_STATS['by_label'].items():
-        if n_in >= 5:
-            by_rate.append((label, n_in - n_kept, n_in, (n_in - n_kept) / n_in * 100))
+        dropped = n_in - n_kept
+        if n_in >= 5 and dropped > 0:
+            by_rate.append((label, dropped, n_in, dropped / n_in * 100))
     by_rate.sort(key=lambda x: -x[3])
     return {
         'total_in': total_in,
@@ -309,7 +309,8 @@ def report_trim_stats(top_n=5):
     }
 
 
-def lognormal_ci(ratio_values, level=0.80, global_sigma=None, label=None):
+def lognormal_ci(ratio_values, level=0.80, global_sigma=None, label=None,
+                 count_stats=True):
     """
     Fit a lognormal to ratio values, return (median, lower, upper).
 
@@ -320,12 +321,15 @@ def lognormal_ci(ratio_values, level=0.80, global_sigma=None, label=None):
 
     Optional `label` (e.g. family name) is forwarded to trim_outliers
     so the per-label trim audit (AUDIT.md C7) attributes correctly.
+    `count_stats=False` lets calibration and prediction evaluate CIs without
+    inflating the once-per-fit trim audit.
     """
     if len(ratio_values) < 2:
         med = ratio_values[0] if len(ratio_values) == 1 else 1.0
         return med, med * 0.7, med * 1.4
 
-    arr = np.array(trim_outliers(ratio_values, label=label))
+    arr = np.array(trim_outliers(ratio_values, label=label,
+                                 count_stats=count_stats))
     n = len(arr)
     alpha = 1 - level
 
@@ -555,6 +559,17 @@ class N5v4_Final:
                 shrink = 0.75
             self.ci_scale[T] *= shrink
 
+        # AUDIT.md C7 — count each family/T ratio list once. Calibration and
+        # prediction calls can touch the same list repeatedly, so they opt out
+        # of trim accounting and this pass owns the per-fit audit totals.
+        reset_trim_stats()
+        for fam, fam_rats in self.ratios.items():
+            if fam == '__global__':
+                continue
+            for T, rats in fam_rats.items():
+                if isinstance(T, (int, float)):
+                    trim_outliers([r[0] for r in rats], label=fam)
+
         # Build pooled per-family regression: final ~ count_at_T + T + intercept
         # Pooling across all T values gives more data points and lets the model
         # learn how lead time affects the count-to-final relationship
@@ -686,7 +701,10 @@ class N5v4_Final:
             def get_coverage(scale):
                 covered = 0
                 for count_at_T, actual, loo in loo_data:
-                    med, lo_r, hi_r = lognormal_ci(loo, level=0.80, global_sigma=g_sigma)
+                    med, lo_r, hi_r = lognormal_ci(
+                        loo, level=0.80, global_sigma=g_sigma,
+                        count_stats=False,
+                    )
                     if scale != 1.0:
                         log_med = np.log(med)
                         log_lo = np.log(lo_r)
@@ -787,16 +805,24 @@ class N5v4_Final:
         Training T is anchored to event_start after reanchor_daily_to_event_start().
         Prediction includes expected on-site registrations (baked into ratios).
 
-        Side effect (AUDIT.md B1): records `self._last_tier` and increments
-        `self._tier_counts[tier]` so callers can surface fallback distribution.
+        Side effect (AUDIT.md B1): records `self._last_tier` and, unless
+        `_track_tier=False`, increments `self._tier_counts[tier]` so callers
+        can surface fallback distribution.
         Tiers: 'family-direct', 'family-alias', 'size-matched', 'guard-no-data',
         'guard-event-started', 'guard-no-ratios'.
         """
-        # Initialize tier tracking lazily
-        if not hasattr(self, '_tier_counts'):
+        track_tier = kwargs.pop('_track_tier', True)
+
+        # Initialize tier tracking lazily for user-facing predictions only.
+        if track_tier and not hasattr(self, '_tier_counts'):
             from collections import defaultdict
             self._tier_counts = defaultdict(int)
             self._last_tier = None
+
+        def record_tier(tier):
+            self._last_tier = tier
+            if track_tier:
+                self._tier_counts[tier] += 1
 
         # AUDIT.md C8 — flag predictions for families with sparse history.
         # Default n_editions=0 for unknown families. Threshold of 4 picked from
@@ -806,12 +832,10 @@ class N5v4_Final:
 
         # Guard: event already started or no data
         if days_remaining < 0:
-            self._last_tier = 'guard-event-started'
-            self._tier_counts[self._last_tier] += 1
+            record_tier('guard-event-started')
             return current_count, current_count, current_count
         if current_count <= 0:
-            self._last_tier = 'guard-no-data'
-            self._tier_counts[self._last_tier] += 1
+            record_tier('guard-no-data')
             return None, None, None
 
         # Late-surge families: dampen ratio extrapolation to avoid over-prediction
@@ -841,16 +865,14 @@ class N5v4_Final:
                     break
 
         if use_family:
-            self._last_tier = 'family-alias' if used_alias else 'family-direct'
+            record_tier('family-alias' if used_alias else 'family-direct')
         else:
-            self._last_tier = 'size-matched'
+            record_tier('size-matched')
             # Fall back to size-matched families instead of global
             fam_ratios = self._get_size_matched_ratios(current_count)
             if not fam_ratios:
-                self._last_tier = 'guard-no-ratios'
-                self._tier_counts[self._last_tier] += 1
+                record_tier('guard-no-ratios')
                 return None, None, None
-        self._tier_counts[self._last_tier] += 1
 
         available_T = sorted([k for k in fam_ratios.keys()
                              if isinstance(k, (int, float))])
@@ -873,8 +895,12 @@ class N5v4_Final:
             g_sigma_below = self.global_log_sigma.get(T_below)
             g_sigma_above = self.global_log_sigma.get(T_above)
 
-            med_b, lo_b, hi_b = lognormal_ci(rats_below, level=0.80, global_sigma=g_sigma_below, label=family)
-            med_a, lo_a, hi_a = lognormal_ci(rats_above, level=0.80, global_sigma=g_sigma_above, label=family)
+            med_b, lo_b, hi_b = lognormal_ci(
+                rats_below, level=0.80, global_sigma=g_sigma_below,
+                label=family, count_stats=False)
+            med_a, lo_a, hi_a = lognormal_ci(
+                rats_above, level=0.80, global_sigma=g_sigma_above,
+                label=family, count_stats=False)
 
             # Blend in log space for ratios
             med = np.exp(w_below * np.log(med_b) + w_above * np.log(med_a))
@@ -890,7 +916,9 @@ class N5v4_Final:
             if not ratio_list:
                 return None, None, None
             g_sigma = self.global_log_sigma.get(closest_T)
-            med, lo_r, hi_r = lognormal_ci(ratio_list, level=0.80, global_sigma=g_sigma, label=family)
+            med, lo_r, hi_r = lognormal_ci(
+                ratio_list, level=0.80, global_sigma=g_sigma,
+                label=family, count_stats=False)
             scale = self.ci_scale.get(closest_T, 1.0)
 
         # Apply calibration scaling (scale already set above for interpolated path)
@@ -1193,7 +1221,6 @@ class N5v4_Final:
         Sets self._recal_bias, self._recal_ci, self._recal_n dicts.
         Returns dict with calibration diagnostics.
         """
-        from scipy.stats import norm
         if T_points is None:
             T_points = [90, 60, 42, 28, 14, 7, 3, 1]
 
@@ -1216,11 +1243,9 @@ class N5v4_Final:
         else:
             completed_sorted = completed_tournaments
 
-        # Standard normal quantile for the target coverage level (two-sided)
-        z_target = norm.ppf(0.5 + target_coverage / 2.0)
-
         for T in T_points:
-            # Records: (residual_pct, log_residual_over_halfwidth, ci_hit, last_reg)
+            # Records: (residual_pct, log_actual, log_point, log_halfwidth,
+            #           ci_hit, last_reg)
             records = []
 
             for _, row in completed_sorted.iterrows():
@@ -1248,7 +1273,8 @@ class N5v4_Final:
                 old_ci = self._recal_ci
                 self._recal_bias = {}
                 self._recal_ci = {}
-                point, lo, hi = self.predict_nowcast(count_at_T, T, family)
+                point, lo, hi = self.predict_nowcast(
+                    count_at_T, T, family, _track_tier=False)
                 self._recal_bias = old_bias
                 self._recal_ci = old_ci
 
@@ -1260,11 +1286,10 @@ class N5v4_Final:
                 log_halfw = (np.log(max(hi, 1)) - np.log(max(lo, 1))) / 2.0
                 if log_halfw <= 0:
                     continue
-                log_residual = abs(np.log(max(actual, 1)) - np.log(max(point, 1)))
-                # Normalized residual: 1.0 means residual exactly equals half-width
-                norm_residual = log_residual / log_halfw
+                log_actual = np.log(max(actual, 1))
+                log_point = np.log(max(point, 1))
                 ci_hit = 1 if lo <= actual <= hi else 0
-                records.append((err_pct, norm_residual, ci_hit, lr))
+                records.append((err_pct, log_actual, log_point, log_halfw, ci_hit, lr))
 
             if len(records) < 3:
                 continue
@@ -1297,16 +1322,21 @@ class N5v4_Final:
 
             # ── CI scale (continuous derivation, AUDIT.md C1) ───────────
             # Empirical 80th percentile of normalized residual tells us the scale
-            # needed to make the 80% CI actually cover 80% of cases. If it's > 1,
-            # widen; if < 1, narrow.
-            norm_residuals = np.array([r[1] for r in records])
+            # needed to make the 80% CI actually cover 80% of cases. Compute it
+            # around the same bias-corrected center used when the scale is later
+            # applied in predict_nowcast().
+            log_bias_factor = np.log(max(bias_factor, 1e-9))
+            norm_residuals = np.array([
+                abs(r[1] - (r[2] + log_bias_factor)) / r[3]
+                for r in records
+            ])
             empirical_q = float(np.percentile(norm_residuals, target_coverage * 100))
-            # The CI width corresponds to z_target log-sigmas. The empirical_q is
-            # already in units of half-width, so it IS the scale we need to apply.
+            # The empirical_q is already in units of half-width, so it is the
+            # scale to apply around the bias-corrected center.
             ci_adj = empirical_q
             ci_adj = max(ci_min_scale, min(ci_max_scale, ci_adj))
 
-            current_coverage = float(np.mean([r[2] for r in records]))
+            current_coverage = float(np.mean([r[4] for r in records]))
 
             self._recal_bias[T] = bias_factor
             self._recal_ci[T] = ci_adj
@@ -1384,16 +1414,12 @@ def build_template_curves(summary, daily):
 def run_blind_test(summary, daily):
     """
     Blind test: hold out 2024 and 2025 editions.
-    Compare N5 original vs N5v4.
+    Validate N5v4 after cleanup of retired exploratory models.
     Uses raw T throughout for consistency.
     """
     print("=" * 70)
     print("BLIND VALIDATION")
     print("=" * 70)
-
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from importlib import import_module
-    m03 = import_module("03_models")
 
     all_results = []
 
@@ -1408,10 +1434,7 @@ def run_blind_test(summary, daily):
         train_d = daily[daily['tid'].isin(train['tid'])]
         test_d = daily[daily['tid'].isin(test['tid'])]
 
-        models = [
-            ('N5_Original', m03.N5_HistoricalRatio()),
-            ('N5v4_Final', N5v4_Final()),
-        ]
+        models = [('N5v4_Final', N5v4_Final())]
 
         for name, model in models:
             try:
@@ -1759,15 +1782,7 @@ def main():
     print(f"  CI width:               {hi - lo}")
     print(f"  Historical range:       860-960 (2022-2025)")
 
-    # OLD model comparison
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from importlib import import_module
-    m03 = import_module("03_models")
-    old = m03.N5_HistoricalRatio()
-    old.fit(summary, daily)
-    old_pred, old_lo, old_hi = old.predict_nowcast(current, 60, 'Chicago Open')
-    print(f"\n  OLD N5 (with outlier):  pred={old_pred}  CI=[{old_lo}, {old_hi}]  width={old_hi-old_lo}")
-    print(f"  NEW N5v4 (fixed):       pred={pred}  CI=[{lo}, {hi}]  width={hi-lo}")
+    print(f"\n  N5v4 (fixed):            pred={pred}  CI=[{lo}, {hi}]  width={hi-lo}")
 
     # Blind validation
     print("\n")

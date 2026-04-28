@@ -6,7 +6,9 @@ where the underlying production code has already been written.
 """
 import os
 import sys
+from types import MethodType
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -69,6 +71,17 @@ def test_standings_name_map_zero_orphans():
     assert len(orphans) == 0, f"Standings names without summary match: {sorted(orphans)}"
 
 
+def test_standings_name_map_international_is_philadelphia():
+    """Chessevents /event/international/YYYY is Philadelphia International.
+
+    A zero-orphan map can still be semantically wrong if a short slug maps to
+    the wrong family. AUDIT.md A2.
+    """
+    from tournament_aliases import STANDINGS_NAME_MAP
+
+    assert STANDINGS_NAME_MAP['International'] == 'Philadelphia International'
+
+
 # ── D1 — Reconciliation fixture: snapshot 184 + scrape 424 → 424 ─────────
 def test_reconciliation_bumps_final_count(tmp_path):
     """01_data_prep should reconcile a stale snapshot up to the live scrape peak.
@@ -102,6 +115,24 @@ def test_reconciliation_bumps_final_count(tmp_path):
 
     assert int(summary.iloc[0]['final_count']) == 424
     assert int(summary.iloc[0]['scrape_peak']) == 424
+
+
+def test_curve_extension_keeps_higher_count_on_overlapping_t():
+    """Archive and scrape rows at the same T should keep the higher count."""
+    archive = pd.DataFrame([
+        {'tid': 1, 'T': 15, 'cum_regs': 170, 'source': 'archive'},
+        {'tid': 1, 'T': 14, 'cum_regs': 184, 'source': 'archive'},
+    ])
+    scrape = pd.DataFrame([
+        {'tid': 1, 'T': 14, 'cum_regs': 180, 'source': 'scrape'},
+        {'tid': 1, 'T': 13, 'cum_regs': 210, 'source': 'scrape'},
+    ])
+
+    combined = pd.concat([archive, scrape], ignore_index=True)
+    combined = combined.groupby(['tid', 'T'], as_index=False)['cum_regs'].max()
+
+    overlap = combined[(combined['tid'] == 1) & (combined['T'] == 14)].iloc[0]
+    assert int(overlap['cum_regs']) == 184
 
 
 # ── D2 — Freshness assertion fires with offending names ─────────────────
@@ -165,6 +196,30 @@ def test_scrape_coverage_gate_excludes_only_when_event_after_snapshot():
     has_scrape = True
     excluded = ended_after_snapshot and not has_scrape
     assert excluded is False
+
+
+def test_scrape_coverage_gate_uses_unrebased_snapshot_date():
+    """Rebased last_reg values must not move the inferred snapshot horizon.
+
+    If a scraped tournament rebases last_reg to today, an unscraped event that
+    ended after the manual export still needs scrape coverage.
+    """
+    summary = pd.DataFrame([
+        {'tournament_name': '2026 Scraped Open', 'last_reg': '2026-04-28',
+         'snapshot_last_reg': '2026-03-22'},
+        {'tournament_name': '2026 Unscraped April Open', 'last_reg': '2026-03-22',
+         'snapshot_last_reg': '2026-03-22'},
+    ])
+    snapshot_col = 'snapshot_last_reg' if 'snapshot_last_reg' in summary.columns else 'last_reg'
+    snapshot_date = pd.to_datetime(summary[snapshot_col], errors='coerce').max()
+
+    end_post = pd.Timestamp('2026-04-05')
+    scraped_names = {'2026 Scraped Open'}
+    ended_after_snapshot = end_post > snapshot_date
+    excluded = ended_after_snapshot and scraped_names and '2026 Unscraped April Open' not in scraped_names
+
+    assert snapshot_date == pd.Timestamp('2026-03-22')
+    assert excluded is True
 
 
 # ── B2 — Walk-in source telemetry must distinguish family/type/estimate ──
@@ -296,6 +351,25 @@ def test_predict_nowcast_records_tier(summary_df, daily_df, metadata_df):
     }
 
 
+def test_recalibrate_does_not_pollute_tier_counts(summary_df, daily_df):
+    """Internal calibration predictions should not be reported as production
+    prediction-tier telemetry. AUDIT.md B1.
+    """
+    from importlib import import_module
+    sys.path.insert(0, PROJECT_DIR)
+    m04c = import_module("04c_final_model")
+
+    model = m04c.N5v4_Final()
+    model.fit(summary_df, daily_df)
+    completed = summary_df[summary_df['has_timestamps'].astype(bool)]
+    model.recalibrate(completed, daily_df)
+
+    assert not hasattr(model, '_tier_counts') or sum(model._tier_counts.values()) == 0
+
+    model.predict_nowcast(100, 14, 'Chicago Open')
+    assert sum(model._tier_counts.values()) == 1
+
+
 # ── C1 — CI recalibration uses continuous derivation, not step function ──
 def test_recalibrate_targets_continuous_coverage(summary_df, daily_df):
     """recalibrate() should set ci_adj from empirical residual quantile, not
@@ -325,6 +399,43 @@ def test_recalibrate_targets_continuous_coverage(summary_df, daily_df):
     # At least one diagnostic should have a target_coverage field
     sample = next(iter(diag.values()))
     assert sample.get('target_coverage') == 80
+
+
+def test_recalibrate_ci_scale_applies_after_bias_recenter():
+    """Synthetic residual stream should hit target coverage after recalibration.
+
+    This catches the bug where ci_adj was derived around the raw point estimate
+    but later applied around a bias-corrected center. AUDIT.md C1.
+    """
+    from importlib import import_module
+    sys.path.insert(0, PROJECT_DIR)
+    m04c = import_module("04c_final_model")
+
+    completed = pd.DataFrame({
+        'tid': range(10),
+        'family': ['Synthetic'] * 10,
+        'final_count': [120] * 8 + [140] * 2,
+        'last_reg': pd.date_range('2025-01-01', periods=10),
+    })
+    daily = pd.DataFrame({'tid': range(10), 'T': [14] * 10, 'cum_regs': [50] * 10})
+    model = m04c.N5v4_Final()
+
+    def fake_predict(self, current_count, days_remaining, family, **kwargs):
+        return 100, 90, 110
+
+    model.predict_nowcast = MethodType(fake_predict, model)
+    model.recalibrate(
+        completed, daily, T_points=[14], target_coverage=0.80,
+        ci_min_scale=0.0, ci_max_scale=10.0)
+
+    half = (np.log(110) - np.log(90)) / 2
+    center = 100 * model._recal_bias[14]
+    lo = np.exp(np.log(center) - half * model._recal_ci[14])
+    hi = np.exp(np.log(center) + half * model._recal_ci[14])
+    actuals = completed['final_count'].to_numpy()
+    coverage = np.mean((lo <= actuals) & (actuals <= hi))
+
+    assert coverage == pytest.approx(0.80)
 
 
 # ── C2 — Stationarity probe surfaces in diagnostics ─────────────────────
@@ -368,6 +479,25 @@ def test_trim_outliers_records_per_label_stats():
     assert 'Test Family' in by_label
     assert by_label['Test Family'][0] == 10  # n_in
     assert by_label['Test Family'][1] < 10   # n_kept
+
+
+def test_trim_accounting_ignores_internal_repeated_ci_calls():
+    """Binary-search calibration may call lognormal_ci repeatedly; those calls
+    must not inflate the once-per-fit trim audit. AUDIT.md C7.
+    """
+    from importlib import import_module
+    sys.path.insert(0, PROJECT_DIR)
+    m04c = import_module("04c_final_model")
+
+    vals = [1.1, 1.2, 1.0, 1.3, 1.15, 1.05, 1.25, 1.18, 50.0, 0.001]
+    m04c.reset_trim_stats()
+    for _ in range(20):
+        m04c.lognormal_ci(vals, label='Calibration Family', count_stats=False)
+    assert m04c.report_trim_stats()['total_in'] == 0
+
+    m04c.trim_outliers(vals, label='Calibration Family')
+    stats = m04c.report_trim_stats()
+    assert stats['total_in'] == len(vals)
 
 
 # ── B3 — Event-start offset surfaces fallback usage ─────────────────────

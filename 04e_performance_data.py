@@ -243,9 +243,11 @@ def main():
         sc = sc[sc['entry_count'] > 0]
         scraped_names = set(sc['tournament_name'].unique())
 
-    # Infer snapshot cutoff: max last_reg across all summary rows (proxy for
-    # the manual export's data horizon).
-    summary_lr = pd.to_datetime(summary['last_reg'], errors='coerce')
+    # Infer snapshot cutoff from the unreconciled manual snapshot horizon.
+    # Reconciliation can rebase last_reg to today's scrape date, which would
+    # incorrectly make post-snapshot, unscraped events look authoritative.
+    snapshot_col = 'snapshot_last_reg' if 'snapshot_last_reg' in summary.columns else 'last_reg'
+    summary_lr = pd.to_datetime(summary[snapshot_col], errors='coerce')
     snapshot_date = summary_lr.max() if summary_lr.notna().any() else None
 
     completed_2026_all = summary[

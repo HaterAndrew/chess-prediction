@@ -911,6 +911,19 @@ output = {
 
 # Print summary
 print(f"\nGenerated {len(tournaments_out)} tournaments ({n_live} live, {n_complete} complete 2026, {n_historical} historical)")
+
+# AUDIT.md B1 — surface prediction-tier distribution so silent fallback is visible
+if hasattr(prod_model, '_tier_counts'):
+    tier_counts = dict(prod_model._tier_counts)
+    total = sum(tier_counts.values())
+    if total > 0:
+        print(f"\nPrediction tier distribution (n={total}):")
+        for tier, count in sorted(tier_counts.items(), key=lambda kv: -kv[1]):
+            print(f"  {tier:<22} {count:>4}  ({100*count/total:>4.1f}%)")
+        size_matched = tier_counts.get('size-matched', 0) + tier_counts.get('guard-no-ratios', 0)
+        if total > 0 and size_matched / total > 0.20:
+            print(f"  WARNING: {100*size_matched/total:.0f}% of predictions used size-matched fallback "
+                  f"or had no ratios. Family coverage is degraded.")
 for t in tournaments_out:
     ci = f"[{t['ci_lower']}, {t['ci_upper']}]"
     print(f"  {t['status']:12s} {t['family']:45s}  yr={t['year']}  count={t['current_count']:>5}  pred={t['point_estimate']:>5}  CI={ci:>15}  days={t['days_remaining']:>3}")

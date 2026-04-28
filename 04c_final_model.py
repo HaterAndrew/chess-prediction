@@ -91,6 +91,9 @@ def reanchor_daily_to_event_start(summary, daily, meta):
 
     # Shift T for each tournament
     daily = daily.copy()
+    # AUDIT.md B3 — track which offset path each tournament took so silent
+    # fallback to DEFAULT_EVENT_START_OFFSET=2 surfaces in logs.
+    _offset_source_counts = {'metadata': 0, 'family-median': 0, 'global-default': 0, 'bad-metadata': 0}
     for _, row in summary.iterrows():
         tid = row['tid']
         fam = row['family']
@@ -103,9 +106,20 @@ def reanchor_daily_to_event_start(summary, daily, meta):
             offset = (lr - start).days
             if offset < 0 or offset > 30:
                 # Bad data — fall back
-                offset = family_median_offset.get(fam, global_median_offset)
+                _offset_source_counts['bad-metadata'] += 1
+                if fam in family_median_offset:
+                    offset = family_median_offset[fam]
+                else:
+                    offset = global_median_offset
+            else:
+                _offset_source_counts['metadata'] += 1
         elif pd.notna(lr):
-            offset = family_median_offset.get(fam, global_median_offset)
+            if fam in family_median_offset:
+                offset = family_median_offset[fam]
+                _offset_source_counts['family-median'] += 1
+            else:
+                offset = global_median_offset
+                _offset_source_counts['global-default'] += 1
         else:
             continue  # no timestamp data, skip
 
@@ -133,6 +147,15 @@ def reanchor_daily_to_event_start(summary, daily, meta):
 
     if dropped > 0:
         print(f"  Reanchored T to event_start: dropped {dropped} on-site rows")
+    # AUDIT.md B3 — surface offset source distribution
+    total_offsets = sum(_offset_source_counts.values())
+    if total_offsets > 0:
+        print(f"  Event-start offset sources (n={total_offsets}): "
+              + ", ".join(f"{k}={v}" for k, v in _offset_source_counts.items() if v > 0))
+        if _offset_source_counts['global-default'] > 2:
+            print(f"  WARNING: {_offset_source_counts['global-default']} tournaments fell back to "
+                  f"DEFAULT_EVENT_START_OFFSET={DEFAULT_EVENT_START_OFFSET} (no metadata, no family median). "
+                  f"Run update_metadata.py.")
     return daily
 
 
@@ -679,11 +702,26 @@ class N5v4_Final:
         days_remaining = days until event_start (T=0 is first day of tournament).
         Training T is anchored to event_start after reanchor_daily_to_event_start().
         Prediction includes expected on-site registrations (baked into ratios).
+
+        Side effect (AUDIT.md B1): records `self._last_tier` and increments
+        `self._tier_counts[tier]` so callers can surface fallback distribution.
+        Tiers: 'family-direct', 'family-alias', 'size-matched', 'guard-no-data',
+        'guard-event-started', 'guard-no-ratios'.
         """
+        # Initialize tier tracking lazily
+        if not hasattr(self, '_tier_counts'):
+            from collections import defaultdict
+            self._tier_counts = defaultdict(int)
+            self._last_tier = None
+
         # Guard: event already started or no data
         if days_remaining < 0:
+            self._last_tier = 'guard-event-started'
+            self._tier_counts[self._last_tier] += 1
             return current_count, current_count, current_count
         if current_count <= 0:
+            self._last_tier = 'guard-no-data'
+            self._tier_counts[self._last_tier] += 1
             return None, None, None
 
         # Late-surge families: dampen ratio extrapolation to avoid over-prediction
@@ -693,6 +731,7 @@ class N5v4_Final:
 
         # Use family-specific ratios if available (>= 2 data points at some T)
         use_family = False
+        used_alias = False
         fam_ratios = self.ratios.get(family, {})
 
         # Check family aliases: pool ratios from comparable families
@@ -703,6 +742,7 @@ class N5v4_Final:
                 for T, rats in alias_rats.items():
                     if isinstance(T, (int, float)):
                         fam_ratios.setdefault(T, []).extend(rats)
+            used_alias = bool(fam_ratios)
 
         if fam_ratios:
             for T, rats in fam_ratios.items():
@@ -710,11 +750,17 @@ class N5v4_Final:
                     use_family = True
                     break
 
-        if not use_family:
+        if use_family:
+            self._last_tier = 'family-alias' if used_alias else 'family-direct'
+        else:
+            self._last_tier = 'size-matched'
             # Fall back to size-matched families instead of global
             fam_ratios = self._get_size_matched_ratios(current_count)
             if not fam_ratios:
+                self._last_tier = 'guard-no-ratios'
+                self._tier_counts[self._last_tier] += 1
                 return None, None, None
+        self._tier_counts[self._last_tier] += 1
 
         available_T = sorted([k for k in fam_ratios.keys()
                              if isinstance(k, (int, float))])

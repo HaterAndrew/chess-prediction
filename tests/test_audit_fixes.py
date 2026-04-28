@@ -199,3 +199,112 @@ def test_walkin_source_distinguishes_family_vs_estimate(tmp_path):
         assert source2 == 'estimate'
     finally:
         m04c.OUTPUT_DIR = orig
+
+
+# ── D5 — Walk-in freshness check ─────────────────────────────────────────
+def test_walkin_freshness_warning(tmp_path):
+    """When walk_in_family_stats.csv is missing, the pipeline should
+    surface that 100% of multipliers fall back to 'estimate'. AUDIT.md A1/B2."""
+    from importlib import import_module
+    sys.path.insert(0, PROJECT_DIR)
+    m04c = import_module("04c_final_model")
+
+    out = tmp_path / "output"
+    out.mkdir()
+    # Deliberately do NOT create walk_in_family_stats.csv
+    orig = m04c.OUTPUT_DIR
+    m04c.OUTPUT_DIR = str(out)
+    try:
+        mults = m04c.load_walkin_multipliers()
+        assert mults == {}, "load_walkin_multipliers should return {} when file missing"
+        # All apply_walkin_multiplier calls should now use 'estimate' source
+        _, _, _, ratio, source = m04c.apply_walkin_multiplier(100, 90, 110, 'Atlantic City Open', mults)
+        assert source == 'estimate'
+        assert ratio == 1.1
+    finally:
+        m04c.OUTPUT_DIR = orig
+
+
+# ── D6 — Auto-update stale-mode propagates is_stale=True ────────────────
+def test_stale_flag_propagates_to_website_data(tmp_path):
+    """When the scrape fails, _stamp_stale_flag should set is_stale=True
+    in website_data.json so the frontend banner activates. AUDIT.md B4."""
+    from importlib import import_module
+    import json
+
+    sys.path.insert(0, PROJECT_DIR)
+    auto_update = import_module("auto_update")
+
+    wd = {
+        'generated': '2026-04-28', 'tournaments': [],
+        'is_stale': False, 'last_updated': None,
+    }
+    wd_path = tmp_path / "website_data.json"
+    wd_path.write_text(json.dumps(wd))
+
+    orig = auto_update.WEBSITE_JSON
+    auto_update.WEBSITE_JSON = str(wd_path)
+    try:
+        auto_update._stamp_stale_flag(is_stale=True)
+        result = json.loads(wd_path.read_text())
+        assert result['is_stale'] is True
+        assert result['last_updated'] is not None
+    finally:
+        auto_update.WEBSITE_JSON = orig
+
+
+# ── D7 — Tiny-family fit emits low_confidence flag ──────────────────────
+# Note: this test will fail until the low_confidence feature is added to
+# 04c_final_model.predict_nowcast. See AUDIT.md C8.
+@pytest.mark.skip(reason="C8 not yet implemented — add low_confidence flag for n<4 families")
+def test_tiny_family_emits_low_confidence():
+    pass
+
+
+# ── B1 — Prediction tier counter is populated ────────────────────────────
+def test_predict_nowcast_records_tier(summary_df, daily_df, metadata_df):
+    """predict_nowcast must increment self._tier_counts on each call so 04d
+    can surface fallback distribution. AUDIT.md B1."""
+    from importlib import import_module
+    sys.path.insert(0, PROJECT_DIR)
+    m04c = import_module("04c_final_model")
+
+    model = m04c.N5v4_Final()
+    model.fit(summary_df, daily_df)
+    # First call initializes _tier_counts
+    model.predict_nowcast(100, 14, 'Chicago Open')
+    assert hasattr(model, '_tier_counts')
+    assert hasattr(model, '_last_tier')
+    total = sum(model._tier_counts.values())
+    assert total >= 1, "tier counter should increment on call"
+    assert model._last_tier in {
+        'family-direct', 'family-alias', 'size-matched',
+        'guard-no-data', 'guard-event-started', 'guard-no-ratios'
+    }
+
+
+# ── B3 — Event-start offset surfaces fallback usage ─────────────────────
+def test_reanchor_logs_offset_source_distribution(capsys):
+    """reanchor_daily_to_event_start should print offset source counts
+    so silent DEFAULT_EVENT_START_OFFSET fallback is visible. AUDIT.md B3."""
+    from importlib import import_module
+    sys.path.insert(0, PROJECT_DIR)
+    m04c = import_module("04c_final_model")
+
+    summary = pd.DataFrame([
+        {'tid': 1, 'family': 'Test Open', 'tournament_year': 2025.0,
+         'last_reg': '2025-06-15', 'final_count': 100,
+         'has_timestamps': True, 'is_online': False, 'is_covid': False,
+         'tournament_name': '2025 Test Open'},
+    ])
+    daily = pd.DataFrame([
+        {'tid': 1, 'T': 14, 'daily_regs': 5, 'cum_regs': 50, 'cum_pct': 0.5},
+        {'tid': 1, 'T': 7, 'daily_regs': 5, 'cum_regs': 100, 'cum_pct': 1.0},
+    ])
+    meta = pd.DataFrame([
+        # No metadata for Test Open → forces fallback
+    ], columns=['family', 'year', 'start_date', 'end_date'])
+
+    m04c.reanchor_daily_to_event_start(summary, daily, meta)
+    captured = capsys.readouterr()
+    assert 'offset sources' in captured.out or 'global-default' in captured.out

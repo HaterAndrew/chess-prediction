@@ -1,0 +1,58 @@
+{
+  "generated": "2026-04-28 22:46:28",
+  "count": 13,
+  "warnings": [
+    {
+      "step": "Generate predictions (04d_website_data_v2.py)",
+      "text": "267 tournaments fell back to DEFAULT_EVENT_START_OFFSET=2 (no metadata, no family median). Run update_metadata.py."
+    },
+    {
+      "step": "Generate predictions (04d_website_data_v2.py)",
+      "text": "6 standings name(s) won't join to any summary family \u2014 extend STANDINGS_NAME_MAP in tournament_aliases.py:"
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "267 tournaments fell back to DEFAULT_EVENT_START_OFFSET=2 (no metadata, no family median). Run update_metadata.py."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "47 standings name(s) won't join to any summary family \u2014 extend STANDINGS_NAME_MAP in tournament_aliases.py:"
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "16 standings name(s) won't join to any summary family \u2014 extend STANDINGS_NAME_MAP in tournament_aliases.py:"
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=42 bias non-stationary (old half: 3.0%, new half: -3.8%, \u0394=-6.7pp). Recent-cohort recalibration recommended."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=28 bias non-stationary (old half: -5.0%, new half: -10.5%, \u0394=-5.5pp). Recent-cohort recalibration recommended."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "13 standings name(s) won't join to any summary family \u2014 extend STANDINGS_NAME_MAP in tournament_aliases.py:"
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=60 bias non-stationary (old half: 3.9%, new half: -2.1%, \u0394=-6.1pp). Recent-cohort recalibration recommended."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=7 bias non-stationary (old half: 1.0%, new half: -4.2%, \u0394=-5.3pp). Recent-cohort recalibration recommended."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "11 standings name(s) won't join to any summary family \u2014 extend STANDINGS_NAME_MAP in tournament_aliases.py:"
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "7 standings name(s) won't join to any summary family \u2014 extend STANDINGS_NAME_MAP in tournament_aliases.py:"
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=3 bias non-stationary (old half: -3.1%, new half: 2.9%, \u0394=6.1pp). Recent-cohort recalibration recommended."
+    }
+  ]
+}

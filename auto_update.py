@@ -39,6 +39,26 @@ UPDATE_LOG = os.path.join(OUTPUT_DIR, "update_log.csv")
 RUN_TS = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
+_PIPELINE_WARNINGS = []
+
+
+def _harvest_warnings(step_name, stdout):
+    """Pull lines starting with WARNING: out of a step's stdout into the
+    pipeline-wide warning list. Exposed via output/audit_warnings.json so
+    CI can surface them in the step summary instead of letting them rot
+    in auto_update.log. AUDIT.md follow-up #2."""
+    if not stdout:
+        return
+    for line in stdout.split('\n'):
+        stripped = line.strip()
+        # Match the audit-emitted format: "WARNING: <message>" anywhere on the line.
+        if 'WARNING:' in stripped:
+            # Strip leading whitespace + any leading "WARNING:" prefix from the captured text
+            idx = stripped.find('WARNING:')
+            text = stripped[idx + len('WARNING:'):].strip()
+            _PIPELINE_WARNINGS.append({'step': step_name, 'text': text})
+
+
 def run_step(description, cmd):
     """Run a subprocess step, printing status and handling errors."""
     print(f"\n{'─'*60}")
@@ -56,10 +76,34 @@ def run_step(description, cmd):
         lines = result.stdout.strip().split('\n')
         for line in lines[-20:]:
             print(f"  {line}")
+    _harvest_warnings(description, result.stdout)
     if result.returncode != 0:
         print(f"  STDERR: {result.stderr[-500:]}" if result.stderr else "")
         raise RuntimeError(f"Step failed with exit code {result.returncode}: {description}")
     return result
+
+
+def write_audit_warnings():
+    """Write pipeline warnings to output/audit_warnings.json for CI consumption.
+    AUDIT.md follow-up #2."""
+    out_path = os.path.join(OUTPUT_DIR, "audit_warnings.json")
+    payload = {
+        'generated': RUN_TS,
+        'count': len(_PIPELINE_WARNINGS),
+        'warnings': _PIPELINE_WARNINGS,
+    }
+    with open(out_path, 'w') as f:
+        json.dump(payload, f, indent=2)
+    site_path = os.path.join(SITE_DIR, "audit_warnings.json")
+    with open(site_path, 'w') as f:
+        json.dump(payload, f, indent=2)
+    if _PIPELINE_WARNINGS:
+        print(f"\n  Captured {len(_PIPELINE_WARNINGS)} pipeline warning(s) → {out_path}")
+        for w in _PIPELINE_WARNINGS:
+            print(f"    [{w['step']}] {w['text'][:120]}")
+    else:
+        print(f"\n  No pipeline warnings captured → {out_path}")
+    print(f"  Copied audit_warnings.json to docs/")
 
 
 def step_scrape():
@@ -463,6 +507,9 @@ def main():
             duration_seconds=duration,
         )
         generate_health_html()
+
+        # Persist any WARNING lines emitted by sub-steps so CI can surface them.
+        write_audit_warnings()
 
         status = "COMPLETE" if scrape_ok else "COMPLETE (STALE)"
         print(f"\n{'='*60}")

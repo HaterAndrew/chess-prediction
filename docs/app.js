@@ -1784,15 +1784,33 @@ function renderHero(t) {
     heroNum.style.webkitBackgroundClip = 'text';
   }
 
-  const nHist = t.historical ? t.historical.length : 0;
-  const confLabel = nHist >= 8 ? 'High' : nHist >= 4 ? 'Medium' : nHist >= 2 ? 'Low' : 'Very Low';
-  const confColor = nHist >= 8 ? 'var(--green)' : nHist >= 4 ? 'var(--gold)' : nHist >= 2 ? 'var(--orange)' : 'var(--red)';
+  // Audit telemetry: prefer explicit low_confidence flag over derived nHist count.
+  // n_historical_editions is the audit-canonical count (excludes COVID/online); fall back
+  // to the historical array length only when the audit fields aren't present.
+  const nHist = (typeof t.n_historical_editions === 'number')
+    ? t.n_historical_editions
+    : (t.historical ? t.historical.length : 0);
+  const isLowConfidence = (typeof t.low_confidence === 'boolean')
+    ? t.low_confidence
+    : (nHist < 4);
+  const confLabel = isLowConfidence
+    ? (nHist >= 2 ? 'Low Confidence' : 'Very Low Confidence')
+    : (nHist >= 8 ? 'High Confidence' : 'Medium Confidence');
+  const confColor = isLowConfidence
+    ? (nHist >= 2 ? 'var(--orange)' : 'var(--red)')
+    : (nHist >= 8 ? 'var(--green)' : 'var(--gold)');
   const confBadge = !isDone(t) && t.ci_lower !== t.ci_upper
-    ? ` <span style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:700;background:rgba(0,0,0,.3);border:1px solid ${confColor};color:${confColor};margin-left:6px;vertical-align:middle">${confLabel} · ${nHist} editions</span>`
+    ? ` <span title="${nHist} qualifying historical edition${nHist===1?'':'s'} for this family. Below 4 editions, the model marks the prediction low-confidence." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:700;background:rgba(0,0,0,.3);border:1px solid ${confColor};color:${confColor};margin-left:6px;vertical-align:middle;cursor:help">${confLabel} · ${nHist} edition${nHist===1?'':'s'}</span>`
     : '';
+
+  // Audit telemetry: surface fallback tier when prediction didn't use direct family ratios.
+  const tierBadge = (!isDone(t) && t.prediction_tier && t.prediction_tier !== 'family-direct')
+    ? ` <span title="Prediction used the '${t.prediction_tier}' fallback path. 'family-alias' pools history from related families; 'size-matched' uses families with comparable historical size when this family has no direct history." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:700;background:rgba(0,0,0,.3);border:1px solid var(--blue);color:var(--blue);margin-left:6px;vertical-align:middle;cursor:help">${t.prediction_tier.replace('-',' ')}</span>`
+    : '';
+
   const ciText = t.ci_lower === t.ci_upper
-    ? `<span style="color:var(--text2)">${fmt(t.current_count)} total entries</span>${confBadge}`
-    : `<span style="color:var(--text2);font-weight:600">${fmt(t.ci_lower)}</span> <span style="opacity:.5">–</span> <span style="color:var(--text2);font-weight:600">${fmt(t.ci_upper)}</span> <span style="opacity:.7">(${Math.round((t.ci_level || .8) * 100)}% CI)</span>${confBadge}`;
+    ? `<span style="color:var(--text2)">${fmt(t.current_count)} total entries</span>${confBadge}${tierBadge}`
+    : `<span style="color:var(--text2);font-weight:600">${fmt(t.ci_lower)}</span> <span style="opacity:.5">–</span> <span style="color:var(--text2);font-weight:600">${fmt(t.ci_upper)}</span> <span style="opacity:.7">(${Math.round((t.ci_level || .8) * 100)}% CI)</span>${confBadge}${tierBadge}`;
   document.getElementById('heroCi').innerHTML = ciText;
 
   // Side KPI cards
@@ -3167,6 +3185,145 @@ function selectTournament(index, skipHash) {
   }, 120);
 }
 
+// AUDIT.md follow-up #3 — Model Health panel populates audit telemetry on the
+// About-the-Model tab. Pulls cumulative CI coverage from PERFORMANCE_DATA,
+// walkin/tier/low_confidence counts from TOURNAMENT_DATA, and fetches
+// audit_warnings.json for the latest pipeline-run warnings.
+function renderModelHealth() {
+  const grid = document.getElementById('mh-grid');
+  if (!grid) return;
+  const updated = document.getElementById('mh-updated');
+  if (updated) {
+    const ts = TOURNAMENT_DATA.last_updated || TOURNAMENT_DATA.generated;
+    updated.textContent = ts ? 'Pipeline last ran ' + ts : '';
+  }
+
+  const tiles = [];
+
+  // Tile 1: cumulative T-14 CI coverage vs nominal 80%
+  let covPct = null;
+  if (typeof PERFORMANCE_DATA !== 'undefined' && PERFORMANCE_DATA) {
+    const cum = PERFORMANCE_DATA.cumulative || {};
+    const cumT14 = (cum.aggregate || []).find(a => a.T === 14);
+    if (cumT14) covPct = cumT14.ci_coverage;
+  }
+  if (covPct !== null) {
+    const drift = Math.abs(covPct - 80);
+    const color = drift <= 3 ? 'var(--green)' : drift <= 7 ? 'var(--gold)' : 'var(--red)';
+    tiles.push({
+      label: 'CI coverage (cumulative T-14)',
+      value: covPct + '%',
+      sub: 'target 80% / drift ' + Math.round(drift) + 'pp',
+      color,
+      help: 'Cumulative empirical coverage of the 80% confidence interval across years 2023-2026. Should sit near 80%.',
+    });
+  }
+
+  // Tile 2: walk-in source distribution
+  const walkinSrc = {};
+  (TOURNAMENT_DATA.tournaments || []).forEach(t => {
+    if (t.walkin_source) walkinSrc[t.walkin_source] = (walkinSrc[t.walkin_source] || 0) + 1;
+  });
+  const walkinTotal = Object.values(walkinSrc).reduce((a, b) => a + b, 0);
+  if (walkinTotal > 0) {
+    const fam = walkinSrc.family || 0;
+    const est = walkinSrc.estimate || 0;
+    const famPct = Math.round(100 * fam / walkinTotal);
+    const color = famPct >= 80 ? 'var(--green)' : famPct >= 50 ? 'var(--gold)' : 'var(--red)';
+    tiles.push({
+      label: 'Walk-in family-level coverage',
+      value: famPct + '%',
+      sub: fam + ' family / ' + est + ' estimate (n=' + walkinTotal + ')',
+      color,
+      help: 'How many tournaments use family-specific walk-in multipliers vs the global 1.1x fallback.',
+    });
+  }
+
+  // Tile 3: prediction tier on live cohort
+  const tierCounts = {};
+  (TOURNAMENT_DATA.tournaments || []).forEach(t => {
+    if (t.status === 'live' && t.prediction_tier) {
+      tierCounts[t.prediction_tier] = (tierCounts[t.prediction_tier] || 0) + 1;
+    }
+  });
+  const liveTotal = Object.values(tierCounts).reduce((a, b) => a + b, 0);
+  if (liveTotal > 0) {
+    const direct = tierCounts['family-direct'] || 0;
+    const fallback = liveTotal - direct;
+    const directPct = Math.round(100 * direct / liveTotal);
+    const color = directPct >= 90 ? 'var(--green)' : directPct >= 70 ? 'var(--gold)' : 'var(--red)';
+    tiles.push({
+      label: 'Live cohort direct family ratio',
+      value: directPct + '%',
+      sub: direct + ' direct / ' + fallback + ' fallback (n=' + liveTotal + ')',
+      color,
+      help: 'Of live-cohort predictions, how many used direct family ratios vs a fallback path.',
+    });
+  }
+
+  // Tile 4: low-confidence count
+  const lowConf = (TOURNAMENT_DATA.tournaments || []).filter(t => t.low_confidence).length;
+  const totalTournaments = (TOURNAMENT_DATA.tournaments || []).length;
+  if (totalTournaments > 0) {
+    const pct = Math.round(100 * lowConf / totalTournaments);
+    const color = pct <= 5 ? 'var(--green)' : pct <= 15 ? 'var(--gold)' : 'var(--red)';
+    tiles.push({
+      label: 'Low-confidence predictions',
+      value: String(lowConf),
+      sub: pct + '% of ' + totalTournaments + ' tournaments / n<4 history',
+      color,
+      help: 'Predictions for families with <4 qualifying historical editions. Lognormal CI is unreliable below 4.',
+    });
+  }
+
+  // Tile 5: 2026 backtest grade
+  if (typeof PERFORMANCE_DATA !== 'undefined' && PERFORMANCE_DATA && PERFORMANCE_DATA.years && PERFORMANCE_DATA.years['2026']) {
+    const yr = PERFORMANCE_DATA.years['2026'];
+    const grade = yr.grade || 'N/A';
+    const color = grade.startsWith('A') ? 'var(--green)' : grade.startsWith('B') ? 'var(--gold)' : 'var(--red)';
+    tiles.push({
+      label: '2026 backtest grade',
+      value: grade,
+      sub: yr.grade_detail || ((yr.n_tournaments || 0) + ' tournaments'),
+      color,
+      help: 'Letter grade from the 2026 evaluation cohort. Based on T-14 MAE and CI coverage.',
+    });
+  }
+
+  grid.innerHTML = tiles.map(t =>
+    '<div title="' + t.help.replace(/"/g, '&quot;') + '" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;cursor:help">' +
+    '<div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">' + t.label + '</div>' +
+    '<div style="font-size:1.6rem;font-weight:800;color:' + t.color + ';line-height:1">' + t.value + '</div>' +
+    '<div style="font-size:.7rem;color:var(--text2);margin-top:6px">' + t.sub + '</div>' +
+    '</div>'
+  ).join('');
+
+  // Pipeline warnings — async fetch
+  const warnEl = document.getElementById('mh-warnings');
+  if (!warnEl) return;
+  fetch('audit_warnings.json', { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (!data || !data.warnings) { warnEl.innerHTML = ''; return; }
+      const c = data.count || 0;
+      if (c === 0) {
+        warnEl.innerHTML = '<div style="font-size:.78rem;color:var(--green);padding:10px 12px;background:rgba(72,187,120,.08);border:1px solid rgba(72,187,120,.3);border-radius:8px">Latest pipeline run: 0 warnings (clean).</div>';
+        return;
+      }
+      const rows = data.warnings.map(w =>
+        '<tr><td style="padding:4px 8px;color:var(--muted);font-size:.72rem;white-space:nowrap">' +
+        w.step.split('(')[0].trim() + '</td><td style="padding:4px 8px;color:var(--text2);font-size:.78rem">' +
+        w.text + '</td></tr>'
+      ).join('');
+      warnEl.innerHTML =
+        '<details style="background:rgba(214,158,46,.08);border:1px solid rgba(214,158,46,.3);border-radius:8px;padding:10px 12px">' +
+        '<summary style="cursor:pointer;font-size:.78rem;color:var(--gold);font-weight:600">Latest pipeline run: ' + c + ' warning' + (c === 1 ? '' : 's') + ' (click to expand)</summary>' +
+        '<table style="width:100%;margin-top:10px;border-collapse:collapse">' + rows + '</table></details>';
+    })
+    .catch(() => { warnEl.innerHTML = ''; });
+}
+
+
 function init() {
   // --- Stale data warning banner ---
   if (TOURNAMENT_DATA.is_stale) {
@@ -3181,6 +3338,7 @@ function init() {
     }
   }
 
+  renderModelHealth();
   document.getElementById('lastUpdated').textContent = fmtDateTimeLong(TOURNAMENT_DATA.generated_time || TOURNAMENT_DATA.generated);
   // Always show splash on load
   initSplash();

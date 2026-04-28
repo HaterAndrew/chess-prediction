@@ -111,6 +111,29 @@ def step_data_prep():
              [sys.executable, "01_data_prep.py"])
 
 
+def step_walkin_multipliers():
+    """Regenerate walk_in_family_stats.csv from historical_standings.csv.
+
+    Without this step, the file is missing in production and apply_walkin_multiplier
+    falls back to the global 'estimate' path for every tournament — silently
+    degrading the per-family walk-in CI propagation. AUDIT.md A1.
+
+    Idempotent: reads historical_standings.csv (updated by scrape_standings.py)
+    and tournament_summary.csv (refreshed by step_data_prep). Skips if either
+    input is missing.
+    """
+    standings = os.path.join(OUTPUT_DIR, "historical_standings.csv")
+    summary = os.path.join(OUTPUT_DIR, "tournament_summary.csv")
+    if not os.path.exists(standings) or not os.path.exists(summary):
+        print(f"\n{'─'*60}")
+        print(f"  STEP: Refresh walk-in multipliers (SKIPPED)")
+        print(f"{'─'*60}")
+        print(f"  Missing input(s); using stale walk-in stats if any exist.")
+        return
+    run_step("Refresh walk-in multipliers (06_walk_in_multipliers.py)",
+             [sys.executable, "06_walk_in_multipliers.py"])
+
+
 def step_update_model():
     """Re-run the prediction model and website data generator."""
     # 04d_website_data_v2.py imports and runs 04c_final_model internally
@@ -386,6 +409,7 @@ def main():
         if scrape_ok:
             # Fresh data — refresh summary from snapshot+scrape, then regenerate model
             step_data_prep()
+            step_walkin_multipliers()
             step_update_model()
             step_performance()
 

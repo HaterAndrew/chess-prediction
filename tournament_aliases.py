@@ -124,3 +124,85 @@ def is_wo_excluded(family_name):
     if family_name == 'World Open':
         return True  # pre-2023 combined family, superseded by split
     return bool(WO_EXCLUDE_PATTERN.search(family_name))
+
+
+# ── historical_standings.csv name → canonical family ────────────────────
+# chessevents.com uses URL-derived names (lowercase concat, missing punctuation).
+# Single source of truth, used by 04c_final_model.py and 06_walk_in_multipliers.py.
+# AUDIT.md A2 — extend this map when validate_standings_join() reports orphans.
+STANDINGS_NAME_MAP = {
+    'Bostonchess Congress': 'Boston Chess Congress',
+    'Midamerica Open': 'Mid-America Open',
+    'Kingsisland Open': 'Kings Island Open',
+    'Pacificcoast Open': 'Pacific Coast Open',
+    'Losangeles Open': 'Los Angeles Open',
+    'Georgewashington Open': 'George Washington Open',
+    'Foxwoods Open': 'Open at Foxwoods',
+    'Midwest Class': 'Midwest Class Championships',
+    'Western Class': 'Western Class Championships',
+    'Centralcalifornia': 'Central California Open',
+    'Centralnewyork': 'Central New York Open',
+    'Easternchesscongress': 'Eastern Chess Congress',
+    'Easternclass': 'Eastern Class',
+    'Chicagoclass': 'Chicago Class',
+    'Continentalclass': 'Continental Class',
+    'Continentalopen': 'Continental Open',
+    'Empirestate': 'Empire State Open',
+    'Empirecity': 'Empire City Open',
+    'Southwest Class': 'Southwest Class Championships',
+    # Single-word standings → ambiguous opens (most likely match by year+size)
+    'Atlantic': 'Atlantic Open',
+    'Boston': 'Boston Chess Congress',
+    'Bradley': 'Bradley Open',
+    'Cleveland': 'Cleveland Open',
+    'Foxwoods': 'Open at Foxwoods',
+    'Hartford': 'Hartford Open',
+    'Indianapolis': 'Indianapolis Open',
+    'Liberty Bell': 'Liberty Bell Open',
+    'Manhattan': 'Manhattan Open',
+    'Pittsburgh': 'Pittsburgh Open',
+    'Princeton': 'Princeton Open',
+    'Stamford': 'Stamford Open',
+    # Lowercase-concat → spaced
+    'Goldenstate': 'Golden State Open',
+    'Golden State': 'Golden State Open',
+    'Georgewashington': 'George Washington Open',
+    'Kingsisland': 'Kings Island Open',
+    'Losangeles': 'Los Angeles Open',
+    'Midamerica': 'Mid-America Open',
+    'Midwestclass': 'Midwest Class Championships',
+    'Midwestcongress': 'Midwest Chess Congress',
+    'Newyorkopen': 'New York State Open',
+    'Niagarafalls': 'Niagara Falls Open',
+    'Northamerican': 'North American Open',
+    'Northeast': 'Northeast Open',
+    'Nychampionship': 'New York State Championship',
+    'Nyhighschool': 'New York State High School Championship',
+    'Nyscholastics': 'New York State Scholastic Championships Grades K-8',
+    'Nysenior': 'New York State Senior Championship With Young Adult Mi',
+    'Pacificcoast': 'Pacific Coast Open',
+    'Philadelphia': 'Philadelphia Open',
+    'Southernclass': 'Southern Class Championships',
+    'Southernopen': 'Southern Open',
+    'Southwestclass': 'Southwest Class Championships',
+    'Washingtoncongress': 'Washington Chess Congress',
+    'Westernclass': 'Western Class Championships',
+    'Boardwalk': 'Boardwalk Open',
+    'International': 'DC International',
+}
+
+
+def validate_standings_join(standings_names, summary_families, verbose=True):
+    """Apply STANDINGS_NAME_MAP and report standings rows that won't join to summary.
+
+    Returns set of unmapped standings names. AUDIT.md A2 — silent drops were the
+    failure mode (build_enrichment_lookup quietly skips any unmatched row).
+    """
+    mapped = {STANDINGS_NAME_MAP.get(n, n) for n in standings_names}
+    orphans = mapped - set(summary_families)
+    if verbose and orphans:
+        print(f"  WARNING: {len(orphans)} standings name(s) won't join to any "
+              f"summary family — extend STANDINGS_NAME_MAP in tournament_aliases.py:")
+        for n in sorted(orphans):
+            print(f"    {n!r}")
+    return orphans

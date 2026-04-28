@@ -267,6 +267,37 @@ def validate_tournament_summary(csv_path=None):
     return report
 
 
+def validate_metadata_freshness(csv_path=None, year=None):
+    """Surface upcoming events with degraded model features (missing early-bird
+    deadline). The deadline drives days_to_early_bird in feature_engineering;
+    when missing, the model uses neutral values — silent degradation.
+    AUDIT.md A3.
+    """
+    import os, pandas as pd
+    report = ValidationReport()
+    if csv_path is None:
+        OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
+        csv_path = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
+    if not os.path.exists(csv_path):
+        report.add_warning(f"{csv_path} not found")
+        return report
+    m = pd.read_csv(csv_path)
+    m['start_date'] = pd.to_datetime(m['start_date'], errors='coerce')
+    m['early_bird_deadline'] = pd.to_datetime(m['early_bird_deadline'], errors='coerce')
+    today = pd.Timestamp.now().normalize()
+    if year is None:
+        year = today.year
+    upcoming = m[(m['year'] == year) & (m['start_date'] > today)]
+    no_eb = upcoming[upcoming['early_bird_deadline'].isna()]
+    if len(no_eb) > 0:
+        report.add_warning(
+            f"{len(no_eb)} upcoming {year} event(s) missing early_bird_deadline "
+            f"in tournament_metadata.csv — model will use neutral feature values. "
+            f"Run update_metadata.py to populate."
+        )
+    return report
+
+
 def validate_all():
     """Run all validators and return a combined ValidationReport."""
     combined = ValidationReport()
@@ -276,6 +307,9 @@ def validate_all():
 
     summary_report = validate_tournament_summary()
     combined.merge(summary_report)
+
+    metadata_report = validate_metadata_freshness()
+    combined.merge(metadata_report)
 
     return combined
 

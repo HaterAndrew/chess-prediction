@@ -31,33 +31,9 @@ COVID_YEARS = {2020, 2021}
 # Minimum standings count to consider valid (filters scraper failures)
 MIN_STANDINGS_COUNT = 15
 
-# Map standings tournament names to summary family names
-# (standings use URL-derived names, summary uses canonical CCA names)
-STANDINGS_NAME_MAP = {
-    'Bostonchess Congress': 'Boston Chess Congress',
-    'Midamerica Open': 'Mid-America Open',
-    'Kingsisland Open': 'Kings Island Open',
-    'Pacificcoast Open': 'Pacific Coast Open',
-    'Losangeles Open': 'Los Angeles Open',
-    'Georgewashington Open': 'George Washington Open',
-    'Foxwoods Open': 'Open at Foxwoods',
-    'Midwest Class': 'Midwest Class Championships',
-    'Western Class': 'Western Class Championships',
-    'Centralcalifornia': 'Central California Open',
-    'Centralnewyork': 'Central New York Open',
-    'Easternchesscongress': 'Eastern Chess Congress',
-    'Easternclass': 'Eastern Class',
-    'Chicagoclass': 'Chicago Class',
-    'Continentalclass': 'Continental Class',
-    'Continentalopen': 'Continental Open',
-    'Empirestate': 'Empire State Open',
-    'Empirecity': 'Empire City Open',
-    'Southwest Class': 'Southwest Class Championships',
-    'Southernclass': 'Southern Class',
-    'Southernopen': 'Southern Open',
-    'Newyorkopen': 'New York State Open',
-    'Nysenior': 'New York State Senior Championship With Young Adult Mi',
-}
+# Map standings tournament names to summary family names — single source of
+# truth in tournament_aliases.py (AUDIT.md A2).
+from tournament_aliases import STANDINGS_NAME_MAP
 
 # Tournament type classification for fallback multipliers
 # Class tournaments have much higher walk-in rates than open tournaments

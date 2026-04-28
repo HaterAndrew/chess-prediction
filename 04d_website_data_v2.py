@@ -549,18 +549,18 @@ for _, row in t2026.iterrows():
             day_from_start = int(max_T - T)
             daily_data.append([day_from_start, by_T[T]])
         daily_data.sort(key=lambda x: x[0])
-        # Stitch archive + scrape: archive counts are from an earlier
-        # snapshot and undercount. When a >3x jump occurs (scrape start),
-        # scale the preceding archive points proportionally so the curve
-        # is smooth from registration open through today.
+        # Defense-in-depth: archive↔scrape reconciliation now happens upstream
+        # in 01_data_prep.py (running cummax + last_reg rebase). These patches
+        # are no-ops on reconciled curves but stay as a safety net for the
+        # path where ~/Downloads/all_registrations.csv is missing and
+        # step_data_prep is skipped. AUDIT.md A4 confirmed zero hits in
+        # production after reconciliation shipped.
         for i in range(1, len(daily_data)):
             if daily_data[i][1] > daily_data[i-1][1] * 3 and daily_data[i][1] > 50:
-                # Scale all prior points by the ratio at the jump
                 scale = daily_data[i][1] / max(daily_data[i-1][1], 1)
                 for j in range(i):
                     daily_data[j][1] = int(daily_data[j][1] * scale)
                 break
-        # Enforce monotonically non-decreasing
         peak = 0
         cleaned = []
         for pt in daily_data:
@@ -862,6 +862,7 @@ from importlib import import_module
 _m04c = import_module("04c_final_model")
 _walkin_mults = _m04c.load_walkin_multipliers()
 _walkin_applied = 0
+_walkin_by_source = {'family': 0, 'type': 0, 'estimate': 0, 'none': 0}
 for t_out in tournaments_out:
     # Only apply walk-in estimates after the event has started
     if t_out["status"] in ("live", "not_tracked"):
@@ -877,7 +878,18 @@ for t_out in tournaments_out:
         t_out["total_ci_lower"] = tl
         t_out["total_ci_upper"] = th
         _walkin_applied += 1
+        _walkin_by_source[wsource] = _walkin_by_source.get(wsource, 0) + 1
 print(f"\nWalk-in multiplier applied to {_walkin_applied} completed/historical tournaments")
+print(f"  by source: {_walkin_by_source}")
+# Loud warning if family-specific data is missing for nearly all events.
+# Without walk_in_family_stats.csv the entire system silently degrades to the
+# global estimate path — see AUDIT.md A1/B2.
+_total_with_source = sum(_walkin_by_source.values())
+if _total_with_source > 0:
+    _est_pct = _walkin_by_source['estimate'] / _total_with_source
+    if _est_pct > 0.5:
+        print(f"  WARNING: {_est_pct:.0%} of walk-in multipliers used 'estimate' fallback. "
+              f"Confirm output/walk_in_family_stats.csv exists and is fresh.")
 
 # Sort: live first (by days_remaining desc), then 2026 complete, then historical
 status_order = {'live': 0, 'complete': 1, 'historical': 2, 'unknown': 3}

@@ -1,6 +1,6 @@
 {
   "generated": "2026-04-28",
-  "generated_time": "2026-04-28T13:57:48.178550-04:00",
+  "generated_time": "2026-04-28T14:20:20.482804-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 14,
@@ -1147,9 +1147,9 @@
       "gross_count": 10,
       "withdrawal_count": 1,
       "days_remaining": 58,
-      "point_estimate": 97,
-      "ci_lower": 89,
-      "ci_upper": 107,
+      "point_estimate": 100,
+      "ci_lower": 61,
+      "ci_upper": 164,
       "ci_level": 0.8,
       "historical": [
         {
@@ -4554,7 +4554,7 @@
       "prediction_source": "final",
       "prior_year_pace": null,
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 395,
       "total_ci_lower": 395,
       "total_ci_upper": 395
@@ -4891,7 +4891,7 @@
       "prediction_source": "final",
       "prior_year_pace": null,
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 620,
       "total_ci_lower": 620,
       "total_ci_upper": 620
@@ -5212,7 +5212,7 @@
       "prediction_source": "final",
       "prior_year_pace": null,
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 426,
       "total_ci_lower": 426,
       "total_ci_upper": 426
@@ -5503,11 +5503,11 @@
       "status": "complete",
       "prediction_source": "final",
       "prior_year_pace": null,
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 230,
-      "total_ci_lower": 230,
-      "total_ci_upper": 230
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 217,
+      "total_ci_lower": 217,
+      "total_ci_upper": 217
     },
     {
       "family": "Southwest Class Championships",
@@ -5941,7 +5941,7 @@
       "prediction_source": "final",
       "prior_year_pace": null,
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 541,
       "total_ci_lower": 541,
       "total_ci_upper": 541
@@ -6638,11 +6638,11 @@
       "status": "complete",
       "prediction_source": "final",
       "prior_year_pace": null,
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 350,
-      "total_ci_lower": 350,
-      "total_ci_upper": 350
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 330,
+      "total_ci_lower": 330,
+      "total_ci_upper": 330
     },
     {
       "family": "Mid-America Open",
@@ -6924,7 +6924,7 @@
       "prediction_source": "final",
       "prior_year_pace": null,
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 220,
       "total_ci_lower": 220,
       "total_ci_upper": 220
@@ -7233,7 +7233,7 @@
       "prediction_source": "final",
       "prior_year_pace": null,
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 218,
       "total_ci_lower": 218,
       "total_ci_upper": 218
@@ -7441,11 +7441,11 @@
       "status": "complete",
       "prediction_source": "final",
       "prior_year_pace": null,
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 67,
-      "total_ci_lower": 67,
-      "total_ci_upper": 67
+      "walkin_multiplier": 1.049,
+      "walkin_source": "family",
+      "total_estimate": 64,
+      "total_ci_lower": 64,
+      "total_ci_upper": 64
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -8066,11 +8066,11 @@
       "status": "complete",
       "prediction_source": "final",
       "prior_year_pace": null,
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 1928,
-      "total_ci_lower": 1928,
-      "total_ci_upper": 1928
+      "walkin_multiplier": 0.972,
+      "walkin_source": "family",
+      "total_estimate": 1703,
+      "total_ci_lower": 1703,
+      "total_ci_upper": 1703
     },
     {
       "family": "Southern Class",
@@ -8428,7 +8428,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 249,
       "total_ci_lower": 249,
       "total_ci_upper": 249
@@ -8516,7 +8516,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 315,
       "total_ci_lower": 315,
       "total_ci_upper": 315
@@ -8608,7 +8608,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 311,
       "total_ci_lower": 311,
       "total_ci_upper": 311
@@ -8704,7 +8704,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 329,
       "total_ci_lower": 329,
       "total_ci_upper": 329
@@ -8804,7 +8804,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 318,
       "total_ci_lower": 318,
       "total_ci_upper": 318
@@ -9116,7 +9116,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 453,
       "total_ci_lower": 453,
       "total_ci_upper": 453
@@ -9444,7 +9444,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 408,
       "total_ci_lower": 408,
       "total_ci_upper": 408
@@ -9716,7 +9716,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 299,
       "total_ci_lower": 299,
       "total_ci_upper": 299
@@ -10004,7 +10004,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 262,
       "total_ci_lower": 262,
       "total_ci_upper": 262
@@ -10436,7 +10436,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 248,
       "total_ci_lower": 248,
       "total_ci_upper": 248
@@ -10524,7 +10524,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 266,
       "total_ci_lower": 266,
       "total_ci_upper": 266
@@ -10616,7 +10616,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 229,
       "total_ci_lower": 229,
       "total_ci_upper": 229
@@ -10712,7 +10712,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 261,
       "total_ci_lower": 261,
       "total_ci_upper": 261
@@ -10812,7 +10812,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 297,
       "total_ci_lower": 297,
       "total_ci_upper": 297
@@ -11128,7 +11128,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 316,
       "total_ci_lower": 316,
       "total_ci_upper": 316
@@ -11476,7 +11476,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 430,
       "total_ci_lower": 430,
       "total_ci_upper": 430
@@ -11780,7 +11780,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 376,
       "total_ci_lower": 376,
       "total_ci_upper": 376
@@ -12104,7 +12104,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 421,
       "total_ci_lower": 421,
       "total_ci_upper": 421
@@ -12188,7 +12188,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 186,
       "total_ci_lower": 186,
       "total_ci_upper": 186
@@ -12276,7 +12276,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 163,
       "total_ci_lower": 163,
       "total_ci_upper": 163
@@ -12368,7 +12368,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 224,
       "total_ci_lower": 224,
       "total_ci_upper": 224
@@ -12464,7 +12464,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 190,
       "total_ci_lower": 190,
       "total_ci_upper": 190
@@ -12564,7 +12564,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 188,
       "total_ci_lower": 188,
       "total_ci_upper": 188
@@ -12816,7 +12816,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 250,
       "total_ci_lower": 250,
       "total_ci_upper": 250
@@ -13116,7 +13116,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 282,
       "total_ci_lower": 282,
       "total_ci_upper": 282
@@ -13384,7 +13384,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 297,
       "total_ci_lower": 297,
       "total_ci_upper": 297
@@ -13640,7 +13640,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 271,
       "total_ci_lower": 271,
       "total_ci_upper": 271
@@ -13724,7 +13724,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 125,
       "total_ci_lower": 125,
       "total_ci_upper": 125
@@ -13812,7 +13812,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 101,
       "total_ci_lower": 101,
       "total_ci_upper": 101
@@ -13904,7 +13904,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 165,
       "total_ci_lower": 165,
       "total_ci_upper": 165
@@ -14000,7 +14000,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 141,
       "total_ci_lower": 141,
       "total_ci_upper": 141
@@ -14100,7 +14100,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 141,
       "total_ci_lower": 141,
       "total_ci_upper": 141
@@ -14376,7 +14376,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 207,
       "total_ci_lower": 207,
       "total_ci_upper": 207
@@ -14660,7 +14660,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 235,
       "total_ci_lower": 235,
       "total_ci_upper": 235
@@ -14912,7 +14912,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 186,
       "total_ci_lower": 186,
       "total_ci_upper": 186
@@ -15184,7 +15184,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 197,
       "total_ci_lower": 197,
       "total_ci_upper": 197
@@ -15268,7 +15268,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 67,
       "total_ci_lower": 67,
       "total_ci_upper": 67
@@ -15356,7 +15356,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 62,
       "total_ci_lower": 62,
       "total_ci_upper": 62
@@ -15448,7 +15448,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 63,
       "total_ci_lower": 63,
       "total_ci_upper": 63
@@ -15544,7 +15544,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 50,
       "total_ci_lower": 50,
       "total_ci_upper": 50
@@ -15644,7 +15644,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 44,
       "total_ci_lower": 44,
       "total_ci_upper": 44
@@ -15912,7 +15912,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 131,
       "total_ci_lower": 131,
       "total_ci_upper": 131
@@ -16156,7 +16156,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 153,
       "total_ci_lower": 153,
       "total_ci_upper": 153
@@ -16240,7 +16240,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 320,
       "total_ci_lower": 320,
       "total_ci_upper": 320
@@ -16328,7 +16328,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 353,
       "total_ci_lower": 353,
       "total_ci_upper": 353
@@ -16420,7 +16420,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 420,
       "total_ci_lower": 420,
       "total_ci_upper": 420
@@ -16516,7 +16516,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 371,
       "total_ci_lower": 371,
       "total_ci_upper": 371
@@ -16616,7 +16616,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 363,
       "total_ci_lower": 363,
       "total_ci_upper": 363
@@ -16884,7 +16884,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 371,
       "total_ci_lower": 371,
       "total_ci_upper": 371
@@ -17164,7 +17164,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 308,
       "total_ci_lower": 308,
       "total_ci_upper": 308
@@ -17472,7 +17472,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 297,
       "total_ci_lower": 297,
       "total_ci_upper": 297
@@ -17740,7 +17740,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 323,
       "total_ci_lower": 323,
       "total_ci_upper": 323
@@ -20360,7 +20360,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 217,
       "total_ci_lower": 217,
       "total_ci_upper": 217
@@ -20448,7 +20448,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 209,
       "total_ci_lower": 209,
       "total_ci_upper": 209
@@ -20540,7 +20540,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 204,
       "total_ci_lower": 204,
       "total_ci_upper": 204
@@ -20636,7 +20636,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 216,
       "total_ci_lower": 216,
       "total_ci_upper": 216
@@ -20736,7 +20736,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 246,
       "total_ci_lower": 246,
       "total_ci_upper": 246
@@ -20964,7 +20964,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 221,
       "total_ci_lower": 221,
       "total_ci_upper": 221
@@ -21232,7 +21232,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 249,
       "total_ci_lower": 249,
       "total_ci_upper": 249
@@ -21468,7 +21468,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 184,
       "total_ci_lower": 184,
       "total_ci_upper": 184
@@ -21708,7 +21708,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 219,
       "total_ci_lower": 219,
       "total_ci_upper": 219
@@ -21952,7 +21952,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 218,
       "total_ci_lower": 218,
       "total_ci_upper": 218
@@ -22396,7 +22396,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 278,
       "total_ci_lower": 278,
       "total_ci_upper": 278
@@ -22484,7 +22484,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 280,
       "total_ci_lower": 280,
       "total_ci_upper": 280
@@ -22576,7 +22576,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 385,
       "total_ci_lower": 385,
       "total_ci_upper": 385
@@ -22672,7 +22672,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 321,
       "total_ci_lower": 321,
       "total_ci_upper": 321
@@ -22772,7 +22772,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 301,
       "total_ci_lower": 301,
       "total_ci_upper": 301
@@ -23052,7 +23052,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 353,
       "total_ci_lower": 353,
       "total_ci_upper": 353
@@ -23352,7 +23352,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 343,
       "total_ci_lower": 343,
       "total_ci_upper": 343
@@ -23592,7 +23592,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 268,
       "total_ci_lower": 268,
       "total_ci_upper": 268
@@ -23884,7 +23884,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 292,
       "total_ci_lower": 292,
       "total_ci_upper": 292
@@ -24052,7 +24052,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 128,
       "total_ci_lower": 128,
       "total_ci_upper": 128
@@ -24140,7 +24140,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 307,
       "total_ci_lower": 307,
       "total_ci_upper": 307
@@ -24232,7 +24232,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 440,
       "total_ci_lower": 440,
       "total_ci_upper": 440
@@ -24328,7 +24328,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 348,
       "total_ci_lower": 348,
       "total_ci_upper": 348
@@ -24428,7 +24428,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 384,
       "total_ci_lower": 384,
       "total_ci_upper": 384
@@ -24784,7 +24784,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 542,
       "total_ci_lower": 542,
       "total_ci_upper": 542
@@ -25120,7 +25120,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 580,
       "total_ci_lower": 580,
       "total_ci_upper": 580
@@ -25460,7 +25460,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 539,
       "total_ci_lower": 539,
       "total_ci_upper": 539
@@ -25836,7 +25836,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 536,
       "total_ci_lower": 536,
       "total_ci_upper": 536
@@ -26120,7 +26120,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 253,
       "total_ci_lower": 253,
       "total_ci_upper": 253
@@ -26416,7 +26416,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 283,
       "total_ci_lower": 283,
       "total_ci_upper": 283
@@ -26676,7 +26676,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 223,
       "total_ci_lower": 223,
       "total_ci_upper": 223
@@ -26956,7 +26956,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 215,
       "total_ci_lower": 215,
       "total_ci_upper": 215
@@ -27708,10 +27708,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 444,
-      "total_ci_lower": 444,
-      "total_ci_upper": 444
+      "total_ci_lower": 378,
+      "total_ci_upper": 523
     },
     {
       "family": "Eastern Open",
@@ -28008,10 +28008,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 404,
-      "total_ci_lower": 404,
-      "total_ci_upper": 404
+      "total_ci_lower": 343,
+      "total_ci_upper": 475
     },
     {
       "family": "Eastern Open",
@@ -28300,10 +28300,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 430,
-      "total_ci_lower": 430,
-      "total_ci_upper": 430
+      "total_ci_lower": 366,
+      "total_ci_upper": 506
     },
     {
       "family": "Eastern Open",
@@ -28620,10 +28620,10 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 428,
-      "total_ci_lower": 428,
-      "total_ci_upper": 428
+      "total_ci_lower": 364,
+      "total_ci_upper": 503
     },
     {
       "family": "Empire City Open",
@@ -29271,11 +29271,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 265,
-      "total_ci_lower": 265,
-      "total_ci_upper": 265
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 250,
+      "total_ci_lower": 250,
+      "total_ci_upper": 250
     },
     {
       "family": "George Washington Open",
@@ -29359,11 +29359,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 217,
-      "total_ci_lower": 217,
-      "total_ci_upper": 217
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 205,
+      "total_ci_lower": 205,
+      "total_ci_upper": 205
     },
     {
       "family": "George Washington Open",
@@ -29451,11 +29451,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 250,
-      "total_ci_lower": 250,
-      "total_ci_upper": 250
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 236,
+      "total_ci_lower": 236,
+      "total_ci_upper": 236
     },
     {
       "family": "George Washington Open",
@@ -29547,11 +29547,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 278,
-      "total_ci_lower": 278,
-      "total_ci_upper": 278
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 263,
+      "total_ci_lower": 263,
+      "total_ci_upper": 263
     },
     {
       "family": "George Washington Open",
@@ -29871,11 +29871,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 380,
-      "total_ci_lower": 380,
-      "total_ci_upper": 380
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 358,
+      "total_ci_lower": 358,
+      "total_ci_upper": 358
     },
     {
       "family": "George Washington Open",
@@ -30151,11 +30151,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 293,
-      "total_ci_lower": 293,
-      "total_ci_upper": 293
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 276,
+      "total_ci_lower": 276,
+      "total_ci_upper": 276
     },
     {
       "family": "George Washington Open",
@@ -30447,11 +30447,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 275,
-      "total_ci_lower": 275,
-      "total_ci_upper": 275
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 260,
+      "total_ci_lower": 260,
+      "total_ci_upper": 260
     },
     {
       "family": "Golden State Open",
@@ -30532,7 +30532,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 272,
       "total_ci_lower": 272,
       "total_ci_upper": 272
@@ -30620,7 +30620,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 287,
       "total_ci_lower": 287,
       "total_ci_upper": 287
@@ -30712,7 +30712,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 310,
       "total_ci_lower": 310,
       "total_ci_upper": 310
@@ -30808,7 +30808,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 317,
       "total_ci_lower": 317,
       "total_ci_upper": 317
@@ -30908,7 +30908,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 300,
       "total_ci_lower": 300,
       "total_ci_upper": 300
@@ -31172,7 +31172,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 302,
       "total_ci_lower": 302,
       "total_ci_upper": 302
@@ -31484,7 +31484,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 322,
       "total_ci_lower": 322,
       "total_ci_upper": 322
@@ -31744,7 +31744,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 322,
       "total_ci_lower": 322,
       "total_ci_upper": 322
@@ -32064,7 +32064,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 415,
       "total_ci_lower": 415,
       "total_ci_upper": 415
@@ -32148,7 +32148,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 119,
       "total_ci_lower": 119,
       "total_ci_upper": 119
@@ -32236,7 +32236,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 95,
       "total_ci_lower": 95,
       "total_ci_upper": 95
@@ -32328,7 +32328,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 138,
       "total_ci_lower": 138,
       "total_ci_upper": 138
@@ -32424,7 +32424,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 134,
       "total_ci_lower": 134,
       "total_ci_upper": 134
@@ -32524,7 +32524,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 121,
       "total_ci_lower": 121,
       "total_ci_upper": 121
@@ -32756,7 +32756,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 218,
       "total_ci_lower": 218,
       "total_ci_upper": 218
@@ -33012,7 +33012,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 245,
       "total_ci_lower": 245,
       "total_ci_upper": 245
@@ -33264,7 +33264,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 219,
       "total_ci_lower": 219,
       "total_ci_upper": 219
@@ -33536,7 +33536,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 208,
       "total_ci_lower": 208,
       "total_ci_upper": 208
@@ -33732,7 +33732,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 197,
       "total_ci_lower": 197,
       "total_ci_upper": 197
@@ -33820,7 +33820,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 205,
       "total_ci_lower": 205,
       "total_ci_upper": 205
@@ -33912,7 +33912,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 175,
       "total_ci_lower": 175,
       "total_ci_upper": 175
@@ -34008,7 +34008,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 210,
       "total_ci_lower": 210,
       "total_ci_upper": 210
@@ -34108,7 +34108,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 224,
       "total_ci_lower": 224,
       "total_ci_upper": 224
@@ -34356,7 +34356,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 201,
       "total_ci_lower": 201,
       "total_ci_upper": 201
@@ -34624,7 +34624,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 209,
       "total_ci_lower": 209,
       "total_ci_upper": 209
@@ -34880,7 +34880,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 187,
       "total_ci_lower": 187,
       "total_ci_upper": 187
@@ -35144,7 +35144,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 206,
       "total_ci_lower": 206,
       "total_ci_upper": 206
@@ -35227,11 +35227,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 301,
-      "total_ci_lower": 301,
-      "total_ci_upper": 301
+      "walkin_multiplier": 1.073,
+      "walkin_source": "family",
+      "total_estimate": 294,
+      "total_ci_lower": 294,
+      "total_ci_upper": 294
     },
     {
       "family": "Kings Island Open",
@@ -35315,11 +35315,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 307,
-      "total_ci_lower": 307,
-      "total_ci_upper": 307
+      "walkin_multiplier": 1.073,
+      "walkin_source": "family",
+      "total_estimate": 299,
+      "total_ci_lower": 299,
+      "total_ci_upper": 299
     },
     {
       "family": "Kings Island Open",
@@ -35407,11 +35407,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 320,
-      "total_ci_lower": 320,
-      "total_ci_upper": 320
+      "walkin_multiplier": 1.073,
+      "walkin_source": "family",
+      "total_estimate": 312,
+      "total_ci_lower": 312,
+      "total_ci_upper": 312
     },
     {
       "family": "Kings Island Open",
@@ -35503,11 +35503,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 276,
-      "total_ci_lower": 276,
-      "total_ci_upper": 276
+      "walkin_multiplier": 1.073,
+      "walkin_source": "family",
+      "total_estimate": 269,
+      "total_ci_lower": 269,
+      "total_ci_upper": 269
     },
     {
       "family": "Kings Island Open",
@@ -35603,11 +35603,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 328,
-      "total_ci_lower": 328,
-      "total_ci_upper": 328
+      "walkin_multiplier": 1.073,
+      "walkin_source": "family",
+      "total_estimate": 320,
+      "total_ci_lower": 320,
+      "total_ci_upper": 320
     },
     {
       "family": "Kings Island Open",
@@ -35931,11 +35931,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 405,
-      "total_ci_lower": 405,
-      "total_ci_upper": 405
+      "walkin_multiplier": 1.073,
+      "walkin_source": "family",
+      "total_estimate": 395,
+      "total_ci_lower": 395,
+      "total_ci_upper": 395
     },
     {
       "family": "Kings Island Open",
@@ -36255,11 +36255,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 394,
-      "total_ci_lower": 394,
-      "total_ci_upper": 394
+      "walkin_multiplier": 1.073,
+      "walkin_source": "family",
+      "total_estimate": 384,
+      "total_ci_lower": 384,
+      "total_ci_upper": 384
     },
     {
       "family": "Kings Island Open",
@@ -36587,11 +36587,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 385,
-      "total_ci_lower": 385,
-      "total_ci_upper": 385
+      "walkin_multiplier": 1.073,
+      "walkin_source": "family",
+      "total_estimate": 376,
+      "total_ci_lower": 376,
+      "total_ci_upper": 376
     },
     {
       "family": "Kings Island Open",
@@ -36919,11 +36919,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 392,
-      "total_ci_lower": 392,
-      "total_ci_upper": 392
+      "walkin_multiplier": 1.073,
+      "walkin_source": "family",
+      "total_estimate": 382,
+      "total_ci_lower": 382,
+      "total_ci_upper": 382
     },
     {
       "family": "Liberty Bell Open",
@@ -37004,7 +37004,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 373,
       "total_ci_lower": 373,
       "total_ci_upper": 373
@@ -37092,7 +37092,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 359,
       "total_ci_lower": 359,
       "total_ci_upper": 359
@@ -37184,7 +37184,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 370,
       "total_ci_lower": 370,
       "total_ci_upper": 370
@@ -37280,7 +37280,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 367,
       "total_ci_lower": 367,
       "total_ci_upper": 367
@@ -37380,7 +37380,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 316,
       "total_ci_lower": 316,
       "total_ci_upper": 316
@@ -37676,7 +37676,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 398,
       "total_ci_lower": 398,
       "total_ci_upper": 398
@@ -38000,7 +38000,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 520,
       "total_ci_lower": 520,
       "total_ci_upper": 520
@@ -38288,7 +38288,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 529,
       "total_ci_lower": 529,
       "total_ci_upper": 529
@@ -38640,7 +38640,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 583,
       "total_ci_lower": 583,
       "total_ci_upper": 583
@@ -38724,7 +38724,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 188,
       "total_ci_lower": 188,
       "total_ci_upper": 188
@@ -38812,7 +38812,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 234,
       "total_ci_lower": 234,
       "total_ci_upper": 234
@@ -38904,7 +38904,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 277,
       "total_ci_lower": 277,
       "total_ci_upper": 277
@@ -39000,7 +39000,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 265,
       "total_ci_lower": 265,
       "total_ci_upper": 265
@@ -39396,7 +39396,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 397,
       "total_ci_lower": 397,
       "total_ci_upper": 397
@@ -39816,7 +39816,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 457,
       "total_ci_lower": 457,
       "total_ci_upper": 457
@@ -40188,7 +40188,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 453,
       "total_ci_lower": 453,
       "total_ci_upper": 453
@@ -40584,7 +40584,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 437,
       "total_ci_lower": 437,
       "total_ci_upper": 437
@@ -41128,7 +41128,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 257,
       "total_ci_lower": 257,
       "total_ci_upper": 257
@@ -41216,7 +41216,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 231,
       "total_ci_lower": 231,
       "total_ci_upper": 231
@@ -41308,7 +41308,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 337,
       "total_ci_lower": 337,
       "total_ci_upper": 337
@@ -41404,7 +41404,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 295,
       "total_ci_lower": 295,
       "total_ci_upper": 295
@@ -41504,7 +41504,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 352,
       "total_ci_lower": 352,
       "total_ci_upper": 352
@@ -41772,7 +41772,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 317,
       "total_ci_lower": 317,
       "total_ci_upper": 317
@@ -42084,7 +42084,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 361,
       "total_ci_lower": 361,
       "total_ci_upper": 361
@@ -42392,7 +42392,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 336,
       "total_ci_lower": 336,
       "total_ci_upper": 336
@@ -42716,7 +42716,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 288,
       "total_ci_lower": 288,
       "total_ci_upper": 288
@@ -42976,7 +42976,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 292,
       "total_ci_lower": 292,
       "total_ci_upper": 292
@@ -43064,7 +43064,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 308,
       "total_ci_lower": 308,
       "total_ci_upper": 308
@@ -43156,7 +43156,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 348,
       "total_ci_lower": 348,
       "total_ci_upper": 348
@@ -43252,7 +43252,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 361,
       "total_ci_lower": 361,
       "total_ci_upper": 361
@@ -43352,7 +43352,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 336,
       "total_ci_lower": 336,
       "total_ci_upper": 336
@@ -43664,7 +43664,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 396,
       "total_ci_lower": 396,
       "total_ci_upper": 396
@@ -43948,7 +43948,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 321,
       "total_ci_lower": 321,
       "total_ci_upper": 321
@@ -44268,7 +44268,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 333,
       "total_ci_lower": 333,
       "total_ci_upper": 333
@@ -44564,7 +44564,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 337,
       "total_ci_lower": 337,
       "total_ci_upper": 337
@@ -46668,7 +46668,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 190,
       "total_ci_lower": 190,
       "total_ci_upper": 190
@@ -46756,7 +46756,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 209,
       "total_ci_lower": 209,
       "total_ci_upper": 209
@@ -46848,7 +46848,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 201,
       "total_ci_lower": 201,
       "total_ci_upper": 201
@@ -46944,7 +46944,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 207,
       "total_ci_lower": 207,
       "total_ci_upper": 207
@@ -47044,7 +47044,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 204,
       "total_ci_lower": 204,
       "total_ci_upper": 204
@@ -47340,7 +47340,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 348,
       "total_ci_lower": 348,
       "total_ci_upper": 348
@@ -47632,7 +47632,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 382,
       "total_ci_lower": 382,
       "total_ci_upper": 382
@@ -47936,7 +47936,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 359,
       "total_ci_lower": 359,
       "total_ci_upper": 359
@@ -48284,7 +48284,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 383,
       "total_ci_lower": 383,
       "total_ci_upper": 383
@@ -48616,7 +48616,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 241,
       "total_ci_lower": 241,
       "total_ci_upper": 241
@@ -48700,7 +48700,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 77,
       "total_ci_lower": 77,
       "total_ci_upper": 77
@@ -48788,7 +48788,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 110,
       "total_ci_lower": 110,
       "total_ci_upper": 110
@@ -48880,7 +48880,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 95,
       "total_ci_lower": 95,
       "total_ci_upper": 95
@@ -49092,7 +49092,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 84,
       "total_ci_lower": 84,
       "total_ci_upper": 84
@@ -49308,7 +49308,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 91,
       "total_ci_lower": 91,
       "total_ci_upper": 91
@@ -49563,11 +49563,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 1048,
-      "total_ci_lower": 1048,
-      "total_ci_upper": 1048
+      "walkin_multiplier": 0.972,
+      "walkin_source": "family",
+      "total_estimate": 926,
+      "total_ci_lower": 926,
+      "total_ci_upper": 926
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -49651,11 +49651,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 1047,
-      "total_ci_lower": 1047,
-      "total_ci_upper": 1047
+      "walkin_multiplier": 0.972,
+      "walkin_source": "family",
+      "total_estimate": 925,
+      "total_ci_lower": 925,
+      "total_ci_upper": 925
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -49743,11 +49743,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 1272,
-      "total_ci_lower": 1272,
-      "total_ci_upper": 1272
+      "walkin_multiplier": 0.972,
+      "walkin_source": "family",
+      "total_estimate": 1123,
+      "total_ci_lower": 1123,
+      "total_ci_upper": 1123
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -49839,11 +49839,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 1352,
-      "total_ci_lower": 1352,
-      "total_ci_upper": 1352
+      "walkin_multiplier": 0.972,
+      "walkin_source": "family",
+      "total_estimate": 1194,
+      "total_ci_lower": 1194,
+      "total_ci_upper": 1194
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -49939,11 +49939,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 1374,
-      "total_ci_lower": 1374,
-      "total_ci_upper": 1374
+      "walkin_multiplier": 0.972,
+      "walkin_source": "family",
+      "total_estimate": 1213,
+      "total_ci_lower": 1213,
+      "total_ci_upper": 1213
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -50283,11 +50283,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 1035,
-      "total_ci_lower": 1035,
-      "total_ci_upper": 1035
+      "walkin_multiplier": 0.972,
+      "walkin_source": "family",
+      "total_estimate": 914,
+      "total_ci_lower": 914,
+      "total_ci_upper": 914
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -50755,11 +50755,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 1703,
-      "total_ci_lower": 1703,
-      "total_ci_upper": 1703
+      "walkin_multiplier": 0.972,
+      "walkin_source": "family",
+      "total_estimate": 1504,
+      "total_ci_lower": 1504,
+      "total_ci_upper": 1504
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -51395,11 +51395,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 1955,
-      "total_ci_lower": 1955,
-      "total_ci_upper": 1955
+      "walkin_multiplier": 0.972,
+      "walkin_source": "family",
+      "total_estimate": 1726,
+      "total_ci_lower": 1726,
+      "total_ci_upper": 1726
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -51983,11 +51983,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 1944,
-      "total_ci_lower": 1944,
-      "total_ci_upper": 1944
+      "walkin_multiplier": 0.972,
+      "walkin_source": "family",
+      "total_estimate": 1717,
+      "total_ci_lower": 1717,
+      "total_ci_upper": 1717
     },
     {
       "family": "New York State Scholastic Championships WAITLIST",
@@ -52251,11 +52251,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 63,
-      "total_ci_lower": 63,
-      "total_ci_upper": 63
+      "walkin_multiplier": 1.049,
+      "walkin_source": "family",
+      "total_estimate": 60,
+      "total_ci_lower": 60,
+      "total_ci_upper": 60
     },
     {
       "family": "Niagara Falls Open",
@@ -52480,7 +52480,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 103,
       "total_ci_lower": 103,
       "total_ci_upper": 103
@@ -52752,7 +52752,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 187,
       "total_ci_lower": 187,
       "total_ci_upper": 187
@@ -53060,7 +53060,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 195,
       "total_ci_lower": 195,
       "total_ci_upper": 195
@@ -53308,7 +53308,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 135,
       "total_ci_lower": 135,
       "total_ci_upper": 135
@@ -53392,7 +53392,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 789,
       "total_ci_lower": 789,
       "total_ci_upper": 789
@@ -53480,7 +53480,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 843,
       "total_ci_lower": 843,
       "total_ci_upper": 843
@@ -53572,7 +53572,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 880,
       "total_ci_lower": 880,
       "total_ci_upper": 880
@@ -53668,7 +53668,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 904,
       "total_ci_lower": 904,
       "total_ci_upper": 904
@@ -53768,7 +53768,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 949,
       "total_ci_lower": 949,
       "total_ci_upper": 949
@@ -54412,7 +54412,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 1178,
       "total_ci_lower": 1178,
       "total_ci_upper": 1178
@@ -55048,7 +55048,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 1226,
       "total_ci_lower": 1226,
       "total_ci_upper": 1226
@@ -55684,7 +55684,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 1212,
       "total_ci_lower": 1212,
       "total_ci_upper": 1212
@@ -56372,7 +56372,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 1382,
       "total_ci_lower": 1382,
       "total_ci_upper": 1382
@@ -58344,7 +58344,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 223,
       "total_ci_lower": 223,
       "total_ci_upper": 223
@@ -58432,7 +58432,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 235,
       "total_ci_lower": 235,
       "total_ci_upper": 235
@@ -58524,7 +58524,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 255,
       "total_ci_lower": 255,
       "total_ci_upper": 255
@@ -58620,7 +58620,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 270,
       "total_ci_lower": 270,
       "total_ci_upper": 270
@@ -58720,7 +58720,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 253,
       "total_ci_lower": 253,
       "total_ci_upper": 253
@@ -59056,7 +59056,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 378,
       "total_ci_lower": 378,
       "total_ci_upper": 378
@@ -59404,7 +59404,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 443,
       "total_ci_lower": 443,
       "total_ci_upper": 443
@@ -59744,7 +59744,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 397,
       "total_ci_lower": 397,
       "total_ci_upper": 397
@@ -60132,7 +60132,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 430,
       "total_ci_lower": 430,
       "total_ci_upper": 430
@@ -63860,7 +63860,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 150,
       "total_ci_lower": 150,
       "total_ci_upper": 150
@@ -63948,7 +63948,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 117,
       "total_ci_lower": 117,
       "total_ci_upper": 117
@@ -64040,7 +64040,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 124,
       "total_ci_lower": 124,
       "total_ci_upper": 124
@@ -64136,7 +64136,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 143,
       "total_ci_lower": 143,
       "total_ci_upper": 143
@@ -64236,7 +64236,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 194,
       "total_ci_lower": 194,
       "total_ci_upper": 194
@@ -64484,7 +64484,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 215,
       "total_ci_lower": 215,
       "total_ci_upper": 215
@@ -64764,7 +64764,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 201,
       "total_ci_lower": 201,
       "total_ci_upper": 201
@@ -65012,7 +65012,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 183,
       "total_ci_lower": 183,
       "total_ci_upper": 183
@@ -65268,7 +65268,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 167,
       "total_ci_lower": 167,
       "total_ci_upper": 167
@@ -67708,7 +67708,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 231,
       "total_ci_lower": 231,
       "total_ci_upper": 231
@@ -67796,7 +67796,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 223,
       "total_ci_lower": 223,
       "total_ci_upper": 223
@@ -67888,7 +67888,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 232,
       "total_ci_lower": 232,
       "total_ci_upper": 232
@@ -67984,7 +67984,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 254,
       "total_ci_lower": 254,
       "total_ci_upper": 254
@@ -68084,7 +68084,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 199,
       "total_ci_lower": 199,
       "total_ci_upper": 199
@@ -68404,7 +68404,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 293,
       "total_ci_lower": 293,
       "total_ci_upper": 293
@@ -68736,7 +68736,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 323,
       "total_ci_lower": 323,
       "total_ci_upper": 323
@@ -69008,7 +69008,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 254,
       "total_ci_lower": 254,
       "total_ci_upper": 254
@@ -69284,7 +69284,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 207,
       "total_ci_lower": 207,
       "total_ci_upper": 207
@@ -69368,7 +69368,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 285,
       "total_ci_lower": 285,
       "total_ci_upper": 285
@@ -69456,7 +69456,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 328,
       "total_ci_lower": 328,
       "total_ci_upper": 328
@@ -69548,7 +69548,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 361,
       "total_ci_lower": 361,
       "total_ci_upper": 361
@@ -69644,7 +69644,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 391,
       "total_ci_lower": 391,
       "total_ci_upper": 391
@@ -69744,7 +69744,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 424,
       "total_ci_lower": 424,
       "total_ci_upper": 424
@@ -70072,7 +70072,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 437,
       "total_ci_lower": 437,
       "total_ci_upper": 437
@@ -70428,7 +70428,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 469,
       "total_ci_lower": 469,
       "total_ci_upper": 469
@@ -70776,7 +70776,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 485,
       "total_ci_lower": 485,
       "total_ci_upper": 485
@@ -71220,7 +71220,7 @@
       ],
       "status": "historical",
       "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
+      "walkin_source": "family",
       "total_estimate": 537,
       "total_ci_lower": 537,
       "total_ci_upper": 537
@@ -72595,11 +72595,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 398,
-      "total_ci_lower": 398,
-      "total_ci_upper": 398
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 376,
+      "total_ci_lower": 376,
+      "total_ci_upper": 376
     },
     {
       "family": "Western Class Championships",
@@ -72903,11 +72903,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 381,
-      "total_ci_lower": 381,
-      "total_ci_upper": 381
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 359,
+      "total_ci_lower": 359,
+      "total_ci_upper": 359
     },
     {
       "family": "Western Class Championships",
@@ -72987,11 +72987,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 220,
-      "total_ci_lower": 220,
-      "total_ci_upper": 220
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 208,
+      "total_ci_lower": 208,
+      "total_ci_upper": 208
     },
     {
       "family": "Western Class Championships",
@@ -73075,11 +73075,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 222,
-      "total_ci_lower": 222,
-      "total_ci_upper": 222
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 210,
+      "total_ci_lower": 210,
+      "total_ci_upper": 210
     },
     {
       "family": "Western Class Championships",
@@ -73167,11 +73167,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 279,
-      "total_ci_lower": 279,
-      "total_ci_upper": 279
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 264,
+      "total_ci_lower": 264,
+      "total_ci_upper": 264
     },
     {
       "family": "Western Class Championships",
@@ -73263,11 +73263,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 270,
-      "total_ci_lower": 270,
-      "total_ci_upper": 270
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 254,
+      "total_ci_lower": 254,
+      "total_ci_upper": 254
     },
     {
       "family": "Western Class Championships",
@@ -73363,11 +73363,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 278,
-      "total_ci_lower": 278,
-      "total_ci_upper": 278
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 263,
+      "total_ci_lower": 263,
+      "total_ci_upper": 263
     },
     {
       "family": "Western Class Championships",
@@ -73711,11 +73711,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 463,
-      "total_ci_lower": 463,
-      "total_ci_upper": 463
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 437,
+      "total_ci_lower": 437,
+      "total_ci_upper": 437
     },
     {
       "family": "Western Class Championships",
@@ -74095,11 +74095,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 428,
-      "total_ci_lower": 428,
-      "total_ci_upper": 428
+      "walkin_multiplier": 1.038,
+      "walkin_source": "family",
+      "total_estimate": 404,
+      "total_ci_lower": 404,
+      "total_ci_upper": 404
     },
     {
       "family": "World Open Under 13 Championship",
@@ -77986,7 +77986,7 @@
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-04-28 19:57:01",
+  "last_updated": "2026-04-28 20:19:34",
   "is_stale": false,
   "alerts": [
     {

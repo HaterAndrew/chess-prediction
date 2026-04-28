@@ -31,6 +31,8 @@ output/chess_history.json
 !output/daily_registration_counts.csv
 !output/tournament_metadata.csv
 !output/update_log.csv
+!output/walk_in_family_stats.csv
+!output/walk_in_multipliers.csv
 
 # Data (local dev DB)
 *.db

@@ -397,35 +397,22 @@ class N5v4_Final:
                         # Normalize slope as fraction of mean (e.g., -0.05 = 5% decline/year)
                         self.family_trend[fam] = np.clip(slope / mean_count, -0.15, 0.15)
 
-        # Supplement with standings data — normalize names to match training families
+        # Supplement with standings data — normalize names to match training families.
+        # Single source of truth for the name map: tournament_aliases.STANDINGS_NAME_MAP.
+        # AUDIT.md A2: previously the inline map had 19 entries while 37 unique
+        # standings names existed in production — the rest dropped silently.
         standings_path = os.path.join(OUTPUT_DIR, "historical_standings.csv")
         if os.path.exists(standings_path):
+            from tournament_aliases import STANDINGS_NAME_MAP, validate_standings_join
             standings = pd.read_csv(standings_path)
             standings = standings[standings['total_players'] > 10]
-            # Map standings names to training family names
-            _STANDINGS_NAME_MAP = {
-                'Bostonchess Congress': 'Boston Chess Congress',
-                'Midamerica Open': 'Mid-America Open',
-                'Kingsisland Open': 'Kings Island Open',
-                'Pacificcoast Open': 'Pacific Coast Open',
-                'Losangeles Open': 'Los Angeles Open',
-                'Georgewashington Open': 'George Washington Open',
-                'Foxwoods Open': 'Open at Foxwoods',
-                'Midwest Class': 'Midwest Class Championships',
-                'Western Class': 'Western Class Championships',
-                'Centralcalifornia': 'Central California Open',
-                'Centralnewyork': 'Central New York Open',
-                'Easternchesscongress': 'Eastern Chess Congress',
-                'Easternclass': 'Eastern Class',
-                'Chicagoclass': 'Chicago Class',
-                'Continentalclass': 'Continental Class',
-                'Continentalopen': 'Continental Open',
-                'Empirestate': 'Empire State Open',
-                'Empirecity': 'Empire City Open',
-                'Southwest Class': 'Southwest Class Championships',
-            }
             standings['tournament_name'] = standings['tournament_name'].replace(
-                _STANDINGS_NAME_MAP)
+                STANDINGS_NAME_MAP)
+            # Surface unmapped names so silent drops become visible
+            validate_standings_join(
+                standings['tournament_name'].unique(),
+                self.family_mean_final.keys(),
+            )
             for fam, grp in standings.groupby('tournament_name'):
                 if fam not in self.family_mean_final:
                     self.family_mean_final[fam] = grp['total_players'].mean()

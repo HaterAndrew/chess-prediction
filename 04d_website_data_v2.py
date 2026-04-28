@@ -613,6 +613,14 @@ for _, row in t2026.iterrows():
     withdrawal_count = wd_info.get('withdrawal_count', 0)
     gross_count = wd_info.get('gross_count', int(current_count))
 
+    # AUDIT.md C8 / B1 — surface model confidence + tier on each prediction
+    n_editions_for_family = (
+        prod_model.family_n_editions.get(family, 0)
+        if hasattr(prod_model, 'family_n_editions') else 0
+    )
+    low_confidence = n_editions_for_family < 4
+    tier_used = getattr(prod_model, '_last_tier', None) if status == 'live' else None
+
     t_out = {
         "family": display_family,
         "year": 2026,
@@ -636,6 +644,9 @@ for _, row in t2026.iterrows():
         "status": 'live' if status == 'in_progress' else status,
         "prediction_source": prediction_source,
         "prior_year_pace": prior_year_pace,
+        "low_confidence": low_confidence,
+        "n_historical_editions": n_editions_for_family,
+        "prediction_tier": tier_used,
     }
 
     # Add event_end from metadata

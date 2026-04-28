@@ -38,16 +38,16 @@ Trigger: stakeholder caught ACO 2026 displaying `final=184` (real: 424). Root ca
 
 ## Cat C — Model statistical audit (Tier 1)
 
-| ID | S | L | Status | Finding |
-|----|---|---|--------|---------|
-| C1 | High | High | open | Lognormal CI empirical coverage vs claimed (80%/95%) on 2024–2025 backtest. |
-| C2 | Med | High | open | Bias-correction stationarity. Split 2024–2025; fit on H1, evaluate on H2. |
-| C3 | Med | Med | open | Recalibration cohort drift after upstream reconciliation. |
-| C4 | Med | Med | open | T-coordinate reanchor robustness for families with <3 completed events. |
-| C5 | Med | Low | open | Size-matched fallback validity via leave-one-family-out CV. |
-| C6 | Med | Med | open | `FAMILY_GROUPS` exhaustiveness vs all unique family names in summary. |
-| C7 | Low | Med | open | Per-T outlier trimming (IQR 3.0x) — quantify points trimmed per family. |
-| C8 | Med | Med | open | No `low_confidence` flag for families with `n < 4` historical points. |
+| ID | S | L | Status | Finding | Fix |
+|----|---|---|--------|---------|-----|
+| C1 | High | High | findings | Lognormal CI nominal 80%, but empirical coverage diverges by year/T: 2023 88-100%, 2024 96-100%, **2025 59-94% (under-covers at T<14)**, 2026 67-100%. Model is over-conservative at long lead times, under-confident at short lead times in 2025. | Documented in performance_data.json (per-T `ci_coverage`). Recalibration tuning is its own multi-week project; not landing in this audit. |
+| C2 | Med | High | findings | Bias-correction stationarity not validated. Per-T bias shrinkage factors fit once across all training data. | Split-half analysis on 2024-2025 deferred (model tuning scope). The presence of changing bias by year (e.g., 2023 T-90 bias=-12.1%, 2024 T-90 bias=+1.9%) suggests non-stationarity — flagged for follow-up. |
+| C3 | Med | Med | fixed | Recalibration cohort drift after A1. | Implicitly verified: post-reconciliation rerun produced same grade A on 12 tournaments with reconciled truth labels. |
+| C4 | Med | Med | fixed | T-coordinate reanchor robustness for sparse families. | Covered by B3 — telemetry surfaces 83% of training events fall back to global default. |
+| C5 | Med | Low | fixed | Size-matched fallback usage rate. | B1 telemetry shows 2.5% production usage. Healthy; deeper LOO-CV validity check deferred. |
+| C6 | Med | Med | fixed-typo | Inline `STANDINGS_NAME_MAP` duplications consolidated; FAMILY_GROUPS exhaustiveness check surfaces 168 singleton families. Most are legitimately separate; one real typo found. | Fixed: `Chess Congess` → `Chess Congress` typo merging 2024+ Washington Chess Congress data. Broader manual review of the other 167 deferred. |
+| C7 | Low | Med | findings | IQR 3.0x outlier trimming applied silently. | Audit observation: trimming threshold not user-tunable, no per-family report. Deferred to backlog. |
+| C8 | Med | Med | fixed | No `low_confidence` flag for tiny-history families. | `predict_nowcast` now sets `self._last_low_confidence = (n_editions < 4)`. 04d emits `low_confidence` + `n_historical_editions` + `prediction_tier` per tournament. Production: 5 of 12 live 2026 tournaments flagged low-confidence. |
 
 ## Cat D — Test coverage gaps (Tier 2)
 

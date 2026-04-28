@@ -54,6 +54,8 @@ def canonicalize_family(name):
     name = name.replace('Championshps', 'Championships')
     name = name.replace('Championsips', 'Championships')
     name = name.replace('Cahmpionships', 'Championships')
+    # AUDIT.md C6 — fix Washington Chess Congress typo merging two families
+    name = name.replace('Chess Congess', 'Chess Congress')
     # Normalize whitespace: collapse multiple spaces to one
     name = re.sub(r'\s{2,}', ' ', name)
     # Normalize apostrophes

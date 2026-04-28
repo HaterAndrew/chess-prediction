@@ -714,6 +714,12 @@ class N5v4_Final:
             self._tier_counts = defaultdict(int)
             self._last_tier = None
 
+        # AUDIT.md C8 — flag predictions for families with sparse history.
+        # Default n_editions=0 for unknown families. Threshold of 4 picked from
+        # the lognormal CI: <4 points means parametric CI is unreliable.
+        n_editions = self.family_n_editions.get(family, 0) if hasattr(self, 'family_n_editions') else 0
+        self._last_low_confidence = n_editions < 4
+
         # Guard: event already started or no data
         if days_remaining < 0:
             self._last_tier = 'guard-event-started'

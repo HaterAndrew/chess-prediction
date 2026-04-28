@@ -26,15 +26,15 @@ Trigger: stakeholder caught ACO 2026 displaying `final=184` (real: 424). Root ca
 | A4 | Low | High | fixed | Chart-layer running-max + 3x-scale patches in `04d_website_data_v2.py:540-570`. | Confirmed zero hits in production (4 rebased tournaments × 200+ daily points → 0 non-monotonic, 0 3x-jumps). Patches retained as defense-in-depth with comment pointing to AUDIT.md A4. |
 | A5 | Med | Low | fixed | Cohort-gate edge cases not tested. | `tests/test_audit_fixes.py::test_scrape_coverage_gate_excludes_only_when_event_after_snapshot` covers ended-before-snapshot and ended-after-snapshot ± scrape-coverage. |
 
-## Cat B — Silent staleness / silent fallbacks (Tier 1)
+## Cat B — Silent staleness / silent fallbacks (Tier 1) — ALL FIXED OR DOCUMENTED
 
-| ID | S | L | Status | Finding |
-|----|---|---|--------|---------|
-| B1 | Med | High | open | `04c_final_model.py:620-668` multi-tier prediction fallback (size-matched → large → small → None) has no telemetry on which tier fired. |
-| B2 | Med | High | fixed | `04d_website_data_v2.py:~1653-1694` walk-in multiplier fallback silent. Fix: added per-source counter + WARNING when estimate fallback > 50%. Output now logs `{family: N, type: N, estimate: N, none: N}` per run. |
-| B3 | Med | Low | open | `04c_final_model.py DEFAULT_EVENT_START_OFFSET=2` silent fallback when metadata missing. |
-| B4 | Med | Med | open | `is_stale=True` banner: verify it actually reaches users behind the service worker cache. |
-| B5 | Low | Low | open | `scrape_entries.py CIRCUIT_BREAKER_THRESHOLD=3` constant defined, never enforced. Dead defense. |
+| ID | S | L | Status | Finding | Fix |
+|----|---|---|--------|---------|-----|
+| B1 | Med | High | fixed | Multi-tier prediction fallback had no telemetry on which tier fired. | `predict_nowcast` now records `self._last_tier` + maintains `self._tier_counts`. 04d prints distribution at end of run. **Production observation**: 97.2% family-direct, 2.5% size-matched, 0.3% family-alias — healthy. WARNING fires if size-matched > 20%. |
+| B2 | Med | High | fixed | Walk-in multiplier fallback silent. (Fixed in Cat A commit.) | Per-source counter + WARNING when estimate > 50%. |
+| B3 | Med | Low | fixed | `DEFAULT_EVENT_START_OFFSET=2` silently used when metadata missing. | `reanchor_daily_to_event_start` now reports offset source distribution. **Production observation**: 267/322 (83%) of training tournaments fall back to global default. WARNING fires when >2 use it. Remediation: bulk-populate metadata via `update_metadata.py` (data scope, separate work). |
+| B4 | Med | Med | fixed | Verify `is_stale` banner reaches users. | Code review: `docs/sw.js` is network-first (commit 3219844), `docs/app.js:3172` reads `TOURNAMENT_DATA.is_stale` and shows `#staleBanner`. End-to-end test in `test_audit_fixes.test_stale_flag_propagates_to_website_data`. |
+| B5 | Low | Low | wont-fix | `CIRCUIT_BREAKER_THRESHOLD=3` defined but recon claimed it was unused. | Verified: it IS wired at `scrape_entries.py:601` (in-run circuit breaker — aborts after 3 consecutive failures within a single `main()` invocation). Cross-run circuit breaker would require state persistence; not adding without a real failure mode driving it. Recon mis-identified. |
 
 ## Cat C — Model statistical audit (Tier 1)
 

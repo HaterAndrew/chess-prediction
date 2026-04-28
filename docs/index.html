@@ -775,7 +775,7 @@
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
   "generated": "2026-04-28",
-  "generated_time": "2026-04-28T15:28:56.040103-04:00",
+  "generated_time": "2026-04-28T16:28:10.535773-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 14,
@@ -1137,7 +1137,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct"
+      "prediction_tier": "family-direct",
+      "pace_alert": {
+        "family": "Chicago Open",
+        "status": "on_pace",
+        "actual": 353,
+        "expected": 384,
+        "deviation_pct": -8.0,
+        "message": "Registrations are tracking within normal range (-8%)"
+      }
     },
     {
       "family": "Hartford Open",
@@ -1392,7 +1400,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct"
+      "prediction_tier": "family-direct",
+      "pace_alert": {
+        "family": "Hartford Open",
+        "status": "on_pace",
+        "actual": 16,
+        "expected": 14,
+        "deviation_pct": 12.4,
+        "message": "Registrations are tracking within normal range (+12%)"
+      }
     },
     {
       "family": "Cleveland Open",
@@ -1647,7 +1663,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct"
+      "prediction_tier": "family-direct",
+      "pace_alert": {
+        "family": "Cleveland Open",
+        "status": "below_pace",
+        "actual": 16,
+        "expected": 37,
+        "deviation_pct": -57.1,
+        "message": "Registrations are 57.1% below historical pace"
+      }
     },
     {
       "family": "New York State Open",
@@ -1887,7 +1911,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": true,
       "n_historical_editions": 2,
-      "prediction_tier": "family-direct"
+      "prediction_tier": "family-direct",
+      "pace_alert": {
+        "family": "New York State Open",
+        "status": "above_pace",
+        "actual": 13,
+        "expected": 8,
+        "deviation_pct": 70.0,
+        "message": "Registrations are 70.0% above historical pace"
+      }
     },
     {
       "family": "DC International",
@@ -2174,7 +2206,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": true,
       "n_historical_editions": 0,
-      "prediction_tier": "family-alias"
+      "prediction_tier": "family-alias",
+      "pace_alert": {
+        "family": "DC International",
+        "status": "above_pace",
+        "actual": 9,
+        "expected": 7,
+        "deviation_pct": 38.1,
+        "message": "Registrations are 38.1% above historical pace"
+      }
     },
     {
       "family": "World Open lower sections",
@@ -2279,7 +2319,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": true,
       "n_historical_editions": 3,
-      "prediction_tier": "family-direct"
+      "prediction_tier": "family-direct",
+      "pace_alert": {
+        "family": "World Open lower sections",
+        "status": "below_pace",
+        "actual": 6,
+        "expected": 16,
+        "deviation_pct": -61.4,
+        "message": "Registrations are 61.4% below historical pace"
+      }
     },
     {
       "family": "DC Open",
@@ -2486,7 +2534,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": true,
       "n_historical_editions": 0,
-      "prediction_tier": "family-alias"
+      "prediction_tier": "family-alias",
+      "pace_alert": {
+        "family": "DC Open",
+        "status": "below_pace",
+        "actual": 5,
+        "expected": 14,
+        "deviation_pct": -65.2,
+        "message": "Registrations are 65.2% below historical pace"
+      }
     },
     {
       "family": "World Open Under 13 Championship",
@@ -2588,7 +2644,15 @@ const TOURNAMENT_DATA = {
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "World Open Under 13 Championship",
+        "status": "on_pace",
+        "actual": 5,
+        "expected": 5,
+        "deviation_pct": 2.0,
+        "message": "Registrations are tracking within normal range (+2%)"
+      }
     },
     {
       "family": "World Open top 6 sections",
@@ -2819,7 +2883,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": true,
       "n_historical_editions": 3,
-      "prediction_tier": "family-direct"
+      "prediction_tier": "family-direct",
+      "pace_alert": {
+        "family": "World Open top 6 sections",
+        "status": "below_pace",
+        "actual": 97,
+        "expected": 131,
+        "deviation_pct": -26.1,
+        "message": "Registrations are 26.1% below historical pace"
+      }
     },
     {
       "family": "Chicago Class",
@@ -3074,7 +3146,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct"
+      "prediction_tier": "family-direct",
+      "pace_alert": {
+        "family": "Chicago Class",
+        "status": "below_pace",
+        "actual": 3,
+        "expected": 4,
+        "deviation_pct": -30.6,
+        "message": "Registrations are 30.6% below historical pace"
+      }
     },
     {
       "family": "Pittsburgh Open",
@@ -3329,7 +3409,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct"
+      "prediction_tier": "family-direct",
+      "pace_alert": {
+        "family": "Pittsburgh Open",
+        "status": "above_pace",
+        "actual": 5,
+        "expected": 3,
+        "deviation_pct": 75.2,
+        "message": "Registrations are 75.2% above historical pace"
+      }
     },
     {
       "family": "Southern Open",
@@ -3431,7 +3519,15 @@ const TOURNAMENT_DATA = {
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "Southern Open",
+        "status": "below_pace",
+        "actual": 1,
+        "expected": 6,
+        "deviation_pct": -83.7,
+        "message": "Registrations are 83.7% below historical pace"
+      }
     },
     {
       "family": "Bradley Open",
@@ -3714,7 +3810,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct"
+      "prediction_tier": "family-direct",
+      "pace_alert": {
+        "family": "Bradley Open",
+        "status": "above_pace",
+        "actual": 4,
+        "expected": 3,
+        "deviation_pct": 46.6,
+        "message": "Registrations are 46.6% above historical pace"
+      }
     },
     {
       "family": "Pacific Coast Open",
@@ -3997,7 +4101,15 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct"
+      "prediction_tier": "family-direct",
+      "pace_alert": {
+        "family": "Pacific Coast Open",
+        "status": "above_pace",
+        "actual": 7,
+        "expected": 5,
+        "deviation_pct": 39.9,
+        "message": "Registrations are 39.9% above historical pace"
+      }
     },
     {
       "family": "Continental Open",
@@ -4099,7 +4211,15 @@ const TOURNAMENT_DATA = {
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "Continental Open",
+        "status": "below_pace",
+        "actual": 1,
+        "expected": 2,
+        "deviation_pct": -53.8,
+        "message": "Registrations are 53.8% below historical pace"
+      }
     },
     {
       "family": "Central California Open",
@@ -4201,7 +4321,15 @@ const TOURNAMENT_DATA = {
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "Central California Open",
+        "status": "on_pace",
+        "actual": 1,
+        "expected": 1,
+        "deviation_pct": -5.1,
+        "message": "Registrations are tracking within normal range (-5%)"
+      }
     },
     {
       "family": "Atlantic Open",
@@ -4303,7 +4431,15 @@ const TOURNAMENT_DATA = {
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "Atlantic Open",
+        "status": "on_pace",
+        "actual": 1,
+        "expected": 1,
+        "deviation_pct": -18.3,
+        "message": "Registrations are tracking within normal range (-18%)"
+      }
     },
     {
       "family": "Indianapolis Open",
@@ -4405,7 +4541,15 @@ const TOURNAMENT_DATA = {
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "Indianapolis Open",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 0,
+        "deviation_pct": -100.0,
+        "message": "Registrations are 100.0% below historical pace"
+      }
     },
     {
       "family": "New York State Championship",
@@ -4507,7 +4651,15 @@ const TOURNAMENT_DATA = {
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "New York State Championship",
+        "status": "above_pace",
+        "actual": 5,
+        "expected": 1,
+        "deviation_pct": 265.0,
+        "message": "Registrations are 265.0% above historical pace"
+      }
     },
     {
       "family": "Midwest Class Championships",
@@ -4609,7 +4761,15 @@ const TOURNAMENT_DATA = {
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "Midwest Class Championships",
+        "status": "above_pace",
+        "actual": 2,
+        "expected": 1,
+        "deviation_pct": 82.4,
+        "message": "Registrations are 82.4% above historical pace"
+      }
     },
     {
       "family": "Eastern Class Championships (in Connecticut)",
@@ -4863,7 +5023,15 @@ const TOURNAMENT_DATA = {
           "cumulative_pct": 1.0
         }
       ],
-      "status": "live"
+      "status": "live",
+      "pace_alert": {
+        "family": "National Chess Congress",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 4,
+        "deviation_pct": -100.0,
+        "message": "Registrations are 100.0% below historical pace"
+      }
     },
     {
       "family": "Boston Chess Congress",
@@ -78685,8 +78853,178 @@ const TOURNAMENT_DATA = {
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-04-28 21:29:30",
-  "is_stale": false
+  "last_updated": "2026-04-28 22:26:45",
+  "is_stale": false,
+  "alerts": [
+    {
+      "family": "Chicago Open",
+      "status": "on_pace",
+      "actual": 353,
+      "expected": 384,
+      "deviation_pct": -8.0,
+      "message": "Registrations are tracking within normal range (-8%)"
+    },
+    {
+      "family": "Hartford Open",
+      "status": "on_pace",
+      "actual": 16,
+      "expected": 14,
+      "deviation_pct": 12.4,
+      "message": "Registrations are tracking within normal range (+12%)"
+    },
+    {
+      "family": "Cleveland Open",
+      "status": "below_pace",
+      "actual": 16,
+      "expected": 37,
+      "deviation_pct": -57.1,
+      "message": "Registrations are 57.1% below historical pace"
+    },
+    {
+      "family": "New York State Open",
+      "status": "above_pace",
+      "actual": 13,
+      "expected": 8,
+      "deviation_pct": 70.0,
+      "message": "Registrations are 70.0% above historical pace"
+    },
+    {
+      "family": "DC International",
+      "status": "above_pace",
+      "actual": 9,
+      "expected": 7,
+      "deviation_pct": 38.1,
+      "message": "Registrations are 38.1% above historical pace"
+    },
+    {
+      "family": "World Open lower sections",
+      "status": "below_pace",
+      "actual": 6,
+      "expected": 16,
+      "deviation_pct": -61.4,
+      "message": "Registrations are 61.4% below historical pace"
+    },
+    {
+      "family": "DC Open",
+      "status": "below_pace",
+      "actual": 5,
+      "expected": 14,
+      "deviation_pct": -65.2,
+      "message": "Registrations are 65.2% below historical pace"
+    },
+    {
+      "family": "World Open Under 13 Championship",
+      "status": "on_pace",
+      "actual": 5,
+      "expected": 5,
+      "deviation_pct": 2.0,
+      "message": "Registrations are tracking within normal range (+2%)"
+    },
+    {
+      "family": "World Open top 6 sections",
+      "status": "below_pace",
+      "actual": 97,
+      "expected": 131,
+      "deviation_pct": -26.1,
+      "message": "Registrations are 26.1% below historical pace"
+    },
+    {
+      "family": "Chicago Class",
+      "status": "below_pace",
+      "actual": 3,
+      "expected": 4,
+      "deviation_pct": -30.6,
+      "message": "Registrations are 30.6% below historical pace"
+    },
+    {
+      "family": "Pittsburgh Open",
+      "status": "above_pace",
+      "actual": 5,
+      "expected": 3,
+      "deviation_pct": 75.2,
+      "message": "Registrations are 75.2% above historical pace"
+    },
+    {
+      "family": "Southern Open",
+      "status": "below_pace",
+      "actual": 1,
+      "expected": 6,
+      "deviation_pct": -83.7,
+      "message": "Registrations are 83.7% below historical pace"
+    },
+    {
+      "family": "Bradley Open",
+      "status": "above_pace",
+      "actual": 4,
+      "expected": 3,
+      "deviation_pct": 46.6,
+      "message": "Registrations are 46.6% above historical pace"
+    },
+    {
+      "family": "Pacific Coast Open",
+      "status": "above_pace",
+      "actual": 7,
+      "expected": 5,
+      "deviation_pct": 39.9,
+      "message": "Registrations are 39.9% above historical pace"
+    },
+    {
+      "family": "Continental Open",
+      "status": "below_pace",
+      "actual": 1,
+      "expected": 2,
+      "deviation_pct": -53.8,
+      "message": "Registrations are 53.8% below historical pace"
+    },
+    {
+      "family": "Central California Open",
+      "status": "on_pace",
+      "actual": 1,
+      "expected": 1,
+      "deviation_pct": -5.1,
+      "message": "Registrations are tracking within normal range (-5%)"
+    },
+    {
+      "family": "Atlantic Open",
+      "status": "on_pace",
+      "actual": 1,
+      "expected": 1,
+      "deviation_pct": -18.3,
+      "message": "Registrations are tracking within normal range (-18%)"
+    },
+    {
+      "family": "Indianapolis Open",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 0,
+      "deviation_pct": -100.0,
+      "message": "Registrations are 100.0% below historical pace"
+    },
+    {
+      "family": "New York State Championship",
+      "status": "above_pace",
+      "actual": 5,
+      "expected": 1,
+      "deviation_pct": 265.0,
+      "message": "Registrations are 265.0% above historical pace"
+    },
+    {
+      "family": "Midwest Class Championships",
+      "status": "above_pace",
+      "actual": 2,
+      "expected": 1,
+      "deviation_pct": 82.4,
+      "message": "Registrations are 82.4% above historical pace"
+    },
+    {
+      "family": "National Chess Congress",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 4,
+      "deviation_pct": -100.0,
+      "message": "Registrations are 100.0% below historical pace"
+    }
+  ]
 };
 
 // ══════════════════════════════════════════════════════════
@@ -78696,151 +79034,149 @@ const PUZZLE_DATA = {
   "date": "2026-04-28",
   "puzzles": [
     {
-      "id": "0L4Ly",
-      "fen": "r2qkb1r/pp3ppp/2n2n2/2pp4/2PP2b1/2N1BN2/PP3PPP/R2QKB1R w KQkq - 6 8",
-      "moves": "d4c5 d5d4 e3d4 g4f3 d4f6 d8d1 c3d1 f3d1 a1d1 g7f6",
-      "rating": 2388,
+      "id": "0LREo",
+      "fen": "1r3r1k/pbp1q1pp/5n2/n1P1pp2/8/P3PN2/B1Q2PPP/1RBR2K1 w - - 6 20",
+      "moves": "c2f5 b7e4 b1b8 e4f5 b8f8 e7f8",
+      "rating": 2001,
       "themes": [
         "advantage",
         "fork",
-        "opening",
-        "veryLong"
-      ],
-      "url": "https://lichess.org/training/0L4Ly",
-      "game_url": "https://lichess.org/NdBBhWhq#15"
-    },
-    {
-      "id": "0Q9Xy",
-      "fen": "5r2/6kP/6P1/5P2/6K1/8/8/8 b - - 6 74",
-      "moves": "f8f6 g4g5 f6a6 f5f6 g7h8 f6f7 a6g6 g5f5 h8h7 f7f8q",
-      "rating": 2152,
-      "themes": [
-        "advancedPawn",
-        "crushing",
-        "endgame",
-        "exposedKing",
-        "promotion",
-        "rookEndgame",
-        "veryLong"
-      ],
-      "url": "https://lichess.org/training/0Q9Xy",
-      "game_url": "https://lichess.org/wqPCcCgX/black#148"
-    },
-    {
-      "id": "08p1T",
-      "fen": "Q1kr3r/1pp1bppp/3p1n2/3P4/4Pq2/3B4/PPPN2PP/R5K1 b - - 1 15",
-      "moves": "c8d7 d3b5 c7c6 b5c6 b7c6 a8c6",
-      "rating": 2124,
-      "themes": [
-        "long",
-        "mate",
-        "mateIn3",
-        "middlegame",
-        "xRayAttack"
-      ],
-      "url": "https://lichess.org/training/08p1T",
-      "game_url": "https://lichess.org/PYp1zZT2/black#30"
-    },
-    {
-      "id": "0GtIs",
-      "fen": "r3r3/ppp3bk/3p2pp/3Ppb1n/2P1N2q/4BP2/PP2P1B1/R1Q2RK1 b - - 0 19",
-      "moves": "f5h3 e3f2 h4e7 g2h3 h5f4 g1h2",
-      "rating": 2332,
-      "themes": [
-        "advantage",
-        "defensiveMove",
         "long",
         "middlegame"
       ],
-      "url": "https://lichess.org/training/0GtIs",
-      "game_url": "https://lichess.org/NUHjdw5A/black#38"
+      "url": "https://lichess.org/training/0LREo",
+      "game_url": "https://lichess.org/lOFXRhGr#39"
     },
     {
-      "id": "0fjIL",
-      "fen": "r4rk1/ppp5/1b4qp/4Q1p1/2P2p2/2PP3P/1P3PPB/R4RK1 b - - 0 21",
-      "moves": "g6d3 c4c5 a8e8 e5d4 d3d4 c3d4",
-      "rating": 2521,
-      "themes": [
-        "crushing",
-        "long",
-        "middlegame"
-      ],
-      "url": "https://lichess.org/training/0fjIL",
-      "game_url": "https://lichess.org/QgnKIKsZ/black#42"
-    },
-    {
-      "id": "0JUKO",
-      "fen": "2rq1rk1/1b4pp/1p2p3/pP1pP3/N4n2/5N2/3QB1PP/2R2RK1 w - - 0 21",
-      "moves": "f3d4 d8g5 f1f4 c8c1 d2c1 g5f4 c1f4 f8f4",
-      "rating": 2397,
-      "themes": [
-        "advantage",
-        "kingsideAttack",
-        "middlegame",
-        "veryLong"
-      ],
-      "url": "https://lichess.org/training/0JUKO",
-      "game_url": "https://lichess.org/F45TEfEh#41"
-    },
-    {
-      "id": "0oZk5",
-      "fen": "2k2b2/p3q3/Ppp1r2p/2n2Qp1/5p2/2P1P2P/3RKPP1/3R4 b - - 5 32",
-      "moves": "c8c7 d2d8 e7f6 d8f8 f6f5 f8f5",
-      "rating": 2068,
-      "themes": [
-        "advantage",
-        "long",
-        "middlegame"
-      ],
-      "url": "https://lichess.org/training/0oZk5",
-      "game_url": "https://lichess.org/j4h0d4wX/black#64"
-    },
-    {
-      "id": "0gSsL",
-      "fen": "1r6/pb1R1pk1/1p4pp/2p5/2P1P2N/1P3PP1/P5K1/8 w - - 1 28",
-      "moves": "e4e5 b7c8 d7a7 g6g5 g2f2 g5h4",
-      "rating": 2005,
-      "themes": [
-        "advantage",
-        "endgame",
-        "long",
-        "trappedPiece"
-      ],
-      "url": "https://lichess.org/training/0gSsL",
-      "game_url": "https://lichess.org/QN8A9KHN#55"
-    },
-    {
-      "id": "0zxJV",
-      "fen": "8/8/3kp3/5pp1/3K4/5P1P/6P1/8 w - - 0 37",
-      "moves": "g2g4 e6e5 d4d3 f5f4 d3e4 d6e6",
-      "rating": 2359,
+      "id": "0Qfps",
+      "fen": "8/5p1p/4p1p1/k7/3K4/5P1P/6P1/8 b - - 1 33",
+      "moves": "a5b6 d4e5 b6c5 h3h4",
+      "rating": 2734,
       "themes": [
         "crushing",
         "defensiveMove",
         "endgame",
-        "long",
         "pawnEndgame",
-        "quietMove",
-        "zugzwang"
+        "short"
       ],
-      "url": "https://lichess.org/training/0zxJV",
-      "game_url": "https://lichess.org/dsbDCbDZ#73"
+      "url": "https://lichess.org/training/0Qfps",
+      "game_url": "https://lichess.org/LyNif3td/black#66"
     },
     {
-      "id": "091aD",
-      "fen": "8/3Q1pk1/8/4P3/2KN4/8/3b2p1/3r4 w - - 0 42",
-      "moves": "d4e6 g7h6 d7f7 g2g1q f7f8 h6h5 f8f5 h5h4",
-      "rating": 2278,
+      "id": "08zzl",
+      "fen": "2r2qk1/p5b1/b1p1p1R1/1p1pP1Np/3P1r1P/8/PPPQ1P2/2KR4 b - - 1 22",
+      "moves": "f4f2 d2d3 f8f5 g5e6",
+      "rating": 2889,
+      "themes": [
+        "advantage",
+        "middlegame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/08zzl",
+      "game_url": "https://lichess.org/LxCH3VBZ/black#44"
+    },
+    {
+      "id": "0HEmH",
+      "fen": "1k6/4r3/PPP5/2K5/8/8/8/8 b - - 0 59",
+      "moves": "e7f7 a6a7 b8a8 c6c7 f7f8 c5c6",
+      "rating": 2128,
       "themes": [
         "advancedPawn",
         "crushing",
         "defensiveMove",
         "endgame",
-        "promotion",
-        "veryLong"
+        "long",
+        "master",
+        "rookEndgame"
       ],
-      "url": "https://lichess.org/training/091aD",
-      "game_url": "https://lichess.org/mDtxOyOr#83"
+      "url": "https://lichess.org/training/0HEmH",
+      "game_url": "https://lichess.org/BRJ1ElZu/black#118"
+    },
+    {
+      "id": "0gR2j",
+      "fen": "8/8/8/4r3/pR3k2/8/1KP5/8 b - - 1 50",
+      "moves": "e5e4 b2a3 e4b4 a3b4",
+      "rating": 2407,
+      "themes": [
+        "crushing",
+        "endgame",
+        "master",
+        "rookEndgame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0gR2j",
+      "game_url": "https://lichess.org/ueG7gL2g/black#100"
+    },
+    {
+      "id": "0JtUr",
+      "fen": "3bn1k1/1b5p/1P1p2p1/3Pp3/1Q2P3/2N1B2P/6PK/q1N5 w - - 9 31",
+      "moves": "b4b1 a1c3 b1b5 e8f6",
+      "rating": 2022,
+      "themes": [
+        "advantage",
+        "hangingPiece",
+        "master",
+        "middlegame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0JtUr",
+      "game_url": "https://lichess.org/AP9nZJ8S#61"
+    },
+    {
+      "id": "0pQ0n",
+      "fen": "r2r3k/pp3p1P/2n5/2P1pb2/4P3/4pP2/P1P1K1P1/3R1B1R b - - 1 23",
+      "moves": "d8d2 d1d2 e3d2 e4f5 a8d8 e2d1",
+      "rating": 2032,
+      "themes": [
+        "advantage",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/0pQ0n",
+      "game_url": "https://lichess.org/TPg8HcPj/black#46"
+    },
+    {
+      "id": "0hFom",
+      "fen": "6k1/p2B4/1p3pn1/2P1p1pp/PP2P3/8/5K2/8 b - - 0 38",
+      "moves": "g8f8 c5b6 a7b6 a4a5 b6a5 b4a5",
+      "rating": 2120,
+      "themes": [
+        "advantage",
+        "endgame",
+        "long"
+      ],
+      "url": "https://lichess.org/training/0hFom",
+      "game_url": "https://lichess.org/byhdQ1dj/black#76"
+    },
+    {
+      "id": "10pOI",
+      "fen": "6k1/p4pp1/1p4b1/1B4Pp/P2N3R/1Q6/5PK1/2q1r3 w - - 3 30",
+      "moves": "d4f3 g6e4 h4e4 e1e4",
+      "rating": 2093,
+      "themes": [
+        "advantage",
+        "middlegame",
+        "pin",
+        "short"
+      ],
+      "url": "https://lichess.org/training/10pOI",
+      "game_url": "https://lichess.org/CXHHjYCN#59"
+    },
+    {
+      "id": "09Ko8",
+      "fen": "r2qk2r/pp3ppp/5n2/2b1n3/6B1/8/PPPP1PPP/RNBQ1RK1 w kq - 1 9",
+      "moves": "f1e1 c5f2 g1f2 d8d4 f2f1 f6g4",
+      "rating": 2379,
+      "themes": [
+        "advantage",
+        "attraction",
+        "kingsideAttack",
+        "long",
+        "opening",
+        "sacrifice"
+      ],
+      "url": "https://lichess.org/training/09Ko8",
+      "game_url": "https://lichess.org/s86ZgJUl#17"
     }
   ]
 };

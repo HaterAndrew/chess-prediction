@@ -171,6 +171,11 @@ print(f"  {summary['has_timestamps'].sum()} with timestamps")
 print(f"  {summary['family'].nunique()} unique families")
 print(f"  Years: {summary['tournament_year'].min()}-{summary['tournament_year'].max()}")
 
+# Preserve the manual snapshot horizon before reconciliation mutates last_reg.
+# 04e_performance_data.py uses this to decide whether a completed 2026 event
+# needs daily_scrape coverage; rebased last_reg values can be as recent as today.
+summary['snapshot_last_reg'] = summary['last_reg']
+
 # ── Reconcile final_count against live scrape ──────────────────────────────
 # all_registrations.csv is a manual snapshot and goes stale between exports.
 # daily_scrape.csv is refreshed by auto_update.py and tracks the live entry
@@ -308,10 +313,11 @@ if _rebased_tids and _scrape_for_extension is not None:
         archive_view = daily_counts[daily_counts['tid'].isin(_rebased_tids)][['tid', 'T', 'cum_regs']].copy()
         archive_view['source'] = 'archive'
         combined = pd.concat([archive_view, ext_df], ignore_index=True)
-        # When archive and scrape have the same T, prefer scrape (it includes
-        # late registrations the archive's individual timestamps may have missed).
-        combined = combined.sort_values(['tid', 'T', 'source'], ascending=[True, False, True])
-        combined = combined.drop_duplicates(subset=['tid', 'T'], keep='last')
+        # When archive and scrape have the same T, keep the higher cumulative
+        # count. Scrape usually wins, but archive can legitimately be higher if
+        # a scrape row missed withdrawals/cleanup timing.
+        combined = (combined.groupby(['tid', 'T'], as_index=False)['cum_regs']
+                            .max())
         # Running max of cum_regs in chronological order (largest T first → smallest)
         combined = combined.sort_values(['tid', 'T'], ascending=[True, False])
         combined['cum_regs'] = combined.groupby('tid')['cum_regs'].cummax()

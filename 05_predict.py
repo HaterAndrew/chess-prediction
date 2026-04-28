@@ -18,7 +18,6 @@ import argparse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from importlib import import_module
-m03 = import_module("03_models")
 m04c = import_module("04c_final_model")
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
@@ -37,21 +36,28 @@ def load_all_data():
 
 def mode_a_forecast(family, year, summary):
     """Pre-registration total count forecast using naive baseline."""
-    model = m03.M1_NaiveBaseline()
     # Train on all non-COVID, non-online data
     train = summary[
         (~summary['is_online'].fillna(False)) &
         (~summary['is_covid'].fillna(False))
     ]
-    model.fit(train)
-    pred, lower, upper = model.predict_count(family, year)
 
     # Get historical context
-    hist = summary[
-        (summary['family'] == family) &
-        (~summary['is_online'].fillna(False)) &
-        (~summary['is_covid'].fillna(False))
-    ].sort_values('tournament_year')
+    hist = train[train['family'] == family].sort_values('tournament_year')
+    if len(hist) > 0:
+        recent = hist.tail(3)['final_count'].astype(float)
+    else:
+        recent = train[train['final_count'] >= 10].tail(20)['final_count'].astype(float)
+    if len(recent) == 0:
+        pred, lower, upper = 100, 70, 140
+    else:
+        pred = int(round(recent.mean()))
+        if len(recent) >= 2:
+            spread = max(float(recent.std(ddof=1)) * 1.28, pred * 0.15)
+        else:
+            spread = pred * 0.25
+        lower = int(round(max(1, pred - spread)))
+        upper = int(round(pred + spread))
 
     print(f"\n{'='*60}")
     print(f"MODE A FORECAST: {family} {year}")

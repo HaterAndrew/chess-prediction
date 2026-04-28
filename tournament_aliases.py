@@ -188,7 +188,7 @@ STANDINGS_NAME_MAP = {
     'Washingtoncongress': 'Washington Chess Congress',
     'Westernclass': 'Western Class Championships',
     'Boardwalk': 'Boardwalk Open',
-    'International': 'DC International',
+    'International': 'Philadelphia International',
 }
 
 

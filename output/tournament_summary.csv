@@ -1,765 +1,765 @@
-tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,first_reg,last_reg,is_covid,is_online,early_bird_spike,spike_day,spike_magnitude
-5,2012 Atlantic Open,Atlantic Open,2012.0,267,False,0,,,False,False,False,,
-6,2012 Indianapolis Open,Indianapolis Open,2012.0,161,False,0,,,False,False,False,,
-7,2012 Manhattan Open,Manhattan Open,2012.0,281,False,0,,,False,False,False,,
-8,2012 Central California Open,Central California Open,2012.0,114,False,0,,,False,False,False,,
-10,42nd annual Continental Open,42nd annual Continental Open,,166,False,0,,,False,False,False,,
-11,134th annual New York State Championship,134th annual New York State Championship,,135,False,0,,,False,False,False,,
-12,3rd annual Hartford Open,3rd annual Hartford Open,,98,False,0,,,False,False,False,,
-13,Louisville Open,Louisville Open,,105,False,0,,,False,False,False,,
-14,Continental Class Championships,Continental Class Championships,,222,False,0,,,False,False,False,,
-15,Los Angeles Open,Los Angeles Open,,144,False,0,,,False,False,False,,
-16,Midwest Class Championships,Midwest Class Championships,,195,False,0,,,False,False,False,,
-17,Boardwalk Open,Boardwalk Open,,177,False,0,,,False,False,False,,
-18,Bahamas International   Amateur,Bahamas International Amateur,,31,False,0,,,False,False,False,,
-19,Kings Island Open,Kings Island Open,,278,False,0,,,False,False,False,,
-20,National Chess Congress,National Chess Congress,,414,False,0,,,False,False,False,,
-21,North American Open,North American Open,,578,False,0,,,False,False,False,,
-22,Capital Region Open,Capital Region Open,,23,False,0,,,False,False,False,,
-25,Empire City Open,Empire City Open,,259,False,0,,,False,False,False,,
-27,Boston Chess Congress,Boston Chess Congress,,156,False,0,,,False,False,False,,
-28,Golden State Open,Golden State Open,,239,False,0,,,False,False,False,,
-29,Liberty Bell Open,Liberty Bell Open,,379,False,0,,,False,False,False,,
-30,New York State Scholastics,New York State Scholastics,,686,False,0,,,False,False,False,,
-31,Long Island Open,Long Island Open,,119,False,0,,,False,False,False,,
-32,Pittsburgh Open,Pittsburgh Open,,138,False,0,,,False,False,False,,
-39,Western Class Championships,Western Class Championships,,182,False,0,,,False,False,False,,
-40,Mid-America Open,Mid-America Open,,219,False,0,,,False,False,False,,
-41,Eastern Class Championships,Eastern Class Championships,,155,False,0,,,False,False,False,,
-42,Southern Class Championships,Southern Class Championships,,178,False,0,,,False,False,False,,
-43,Philadelphia Open,Philadelphia Open,,443,False,0,,,False,False,False,,
-48,Chicago Open,Chicago Open,,600,False,0,,,False,False,False,,
-52,World Open,World Open,,957,False,0,,,False,False,False,,
-54,Vermont Resort Open,Vermont Resort Open,,28,False,0,,,False,False,False,,
-55,DC International,DC International,,75,False,0,,,False,False,False,,
-66,World Open Senior Amateur,World Open Senior Amateur,,32,False,0,,,False,False,False,,
-67,World Open Women s Championship,World Open Womens Championship,,24,False,0,,,False,False,False,,
-68,World Open Under 13,World Open Under 13,,183,False,0,,,False,False,False,,
-69,New York State Open,New York State Open,,56,False,0,,,False,False,False,,
-70,Northeast Open,Northeast Open,,151,False,0,,,False,False,False,,
-74,Pacific Coast Open,Pacific Coast Open,,188,False,0,,,False,False,False,,
-75,Chicago Class,Chicago Class,,261,False,0,,,False,False,False,,
-77,2013 Southern Open,Southern Open,2013.0,192,False,0,,,False,False,False,,
-79,2013 Manhattan Open,Manhattan Open,2013.0,329,False,0,,,False,False,False,,
-80,2013 Bradley Open,Bradley Open,2013.0,131,False,0,,,False,False,False,,
-83,2013 Cleveland Open,Cleveland Open,2013.0,207,False,0,,,False,False,False,,
-87,2013 Continental Open,Continental Open,2013.0,162,False,0,,,False,False,False,,
-91,2013 Indianapolis Open,Indianapolis Open,2013.0,171,False,0,,,False,False,False,,
-92,2013 Atlantic Open,Atlantic Open,2013.0,244,False,0,,,False,False,False,,
-103,2013 New York State Championship,New York State Championship,2013.0,190,False,0,,,False,False,False,,
-105,2013 Continental Class Championships,Continental Class Championships,2013.0,185,False,0,,,False,False,False,,
-106,2013 Louisville Open,Louisville Open,2013.0,98,False,0,,,False,False,False,,
-112,2013 Los Angeles Open,Los Angeles Open,2013.0,154,False,0,,,False,False,False,,
-113,2013 Eastern Team Championship,Eastern Team Championship,2013.0,134,False,0,,,False,False,False,,
-114,2013 Midwest Class Championships,Midwest Class Championships,2013.0,214,False,0,,,False,False,False,,
-115,2013 Boardwalk Open,Boardwalk Open,2013.0,136,False,0,,,False,False,False,,
-116,2013 Kings Island Open,Kings Island Open,2013.0,289,False,0,,,False,False,False,,
-129,2013 Hartford Open,Hartford Open,2013.0,115,False,0,,,False,False,False,,
-144,2013 National Chess Congress,National Chess Congress,2013.0,540,False,0,,,False,False,False,,
-150,2013 North American Open,North American Open,2013.0,591,False,0,,,False,False,False,,
-152,2013 Empire City Open,Empire City Open,2013.0,284,False,0,,,False,False,False,,
-154,2014 Boston Chess Congress,Boston Chess Congress,2014.0,172,False,0,,,False,False,False,,
-171,2014 Golden State Open,Golden State Open,2014.0,285,False,0,,,False,False,False,,
-172,2014 Liberty Bell Open,Liberty Bell Open,2014.0,387,False,0,,,False,False,False,,
-174,2014 Foxwoods Open,Foxwoods Open,2014.0,235,False,0,,,False,False,False,,
-182,2014 Philadelphia Open,Philadelphia Open,2014.0,481,False,0,,,False,False,False,,
-183,2014 New York State Scholastic Championships,New York State Scholastic Championships,2014.0,785,False,0,,,False,False,False,,
-184,2014 Western Class Championships,Western Class Championships,2014.0,180,False,0,,,False,False,False,,
-185,2014 Eastern Class Championships,Eastern Class Championships,2014.0,228,False,0,,,False,False,False,,
-186,2014 Mid-America Open,Mid-America Open,2014.0,232,False,0,,,False,False,False,,
-207,2014 Long Island Open,Long Island Open,2014.0,187,False,0,,,False,False,False,,
-237,2014 Southern Class Championships,Southern Class Championships,2014.0,182,False,0,,,False,False,False,,
-239,2014 Chicago Open,Chicago Open,2014.0,618,False,0,,,False,False,False,,
-241,2014 DC International,DC International,2014.0,80,False,0,,,False,False,False,,
-242,2014 Pittsburgh Open,Pittsburgh Open,2014.0,96,False,0,,,False,False,False,,
-243,2014 New York State Open,New York State Open,2014.0,68,False,0,,,False,False,False,,
-244,2014 World Open Women s Championship,World Open Womens Championship,2014.0,16,False,0,,,False,False,False,,
-250,2014 World Open Senior Amateur,World Open Senior Amateur,2014.0,45,False,0,,,False,False,False,,
-251,2014 World Open Under 13 Championship,World Open Under 13,2014.0,173,False,0,,,False,False,False,,
-252,2014 World Open,World Open,2014.0,1014,False,0,,,False,False,False,,
-254,2014 Northeast Open,Northeast Open,2014.0,147,False,0,,,False,False,False,,
-258,2014 Pacific Coast Open,Pacific Coast Open,2014.0,194,False,0,,,False,False,False,,
-259,2014 Bradley Open,Bradley Open,2014.0,138,False,0,,,False,False,False,,
-262,2014 Chicago Class,Chicago Class,2014.0,320,False,0,,,False,False,False,,
-263,2014 Manhattan Open,Manhattan Open,2014.0,331,False,0,,,False,False,False,,
-282,2014 Continental Open,Continental Open,2014.0,228,False,0,,,False,False,False,,
-286,2014 Cleveland Open,Cleveland Open,2014.0,195,False,0,,,False,False,False,,
-292,2014 Central California Open,Central California Open,2014.0,105,False,0,,,False,False,False,,
-293,2014 Atlantic Open,Atlantic Open,2014.0,222,False,0,,,False,False,False,,
-294,2014 Indianapolis Open,Indianapolis Open,2014.0,176,False,0,,,False,False,False,,
-295,2014 Washington Chess Congress,Washington Chess Congress,2014.0,138,False,0,,,False,False,False,,
-296,2014 New York State Championship,New York State Championship,2014.0,209,False,0,,,False,False,False,,
-297,2014 Southern Open,Southern Open,2014.0,162,False,0,,,False,False,False,,
-299,2014 Midwest Class Championships,Midwest Class Championships,2014.0,243,False,0,,,False,False,False,,
-310,2014 Hartford Open,Hartford Open,2014.0,89,False,0,,,False,False,False,,
-317,2014 North American Open,North American Open,2014.0,619,False,0,,,False,False,False,,
-318,2014 Boardwalk Open,Boardwalk Open,2014.0,107,False,0,,,False,False,False,,
-319,2014 Kings Island Open,Kings Island Open,2014.0,296,False,0,,,False,False,False,,
-322,2014 National Chess Congress,National Chess Congress,2014.0,582,False,0,,,False,False,False,,
-326,2014 Central New York Open,Central New York Open,2014.0,56,False,0,,,False,False,False,,
-327,2014 Eastern Chess Congress,Eastern Chess Congress,2014.0,111,False,0,,,False,False,False,,
-334,2015 Golden State Open,Golden State Open,2015.0,247,False,0,,,False,False,False,,
-346,2014 Empire City Open,Empire City Open,2014.0,249,False,0,,,False,False,False,,
-352,2015 Boston Chess Congress,Boston Chess Congress,2015.0,225,False,0,,,False,False,False,,
-376,2015 Liberty Bell Open,Liberty Bell Open,2015.0,339,False,0,,,False,False,False,,
-377,2015 Southwest Class,Southwest Class,2015.0,259,False,0,,,False,False,False,,
-395,2015 New York State Scholastic Championships,New York State Scholastic Championships,2015.0,953,False,0,,,False,False,False,,
-396,2015 Pittsburgh Open,Pittsburgh Open,2015.0,136,False,0,,,False,False,False,,
-401,2015 Mid-America Open,Mid-America Open,2015.0,234,False,0,,,False,False,False,,
-403,2015 Western Class Championships,Western Class Championships,2015.0,200,False,0,,,False,False,False,,
-404,2015 Philadelphia Open,Philadelphia Open,2015.0,515,False,0,,,False,False,False,,
-405,2015 Southern Class Championships,Southern Class Championships,2015.0,196,False,0,,,False,False,False,,
-406,2015 DC International,DC International,2015.0,128,False,0,,,False,False,False,,
-413,2015 Chicago Open,Chicago Open,2015.0,774,False,0,,,False,False,False,,
-414,2015 Eastern Class Championships,Eastern Class Championships,2015.0,214,False,0,,,False,False,False,,
-424,2015 World Open,World Open,2015.0,921,False,0,,,False,False,False,,
-425,2015 World Open Senior Amateur,World Open Senior Amateur,2015.0,38,False,0,,,False,False,False,,
-426,2015 New York State Open,New York State Open,2015.0,70,False,0,,,False,False,False,,
-430,2015 Northeast Open,Northeast Open,2015.0,189,False,0,,,False,False,False,,
-454,2016 World Open Womens Championship,World Open Womens Championship,2016.0,27,False,0,,,False,False,False,,
-455,2015 World Open Under 13 Championship,World Open Under 13,2015.0,244,False,0,,,False,False,False,,
-474,2015 Chicago Class,Chicago Class,2015.0,291,False,0,,,False,False,False,,
-488,2015 Pacific Coast Open,Pacific Coast Open,2015.0,203,False,0,,,False,False,False,,
-489,2015 Bradley Open,Bradley Open,2015.0,169,False,0,,,False,False,False,,
-490,2015 Southern Open,Southern Open,2015.0,210,False,0,,,False,False,False,,
-492,2015 Cleveland Open,Cleveland Open,2015.0,197,False,0,,,False,False,False,,
-503,2015 Continental Open,Continental Open,2015.0,253,False,0,,,False,False,False,,
-504,2015 Manhattan Open,Manhattan Open,2015.0,435,False,0,,,False,False,False,,
-505,2015 Central California Open,Central California Open,2015.0,114,False,0,,,False,False,False,,
-506,2015 Atlantic Open,Atlantic Open,2015.0,226,False,0,,,False,False,False,,
-517,2015 Indianapolis Open,Indianapolis Open,2015.0,179,False,0,,,False,False,False,,
-522,2015 Washington Chess Congress,Washington Chess Congress,2015.0,185,False,0,,,False,False,False,,
-534,2015 Midwest Class Championships,Midwest Class Championships,2015.0,265,False,0,,,False,False,False,,
-542,2015 Hartford Open,Hartford Open,2015.0,108,False,0,,,False,False,False,,
-543,2015 New York State Championship,New York State Championship,2015.0,173,False,0,,,False,False,False,,
-547,2015 Boardwalk Open,Boardwalk Open,2015.0,115,False,0,,,False,False,False,,
-548,2015 Central New York Open,Central New York Open,2015.0,61,False,0,,,False,False,False,,
-550,2015 Kings Island Open,Kings Island Open,2015.0,274,False,0,,,False,False,False,,
-551,2015 North American Open,North American Open,2015.0,717,False,0,,,False,False,False,,
-552,2015 Eastern Chess Congress,Eastern Chess Congress,2015.0,116,False,0,,,False,False,False,,
-563,2015 National Chess Congress,National Chess Congress,2015.0,574,False,0,,,False,False,False,,
-564,2015 Empire City Open,Empire City Open,2015.0,330,False,0,,,False,False,False,,
-570,2016 Boston Chess Congress,Boston Chess Congress,2016.0,242,False,0,,,False,False,False,,
-571,2016 Liberty Bell Open,Liberty Bell Open,2016.0,326,False,0,,,False,False,False,,
-572,2016 Golden State Open,Golden State Open,2016.0,261,False,0,,,False,False,False,,
-580,2016 Southwest Class,Southwest Class,2016.0,298,False,0,,,False,False,False,,
-589,2016 George Washington Open,George Washington Open,2016.0,241,False,0,,,False,False,False,,
-591,2016 Western Class Championships,Western Class Championships,2016.0,202,False,0,,,False,False,False,,
-599,2016 Pittsburgh Open,Pittsburgh Open,2016.0,106,False,0,,,False,False,False,,
-602,2016 New York State Scholastic Championships,New York State Scholastic Championships,2016.0,952,False,0,,,False,False,False,,
-606,2016 Mid-America Open,Mid-America Open,2016.0,210,False,0,,,False,False,False,,
-612,2016 Philadelphia Open,Philadelphia Open,2016.0,511,False,0,,,False,False,False,,
-626,2016 Chicago Open,Chicago Open,2016.0,798,False,0,,,False,False,False,,
-627,2016 Eastern Class Championships,Eastern Class Championships,2016.0,252,False,0,,,False,False,False,,
-628,2016 Bill Little Memorial,Bill Little Memorial,2016.0,64,False,0,,,False,False,False,,
-629,2016 New York State Open,New York State Open,2016.0,100,False,0,,,False,False,False,,
-630,2016 Continental Class Championships,Continental Class Championships,2016.0,212,False,0,,,False,False,False,,
-645,2016 World Open,World Open,2016.0,1137,False,0,,,False,False,False,,
-646,2016 Philadelphia International,Philadelphia International,2016.0,66,False,0,,,False,False,False,,
-647,2016 World Open Senior,World Open Senior,2016.0,43,False,0,,,False,False,False,,
-648,2016 World Open Under 13 Championship,World Open Under 13,2016.0,137,False,0,,,False,False,False,,
-705,2016 Chicago Class,Chicago Class,2016.0,321,False,0,,,False,False,False,,
-706,2016 Manhattan Open,Manhattan Open,2016.0,438,False,0,,,False,False,False,,
-707,2016 Continental Open,Continental Open,2016.0,255,False,0,,,False,False,False,,
-708,2016 Atlantic Open,Atlantic Open,2016.0,286,False,0,,,False,False,False,,
-709,2016 Washington Chess Congress,Washington Chess Congress,2016.0,197,False,0,,,False,False,False,,
-710,2016 Pacific Coast Open,Pacific Coast Open,2016.0,214,False,0,,,False,False,False,,
-711,2016 Southern Chess Congress,Southern Chess Congress,2016.0,199,False,0,,,False,False,False,,
-712,2016 Southern Open,Southern Open,2016.0,203,False,0,,,False,False,False,,
-713,2016 Bradley Open,Bradley Open,2016.0,148,False,0,,,False,False,False,,
-715,2016 Northeast Open,Northeast Open,2016.0,178,False,0,,,False,False,False,,
-719,2016 Central California Open,Central California Open,2016.0,92,False,0,,,False,False,False,,
-720,2016 Schenectady Open,Schenectady Open,2016.0,69,False,0,,,False,False,False,,
-721,2016 Cleveland Open,Cleveland Open,2016.0,190,False,0,,,False,False,False,,
-724,2016 Indianapolis Open,Indianapolis Open,2016.0,186,False,0,,,False,False,False,,
-726,2016 New York State Championship,New York State Championship,2016.0,190,False,0,,,False,False,False,,
-746,2016 Southern Class Championships,Southern Class Championships,2016.0,168,False,0,,,False,False,False,,
-747,2016 Hartford Open,Hartford Open,2016.0,86,False,0,,,False,False,False,,
-750,2016 Midwest Class Championships,Midwest Class Championships,2016.0,280,False,0,,,False,False,False,,
-751,2016 Eastern Chess Congress,Eastern Chess Congress,2016.0,279,False,0,,,False,False,False,,
-759,2016 Los Angeles Open,Los Angeles Open,2016.0,171,False,0,,,False,False,False,,
-786,2016 Central New York Open,Central New York Open,2016.0,56,False,0,,,False,False,False,,
-798,2016 Kings Island Open,Kings Island Open,2016.0,279,False,0,,,False,False,False,,
-799,2016 Stamford Open,Stamford Open,2016.0,137,False,0,,,False,False,False,,
-801,2016 North American Open,North American Open,2016.0,766,False,0,,,False,False,False,,
-802,2016 National Chess Congress,National Chess Congress,2016.0,595,False,0,,,False,False,False,,
-804,2016 Empire City Open,Empire City Open,2016.0,397,False,0,,,False,False,False,,
-829,2017 Boston Chess Congress,Boston Chess Congress,2017.0,208,False,0,,,False,False,False,,
-831,2017 Golden State Open,Golden State Open,2017.0,282,False,0,,,False,False,False,,
-835,2017 Liberty Bell Open,Liberty Bell Open,2017.0,336,False,0,,,False,False,False,,
-844,2017 Southwest Class,Southwest Class,2017.0,328,False,0,,,False,False,False,,
-858,2017 George Washington Open,George Washington Open,2017.0,197,False,0,,,False,False,False,,
-859,2017 New York State Scholastic Championships,New York State Scholastic Championships,2017.0,1156,False,0,,,False,False,False,,
-863,2017 Western Class Championships,Western Class Championships,2017.0,254,False,0,,,False,False,False,,
-865,2017 Mid-America Open,Mid-America Open,2017.0,306,False,0,,,False,False,False,,
-892,2017 Southern Class Championships,Southern Class Championships,2017.0,204,False,0,,,False,False,False,,
-893,2017 Philadelphia Open,Philadelphia Open,2017.0,553,False,0,,,False,False,False,,
-894,2017 Eastern Class Championships,Eastern Class Championships,2017.0,271,False,0,,,False,False,False,,
-895,2017 Chicago Open,Chicago Open,2017.0,883,False,0,,,False,False,False,,
-900,2017 New York State Open,New York State Open,2017.0,86,False,0,,,False,False,False,,
-901,2017 World Open,World Open,2017.0,1185,False,0,,,False,False,False,,
-902,2017 Philadelphia International,Philadelphia International,2017.0,87,False,0,,,False,False,False,,
-903,2017 World Open Senior,World Open Senior,2017.0,38,False,0,,,False,False,False,,
-904,2017 World Open Warmup,World Open Warmup,2017.0,22,False,0,,,False,False,False,,
-905,2017 World Open Womens Championship,World Open Womens Championship,2017.0,18,False,0,,,False,False,False,,
-906,2017 World Open Action,World Open Action,2017.0,36,False,0,,,False,False,False,,
-918,2017 Northeast Open,Northeast Open,2017.0,205,False,0,,,False,False,False,,
-919,2017 Continental Class Championships,Continental Class Championships,2017.0,219,False,0,,,False,False,False,,
-920,2017 World Open Under 13 Championship,World Open Under 13,2017.0,134,False,0,,,False,False,False,,
-953,2018 Pittsburgh Open,Pittsburgh Open,2018.0,130,False,0,,,False,False,False,,
-956,2017 Pacific Coast Open,Pacific Coast Open,2017.0,232,False,0,,,False,False,False,,
-959,2017 Chicago Class,Chicago Class,2017.0,382,False,0,,,False,False,False,,
-961,2018 Bradley Open,Bradley Open,2018.0,173,False,0,,,False,False,False,,
-966,2018 Peter Henner Memorial,Peter Henner Memorial,2018.0,99,False,0,,,False,False,False,,
-967,2018 Southern Open,Southern Open,2018.0,231,False,0,,,False,False,False,,
-978,2017 Continental Open,Continental Open,2017.0,350,False,0,,,False,False,False,,
-985,2018 Cleveland Open,Cleveland Open,2018.0,196,False,0,,,False,False,False,,
-986,2017 Central California Open,Central California Open,2017.0,150,False,0,,,False,False,False,,
-987,2018 Manhattan Open,Manhattan Open,2018.0,463,False,0,,,False,False,False,,
-1002,2017 Indianapolis Open,Indianapolis Open,2017.0,159,False,0,,,False,False,False,,
-1003,2017 Atlantic Open,Atlantic Open,2017.0,283,False,0,,,False,False,False,,
-1011,2017 New York State Championship,New York State Championship,2017.0,183,False,0,,,False,False,False,,
-1015,2017 Hartford Open,Hartford Open,2017.0,125,False,0,,,False,False,False,,
-1016,2017 Washington Chess Congress,Washington Chess Congress,2017.0,219,False,0,,,False,False,False,,
-1021,2017 North American Open,North American Open,2017.0,800,False,0,,,False,False,False,,
-1022,2017 Midwest Class Championships,Midwest Class Championships,2017.0,316,False,0,,,False,False,False,,
-1023,2017 Eastern Chess Congress,Eastern Chess Congress,2017.0,400,False,0,,,False,False,False,,
-1024,2017 Central New York Open,Central New York Open,2017.0,57,False,0,,,False,False,False,,
-1026,2017 Kings Island Open,Kings Island Open,2017.0,291,False,0,,,False,False,False,,
-1027,2017 National Chess Congress,National Chess Congress,2017.0,645,False,0,,,False,False,False,,
-1029,2017 Los Angeles Open,Los Angeles Open,2017.0,213,False,0,,,False,False,False,,
-1078,2017 Empire City Open,Empire City Open,2017.0,307,False,0,,,False,False,False,,
-1090,2017 Stamford Open,Stamford Open,2017.0,162,False,0,,,False,False,False,,
-1099,2018 Boston Chess Congress,Boston Chess Congress,2018.0,237,False,0,,,False,False,False,,
-1100,2018 Southwest Class,Southwest Class,2018.0,355,False,0,,,False,False,False,,
-1106,2018 Liberty Bell Open,Liberty Bell Open,2018.0,334,False,0,,,False,False,False,,
-1108,2018 George Washington Open,George Washington Open,2018.0,227,False,0,,,False,False,False,,
-1113,2018 New York State Scholastic Championships,New York State Scholastic Championships,2018.0,1229,False,0,,,False,False,False,,
-1124,2018 Western Class Championships,Western Class Championships,2018.0,245,False,0,,,False,False,False,,
-1126,2018 Southern Class Championships,Southern Class Championships,2018.0,174,False,0,,,False,False,False,,
-1131,2018 Golden State Open,Golden State Open,2018.0,288,False,0,,,False,False,False,,
-1154,2018 Mid-America Open,Mid-America Open,2018.0,268,False,0,,,False,False,False,,
-1161,2018 Philadelphia Open,Philadelphia Open,2018.0,527,False,0,,,False,False,False,,
-1173,2018 Chicago Open,Chicago Open,2018.0,829,False,0,,,False,False,False,,
-1174,2018 World Open,World Open,2018.0,1149,False,0,,,False,False,False,,
-1175,2018 Philadelphia International,Philadelphia International,2018.0,151,False,0,,,False,False,False,,
-1176,2018 World Open Senior Amateur,World Open Senior Amateur,2018.0,45,False,0,,,False,False,False,,
-1177,2018 World Open Womens Championship,World Open Womens Championship,2018.0,18,False,0,,,False,False,False,,
-1178,2018 World Open Action,World Open Action,2018.0,35,False,0,,,False,False,False,,
-1186,2018 World Open Under 13 Championship,World Open Under 13,2018.0,156,False,0,,,False,False,False,,
-1187,2018 Bill Little Memorial,Bill Little Memorial,2018.0,58,False,0,,,False,False,False,,
-1209,2018 Continental Class Championships,Continental Class Championships,2018.0,236,False,0,,,False,False,False,,
-1212,2018 Eastern Class Championships,Eastern Class Championships,2018.0,278,False,0,,,False,False,False,,
-1213,2018 New York State Open and Senior,New York State Open and Senior,2018.0,94,False,0,,,False,False,False,,
-1219,2018 Northeast Open,Northeast Open,2018.0,172,False,0,,,False,False,False,,
-1223,2018 Continental Open,Continental Open,2018.0,292,False,0,,,False,False,False,,
-1225,2018 Chicago Class,Chicago Class,2018.0,337,False,0,,,False,False,False,,
-1232,2018 Pacific Coast Open,Pacific Coast Open,2018.0,245,False,0,,,False,False,False,,
-1244,2017 Pittsburgh Open,Pittsburgh Open,2017.0,113,False,0,,,False,False,False,,
-1245,2017 Bradley Open,Bradley Open,2017.0,204,False,0,,,False,False,False,,
-1246,2017 Southern Open,Southern Open,2017.0,211,False,0,,,False,False,False,,
-1247,2017 Peter Henner Memorial,Peter Henner Memorial,2017.0,92,False,0,,,False,False,False,,
-1251,2017 Manhattan Open,Manhattan Open,2017.0,419,False,0,,,False,False,False,,
-1252,2017 Cleveland Open,Cleveland Open,2017.0,185,False,0,,,False,False,False,,
-1262,2018 Central California Open,Central California Open,2018.0,128,False,0,,,False,False,False,,
-1263,2018 Atlantic Open,Atlantic Open,2018.0,299,False,0,,,False,False,False,,
-1270,2018 Washington Chess Congress,Washington Chess Congress,2018.0,235,False,0,,,False,False,False,,
-1271,2018 Indianapolis Open,Indianapolis Open,2018.0,191,False,0,,,False,False,False,,
-1295,2018 New York State Championship,New York State Championship,2018.0,188,False,0,,,False,False,False,,
-1313,2018 Hartford Open,Hartford Open,2018.0,122,False,0,,,False,False,False,,
-1314,2018 Midwest Class Championships,Midwest Class Championships,2018.0,328,False,0,,,False,False,False,,
-1316,2018 North American Open,North American Open,2018.0,822,False,0,,,False,False,False,,
-1344,2018 Eastern Chess Congress,Eastern Chess Congress,2018.0,316,False,0,,,False,False,False,,
-1345,2018 Los Angeles Open,Los Angeles Open,2018.0,252,False,0,,,False,False,False,,
-1346,2018 Central New York Open,Central New York Open,2018.0,45,False,0,,,False,False,False,,
-1368,2018 Kings Island Open,Kings Island Open,2018.0,251,False,0,,,False,False,False,,
-1374,2018 Stamford Open,Stamford Open,2018.0,136,False,0,,,False,False,False,,
-1375,2018 National Chess Congress,National Chess Congress,2018.0,523,False,0,,,False,False,False,,
-1376,2018 Empire City Open,Empire City Open,2018.0,298,False,0,,,False,False,False,,
-1388,2019 Boston Chess Congress,Boston Chess Congress,2019.0,270,False,0,,,False,False,False,,
-1389,2019 Golden State Open,Golden State Open,2019.0,273,False,0,,,False,False,False,,
-1390,2019 Liberty Bell Open,Liberty Bell Open,2019.0,287,False,0,,,False,False,False,,
-1391,2019 Southwest Class,Southwest Class,2019.0,385,False,0,,,False,False,False,,
-1392,2019 George Washington Open,George Washington Open,2019.0,253,False,0,,,False,False,False,,
-1393,2019 Western Class Championships,Western Class Championships,2019.0,253,False,0,,,False,False,False,,
-1394,2019 New York State Scholastic Championships,New York State Scholastic Championships,2019.0,1249,False,0,,,False,False,False,,
-1396,2019 Open at Foxwoods,Open at Foxwoods,2019.0,415,False,0,,,False,False,False,,
-1409,2019 Southern Class Championships,Southern Class Championships,2019.0,196,False,0,,,False,False,False,,
-1414,2019 Mid-America Open,Mid-America Open,2019.0,320,False,0,,,False,False,False,,
-1423,2019 Eastern Class Championships,Eastern Class Championships,2019.0,220,False,0,,,False,False,False,,
-1425,2019 Chicago Open,Chicago Open,2019.0,843,False,0,,,False,False,False,,
-1441,2019 Philadelphia International,Philadelphia International,2019.0,147,False,0,,,False,False,False,,
-1442,2019 World Open,World Open,2019.0,1269,False,0,,,False,False,False,,
-1443,2019 Philadelphia Open,Philadelphia Open,2019.0,231,False,0,,,False,False,False,,
-1444,2019 World Open Warmup,World Open Warmup,2019.0,23,False,0,,,False,False,False,,
-1445,2019 World Open Senior Amateur,World Open Senior Amateur,2019.0,33,False,0,,,False,False,False,,
-1446,2019 World Open Womens Championship,World Open Womens Championship,2019.0,22,False,0,,,False,False,False,,
-1447,2019 Northeast Open,Northeast Open,2019.0,210,False,0,,,False,False,False,,
-1448,2019 Bill Little Memorial,Bill Little Memorial,2019.0,47,False,0,,,False,False,False,,
-1498,2019 Manhattan Open,Manhattan Open,2019.0,434,False,0,,,False,False,False,,
-1499,2019 New York State Open and Senior,New York State Open and Senior,2019.0,77,False,0,,,False,False,False,,
-1500,2019 Southern Open,Southern Open,2019.0,181,False,0,,,False,False,False,,
-1501,2019 Chicago Class,Chicago Class,2019.0,330,False,0,,,False,False,False,,
-1502,2019 Pacific Coast Open,Pacific Coast Open,2019.0,230,False,0,,,False,False,False,,
-1503,2019 Continental Class Championships,Continental Class Championships,2019.0,249,False,0,,,False,False,False,,
-1504,2019 Pittsburgh Open,Pittsburgh Open,2019.0,176,False,0,,,False,False,False,,
-1511,2019 Bradley Open,Bradley Open,2019.0,171,False,0,,,False,False,False,,
-1512,2019 Cleveland Open,Cleveland Open,2019.0,224,False,0,,,False,False,False,,
-1513,2019 Continental Open,Continental Open,2019.0,274,False,0,,,False,False,False,,
-1516,2019 World Open Under 13 Championship,World Open Under 13,2019.0,157,False,0,,,False,False,False,,
-1517,2019 World Open Action,World Open Action,2019.0,28,False,0,,,False,False,False,,
-1534,2019 Atlantic Open,Atlantic Open,2019.0,289,False,0,,,False,False,False,,
-1535,2019 Central California Open,Central California Open,2019.0,128,False,0,,,False,False,False,,
-1536,2019 Indianapolis Open,Indianapolis Open,2019.0,204,False,0,,,False,False,False,,
-1557,2019 New York State Championship,New York State Championship,2019.0,185,False,0,,,False,False,False,,
-1575,2019 Washington Chess Congress,Washington Chess Congress,2019.0,271,False,0,,,False,False,False,,
-1604,Manhattan Blitz,Manhattan Blitz,,2,False,0,,,False,False,False,,
-1609,2019 Hartford Open,Hartford Open,2019.0,110,False,0,,,False,False,False,,
-1610,2019 Midwest Class Championships,Midwest Class Championships,2019.0,305,False,0,,,False,False,False,,
-1611,2019 North American Open,North American Open,2019.0,863,False,0,,,False,False,False,,
-1612,2019 Eastern Chess Congress,Eastern Chess Congress,2019.0,349,False,0,,,False,False,False,,
-1613,2019 Peter Henner Memorial,Peter Henner Memorial,2019.0,49,False,0,,,False,False,False,,
-1614,2019 Central New York Open,Central New York Open,2019.0,40,False,0,,,False,False,False,,
-1615,2019 Kings Island Open,Kings Island Open,2019.0,298,False,0,,,False,False,False,,
-1616,2019 Los Angeles Open,Los Angeles Open,2019.0,241,False,0,,,False,False,False,,
-1617,2019 National Chess Congress,National Chess Congress,2019.0,550,False,0,,,False,False,False,,
-1630,2019 Stamford Open,Stamford Open,2019.0,169,False,0,,,False,False,False,,
-1657,2019 Schenectady Open at Proctors,Schenectady Open at Proctors,2019.0,47,False,0,,,False,False,False,,
-1660,2019 Empire City Open,Empire City Open,2019.0,318,False,0,,,False,False,False,,
-1663,2020 Boston Chess Congress,Boston Chess Congress,2020.0,267,False,0,,,True,False,False,,
-1666,2020 Liberty Bell Open,Liberty Bell Open,2020.0,362,False,0,,,True,False,False,,
-1667,2020 Golden State Open,Golden State Open,2020.0,303,False,0,,,True,False,False,,
-1674,2020 Southwest Class,Southwest Class,2020.0,384,False,0,,,True,False,False,,
-1675,2020 George Washington Open,George Washington Open,2020.0,243,False,0,,,True,False,False,,
-1680,2020 Open at Foxwoods,Open at Foxwoods,2020.0,208,False,0,,,True,False,False,,
-1696,2020 Western Class Championships,Western Class Championships,2020.0,221,False,0,,,True,False,False,,
-1698,2020 New York State Scholastic Championships,New York State Scholastic Championships,2020.0,1008,False,0,,,True,False,False,,
-1702,2020 Southern Class Championships,Southern Class Championships,2020.0,50,False,0,,,True,False,False,,
-1761,2020 Eastern Class Championships,Eastern Class Championships,2020.0,13,False,0,,,True,False,False,,
-1777,2020 New York State Open and Senior,New York State Open and Senior,2020.0,1,False,0,,,True,False,False,,
-1779,2020 Northeast Open,Northeast Open,2020.0,1,False,0,,,True,False,False,,
-1780,2020 Continental Class Championships,Continental Class Championships,2020.0,1,False,0,,,True,False,False,,
-1781,2020 Philadelphia International,Philadelphia International,2020.0,5,False,0,,,True,False,False,,
-1826,2020 Continental Chess June Rapid on ICC,Continental Chess June Rapid,2020.0,231,False,0,,,True,True,False,,
-1834,2020 Continental Chess June Quick on ICC,Continental Chess June Quick,2020.0,180,False,0,,,True,True,False,,
-1835,2020 CCA June Open on ICC,June Open,2020.0,185,False,0,,,True,True,False,,
-1836,2020 World Open Blitz on ICC,World Open Blitz,2020.0,191,False,0,,,True,True,False,,
-1837,2020 World Open G 45 on ICC,World Open G 45,2020.0,284,False,0,,,True,True,False,,
-1838,2020 World Open Action on ICC,World Open Action,2020.0,159,False,0,,,True,True,False,,
-1839,2020 World Open Under 13 Champ on ICC,World Open Under 13,2020.0,216,False,0,,,True,True,False,,
-1840,2020 World Open G 10 on ICC,World Open G 10,2020.0,151,False,0,,,True,True,False,,
-1841,2020 World Open Senior Amateur on ICC,World Open Senior Amateur,2020.0,58,False,0,,,True,True,False,,
-1842,2020 World Open on ICC,World Open,2020.0,1055,False,0,,,True,True,False,,
-1854,2020 CCA July Rapid on ICC,July Rapid,2020.0,99,False,0,,,True,True,False,,
-1855,2020 CCA July Open on ICC,July Open,2020.0,214,False,0,,,True,True,False,,
-1858,2020 CCA World Open Warmup on ICC,World Open Warmup,2020.0,149,False,0,,,True,True,False,,
-1859,2020 World Open Womens Championship on ICC,World Open Womens Championship,2020.0,51,False,0,,,True,True,False,,
-1860,2020 World Open G 7 Championship on ICC,World Open G7 Championship,2020.0,106,False,0,,,True,True,False,,
-1861,2020 North American Scholastics on ICC,North American Scholastics,2020.0,338,False,0,,,True,True,False,,
-1862,2020 New York State Championship on ICC,New York State Championship,2020.0,241,False,0,,,True,True,False,,
-1868,2020 CCA August Open on ICC,August Open,2020.0,205,False,0,,,True,True,False,,
-1869,2020 CCA August Blitz on ICC,August Blitz,2020.0,92,False,0,,,True,True,False,,
-1870,2020 CCA August Rapid on ICC,August Rapid,2020.0,86,False,0,,,True,True,False,,
-1871,2020 CCA September Action on ICC,September Action,2020.0,86,False,0,,,True,True,False,,
-1872,2020 CCA September Rapid on ICC,September Rapid,2020.0,71,False,0,,,True,True,False,,
-1873,2020 CCA September Open on ICC,September Open,2020.0,167,False,0,,,True,True,False,,
-1874,2020 CCA September Quick on ICC,September Quick,2020.0,44,False,0,,,True,True,False,,
-1876,2020 Pacific Coast Open on ICC,Pacific Coast Open,2020.0,171,False,0,,,True,True,False,,
-1879,2020 CCA September Blitz on ICC,September Blitz,2020.0,48,False,0,,,True,True,False,,
-1880,2020 Pittsburgh Open on ICC,Pittsburgh Open,2020.0,151,False,0,,,True,True,False,,
-1882,2020 Chicago Open on ICC,Chicago Open,2020.0,415,False,0,,,True,True,False,,
-1885,2020 Bradley Open at ICC,Bradley Open at ICC,2020.0,104,False,0,,,True,False,False,,
-1887,2020 Chicago Open Blitz on ICC,Chicago Open Blitz,2020.0,93,False,0,,,True,True,False,,
-1889,2020 CCA October Open on ICC,October Open,2020.0,151,False,0,,,True,True,False,,
-1890,2020 Eastern Chess Congress on ICC,Eastern Chess Congress,2020.0,167,False,0,,,True,True,False,,
-1891,2020 Southern Open on ICC,Southern Open,2020.0,130,False,0,,,True,True,False,,
-1892,2020 CCA October Game 7 on ICC,October Game 7,2020.0,32,False,0,,,True,True,False,,
-1893,2020 Indianapolis Open on ICC,Indianapolis Open,2020.0,130,False,0,,,True,True,False,,
-1894,2020 Southern Open Blitz on ICC,Southern Open Blitz,2020.0,60,False,0,,,True,True,False,,
-1895,2020 Continental Open on ICC,Continental Open,2020.0,184,False,0,,,True,True,False,,
-1896,2020 Kings Island Open on ICC,Kings Island Open,2020.0,128,False,0,,,True,True,False,,
-1897,2020 Kings Island Open Blitz on ICC,Kings Island Open Blitz,2020.0,49,False,0,,,True,True,False,,
-1898,2020 Mid-America Open on ICC,Mid-America Open,2020.0,189,False,0,,,True,True,False,,
-1899,2020 CCA November Open on ICC,November Open,2020.0,92,False,0,,,True,True,False,,
-1901,2020 National Chess Congress on ICC,National Chess Congress,2020.0,481,False,0,,,True,True,False,,
-1902,2020 North American Open on ICC,North American Open,2020.0,556,False,0,,,True,True,False,,
-1903,2020 Los Angeles Open on ICC,Los Angeles Open,2020.0,135,False,0,,,True,True,False,,
-1904,2020 Cleveland Open on ICC,Cleveland Open,2020.0,133,False,0,,,True,True,False,,
-1905,2020 Los Angeles Open Blitz on ICC,Los Angeles Open Blitz,2020.0,55,False,0,,,True,True,False,,
-1909,2020 Philadelphia Open on ICC,Philadelphia Open,2020.0,151,False,0,,,True,True,False,,
-1910,2020 CCA December Open on ICC,December Open,2020.0,65,False,0,,,True,True,False,,
-1912,2020 Atlantic Open on ICC,Atlantic Open,2020.0,145,False,0,,,True,True,False,,
-1913,2020 Chicago Class on ICC,Chicago Class,2020.0,106,False,0,,,True,True,False,,
-1914,2020 Atlantic Open Blitz on ICC,Atlantic Open Blitz,2020.0,51,False,0,,,True,True,False,,
-1915,2020 Manhattan Open on ICC,Manhattan Open,2020.0,196,False,0,,,True,True,False,,
-1916,2020 North American Blitz on ICC,North American Blitz,2020.0,154,False,0,,,True,True,False,,
-1918,2021 Boston Chess Congress on ICC,Boston Chess Congress,2021.0,194,False,0,,,True,True,False,,
-1920,2021 Mountains Open on ICC,Mountains Open,2021.0,122,False,0,,,True,True,False,,
-1921,2021 CCA January Open on ICC,January Open,2021.0,119,False,0,,,True,True,False,,
-1922,2021 Liberty Bell Open on ICC,Liberty Bell Open,2021.0,211,False,0,,,True,True,False,,
-1923,2021 Liberty Bell Open Blitz on ICC,Liberty Bell Open Blitz,2021.0,80,False,0,,,True,True,False,,
-1924,2020 Free Software Testing Blitz on ICC,Free Software Testing Blitz,2020.0,38,False,0,,,True,True,False,,
-1925,2021 Golden State Open on ICC,Golden State Open,2021.0,221,False,0,,,True,True,False,,
-1926,2021 Golden State Blitz on ICC,Golden State Blitz,2021.0,61,False,0,,,True,True,False,,
-1932,2021 Southwest Class on ICC,Southwest Class,2021.0,255,False,0,,,True,True,False,,
-1933,2021 Southwest Class Blitz on ICC,Southwest Class Blitz,2021.0,61,False,0,,,True,True,False,,
-1934,2021 George Washington Open on ICC,George Washington Open,2021.0,193,False,0,,,True,True,False,,
-1935,2021 CCA February Open on ICC,February Open,2021.0,104,False,0,,,True,True,False,,
-1936,2021 New York State Scholastic Championships on ICC,New York State Scholastic Championships,2021.0,1174,False,0,,,True,True,False,,
-1937,2021 Western Class on ICC,Western Class,2021.0,185,False,0,,,True,True,False,,
-1938,2021 Western Class Blitz on ICC,Western Class Blitz,2021.0,50,False,0,,,True,True,False,,
-1947,2021 Southern Class on ICC,Southern Class,2021.0,146,False,0,,,True,True,False,,
-1948,2021 CCA March Open on ICC,March Open,2021.0,99,False,0,,,True,True,False,,
-1956,2021 Mid-America Open on ICC,Mid-America Open,2021.0,202,False,0,,,True,True,False,,
-1957,2021 Mid-America Blitz on ICC,Mid-America Blitz,2021.0,52,False,0,,,True,True,False,,
-1958,2021 North American Class on ICC,North American Class,2021.0,158,False,0,,,True,True,False,,
-1975,2021 CCA April Open on ICC,April Open,2021.0,166,False,0,,,True,True,False,,
-1985,2021 Eastern Class on ICC,Eastern Class,2021.0,193,False,0,,,True,True,False,,
-1986,2021 Eastern Class Blitz on ICC,Eastern Class Blitz,2021.0,46,False,0,,,True,True,False,,
-1990,2021 Chicago Open,Chicago Open,2021.0,561,False,0,,,True,False,False,,
-1992,2021 Cleveland Open,Cleveland Open,2021.0,200,False,0,,,True,False,False,,
-1993,2021 Southern Open,Southern Open,2021.0,340,False,0,,,True,False,False,,
-1998,2021 New York State Open on ICC,New York State Open,2021.0,154,False,0,,,True,True,False,,
-1999,2021 CCA May Open on ICC,May Open,2021.0,113,False,0,,,True,True,False,,
-2000,2021 North American Under 13 on ICC,North American Under 13,2021.0,136,False,0,,,True,True,False,,
-2002,2021 World Open,World Open,2021.0,1061,False,0,,,True,False,False,,
-2003,2021 Philadelphia International,Philadelphia International,2021.0,102,False,0,,,True,False,False,,
-2004,2021 Chicago Open Blitz,Chicago Open Blitz,2021.0,79,False,0,,,True,False,False,,
-2005,2021 Philadelphia Open,Philadelphia Open,2021.0,267,False,0,,,True,False,False,,
-2006,2021 World Open Action,World Open Action,2021.0,46,False,0,,,True,False,False,,
-2007,2021 World Open Senior Amateur,World Open Senior Amateur,2021.0,29,False,0,,,True,False,False,,
-2008,2021 World Open Warmup,World Open Warmup,2021.0,21,False,0,,,True,False,False,,
-2009,2021 Pacific Coast Open,Pacific Coast Open,2021.0,446,False,0,,,True,False,False,,
-2010,2021 World Open G7 Championship,World Open G7 Championship,2021.0,44,False,0,,,True,False,False,,
-2011,2021 World Open Under 13 Championship,World Open Under 13,2021.0,129,False,0,,,True,False,False,,
-2014,2021 Chicago Class,Chicago Class,2021.0,435,False,0,,,True,False,False,,
-2017,2021 Bradley Open,Bradley Open,2021.0,285,False,0,,,True,False,False,,
-2018,2021 Continental Open,Continental Open,2021.0,393,True,159,2021-08-02 09:47:34,2021-08-14 08:59:36,True,False,False,,0.0
-2035,2021 CCA June Open on ICC,June Open,2021.0,218,False,0,,,True,True,False,,
-2044,2021 Pittsburgh Open,Pittsburgh Open,2021.0,225,False,0,,,True,False,False,,
-2045,2021 World Open Womens Championship,World Open Womens Championship,2021.0,18,False,0,,,True,False,False,,
-2046,2021 Peter Henner Memorial,Peter Henner Memorial,2021.0,116,False,0,,,True,False,False,,
-2049,2021 Indianapolis Open,Indianapolis Open,2021.0,170,True,132,2021-08-02 15:29:19,2021-08-27 21:57:19,True,False,False,,0.0
-2050,2021 Central California Open,Central California Open,2021.0,189,True,127,2021-08-02 13:04:51,2021-08-20 13:32:23,True,False,False,,0.0
-2051,2021 Atlantic Open,Atlantic Open,2021.0,457,True,366,2021-08-02 09:07:54,2021-08-28 08:27:22,True,False,False,,0.0
-2053,2021 World Open Blitz Championship,World Open Blitz Championship,2021.0,165,False,0,,,True,False,False,,
-2054,2021 World Open G 10 Championship,World Open G 10 Championship,2021.0,51,False,0,,,True,False,False,,
-2057,2021 CCA July Open on ICC,July Open,2021.0,201,False,0,,,True,True,False,,
-2059,2021 New York State Championship,New York State Championship,2021.0,212,True,175,2021-08-03 17:37:32,2021-09-05 09:38:49,True,False,False,,0.0
-2060,2021 Eastern Chess Congress,Eastern Chess Congress,2021.0,474,True,450,2021-08-02 15:43:37,2021-10-02 10:07:31,True,False,False,,0.0
-2079,2021 Washington Chess Congress,Washington Chess Congress,2021.0,332,True,313,2021-08-02 15:53:05,2021-10-09 00:19:51,True,False,False,,0.0
-2080,2021 Midwest Class Championships,Midwest Class Championships,2021.0,348,True,338,2021-08-03 14:24:09,2021-10-09 09:07:43,True,False,False,,0.0
-2087,2021 North American Open,North American Open,2021.0,922,True,902,2021-08-02 13:45:16,2021-12-26 23:43:18,True,False,True,70.0,5.0
-2092,2021 Kings Island Open,Kings Island Open,2021.0,300,True,292,2021-08-05 12:14:12,2021-11-13 08:18:56,True,False,False,,0.0
-2093,2021 Central New York Open,Central New York Open,2021.0,110,True,101,2021-08-30 19:52:37,2021-10-23 07:47:39,True,False,False,,0.0
-2095,2021 National Chess Congress,National Chess Congress,2021.0,594,True,577,2021-08-22 14:13:52,2021-11-27 07:57:20,True,False,False,68.0,1.5
-2110,2021 Northeast Open,Northeast Open,2021.0,279,True,266,2021-09-04 15:34:44,2021-11-06 09:59:12,True,False,False,,0.0
-2111,2021 Niagara Falls Open,Niagara Falls Open,2021.0,132,True,130,2021-09-09 19:33:17,2021-11-19 15:36:32,True,False,False,,0.0
-2112,2021 Los Angeles Open,Los Angeles Open,2021.0,364,True,356,2021-08-03 12:09:08,2021-11-06 07:02:35,True,False,False,58.0,4.0
-2113,2021 CCA August Open on ICC,August Open,2021.0,143,True,134,2021-08-02 10:21:11,2021-08-21 08:49:51,True,True,False,,0.0
-2129,2021 CCA September Open on ICC,September Open,2021.0,154,True,150,2021-08-20 09:15:14,2021-09-11 09:58:20,True,True,False,,0.0
-2130,2021 Eastern Chess Congress Warmup on ICC,Eastern Chess Congress Warmup,2021.0,91,True,84,2021-08-20 09:16:22,2021-09-25 09:50:33,True,True,False,,0.0
-2153,2021 Empire State Open,Empire State Open,2021.0,151,True,147,2021-09-15 17:47:02,2021-12-27 05:31:49,True,False,False,57.0,1.0
-2154,2021 New York State Junior Championships,New York State Junior Championships,2021.0,104,True,97,2021-10-31 14:29:28,2021-12-28 22:07:05,True,False,False,,0.0
-2164,2021 CCA-ICC September Scholastic on ICC,CCA-ICC September Scholastic,2021.0,88,True,86,2021-09-08 10:30:43,2021-09-18 09:56:24,True,True,False,,0.0
-2167,2021 New York Under 13 Action Championship,New York Under 13 Action Championship,2021.0,32,True,30,2021-11-19 17:09:48,2021-12-27 21:33:04,True,False,False,,0.0
-2170,2021 CCA October Open on ICC,October Open,2021.0,153,True,149,2021-09-24 17:56:12,2021-10-23 09:34:03,True,True,False,,0.0
-2171,2021 Kings Island Open Warmup on ICC,Kings Island Open Warmup,2021.0,69,True,65,2021-10-04 13:00:50,2021-11-06 11:15:33,True,True,False,,0.0
-2172,2021 National Chess Congress Warmup on ICC,National Chess Congress Warmup,2021.0,9,True,9,2021-09-25 18:38:02,2021-11-04 04:55:58,True,True,False,,0.0
-2183,2021 CCA-ICC October Scholastic on ICC,CCA-ICC October Scholastic,2021.0,38,True,38,2021-10-05 13:59:54,2021-10-16 13:03:13,True,True,False,,0.0
-2184,2021 Susan Kantor Memorial on ICC,Susan Kantor Memorial,2021.0,53,True,47,2021-10-08 00:40:06,2021-10-17 12:18:01,True,True,False,,0.0
-2190,2021 CCA Halloween Open on ICC,Halloween Open,2021.0,122,True,117,2021-10-20 11:48:59,2021-10-30 10:35:16,True,True,False,,0.0
-2194,2021 CCA December Open on ICC,December Open,2021.0,121,True,118,2021-10-25 19:45:05,2021-12-04 09:47:45,True,True,False,,0.0
-2203,2022 Boston Chess Congress,Boston Chess Congress,2022.0,287,True,283,2021-10-25 15:11:49,2022-01-08 02:59:04,False,False,False,,0.0
-2221,2021 North American Scholastics,North American Scholastics,2021.0,117,True,115,2021-11-07 13:58:58,2021-12-19 11:24:23,True,False,False,,0.0
-2224,2022 Golden State Open,Golden State Open,2022.0,275,True,269,2021-11-08 09:50:02,2022-01-15 22:42:38,False,False,False,,0.0
-2225,2022 Liberty Bell Open,Liberty Bell Open,2022.0,362,True,353,2021-10-31 14:33:51,2022-01-16 02:53:50,False,False,False,66.0,1.5
-2233,2021 CCA November Open,November Open,2021.0,123,True,115,2021-11-06 11:08:18,2021-11-20 07:00:09,True,False,False,,0.0
-2235,2022 Southwest Class Championships,Southwest Class Championships,2022.0,397,True,386,2021-11-18 07:15:08,2022-02-19 20:33:17,False,False,False,66.0,3.0
-2238,2021 North American Action on ICC,North American Action,2021.0,115,True,112,2021-11-21 12:52:21,2021-12-18 10:58:22,True,True,False,,0.0
-2249,2022 Liberty Bell Action on ICC,Liberty Bell Action,2022.0,149,True,138,2021-12-06 16:56:33,2022-01-02 11:01:04,False,True,False,,0.0
-2250,2022 Golden State Action on ICC,Golden State Action,2022.0,138,True,125,2021-12-09 18:52:19,2022-01-08 10:00:29,False,True,False,,0.0
-2263,2022 Western Class,Western Class,2022.0,362,True,352,2021-12-19 21:13:46,2022-03-05 06:19:14,False,False,False,,0.0
-2285,2022 Open at Foxwoods,Open at Foxwoods,2022.0,472,True,461,2021-12-30 23:41:22,2022-04-15 09:51:55,False,False,True,68.0,8.0
-2286,2022 Southern Class,Southern Class,2022.0,200,True,198,2021-12-24 15:55:58,2022-03-19 09:14:41,False,False,False,57.0,3.0
-2287,2022 Mid-America Open,Mid-America Open,2022.0,288,True,286,2021-12-30 07:40:39,2022-03-25 21:27:48,False,False,False,64.0,1.0
-2291,2022 New York State Scholastic Championships,New York State Scholastic Championships,2022.0,941,True,932,2021-12-27 11:58:49,2022-03-11 22:24:03,False,False,False,,0.0
-2292,2022 Chicago Open,Chicago Open,2022.0,944,True,929,2022-01-07 15:07:51,2022-05-29 05:52:46,False,False,True,67.0,25.7
-2294,2022 Eastern Class,Eastern Class,2022.0,230,True,221,2022-01-06 12:19:11,2022-04-30 07:06:58,False,False,False,62.0,2.0
-2299,2022 CCA January Open on ICC,January Open,2022.0,163,True,155,2022-01-02 20:40:42,2022-01-29 09:52:08,False,True,False,,0.0
-2302,2022 January Game 60 on ICC,January Game 60,2022.0,135,True,121,2022-01-09 01:05:00,2022-01-22 09:49:43,False,True,False,,0.0
-2304,2022 Southwest Action on ICC,Southwest Action,2022.0,124,True,115,2022-01-26 20:59:33,2022-02-12 08:41:52,False,True,False,,0.0
-2305,2022 World Open,World Open,2022.0,1491,True,1423,2022-01-19 17:41:34,2022-07-02 09:40:43,False,False,False,65.0,0.7
-2306,2022 Philadelphia International,Philadelphia International,2022.0,88,True,76,2022-03-01 02:33:55,2022-06-24 02:08:31,False,False,False,66.0,2.0
-2307,2022 Philadelphia Open,Philadelphia Open,2022.0,281,True,270,2022-01-19 17:12:20,2022-06-25 11:32:44,False,False,False,71.0,4.0
-2308,2022 World Open Under 13 Championship,World Open Under 13,2022.0,129,True,123,2022-02-02 08:30:29,2022-06-22 19:51:51,False,False,False,69.0,2.7
-2309,2022 World Open Senior Amateur,World Open Senior Amateur,2022.0,41,True,41,2022-01-24 00:00:47,2022-06-23 09:26:48,False,False,False,68.0,2.0
-2310,2022 FIDE U2400 at Foxwoods,FIDE U2400 at Foxwoods,2022.0,12,True,10,2022-01-29 18:51:57,2022-04-15 21:37:34,False,False,False,61.0,1.0
-2312,2022 World Open FIDE U2200,World Open FIDE U2200,2022.0,24,True,23,2022-03-25 16:30:20,2022-06-22 20:05:50,False,False,False,67.0,1.0
-2313,2022 World Open Amateur,World Open Amateur,2022.0,71,True,69,2022-01-24 00:05:14,2022-06-27 06:46:03,False,False,False,74.0,2.0
-2314,2022 World Open FIDE U2400,World Open FIDE U2400,2022.0,20,True,19,2022-04-13 23:20:14,2022-06-28 22:25:44,False,False,False,,0.0
-2319,2022 Youth Rapid Chess Challenge on ICC,Youth Rapid Chess Challenge,2022.0,58,True,56,2022-01-26 20:24:44,2022-02-05 06:53:54,False,True,False,,0.0
-2320,2022 CCA February Open on ICC,February Open,2022.0,126,True,112,2022-01-28 20:09:40,2022-02-26 09:23:01,False,True,False,,0.0
-2321,2022 World Open Women s Championship,World Open Womens Championship,2022.0,31,True,29,2022-03-03 20:43:01,2022-06-28 16:23:33,False,False,False,75.0,1.0
-2322,2022 World Open G7 Championship,World Open G7 Championship,2022.0,54,True,51,2022-04-11 14:35:11,2022-06-30 09:44:47,False,False,False,75.0,1.0
-2329,2022 Niagara Falls Open,Niagara Falls Open,2022.0,94,True,91,2022-02-21 18:06:06,2022-05-14 02:46:09,False,False,False,58.0,2.0
-2334,2022 Western Action on ICC,Western Action,2022.0,69,True,58,2022-02-16 18:48:15,2022-02-27 08:50:56,False,True,False,,0.0
-2357,2022 March Game 60 on ICC,March Game 60,2022.0,76,True,66,2022-02-27 12:16:41,2022-03-26 11:26:22,False,True,False,,0.0
-2360,2022 CCA March Open on ICC,March Open,2022.0,130,True,122,2022-02-25 15:42:43,2022-03-12 08:46:49,False,True,False,,0.0
-2361,2022 Mid-America Action on ICC,Mid-America Action,2022.0,96,True,88,2022-02-27 09:24:07,2022-03-19 09:56:23,False,True,False,,0.0
-2365,2022 Chicago FIDE U2200,Chicago FIDE U2200,2022.0,9,True,9,2022-03-21 21:34:11,2022-05-27 21:18:44,False,False,False,,0.0
-2369,2022 Cleveland Open,Cleveland Open,2022.0,201,True,200,2022-03-05 19:09:03,2022-06-10 23:43:31,False,False,False,,0.0
-2370,2022 Northeast Open,Northeast Open,2022.0,227,True,214,2022-03-10 14:33:12,2022-06-11 09:26:28,False,False,False,61.0,1.0
-2371,2022 Midwest Chess Congress,Midwest Chess Congress,2022.0,81,True,81,2022-03-13 12:05:31,2022-06-18 09:44:23,False,False,False,,0.0
-2373,2022 CCA April Open on ICC,April Open,2022.0,114,True,103,2022-03-20 13:37:25,2022-04-09 09:58:11,False,True,False,,0.0
-2374,2022 Eastern Action on ICC,Eastern Action,2022.0,83,True,76,2022-03-20 13:41:01,2022-04-23 11:13:30,False,True,False,,0.0
-2375,2022 CCA May Open on ICC,May Open,2022.0,90,True,82,2022-03-20 13:46:46,2022-05-07 09:38:44,False,True,False,,0.0
-2376,2022 Chicago Action on ICC,Chicago Action,2022.0,83,True,74,2022-04-07 10:28:37,2022-05-21 09:55:32,False,True,False,,0.0
-2388,2022 Pacific Coast Open,Pacific Coast Open,2022.0,344,True,336,2022-03-28 17:07:46,2022-07-16 08:35:28,False,False,False,61.0,1.5
-2389,2022 Chicago Class,Chicago Class,2022.0,337,True,337,2022-04-03 11:16:06,2022-07-16 00:24:58,False,False,False,69.0,2.0
-2390,2022 Southern Open,Southern Open,2022.0,266,True,265,2022-04-19 08:03:54,2022-07-22 19:37:47,False,False,False,75.0,2.0
-2394,2022 Pittsburgh Open,Pittsburgh Open,2022.0,195,True,190,2022-05-02 18:33:16,2022-07-23 01:35:04,False,False,False,60.0,2.0
-2395,2022 Continental Open,Continental Open,2022.0,321,True,305,2022-04-06 13:29:58,2022-07-30 00:02:12,False,False,False,74.0,1.0
-2400,2022 April Game 60 on ICC,April Game 60,2022.0,50,True,48,2022-04-16 19:34:19,2022-04-30 03:37:35,False,True,False,,0.0
-2402,2022 April Rapid on ICC,April Rapid,2022.0,56,True,51,2022-04-06 10:53:41,2022-04-16 09:57:18,False,True,False,,0.0
-2403,2022 World Open Action on ICC,World Open Action,2022.0,104,True,97,2022-04-20 00:01:35,2022-06-18 10:41:00,False,True,False,,0.0
-2404,2022 Central California Open,Central California Open,2022.0,188,True,181,2022-04-13 18:37:40,2022-08-20 08:53:13,False,False,False,60.0,2.0
-2405,2022 Atlantic Open,Atlantic Open,2022.0,412,True,400,2022-05-04 11:57:10,2022-08-27 09:48:23,False,False,False,,0.0
-2414,2022 New York State Championship,New York State Championship,2022.0,316,True,311,2022-07-03 12:31:58,2022-09-04 09:57:04,False,False,False,,0.0
-2418,2022 Bradley Open,Bradley Open,2022.0,227,True,216,2022-04-24 18:51:29,2022-07-16 10:01:52,False,False,False,63.0,0.5
-2421,2022 Indianapolis Open,Indianapolis Open,2022.0,183,True,179,2022-06-18 15:16:41,2022-08-27 04:29:19,False,False,False,,0.0
-2441,2022 CCA June Open on ICC,June Open,2022.0,90,True,81,2022-05-10 01:06:23,2022-06-04 09:03:35,False,True,False,,0.0
-2442,2022 World Open G 10 Championship,World Open G 10 Championship,2022.0,61,True,55,2022-05-26 05:36:01,2022-07-04 07:23:02,False,False,False,,0.0
-2443,2022 World Open Blitz Championship,World Open Blitz Championship,2022.0,145,True,140,2022-05-15 16:23:46,2022-07-04 21:44:42,False,False,False,,0.0
-2451,2022 CCA July Open on ICC,July Open,2022.0,91,True,85,2022-06-01 06:19:49,2022-07-09 08:04:19,False,True,False,,0.0
-2452,2022 Continental Action on ICC,Continental Action,2022.0,67,True,64,2022-06-01 05:39:44,2022-07-23 09:48:46,False,True,False,,0.0
-2453,2022 CCA August Open on ICC,August Open,2022.0,85,True,81,2022-07-11 12:34:10,2022-08-06 09:27:12,False,True,False,,0.0
-2458,2022 Midwest Class Championships,Midwest Class Championships,2022.0,360,True,351,2022-05-30 18:27:26,2022-10-08 10:03:43,False,False,False,63.0,2.0
-2459,2022 Eastern Chess Congress,Eastern Chess Congress,2022.0,493,True,475,2022-06-09 14:29:04,2022-10-29 07:35:55,False,False,False,71.0,3.0
-2464,2022 Central New York Open,Central New York Open,2022.0,119,True,117,2022-06-19 11:12:30,2022-10-22 08:44:55,False,False,False,73.0,2.0
-2465,2022 Kings Island Open,Kings Island Open,2022.0,368,True,363,2022-07-28 23:52:37,2022-11-12 09:26:06,False,False,False,67.0,2.0
-2466,2022 National Chess Congress,National Chess Congress,2022.0,606,True,590,2022-06-28 10:32:36,2022-11-26 07:26:16,False,False,False,75.0,1.0
-2476,2022 Los Angeles Open,Los Angeles Open,2022.0,361,True,358,2022-07-18 21:56:43,2022-11-05 11:16:38,False,False,False,74.0,3.0
-2487,2022 Hartford Open,Hartford Open,2022.0,198,True,194,2022-07-20 22:36:51,2022-10-15 09:46:56,False,False,False,70.0,1.0
-2491,2022 North American Open,North American Open,2022.0,1071,True,1052,2022-07-24 12:08:49,2022-12-27 07:38:05,False,False,False,74.0,4.0
-2494,2022 ICC August Rapid,ICC August Rapid,2022.0,53,True,52,2022-08-01 18:49:41,2022-08-13 10:01:54,False,False,False,,0.0
-2500,2022 Eastern Open,Eastern Open,2022.0,404,True,388,2022-08-12 19:22:03,2022-12-28 00:17:47,False,False,False,74.0,2.0
-2505,2022 Atlantic Action on ICC,Atlantic Action,2022.0,59,True,58,2022-08-12 20:11:51,2022-08-20 07:42:57,False,True,False,,0.0
-2508,2022 CCA September Open on ICC,September Open,2022.0,73,True,70,2022-08-16 15:46:36,2022-09-10 10:55:20,False,True,False,,0.0
-2511,2022 Midwest Action on ICC,Midwest Action,2022.0,56,True,56,2022-08-30 16:03:23,2022-09-24 09:46:44,False,True,False,,0.0
-2512,2023 Boston Chess Congress,Boston Chess Congress,2023.0,391,True,383,2022-09-18 14:30:09,2023-01-07 09:00:59,False,False,False,62.0,2.0
-2514,2022 ICC September Rapid,ICC September Rapid,2022.0,33,True,33,2022-08-30 17:01:11,2022-09-17 02:58:43,False,False,False,,0.0
-2546,2022 CCA October Open on ICC,October Open,2022.0,63,True,61,2022-09-30 05:21:52,2022-10-08 09:54:02,False,True,False,,0.0
-2547,2023 Liberty Bell Open,Liberty Bell Open,2023.0,473,True,456,2022-09-18 20:27:40,2023-01-15 06:57:54,False,False,False,62.0,2.0
-2550,2022 Eastern Chess Congress Action on ICC,Eastern Chess Congress Action,2022.0,54,True,54,2022-09-25 18:40:41,2022-10-22 10:47:20,False,True,False,,0.0
-2565,2022 CCA November Open on ICC,November Open,2022.0,51,True,51,2022-10-15 16:25:31,2022-11-05 10:17:18,False,True,False,,0.0
-2566,2023 Golden State Open,Golden State Open,2023.0,293,True,280,2022-10-10 18:52:55,2023-01-15 08:43:09,False,False,False,69.0,1.3
-2568,2022 North American Blitz Championship,North American Blitz Championship,2022.0,239,True,237,2022-10-22 11:15:52,2022-12-29 22:52:34,False,False,False,,0.0
-2569,2023 Southwest Class Championships,Southwest Class Championships,2023.0,426,True,412,2022-10-21 18:04:10,2023-02-18 09:16:03,False,False,False,70.0,1.3
-2572,2022 National Chess Congress Action on ICC,National Chess Congress Action,2022.0,73,True,73,2022-11-01 05:53:55,2022-11-19 10:45:40,False,True,False,,0.0
-2604,2023 Western Class,Western Class,2023.0,346,True,336,2022-11-14 19:48:16,2023-03-04 08:44:55,False,False,False,,0.0
-2605,2022 CCA December Open on ICC,December Open,2022.0,50,True,49,2022-11-22 22:49:29,2022-12-03 09:21:52,False,True,False,,0.0
-2606,2023 New York State Scholastic Championships,New York State Scholastic Championships,2023.0,1548,True,1491,2022-11-17 02:15:51,2023-03-10 15:55:09,False,False,False,66.0,4.8
-2607,2023 Eastern Class,Eastern Class,2023.0,257,True,244,2022-12-11 11:39:03,2023-03-18 09:56:47,False,False,False,63.0,3.0
-2608,2023 Southern Class,Southern Class,2023.0,264,True,258,2022-12-18 19:14:06,2023-03-18 06:45:14,False,False,False,68.0,1.3
-2609,2023 Mid-America Open,Mid-America Open,2023.0,328,True,322,2022-12-10 12:17:56,2023-03-25 08:53:37,False,False,False,64.0,3.0
-2610,2023 George Washington Open,George Washington Open,2023.0,345,True,343,2022-11-22 14:36:01,2023-02-25 09:02:36,False,False,False,67.0,2.0
-2611,2023 Open at Foxwoods,Open at Foxwoods,2023.0,445,True,417,2022-12-29 15:22:31,2023-04-07 09:20:26,False,False,False,69.0,3.0
-2624,2022 CCA December Action on ICC,December Action,2022.0,65,True,63,2022-12-12 19:06:15,2022-12-17 10:50:07,False,True,False,,0.0
-2655,2023 CCA January Open on ICC,January Open,2023.0,90,True,88,2022-12-13 01:40:35,2023-01-07 09:57:51,False,True,False,,0.0
-2657,2023 Chicago Open,Chicago Open,2023.0,960,True,945,2022-12-30 11:58:51,2023-05-28 22:05:12,False,False,True,68.0,22.0
-2665,2023 Niagara Falls Open,Niagara Falls Open,2023.0,170,True,165,2023-01-01 01:10:59,2023-05-06 08:21:11,False,False,False,65.0,2.0
-2667,2023 Cleveland Open,Cleveland Open,2023.0,226,True,221,2023-01-10 03:46:15,2023-06-10 08:31:43,False,False,False,65.0,1.0
-2668,2023 Chicago Open Blitz,Chicago Open Blitz,2023.0,130,True,130,2023-01-18 18:20:44,2023-05-28 21:01:55,False,False,False,,0.0
-2669,2023 Blitz at Foxwoods,Blitz at Foxwoods,2023.0,38,True,38,2023-02-25 08:40:24,2023-04-08 20:43:05,False,False,False,,0.0
-2670,2023 World Open  top 6 sections,World Open top 6 sections,2023.0,1324,True,1316,2023-01-01 16:46:58,2023-07-02 03:20:10,False,False,True,57.0,7.3
-2672,2023 World Open  lower sections,World Open lower sections,2023.0,149,True,146,2023-01-09 14:30:17,2023-06-23 06:08:06,False,False,False,59.0,2.0
-2673,2023 Philadelphia International,Philadelphia International,2023.0,108,True,105,2023-01-11 11:58:30,2023-06-24 10:09:41,False,False,False,73.0,1.3
-2674,2023 Philadelphia Open,Philadelphia Open,2023.0,281,True,279,2023-01-11 17:23:24,2023-06-24 09:42:20,False,False,False,67.0,0.5
-2675,2023 World Open Under 13 Championship,World Open Under 13,2023.0,110,True,109,2023-01-10 13:02:00,2023-06-26 00:54:47,False,False,False,62.0,2.0
-2676,2023 World Open Amateur,World Open Amateur,2023.0,55,True,54,2023-01-10 12:19:57,2023-06-26 09:03:25,False,False,False,64.0,1.0
-2677,2023 World Open Junior Championship,World Open Junior Championship,2023.0,102,True,101,2023-01-10 13:03:48,2023-06-27 22:54:25,False,False,False,58.0,2.0
-2678,2023 World Open Action,World Open Action,2023.0,39,True,39,2023-01-01 22:41:38,2023-06-28 22:24:57,False,False,False,,0.0
-2679,2023 World Open Senior Amateur,World Open Senior Amateur,2023.0,40,True,40,2023-03-03 19:53:14,2023-06-27 19:03:55,False,False,False,,0.0
-2680,2023 World Open Women s Championship,World Open Womens Championship,2023.0,20,True,20,2023-03-11 09:55:53,2023-06-28 22:56:00,False,False,False,,0.0
-2681,2023 World Open G7 Championship,World Open G7 Championship,2023.0,66,True,66,2023-04-25 00:05:06,2023-07-01 09:22:40,False,False,False,,0.0
-2684,2023 World Open Blitz Championship,World Open Blitz Championship,2023.0,221,True,221,2023-03-08 23:07:12,2023-07-04 22:08:09,False,False,False,,0.0
-2689,2023 World Open G 10 Championship,World Open G 10 Championship,2023.0,71,True,71,2023-03-08 23:14:39,2023-07-03 22:15:26,False,False,False,,0.0
-2695,2023 CCA January Action on ICC,January Action,2023.0,58,True,57,2023-01-10 22:54:26,2023-01-21 10:45:46,False,True,False,,0.0
-2696,2023 CCA February Open on ICC,February Open,2023.0,76,True,73,2023-01-10 23:02:47,2023-02-04 09:24:33,False,True,False,,0.0
-2701,2023 CCA February Action on ICC,February Action,2023.0,54,True,52,2023-01-15 17:05:28,2023-02-25 09:59:27,False,True,False,,0.0
-2702,2023 CCA March Open on ICC,March Open,2023.0,83,True,81,2023-01-15 17:09:06,2023-03-04 08:27:21,False,True,False,,0.0
-2703,2023 ICC March G 60,ICC March G 60,2023.0,54,True,51,2023-01-22 11:06:21,2023-03-18 09:25:50,False,False,False,,0.0
-2738,2023 Continental Class,Continental Class,2023.0,198,True,194,2023-03-17 14:26:50,2023-06-17 09:29:15,False,False,False,66.0,2.0
-2760,2023 Continental Open,Continental Open,2023.0,312,True,311,2023-03-02 14:17:05,2023-07-15 08:20:00,False,False,False,74.0,2.0
-2780,2023 Chicago Class,Chicago Class,2023.0,280,True,280,2023-03-22 12:51:13,2023-07-14 18:56:31,False,False,False,67.0,2.0
-2788,2023 CCA April Open on ICC,April Open,2023.0,58,True,54,2023-03-21 07:58:52,2023-04-01 10:05:09,False,True,False,,0.0
-2789,2023 CCA April Action on ICC,April Action,2023.0,51,True,46,2023-03-25 11:42:22,2023-04-15 10:07:51,False,True,False,,0.0
-2795,2023 Pacific Coast Open,Pacific Coast Open,2023.0,403,True,401,2023-04-05 16:58:09,2023-07-22 07:59:35,False,False,False,75.0,1.0
-2805,2023 Pittsburgh Open,Pittsburgh Open,2023.0,183,True,183,2023-04-01 08:44:10,2023-07-22 09:40:55,False,False,False,61.0,1.0
-2811,2023 Southern Open,Southern Open,2023.0,294,True,293,2023-04-04 14:59:31,2023-07-29 07:46:58,False,False,False,62.0,1.3
-2822,2023 CCA May Open on ICC,May Open,2023.0,70,True,66,2023-04-09 16:00:46,2023-05-06 03:43:10,False,True,False,,0.0
-2823,2023 Bradley Open,Bradley Open,2023.0,256,True,256,2023-04-12 08:42:48,2023-07-29 09:44:18,False,False,False,75.0,1.0
-2824,2023 Central California Open,Central California Open,2023.0,214,True,214,2023-04-12 11:58:31,2023-08-12 06:57:26,False,False,False,64.0,2.0
-2880,2023 CCA May Action on ICC,May Action,2023.0,55,True,50,2023-05-11 23:29:55,2023-05-20 09:59:25,False,True,False,,0.0
-2881,2023 Atlantic Open,Atlantic Open,2023.0,371,True,370,2023-05-26 22:10:38,2023-08-26 09:31:00,False,False,False,55.0,3.0
-2886,2023 CCA June Open on ICC,June Open,2023.0,64,True,60,2023-05-13 06:45:38,2023-06-03 09:14:44,False,True,False,,0.0
-2891,2023 CCA June Action on ICC,June Action,2023.0,41,True,40,2023-05-13 06:47:04,2023-06-17 10:11:43,False,True,False,,0.0
-2918,2023 CCA July Open on ICC,July Open,2023.0,66,True,66,2023-06-25 19:20:46,2023-07-08 10:46:19,False,True,False,,0.0
-2919,2023 Indianapolis Open,Indianapolis Open,2023.0,190,True,189,2023-06-05 01:25:34,2023-08-26 07:34:08,False,False,False,66.0,1.0
-2936,2023 New York State Championship,New York State Championship,2023.0,347,True,347,2023-06-22 00:38:37,2023-09-02 21:23:24,False,False,False,,0.0
-2963,2023 CCA July Action on ICC,July Action,2023.0,40,True,40,2023-06-30 05:35:18,2023-07-22 10:59:39,False,True,False,,0.0
-2969,2023 Central New York Open,Central New York Open,2023.0,139,True,139,2023-07-06 15:08:35,2023-09-23 06:52:02,False,False,False,68.0,1.0
-2977,2023 CCA August Open on ICC,August Open,2023.0,59,True,59,2023-07-22 22:41:02,2023-08-05 10:38:41,False,True,False,,0.0
-2978,2023 Midwest Class Championships,Midwest Class Championships,2023.0,292,True,292,2023-07-28 11:44:21,2023-10-07 08:49:26,False,False,False,,0.0
-2980,2023 Hartford Open,Hartford Open,2023.0,223,True,223,2023-08-06 12:20:03,2023-10-07 00:54:55,False,False,False,,0.0
-2981,2023 Washington Chess Congess,Washington Chess Congress,2023.0,249,True,249,2023-07-25 23:21:56,2023-10-21 08:59:39,False,False,False,67.0,1.0
-2984,2023 Eastern Chess Congress,Eastern Chess Congress,2023.0,527,True,527,2023-07-29 09:35:12,2023-10-28 09:06:33,False,False,False,64.0,3.0
-2985,2023 North American Open,North American Open,2023.0,1115,True,1115,2023-07-25 12:41:45,2023-12-27 09:02:53,False,False,False,59.0,2.4
-2987,2023 Los Angeles Open,Los Angeles Open,2023.0,415,True,415,2023-07-25 08:25:34,2023-11-04 09:20:44,False,False,False,55.0,2.0
-3032,2023 CCA August Action on ICC,August Action,2023.0,35,True,35,2023-08-09 00:08:52,2023-08-19 10:50:13,False,True,False,,0.0
-3034,2023 Kings Island Open,Kings Island Open,2023.0,358,True,358,2023-08-17 02:54:33,2023-11-11 09:51:33,False,False,False,60.0,2.0
-3035,2023 National Chess Congress,National Chess Congress,2023.0,636,True,636,2023-08-15 17:44:59,2023-11-25 08:29:44,False,False,False,55.0,2.7
-3056,2023 CCA September Open on ICC,September Open,2023.0,58,True,58,2023-08-24 19:43:15,2023-09-09 10:42:25,False,True,False,,0.0
-3078,2023 Eastern Open,Eastern Open,2023.0,367,True,367,2023-09-13 23:58:24,2023-12-27 22:46:10,False,False,False,,0.0
-3079,2023 CCA September Action on ICC,September Action,2023.0,33,True,33,2023-09-12 21:04:28,2023-09-23 08:08:45,False,True,False,,0.0
-3090,2024 New York State Scholastic Championships,New York State Scholastic Championships,2024.0,1777,True,1777,2023-09-26 06:47:17,2024-03-08 21:06:41,False,False,True,60.0,11.0
-3091,2023 CCA October Open on ICC,October Open,2023.0,32,True,32,2023-09-28 00:50:07,2023-10-07 02:49:42,False,True,False,,0.0
-3129,2023 CCA November Classic on ICC,November Classic,2023.0,37,True,37,2023-11-02 04:56:24,2023-11-11 12:50:24,False,True,False,,0.0
-3139,2024 Boston Chess Congress,Boston Chess Congress,2024.0,342,True,342,2023-11-06 13:27:17,2024-01-06 09:49:44,False,False,False,,0.0
-3141,2024 Liberty Bell Open,Liberty Bell Open,2024.0,481,True,481,2023-11-09 15:10:45,2024-01-14 02:28:25,False,False,False,,0.0
-3142,2024 Golden State Open,Golden State Open,2024.0,293,True,293,2023-11-09 16:03:16,2024-01-14 06:46:00,False,False,False,,0.0
-3148,2023 North American Blitz Championship,North American Blitz Championship,2023.0,233,True,233,2023-11-17 11:34:10,2023-12-29 21:17:30,False,False,False,,0.0
-3149,2023 CCA December Celebration on ICC,December Celebration,2023.0,51,True,51,2023-11-17 14:39:25,2023-12-09 09:41:14,False,True,False,,0.0
-3153,2024 Southwest Class Championships,Southwest Class Championships,2024.0,441,True,441,2023-11-26 21:27:10,2024-02-16 22:24:48,False,False,False,67.0,2.0
-3178,2024 George Washington Open,George Washington Open,2024.0,266,True,266,2023-12-07 15:04:45,2024-02-24 08:29:24,False,False,False,73.0,1.0
-3179,2024 Western Class Championshps,Western Class Championships,2024.0,421,True,421,2023-12-08 09:28:20,2024-03-02 09:50:48,False,False,False,56.0,2.0
-3188,2024 CCA January Classic on ICC,January Classic,2024.0,43,True,43,2023-12-29 23:22:12,2024-01-13 01:27:46,False,True,False,,0.0
-3213,2024 Open at Foxwoods,Open at Foxwoods,2024.0,465,True,465,2024-01-02 22:58:20,2024-03-29 09:49:01,False,False,False,72.0,1.5
-3214,2024 Southern Class,Southern Class,2024.0,259,True,259,2024-01-05 05:21:30,2024-03-16 09:19:15,False,False,False,,0.0
-3215,2024 Mid-America Open,Mid-America Open,2024.0,305,True,305,2024-01-04 10:40:58,2024-03-23 08:05:23,False,False,False,71.0,2.0
-3225,2024 CCA February Classic on ICC,February Classic,2024.0,66,True,66,2024-01-18 15:16:59,2024-02-10 08:26:29,False,True,False,,0.0
-3248,2024 Chicago Open,Chicago Open,2024.0,860,True,860,2024-01-25 19:33:38,2024-05-25 08:16:56,False,False,True,66.0,17.5
-3249,2024 Niagara Falls Open,Niagara Falls Open,2024.0,177,True,177,2024-02-09 00:36:59,2024-05-31 21:25:44,False,False,False,68.0,3.0
-3253,2024 Chicago Open Blitz,Chicago Open Blitz,2024.0,145,True,145,2024-02-03 23:54:18,2024-05-26 20:57:53,False,False,False,73.0,1.0
-3259,2024 Eastern Class,Eastern Class,2024.0,203,True,203,2024-02-08 11:23:07,2024-06-08 09:29:05,False,False,False,,0.0
-3276,2024 Cleveland Open,Cleveland Open,2024.0,167,True,167,2024-03-11 18:53:31,2024-06-08 09:48:51,False,False,False,75.0,1.0
-3278,2024 CCA March Classic on ICC,March Classic,2024.0,47,True,47,2024-02-13 22:56:48,2024-03-09 11:49:06,False,True,False,,0.0
-3288,2024 New York State Scholastic Championships WAITLIST,New York State Scholastic Championships WAITLIST,2024.0,174,True,174,2024-02-27 21:57:06,2024-03-05 09:25:47,False,False,False,,0.0
-3306,2024 New York State Open,New York State Open,2024.0,76,True,76,2024-04-04 06:39:34,2024-06-14 09:02:39,False,False,False,,0.0
-3307,2024 Philadelphia International,Philadelphia International,2024.0,143,True,143,2024-03-06 00:44:21,2024-06-27 16:33:43,False,False,False,72.0,2.0
-3309,2024 World Open  top 6 sections,World Open top 6 sections,2024.0,1195,True,1195,2024-03-06 12:32:54,2024-07-05 09:06:20,False,False,False,58.0,4.0
-3310,2024 World Open  lower sections,World Open lower sections,2024.0,151,True,151,2024-03-26 19:16:39,2024-06-28 08:43:31,False,False,False,68.0,3.0
-3311,2024 Philadelphia Open,Philadelphia Open,2024.0,312,True,312,2024-03-16 21:03:16,2024-06-29 09:40:24,False,False,False,57.0,2.0
-3314,2024 CCA April Classic on ICC,April Classic,2024.0,41,True,41,2024-03-15 19:12:24,2024-04-13 11:53:37,False,True,False,,0.0
-3319,2024 World Open Under 13 Championship,World Open Under 13,2024.0,80,True,80,2024-04-03 21:09:04,2024-06-26 09:26:56,False,False,False,,0.0
-3320,2024 World Open Senior Amateur,World Open Senior Amateur,2024.0,40,True,40,2024-04-08 10:04:44,2024-07-01 07:10:10,False,False,False,73.0,2.0
-3321,2024 World Open Womens Championship,World Open Womens Championship,2024.0,12,True,12,2024-05-20 23:54:37,2024-06-30 22:25:22,False,False,False,,0.0
-3322,2024 World Open Amateur,World Open Amateur,2024.0,47,True,47,2024-04-05 13:51:25,2024-07-01 08:36:05,False,False,False,65.0,1.0
-3323,2024 World Open Junior Championship,World Open Junior Championship,2024.0,59,True,59,2024-04-04 06:15:33,2024-06-30 23:20:59,False,False,False,,0.0
-3324,2024 World Open G 7 Championship,World Open G7 Championship,2024.0,64,True,64,2024-04-09 11:02:46,2024-07-03 09:21:24,False,False,False,55.0,1.0
-3325,2024 World Open G 10 Championship,World Open G 10 Championship,2024.0,58,True,58,2024-04-03 15:04:34,2024-07-06 20:46:29,False,False,False,,0.0
-3326,2024 World Open Blitz Championship,World Open Blitz Championship,2024.0,186,True,186,2024-04-03 15:05:43,2024-07-07 22:01:16,False,False,False,64.0,1.0
-3327,2024 Pittsburgh Open,Pittsburgh Open,2024.0,166,True,166,2024-04-14 18:46:23,2024-07-27 09:38:19,False,False,False,63.0,1.0
-3328,2024 Chicago Class,Chicago Class,2024.0,270,True,270,2024-04-02 01:27:07,2024-07-20 08:55:50,False,False,False,71.0,2.0
-3329,2024 Southern Open,Southern Open,2024.0,231,True,231,2024-03-30 11:59:40,2024-07-20 09:41:41,False,False,False,,0.0
-3330,2024 Pacific Coast Open,Pacific Coast Open,2024.0,361,True,361,2024-03-26 16:06:47,2024-07-20 08:37:35,False,False,False,68.0,3.0
-3331,2024 Bradley Open,Bradley Open,2024.0,270,True,270,2024-04-01 09:51:38,2024-07-27 08:30:04,False,False,False,,0.0
-3359,2024 Continental Open,Continental Open,2024.0,244,True,244,2024-04-14 23:13:42,2024-08-17 08:21:37,False,False,False,,0.0
-3372,2024 Indianapolis Open,Indianapolis Open,2024.0,170,True,170,2024-05-18 13:14:55,2024-08-24 09:52:27,False,False,False,,0.0
-3373,2024 Central California Open,Central California Open,2024.0,169,True,169,2024-06-06 07:46:40,2024-08-09 23:40:24,False,False,False,,0.0
-3374,2024 New York State Championship,New York State Championship,2024.0,326,True,326,2024-04-22 08:44:13,2024-09-01 09:27:06,False,False,False,,0.0
-3377,2024 Atlantic Open,Atlantic Open,2024.0,272,True,272,2024-04-22 08:07:04,2024-08-24 09:56:51,False,False,False,,0.0
-3455,2024 Midwest Class Championships,Midwest Class Championships,2024.0,303,True,303,2024-06-26 07:56:59,2024-10-12 09:19:21,False,False,False,57.0,2.0
-3456,2024 Hartford Open,Hartford Open,2024.0,199,True,199,2024-06-26 09:59:32,2024-10-19 09:36:20,False,False,False,56.0,2.0
-3457,2024 Eastern Chess Congress,Eastern Chess Congress,2024.0,490,True,490,2024-06-22 18:15:42,2024-10-26 09:05:35,False,False,False,62.0,2.0
-3458,2024 Los Angeles Open,Los Angeles Open,2024.0,412,True,412,2024-06-23 14:59:00,2024-11-02 09:53:31,False,False,True,57.0,5.0
-3476,2024 Kings Island Open,Kings Island Open,2024.0,350,True,350,2024-07-12 12:03:49,2024-11-16 08:35:07,False,False,False,,0.0
-3477,2024 National Chess Congress,National Chess Congress,2024.0,621,True,621,2024-07-16 12:20:35,2024-11-30 08:57:02,False,False,False,62.0,2.0
-3478,2024 Eastern Open,Eastern Open,2024.0,391,True,391,2024-08-07 09:50:33,2024-12-28 08:56:49,False,False,False,74.0,3.0
-3479,2024 North American Open,North American Open,2024.0,1102,True,1102,2024-07-12 15:23:20,2024-12-27 07:47:19,False,False,False,70.0,4.0
-3504,2025 Liberty Bell Open,Liberty Bell Open,2025.0,530,True,530,2024-08-20 09:00:09,2025-01-19 07:38:34,False,False,False,59.0,2.0
-3524,2025 Boston Chess Congress,Boston Chess Congress,2025.0,383,True,383,2024-08-20 14:19:36,2025-01-04 09:58:02,False,False,False,65.0,2.0
-3526,2024 North American Blitz Championship,North American Blitz Championship,2024.0,212,True,212,2024-08-21 15:35:09,2024-12-29 21:25:10,False,False,False,74.0,1.0
-3595,2025 Golden State Open,Golden State Open,2025.0,377,True,377,2024-09-25 17:14:43,2025-01-18 21:49:24,False,False,False,66.0,1.0
-3596,2025 Western Class Championshps,Western Class Championships,2025.0,389,True,389,2024-11-17 12:35:36,2025-03-08 08:57:12,False,False,False,59.0,3.0
-3597,2025 Southwest Class Championships,Southwest Class Championships,2025.0,488,True,488,2024-09-23 18:07:46,2025-02-15 01:11:53,False,False,True,74.0,5.0
-3598,2025 George Washington Open,George Washington Open,2025.0,250,True,250,2024-09-14 08:09:13,2025-02-22 09:38:58,False,False,False,74.0,1.0
-3631,2025 Princeton Open,Princeton Open,2025.0,574,True,574,2024-10-16 23:08:27,2025-04-18 08:41:58,False,False,False,70.0,4.0
-3632,2025 Mid-America Open,Mid-America Open,2025.0,262,True,262,2024-10-25 17:19:17,2025-03-22 09:51:28,False,False,False,74.0,1.3
-3660,2025 Chicago Open,Chicago Open,2025.0,899,True,899,2024-10-15 08:56:54,2025-05-25 04:12:02,False,False,True,64.0,12.0
-3664,2025 New York State Scholastic Championships Grades K-8,New York State Scholastic Championships Grades K-8,2025.0,1767,True,1767,2024-10-14 14:31:24,2025-03-07 19:18:46,False,False,False,56.0,4.3
-3666,2025 New York State High School Championship,New York State High School Championship,2025.0,219,True,219,2024-11-16 21:13:58,2025-03-14 15:51:07,False,False,True,58.0,5.0
-3684,2025 Southern Class,Southern Class,2025.0,170,True,170,2024-11-27 20:16:35,2025-03-08 08:47:30,False,False,False,70.0,0.7
-3686,2025 Philadelphia International,Philadelphia International,2025.0,126,True,126,2024-12-09 15:48:22,2025-06-26 11:06:41,False,False,False,57.0,2.0
-3687,2025 World Open  top 6 sections,World Open top 6 sections,2025.0,1165,True,1165,2024-11-11 21:28:00,2025-07-04 06:29:17,False,False,False,63.0,4.0
-3688,2025 World Open  lower sections,World Open lower sections,2025.0,135,True,135,2024-12-17 17:50:41,2025-06-27 10:06:28,False,False,False,,0.0
-3720,2025 Niagara Falls Open,Niagara Falls Open,2025.0,123,True,123,2024-12-20 08:31:03,2025-05-02 22:28:25,False,False,False,62.0,2.0
-3731,2025 New York State Senior Championship  With Young Adult Mi,New York State Senior Championship With Young Adult Mi,2025.0,57,True,57,2025-01-13 13:23:38,2025-03-15 08:13:50,False,False,False,,0.0
-3751,2025 Philadelphia Open,Philadelphia Open,2025.0,325,True,325,2024-12-29 11:32:19,2025-06-28 09:54:10,False,False,False,64.0,2.0
-3752,2025 Eastern Class,Eastern Class,2025.0,195,True,195,2025-02-13 05:39:38,2025-06-07 08:03:34,False,False,False,73.0,3.0
-3798,2025 Cleveland Open,Cleveland Open,2025.0,199,True,199,2025-01-24 00:39:01,2025-06-14 09:33:29,False,False,False,,0.0
-3832,WAIT LIST-2025 New York State Scholastic Championships Grade,WAIT LIST-2025 New York State Scholastic Championships Grade,,101,True,101,2025-02-21 10:35:31,2025-03-07 14:18:36,False,False,False,,0.0
-3834,2025 Southern Open,Southern Open,2025.0,188,True,188,2025-02-18 10:01:47,2025-07-26 04:00:36,False,False,False,,0.0
-3835,2025 Bradley Open,Bradley Open,2025.0,246,True,246,2025-02-13 00:08:57,2025-07-26 09:51:42,False,False,False,,0.0
-3836,2025 Chicago Class,Chicago Class,2025.0,294,True,294,2025-04-01 14:17:29,2025-07-19 09:32:46,False,False,False,,0.0
-3837,2025 Pittsburgh Open,Pittsburgh Open,2025.0,152,True,152,2025-03-18 10:13:11,2025-07-18 17:31:21,False,False,False,,0.0
-3861,2025 Pacific Coast Open,Pacific Coast Open,2025.0,391,True,391,2025-02-18 23:05:46,2025-08-09 01:36:27,False,False,False,75.0,1.0
-3862,2025 Continental Open,Continental Open,2025.0,265,True,265,2025-02-21 23:49:44,2025-08-15 22:27:59,False,False,False,,0.0
-3863,2025 Atlantic Open,Atlantic Open,2025.0,238,True,238,2025-03-23 12:52:33,2025-08-23 09:50:52,False,False,False,74.0,2.0
-3864,2025 New York State Championship,New York State Championship,2025.0,348,True,348,2025-02-27 17:24:41,2025-08-31 08:45:50,False,False,False,,0.0
-3874,2025 World Open Under 13 Championship,World Open Under 13,2025.0,76,True,76,2025-04-08 13:54:45,2025-06-30 08:24:32,False,False,False,56.0,1.0
-3875,2025 World Open Amateur,World Open Amateur,2025.0,54,True,54,2025-04-09 21:42:16,2025-06-30 07:41:09,False,False,False,58.0,2.0
-3876,2025 World Open Senior Amateur,World Open Senior Amateur,2025.0,45,True,45,2025-03-11 13:27:38,2025-06-29 14:19:21,False,False,False,58.0,1.0
-3877,2025 World Open Womens Championship,World Open Womens Championship,2025.0,15,True,15,2025-05-05 02:07:15,2025-06-30 00:25:11,False,False,False,,0.0
-3900,2025 World Open G 7 Championship,World Open G7 Championship,2025.0,66,True,66,2025-03-23 14:54:07,2025-07-02 09:58:25,False,False,False,60.0,3.0
-3901,2025 World Open G 10 Championship,World Open G 10 Championship,2025.0,91,True,91,2025-03-23 14:57:38,2025-07-05 21:42:55,False,False,False,,0.0
-3902,2025 World Open Blitz Championship,World Open Blitz Championship,2025.0,195,True,195,2025-03-23 15:01:10,2025-07-06 21:49:49,False,False,False,59.0,1.0
-3903,2025 Central California Open,Central California Open,2025.0,179,True,179,2025-05-03 18:47:20,2025-08-22 22:12:31,False,False,False,,0.0
-3904,2025 Indianapolis Open,Indianapolis Open,2025.0,187,True,187,2025-05-18 18:14:51,2025-08-23 07:21:37,False,False,False,,0.0
-3906,2025 New York State Open,New York State Open,2025.0,83,True,83,2025-03-16 07:04:27,2025-06-19 14:29:49,False,False,False,,0.0
-3915,2025 Chicago Open Blitz,Chicago Open Blitz,2025.0,120,True,120,2025-03-19 13:43:22,2025-05-25 20:59:19,False,False,False,,0.0
-3973,2025 Midwest Class Championships,Midwest Class Championships,2025.0,306,True,306,2025-05-06 08:30:59,2025-10-11 09:20:47,False,False,False,,0.0
-3974,2025 Hartford Open,Hartford Open,2025.0,189,True,189,2025-06-28 15:35:57,2025-10-11 09:56:04,False,False,False,74.0,1.0
-4006,2025 Eastern Chess Congress,Eastern Chess Congress,2025.0,487,True,487,2025-06-26 08:07:28,2025-10-25 09:40:33,False,False,False,60.0,3.0
-4007,2025 Los Angeles Open,Los Angeles Open,2025.0,397,True,397,2025-06-19 16:28:08,2025-11-08 09:39:42,False,False,False,57.0,2.0
-4008,2025 Kings Island Open,Kings Island Open,2025.0,356,True,356,2025-06-13 14:25:40,2025-11-15 08:44:15,False,False,False,61.0,1.3
-4019,2025 World Open Action,World Open Action,2025.0,27,True,27,2025-06-18 21:45:45,2025-06-30 23:07:39,False,False,False,,0.0
-4020,2025 National Chess Congress,National Chess Congress,2025.0,705,True,705,2025-07-06 05:38:37,2025-11-29 08:42:43,False,False,False,75.0,1.5
-4021,2025 Eastern Open,Eastern Open,2025.0,389,True,389,2025-08-25 02:04:17,2025-12-27 09:08:57,False,False,False,74.0,0.7
-4022,2025 North American Open,North American Open,2025.0,1256,True,1256,2025-06-20 09:14:10,2025-12-27 08:40:13,False,False,False,61.0,3.5
-4023,World Open Junior Octos,World Open Junior Octos,,8,True,8,2025-06-15 18:41:00,2025-06-25 23:52:26,False,False,False,,0.0
-4024,Philadelphia Octos,Philadelphia Octos,,11,True,11,2025-06-23 19:52:13,2025-06-26 16:28:09,False,False,False,,0.0
-4029,2026 Boston Chess Congress,Boston Chess Congress,2026.0,359,True,359,2025-06-26 11:36:00,2026-01-03 07:30:30,False,False,False,67.0,2.0
-4030,2025 North American Blitz Championship,North American Blitz Championship,2025.0,280,True,280,2025-06-26 07:52:30,2025-12-29 21:29:31,False,False,False,60.0,2.0
-4088,2026 Liberty Bell Open,Liberty Bell Open,2026.0,564,True,564,2025-08-19 10:20:52,2026-01-18 08:58:00,False,False,False,75.0,1.0
-4090,2026 Golden State Open,Golden State Open,2026.0,387,True,387,2025-09-20 11:43:46,2026-01-18 08:19:32,False,False,False,67.0,1.0
-4142,2026 George Washington Open,George Washington Open,2026.0,209,True,209,2025-09-12 14:24:54,2026-02-28 09:53:56,False,False,False,57.0,1.0
-4144,2026 George Washington Saturday Octos,George Washington Saturday Octos,2026.0,1,True,1,2026-01-25 17:15:48,2026-01-25 17:15:48,False,False,False,,0.0
-4146,2026 George Washington Sunday Octos,George Washington Sunday Octos,2026.0,6,True,6,2026-02-25 13:59:04,2026-02-28 21:34:13,False,False,False,,0.0
-4147,2026 Southwest Class Championships,Southwest Class Championships,2026.0,492,True,492,2025-09-16 14:41:21,2026-02-13 21:52:28,False,False,False,61.0,2.0
-4178,2026 Atlantic City Open,Atlantic City Open,2026.0,424,True,184,2025-10-22 01:20:15,2026-04-05 00:00:00,False,False,False,71.0,3.0
-4179,2026 Western Class Championshps,Western Class Championships,2026.0,318,True,318,2025-12-14 12:22:30,2026-03-07 09:29:53,False,False,False,62.0,4.0
-4180,2026 Mid-America Open,Mid-America Open,2026.0,200,True,200,2025-11-16 18:29:21,2026-03-21 01:18:32,False,False,False,,0.0
-4181,2026 New York State High School Championship,New York State High School Championship,2026.0,198,True,198,2025-11-07 16:49:10,2026-02-27 22:07:42,False,False,False,75.0,2.0
-4182,2026 New York State Senior Championship  With Young Adult Mi,New York State Senior Championship With Young Adult Mi,2026.0,61,True,61,2025-12-10 19:20:19,2026-02-27 18:49:11,False,False,False,74.0,1.0
-4183,2026 New York State Scholastic Championships Grades K-8,New York State Scholastic Championships Grades K-8,2026.0,1753,True,1753,2025-10-11 13:01:01,2026-03-06 12:56:46,False,False,True,56.0,8.0
-4244,2026 Chicago Open,Chicago Open,2026.0,362,True,179,2025-11-26 10:20:11,2026-04-28 00:00:00,False,False,False,57.0,4.0
-4245,2026 Chicago Open Blitz,Chicago Open Blitz,2026.0,10,True,4,2025-11-26 10:14:59,2026-04-28 00:00:00,False,False,False,,0.0
-4248,2026 World Open  top 6 sections,World Open top 6 sections,2026.0,28,True,28,2025-11-26 11:26:59,2026-03-20 23:31:56,False,False,False,69.0,1.0
-4249,2026 World Open  lower sections,World Open lower sections,2026.0,2,True,2,2026-02-05 14:30:03,2026-02-26 09:25:19,False,False,False,,0.0
-4284,2026 DC International,DC International,2026.0,10,True,5,2025-12-04 00:39:41,2026-04-28 00:00:00,False,False,False,67.0,1.0
-4289,2026 Southern Class,Southern Class,2026.0,195,True,195,2025-12-15 13:05:36,2026-03-14 08:32:11,False,False,False,67.0,1.0
-4349,2026 New York State Open,New York State Open,2026.0,13,True,1,2026-03-19 11:29:59,2026-04-28 00:00:00,False,False,False,,0.0
-4351,2026 DC Open,DC Open,2026.0,6,True,2,2026-02-20 19:24:23,2026-04-28 00:00:00,False,False,False,,0.0
-4396,2026 World Open G 7 Championship,World Open G7 Championship,2026.0,1,True,1,2026-02-10 00:04:34,2026-02-10 00:04:34,False,False,False,,0.0
-4397,2026 World Open G 10 Championship,World Open G 10 Championship,2026.0,1,True,1,2026-02-10 00:07:56,2026-02-10 00:07:56,False,False,False,,0.0
-4404,2026 Chicago Class,Chicago Class,2026.0,3,True,1,2026-03-04 00:14:48,2026-04-28 00:00:00,False,False,False,,0.0
-4405,2026 World Open Action,World Open Action,2026.0,1,True,1,2026-03-04 00:53:40,2026-03-04 00:53:40,False,False,False,,0.0
-4408,2026 World Open Blitz Championship,World Open Blitz Championship,2026.0,1,True,1,2026-03-04 00:51:31,2026-03-04 00:51:31,False,False,False,,0.0
-4409,2026 World Open G 50 Championship,World Open G 50 Championship,2026.0,1,True,1,2026-03-04 01:03:09,2026-03-04 01:03:09,False,False,False,,0.0
-4412,2026 Bradley Open,Bradley Open,2026.0,4,True,2,2026-02-16 09:38:22,2026-04-28 00:00:00,False,False,False,,0.0
-4413,2026 Hartford Open,Hartford Open,2026.0,16,True,3,2026-03-08 21:12:04,2026-04-28 00:00:00,False,False,False,,0.0
-4414,2026 Pittsburgh Open,Pittsburgh Open,2026.0,5,True,2,2026-02-20 19:28:19,2026-04-28 00:00:00,False,False,False,,0.0
-4415,2026 Pacific Coast Open,Pacific Coast Open,2026.0,7,True,3,2026-03-03 22:56:45,2026-04-28 00:00:00,False,False,False,,0.0
-4417,2026 Cleveland Open,Cleveland Open,2026.0,16,True,2,2026-03-01 19:24:30,2026-04-28 00:00:00,False,False,False,,0.0
+tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,first_reg,last_reg,is_covid,is_online,snapshot_last_reg,early_bird_spike,spike_day,spike_magnitude
+5,2012 Atlantic Open,Atlantic Open,2012.0,267,False,0,,,False,False,,False,,
+6,2012 Indianapolis Open,Indianapolis Open,2012.0,161,False,0,,,False,False,,False,,
+7,2012 Manhattan Open,Manhattan Open,2012.0,281,False,0,,,False,False,,False,,
+8,2012 Central California Open,Central California Open,2012.0,114,False,0,,,False,False,,False,,
+10,42nd annual Continental Open,42nd annual Continental Open,,166,False,0,,,False,False,,False,,
+11,134th annual New York State Championship,134th annual New York State Championship,,135,False,0,,,False,False,,False,,
+12,3rd annual Hartford Open,3rd annual Hartford Open,,98,False,0,,,False,False,,False,,
+13,Louisville Open,Louisville Open,,105,False,0,,,False,False,,False,,
+14,Continental Class Championships,Continental Class Championships,,222,False,0,,,False,False,,False,,
+15,Los Angeles Open,Los Angeles Open,,144,False,0,,,False,False,,False,,
+16,Midwest Class Championships,Midwest Class Championships,,195,False,0,,,False,False,,False,,
+17,Boardwalk Open,Boardwalk Open,,177,False,0,,,False,False,,False,,
+18,Bahamas International   Amateur,Bahamas International Amateur,,31,False,0,,,False,False,,False,,
+19,Kings Island Open,Kings Island Open,,278,False,0,,,False,False,,False,,
+20,National Chess Congress,National Chess Congress,,414,False,0,,,False,False,,False,,
+21,North American Open,North American Open,,578,False,0,,,False,False,,False,,
+22,Capital Region Open,Capital Region Open,,23,False,0,,,False,False,,False,,
+25,Empire City Open,Empire City Open,,259,False,0,,,False,False,,False,,
+27,Boston Chess Congress,Boston Chess Congress,,156,False,0,,,False,False,,False,,
+28,Golden State Open,Golden State Open,,239,False,0,,,False,False,,False,,
+29,Liberty Bell Open,Liberty Bell Open,,379,False,0,,,False,False,,False,,
+30,New York State Scholastics,New York State Scholastics,,686,False,0,,,False,False,,False,,
+31,Long Island Open,Long Island Open,,119,False,0,,,False,False,,False,,
+32,Pittsburgh Open,Pittsburgh Open,,138,False,0,,,False,False,,False,,
+39,Western Class Championships,Western Class Championships,,182,False,0,,,False,False,,False,,
+40,Mid-America Open,Mid-America Open,,219,False,0,,,False,False,,False,,
+41,Eastern Class Championships,Eastern Class Championships,,155,False,0,,,False,False,,False,,
+42,Southern Class Championships,Southern Class Championships,,178,False,0,,,False,False,,False,,
+43,Philadelphia Open,Philadelphia Open,,443,False,0,,,False,False,,False,,
+48,Chicago Open,Chicago Open,,600,False,0,,,False,False,,False,,
+52,World Open,World Open,,957,False,0,,,False,False,,False,,
+54,Vermont Resort Open,Vermont Resort Open,,28,False,0,,,False,False,,False,,
+55,DC International,DC International,,75,False,0,,,False,False,,False,,
+66,World Open Senior Amateur,World Open Senior Amateur,,32,False,0,,,False,False,,False,,
+67,World Open Women s Championship,World Open Womens Championship,,24,False,0,,,False,False,,False,,
+68,World Open Under 13,World Open Under 13,,183,False,0,,,False,False,,False,,
+69,New York State Open,New York State Open,,56,False,0,,,False,False,,False,,
+70,Northeast Open,Northeast Open,,151,False,0,,,False,False,,False,,
+74,Pacific Coast Open,Pacific Coast Open,,188,False,0,,,False,False,,False,,
+75,Chicago Class,Chicago Class,,261,False,0,,,False,False,,False,,
+77,2013 Southern Open,Southern Open,2013.0,192,False,0,,,False,False,,False,,
+79,2013 Manhattan Open,Manhattan Open,2013.0,329,False,0,,,False,False,,False,,
+80,2013 Bradley Open,Bradley Open,2013.0,131,False,0,,,False,False,,False,,
+83,2013 Cleveland Open,Cleveland Open,2013.0,207,False,0,,,False,False,,False,,
+87,2013 Continental Open,Continental Open,2013.0,162,False,0,,,False,False,,False,,
+91,2013 Indianapolis Open,Indianapolis Open,2013.0,171,False,0,,,False,False,,False,,
+92,2013 Atlantic Open,Atlantic Open,2013.0,244,False,0,,,False,False,,False,,
+103,2013 New York State Championship,New York State Championship,2013.0,190,False,0,,,False,False,,False,,
+105,2013 Continental Class Championships,Continental Class Championships,2013.0,185,False,0,,,False,False,,False,,
+106,2013 Louisville Open,Louisville Open,2013.0,98,False,0,,,False,False,,False,,
+112,2013 Los Angeles Open,Los Angeles Open,2013.0,154,False,0,,,False,False,,False,,
+113,2013 Eastern Team Championship,Eastern Team Championship,2013.0,134,False,0,,,False,False,,False,,
+114,2013 Midwest Class Championships,Midwest Class Championships,2013.0,214,False,0,,,False,False,,False,,
+115,2013 Boardwalk Open,Boardwalk Open,2013.0,136,False,0,,,False,False,,False,,
+116,2013 Kings Island Open,Kings Island Open,2013.0,289,False,0,,,False,False,,False,,
+129,2013 Hartford Open,Hartford Open,2013.0,115,False,0,,,False,False,,False,,
+144,2013 National Chess Congress,National Chess Congress,2013.0,540,False,0,,,False,False,,False,,
+150,2013 North American Open,North American Open,2013.0,591,False,0,,,False,False,,False,,
+152,2013 Empire City Open,Empire City Open,2013.0,284,False,0,,,False,False,,False,,
+154,2014 Boston Chess Congress,Boston Chess Congress,2014.0,172,False,0,,,False,False,,False,,
+171,2014 Golden State Open,Golden State Open,2014.0,285,False,0,,,False,False,,False,,
+172,2014 Liberty Bell Open,Liberty Bell Open,2014.0,387,False,0,,,False,False,,False,,
+174,2014 Foxwoods Open,Foxwoods Open,2014.0,235,False,0,,,False,False,,False,,
+182,2014 Philadelphia Open,Philadelphia Open,2014.0,481,False,0,,,False,False,,False,,
+183,2014 New York State Scholastic Championships,New York State Scholastic Championships,2014.0,785,False,0,,,False,False,,False,,
+184,2014 Western Class Championships,Western Class Championships,2014.0,180,False,0,,,False,False,,False,,
+185,2014 Eastern Class Championships,Eastern Class Championships,2014.0,228,False,0,,,False,False,,False,,
+186,2014 Mid-America Open,Mid-America Open,2014.0,232,False,0,,,False,False,,False,,
+207,2014 Long Island Open,Long Island Open,2014.0,187,False,0,,,False,False,,False,,
+237,2014 Southern Class Championships,Southern Class Championships,2014.0,182,False,0,,,False,False,,False,,
+239,2014 Chicago Open,Chicago Open,2014.0,618,False,0,,,False,False,,False,,
+241,2014 DC International,DC International,2014.0,80,False,0,,,False,False,,False,,
+242,2014 Pittsburgh Open,Pittsburgh Open,2014.0,96,False,0,,,False,False,,False,,
+243,2014 New York State Open,New York State Open,2014.0,68,False,0,,,False,False,,False,,
+244,2014 World Open Women s Championship,World Open Womens Championship,2014.0,16,False,0,,,False,False,,False,,
+250,2014 World Open Senior Amateur,World Open Senior Amateur,2014.0,45,False,0,,,False,False,,False,,
+251,2014 World Open Under 13 Championship,World Open Under 13,2014.0,173,False,0,,,False,False,,False,,
+252,2014 World Open,World Open,2014.0,1014,False,0,,,False,False,,False,,
+254,2014 Northeast Open,Northeast Open,2014.0,147,False,0,,,False,False,,False,,
+258,2014 Pacific Coast Open,Pacific Coast Open,2014.0,194,False,0,,,False,False,,False,,
+259,2014 Bradley Open,Bradley Open,2014.0,138,False,0,,,False,False,,False,,
+262,2014 Chicago Class,Chicago Class,2014.0,320,False,0,,,False,False,,False,,
+263,2014 Manhattan Open,Manhattan Open,2014.0,331,False,0,,,False,False,,False,,
+282,2014 Continental Open,Continental Open,2014.0,228,False,0,,,False,False,,False,,
+286,2014 Cleveland Open,Cleveland Open,2014.0,195,False,0,,,False,False,,False,,
+292,2014 Central California Open,Central California Open,2014.0,105,False,0,,,False,False,,False,,
+293,2014 Atlantic Open,Atlantic Open,2014.0,222,False,0,,,False,False,,False,,
+294,2014 Indianapolis Open,Indianapolis Open,2014.0,176,False,0,,,False,False,,False,,
+295,2014 Washington Chess Congress,Washington Chess Congress,2014.0,138,False,0,,,False,False,,False,,
+296,2014 New York State Championship,New York State Championship,2014.0,209,False,0,,,False,False,,False,,
+297,2014 Southern Open,Southern Open,2014.0,162,False,0,,,False,False,,False,,
+299,2014 Midwest Class Championships,Midwest Class Championships,2014.0,243,False,0,,,False,False,,False,,
+310,2014 Hartford Open,Hartford Open,2014.0,89,False,0,,,False,False,,False,,
+317,2014 North American Open,North American Open,2014.0,619,False,0,,,False,False,,False,,
+318,2014 Boardwalk Open,Boardwalk Open,2014.0,107,False,0,,,False,False,,False,,
+319,2014 Kings Island Open,Kings Island Open,2014.0,296,False,0,,,False,False,,False,,
+322,2014 National Chess Congress,National Chess Congress,2014.0,582,False,0,,,False,False,,False,,
+326,2014 Central New York Open,Central New York Open,2014.0,56,False,0,,,False,False,,False,,
+327,2014 Eastern Chess Congress,Eastern Chess Congress,2014.0,111,False,0,,,False,False,,False,,
+334,2015 Golden State Open,Golden State Open,2015.0,247,False,0,,,False,False,,False,,
+346,2014 Empire City Open,Empire City Open,2014.0,249,False,0,,,False,False,,False,,
+352,2015 Boston Chess Congress,Boston Chess Congress,2015.0,225,False,0,,,False,False,,False,,
+376,2015 Liberty Bell Open,Liberty Bell Open,2015.0,339,False,0,,,False,False,,False,,
+377,2015 Southwest Class,Southwest Class,2015.0,259,False,0,,,False,False,,False,,
+395,2015 New York State Scholastic Championships,New York State Scholastic Championships,2015.0,953,False,0,,,False,False,,False,,
+396,2015 Pittsburgh Open,Pittsburgh Open,2015.0,136,False,0,,,False,False,,False,,
+401,2015 Mid-America Open,Mid-America Open,2015.0,234,False,0,,,False,False,,False,,
+403,2015 Western Class Championships,Western Class Championships,2015.0,200,False,0,,,False,False,,False,,
+404,2015 Philadelphia Open,Philadelphia Open,2015.0,515,False,0,,,False,False,,False,,
+405,2015 Southern Class Championships,Southern Class Championships,2015.0,196,False,0,,,False,False,,False,,
+406,2015 DC International,DC International,2015.0,128,False,0,,,False,False,,False,,
+413,2015 Chicago Open,Chicago Open,2015.0,774,False,0,,,False,False,,False,,
+414,2015 Eastern Class Championships,Eastern Class Championships,2015.0,214,False,0,,,False,False,,False,,
+424,2015 World Open,World Open,2015.0,921,False,0,,,False,False,,False,,
+425,2015 World Open Senior Amateur,World Open Senior Amateur,2015.0,38,False,0,,,False,False,,False,,
+426,2015 New York State Open,New York State Open,2015.0,70,False,0,,,False,False,,False,,
+430,2015 Northeast Open,Northeast Open,2015.0,189,False,0,,,False,False,,False,,
+454,2016 World Open Womens Championship,World Open Womens Championship,2016.0,27,False,0,,,False,False,,False,,
+455,2015 World Open Under 13 Championship,World Open Under 13,2015.0,244,False,0,,,False,False,,False,,
+474,2015 Chicago Class,Chicago Class,2015.0,291,False,0,,,False,False,,False,,
+488,2015 Pacific Coast Open,Pacific Coast Open,2015.0,203,False,0,,,False,False,,False,,
+489,2015 Bradley Open,Bradley Open,2015.0,169,False,0,,,False,False,,False,,
+490,2015 Southern Open,Southern Open,2015.0,210,False,0,,,False,False,,False,,
+492,2015 Cleveland Open,Cleveland Open,2015.0,197,False,0,,,False,False,,False,,
+503,2015 Continental Open,Continental Open,2015.0,253,False,0,,,False,False,,False,,
+504,2015 Manhattan Open,Manhattan Open,2015.0,435,False,0,,,False,False,,False,,
+505,2015 Central California Open,Central California Open,2015.0,114,False,0,,,False,False,,False,,
+506,2015 Atlantic Open,Atlantic Open,2015.0,226,False,0,,,False,False,,False,,
+517,2015 Indianapolis Open,Indianapolis Open,2015.0,179,False,0,,,False,False,,False,,
+522,2015 Washington Chess Congress,Washington Chess Congress,2015.0,185,False,0,,,False,False,,False,,
+534,2015 Midwest Class Championships,Midwest Class Championships,2015.0,265,False,0,,,False,False,,False,,
+542,2015 Hartford Open,Hartford Open,2015.0,108,False,0,,,False,False,,False,,
+543,2015 New York State Championship,New York State Championship,2015.0,173,False,0,,,False,False,,False,,
+547,2015 Boardwalk Open,Boardwalk Open,2015.0,115,False,0,,,False,False,,False,,
+548,2015 Central New York Open,Central New York Open,2015.0,61,False,0,,,False,False,,False,,
+550,2015 Kings Island Open,Kings Island Open,2015.0,274,False,0,,,False,False,,False,,
+551,2015 North American Open,North American Open,2015.0,717,False,0,,,False,False,,False,,
+552,2015 Eastern Chess Congress,Eastern Chess Congress,2015.0,116,False,0,,,False,False,,False,,
+563,2015 National Chess Congress,National Chess Congress,2015.0,574,False,0,,,False,False,,False,,
+564,2015 Empire City Open,Empire City Open,2015.0,330,False,0,,,False,False,,False,,
+570,2016 Boston Chess Congress,Boston Chess Congress,2016.0,242,False,0,,,False,False,,False,,
+571,2016 Liberty Bell Open,Liberty Bell Open,2016.0,326,False,0,,,False,False,,False,,
+572,2016 Golden State Open,Golden State Open,2016.0,261,False,0,,,False,False,,False,,
+580,2016 Southwest Class,Southwest Class,2016.0,298,False,0,,,False,False,,False,,
+589,2016 George Washington Open,George Washington Open,2016.0,241,False,0,,,False,False,,False,,
+591,2016 Western Class Championships,Western Class Championships,2016.0,202,False,0,,,False,False,,False,,
+599,2016 Pittsburgh Open,Pittsburgh Open,2016.0,106,False,0,,,False,False,,False,,
+602,2016 New York State Scholastic Championships,New York State Scholastic Championships,2016.0,952,False,0,,,False,False,,False,,
+606,2016 Mid-America Open,Mid-America Open,2016.0,210,False,0,,,False,False,,False,,
+612,2016 Philadelphia Open,Philadelphia Open,2016.0,511,False,0,,,False,False,,False,,
+626,2016 Chicago Open,Chicago Open,2016.0,798,False,0,,,False,False,,False,,
+627,2016 Eastern Class Championships,Eastern Class Championships,2016.0,252,False,0,,,False,False,,False,,
+628,2016 Bill Little Memorial,Bill Little Memorial,2016.0,64,False,0,,,False,False,,False,,
+629,2016 New York State Open,New York State Open,2016.0,100,False,0,,,False,False,,False,,
+630,2016 Continental Class Championships,Continental Class Championships,2016.0,212,False,0,,,False,False,,False,,
+645,2016 World Open,World Open,2016.0,1137,False,0,,,False,False,,False,,
+646,2016 Philadelphia International,Philadelphia International,2016.0,66,False,0,,,False,False,,False,,
+647,2016 World Open Senior,World Open Senior,2016.0,43,False,0,,,False,False,,False,,
+648,2016 World Open Under 13 Championship,World Open Under 13,2016.0,137,False,0,,,False,False,,False,,
+705,2016 Chicago Class,Chicago Class,2016.0,321,False,0,,,False,False,,False,,
+706,2016 Manhattan Open,Manhattan Open,2016.0,438,False,0,,,False,False,,False,,
+707,2016 Continental Open,Continental Open,2016.0,255,False,0,,,False,False,,False,,
+708,2016 Atlantic Open,Atlantic Open,2016.0,286,False,0,,,False,False,,False,,
+709,2016 Washington Chess Congress,Washington Chess Congress,2016.0,197,False,0,,,False,False,,False,,
+710,2016 Pacific Coast Open,Pacific Coast Open,2016.0,214,False,0,,,False,False,,False,,
+711,2016 Southern Chess Congress,Southern Chess Congress,2016.0,199,False,0,,,False,False,,False,,
+712,2016 Southern Open,Southern Open,2016.0,203,False,0,,,False,False,,False,,
+713,2016 Bradley Open,Bradley Open,2016.0,148,False,0,,,False,False,,False,,
+715,2016 Northeast Open,Northeast Open,2016.0,178,False,0,,,False,False,,False,,
+719,2016 Central California Open,Central California Open,2016.0,92,False,0,,,False,False,,False,,
+720,2016 Schenectady Open,Schenectady Open,2016.0,69,False,0,,,False,False,,False,,
+721,2016 Cleveland Open,Cleveland Open,2016.0,190,False,0,,,False,False,,False,,
+724,2016 Indianapolis Open,Indianapolis Open,2016.0,186,False,0,,,False,False,,False,,
+726,2016 New York State Championship,New York State Championship,2016.0,190,False,0,,,False,False,,False,,
+746,2016 Southern Class Championships,Southern Class Championships,2016.0,168,False,0,,,False,False,,False,,
+747,2016 Hartford Open,Hartford Open,2016.0,86,False,0,,,False,False,,False,,
+750,2016 Midwest Class Championships,Midwest Class Championships,2016.0,280,False,0,,,False,False,,False,,
+751,2016 Eastern Chess Congress,Eastern Chess Congress,2016.0,279,False,0,,,False,False,,False,,
+759,2016 Los Angeles Open,Los Angeles Open,2016.0,171,False,0,,,False,False,,False,,
+786,2016 Central New York Open,Central New York Open,2016.0,56,False,0,,,False,False,,False,,
+798,2016 Kings Island Open,Kings Island Open,2016.0,279,False,0,,,False,False,,False,,
+799,2016 Stamford Open,Stamford Open,2016.0,137,False,0,,,False,False,,False,,
+801,2016 North American Open,North American Open,2016.0,766,False,0,,,False,False,,False,,
+802,2016 National Chess Congress,National Chess Congress,2016.0,595,False,0,,,False,False,,False,,
+804,2016 Empire City Open,Empire City Open,2016.0,397,False,0,,,False,False,,False,,
+829,2017 Boston Chess Congress,Boston Chess Congress,2017.0,208,False,0,,,False,False,,False,,
+831,2017 Golden State Open,Golden State Open,2017.0,282,False,0,,,False,False,,False,,
+835,2017 Liberty Bell Open,Liberty Bell Open,2017.0,336,False,0,,,False,False,,False,,
+844,2017 Southwest Class,Southwest Class,2017.0,328,False,0,,,False,False,,False,,
+858,2017 George Washington Open,George Washington Open,2017.0,197,False,0,,,False,False,,False,,
+859,2017 New York State Scholastic Championships,New York State Scholastic Championships,2017.0,1156,False,0,,,False,False,,False,,
+863,2017 Western Class Championships,Western Class Championships,2017.0,254,False,0,,,False,False,,False,,
+865,2017 Mid-America Open,Mid-America Open,2017.0,306,False,0,,,False,False,,False,,
+892,2017 Southern Class Championships,Southern Class Championships,2017.0,204,False,0,,,False,False,,False,,
+893,2017 Philadelphia Open,Philadelphia Open,2017.0,553,False,0,,,False,False,,False,,
+894,2017 Eastern Class Championships,Eastern Class Championships,2017.0,271,False,0,,,False,False,,False,,
+895,2017 Chicago Open,Chicago Open,2017.0,883,False,0,,,False,False,,False,,
+900,2017 New York State Open,New York State Open,2017.0,86,False,0,,,False,False,,False,,
+901,2017 World Open,World Open,2017.0,1185,False,0,,,False,False,,False,,
+902,2017 Philadelphia International,Philadelphia International,2017.0,87,False,0,,,False,False,,False,,
+903,2017 World Open Senior,World Open Senior,2017.0,38,False,0,,,False,False,,False,,
+904,2017 World Open Warmup,World Open Warmup,2017.0,22,False,0,,,False,False,,False,,
+905,2017 World Open Womens Championship,World Open Womens Championship,2017.0,18,False,0,,,False,False,,False,,
+906,2017 World Open Action,World Open Action,2017.0,36,False,0,,,False,False,,False,,
+918,2017 Northeast Open,Northeast Open,2017.0,205,False,0,,,False,False,,False,,
+919,2017 Continental Class Championships,Continental Class Championships,2017.0,219,False,0,,,False,False,,False,,
+920,2017 World Open Under 13 Championship,World Open Under 13,2017.0,134,False,0,,,False,False,,False,,
+953,2018 Pittsburgh Open,Pittsburgh Open,2018.0,130,False,0,,,False,False,,False,,
+956,2017 Pacific Coast Open,Pacific Coast Open,2017.0,232,False,0,,,False,False,,False,,
+959,2017 Chicago Class,Chicago Class,2017.0,382,False,0,,,False,False,,False,,
+961,2018 Bradley Open,Bradley Open,2018.0,173,False,0,,,False,False,,False,,
+966,2018 Peter Henner Memorial,Peter Henner Memorial,2018.0,99,False,0,,,False,False,,False,,
+967,2018 Southern Open,Southern Open,2018.0,231,False,0,,,False,False,,False,,
+978,2017 Continental Open,Continental Open,2017.0,350,False,0,,,False,False,,False,,
+985,2018 Cleveland Open,Cleveland Open,2018.0,196,False,0,,,False,False,,False,,
+986,2017 Central California Open,Central California Open,2017.0,150,False,0,,,False,False,,False,,
+987,2018 Manhattan Open,Manhattan Open,2018.0,463,False,0,,,False,False,,False,,
+1002,2017 Indianapolis Open,Indianapolis Open,2017.0,159,False,0,,,False,False,,False,,
+1003,2017 Atlantic Open,Atlantic Open,2017.0,283,False,0,,,False,False,,False,,
+1011,2017 New York State Championship,New York State Championship,2017.0,183,False,0,,,False,False,,False,,
+1015,2017 Hartford Open,Hartford Open,2017.0,125,False,0,,,False,False,,False,,
+1016,2017 Washington Chess Congress,Washington Chess Congress,2017.0,219,False,0,,,False,False,,False,,
+1021,2017 North American Open,North American Open,2017.0,800,False,0,,,False,False,,False,,
+1022,2017 Midwest Class Championships,Midwest Class Championships,2017.0,316,False,0,,,False,False,,False,,
+1023,2017 Eastern Chess Congress,Eastern Chess Congress,2017.0,400,False,0,,,False,False,,False,,
+1024,2017 Central New York Open,Central New York Open,2017.0,57,False,0,,,False,False,,False,,
+1026,2017 Kings Island Open,Kings Island Open,2017.0,291,False,0,,,False,False,,False,,
+1027,2017 National Chess Congress,National Chess Congress,2017.0,645,False,0,,,False,False,,False,,
+1029,2017 Los Angeles Open,Los Angeles Open,2017.0,213,False,0,,,False,False,,False,,
+1078,2017 Empire City Open,Empire City Open,2017.0,307,False,0,,,False,False,,False,,
+1090,2017 Stamford Open,Stamford Open,2017.0,162,False,0,,,False,False,,False,,
+1099,2018 Boston Chess Congress,Boston Chess Congress,2018.0,237,False,0,,,False,False,,False,,
+1100,2018 Southwest Class,Southwest Class,2018.0,355,False,0,,,False,False,,False,,
+1106,2018 Liberty Bell Open,Liberty Bell Open,2018.0,334,False,0,,,False,False,,False,,
+1108,2018 George Washington Open,George Washington Open,2018.0,227,False,0,,,False,False,,False,,
+1113,2018 New York State Scholastic Championships,New York State Scholastic Championships,2018.0,1229,False,0,,,False,False,,False,,
+1124,2018 Western Class Championships,Western Class Championships,2018.0,245,False,0,,,False,False,,False,,
+1126,2018 Southern Class Championships,Southern Class Championships,2018.0,174,False,0,,,False,False,,False,,
+1131,2018 Golden State Open,Golden State Open,2018.0,288,False,0,,,False,False,,False,,
+1154,2018 Mid-America Open,Mid-America Open,2018.0,268,False,0,,,False,False,,False,,
+1161,2018 Philadelphia Open,Philadelphia Open,2018.0,527,False,0,,,False,False,,False,,
+1173,2018 Chicago Open,Chicago Open,2018.0,829,False,0,,,False,False,,False,,
+1174,2018 World Open,World Open,2018.0,1149,False,0,,,False,False,,False,,
+1175,2018 Philadelphia International,Philadelphia International,2018.0,151,False,0,,,False,False,,False,,
+1176,2018 World Open Senior Amateur,World Open Senior Amateur,2018.0,45,False,0,,,False,False,,False,,
+1177,2018 World Open Womens Championship,World Open Womens Championship,2018.0,18,False,0,,,False,False,,False,,
+1178,2018 World Open Action,World Open Action,2018.0,35,False,0,,,False,False,,False,,
+1186,2018 World Open Under 13 Championship,World Open Under 13,2018.0,156,False,0,,,False,False,,False,,
+1187,2018 Bill Little Memorial,Bill Little Memorial,2018.0,58,False,0,,,False,False,,False,,
+1209,2018 Continental Class Championships,Continental Class Championships,2018.0,236,False,0,,,False,False,,False,,
+1212,2018 Eastern Class Championships,Eastern Class Championships,2018.0,278,False,0,,,False,False,,False,,
+1213,2018 New York State Open and Senior,New York State Open and Senior,2018.0,94,False,0,,,False,False,,False,,
+1219,2018 Northeast Open,Northeast Open,2018.0,172,False,0,,,False,False,,False,,
+1223,2018 Continental Open,Continental Open,2018.0,292,False,0,,,False,False,,False,,
+1225,2018 Chicago Class,Chicago Class,2018.0,337,False,0,,,False,False,,False,,
+1232,2018 Pacific Coast Open,Pacific Coast Open,2018.0,245,False,0,,,False,False,,False,,
+1244,2017 Pittsburgh Open,Pittsburgh Open,2017.0,113,False,0,,,False,False,,False,,
+1245,2017 Bradley Open,Bradley Open,2017.0,204,False,0,,,False,False,,False,,
+1246,2017 Southern Open,Southern Open,2017.0,211,False,0,,,False,False,,False,,
+1247,2017 Peter Henner Memorial,Peter Henner Memorial,2017.0,92,False,0,,,False,False,,False,,
+1251,2017 Manhattan Open,Manhattan Open,2017.0,419,False,0,,,False,False,,False,,
+1252,2017 Cleveland Open,Cleveland Open,2017.0,185,False,0,,,False,False,,False,,
+1262,2018 Central California Open,Central California Open,2018.0,128,False,0,,,False,False,,False,,
+1263,2018 Atlantic Open,Atlantic Open,2018.0,299,False,0,,,False,False,,False,,
+1270,2018 Washington Chess Congress,Washington Chess Congress,2018.0,235,False,0,,,False,False,,False,,
+1271,2018 Indianapolis Open,Indianapolis Open,2018.0,191,False,0,,,False,False,,False,,
+1295,2018 New York State Championship,New York State Championship,2018.0,188,False,0,,,False,False,,False,,
+1313,2018 Hartford Open,Hartford Open,2018.0,122,False,0,,,False,False,,False,,
+1314,2018 Midwest Class Championships,Midwest Class Championships,2018.0,328,False,0,,,False,False,,False,,
+1316,2018 North American Open,North American Open,2018.0,822,False,0,,,False,False,,False,,
+1344,2018 Eastern Chess Congress,Eastern Chess Congress,2018.0,316,False,0,,,False,False,,False,,
+1345,2018 Los Angeles Open,Los Angeles Open,2018.0,252,False,0,,,False,False,,False,,
+1346,2018 Central New York Open,Central New York Open,2018.0,45,False,0,,,False,False,,False,,
+1368,2018 Kings Island Open,Kings Island Open,2018.0,251,False,0,,,False,False,,False,,
+1374,2018 Stamford Open,Stamford Open,2018.0,136,False,0,,,False,False,,False,,
+1375,2018 National Chess Congress,National Chess Congress,2018.0,523,False,0,,,False,False,,False,,
+1376,2018 Empire City Open,Empire City Open,2018.0,298,False,0,,,False,False,,False,,
+1388,2019 Boston Chess Congress,Boston Chess Congress,2019.0,270,False,0,,,False,False,,False,,
+1389,2019 Golden State Open,Golden State Open,2019.0,273,False,0,,,False,False,,False,,
+1390,2019 Liberty Bell Open,Liberty Bell Open,2019.0,287,False,0,,,False,False,,False,,
+1391,2019 Southwest Class,Southwest Class,2019.0,385,False,0,,,False,False,,False,,
+1392,2019 George Washington Open,George Washington Open,2019.0,253,False,0,,,False,False,,False,,
+1393,2019 Western Class Championships,Western Class Championships,2019.0,253,False,0,,,False,False,,False,,
+1394,2019 New York State Scholastic Championships,New York State Scholastic Championships,2019.0,1249,False,0,,,False,False,,False,,
+1396,2019 Open at Foxwoods,Open at Foxwoods,2019.0,415,False,0,,,False,False,,False,,
+1409,2019 Southern Class Championships,Southern Class Championships,2019.0,196,False,0,,,False,False,,False,,
+1414,2019 Mid-America Open,Mid-America Open,2019.0,320,False,0,,,False,False,,False,,
+1423,2019 Eastern Class Championships,Eastern Class Championships,2019.0,220,False,0,,,False,False,,False,,
+1425,2019 Chicago Open,Chicago Open,2019.0,843,False,0,,,False,False,,False,,
+1441,2019 Philadelphia International,Philadelphia International,2019.0,147,False,0,,,False,False,,False,,
+1442,2019 World Open,World Open,2019.0,1269,False,0,,,False,False,,False,,
+1443,2019 Philadelphia Open,Philadelphia Open,2019.0,231,False,0,,,False,False,,False,,
+1444,2019 World Open Warmup,World Open Warmup,2019.0,23,False,0,,,False,False,,False,,
+1445,2019 World Open Senior Amateur,World Open Senior Amateur,2019.0,33,False,0,,,False,False,,False,,
+1446,2019 World Open Womens Championship,World Open Womens Championship,2019.0,22,False,0,,,False,False,,False,,
+1447,2019 Northeast Open,Northeast Open,2019.0,210,False,0,,,False,False,,False,,
+1448,2019 Bill Little Memorial,Bill Little Memorial,2019.0,47,False,0,,,False,False,,False,,
+1498,2019 Manhattan Open,Manhattan Open,2019.0,434,False,0,,,False,False,,False,,
+1499,2019 New York State Open and Senior,New York State Open and Senior,2019.0,77,False,0,,,False,False,,False,,
+1500,2019 Southern Open,Southern Open,2019.0,181,False,0,,,False,False,,False,,
+1501,2019 Chicago Class,Chicago Class,2019.0,330,False,0,,,False,False,,False,,
+1502,2019 Pacific Coast Open,Pacific Coast Open,2019.0,230,False,0,,,False,False,,False,,
+1503,2019 Continental Class Championships,Continental Class Championships,2019.0,249,False,0,,,False,False,,False,,
+1504,2019 Pittsburgh Open,Pittsburgh Open,2019.0,176,False,0,,,False,False,,False,,
+1511,2019 Bradley Open,Bradley Open,2019.0,171,False,0,,,False,False,,False,,
+1512,2019 Cleveland Open,Cleveland Open,2019.0,224,False,0,,,False,False,,False,,
+1513,2019 Continental Open,Continental Open,2019.0,274,False,0,,,False,False,,False,,
+1516,2019 World Open Under 13 Championship,World Open Under 13,2019.0,157,False,0,,,False,False,,False,,
+1517,2019 World Open Action,World Open Action,2019.0,28,False,0,,,False,False,,False,,
+1534,2019 Atlantic Open,Atlantic Open,2019.0,289,False,0,,,False,False,,False,,
+1535,2019 Central California Open,Central California Open,2019.0,128,False,0,,,False,False,,False,,
+1536,2019 Indianapolis Open,Indianapolis Open,2019.0,204,False,0,,,False,False,,False,,
+1557,2019 New York State Championship,New York State Championship,2019.0,185,False,0,,,False,False,,False,,
+1575,2019 Washington Chess Congress,Washington Chess Congress,2019.0,271,False,0,,,False,False,,False,,
+1604,Manhattan Blitz,Manhattan Blitz,,2,False,0,,,False,False,,False,,
+1609,2019 Hartford Open,Hartford Open,2019.0,110,False,0,,,False,False,,False,,
+1610,2019 Midwest Class Championships,Midwest Class Championships,2019.0,305,False,0,,,False,False,,False,,
+1611,2019 North American Open,North American Open,2019.0,863,False,0,,,False,False,,False,,
+1612,2019 Eastern Chess Congress,Eastern Chess Congress,2019.0,349,False,0,,,False,False,,False,,
+1613,2019 Peter Henner Memorial,Peter Henner Memorial,2019.0,49,False,0,,,False,False,,False,,
+1614,2019 Central New York Open,Central New York Open,2019.0,40,False,0,,,False,False,,False,,
+1615,2019 Kings Island Open,Kings Island Open,2019.0,298,False,0,,,False,False,,False,,
+1616,2019 Los Angeles Open,Los Angeles Open,2019.0,241,False,0,,,False,False,,False,,
+1617,2019 National Chess Congress,National Chess Congress,2019.0,550,False,0,,,False,False,,False,,
+1630,2019 Stamford Open,Stamford Open,2019.0,169,False,0,,,False,False,,False,,
+1657,2019 Schenectady Open at Proctors,Schenectady Open at Proctors,2019.0,47,False,0,,,False,False,,False,,
+1660,2019 Empire City Open,Empire City Open,2019.0,318,False,0,,,False,False,,False,,
+1663,2020 Boston Chess Congress,Boston Chess Congress,2020.0,267,False,0,,,True,False,,False,,
+1666,2020 Liberty Bell Open,Liberty Bell Open,2020.0,362,False,0,,,True,False,,False,,
+1667,2020 Golden State Open,Golden State Open,2020.0,303,False,0,,,True,False,,False,,
+1674,2020 Southwest Class,Southwest Class,2020.0,384,False,0,,,True,False,,False,,
+1675,2020 George Washington Open,George Washington Open,2020.0,243,False,0,,,True,False,,False,,
+1680,2020 Open at Foxwoods,Open at Foxwoods,2020.0,208,False,0,,,True,False,,False,,
+1696,2020 Western Class Championships,Western Class Championships,2020.0,221,False,0,,,True,False,,False,,
+1698,2020 New York State Scholastic Championships,New York State Scholastic Championships,2020.0,1008,False,0,,,True,False,,False,,
+1702,2020 Southern Class Championships,Southern Class Championships,2020.0,50,False,0,,,True,False,,False,,
+1761,2020 Eastern Class Championships,Eastern Class Championships,2020.0,13,False,0,,,True,False,,False,,
+1777,2020 New York State Open and Senior,New York State Open and Senior,2020.0,1,False,0,,,True,False,,False,,
+1779,2020 Northeast Open,Northeast Open,2020.0,1,False,0,,,True,False,,False,,
+1780,2020 Continental Class Championships,Continental Class Championships,2020.0,1,False,0,,,True,False,,False,,
+1781,2020 Philadelphia International,Philadelphia International,2020.0,5,False,0,,,True,False,,False,,
+1826,2020 Continental Chess June Rapid on ICC,Continental Chess June Rapid,2020.0,231,False,0,,,True,True,,False,,
+1834,2020 Continental Chess June Quick on ICC,Continental Chess June Quick,2020.0,180,False,0,,,True,True,,False,,
+1835,2020 CCA June Open on ICC,June Open,2020.0,185,False,0,,,True,True,,False,,
+1836,2020 World Open Blitz on ICC,World Open Blitz,2020.0,191,False,0,,,True,True,,False,,
+1837,2020 World Open G 45 on ICC,World Open G 45,2020.0,284,False,0,,,True,True,,False,,
+1838,2020 World Open Action on ICC,World Open Action,2020.0,159,False,0,,,True,True,,False,,
+1839,2020 World Open Under 13 Champ on ICC,World Open Under 13,2020.0,216,False,0,,,True,True,,False,,
+1840,2020 World Open G 10 on ICC,World Open G 10,2020.0,151,False,0,,,True,True,,False,,
+1841,2020 World Open Senior Amateur on ICC,World Open Senior Amateur,2020.0,58,False,0,,,True,True,,False,,
+1842,2020 World Open on ICC,World Open,2020.0,1055,False,0,,,True,True,,False,,
+1854,2020 CCA July Rapid on ICC,July Rapid,2020.0,99,False,0,,,True,True,,False,,
+1855,2020 CCA July Open on ICC,July Open,2020.0,214,False,0,,,True,True,,False,,
+1858,2020 CCA World Open Warmup on ICC,World Open Warmup,2020.0,149,False,0,,,True,True,,False,,
+1859,2020 World Open Womens Championship on ICC,World Open Womens Championship,2020.0,51,False,0,,,True,True,,False,,
+1860,2020 World Open G 7 Championship on ICC,World Open G7 Championship,2020.0,106,False,0,,,True,True,,False,,
+1861,2020 North American Scholastics on ICC,North American Scholastics,2020.0,338,False,0,,,True,True,,False,,
+1862,2020 New York State Championship on ICC,New York State Championship,2020.0,241,False,0,,,True,True,,False,,
+1868,2020 CCA August Open on ICC,August Open,2020.0,205,False,0,,,True,True,,False,,
+1869,2020 CCA August Blitz on ICC,August Blitz,2020.0,92,False,0,,,True,True,,False,,
+1870,2020 CCA August Rapid on ICC,August Rapid,2020.0,86,False,0,,,True,True,,False,,
+1871,2020 CCA September Action on ICC,September Action,2020.0,86,False,0,,,True,True,,False,,
+1872,2020 CCA September Rapid on ICC,September Rapid,2020.0,71,False,0,,,True,True,,False,,
+1873,2020 CCA September Open on ICC,September Open,2020.0,167,False,0,,,True,True,,False,,
+1874,2020 CCA September Quick on ICC,September Quick,2020.0,44,False,0,,,True,True,,False,,
+1876,2020 Pacific Coast Open on ICC,Pacific Coast Open,2020.0,171,False,0,,,True,True,,False,,
+1879,2020 CCA September Blitz on ICC,September Blitz,2020.0,48,False,0,,,True,True,,False,,
+1880,2020 Pittsburgh Open on ICC,Pittsburgh Open,2020.0,151,False,0,,,True,True,,False,,
+1882,2020 Chicago Open on ICC,Chicago Open,2020.0,415,False,0,,,True,True,,False,,
+1885,2020 Bradley Open at ICC,Bradley Open at ICC,2020.0,104,False,0,,,True,False,,False,,
+1887,2020 Chicago Open Blitz on ICC,Chicago Open Blitz,2020.0,93,False,0,,,True,True,,False,,
+1889,2020 CCA October Open on ICC,October Open,2020.0,151,False,0,,,True,True,,False,,
+1890,2020 Eastern Chess Congress on ICC,Eastern Chess Congress,2020.0,167,False,0,,,True,True,,False,,
+1891,2020 Southern Open on ICC,Southern Open,2020.0,130,False,0,,,True,True,,False,,
+1892,2020 CCA October Game 7 on ICC,October Game 7,2020.0,32,False,0,,,True,True,,False,,
+1893,2020 Indianapolis Open on ICC,Indianapolis Open,2020.0,130,False,0,,,True,True,,False,,
+1894,2020 Southern Open Blitz on ICC,Southern Open Blitz,2020.0,60,False,0,,,True,True,,False,,
+1895,2020 Continental Open on ICC,Continental Open,2020.0,184,False,0,,,True,True,,False,,
+1896,2020 Kings Island Open on ICC,Kings Island Open,2020.0,128,False,0,,,True,True,,False,,
+1897,2020 Kings Island Open Blitz on ICC,Kings Island Open Blitz,2020.0,49,False,0,,,True,True,,False,,
+1898,2020 Mid-America Open on ICC,Mid-America Open,2020.0,189,False,0,,,True,True,,False,,
+1899,2020 CCA November Open on ICC,November Open,2020.0,92,False,0,,,True,True,,False,,
+1901,2020 National Chess Congress on ICC,National Chess Congress,2020.0,481,False,0,,,True,True,,False,,
+1902,2020 North American Open on ICC,North American Open,2020.0,556,False,0,,,True,True,,False,,
+1903,2020 Los Angeles Open on ICC,Los Angeles Open,2020.0,135,False,0,,,True,True,,False,,
+1904,2020 Cleveland Open on ICC,Cleveland Open,2020.0,133,False,0,,,True,True,,False,,
+1905,2020 Los Angeles Open Blitz on ICC,Los Angeles Open Blitz,2020.0,55,False,0,,,True,True,,False,,
+1909,2020 Philadelphia Open on ICC,Philadelphia Open,2020.0,151,False,0,,,True,True,,False,,
+1910,2020 CCA December Open on ICC,December Open,2020.0,65,False,0,,,True,True,,False,,
+1912,2020 Atlantic Open on ICC,Atlantic Open,2020.0,145,False,0,,,True,True,,False,,
+1913,2020 Chicago Class on ICC,Chicago Class,2020.0,106,False,0,,,True,True,,False,,
+1914,2020 Atlantic Open Blitz on ICC,Atlantic Open Blitz,2020.0,51,False,0,,,True,True,,False,,
+1915,2020 Manhattan Open on ICC,Manhattan Open,2020.0,196,False,0,,,True,True,,False,,
+1916,2020 North American Blitz on ICC,North American Blitz,2020.0,154,False,0,,,True,True,,False,,
+1918,2021 Boston Chess Congress on ICC,Boston Chess Congress,2021.0,194,False,0,,,True,True,,False,,
+1920,2021 Mountains Open on ICC,Mountains Open,2021.0,122,False,0,,,True,True,,False,,
+1921,2021 CCA January Open on ICC,January Open,2021.0,119,False,0,,,True,True,,False,,
+1922,2021 Liberty Bell Open on ICC,Liberty Bell Open,2021.0,211,False,0,,,True,True,,False,,
+1923,2021 Liberty Bell Open Blitz on ICC,Liberty Bell Open Blitz,2021.0,80,False,0,,,True,True,,False,,
+1924,2020 Free Software Testing Blitz on ICC,Free Software Testing Blitz,2020.0,38,False,0,,,True,True,,False,,
+1925,2021 Golden State Open on ICC,Golden State Open,2021.0,221,False,0,,,True,True,,False,,
+1926,2021 Golden State Blitz on ICC,Golden State Blitz,2021.0,61,False,0,,,True,True,,False,,
+1932,2021 Southwest Class on ICC,Southwest Class,2021.0,255,False,0,,,True,True,,False,,
+1933,2021 Southwest Class Blitz on ICC,Southwest Class Blitz,2021.0,61,False,0,,,True,True,,False,,
+1934,2021 George Washington Open on ICC,George Washington Open,2021.0,193,False,0,,,True,True,,False,,
+1935,2021 CCA February Open on ICC,February Open,2021.0,104,False,0,,,True,True,,False,,
+1936,2021 New York State Scholastic Championships on ICC,New York State Scholastic Championships,2021.0,1174,False,0,,,True,True,,False,,
+1937,2021 Western Class on ICC,Western Class,2021.0,185,False,0,,,True,True,,False,,
+1938,2021 Western Class Blitz on ICC,Western Class Blitz,2021.0,50,False,0,,,True,True,,False,,
+1947,2021 Southern Class on ICC,Southern Class,2021.0,146,False,0,,,True,True,,False,,
+1948,2021 CCA March Open on ICC,March Open,2021.0,99,False,0,,,True,True,,False,,
+1956,2021 Mid-America Open on ICC,Mid-America Open,2021.0,202,False,0,,,True,True,,False,,
+1957,2021 Mid-America Blitz on ICC,Mid-America Blitz,2021.0,52,False,0,,,True,True,,False,,
+1958,2021 North American Class on ICC,North American Class,2021.0,158,False,0,,,True,True,,False,,
+1975,2021 CCA April Open on ICC,April Open,2021.0,166,False,0,,,True,True,,False,,
+1985,2021 Eastern Class on ICC,Eastern Class,2021.0,193,False,0,,,True,True,,False,,
+1986,2021 Eastern Class Blitz on ICC,Eastern Class Blitz,2021.0,46,False,0,,,True,True,,False,,
+1990,2021 Chicago Open,Chicago Open,2021.0,561,False,0,,,True,False,,False,,
+1992,2021 Cleveland Open,Cleveland Open,2021.0,200,False,0,,,True,False,,False,,
+1993,2021 Southern Open,Southern Open,2021.0,340,False,0,,,True,False,,False,,
+1998,2021 New York State Open on ICC,New York State Open,2021.0,154,False,0,,,True,True,,False,,
+1999,2021 CCA May Open on ICC,May Open,2021.0,113,False,0,,,True,True,,False,,
+2000,2021 North American Under 13 on ICC,North American Under 13,2021.0,136,False,0,,,True,True,,False,,
+2002,2021 World Open,World Open,2021.0,1061,False,0,,,True,False,,False,,
+2003,2021 Philadelphia International,Philadelphia International,2021.0,102,False,0,,,True,False,,False,,
+2004,2021 Chicago Open Blitz,Chicago Open Blitz,2021.0,79,False,0,,,True,False,,False,,
+2005,2021 Philadelphia Open,Philadelphia Open,2021.0,267,False,0,,,True,False,,False,,
+2006,2021 World Open Action,World Open Action,2021.0,46,False,0,,,True,False,,False,,
+2007,2021 World Open Senior Amateur,World Open Senior Amateur,2021.0,29,False,0,,,True,False,,False,,
+2008,2021 World Open Warmup,World Open Warmup,2021.0,21,False,0,,,True,False,,False,,
+2009,2021 Pacific Coast Open,Pacific Coast Open,2021.0,446,False,0,,,True,False,,False,,
+2010,2021 World Open G7 Championship,World Open G7 Championship,2021.0,44,False,0,,,True,False,,False,,
+2011,2021 World Open Under 13 Championship,World Open Under 13,2021.0,129,False,0,,,True,False,,False,,
+2014,2021 Chicago Class,Chicago Class,2021.0,435,False,0,,,True,False,,False,,
+2017,2021 Bradley Open,Bradley Open,2021.0,285,False,0,,,True,False,,False,,
+2018,2021 Continental Open,Continental Open,2021.0,393,True,159,2021-08-02 09:47:34,2021-08-14 08:59:36,True,False,2021-08-14 08:59:36,False,,0.0
+2035,2021 CCA June Open on ICC,June Open,2021.0,218,False,0,,,True,True,,False,,
+2044,2021 Pittsburgh Open,Pittsburgh Open,2021.0,225,False,0,,,True,False,,False,,
+2045,2021 World Open Womens Championship,World Open Womens Championship,2021.0,18,False,0,,,True,False,,False,,
+2046,2021 Peter Henner Memorial,Peter Henner Memorial,2021.0,116,False,0,,,True,False,,False,,
+2049,2021 Indianapolis Open,Indianapolis Open,2021.0,170,True,132,2021-08-02 15:29:19,2021-08-27 21:57:19,True,False,2021-08-27 21:57:19,False,,0.0
+2050,2021 Central California Open,Central California Open,2021.0,189,True,127,2021-08-02 13:04:51,2021-08-20 13:32:23,True,False,2021-08-20 13:32:23,False,,0.0
+2051,2021 Atlantic Open,Atlantic Open,2021.0,457,True,366,2021-08-02 09:07:54,2021-08-28 08:27:22,True,False,2021-08-28 08:27:22,False,,0.0
+2053,2021 World Open Blitz Championship,World Open Blitz Championship,2021.0,165,False,0,,,True,False,,False,,
+2054,2021 World Open G 10 Championship,World Open G 10 Championship,2021.0,51,False,0,,,True,False,,False,,
+2057,2021 CCA July Open on ICC,July Open,2021.0,201,False,0,,,True,True,,False,,
+2059,2021 New York State Championship,New York State Championship,2021.0,212,True,175,2021-08-03 17:37:32,2021-09-05 09:38:49,True,False,2021-09-05 09:38:49,False,,0.0
+2060,2021 Eastern Chess Congress,Eastern Chess Congress,2021.0,474,True,450,2021-08-02 15:43:37,2021-10-02 10:07:31,True,False,2021-10-02 10:07:31,False,,0.0
+2079,2021 Washington Chess Congress,Washington Chess Congress,2021.0,332,True,313,2021-08-02 15:53:05,2021-10-09 00:19:51,True,False,2021-10-09 00:19:51,False,,0.0
+2080,2021 Midwest Class Championships,Midwest Class Championships,2021.0,348,True,338,2021-08-03 14:24:09,2021-10-09 09:07:43,True,False,2021-10-09 09:07:43,False,,0.0
+2087,2021 North American Open,North American Open,2021.0,922,True,902,2021-08-02 13:45:16,2021-12-26 23:43:18,True,False,2021-12-26 23:43:18,True,70.0,5.0
+2092,2021 Kings Island Open,Kings Island Open,2021.0,300,True,292,2021-08-05 12:14:12,2021-11-13 08:18:56,True,False,2021-11-13 08:18:56,False,,0.0
+2093,2021 Central New York Open,Central New York Open,2021.0,110,True,101,2021-08-30 19:52:37,2021-10-23 07:47:39,True,False,2021-10-23 07:47:39,False,,0.0
+2095,2021 National Chess Congress,National Chess Congress,2021.0,594,True,577,2021-08-22 14:13:52,2021-11-27 07:57:20,True,False,2021-11-27 07:57:20,False,68.0,1.5
+2110,2021 Northeast Open,Northeast Open,2021.0,279,True,266,2021-09-04 15:34:44,2021-11-06 09:59:12,True,False,2021-11-06 09:59:12,False,,0.0
+2111,2021 Niagara Falls Open,Niagara Falls Open,2021.0,132,True,130,2021-09-09 19:33:17,2021-11-19 15:36:32,True,False,2021-11-19 15:36:32,False,,0.0
+2112,2021 Los Angeles Open,Los Angeles Open,2021.0,364,True,356,2021-08-03 12:09:08,2021-11-06 07:02:35,True,False,2021-11-06 07:02:35,False,58.0,4.0
+2113,2021 CCA August Open on ICC,August Open,2021.0,143,True,134,2021-08-02 10:21:11,2021-08-21 08:49:51,True,True,2021-08-21 08:49:51,False,,0.0
+2129,2021 CCA September Open on ICC,September Open,2021.0,154,True,150,2021-08-20 09:15:14,2021-09-11 09:58:20,True,True,2021-09-11 09:58:20,False,,0.0
+2130,2021 Eastern Chess Congress Warmup on ICC,Eastern Chess Congress Warmup,2021.0,91,True,84,2021-08-20 09:16:22,2021-09-25 09:50:33,True,True,2021-09-25 09:50:33,False,,0.0
+2153,2021 Empire State Open,Empire State Open,2021.0,151,True,147,2021-09-15 17:47:02,2021-12-27 05:31:49,True,False,2021-12-27 05:31:49,False,57.0,1.0
+2154,2021 New York State Junior Championships,New York State Junior Championships,2021.0,104,True,97,2021-10-31 14:29:28,2021-12-28 22:07:05,True,False,2021-12-28 22:07:05,False,,0.0
+2164,2021 CCA-ICC September Scholastic on ICC,CCA-ICC September Scholastic,2021.0,88,True,86,2021-09-08 10:30:43,2021-09-18 09:56:24,True,True,2021-09-18 09:56:24,False,,0.0
+2167,2021 New York Under 13 Action Championship,New York Under 13 Action Championship,2021.0,32,True,30,2021-11-19 17:09:48,2021-12-27 21:33:04,True,False,2021-12-27 21:33:04,False,,0.0
+2170,2021 CCA October Open on ICC,October Open,2021.0,153,True,149,2021-09-24 17:56:12,2021-10-23 09:34:03,True,True,2021-10-23 09:34:03,False,,0.0
+2171,2021 Kings Island Open Warmup on ICC,Kings Island Open Warmup,2021.0,69,True,65,2021-10-04 13:00:50,2021-11-06 11:15:33,True,True,2021-11-06 11:15:33,False,,0.0
+2172,2021 National Chess Congress Warmup on ICC,National Chess Congress Warmup,2021.0,9,True,9,2021-09-25 18:38:02,2021-11-04 04:55:58,True,True,2021-11-04 04:55:58,False,,0.0
+2183,2021 CCA-ICC October Scholastic on ICC,CCA-ICC October Scholastic,2021.0,38,True,38,2021-10-05 13:59:54,2021-10-16 13:03:13,True,True,2021-10-16 13:03:13,False,,0.0
+2184,2021 Susan Kantor Memorial on ICC,Susan Kantor Memorial,2021.0,53,True,47,2021-10-08 00:40:06,2021-10-17 12:18:01,True,True,2021-10-17 12:18:01,False,,0.0
+2190,2021 CCA Halloween Open on ICC,Halloween Open,2021.0,122,True,117,2021-10-20 11:48:59,2021-10-30 10:35:16,True,True,2021-10-30 10:35:16,False,,0.0
+2194,2021 CCA December Open on ICC,December Open,2021.0,121,True,118,2021-10-25 19:45:05,2021-12-04 09:47:45,True,True,2021-12-04 09:47:45,False,,0.0
+2203,2022 Boston Chess Congress,Boston Chess Congress,2022.0,287,True,283,2021-10-25 15:11:49,2022-01-08 02:59:04,False,False,2022-01-08 02:59:04,False,,0.0
+2221,2021 North American Scholastics,North American Scholastics,2021.0,117,True,115,2021-11-07 13:58:58,2021-12-19 11:24:23,True,False,2021-12-19 11:24:23,False,,0.0
+2224,2022 Golden State Open,Golden State Open,2022.0,275,True,269,2021-11-08 09:50:02,2022-01-15 22:42:38,False,False,2022-01-15 22:42:38,False,,0.0
+2225,2022 Liberty Bell Open,Liberty Bell Open,2022.0,362,True,353,2021-10-31 14:33:51,2022-01-16 02:53:50,False,False,2022-01-16 02:53:50,False,66.0,1.5
+2233,2021 CCA November Open,November Open,2021.0,123,True,115,2021-11-06 11:08:18,2021-11-20 07:00:09,True,False,2021-11-20 07:00:09,False,,0.0
+2235,2022 Southwest Class Championships,Southwest Class Championships,2022.0,397,True,386,2021-11-18 07:15:08,2022-02-19 20:33:17,False,False,2022-02-19 20:33:17,False,66.0,3.0
+2238,2021 North American Action on ICC,North American Action,2021.0,115,True,112,2021-11-21 12:52:21,2021-12-18 10:58:22,True,True,2021-12-18 10:58:22,False,,0.0
+2249,2022 Liberty Bell Action on ICC,Liberty Bell Action,2022.0,149,True,138,2021-12-06 16:56:33,2022-01-02 11:01:04,False,True,2022-01-02 11:01:04,False,,0.0
+2250,2022 Golden State Action on ICC,Golden State Action,2022.0,138,True,125,2021-12-09 18:52:19,2022-01-08 10:00:29,False,True,2022-01-08 10:00:29,False,,0.0
+2263,2022 Western Class,Western Class,2022.0,362,True,352,2021-12-19 21:13:46,2022-03-05 06:19:14,False,False,2022-03-05 06:19:14,False,,0.0
+2285,2022 Open at Foxwoods,Open at Foxwoods,2022.0,472,True,461,2021-12-30 23:41:22,2022-04-15 09:51:55,False,False,2022-04-15 09:51:55,True,68.0,8.0
+2286,2022 Southern Class,Southern Class,2022.0,200,True,198,2021-12-24 15:55:58,2022-03-19 09:14:41,False,False,2022-03-19 09:14:41,False,57.0,3.0
+2287,2022 Mid-America Open,Mid-America Open,2022.0,288,True,286,2021-12-30 07:40:39,2022-03-25 21:27:48,False,False,2022-03-25 21:27:48,False,64.0,1.0
+2291,2022 New York State Scholastic Championships,New York State Scholastic Championships,2022.0,941,True,932,2021-12-27 11:58:49,2022-03-11 22:24:03,False,False,2022-03-11 22:24:03,False,,0.0
+2292,2022 Chicago Open,Chicago Open,2022.0,944,True,929,2022-01-07 15:07:51,2022-05-29 05:52:46,False,False,2022-05-29 05:52:46,True,67.0,25.7
+2294,2022 Eastern Class,Eastern Class,2022.0,230,True,221,2022-01-06 12:19:11,2022-04-30 07:06:58,False,False,2022-04-30 07:06:58,False,62.0,2.0
+2299,2022 CCA January Open on ICC,January Open,2022.0,163,True,155,2022-01-02 20:40:42,2022-01-29 09:52:08,False,True,2022-01-29 09:52:08,False,,0.0
+2302,2022 January Game 60 on ICC,January Game 60,2022.0,135,True,121,2022-01-09 01:05:00,2022-01-22 09:49:43,False,True,2022-01-22 09:49:43,False,,0.0
+2304,2022 Southwest Action on ICC,Southwest Action,2022.0,124,True,115,2022-01-26 20:59:33,2022-02-12 08:41:52,False,True,2022-02-12 08:41:52,False,,0.0
+2305,2022 World Open,World Open,2022.0,1491,True,1423,2022-01-19 17:41:34,2022-07-02 09:40:43,False,False,2022-07-02 09:40:43,False,65.0,0.7
+2306,2022 Philadelphia International,Philadelphia International,2022.0,88,True,76,2022-03-01 02:33:55,2022-06-24 02:08:31,False,False,2022-06-24 02:08:31,False,66.0,2.0
+2307,2022 Philadelphia Open,Philadelphia Open,2022.0,281,True,270,2022-01-19 17:12:20,2022-06-25 11:32:44,False,False,2022-06-25 11:32:44,False,71.0,4.0
+2308,2022 World Open Under 13 Championship,World Open Under 13,2022.0,129,True,123,2022-02-02 08:30:29,2022-06-22 19:51:51,False,False,2022-06-22 19:51:51,False,69.0,2.7
+2309,2022 World Open Senior Amateur,World Open Senior Amateur,2022.0,41,True,41,2022-01-24 00:00:47,2022-06-23 09:26:48,False,False,2022-06-23 09:26:48,False,68.0,2.0
+2310,2022 FIDE U2400 at Foxwoods,FIDE U2400 at Foxwoods,2022.0,12,True,10,2022-01-29 18:51:57,2022-04-15 21:37:34,False,False,2022-04-15 21:37:34,False,61.0,1.0
+2312,2022 World Open FIDE U2200,World Open FIDE U2200,2022.0,24,True,23,2022-03-25 16:30:20,2022-06-22 20:05:50,False,False,2022-06-22 20:05:50,False,67.0,1.0
+2313,2022 World Open Amateur,World Open Amateur,2022.0,71,True,69,2022-01-24 00:05:14,2022-06-27 06:46:03,False,False,2022-06-27 06:46:03,False,74.0,2.0
+2314,2022 World Open FIDE U2400,World Open FIDE U2400,2022.0,20,True,19,2022-04-13 23:20:14,2022-06-28 22:25:44,False,False,2022-06-28 22:25:44,False,,0.0
+2319,2022 Youth Rapid Chess Challenge on ICC,Youth Rapid Chess Challenge,2022.0,58,True,56,2022-01-26 20:24:44,2022-02-05 06:53:54,False,True,2022-02-05 06:53:54,False,,0.0
+2320,2022 CCA February Open on ICC,February Open,2022.0,126,True,112,2022-01-28 20:09:40,2022-02-26 09:23:01,False,True,2022-02-26 09:23:01,False,,0.0
+2321,2022 World Open Women s Championship,World Open Womens Championship,2022.0,31,True,29,2022-03-03 20:43:01,2022-06-28 16:23:33,False,False,2022-06-28 16:23:33,False,75.0,1.0
+2322,2022 World Open G7 Championship,World Open G7 Championship,2022.0,54,True,51,2022-04-11 14:35:11,2022-06-30 09:44:47,False,False,2022-06-30 09:44:47,False,75.0,1.0
+2329,2022 Niagara Falls Open,Niagara Falls Open,2022.0,94,True,91,2022-02-21 18:06:06,2022-05-14 02:46:09,False,False,2022-05-14 02:46:09,False,58.0,2.0
+2334,2022 Western Action on ICC,Western Action,2022.0,69,True,58,2022-02-16 18:48:15,2022-02-27 08:50:56,False,True,2022-02-27 08:50:56,False,,0.0
+2357,2022 March Game 60 on ICC,March Game 60,2022.0,76,True,66,2022-02-27 12:16:41,2022-03-26 11:26:22,False,True,2022-03-26 11:26:22,False,,0.0
+2360,2022 CCA March Open on ICC,March Open,2022.0,130,True,122,2022-02-25 15:42:43,2022-03-12 08:46:49,False,True,2022-03-12 08:46:49,False,,0.0
+2361,2022 Mid-America Action on ICC,Mid-America Action,2022.0,96,True,88,2022-02-27 09:24:07,2022-03-19 09:56:23,False,True,2022-03-19 09:56:23,False,,0.0
+2365,2022 Chicago FIDE U2200,Chicago FIDE U2200,2022.0,9,True,9,2022-03-21 21:34:11,2022-05-27 21:18:44,False,False,2022-05-27 21:18:44,False,,0.0
+2369,2022 Cleveland Open,Cleveland Open,2022.0,201,True,200,2022-03-05 19:09:03,2022-06-10 23:43:31,False,False,2022-06-10 23:43:31,False,,0.0
+2370,2022 Northeast Open,Northeast Open,2022.0,227,True,214,2022-03-10 14:33:12,2022-06-11 09:26:28,False,False,2022-06-11 09:26:28,False,61.0,1.0
+2371,2022 Midwest Chess Congress,Midwest Chess Congress,2022.0,81,True,81,2022-03-13 12:05:31,2022-06-18 09:44:23,False,False,2022-06-18 09:44:23,False,,0.0
+2373,2022 CCA April Open on ICC,April Open,2022.0,114,True,103,2022-03-20 13:37:25,2022-04-09 09:58:11,False,True,2022-04-09 09:58:11,False,,0.0
+2374,2022 Eastern Action on ICC,Eastern Action,2022.0,83,True,76,2022-03-20 13:41:01,2022-04-23 11:13:30,False,True,2022-04-23 11:13:30,False,,0.0
+2375,2022 CCA May Open on ICC,May Open,2022.0,90,True,82,2022-03-20 13:46:46,2022-05-07 09:38:44,False,True,2022-05-07 09:38:44,False,,0.0
+2376,2022 Chicago Action on ICC,Chicago Action,2022.0,83,True,74,2022-04-07 10:28:37,2022-05-21 09:55:32,False,True,2022-05-21 09:55:32,False,,0.0
+2388,2022 Pacific Coast Open,Pacific Coast Open,2022.0,344,True,336,2022-03-28 17:07:46,2022-07-16 08:35:28,False,False,2022-07-16 08:35:28,False,61.0,1.5
+2389,2022 Chicago Class,Chicago Class,2022.0,337,True,337,2022-04-03 11:16:06,2022-07-16 00:24:58,False,False,2022-07-16 00:24:58,False,69.0,2.0
+2390,2022 Southern Open,Southern Open,2022.0,266,True,265,2022-04-19 08:03:54,2022-07-22 19:37:47,False,False,2022-07-22 19:37:47,False,75.0,2.0
+2394,2022 Pittsburgh Open,Pittsburgh Open,2022.0,195,True,190,2022-05-02 18:33:16,2022-07-23 01:35:04,False,False,2022-07-23 01:35:04,False,60.0,2.0
+2395,2022 Continental Open,Continental Open,2022.0,321,True,305,2022-04-06 13:29:58,2022-07-30 00:02:12,False,False,2022-07-30 00:02:12,False,74.0,1.0
+2400,2022 April Game 60 on ICC,April Game 60,2022.0,50,True,48,2022-04-16 19:34:19,2022-04-30 03:37:35,False,True,2022-04-30 03:37:35,False,,0.0
+2402,2022 April Rapid on ICC,April Rapid,2022.0,56,True,51,2022-04-06 10:53:41,2022-04-16 09:57:18,False,True,2022-04-16 09:57:18,False,,0.0
+2403,2022 World Open Action on ICC,World Open Action,2022.0,104,True,97,2022-04-20 00:01:35,2022-06-18 10:41:00,False,True,2022-06-18 10:41:00,False,,0.0
+2404,2022 Central California Open,Central California Open,2022.0,188,True,181,2022-04-13 18:37:40,2022-08-20 08:53:13,False,False,2022-08-20 08:53:13,False,60.0,2.0
+2405,2022 Atlantic Open,Atlantic Open,2022.0,412,True,400,2022-05-04 11:57:10,2022-08-27 09:48:23,False,False,2022-08-27 09:48:23,False,,0.0
+2414,2022 New York State Championship,New York State Championship,2022.0,316,True,311,2022-07-03 12:31:58,2022-09-04 09:57:04,False,False,2022-09-04 09:57:04,False,,0.0
+2418,2022 Bradley Open,Bradley Open,2022.0,227,True,216,2022-04-24 18:51:29,2022-07-16 10:01:52,False,False,2022-07-16 10:01:52,False,63.0,0.5
+2421,2022 Indianapolis Open,Indianapolis Open,2022.0,183,True,179,2022-06-18 15:16:41,2022-08-27 04:29:19,False,False,2022-08-27 04:29:19,False,,0.0
+2441,2022 CCA June Open on ICC,June Open,2022.0,90,True,81,2022-05-10 01:06:23,2022-06-04 09:03:35,False,True,2022-06-04 09:03:35,False,,0.0
+2442,2022 World Open G 10 Championship,World Open G 10 Championship,2022.0,61,True,55,2022-05-26 05:36:01,2022-07-04 07:23:02,False,False,2022-07-04 07:23:02,False,,0.0
+2443,2022 World Open Blitz Championship,World Open Blitz Championship,2022.0,145,True,140,2022-05-15 16:23:46,2022-07-04 21:44:42,False,False,2022-07-04 21:44:42,False,,0.0
+2451,2022 CCA July Open on ICC,July Open,2022.0,91,True,85,2022-06-01 06:19:49,2022-07-09 08:04:19,False,True,2022-07-09 08:04:19,False,,0.0
+2452,2022 Continental Action on ICC,Continental Action,2022.0,67,True,64,2022-06-01 05:39:44,2022-07-23 09:48:46,False,True,2022-07-23 09:48:46,False,,0.0
+2453,2022 CCA August Open on ICC,August Open,2022.0,85,True,81,2022-07-11 12:34:10,2022-08-06 09:27:12,False,True,2022-08-06 09:27:12,False,,0.0
+2458,2022 Midwest Class Championships,Midwest Class Championships,2022.0,360,True,351,2022-05-30 18:27:26,2022-10-08 10:03:43,False,False,2022-10-08 10:03:43,False,63.0,2.0
+2459,2022 Eastern Chess Congress,Eastern Chess Congress,2022.0,493,True,475,2022-06-09 14:29:04,2022-10-29 07:35:55,False,False,2022-10-29 07:35:55,False,71.0,3.0
+2464,2022 Central New York Open,Central New York Open,2022.0,119,True,117,2022-06-19 11:12:30,2022-10-22 08:44:55,False,False,2022-10-22 08:44:55,False,73.0,2.0
+2465,2022 Kings Island Open,Kings Island Open,2022.0,368,True,363,2022-07-28 23:52:37,2022-11-12 09:26:06,False,False,2022-11-12 09:26:06,False,67.0,2.0
+2466,2022 National Chess Congress,National Chess Congress,2022.0,606,True,590,2022-06-28 10:32:36,2022-11-26 07:26:16,False,False,2022-11-26 07:26:16,False,75.0,1.0
+2476,2022 Los Angeles Open,Los Angeles Open,2022.0,361,True,358,2022-07-18 21:56:43,2022-11-05 11:16:38,False,False,2022-11-05 11:16:38,False,74.0,3.0
+2487,2022 Hartford Open,Hartford Open,2022.0,198,True,194,2022-07-20 22:36:51,2022-10-15 09:46:56,False,False,2022-10-15 09:46:56,False,70.0,1.0
+2491,2022 North American Open,North American Open,2022.0,1071,True,1052,2022-07-24 12:08:49,2022-12-27 07:38:05,False,False,2022-12-27 07:38:05,False,74.0,4.0
+2494,2022 ICC August Rapid,ICC August Rapid,2022.0,53,True,52,2022-08-01 18:49:41,2022-08-13 10:01:54,False,False,2022-08-13 10:01:54,False,,0.0
+2500,2022 Eastern Open,Eastern Open,2022.0,404,True,388,2022-08-12 19:22:03,2022-12-28 00:17:47,False,False,2022-12-28 00:17:47,False,74.0,2.0
+2505,2022 Atlantic Action on ICC,Atlantic Action,2022.0,59,True,58,2022-08-12 20:11:51,2022-08-20 07:42:57,False,True,2022-08-20 07:42:57,False,,0.0
+2508,2022 CCA September Open on ICC,September Open,2022.0,73,True,70,2022-08-16 15:46:36,2022-09-10 10:55:20,False,True,2022-09-10 10:55:20,False,,0.0
+2511,2022 Midwest Action on ICC,Midwest Action,2022.0,56,True,56,2022-08-30 16:03:23,2022-09-24 09:46:44,False,True,2022-09-24 09:46:44,False,,0.0
+2512,2023 Boston Chess Congress,Boston Chess Congress,2023.0,391,True,383,2022-09-18 14:30:09,2023-01-07 09:00:59,False,False,2023-01-07 09:00:59,False,62.0,2.0
+2514,2022 ICC September Rapid,ICC September Rapid,2022.0,33,True,33,2022-08-30 17:01:11,2022-09-17 02:58:43,False,False,2022-09-17 02:58:43,False,,0.0
+2546,2022 CCA October Open on ICC,October Open,2022.0,63,True,61,2022-09-30 05:21:52,2022-10-08 09:54:02,False,True,2022-10-08 09:54:02,False,,0.0
+2547,2023 Liberty Bell Open,Liberty Bell Open,2023.0,473,True,456,2022-09-18 20:27:40,2023-01-15 06:57:54,False,False,2023-01-15 06:57:54,False,62.0,2.0
+2550,2022 Eastern Chess Congress Action on ICC,Eastern Chess Congress Action,2022.0,54,True,54,2022-09-25 18:40:41,2022-10-22 10:47:20,False,True,2022-10-22 10:47:20,False,,0.0
+2565,2022 CCA November Open on ICC,November Open,2022.0,51,True,51,2022-10-15 16:25:31,2022-11-05 10:17:18,False,True,2022-11-05 10:17:18,False,,0.0
+2566,2023 Golden State Open,Golden State Open,2023.0,293,True,280,2022-10-10 18:52:55,2023-01-15 08:43:09,False,False,2023-01-15 08:43:09,False,69.0,1.3
+2568,2022 North American Blitz Championship,North American Blitz Championship,2022.0,239,True,237,2022-10-22 11:15:52,2022-12-29 22:52:34,False,False,2022-12-29 22:52:34,False,,0.0
+2569,2023 Southwest Class Championships,Southwest Class Championships,2023.0,426,True,412,2022-10-21 18:04:10,2023-02-18 09:16:03,False,False,2023-02-18 09:16:03,False,70.0,1.3
+2572,2022 National Chess Congress Action on ICC,National Chess Congress Action,2022.0,73,True,73,2022-11-01 05:53:55,2022-11-19 10:45:40,False,True,2022-11-19 10:45:40,False,,0.0
+2604,2023 Western Class,Western Class,2023.0,346,True,336,2022-11-14 19:48:16,2023-03-04 08:44:55,False,False,2023-03-04 08:44:55,False,,0.0
+2605,2022 CCA December Open on ICC,December Open,2022.0,50,True,49,2022-11-22 22:49:29,2022-12-03 09:21:52,False,True,2022-12-03 09:21:52,False,,0.0
+2606,2023 New York State Scholastic Championships,New York State Scholastic Championships,2023.0,1548,True,1491,2022-11-17 02:15:51,2023-03-10 15:55:09,False,False,2023-03-10 15:55:09,False,66.0,4.8
+2607,2023 Eastern Class,Eastern Class,2023.0,257,True,244,2022-12-11 11:39:03,2023-03-18 09:56:47,False,False,2023-03-18 09:56:47,False,63.0,3.0
+2608,2023 Southern Class,Southern Class,2023.0,264,True,258,2022-12-18 19:14:06,2023-03-18 06:45:14,False,False,2023-03-18 06:45:14,False,68.0,1.3
+2609,2023 Mid-America Open,Mid-America Open,2023.0,328,True,322,2022-12-10 12:17:56,2023-03-25 08:53:37,False,False,2023-03-25 08:53:37,False,64.0,3.0
+2610,2023 George Washington Open,George Washington Open,2023.0,345,True,343,2022-11-22 14:36:01,2023-02-25 09:02:36,False,False,2023-02-25 09:02:36,False,67.0,2.0
+2611,2023 Open at Foxwoods,Open at Foxwoods,2023.0,445,True,417,2022-12-29 15:22:31,2023-04-07 09:20:26,False,False,2023-04-07 09:20:26,False,69.0,3.0
+2624,2022 CCA December Action on ICC,December Action,2022.0,65,True,63,2022-12-12 19:06:15,2022-12-17 10:50:07,False,True,2022-12-17 10:50:07,False,,0.0
+2655,2023 CCA January Open on ICC,January Open,2023.0,90,True,88,2022-12-13 01:40:35,2023-01-07 09:57:51,False,True,2023-01-07 09:57:51,False,,0.0
+2657,2023 Chicago Open,Chicago Open,2023.0,960,True,945,2022-12-30 11:58:51,2023-05-28 22:05:12,False,False,2023-05-28 22:05:12,True,68.0,22.0
+2665,2023 Niagara Falls Open,Niagara Falls Open,2023.0,170,True,165,2023-01-01 01:10:59,2023-05-06 08:21:11,False,False,2023-05-06 08:21:11,False,65.0,2.0
+2667,2023 Cleveland Open,Cleveland Open,2023.0,226,True,221,2023-01-10 03:46:15,2023-06-10 08:31:43,False,False,2023-06-10 08:31:43,False,65.0,1.0
+2668,2023 Chicago Open Blitz,Chicago Open Blitz,2023.0,130,True,130,2023-01-18 18:20:44,2023-05-28 21:01:55,False,False,2023-05-28 21:01:55,False,,0.0
+2669,2023 Blitz at Foxwoods,Blitz at Foxwoods,2023.0,38,True,38,2023-02-25 08:40:24,2023-04-08 20:43:05,False,False,2023-04-08 20:43:05,False,,0.0
+2670,2023 World Open  top 6 sections,World Open top 6 sections,2023.0,1324,True,1316,2023-01-01 16:46:58,2023-07-02 03:20:10,False,False,2023-07-02 03:20:10,True,57.0,7.3
+2672,2023 World Open  lower sections,World Open lower sections,2023.0,149,True,146,2023-01-09 14:30:17,2023-06-23 06:08:06,False,False,2023-06-23 06:08:06,False,59.0,2.0
+2673,2023 Philadelphia International,Philadelphia International,2023.0,108,True,105,2023-01-11 11:58:30,2023-06-24 10:09:41,False,False,2023-06-24 10:09:41,False,73.0,1.3
+2674,2023 Philadelphia Open,Philadelphia Open,2023.0,281,True,279,2023-01-11 17:23:24,2023-06-24 09:42:20,False,False,2023-06-24 09:42:20,False,67.0,0.5
+2675,2023 World Open Under 13 Championship,World Open Under 13,2023.0,110,True,109,2023-01-10 13:02:00,2023-06-26 00:54:47,False,False,2023-06-26 00:54:47,False,62.0,2.0
+2676,2023 World Open Amateur,World Open Amateur,2023.0,55,True,54,2023-01-10 12:19:57,2023-06-26 09:03:25,False,False,2023-06-26 09:03:25,False,64.0,1.0
+2677,2023 World Open Junior Championship,World Open Junior Championship,2023.0,102,True,101,2023-01-10 13:03:48,2023-06-27 22:54:25,False,False,2023-06-27 22:54:25,False,58.0,2.0
+2678,2023 World Open Action,World Open Action,2023.0,39,True,39,2023-01-01 22:41:38,2023-06-28 22:24:57,False,False,2023-06-28 22:24:57,False,,0.0
+2679,2023 World Open Senior Amateur,World Open Senior Amateur,2023.0,40,True,40,2023-03-03 19:53:14,2023-06-27 19:03:55,False,False,2023-06-27 19:03:55,False,,0.0
+2680,2023 World Open Women s Championship,World Open Womens Championship,2023.0,20,True,20,2023-03-11 09:55:53,2023-06-28 22:56:00,False,False,2023-06-28 22:56:00,False,,0.0
+2681,2023 World Open G7 Championship,World Open G7 Championship,2023.0,66,True,66,2023-04-25 00:05:06,2023-07-01 09:22:40,False,False,2023-07-01 09:22:40,False,,0.0
+2684,2023 World Open Blitz Championship,World Open Blitz Championship,2023.0,221,True,221,2023-03-08 23:07:12,2023-07-04 22:08:09,False,False,2023-07-04 22:08:09,False,,0.0
+2689,2023 World Open G 10 Championship,World Open G 10 Championship,2023.0,71,True,71,2023-03-08 23:14:39,2023-07-03 22:15:26,False,False,2023-07-03 22:15:26,False,,0.0
+2695,2023 CCA January Action on ICC,January Action,2023.0,58,True,57,2023-01-10 22:54:26,2023-01-21 10:45:46,False,True,2023-01-21 10:45:46,False,,0.0
+2696,2023 CCA February Open on ICC,February Open,2023.0,76,True,73,2023-01-10 23:02:47,2023-02-04 09:24:33,False,True,2023-02-04 09:24:33,False,,0.0
+2701,2023 CCA February Action on ICC,February Action,2023.0,54,True,52,2023-01-15 17:05:28,2023-02-25 09:59:27,False,True,2023-02-25 09:59:27,False,,0.0
+2702,2023 CCA March Open on ICC,March Open,2023.0,83,True,81,2023-01-15 17:09:06,2023-03-04 08:27:21,False,True,2023-03-04 08:27:21,False,,0.0
+2703,2023 ICC March G 60,ICC March G 60,2023.0,54,True,51,2023-01-22 11:06:21,2023-03-18 09:25:50,False,False,2023-03-18 09:25:50,False,,0.0
+2738,2023 Continental Class,Continental Class,2023.0,198,True,194,2023-03-17 14:26:50,2023-06-17 09:29:15,False,False,2023-06-17 09:29:15,False,66.0,2.0
+2760,2023 Continental Open,Continental Open,2023.0,312,True,311,2023-03-02 14:17:05,2023-07-15 08:20:00,False,False,2023-07-15 08:20:00,False,74.0,2.0
+2780,2023 Chicago Class,Chicago Class,2023.0,280,True,280,2023-03-22 12:51:13,2023-07-14 18:56:31,False,False,2023-07-14 18:56:31,False,67.0,2.0
+2788,2023 CCA April Open on ICC,April Open,2023.0,58,True,54,2023-03-21 07:58:52,2023-04-01 10:05:09,False,True,2023-04-01 10:05:09,False,,0.0
+2789,2023 CCA April Action on ICC,April Action,2023.0,51,True,46,2023-03-25 11:42:22,2023-04-15 10:07:51,False,True,2023-04-15 10:07:51,False,,0.0
+2795,2023 Pacific Coast Open,Pacific Coast Open,2023.0,403,True,401,2023-04-05 16:58:09,2023-07-22 07:59:35,False,False,2023-07-22 07:59:35,False,75.0,1.0
+2805,2023 Pittsburgh Open,Pittsburgh Open,2023.0,183,True,183,2023-04-01 08:44:10,2023-07-22 09:40:55,False,False,2023-07-22 09:40:55,False,61.0,1.0
+2811,2023 Southern Open,Southern Open,2023.0,294,True,293,2023-04-04 14:59:31,2023-07-29 07:46:58,False,False,2023-07-29 07:46:58,False,62.0,1.3
+2822,2023 CCA May Open on ICC,May Open,2023.0,70,True,66,2023-04-09 16:00:46,2023-05-06 03:43:10,False,True,2023-05-06 03:43:10,False,,0.0
+2823,2023 Bradley Open,Bradley Open,2023.0,256,True,256,2023-04-12 08:42:48,2023-07-29 09:44:18,False,False,2023-07-29 09:44:18,False,75.0,1.0
+2824,2023 Central California Open,Central California Open,2023.0,214,True,214,2023-04-12 11:58:31,2023-08-12 06:57:26,False,False,2023-08-12 06:57:26,False,64.0,2.0
+2880,2023 CCA May Action on ICC,May Action,2023.0,55,True,50,2023-05-11 23:29:55,2023-05-20 09:59:25,False,True,2023-05-20 09:59:25,False,,0.0
+2881,2023 Atlantic Open,Atlantic Open,2023.0,371,True,370,2023-05-26 22:10:38,2023-08-26 09:31:00,False,False,2023-08-26 09:31:00,False,55.0,3.0
+2886,2023 CCA June Open on ICC,June Open,2023.0,64,True,60,2023-05-13 06:45:38,2023-06-03 09:14:44,False,True,2023-06-03 09:14:44,False,,0.0
+2891,2023 CCA June Action on ICC,June Action,2023.0,41,True,40,2023-05-13 06:47:04,2023-06-17 10:11:43,False,True,2023-06-17 10:11:43,False,,0.0
+2918,2023 CCA July Open on ICC,July Open,2023.0,66,True,66,2023-06-25 19:20:46,2023-07-08 10:46:19,False,True,2023-07-08 10:46:19,False,,0.0
+2919,2023 Indianapolis Open,Indianapolis Open,2023.0,190,True,189,2023-06-05 01:25:34,2023-08-26 07:34:08,False,False,2023-08-26 07:34:08,False,66.0,1.0
+2936,2023 New York State Championship,New York State Championship,2023.0,347,True,347,2023-06-22 00:38:37,2023-09-02 21:23:24,False,False,2023-09-02 21:23:24,False,,0.0
+2963,2023 CCA July Action on ICC,July Action,2023.0,40,True,40,2023-06-30 05:35:18,2023-07-22 10:59:39,False,True,2023-07-22 10:59:39,False,,0.0
+2969,2023 Central New York Open,Central New York Open,2023.0,139,True,139,2023-07-06 15:08:35,2023-09-23 06:52:02,False,False,2023-09-23 06:52:02,False,68.0,1.0
+2977,2023 CCA August Open on ICC,August Open,2023.0,59,True,59,2023-07-22 22:41:02,2023-08-05 10:38:41,False,True,2023-08-05 10:38:41,False,,0.0
+2978,2023 Midwest Class Championships,Midwest Class Championships,2023.0,292,True,292,2023-07-28 11:44:21,2023-10-07 08:49:26,False,False,2023-10-07 08:49:26,False,,0.0
+2980,2023 Hartford Open,Hartford Open,2023.0,223,True,223,2023-08-06 12:20:03,2023-10-07 00:54:55,False,False,2023-10-07 00:54:55,False,,0.0
+2981,2023 Washington Chess Congess,Washington Chess Congress,2023.0,249,True,249,2023-07-25 23:21:56,2023-10-21 08:59:39,False,False,2023-10-21 08:59:39,False,67.0,1.0
+2984,2023 Eastern Chess Congress,Eastern Chess Congress,2023.0,527,True,527,2023-07-29 09:35:12,2023-10-28 09:06:33,False,False,2023-10-28 09:06:33,False,64.0,3.0
+2985,2023 North American Open,North American Open,2023.0,1115,True,1115,2023-07-25 12:41:45,2023-12-27 09:02:53,False,False,2023-12-27 09:02:53,False,59.0,2.4
+2987,2023 Los Angeles Open,Los Angeles Open,2023.0,415,True,415,2023-07-25 08:25:34,2023-11-04 09:20:44,False,False,2023-11-04 09:20:44,False,55.0,2.0
+3032,2023 CCA August Action on ICC,August Action,2023.0,35,True,35,2023-08-09 00:08:52,2023-08-19 10:50:13,False,True,2023-08-19 10:50:13,False,,0.0
+3034,2023 Kings Island Open,Kings Island Open,2023.0,358,True,358,2023-08-17 02:54:33,2023-11-11 09:51:33,False,False,2023-11-11 09:51:33,False,60.0,2.0
+3035,2023 National Chess Congress,National Chess Congress,2023.0,636,True,636,2023-08-15 17:44:59,2023-11-25 08:29:44,False,False,2023-11-25 08:29:44,False,55.0,2.7
+3056,2023 CCA September Open on ICC,September Open,2023.0,58,True,58,2023-08-24 19:43:15,2023-09-09 10:42:25,False,True,2023-09-09 10:42:25,False,,0.0
+3078,2023 Eastern Open,Eastern Open,2023.0,367,True,367,2023-09-13 23:58:24,2023-12-27 22:46:10,False,False,2023-12-27 22:46:10,False,,0.0
+3079,2023 CCA September Action on ICC,September Action,2023.0,33,True,33,2023-09-12 21:04:28,2023-09-23 08:08:45,False,True,2023-09-23 08:08:45,False,,0.0
+3090,2024 New York State Scholastic Championships,New York State Scholastic Championships,2024.0,1777,True,1777,2023-09-26 06:47:17,2024-03-08 21:06:41,False,False,2024-03-08 21:06:41,True,60.0,11.0
+3091,2023 CCA October Open on ICC,October Open,2023.0,32,True,32,2023-09-28 00:50:07,2023-10-07 02:49:42,False,True,2023-10-07 02:49:42,False,,0.0
+3129,2023 CCA November Classic on ICC,November Classic,2023.0,37,True,37,2023-11-02 04:56:24,2023-11-11 12:50:24,False,True,2023-11-11 12:50:24,False,,0.0
+3139,2024 Boston Chess Congress,Boston Chess Congress,2024.0,342,True,342,2023-11-06 13:27:17,2024-01-06 09:49:44,False,False,2024-01-06 09:49:44,False,,0.0
+3141,2024 Liberty Bell Open,Liberty Bell Open,2024.0,481,True,481,2023-11-09 15:10:45,2024-01-14 02:28:25,False,False,2024-01-14 02:28:25,False,,0.0
+3142,2024 Golden State Open,Golden State Open,2024.0,293,True,293,2023-11-09 16:03:16,2024-01-14 06:46:00,False,False,2024-01-14 06:46:00,False,,0.0
+3148,2023 North American Blitz Championship,North American Blitz Championship,2023.0,233,True,233,2023-11-17 11:34:10,2023-12-29 21:17:30,False,False,2023-12-29 21:17:30,False,,0.0
+3149,2023 CCA December Celebration on ICC,December Celebration,2023.0,51,True,51,2023-11-17 14:39:25,2023-12-09 09:41:14,False,True,2023-12-09 09:41:14,False,,0.0
+3153,2024 Southwest Class Championships,Southwest Class Championships,2024.0,441,True,441,2023-11-26 21:27:10,2024-02-16 22:24:48,False,False,2024-02-16 22:24:48,False,67.0,2.0
+3178,2024 George Washington Open,George Washington Open,2024.0,266,True,266,2023-12-07 15:04:45,2024-02-24 08:29:24,False,False,2024-02-24 08:29:24,False,73.0,1.0
+3179,2024 Western Class Championshps,Western Class Championships,2024.0,421,True,421,2023-12-08 09:28:20,2024-03-02 09:50:48,False,False,2024-03-02 09:50:48,False,56.0,2.0
+3188,2024 CCA January Classic on ICC,January Classic,2024.0,43,True,43,2023-12-29 23:22:12,2024-01-13 01:27:46,False,True,2024-01-13 01:27:46,False,,0.0
+3213,2024 Open at Foxwoods,Open at Foxwoods,2024.0,465,True,465,2024-01-02 22:58:20,2024-03-29 09:49:01,False,False,2024-03-29 09:49:01,False,72.0,1.5
+3214,2024 Southern Class,Southern Class,2024.0,259,True,259,2024-01-05 05:21:30,2024-03-16 09:19:15,False,False,2024-03-16 09:19:15,False,,0.0
+3215,2024 Mid-America Open,Mid-America Open,2024.0,305,True,305,2024-01-04 10:40:58,2024-03-23 08:05:23,False,False,2024-03-23 08:05:23,False,71.0,2.0
+3225,2024 CCA February Classic on ICC,February Classic,2024.0,66,True,66,2024-01-18 15:16:59,2024-02-10 08:26:29,False,True,2024-02-10 08:26:29,False,,0.0
+3248,2024 Chicago Open,Chicago Open,2024.0,860,True,860,2024-01-25 19:33:38,2024-05-25 08:16:56,False,False,2024-05-25 08:16:56,True,66.0,17.5
+3249,2024 Niagara Falls Open,Niagara Falls Open,2024.0,177,True,177,2024-02-09 00:36:59,2024-05-31 21:25:44,False,False,2024-05-31 21:25:44,False,68.0,3.0
+3253,2024 Chicago Open Blitz,Chicago Open Blitz,2024.0,145,True,145,2024-02-03 23:54:18,2024-05-26 20:57:53,False,False,2024-05-26 20:57:53,False,73.0,1.0
+3259,2024 Eastern Class,Eastern Class,2024.0,203,True,203,2024-02-08 11:23:07,2024-06-08 09:29:05,False,False,2024-06-08 09:29:05,False,,0.0
+3276,2024 Cleveland Open,Cleveland Open,2024.0,167,True,167,2024-03-11 18:53:31,2024-06-08 09:48:51,False,False,2024-06-08 09:48:51,False,75.0,1.0
+3278,2024 CCA March Classic on ICC,March Classic,2024.0,47,True,47,2024-02-13 22:56:48,2024-03-09 11:49:06,False,True,2024-03-09 11:49:06,False,,0.0
+3288,2024 New York State Scholastic Championships WAITLIST,New York State Scholastic Championships WAITLIST,2024.0,174,True,174,2024-02-27 21:57:06,2024-03-05 09:25:47,False,False,2024-03-05 09:25:47,False,,0.0
+3306,2024 New York State Open,New York State Open,2024.0,76,True,76,2024-04-04 06:39:34,2024-06-14 09:02:39,False,False,2024-06-14 09:02:39,False,,0.0
+3307,2024 Philadelphia International,Philadelphia International,2024.0,143,True,143,2024-03-06 00:44:21,2024-06-27 16:33:43,False,False,2024-06-27 16:33:43,False,72.0,2.0
+3309,2024 World Open  top 6 sections,World Open top 6 sections,2024.0,1195,True,1195,2024-03-06 12:32:54,2024-07-05 09:06:20,False,False,2024-07-05 09:06:20,False,58.0,4.0
+3310,2024 World Open  lower sections,World Open lower sections,2024.0,151,True,151,2024-03-26 19:16:39,2024-06-28 08:43:31,False,False,2024-06-28 08:43:31,False,68.0,3.0
+3311,2024 Philadelphia Open,Philadelphia Open,2024.0,312,True,312,2024-03-16 21:03:16,2024-06-29 09:40:24,False,False,2024-06-29 09:40:24,False,57.0,2.0
+3314,2024 CCA April Classic on ICC,April Classic,2024.0,41,True,41,2024-03-15 19:12:24,2024-04-13 11:53:37,False,True,2024-04-13 11:53:37,False,,0.0
+3319,2024 World Open Under 13 Championship,World Open Under 13,2024.0,80,True,80,2024-04-03 21:09:04,2024-06-26 09:26:56,False,False,2024-06-26 09:26:56,False,,0.0
+3320,2024 World Open Senior Amateur,World Open Senior Amateur,2024.0,40,True,40,2024-04-08 10:04:44,2024-07-01 07:10:10,False,False,2024-07-01 07:10:10,False,73.0,2.0
+3321,2024 World Open Womens Championship,World Open Womens Championship,2024.0,12,True,12,2024-05-20 23:54:37,2024-06-30 22:25:22,False,False,2024-06-30 22:25:22,False,,0.0
+3322,2024 World Open Amateur,World Open Amateur,2024.0,47,True,47,2024-04-05 13:51:25,2024-07-01 08:36:05,False,False,2024-07-01 08:36:05,False,65.0,1.0
+3323,2024 World Open Junior Championship,World Open Junior Championship,2024.0,59,True,59,2024-04-04 06:15:33,2024-06-30 23:20:59,False,False,2024-06-30 23:20:59,False,,0.0
+3324,2024 World Open G 7 Championship,World Open G7 Championship,2024.0,64,True,64,2024-04-09 11:02:46,2024-07-03 09:21:24,False,False,2024-07-03 09:21:24,False,55.0,1.0
+3325,2024 World Open G 10 Championship,World Open G 10 Championship,2024.0,58,True,58,2024-04-03 15:04:34,2024-07-06 20:46:29,False,False,2024-07-06 20:46:29,False,,0.0
+3326,2024 World Open Blitz Championship,World Open Blitz Championship,2024.0,186,True,186,2024-04-03 15:05:43,2024-07-07 22:01:16,False,False,2024-07-07 22:01:16,False,64.0,1.0
+3327,2024 Pittsburgh Open,Pittsburgh Open,2024.0,166,True,166,2024-04-14 18:46:23,2024-07-27 09:38:19,False,False,2024-07-27 09:38:19,False,63.0,1.0
+3328,2024 Chicago Class,Chicago Class,2024.0,270,True,270,2024-04-02 01:27:07,2024-07-20 08:55:50,False,False,2024-07-20 08:55:50,False,71.0,2.0
+3329,2024 Southern Open,Southern Open,2024.0,231,True,231,2024-03-30 11:59:40,2024-07-20 09:41:41,False,False,2024-07-20 09:41:41,False,,0.0
+3330,2024 Pacific Coast Open,Pacific Coast Open,2024.0,361,True,361,2024-03-26 16:06:47,2024-07-20 08:37:35,False,False,2024-07-20 08:37:35,False,68.0,3.0
+3331,2024 Bradley Open,Bradley Open,2024.0,270,True,270,2024-04-01 09:51:38,2024-07-27 08:30:04,False,False,2024-07-27 08:30:04,False,,0.0
+3359,2024 Continental Open,Continental Open,2024.0,244,True,244,2024-04-14 23:13:42,2024-08-17 08:21:37,False,False,2024-08-17 08:21:37,False,,0.0
+3372,2024 Indianapolis Open,Indianapolis Open,2024.0,170,True,170,2024-05-18 13:14:55,2024-08-24 09:52:27,False,False,2024-08-24 09:52:27,False,,0.0
+3373,2024 Central California Open,Central California Open,2024.0,169,True,169,2024-06-06 07:46:40,2024-08-09 23:40:24,False,False,2024-08-09 23:40:24,False,,0.0
+3374,2024 New York State Championship,New York State Championship,2024.0,326,True,326,2024-04-22 08:44:13,2024-09-01 09:27:06,False,False,2024-09-01 09:27:06,False,,0.0
+3377,2024 Atlantic Open,Atlantic Open,2024.0,272,True,272,2024-04-22 08:07:04,2024-08-24 09:56:51,False,False,2024-08-24 09:56:51,False,,0.0
+3455,2024 Midwest Class Championships,Midwest Class Championships,2024.0,303,True,303,2024-06-26 07:56:59,2024-10-12 09:19:21,False,False,2024-10-12 09:19:21,False,57.0,2.0
+3456,2024 Hartford Open,Hartford Open,2024.0,199,True,199,2024-06-26 09:59:32,2024-10-19 09:36:20,False,False,2024-10-19 09:36:20,False,56.0,2.0
+3457,2024 Eastern Chess Congress,Eastern Chess Congress,2024.0,490,True,490,2024-06-22 18:15:42,2024-10-26 09:05:35,False,False,2024-10-26 09:05:35,False,62.0,2.0
+3458,2024 Los Angeles Open,Los Angeles Open,2024.0,412,True,412,2024-06-23 14:59:00,2024-11-02 09:53:31,False,False,2024-11-02 09:53:31,True,57.0,5.0
+3476,2024 Kings Island Open,Kings Island Open,2024.0,350,True,350,2024-07-12 12:03:49,2024-11-16 08:35:07,False,False,2024-11-16 08:35:07,False,,0.0
+3477,2024 National Chess Congress,National Chess Congress,2024.0,621,True,621,2024-07-16 12:20:35,2024-11-30 08:57:02,False,False,2024-11-30 08:57:02,False,62.0,2.0
+3478,2024 Eastern Open,Eastern Open,2024.0,391,True,391,2024-08-07 09:50:33,2024-12-28 08:56:49,False,False,2024-12-28 08:56:49,False,74.0,3.0
+3479,2024 North American Open,North American Open,2024.0,1102,True,1102,2024-07-12 15:23:20,2024-12-27 07:47:19,False,False,2024-12-27 07:47:19,False,70.0,4.0
+3504,2025 Liberty Bell Open,Liberty Bell Open,2025.0,530,True,530,2024-08-20 09:00:09,2025-01-19 07:38:34,False,False,2025-01-19 07:38:34,False,59.0,2.0
+3524,2025 Boston Chess Congress,Boston Chess Congress,2025.0,383,True,383,2024-08-20 14:19:36,2025-01-04 09:58:02,False,False,2025-01-04 09:58:02,False,65.0,2.0
+3526,2024 North American Blitz Championship,North American Blitz Championship,2024.0,212,True,212,2024-08-21 15:35:09,2024-12-29 21:25:10,False,False,2024-12-29 21:25:10,False,74.0,1.0
+3595,2025 Golden State Open,Golden State Open,2025.0,377,True,377,2024-09-25 17:14:43,2025-01-18 21:49:24,False,False,2025-01-18 21:49:24,False,66.0,1.0
+3596,2025 Western Class Championshps,Western Class Championships,2025.0,389,True,389,2024-11-17 12:35:36,2025-03-08 08:57:12,False,False,2025-03-08 08:57:12,False,59.0,3.0
+3597,2025 Southwest Class Championships,Southwest Class Championships,2025.0,488,True,488,2024-09-23 18:07:46,2025-02-15 01:11:53,False,False,2025-02-15 01:11:53,True,74.0,5.0
+3598,2025 George Washington Open,George Washington Open,2025.0,250,True,250,2024-09-14 08:09:13,2025-02-22 09:38:58,False,False,2025-02-22 09:38:58,False,74.0,1.0
+3631,2025 Princeton Open,Princeton Open,2025.0,574,True,574,2024-10-16 23:08:27,2025-04-18 08:41:58,False,False,2025-04-18 08:41:58,False,70.0,4.0
+3632,2025 Mid-America Open,Mid-America Open,2025.0,262,True,262,2024-10-25 17:19:17,2025-03-22 09:51:28,False,False,2025-03-22 09:51:28,False,74.0,1.3
+3660,2025 Chicago Open,Chicago Open,2025.0,899,True,899,2024-10-15 08:56:54,2025-05-25 04:12:02,False,False,2025-05-25 04:12:02,True,64.0,12.0
+3664,2025 New York State Scholastic Championships Grades K-8,New York State Scholastic Championships Grades K-8,2025.0,1767,True,1767,2024-10-14 14:31:24,2025-03-07 19:18:46,False,False,2025-03-07 19:18:46,False,56.0,4.3
+3666,2025 New York State High School Championship,New York State High School Championship,2025.0,219,True,219,2024-11-16 21:13:58,2025-03-14 15:51:07,False,False,2025-03-14 15:51:07,True,58.0,5.0
+3684,2025 Southern Class,Southern Class,2025.0,170,True,170,2024-11-27 20:16:35,2025-03-08 08:47:30,False,False,2025-03-08 08:47:30,False,70.0,0.7
+3686,2025 Philadelphia International,Philadelphia International,2025.0,126,True,126,2024-12-09 15:48:22,2025-06-26 11:06:41,False,False,2025-06-26 11:06:41,False,57.0,2.0
+3687,2025 World Open  top 6 sections,World Open top 6 sections,2025.0,1165,True,1165,2024-11-11 21:28:00,2025-07-04 06:29:17,False,False,2025-07-04 06:29:17,False,63.0,4.0
+3688,2025 World Open  lower sections,World Open lower sections,2025.0,135,True,135,2024-12-17 17:50:41,2025-06-27 10:06:28,False,False,2025-06-27 10:06:28,False,,0.0
+3720,2025 Niagara Falls Open,Niagara Falls Open,2025.0,123,True,123,2024-12-20 08:31:03,2025-05-02 22:28:25,False,False,2025-05-02 22:28:25,False,62.0,2.0
+3731,2025 New York State Senior Championship  With Young Adult Mi,New York State Senior Championship With Young Adult Mi,2025.0,57,True,57,2025-01-13 13:23:38,2025-03-15 08:13:50,False,False,2025-03-15 08:13:50,False,,0.0
+3751,2025 Philadelphia Open,Philadelphia Open,2025.0,325,True,325,2024-12-29 11:32:19,2025-06-28 09:54:10,False,False,2025-06-28 09:54:10,False,64.0,2.0
+3752,2025 Eastern Class,Eastern Class,2025.0,195,True,195,2025-02-13 05:39:38,2025-06-07 08:03:34,False,False,2025-06-07 08:03:34,False,73.0,3.0
+3798,2025 Cleveland Open,Cleveland Open,2025.0,199,True,199,2025-01-24 00:39:01,2025-06-14 09:33:29,False,False,2025-06-14 09:33:29,False,,0.0
+3832,WAIT LIST-2025 New York State Scholastic Championships Grade,WAIT LIST-2025 New York State Scholastic Championships Grade,,101,True,101,2025-02-21 10:35:31,2025-03-07 14:18:36,False,False,2025-03-07 14:18:36,False,,0.0
+3834,2025 Southern Open,Southern Open,2025.0,188,True,188,2025-02-18 10:01:47,2025-07-26 04:00:36,False,False,2025-07-26 04:00:36,False,,0.0
+3835,2025 Bradley Open,Bradley Open,2025.0,246,True,246,2025-02-13 00:08:57,2025-07-26 09:51:42,False,False,2025-07-26 09:51:42,False,,0.0
+3836,2025 Chicago Class,Chicago Class,2025.0,294,True,294,2025-04-01 14:17:29,2025-07-19 09:32:46,False,False,2025-07-19 09:32:46,False,,0.0
+3837,2025 Pittsburgh Open,Pittsburgh Open,2025.0,152,True,152,2025-03-18 10:13:11,2025-07-18 17:31:21,False,False,2025-07-18 17:31:21,False,,0.0
+3861,2025 Pacific Coast Open,Pacific Coast Open,2025.0,391,True,391,2025-02-18 23:05:46,2025-08-09 01:36:27,False,False,2025-08-09 01:36:27,False,75.0,1.0
+3862,2025 Continental Open,Continental Open,2025.0,265,True,265,2025-02-21 23:49:44,2025-08-15 22:27:59,False,False,2025-08-15 22:27:59,False,,0.0
+3863,2025 Atlantic Open,Atlantic Open,2025.0,238,True,238,2025-03-23 12:52:33,2025-08-23 09:50:52,False,False,2025-08-23 09:50:52,False,74.0,2.0
+3864,2025 New York State Championship,New York State Championship,2025.0,348,True,348,2025-02-27 17:24:41,2025-08-31 08:45:50,False,False,2025-08-31 08:45:50,False,,0.0
+3874,2025 World Open Under 13 Championship,World Open Under 13,2025.0,76,True,76,2025-04-08 13:54:45,2025-06-30 08:24:32,False,False,2025-06-30 08:24:32,False,56.0,1.0
+3875,2025 World Open Amateur,World Open Amateur,2025.0,54,True,54,2025-04-09 21:42:16,2025-06-30 07:41:09,False,False,2025-06-30 07:41:09,False,58.0,2.0
+3876,2025 World Open Senior Amateur,World Open Senior Amateur,2025.0,45,True,45,2025-03-11 13:27:38,2025-06-29 14:19:21,False,False,2025-06-29 14:19:21,False,58.0,1.0
+3877,2025 World Open Womens Championship,World Open Womens Championship,2025.0,15,True,15,2025-05-05 02:07:15,2025-06-30 00:25:11,False,False,2025-06-30 00:25:11,False,,0.0
+3900,2025 World Open G 7 Championship,World Open G7 Championship,2025.0,66,True,66,2025-03-23 14:54:07,2025-07-02 09:58:25,False,False,2025-07-02 09:58:25,False,60.0,3.0
+3901,2025 World Open G 10 Championship,World Open G 10 Championship,2025.0,91,True,91,2025-03-23 14:57:38,2025-07-05 21:42:55,False,False,2025-07-05 21:42:55,False,,0.0
+3902,2025 World Open Blitz Championship,World Open Blitz Championship,2025.0,195,True,195,2025-03-23 15:01:10,2025-07-06 21:49:49,False,False,2025-07-06 21:49:49,False,59.0,1.0
+3903,2025 Central California Open,Central California Open,2025.0,179,True,179,2025-05-03 18:47:20,2025-08-22 22:12:31,False,False,2025-08-22 22:12:31,False,,0.0
+3904,2025 Indianapolis Open,Indianapolis Open,2025.0,187,True,187,2025-05-18 18:14:51,2025-08-23 07:21:37,False,False,2025-08-23 07:21:37,False,,0.0
+3906,2025 New York State Open,New York State Open,2025.0,83,True,83,2025-03-16 07:04:27,2025-06-19 14:29:49,False,False,2025-06-19 14:29:49,False,,0.0
+3915,2025 Chicago Open Blitz,Chicago Open Blitz,2025.0,120,True,120,2025-03-19 13:43:22,2025-05-25 20:59:19,False,False,2025-05-25 20:59:19,False,,0.0
+3973,2025 Midwest Class Championships,Midwest Class Championships,2025.0,306,True,306,2025-05-06 08:30:59,2025-10-11 09:20:47,False,False,2025-10-11 09:20:47,False,,0.0
+3974,2025 Hartford Open,Hartford Open,2025.0,189,True,189,2025-06-28 15:35:57,2025-10-11 09:56:04,False,False,2025-10-11 09:56:04,False,74.0,1.0
+4006,2025 Eastern Chess Congress,Eastern Chess Congress,2025.0,487,True,487,2025-06-26 08:07:28,2025-10-25 09:40:33,False,False,2025-10-25 09:40:33,False,60.0,3.0
+4007,2025 Los Angeles Open,Los Angeles Open,2025.0,397,True,397,2025-06-19 16:28:08,2025-11-08 09:39:42,False,False,2025-11-08 09:39:42,False,57.0,2.0
+4008,2025 Kings Island Open,Kings Island Open,2025.0,356,True,356,2025-06-13 14:25:40,2025-11-15 08:44:15,False,False,2025-11-15 08:44:15,False,61.0,1.3
+4019,2025 World Open Action,World Open Action,2025.0,27,True,27,2025-06-18 21:45:45,2025-06-30 23:07:39,False,False,2025-06-30 23:07:39,False,,0.0
+4020,2025 National Chess Congress,National Chess Congress,2025.0,705,True,705,2025-07-06 05:38:37,2025-11-29 08:42:43,False,False,2025-11-29 08:42:43,False,75.0,1.5
+4021,2025 Eastern Open,Eastern Open,2025.0,389,True,389,2025-08-25 02:04:17,2025-12-27 09:08:57,False,False,2025-12-27 09:08:57,False,74.0,0.7
+4022,2025 North American Open,North American Open,2025.0,1256,True,1256,2025-06-20 09:14:10,2025-12-27 08:40:13,False,False,2025-12-27 08:40:13,False,61.0,3.5
+4023,World Open Junior Octos,World Open Junior Octos,,8,True,8,2025-06-15 18:41:00,2025-06-25 23:52:26,False,False,2025-06-25 23:52:26,False,,0.0
+4024,Philadelphia Octos,Philadelphia Octos,,11,True,11,2025-06-23 19:52:13,2025-06-26 16:28:09,False,False,2025-06-26 16:28:09,False,,0.0
+4029,2026 Boston Chess Congress,Boston Chess Congress,2026.0,359,True,359,2025-06-26 11:36:00,2026-01-03 07:30:30,False,False,2026-01-03 07:30:30,False,67.0,2.0
+4030,2025 North American Blitz Championship,North American Blitz Championship,2025.0,280,True,280,2025-06-26 07:52:30,2025-12-29 21:29:31,False,False,2025-12-29 21:29:31,False,60.0,2.0
+4088,2026 Liberty Bell Open,Liberty Bell Open,2026.0,564,True,564,2025-08-19 10:20:52,2026-01-18 08:58:00,False,False,2026-01-18 08:58:00,False,75.0,1.0
+4090,2026 Golden State Open,Golden State Open,2026.0,387,True,387,2025-09-20 11:43:46,2026-01-18 08:19:32,False,False,2026-01-18 08:19:32,False,67.0,1.0
+4142,2026 George Washington Open,George Washington Open,2026.0,209,True,209,2025-09-12 14:24:54,2026-02-28 09:53:56,False,False,2026-02-28 09:53:56,False,57.0,1.0
+4144,2026 George Washington Saturday Octos,George Washington Saturday Octos,2026.0,1,True,1,2026-01-25 17:15:48,2026-01-25 17:15:48,False,False,2026-01-25 17:15:48,False,,0.0
+4146,2026 George Washington Sunday Octos,George Washington Sunday Octos,2026.0,6,True,6,2026-02-25 13:59:04,2026-02-28 21:34:13,False,False,2026-02-28 21:34:13,False,,0.0
+4147,2026 Southwest Class Championships,Southwest Class Championships,2026.0,492,True,492,2025-09-16 14:41:21,2026-02-13 21:52:28,False,False,2026-02-13 21:52:28,False,61.0,2.0
+4178,2026 Atlantic City Open,Atlantic City Open,2026.0,424,True,184,2025-10-22 01:20:15,2026-04-05 00:00:00,False,False,2026-03-21 01:35:33,False,71.0,3.0
+4179,2026 Western Class Championshps,Western Class Championships,2026.0,318,True,318,2025-12-14 12:22:30,2026-03-07 09:29:53,False,False,2026-03-07 09:29:53,False,62.0,4.0
+4180,2026 Mid-America Open,Mid-America Open,2026.0,200,True,200,2025-11-16 18:29:21,2026-03-21 01:18:32,False,False,2026-03-21 01:18:32,False,,0.0
+4181,2026 New York State High School Championship,New York State High School Championship,2026.0,198,True,198,2025-11-07 16:49:10,2026-02-27 22:07:42,False,False,2026-02-27 22:07:42,False,75.0,2.0
+4182,2026 New York State Senior Championship  With Young Adult Mi,New York State Senior Championship With Young Adult Mi,2026.0,61,True,61,2025-12-10 19:20:19,2026-02-27 18:49:11,False,False,2026-02-27 18:49:11,False,74.0,1.0
+4183,2026 New York State Scholastic Championships Grades K-8,New York State Scholastic Championships Grades K-8,2026.0,1753,True,1753,2025-10-11 13:01:01,2026-03-06 12:56:46,False,False,2026-03-06 12:56:46,True,56.0,8.0
+4244,2026 Chicago Open,Chicago Open,2026.0,362,True,179,2025-11-26 10:20:11,2026-04-28 00:00:00,False,False,2026-03-20 17:04:07,False,57.0,4.0
+4245,2026 Chicago Open Blitz,Chicago Open Blitz,2026.0,10,True,4,2025-11-26 10:14:59,2026-04-28 00:00:00,False,False,2026-03-19 07:14:00,False,,0.0
+4248,2026 World Open  top 6 sections,World Open top 6 sections,2026.0,28,True,28,2025-11-26 11:26:59,2026-03-20 23:31:56,False,False,2026-03-20 23:31:56,False,69.0,1.0
+4249,2026 World Open  lower sections,World Open lower sections,2026.0,2,True,2,2026-02-05 14:30:03,2026-02-26 09:25:19,False,False,2026-02-26 09:25:19,False,,0.0
+4284,2026 DC International,DC International,2026.0,10,True,5,2025-12-04 00:39:41,2026-04-28 00:00:00,False,False,2026-02-19 00:02:48,False,67.0,1.0
+4289,2026 Southern Class,Southern Class,2026.0,195,True,195,2025-12-15 13:05:36,2026-03-14 08:32:11,False,False,2026-03-14 08:32:11,False,67.0,1.0
+4349,2026 New York State Open,New York State Open,2026.0,13,True,1,2026-03-19 11:29:59,2026-04-28 00:00:00,False,False,2026-03-19 11:29:59,False,,0.0
+4351,2026 DC Open,DC Open,2026.0,6,True,2,2026-02-20 19:24:23,2026-04-28 00:00:00,False,False,2026-03-21 00:10:13,False,,0.0
+4396,2026 World Open G 7 Championship,World Open G7 Championship,2026.0,1,True,1,2026-02-10 00:04:34,2026-02-10 00:04:34,False,False,2026-02-10 00:04:34,False,,0.0
+4397,2026 World Open G 10 Championship,World Open G 10 Championship,2026.0,1,True,1,2026-02-10 00:07:56,2026-02-10 00:07:56,False,False,2026-02-10 00:07:56,False,,0.0
+4404,2026 Chicago Class,Chicago Class,2026.0,3,True,1,2026-03-04 00:14:48,2026-04-28 00:00:00,False,False,2026-03-04 00:14:48,False,,0.0
+4405,2026 World Open Action,World Open Action,2026.0,1,True,1,2026-03-04 00:53:40,2026-03-04 00:53:40,False,False,2026-03-04 00:53:40,False,,0.0
+4408,2026 World Open Blitz Championship,World Open Blitz Championship,2026.0,1,True,1,2026-03-04 00:51:31,2026-03-04 00:51:31,False,False,2026-03-04 00:51:31,False,,0.0
+4409,2026 World Open G 50 Championship,World Open G 50 Championship,2026.0,1,True,1,2026-03-04 01:03:09,2026-03-04 01:03:09,False,False,2026-03-04 01:03:09,False,,0.0
+4412,2026 Bradley Open,Bradley Open,2026.0,4,True,2,2026-02-16 09:38:22,2026-04-28 00:00:00,False,False,2026-03-08 21:13:17,False,,0.0
+4413,2026 Hartford Open,Hartford Open,2026.0,16,True,3,2026-03-08 21:12:04,2026-04-28 00:00:00,False,False,2026-03-19 10:23:59,False,,0.0
+4414,2026 Pittsburgh Open,Pittsburgh Open,2026.0,5,True,2,2026-02-20 19:28:19,2026-04-28 00:00:00,False,False,2026-03-11 22:24:42,False,,0.0
+4415,2026 Pacific Coast Open,Pacific Coast Open,2026.0,7,True,3,2026-03-03 22:56:45,2026-04-28 00:00:00,False,False,2026-03-10 19:06:24,False,,0.0
+4417,2026 Cleveland Open,Cleveland Open,2026.0,16,True,2,2026-03-01 19:24:30,2026-04-28 00:00:00,False,False,2026-03-16 21:23:52,False,,0.0

@@ -10,8 +10,8 @@ Steps:
   5. Update the TOURNAMENT_DATA block in docs/index.html
   6. Log the run to output/update_log.csv
 
-Note: Walk-in multiplier data (06_walk_in_multipliers.py) is regenerated manually
-after scrape_standings.py runs, not on every daily update.
+Note: Walk-in multiplier data (06_walk_in_multipliers.py) is regenerated every
+pipeline run from historical_standings.csv + tournament_summary.csv.
 """
 
 import argparse

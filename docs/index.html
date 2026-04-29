@@ -788,8 +788,8 @@
 // TOURNAMENT DATA (embedded from model pipeline)
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
-  "generated": "2026-04-28",
-  "generated_time": "2026-04-28T16:47:40.052679-04:00",
+  "generated": "2026-04-29",
+  "generated_time": "2026-04-29T01:30:13.893368-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 14,
@@ -803,13 +803,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 353,
-      "gross_count": 362,
-      "withdrawal_count": 9,
-      "days_remaining": 23,
-      "point_estimate": 888,
-      "ci_lower": 851,
-      "ci_upper": 927,
+      "current_count": 366,
+      "gross_count": 376,
+      "withdrawal_count": 10,
+      "days_remaining": 22,
+      "point_estimate": 893,
+      "ci_lower": 855,
+      "ci_upper": 933,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1090,6 +1090,10 @@ const TOURNAMENT_DATA = {
         [
           126,
           353
+        ],
+        [
+          127,
+          366
         ]
       ],
       "registration_curve": [
@@ -1146,7 +1150,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 316,
+        "count_at_same_point": 321,
         "final": 899
       },
       "low_confidence": false,
@@ -1155,10 +1159,10 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Chicago Open",
         "status": "on_pace",
-        "actual": 353,
-        "expected": 384,
-        "deviation_pct": -8.0,
-        "message": "Registrations are tracking within normal range (-8%)"
+        "actual": 366,
+        "expected": 390,
+        "deviation_pct": -6.0,
+        "message": "Registrations are tracking within normal range (-6%)"
       }
     },
     {
@@ -1173,10 +1177,10 @@ const TOURNAMENT_DATA = {
       "current_count": 16,
       "gross_count": 16,
       "withdrawal_count": 0,
-      "days_remaining": 38,
-      "point_estimate": 209,
-      "ci_lower": 203,
-      "ci_upper": 216,
+      "days_remaining": 37,
+      "point_estimate": 208,
+      "ci_lower": 201,
+      "ci_upper": 214,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1353,6 +1357,10 @@ const TOURNAMENT_DATA = {
         [
           36,
           16
+        ],
+        [
+          37,
+          16
         ]
       ],
       "registration_curve": [
@@ -1419,9 +1427,9 @@ const TOURNAMENT_DATA = {
         "family": "Hartford Open",
         "status": "on_pace",
         "actual": 16,
-        "expected": 14,
-        "deviation_pct": 12.4,
-        "message": "Registrations are tracking within normal range (+12%)"
+        "expected": 15,
+        "deviation_pct": 8.0,
+        "message": "Registrations are tracking within normal range (+8%)"
       }
     },
     {
@@ -1433,13 +1441,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": 93.0,
       "regular_fee": 110.0,
       "onsite_fee": 110.0,
-      "current_count": 16,
-      "gross_count": 16,
+      "current_count": 20,
+      "gross_count": 20,
       "withdrawal_count": 0,
-      "days_remaining": 38,
-      "point_estimate": 212,
-      "ci_lower": 201,
-      "ci_upper": 224,
+      "days_remaining": 37,
+      "point_estimate": 222,
+      "ci_lower": 210,
+      "ci_upper": 235,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1616,6 +1624,10 @@ const TOURNAMENT_DATA = {
         [
           36,
           16
+        ],
+        [
+          37,
+          20
         ]
       ],
       "registration_curve": [
@@ -1672,7 +1684,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 8,
+        "count_at_same_point": 9,
         "final": 199
       },
       "low_confidence": false,
@@ -1681,10 +1693,10 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Cleveland Open",
         "status": "below_pace",
-        "actual": 16,
-        "expected": 37,
-        "deviation_pct": -57.1,
-        "message": "Registrations are 57.1% below historical pace"
+        "actual": 20,
+        "expected": 39,
+        "deviation_pct": -48.2,
+        "message": "Registrations are 48.2% below historical pace"
       }
     },
     {
@@ -1699,10 +1711,10 @@ const TOURNAMENT_DATA = {
       "current_count": 13,
       "gross_count": 13,
       "withdrawal_count": 0,
-      "days_remaining": 52,
+      "days_remaining": 51,
       "point_estimate": 105,
-      "ci_lower": 76,
-      "ci_upper": 144,
+      "ci_lower": 70,
+      "ci_upper": 156,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1864,6 +1876,10 @@ const TOURNAMENT_DATA = {
         [
           36,
           13
+        ],
+        [
+          37,
+          13
         ]
       ],
       "registration_curve": [
@@ -1931,8 +1947,8 @@ const TOURNAMENT_DATA = {
         "status": "above_pace",
         "actual": 13,
         "expected": 8,
-        "deviation_pct": 70.0,
-        "message": "Registrations are 70.0% above historical pace"
+        "deviation_pct": 60.6,
+        "message": "Registrations are 60.6% above historical pace"
       }
     },
     {
@@ -1947,10 +1963,10 @@ const TOURNAMENT_DATA = {
       "current_count": 9,
       "gross_count": 10,
       "withdrawal_count": 1,
-      "days_remaining": 58,
-      "point_estimate": 97,
-      "ci_lower": 92,
-      "ci_upper": 102,
+      "days_remaining": 57,
+      "point_estimate": 96,
+      "ci_lower": 91,
+      "ci_upper": 101,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2121,6 +2137,10 @@ const TOURNAMENT_DATA = {
           9
         ],
         [
+          85,
+          9
+        ],
+        [
           133,
           9
         ],
@@ -2215,7 +2235,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 12,
+        "count_at_same_point": 13,
         "final": 126
       },
       "low_confidence": true,
@@ -2226,8 +2246,8 @@ const TOURNAMENT_DATA = {
         "status": "above_pace",
         "actual": 9,
         "expected": 7,
-        "deviation_pct": 38.1,
-        "message": "Registrations are 38.1% above historical pace"
+        "deviation_pct": 30.7,
+        "message": "Registrations are 30.7% above historical pace"
       }
     },
     {
@@ -2242,10 +2262,10 @@ const TOURNAMENT_DATA = {
       "current_count": 6,
       "gross_count": 6,
       "withdrawal_count": 0,
-      "days_remaining": 59,
-      "point_estimate": 139,
+      "days_remaining": 58,
+      "point_estimate": 138,
       "ci_lower": 105,
-      "ci_upper": 183,
+      "ci_upper": 182,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2271,6 +2291,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           1,
+          6
+        ],
+        [
+          2,
           6
         ]
       ],
@@ -2339,8 +2363,8 @@ const TOURNAMENT_DATA = {
         "status": "below_pace",
         "actual": 6,
         "expected": 16,
-        "deviation_pct": -61.4,
-        "message": "Registrations are 61.4% below historical pace"
+        "deviation_pct": -63.0,
+        "message": "Registrations are 63.0% below historical pace"
       }
     },
     {
@@ -2352,13 +2376,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 5,
-      "gross_count": 6,
+      "current_count": 6,
+      "gross_count": 7,
       "withdrawal_count": 1,
-      "days_remaining": 59,
-      "point_estimate": 263,
-      "ci_lower": 233,
-      "ci_upper": 295,
+      "days_remaining": 58,
+      "point_estimate": 265,
+      "ci_lower": 236,
+      "ci_upper": 296,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2481,12 +2505,8 @@ const TOURNAMENT_DATA = {
           5
         ],
         [
-          94,
-          5
-        ],
-        [
-          95,
-          5
+          37,
+          6
         ]
       ],
       "registration_curve": [
@@ -2552,10 +2572,10 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "DC Open",
         "status": "below_pace",
-        "actual": 5,
-        "expected": 14,
-        "deviation_pct": -65.2,
-        "message": "Registrations are 65.2% below historical pace"
+        "actual": 6,
+        "expected": 15,
+        "deviation_pct": -60.6,
+        "message": "Registrations are 60.6% below historical pace"
       }
     },
     {
@@ -2570,7 +2590,7 @@ const TOURNAMENT_DATA = {
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 62,
+      "days_remaining": 61,
       "point_estimate": 110,
       "ci_lower": 77,
       "ci_upper": 145,
@@ -2664,8 +2684,8 @@ const TOURNAMENT_DATA = {
         "status": "on_pace",
         "actual": 5,
         "expected": 5,
-        "deviation_pct": 2.0,
-        "message": "Registrations are tracking within normal range (+2%)"
+        "deviation_pct": -1.1,
+        "message": "Registrations are tracking within normal range (-1%)"
       }
     },
     {
@@ -2677,13 +2697,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": 318.0,
       "regular_fee": 328.0,
       "onsite_fee": 350.0,
-      "current_count": 97,
-      "gross_count": 97,
+      "current_count": 99,
+      "gross_count": 99,
       "withdrawal_count": 0,
-      "days_remaining": 64,
-      "point_estimate": 1108,
-      "ci_lower": 972,
-      "ci_upper": 1262,
+      "days_remaining": 63,
+      "point_estimate": 1104,
+      "ci_lower": 969,
+      "ci_upper": 1258,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2836,6 +2856,10 @@ const TOURNAMENT_DATA = {
         [
           48,
           97
+        ],
+        [
+          49,
+          99
         ]
       ],
       "registration_curve": [
@@ -2892,7 +2916,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 83,
+        "count_at_same_point": 85,
         "final": 1165
       },
       "low_confidence": true,
@@ -2901,10 +2925,10 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "World Open top 6 sections",
         "status": "below_pace",
-        "actual": 97,
-        "expected": 131,
-        "deviation_pct": -26.1,
-        "message": "Registrations are 26.1% below historical pace"
+        "actual": 99,
+        "expected": 135,
+        "deviation_pct": -26.7,
+        "message": "Registrations are 26.7% below historical pace"
       }
     },
     {
@@ -2919,10 +2943,10 @@ const TOURNAMENT_DATA = {
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 80,
-      "point_estimate": 277,
+      "days_remaining": 79,
+      "point_estimate": 276,
       "ci_lower": 210,
-      "ci_upper": 364,
+      "ci_upper": 363,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3099,6 +3123,10 @@ const TOURNAMENT_DATA = {
         [
           36,
           3
+        ],
+        [
+          37,
+          3
         ]
       ],
       "registration_curve": [
@@ -3166,8 +3194,8 @@ const TOURNAMENT_DATA = {
         "status": "below_pace",
         "actual": 3,
         "expected": 4,
-        "deviation_pct": -30.6,
-        "message": "Registrations are 30.6% below historical pace"
+        "deviation_pct": -32.0,
+        "message": "Registrations are 32.0% below historical pace"
       }
     },
     {
@@ -3182,10 +3210,10 @@ const TOURNAMENT_DATA = {
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 80,
-      "point_estimate": 173,
+      "days_remaining": 79,
+      "point_estimate": 172,
       "ci_lower": 122,
-      "ci_upper": 244,
+      "ci_upper": 243,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3362,6 +3390,10 @@ const TOURNAMENT_DATA = {
         [
           36,
           5
+        ],
+        [
+          37,
+          5
         ]
       ],
       "registration_curve": [
@@ -3429,8 +3461,8 @@ const TOURNAMENT_DATA = {
         "status": "above_pace",
         "actual": 5,
         "expected": 3,
-        "deviation_pct": 75.2,
-        "message": "Registrations are 75.2% above historical pace"
+        "deviation_pct": 71.1,
+        "message": "Registrations are 71.1% above historical pace"
       }
     },
     {
@@ -3442,10 +3474,10 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 1,
-      "gross_count": 1,
+      "current_count": 2,
+      "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 80,
+      "days_remaining": 79,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -3480,7 +3512,7 @@ const TOURNAMENT_DATA = {
       "daily_data": [
         [
           0,
-          1
+          2
         ]
       ],
       "registration_curve": [
@@ -3537,10 +3569,10 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Southern Open",
         "status": "below_pace",
-        "actual": 1,
+        "actual": 2,
         "expected": 6,
-        "deviation_pct": -83.7,
-        "message": "Registrations are 83.7% below historical pace"
+        "deviation_pct": -68.7,
+        "message": "Registrations are 68.7% below historical pace"
       }
     },
     {
@@ -3555,10 +3587,10 @@ const TOURNAMENT_DATA = {
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 87,
-      "point_estimate": 263,
+      "days_remaining": 86,
+      "point_estimate": 262,
       "ci_lower": 195,
-      "ci_upper": 354,
+      "ci_upper": 352,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3737,6 +3769,10 @@ const TOURNAMENT_DATA = {
           4
         ],
         [
+          37,
+          4
+        ],
+        [
           117,
           4
         ],
@@ -3830,8 +3866,8 @@ const TOURNAMENT_DATA = {
         "status": "above_pace",
         "actual": 4,
         "expected": 3,
-        "deviation_pct": 46.6,
-        "message": "Registrations are 46.6% above historical pace"
+        "deviation_pct": 45.1,
+        "message": "Registrations are 45.1% above historical pace"
       }
     },
     {
@@ -3843,13 +3879,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": 123.0,
       "regular_fee": 143.0,
       "onsite_fee": 155.0,
-      "current_count": 7,
-      "gross_count": 7,
+      "current_count": 8,
+      "gross_count": 8,
       "withdrawal_count": 0,
-      "days_remaining": 94,
-      "point_estimate": 393,
-      "ci_lower": 295,
-      "ci_upper": 524,
+      "days_remaining": 93,
+      "point_estimate": 398,
+      "ci_lower": 294,
+      "ci_upper": 539,
       "ci_level": 0.8,
       "historical": [
         {
@@ -4028,32 +4064,8 @@ const TOURNAMENT_DATA = {
           7
         ],
         [
-          124,
-          7
-        ],
-        [
-          125,
-          7
-        ],
-        [
-          126,
-          7
-        ],
-        [
-          127,
-          7
-        ],
-        [
-          128,
-          7
-        ],
-        [
-          129,
-          7
-        ],
-        [
-          130,
-          7
+          37,
+          8
         ]
       ],
       "registration_curve": [
@@ -4110,7 +4122,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 6,
+        "count_at_same_point": 7,
         "final": 391
       },
       "low_confidence": false,
@@ -4119,10 +4131,10 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Pacific Coast Open",
         "status": "above_pace",
-        "actual": 7,
+        "actual": 8,
         "expected": 5,
-        "deviation_pct": 39.9,
-        "message": "Registrations are 39.9% above historical pace"
+        "deviation_pct": 53.9,
+        "message": "Registrations are 53.9% above historical pace"
       }
     },
     {
@@ -4137,7 +4149,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 107,
+      "days_remaining": 106,
       "point_estimate": 283,
       "ci_lower": 252,
       "ci_upper": 317,
@@ -4231,8 +4243,8 @@ const TOURNAMENT_DATA = {
         "status": "below_pace",
         "actual": 1,
         "expected": 2,
-        "deviation_pct": -53.8,
-        "message": "Registrations are 53.8% below historical pace"
+        "deviation_pct": -54.8,
+        "message": "Registrations are 54.8% below historical pace"
       }
     },
     {
@@ -4244,10 +4256,10 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 1,
-      "gross_count": 1,
+      "current_count": 2,
+      "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 108,
+      "days_remaining": 107,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -4282,7 +4294,7 @@ const TOURNAMENT_DATA = {
       "daily_data": [
         [
           0,
-          1
+          2
         ]
       ],
       "registration_curve": [
@@ -4338,11 +4350,11 @@ const TOURNAMENT_DATA = {
       "status": "live",
       "pace_alert": {
         "family": "Central California Open",
-        "status": "on_pace",
-        "actual": 1,
+        "status": "above_pace",
+        "actual": 2,
         "expected": 1,
-        "deviation_pct": -5.1,
-        "message": "Registrations are tracking within normal range (-5%)"
+        "deviation_pct": 75.2,
+        "message": "Registrations are 75.2% above historical pace"
       }
     },
     {
@@ -4357,7 +4369,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 115,
+      "days_remaining": 114,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -4448,11 +4460,11 @@ const TOURNAMENT_DATA = {
       "status": "live",
       "pace_alert": {
         "family": "Atlantic Open",
-        "status": "on_pace",
+        "status": "below_pace",
         "actual": 1,
         "expected": 1,
-        "deviation_pct": -18.3,
-        "message": "Registrations are tracking within normal range (-18%)"
+        "deviation_pct": -24.7,
+        "message": "Registrations are 24.7% below historical pace"
       }
     },
     {
@@ -4467,7 +4479,7 @@ const TOURNAMENT_DATA = {
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 115,
+      "days_remaining": 114,
       "point_estimate": 186,
       "ci_lower": 175,
       "ci_upper": 198,
@@ -4577,7 +4589,7 @@ const TOURNAMENT_DATA = {
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 129,
+      "days_remaining": 128,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -4687,7 +4699,7 @@ const TOURNAMENT_DATA = {
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 164,
+      "days_remaining": 163,
       "point_estimate": 313,
       "ci_lower": 296,
       "ci_upper": 338,
@@ -4797,7 +4809,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 171,
+      "days_remaining": 170,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -4873,7 +4885,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 178,
+      "days_remaining": 177,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -4949,7 +4961,7 @@ const TOURNAMENT_DATA = {
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 214,
+      "days_remaining": 213,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -78867,144 +78879,144 @@ const TOURNAMENT_DATA = {
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-04-28 22:46:28",
+  "last_updated": "2026-04-29 05:29:40",
   "is_stale": false,
   "alerts": [
     {
       "family": "Chicago Open",
       "status": "on_pace",
-      "actual": 353,
-      "expected": 384,
-      "deviation_pct": -8.0,
-      "message": "Registrations are tracking within normal range (-8%)"
+      "actual": 366,
+      "expected": 390,
+      "deviation_pct": -6.0,
+      "message": "Registrations are tracking within normal range (-6%)"
     },
     {
       "family": "Hartford Open",
       "status": "on_pace",
       "actual": 16,
-      "expected": 14,
-      "deviation_pct": 12.4,
-      "message": "Registrations are tracking within normal range (+12%)"
+      "expected": 15,
+      "deviation_pct": 8.0,
+      "message": "Registrations are tracking within normal range (+8%)"
     },
     {
       "family": "Cleveland Open",
       "status": "below_pace",
-      "actual": 16,
-      "expected": 37,
-      "deviation_pct": -57.1,
-      "message": "Registrations are 57.1% below historical pace"
+      "actual": 20,
+      "expected": 39,
+      "deviation_pct": -48.2,
+      "message": "Registrations are 48.2% below historical pace"
     },
     {
       "family": "New York State Open",
       "status": "above_pace",
       "actual": 13,
       "expected": 8,
-      "deviation_pct": 70.0,
-      "message": "Registrations are 70.0% above historical pace"
+      "deviation_pct": 60.6,
+      "message": "Registrations are 60.6% above historical pace"
     },
     {
       "family": "DC International",
       "status": "above_pace",
       "actual": 9,
       "expected": 7,
-      "deviation_pct": 38.1,
-      "message": "Registrations are 38.1% above historical pace"
+      "deviation_pct": 30.7,
+      "message": "Registrations are 30.7% above historical pace"
     },
     {
       "family": "World Open lower sections",
       "status": "below_pace",
       "actual": 6,
       "expected": 16,
-      "deviation_pct": -61.4,
-      "message": "Registrations are 61.4% below historical pace"
+      "deviation_pct": -63.0,
+      "message": "Registrations are 63.0% below historical pace"
     },
     {
       "family": "DC Open",
       "status": "below_pace",
-      "actual": 5,
-      "expected": 14,
-      "deviation_pct": -65.2,
-      "message": "Registrations are 65.2% below historical pace"
+      "actual": 6,
+      "expected": 15,
+      "deviation_pct": -60.6,
+      "message": "Registrations are 60.6% below historical pace"
     },
     {
       "family": "World Open Under 13 Championship",
       "status": "on_pace",
       "actual": 5,
       "expected": 5,
-      "deviation_pct": 2.0,
-      "message": "Registrations are tracking within normal range (+2%)"
+      "deviation_pct": -1.1,
+      "message": "Registrations are tracking within normal range (-1%)"
     },
     {
       "family": "World Open top 6 sections",
       "status": "below_pace",
-      "actual": 97,
-      "expected": 131,
-      "deviation_pct": -26.1,
-      "message": "Registrations are 26.1% below historical pace"
+      "actual": 99,
+      "expected": 135,
+      "deviation_pct": -26.7,
+      "message": "Registrations are 26.7% below historical pace"
     },
     {
       "family": "Chicago Class",
       "status": "below_pace",
       "actual": 3,
       "expected": 4,
-      "deviation_pct": -30.6,
-      "message": "Registrations are 30.6% below historical pace"
+      "deviation_pct": -32.0,
+      "message": "Registrations are 32.0% below historical pace"
     },
     {
       "family": "Pittsburgh Open",
       "status": "above_pace",
       "actual": 5,
       "expected": 3,
-      "deviation_pct": 75.2,
-      "message": "Registrations are 75.2% above historical pace"
+      "deviation_pct": 71.1,
+      "message": "Registrations are 71.1% above historical pace"
     },
     {
       "family": "Southern Open",
       "status": "below_pace",
-      "actual": 1,
+      "actual": 2,
       "expected": 6,
-      "deviation_pct": -83.7,
-      "message": "Registrations are 83.7% below historical pace"
+      "deviation_pct": -68.7,
+      "message": "Registrations are 68.7% below historical pace"
     },
     {
       "family": "Bradley Open",
       "status": "above_pace",
       "actual": 4,
       "expected": 3,
-      "deviation_pct": 46.6,
-      "message": "Registrations are 46.6% above historical pace"
+      "deviation_pct": 45.1,
+      "message": "Registrations are 45.1% above historical pace"
     },
     {
       "family": "Pacific Coast Open",
       "status": "above_pace",
-      "actual": 7,
+      "actual": 8,
       "expected": 5,
-      "deviation_pct": 39.9,
-      "message": "Registrations are 39.9% above historical pace"
+      "deviation_pct": 53.9,
+      "message": "Registrations are 53.9% above historical pace"
     },
     {
       "family": "Continental Open",
       "status": "below_pace",
       "actual": 1,
       "expected": 2,
-      "deviation_pct": -53.8,
-      "message": "Registrations are 53.8% below historical pace"
+      "deviation_pct": -54.8,
+      "message": "Registrations are 54.8% below historical pace"
     },
     {
       "family": "Central California Open",
-      "status": "on_pace",
-      "actual": 1,
+      "status": "above_pace",
+      "actual": 2,
       "expected": 1,
-      "deviation_pct": -5.1,
-      "message": "Registrations are tracking within normal range (-5%)"
+      "deviation_pct": 75.2,
+      "message": "Registrations are 75.2% above historical pace"
     },
     {
       "family": "Atlantic Open",
-      "status": "on_pace",
+      "status": "below_pace",
       "actual": 1,
       "expected": 1,
-      "deviation_pct": -18.3,
-      "message": "Registrations are tracking within normal range (-18%)"
+      "deviation_pct": -24.7,
+      "message": "Registrations are 24.7% below historical pace"
     },
     {
       "family": "Indianapolis Open",
@@ -79045,152 +79057,143 @@ const TOURNAMENT_DATA = {
 // PUZZLE DATA (embedded from puzzle pipeline)
 // ══════════════════════════════════════════════════════════
 const PUZZLE_DATA = {
-  "date": "2026-04-28",
+  "date": "2026-04-29",
   "puzzles": [
     {
-      "id": "0LREo",
-      "fen": "1r3r1k/pbp1q1pp/5n2/n1P1pp2/8/P3PN2/B1Q2PPP/1RBR2K1 w - - 6 20",
-      "moves": "c2f5 b7e4 b1b8 e4f5 b8f8 e7f8",
-      "rating": 2001,
-      "themes": [
-        "advantage",
-        "fork",
-        "long",
-        "middlegame"
-      ],
-      "url": "https://lichess.org/training/0LREo",
-      "game_url": "https://lichess.org/lOFXRhGr#39"
-    },
-    {
-      "id": "0Qfps",
-      "fen": "8/5p1p/4p1p1/k7/3K4/5P1P/6P1/8 b - - 1 33",
-      "moves": "a5b6 d4e5 b6c5 h3h4",
-      "rating": 2734,
+      "id": "06njT",
+      "fen": "5r2/2R2ppk/4p2p/4P3/1p1P1Q2/6P1/P4PKP/1q6 w - - 6 37",
+      "moves": "c7f7 f8f7 f4f7 b1a2 g2h3 a2c4",
+      "rating": 2796,
       "themes": [
         "crushing",
-        "defensiveMove",
-        "endgame",
-        "pawnEndgame",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0Qfps",
-      "game_url": "https://lichess.org/LyNif3td/black#66"
-    },
-    {
-      "id": "08zzl",
-      "fen": "2r2qk1/p5b1/b1p1p1R1/1p1pP1Np/3P1r1P/8/PPPQ1P2/2KR4 b - - 1 22",
-      "moves": "f4f2 d2d3 f8f5 g5e6",
-      "rating": 2889,
-      "themes": [
-        "advantage",
-        "middlegame",
-        "short"
-      ],
-      "url": "https://lichess.org/training/08zzl",
-      "game_url": "https://lichess.org/LxCH3VBZ/black#44"
-    },
-    {
-      "id": "0HEmH",
-      "fen": "1k6/4r3/PPP5/2K5/8/8/8/8 b - - 0 59",
-      "moves": "e7f7 a6a7 b8a8 c6c7 f7f8 c5c6",
-      "rating": 2128,
-      "themes": [
-        "advancedPawn",
-        "crushing",
-        "defensiveMove",
-        "endgame",
-        "long",
-        "master",
-        "rookEndgame"
-      ],
-      "url": "https://lichess.org/training/0HEmH",
-      "game_url": "https://lichess.org/BRJ1ElZu/black#118"
-    },
-    {
-      "id": "0gR2j",
-      "fen": "8/8/8/4r3/pR3k2/8/1KP5/8 b - - 1 50",
-      "moves": "e5e4 b2a3 e4b4 a3b4",
-      "rating": 2407,
-      "themes": [
-        "crushing",
-        "endgame",
-        "master",
-        "rookEndgame",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0gR2j",
-      "game_url": "https://lichess.org/ueG7gL2g/black#100"
-    },
-    {
-      "id": "0JtUr",
-      "fen": "3bn1k1/1b5p/1P1p2p1/3Pp3/1Q2P3/2N1B2P/6PK/q1N5 w - - 9 31",
-      "moves": "b4b1 a1c3 b1b5 e8f6",
-      "rating": 2022,
-      "themes": [
-        "advantage",
-        "hangingPiece",
-        "master",
-        "middlegame",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0JtUr",
-      "game_url": "https://lichess.org/AP9nZJ8S#61"
-    },
-    {
-      "id": "0pQ0n",
-      "fen": "r2r3k/pp3p1P/2n5/2P1pb2/4P3/4pP2/P1P1K1P1/3R1B1R b - - 1 23",
-      "moves": "d8d2 d1d2 e3d2 e4f5 a8d8 e2d1",
-      "rating": 2032,
-      "themes": [
-        "advantage",
-        "long",
-        "middlegame"
-      ],
-      "url": "https://lichess.org/training/0pQ0n",
-      "game_url": "https://lichess.org/TPg8HcPj/black#46"
-    },
-    {
-      "id": "0hFom",
-      "fen": "6k1/p2B4/1p3pn1/2P1p1pp/PP2P3/8/5K2/8 b - - 0 38",
-      "moves": "g8f8 c5b6 a7b6 a4a5 b6a5 b4a5",
-      "rating": 2120,
-      "themes": [
-        "advantage",
         "endgame",
         "long"
       ],
-      "url": "https://lichess.org/training/0hFom",
-      "game_url": "https://lichess.org/byhdQ1dj/black#76"
+      "url": "https://lichess.org/training/06njT",
+      "game_url": "https://lichess.org/mU4BZMKO#73"
     },
     {
-      "id": "10pOI",
-      "fen": "6k1/p4pp1/1p4b1/1B4Pp/P2N3R/1Q6/5PK1/2q1r3 w - - 3 30",
-      "moves": "d4f3 g6e4 h4e4 e1e4",
-      "rating": 2093,
+      "id": "0Q0pq",
+      "fen": "r3qrk1/pp5p/2pp2p1/8/2P1B1nR/8/PPQ2PPP/R5K1 b - - 3 20",
+      "moves": "g4f2 e4f3 f2h3 h4h3",
+      "rating": 2180,
+      "themes": [
+        "advantage",
+        "middlegame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0Q0pq",
+      "game_url": "https://lichess.org/wv34dFsy/black#40"
+    },
+    {
+      "id": "0uM0n",
+      "fen": "r3k2N/ppp1q1pp/5n2/2bp4/2BnP1b1/2N2P2/PPPP2PP/R1BQK2R w KQq - 0 10",
+      "moves": "c3d5 f6d5 c4d5 d4f3 g2f3 e7h4 e1e2 h4f2",
+      "rating": 2206,
       "themes": [
         "advantage",
         "middlegame",
         "pin",
-        "short"
+        "sacrifice",
+        "veryLong"
       ],
-      "url": "https://lichess.org/training/10pOI",
-      "game_url": "https://lichess.org/CXHHjYCN#59"
+      "url": "https://lichess.org/training/0uM0n",
+      "game_url": "https://lichess.org/L9SuDZs2#19"
     },
     {
-      "id": "09Ko8",
-      "fen": "r2qk2r/pp3ppp/5n2/2b1n3/6B1/8/PPPP1PPP/RNBQ1RK1 w kq - 1 9",
-      "moves": "f1e1 c5f2 g1f2 d8d4 f2f1 f6g4",
-      "rating": 2379,
+      "id": "0eqFQ",
+      "fen": "rnbq1rk1/pp3pp1/4p2p/2pp3Q/7P/1BPP4/P1P2P2/R1B1K2R b KQ - 1 14",
+      "moves": "b7b5 c1h6 d8f6 h6g7 f6g7 e1e2 g7h7 a1g1 g8h8 h5f3 f7f6 g1g5",
+      "rating": 3029,
       "themes": [
         "advantage",
-        "attraction",
-        "kingsideAttack",
-        "long",
-        "opening",
-        "sacrifice"
+        "clearance",
+        "middlegame",
+        "veryLong"
       ],
-      "url": "https://lichess.org/training/09Ko8",
-      "game_url": "https://lichess.org/s86ZgJUl#17"
+      "url": "https://lichess.org/training/0eqFQ",
+      "game_url": "https://lichess.org/1cowY9ze/black#28"
+    },
+    {
+      "id": "0BAMa",
+      "fen": "4r1k1/2Q4p/4q1p1/1p6/p1pB4/P1P1n3/1P4PP/5RK1 w - - 0 36",
+      "moves": "d4e3 e6e3 g1h1 e3f2 f1g1 e8e1",
+      "rating": 2029,
+      "themes": [
+        "clearance",
+        "crushing",
+        "endgame",
+        "long"
+      ],
+      "url": "https://lichess.org/training/0BAMa",
+      "game_url": "https://lichess.org/FJ5mzUbS#71"
+    },
+    {
+      "id": "0EOmJ",
+      "fen": "4r2k/p5pp/1pp2q2/2b5/P7/1P1B1pPb/2PB1P1P/1RQ3K1 w - - 4 24",
+      "moves": "d2g5 f6d4 c1d2 e8e2",
+      "rating": 2278,
+      "themes": [
+        "crushing",
+        "middlegame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0EOmJ",
+      "game_url": "https://lichess.org/WAwWbf1u#47"
+    },
+    {
+      "id": "0brEY",
+      "fen": "1r4k1/1b3pp1/pR2p1np/1p2P3/8/1B3PB1/PP4PP/6K1 b - - 0 28",
+      "moves": "g8f8 b3c2 b8c8 c2g6 c8c1 g1f2 f7g6 b6b7",
+      "rating": 2416,
+      "themes": [
+        "crushing",
+        "endgame",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/0brEY",
+      "game_url": "https://lichess.org/4wyWerxS/black#56"
+    },
+    {
+      "id": "0Q9d9",
+      "fen": "r3r1k1/ppp2pb1/1q2bn2/6N1/4PR1Q/P2P4/6PP/5R1K b - - 0 23",
+      "moves": "a8d8 e4e5 f6h5 h4h5",
+      "rating": 2596,
+      "themes": [
+        "advantage",
+        "middlegame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0Q9d9",
+      "game_url": "https://lichess.org/G0SZTdJk/black#46"
+    },
+    {
+      "id": "0pRMu",
+      "fen": "7k/2pp3p/pb5q/n4B2/8/8/P4P1P/4R1RK b - - 0 27",
+      "moves": "h6c6 g1g2 d7d6 e1e7 c6c1 g2g1",
+      "rating": 2393,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "endgame",
+        "long"
+      ],
+      "url": "https://lichess.org/training/0pRMu",
+      "game_url": "https://lichess.org/y8nYWdKh/black#54"
+    },
+    {
+      "id": "0D2Fc",
+      "fen": "6k1/pQ3ppp/4R1r1/8/3q4/P4P2/BPR2KPP/3r4 w - - 3 26",
+      "moves": "e6e3 d4h4 g2g3 h4h2",
+      "rating": 2040,
+      "themes": [
+        "mate",
+        "mateIn2",
+        "middlegame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0D2Fc",
+      "game_url": "https://lichess.org/SMPaxUkG#51"
     }
   ]
 };
@@ -81036,7 +81039,7 @@ const CHESS_HISTORY = {
 // PERFORMANCE DATA (model blind test results)
 // ══════════════════════════════════════════════════════════
 const PERFORMANCE_DATA = {
-  "generated": "2026-04-28",
+  "generated": "2026-04-29",
   "model": "N5v4_Final",
   "n_tournaments": 11,
   "grade": "A+",
@@ -81093,10 +81096,10 @@ const PERFORMANCE_DATA = {
     {
       "T": 3,
       "n": 11,
-      "mae_pct": 6.4,
-      "median_ape_pct": 5.3,
-      "ci_coverage": 73.0,
-      "bias_pct": 5.9
+      "mae_pct": 5.7,
+      "median_ape_pct": 3.3,
+      "ci_coverage": 82.0,
+      "bias_pct": 3.7
     },
     {
       "T": 1,
@@ -81166,11 +81169,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "count_at_T": 193,
-          "predicted": 378,
-          "ci_lower": 355,
-          "ci_upper": 402,
-          "error_pct": 5.3,
-          "abs_error_pct": 5.3,
+          "predicted": 370,
+          "ci_lower": 348,
+          "ci_upper": 393,
+          "error_pct": 3.1,
+          "abs_error_pct": 3.1,
           "in_ci": 1
         },
         {
@@ -81243,11 +81246,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "count_at_T": 429,
-          "predicted": 679,
-          "ci_lower": 586,
-          "ci_upper": 786,
-          "error_pct": 20.4,
-          "abs_error_pct": 20.4,
+          "predicted": 665,
+          "ci_lower": 577,
+          "ci_upper": 766,
+          "error_pct": 17.9,
+          "abs_error_pct": 17.9,
           "in_ci": 0
         },
         {
@@ -81310,12 +81313,12 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "count_at_T": 289,
-          "predicted": 427,
-          "ci_lower": 390,
-          "ci_upper": 467,
-          "error_pct": 10.3,
-          "abs_error_pct": 10.3,
-          "in_ci": 0
+          "predicted": 418,
+          "ci_lower": 383,
+          "ci_upper": 456,
+          "error_pct": 8.0,
+          "abs_error_pct": 8.0,
+          "in_ci": 1
         },
         {
           "T": 1,
@@ -81377,11 +81380,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "count_at_T": 128,
-          "predicted": 238,
-          "ci_lower": 215,
-          "ci_upper": 264,
-          "error_pct": 13.9,
-          "abs_error_pct": 13.9,
+          "predicted": 233,
+          "ci_lower": 211,
+          "ci_upper": 258,
+          "error_pct": 11.5,
+          "abs_error_pct": 11.5,
           "in_ci": 0
         },
         {
@@ -81464,11 +81467,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "count_at_T": 395,
-          "predicted": 518,
-          "ci_lower": 480,
-          "ci_upper": 559,
-          "error_pct": 5.3,
-          "abs_error_pct": 5.3,
+          "predicted": 507,
+          "ci_lower": 471,
+          "ci_upper": 546,
+          "error_pct": 3.0,
+          "abs_error_pct": 3.0,
           "in_ci": 1
         },
         {
@@ -81551,11 +81554,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "count_at_T": 286,
-          "predicted": 453,
-          "ci_lower": 391,
-          "ci_upper": 526,
-          "error_pct": 6.8,
-          "abs_error_pct": 6.8,
+          "predicted": 444,
+          "ci_lower": 385,
+          "ci_upper": 512,
+          "error_pct": 4.7,
+          "abs_error_pct": 4.7,
           "in_ci": 1
         },
         {
@@ -81628,11 +81631,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "count_at_T": 193,
-          "predicted": 315,
-          "ci_lower": 273,
-          "ci_upper": 363,
-          "error_pct": -0.9,
-          "abs_error_pct": 0.9,
+          "predicted": 308,
+          "ci_lower": 269,
+          "ci_upper": 354,
+          "error_pct": -3.1,
+          "abs_error_pct": 3.1,
           "in_ci": 1
         },
         {
@@ -81715,11 +81718,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "count_at_T": 185,
-          "predicted": 197,
+          "predicted": 193,
           "ci_lower": 185,
-          "ci_upper": 252,
-          "error_pct": -0.5,
-          "abs_error_pct": 0.5,
+          "ci_upper": 244,
+          "error_pct": -2.5,
+          "abs_error_pct": 2.5,
           "in_ci": 1
         },
         {
@@ -81792,11 +81795,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "count_at_T": 42,
-          "predicted": 60,
+          "predicted": 59,
           "ci_lower": 46,
-          "ci_upper": 79,
-          "error_pct": -1.6,
-          "abs_error_pct": 1.6,
+          "ci_upper": 77,
+          "error_pct": -3.3,
+          "abs_error_pct": 3.3,
           "in_ci": 1
         },
         {
@@ -81879,11 +81882,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "count_at_T": 1719,
-          "predicted": 1759,
+          "predicted": 1723,
           "ci_lower": 1719,
-          "ci_upper": 2230,
-          "error_pct": 0.3,
-          "abs_error_pct": 0.3,
+          "ci_upper": 2167,
+          "error_pct": -1.7,
+          "abs_error_pct": 1.7,
           "in_ci": 1
         },
         {
@@ -81956,11 +81959,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "count_at_T": 117,
-          "predicted": 206,
-          "ci_lower": 188,
-          "ci_upper": 227,
-          "error_pct": 5.6,
-          "abs_error_pct": 5.6,
+          "predicted": 202,
+          "ci_lower": 185,
+          "ci_upper": 221,
+          "error_pct": 3.6,
+          "abs_error_pct": 3.6,
           "in_ci": 1
         },
         {
@@ -82010,18 +82013,18 @@ const PERFORMANCE_DATA = {
         {
           "T": 42,
           "n": 38,
-          "mae_pct": 15.5,
-          "median_ape_pct": 10.3,
+          "mae_pct": 15.3,
+          "median_ape_pct": 11.0,
           "ci_coverage": 89.0,
-          "bias_pct": -7.2
+          "bias_pct": -4.9
         },
         {
           "T": 28,
           "n": 39,
-          "mae_pct": 15.6,
-          "median_ape_pct": 11.3,
+          "mae_pct": 15.2,
+          "median_ape_pct": 11.5,
           "ci_coverage": 95.0,
-          "bias_pct": -6.7
+          "bias_pct": -3.5
         },
         {
           "T": 14,
@@ -82085,21 +82088,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 35,
-              "predicted": 289,
-              "ci_lower": 233,
-              "ci_upper": 359,
-              "error_pct": -26.1,
-              "abs_error_pct": 26.1,
+              "predicted": 297,
+              "ci_lower": 239,
+              "ci_upper": 368,
+              "error_pct": -24.0,
+              "abs_error_pct": 24.0,
               "in_ci": 0
             },
             {
               "T": 28,
               "count_at_T": 58,
-              "predicted": 320,
-              "ci_lower": 205,
-              "ci_upper": 498,
-              "error_pct": -18.2,
-              "abs_error_pct": 18.2,
+              "predicted": 331,
+              "ci_lower": 213,
+              "ci_upper": 516,
+              "error_pct": -15.3,
+              "abs_error_pct": 15.3,
               "in_ci": 1
             },
             {
@@ -82172,21 +82175,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 27,
-              "predicted": 362,
-              "ci_lower": 225,
-              "ci_upper": 584,
-              "error_pct": -23.5,
-              "abs_error_pct": 23.5,
+              "predicted": 371,
+              "ci_lower": 230,
+              "ci_upper": 599,
+              "error_pct": -21.6,
+              "abs_error_pct": 21.6,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 56,
-              "predicted": 375,
-              "ci_lower": 241,
-              "ci_upper": 584,
-              "error_pct": -20.7,
-              "abs_error_pct": 20.7,
+              "predicted": 388,
+              "ci_lower": 249,
+              "ci_upper": 605,
+              "error_pct": -18.0,
+              "abs_error_pct": 18.0,
               "in_ci": 1
             },
             {
@@ -82259,21 +82262,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 27,
-              "predicted": 286,
-              "ci_lower": 177,
-              "ci_upper": 461,
-              "error_pct": -2.4,
-              "abs_error_pct": 2.4,
+              "predicted": 293,
+              "ci_lower": 182,
+              "ci_upper": 473,
+              "error_pct": 0.0,
+              "abs_error_pct": 0.0,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 37,
-              "predicted": 263,
-              "ci_lower": 212,
-              "ci_upper": 327,
-              "error_pct": -10.2,
-              "abs_error_pct": 10.2,
+              "predicted": 272,
+              "ci_lower": 219,
+              "ci_upper": 339,
+              "error_pct": -7.2,
+              "abs_error_pct": 7.2,
               "in_ci": 1
             },
             {
@@ -82346,21 +82349,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 31,
-              "predicted": 395,
-              "ci_lower": 245,
-              "ci_upper": 638,
-              "error_pct": -7.3,
-              "abs_error_pct": 7.3,
+              "predicted": 405,
+              "ci_lower": 251,
+              "ci_upper": 654,
+              "error_pct": -4.9,
+              "abs_error_pct": 4.9,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 71,
-              "predicted": 427,
-              "ci_lower": 274,
-              "ci_upper": 665,
-              "error_pct": 0.2,
-              "abs_error_pct": 0.2,
+              "predicted": 442,
+              "ci_lower": 284,
+              "ci_upper": 689,
+              "error_pct": 3.8,
+              "abs_error_pct": 3.8,
               "in_ci": 1
             },
             {
@@ -82433,21 +82436,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 22,
-              "predicted": 351,
-              "ci_lower": 258,
-              "ci_upper": 478,
-              "error_pct": 1.4,
-              "abs_error_pct": 1.4,
+              "predicted": 360,
+              "ci_lower": 265,
+              "ci_upper": 490,
+              "error_pct": 4.0,
+              "abs_error_pct": 4.0,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 43,
-              "predicted": 339,
-              "ci_lower": 272,
-              "ci_upper": 422,
-              "error_pct": -2.0,
-              "abs_error_pct": 2.0,
+              "predicted": 351,
+              "ci_lower": 282,
+              "ci_upper": 436,
+              "error_pct": 1.4,
+              "abs_error_pct": 1.4,
               "in_ci": 1
             },
             {
@@ -82520,21 +82523,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 271,
-              "predicted": 879,
-              "ci_lower": 751,
-              "ci_upper": 1030,
-              "error_pct": -43.2,
-              "abs_error_pct": 43.2,
+              "predicted": 901,
+              "ci_lower": 770,
+              "ci_upper": 1056,
+              "error_pct": -41.8,
+              "abs_error_pct": 41.8,
               "in_ci": 0
             },
             {
               "T": 28,
               "count_at_T": 447,
-              "predicted": 915,
-              "ci_lower": 781,
-              "ci_upper": 1071,
-              "error_pct": -40.9,
-              "abs_error_pct": 40.9,
+              "predicted": 947,
+              "ci_lower": 808,
+              "ci_upper": 1109,
+              "error_pct": -38.8,
+              "abs_error_pct": 38.8,
               "in_ci": 0
             },
             {
@@ -82597,21 +82600,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 22,
-              "predicted": 236,
-              "ci_lower": 173,
-              "ci_upper": 320,
-              "error_pct": -8.2,
-              "abs_error_pct": 8.2,
+              "predicted": 242,
+              "ci_lower": 178,
+              "ci_upper": 329,
+              "error_pct": -5.8,
+              "abs_error_pct": 5.8,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 33,
-              "predicted": 223,
-              "ci_lower": 179,
-              "ci_upper": 277,
-              "error_pct": -13.2,
-              "abs_error_pct": 13.2,
+              "predicted": 231,
+              "ci_lower": 185,
+              "ci_upper": 287,
+              "error_pct": -10.1,
+              "abs_error_pct": 10.1,
               "in_ci": 1
             },
             {
@@ -82674,21 +82677,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 32,
-              "predicted": 224,
-              "ci_lower": 139,
-              "ci_upper": 362,
-              "error_pct": -15.2,
-              "abs_error_pct": 15.2,
+              "predicted": 230,
+              "ci_lower": 143,
+              "ci_upper": 371,
+              "error_pct": -12.9,
+              "abs_error_pct": 12.9,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 47,
-              "predicted": 234,
-              "ci_lower": 151,
-              "ci_upper": 362,
-              "error_pct": -11.4,
-              "abs_error_pct": 11.4,
+              "predicted": 242,
+              "ci_lower": 157,
+              "ci_upper": 374,
+              "error_pct": -8.3,
+              "abs_error_pct": 8.3,
               "in_ci": 1
             },
             {
@@ -82751,21 +82754,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 22,
-              "predicted": 286,
-              "ci_lower": 211,
-              "ci_upper": 390,
-              "error_pct": -12.8,
-              "abs_error_pct": 12.8,
+              "predicted": 294,
+              "ci_lower": 216,
+              "ci_upper": 399,
+              "error_pct": -10.4,
+              "abs_error_pct": 10.4,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 42,
-              "predicted": 280,
-              "ci_lower": 225,
-              "ci_upper": 348,
-              "error_pct": -14.6,
-              "abs_error_pct": 14.6,
+              "predicted": 290,
+              "ci_lower": 233,
+              "ci_upper": 361,
+              "error_pct": -11.6,
+              "abs_error_pct": 11.6,
               "in_ci": 1
             },
             {
@@ -82838,21 +82841,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 27,
-              "predicted": 122,
-              "ci_lower": 59,
-              "ci_upper": 253,
-              "error_pct": -64.6,
-              "abs_error_pct": 64.6,
+              "predicted": 126,
+              "ci_lower": 61,
+              "ci_upper": 259,
+              "error_pct": -63.5,
+              "abs_error_pct": 63.5,
               "in_ci": 0
             },
             {
               "T": 28,
               "count_at_T": 55,
-              "predicted": 216,
-              "ci_lower": 109,
-              "ci_upper": 426,
-              "error_pct": -37.4,
-              "abs_error_pct": 37.4,
+              "predicted": 223,
+              "ci_lower": 113,
+              "ci_upper": 441,
+              "error_pct": -35.4,
+              "abs_error_pct": 35.4,
               "in_ci": 1
             },
             {
@@ -82925,21 +82928,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 34,
-              "predicted": 451,
-              "ci_lower": 363,
-              "ci_upper": 559,
-              "error_pct": 1.3,
-              "abs_error_pct": 1.3,
+              "predicted": 462,
+              "ci_lower": 372,
+              "ci_upper": 573,
+              "error_pct": 3.8,
+              "abs_error_pct": 3.8,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 68,
-              "predicted": 481,
-              "ci_lower": 309,
-              "ci_upper": 749,
-              "error_pct": 8.1,
-              "abs_error_pct": 8.1,
+              "predicted": 497,
+              "ci_lower": 319,
+              "ci_upper": 775,
+              "error_pct": 11.7,
+              "abs_error_pct": 11.7,
               "in_ci": 1
             },
             {
@@ -83012,21 +83015,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 291,
-              "predicted": 1218,
-              "ci_lower": 784,
-              "ci_upper": 1893,
-              "error_pct": 26.9,
-              "abs_error_pct": 26.9,
+              "predicted": 1249,
+              "ci_lower": 804,
+              "ci_upper": 1940,
+              "error_pct": 30.1,
+              "abs_error_pct": 30.1,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 353,
-              "predicted": 1302,
-              "ci_lower": 917,
-              "ci_upper": 1850,
-              "error_pct": 35.6,
-              "abs_error_pct": 35.6,
+              "predicted": 1348,
+              "ci_lower": 949,
+              "ci_upper": 1914,
+              "error_pct": 40.4,
+              "abs_error_pct": 40.4,
               "in_ci": 1
             },
             {
@@ -83099,21 +83102,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 24,
-              "predicted": 122,
-              "ci_lower": 76,
-              "ci_upper": 197,
-              "error_pct": -28.2,
-              "abs_error_pct": 28.2,
+              "predicted": 125,
+              "ci_lower": 78,
+              "ci_upper": 202,
+              "error_pct": -26.5,
+              "abs_error_pct": 26.5,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 28,
-              "predicted": 116,
-              "ci_lower": 72,
-              "ci_upper": 187,
-              "error_pct": -31.8,
-              "abs_error_pct": 31.8,
+              "predicted": 120,
+              "ci_lower": 75,
+              "ci_upper": 193,
+              "error_pct": -29.4,
+              "abs_error_pct": 29.4,
               "in_ci": 1
             },
             {
@@ -83166,21 +83169,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 13,
-              "predicted": 196,
-              "ci_lower": 144,
-              "ci_upper": 267,
-              "error_pct": -13.3,
-              "abs_error_pct": 13.3,
+              "predicted": 201,
+              "ci_lower": 148,
+              "ci_upper": 274,
+              "error_pct": -11.1,
+              "abs_error_pct": 11.1,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 22,
-              "predicted": 193,
-              "ci_lower": 124,
-              "ci_upper": 300,
-              "error_pct": -14.6,
-              "abs_error_pct": 14.6,
+              "predicted": 200,
+              "ci_lower": 129,
+              "ci_upper": 310,
+              "error_pct": -11.5,
+              "abs_error_pct": 11.5,
               "in_ci": 1
             },
             {
@@ -83253,21 +83256,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 483,
-              "predicted": 1281,
-              "ci_lower": 621,
-              "ci_upper": 2642,
-              "error_pct": -3.2,
-              "abs_error_pct": 3.2,
+              "predicted": 1313,
+              "ci_lower": 637,
+              "ci_upper": 2709,
+              "error_pct": -0.8,
+              "abs_error_pct": 0.8,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 538,
-              "predicted": 1339,
-              "ci_lower": 693,
-              "ci_upper": 2588,
-              "error_pct": 1.1,
-              "abs_error_pct": 1.1,
+              "predicted": 1386,
+              "ci_lower": 718,
+              "ci_upper": 2679,
+              "error_pct": 4.7,
+              "abs_error_pct": 4.7,
               "in_ci": 1
             },
             {
@@ -83330,21 +83333,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 25,
-              "predicted": 119,
-              "ci_lower": 74,
-              "ci_upper": 191,
-              "error_pct": 10.2,
-              "abs_error_pct": 10.2,
+              "predicted": 122,
+              "ci_lower": 75,
+              "ci_upper": 196,
+              "error_pct": 13.0,
+              "abs_error_pct": 13.0,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 45,
-              "predicted": 128,
-              "ci_lower": 103,
-              "ci_upper": 160,
-              "error_pct": 18.5,
-              "abs_error_pct": 18.5,
+              "predicted": 133,
+              "ci_lower": 107,
+              "ci_upper": 165,
+              "error_pct": 23.1,
+              "abs_error_pct": 23.1,
               "in_ci": 1
             },
             {
@@ -83407,21 +83410,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 27,
-              "predicted": 291,
-              "ci_lower": 181,
-              "ci_upper": 470,
-              "error_pct": 3.6,
-              "abs_error_pct": 3.6,
+              "predicted": 299,
+              "ci_lower": 185,
+              "ci_upper": 482,
+              "error_pct": 6.4,
+              "abs_error_pct": 6.4,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 39,
-              "predicted": 271,
-              "ci_lower": 218,
-              "ci_upper": 337,
-              "error_pct": -3.6,
-              "abs_error_pct": 3.6,
+              "predicted": 280,
+              "ci_lower": 225,
+              "ci_upper": 348,
+              "error_pct": -0.4,
+              "abs_error_pct": 0.4,
               "in_ci": 1
             },
             {
@@ -83484,21 +83487,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 19,
-              "predicted": 142,
-              "ci_lower": 105,
-              "ci_upper": 194,
-              "error_pct": 29.1,
-              "abs_error_pct": 29.1,
+              "predicted": 146,
+              "ci_lower": 107,
+              "ci_upper": 199,
+              "error_pct": 32.7,
+              "abs_error_pct": 32.7,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 25,
-              "predicted": 139,
-              "ci_lower": 86,
-              "ci_upper": 223,
-              "error_pct": 26.4,
-              "abs_error_pct": 26.4,
+              "predicted": 144,
+              "ci_lower": 89,
+              "ci_upper": 231,
+              "error_pct": 30.9,
+              "abs_error_pct": 30.9,
               "in_ci": 1
             },
             {
@@ -83608,21 +83611,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 13,
-              "predicted": 169,
-              "ci_lower": 89,
-              "ci_upper": 323,
-              "error_pct": -14.6,
-              "abs_error_pct": 14.6,
+              "predicted": 174,
+              "ci_lower": 91,
+              "ci_upper": 331,
+              "error_pct": -12.1,
+              "abs_error_pct": 12.1,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 23,
-              "predicted": 104,
-              "ci_lower": 53,
-              "ci_upper": 204,
-              "error_pct": -47.5,
-              "abs_error_pct": 47.5,
+              "predicted": 107,
+              "ci_lower": 55,
+              "ci_upper": 211,
+              "error_pct": -46.0,
+              "abs_error_pct": 46.0,
               "in_ci": 1
             },
             {
@@ -83675,21 +83678,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 22,
-              "predicted": 315,
-              "ci_lower": 232,
-              "ci_upper": 429,
-              "error_pct": 1.0,
-              "abs_error_pct": 1.0,
+              "predicted": 323,
+              "ci_lower": 238,
+              "ci_upper": 440,
+              "error_pct": 3.5,
+              "abs_error_pct": 3.5,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 35,
-              "predicted": 296,
-              "ci_lower": 238,
-              "ci_upper": 369,
-              "error_pct": -5.1,
-              "abs_error_pct": 5.1,
+              "predicted": 307,
+              "ci_lower": 247,
+              "ci_upper": 382,
+              "error_pct": -1.6,
+              "abs_error_pct": 1.6,
               "in_ci": 1
             },
             {
@@ -83742,21 +83745,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 17,
-              "predicted": 322,
-              "ci_lower": 237,
-              "ci_upper": 438,
-              "error_pct": 15.0,
-              "abs_error_pct": 15.0,
+              "predicted": 330,
+              "ci_lower": 243,
+              "ci_upper": 449,
+              "error_pct": 17.9,
+              "abs_error_pct": 17.9,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 35,
-              "predicted": 309,
-              "ci_lower": 248,
-              "ci_upper": 384,
-              "error_pct": 10.4,
-              "abs_error_pct": 10.4,
+              "predicted": 320,
+              "ci_lower": 257,
+              "ci_upper": 398,
+              "error_pct": 14.3,
+              "abs_error_pct": 14.3,
               "in_ci": 1
             },
             {
@@ -83829,21 +83832,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 30,
-              "predicted": 347,
-              "ci_lower": 215,
-              "ci_upper": 560,
-              "error_pct": -13.9,
-              "abs_error_pct": 13.9,
+              "predicted": 356,
+              "ci_lower": 221,
+              "ci_upper": 574,
+              "error_pct": -11.7,
+              "abs_error_pct": 11.7,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 59,
-              "predicted": 366,
-              "ci_lower": 235,
-              "ci_upper": 570,
-              "error_pct": -9.2,
-              "abs_error_pct": 9.2,
+              "predicted": 379,
+              "ci_lower": 243,
+              "ci_upper": 590,
+              "error_pct": -6.0,
+              "abs_error_pct": 6.0,
               "in_ci": 1
             },
             {
@@ -83916,21 +83919,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 20,
-              "predicted": 202,
-              "ci_lower": 148,
-              "ci_upper": 274,
-              "error_pct": 10.4,
-              "abs_error_pct": 10.4,
+              "predicted": 207,
+              "ci_lower": 152,
+              "ci_upper": 281,
+              "error_pct": 13.1,
+              "abs_error_pct": 13.1,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 29,
-              "predicted": 196,
-              "ci_lower": 122,
-              "ci_upper": 315,
-              "error_pct": 7.1,
-              "abs_error_pct": 7.1,
+              "predicted": 203,
+              "ci_lower": 126,
+              "ci_upper": 326,
+              "error_pct": 10.9,
+              "abs_error_pct": 10.9,
               "in_ci": 1
             },
             {
@@ -83993,21 +83996,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 24,
-              "predicted": 273,
-              "ci_lower": 169,
-              "ci_upper": 440,
-              "error_pct": -7.1,
-              "abs_error_pct": 7.1,
+              "predicted": 280,
+              "ci_lower": 174,
+              "ci_upper": 452,
+              "error_pct": -4.8,
+              "abs_error_pct": 4.8,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 48,
-              "predicted": 287,
-              "ci_lower": 186,
-              "ci_upper": 444,
-              "error_pct": -2.4,
-              "abs_error_pct": 2.4,
+              "predicted": 297,
+              "ci_lower": 192,
+              "ci_upper": 459,
+              "error_pct": 1.0,
+              "abs_error_pct": 1.0,
               "in_ci": 1
             },
             {
@@ -84070,21 +84073,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 21,
-              "predicted": 231,
-              "ci_lower": 170,
-              "ci_upper": 315,
-              "error_pct": -9.8,
-              "abs_error_pct": 9.8,
+              "predicted": 237,
+              "ci_lower": 174,
+              "ci_upper": 323,
+              "error_pct": -7.4,
+              "abs_error_pct": 7.4,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 31,
-              "predicted": 227,
-              "ci_lower": 146,
-              "ci_upper": 354,
-              "error_pct": -11.3,
-              "abs_error_pct": 11.3,
+              "predicted": 235,
+              "ci_lower": 151,
+              "ci_upper": 366,
+              "error_pct": -8.2,
+              "abs_error_pct": 8.2,
               "in_ci": 1
             },
             {
@@ -84157,21 +84160,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 20,
-              "predicted": 196,
-              "ci_lower": 144,
-              "ci_upper": 266,
-              "error_pct": -8.4,
-              "abs_error_pct": 8.4,
+              "predicted": 201,
+              "ci_lower": 148,
+              "ci_upper": 273,
+              "error_pct": -6.1,
+              "abs_error_pct": 6.1,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 29,
-              "predicted": 191,
-              "ci_lower": 119,
-              "ci_upper": 306,
-              "error_pct": -10.7,
-              "abs_error_pct": 10.7,
+              "predicted": 197,
+              "ci_lower": 123,
+              "ci_upper": 317,
+              "error_pct": -7.9,
+              "abs_error_pct": 7.9,
               "in_ci": 1
             },
             {
@@ -84234,21 +84237,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 25,
-              "predicted": 403,
-              "ci_lower": 250,
-              "ci_upper": 650,
-              "error_pct": 8.6,
-              "abs_error_pct": 8.6,
+              "predicted": 413,
+              "ci_lower": 256,
+              "ci_upper": 666,
+              "error_pct": 11.3,
+              "abs_error_pct": 11.3,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 47,
-              "predicted": 399,
-              "ci_lower": 258,
-              "ci_upper": 617,
-              "error_pct": 7.5,
-              "abs_error_pct": 7.5,
+              "predicted": 413,
+              "ci_lower": 267,
+              "ci_upper": 638,
+              "error_pct": 11.3,
+              "abs_error_pct": 11.3,
               "in_ci": 1
             },
             {
@@ -84301,21 +84304,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 15,
-              "predicted": 184,
-              "ci_lower": 135,
-              "ci_upper": 250,
-              "error_pct": -3.2,
-              "abs_error_pct": 3.2,
+              "predicted": 188,
+              "ci_lower": 138,
+              "ci_upper": 256,
+              "error_pct": -1.1,
+              "abs_error_pct": 1.1,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 28,
-              "predicted": 185,
-              "ci_lower": 115,
-              "ci_upper": 298,
-              "error_pct": -2.6,
-              "abs_error_pct": 2.6,
+              "predicted": 192,
+              "ci_lower": 119,
+              "ci_upper": 308,
+              "error_pct": 1.1,
+              "abs_error_pct": 1.1,
               "in_ci": 1
             },
             {
@@ -84378,21 +84381,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 16,
-              "predicted": 302,
-              "ci_lower": 222,
-              "ci_upper": 410,
-              "error_pct": -13.0,
-              "abs_error_pct": 13.0,
+              "predicted": 309,
+              "ci_lower": 227,
+              "ci_upper": 421,
+              "error_pct": -11.0,
+              "abs_error_pct": 11.0,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 35,
-              "predicted": 292,
-              "ci_lower": 235,
-              "ci_upper": 364,
-              "error_pct": -15.9,
-              "abs_error_pct": 15.9,
+              "predicted": 303,
+              "ci_lower": 243,
+              "ci_upper": 377,
+              "error_pct": -12.7,
+              "abs_error_pct": 12.7,
               "in_ci": 1
             },
             {
@@ -84455,11 +84458,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 28,
               "count_at_T": 12,
-              "predicted": 113,
-              "ci_lower": 72,
-              "ci_upper": 175,
-              "error_pct": -18.7,
-              "abs_error_pct": 18.7,
+              "predicted": 117,
+              "ci_lower": 75,
+              "ci_upper": 181,
+              "error_pct": -15.8,
+              "abs_error_pct": 15.8,
               "in_ci": 1
             },
             {
@@ -84522,21 +84525,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 18,
-              "predicted": 343,
-              "ci_lower": 253,
-              "ci_upper": 467,
-              "error_pct": 17.5,
-              "abs_error_pct": 17.5,
+              "predicted": 352,
+              "ci_lower": 259,
+              "ci_upper": 479,
+              "error_pct": 20.5,
+              "abs_error_pct": 20.5,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 32,
-              "predicted": 332,
-              "ci_lower": 213,
-              "ci_upper": 518,
-              "error_pct": 13.7,
-              "abs_error_pct": 13.7,
+              "predicted": 344,
+              "ci_lower": 221,
+              "ci_upper": 536,
+              "error_pct": 17.8,
+              "abs_error_pct": 17.8,
               "in_ci": 1
             },
             {
@@ -84599,21 +84602,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 13,
-              "predicted": 194,
-              "ci_lower": 142,
-              "ci_upper": 263,
-              "error_pct": -13.0,
-              "abs_error_pct": 13.0,
+              "predicted": 199,
+              "ci_lower": 146,
+              "ci_upper": 270,
+              "error_pct": -10.8,
+              "abs_error_pct": 10.8,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 22,
-              "predicted": 191,
-              "ci_lower": 123,
-              "ci_upper": 296,
-              "error_pct": -14.3,
-              "abs_error_pct": 14.3,
+              "predicted": 197,
+              "ci_lower": 127,
+              "ci_upper": 307,
+              "error_pct": -11.7,
+              "abs_error_pct": 11.7,
               "in_ci": 1
             },
             {
@@ -84666,21 +84669,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 11,
-              "predicted": 27,
+              "predicted": 28,
               "ci_lower": 11,
-              "ci_upper": 79,
-              "error_pct": -89.2,
-              "abs_error_pct": 89.2,
+              "ci_upper": 81,
+              "error_pct": -88.8,
+              "abs_error_pct": 88.8,
               "in_ci": 0
             },
             {
               "T": 28,
               "count_at_T": 21,
-              "predicted": 98,
-              "ci_lower": 50,
-              "ci_upper": 193,
-              "error_pct": -60.6,
-              "abs_error_pct": 60.6,
+              "predicted": 101,
+              "ci_lower": 52,
+              "ci_upper": 200,
+              "error_pct": -59.4,
+              "abs_error_pct": 59.4,
               "in_ci": 0
             },
             {
@@ -84753,21 +84756,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 28,
-              "predicted": 479,
-              "ci_lower": 297,
-              "ci_upper": 772,
-              "error_pct": -9.1,
-              "abs_error_pct": 9.1,
+              "predicted": 491,
+              "ci_lower": 304,
+              "ci_upper": 792,
+              "error_pct": -6.8,
+              "abs_error_pct": 6.8,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 59,
-              "predicted": 482,
-              "ci_lower": 309,
-              "ci_upper": 751,
-              "error_pct": -8.5,
-              "abs_error_pct": 8.5,
+              "predicted": 499,
+              "ci_lower": 320,
+              "ci_upper": 777,
+              "error_pct": -5.3,
+              "abs_error_pct": 5.3,
               "in_ci": 1
             },
             {
@@ -84840,21 +84843,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 395,
-              "predicted": 1304,
-              "ci_lower": 817,
-              "ci_upper": 2082,
-              "error_pct": 17.0,
-              "abs_error_pct": 17.0,
+              "predicted": 1338,
+              "ci_lower": 838,
+              "ci_upper": 2135,
+              "error_pct": 20.0,
+              "abs_error_pct": 20.0,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 486,
-              "predicted": 1429,
-              "ci_lower": 991,
-              "ci_upper": 2062,
-              "error_pct": 28.2,
-              "abs_error_pct": 28.2,
+              "predicted": 1479,
+              "ci_lower": 1025,
+              "ci_upper": 2134,
+              "error_pct": 32.6,
+              "abs_error_pct": 32.6,
               "in_ci": 1
             },
             {
@@ -84927,21 +84930,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 70,
-              "predicted": 452,
-              "ci_lower": 333,
-              "ci_upper": 615,
-              "error_pct": 8.9,
-              "abs_error_pct": 8.9,
+              "predicted": 464,
+              "ci_lower": 341,
+              "ci_upper": 631,
+              "error_pct": 11.8,
+              "abs_error_pct": 11.8,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 103,
-              "predicted": 453,
-              "ci_lower": 291,
-              "ci_upper": 705,
-              "error_pct": 9.2,
-              "abs_error_pct": 9.2,
+              "predicted": 468,
+              "ci_lower": 301,
+              "ci_upper": 730,
+              "error_pct": 12.8,
+              "abs_error_pct": 12.8,
               "in_ci": 1
             },
             {
@@ -85004,21 +85007,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 20,
-              "predicted": 354,
-              "ci_lower": 260,
-              "ci_upper": 481,
-              "error_pct": -1.1,
+              "predicted": 362,
+              "ci_lower": 267,
+              "ci_upper": 493,
+              "error_pct": 1.1,
               "abs_error_pct": 1.1,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 39,
-              "predicted": 338,
-              "ci_lower": 272,
-              "ci_upper": 421,
-              "error_pct": -5.6,
-              "abs_error_pct": 5.6,
+              "predicted": 350,
+              "ci_lower": 281,
+              "ci_upper": 436,
+              "error_pct": -2.2,
+              "abs_error_pct": 2.2,
               "in_ci": 1
             },
             {
@@ -85091,21 +85094,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 54,
-              "predicted": 626,
-              "ci_lower": 417,
-              "ci_upper": 939,
-              "error_pct": -1.6,
-              "abs_error_pct": 1.6,
+              "predicted": 642,
+              "ci_lower": 428,
+              "ci_upper": 962,
+              "error_pct": 0.9,
+              "abs_error_pct": 0.9,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 83,
-              "predicted": 610,
-              "ci_lower": 392,
-              "ci_upper": 950,
-              "error_pct": -4.1,
-              "abs_error_pct": 4.1,
+              "predicted": 631,
+              "ci_lower": 405,
+              "ci_upper": 983,
+              "error_pct": -0.8,
+              "abs_error_pct": 0.8,
               "in_ci": 1
             },
             {
@@ -85178,21 +85181,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 22,
-              "predicted": 388,
-              "ci_lower": 285,
-              "ci_upper": 528,
-              "error_pct": 5.7,
-              "abs_error_pct": 5.7,
+              "predicted": 398,
+              "ci_lower": 293,
+              "ci_upper": 541,
+              "error_pct": 8.4,
+              "abs_error_pct": 8.4,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 46,
-              "predicted": 391,
-              "ci_lower": 253,
-              "ci_upper": 604,
-              "error_pct": 6.5,
-              "abs_error_pct": 6.5,
+              "predicted": 405,
+              "ci_lower": 262,
+              "ci_upper": 626,
+              "error_pct": 10.4,
+              "abs_error_pct": 10.4,
               "in_ci": 1
             },
             {
@@ -85256,10 +85259,10 @@ const PERFORMANCE_DATA = {
         {
           "T": 60,
           "n": 28,
-          "mae_pct": 12.8,
-          "median_ape_pct": 10.1,
+          "mae_pct": 13.1,
+          "median_ape_pct": 9.0,
           "ci_coverage": 93.0,
-          "bias_pct": -4.1
+          "bias_pct": -1.3
         },
         {
           "T": 42,
@@ -85288,10 +85291,10 @@ const PERFORMANCE_DATA = {
         {
           "T": 7,
           "n": 37,
-          "mae_pct": 7.3,
-          "median_ape_pct": 5.8,
+          "mae_pct": 8.1,
+          "median_ape_pct": 6.7,
           "ci_coverage": 95.0,
-          "bias_pct": 2.5
+          "bias_pct": 4.5
         },
         {
           "T": 3,
@@ -85329,11 +85332,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 299,
-              "predicted": 1502,
-              "ci_lower": 1357,
-              "ci_upper": 1662,
-              "error_pct": -15.5,
-              "abs_error_pct": 15.5,
+              "predicted": 1544,
+              "ci_lower": 1395,
+              "ci_upper": 1708,
+              "error_pct": -13.1,
+              "abs_error_pct": 13.1,
               "in_ci": 0
             },
             {
@@ -85369,11 +85372,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 1663,
-              "predicted": 1851,
+              "predicted": 1887,
               "ci_lower": 1663,
-              "ci_upper": 2127,
-              "error_pct": 4.2,
-              "abs_error_pct": 4.2,
+              "ci_upper": 2168,
+              "error_pct": 6.2,
+              "abs_error_pct": 6.2,
               "in_ci": 1
             },
             {
@@ -85406,11 +85409,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 2,
-              "predicted": 333,
-              "ci_lower": 246,
-              "ci_upper": 450,
-              "error_pct": -2.6,
-              "abs_error_pct": 2.6,
+              "predicted": 342,
+              "ci_lower": 253,
+              "ci_upper": 462,
+              "error_pct": 0.0,
+              "abs_error_pct": 0.0,
               "in_ci": 1
             },
             {
@@ -85446,11 +85449,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 103,
-              "predicted": 307,
-              "ci_lower": 259,
-              "ci_upper": 363,
-              "error_pct": -10.2,
-              "abs_error_pct": 10.2,
+              "predicted": 313,
+              "ci_lower": 264,
+              "ci_upper": 370,
+              "error_pct": -8.5,
+              "abs_error_pct": 8.5,
               "in_ci": 1
             },
             {
@@ -85483,11 +85486,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 2,
-              "predicted": 414,
-              "ci_lower": 306,
-              "ci_upper": 559,
-              "error_pct": -13.9,
-              "abs_error_pct": 13.9,
+              "predicted": 425,
+              "ci_lower": 315,
+              "ci_upper": 574,
+              "error_pct": -11.6,
+              "abs_error_pct": 11.6,
               "in_ci": 1
             },
             {
@@ -85523,11 +85526,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 154,
-              "predicted": 441,
-              "ci_lower": 374,
-              "ci_upper": 520,
-              "error_pct": -8.3,
-              "abs_error_pct": 8.3,
+              "predicted": 449,
+              "ci_lower": 381,
+              "ci_upper": 530,
+              "error_pct": -6.7,
+              "abs_error_pct": 6.7,
               "in_ci": 1
             },
             {
@@ -85560,11 +85563,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 2,
-              "predicted": 272,
-              "ci_lower": 202,
-              "ci_upper": 368,
-              "error_pct": -7.2,
-              "abs_error_pct": 7.2,
+              "predicted": 280,
+              "ci_lower": 207,
+              "ci_upper": 378,
+              "error_pct": -4.4,
+              "abs_error_pct": 4.4,
               "in_ci": 1
             },
             {
@@ -85600,11 +85603,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 91,
-              "predicted": 259,
-              "ci_lower": 220,
-              "ci_upper": 305,
-              "error_pct": -11.6,
-              "abs_error_pct": 11.6,
+              "predicted": 264,
+              "ci_lower": 224,
+              "ci_upper": 311,
+              "error_pct": -9.9,
+              "abs_error_pct": 9.9,
               "in_ci": 1
             },
             {
@@ -85637,11 +85640,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 15,
-              "predicted": 406,
-              "ci_lower": 283,
-              "ci_upper": 584,
-              "error_pct": -7.9,
-              "abs_error_pct": 7.9,
+              "predicted": 418,
+              "ci_lower": 291,
+              "ci_upper": 600,
+              "error_pct": -5.2,
+              "abs_error_pct": 5.2,
               "in_ci": 1
             },
             {
@@ -85677,11 +85680,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 265,
-              "predicted": 474,
-              "ci_lower": 403,
-              "ci_upper": 558,
-              "error_pct": 7.5,
-              "abs_error_pct": 7.5,
+              "predicted": 483,
+              "ci_lower": 411,
+              "ci_upper": 569,
+              "error_pct": 9.5,
+              "abs_error_pct": 9.5,
               "in_ci": 1
             },
             {
@@ -85744,11 +85747,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 109,
-              "predicted": 278,
-              "ci_lower": 215,
-              "ci_upper": 361,
-              "error_pct": 4.5,
-              "abs_error_pct": 4.5,
+              "predicted": 284,
+              "ci_lower": 219,
+              "ci_upper": 368,
+              "error_pct": 6.8,
+              "abs_error_pct": 6.8,
               "in_ci": 1
             },
             {
@@ -85781,11 +85784,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 9,
-              "predicted": 352,
-              "ci_lower": 242,
-              "ci_upper": 511,
-              "error_pct": -16.4,
-              "abs_error_pct": 16.4,
+              "predicted": 361,
+              "ci_lower": 249,
+              "ci_upper": 525,
+              "error_pct": -14.3,
+              "abs_error_pct": 14.3,
               "in_ci": 1
             },
             {
@@ -85821,11 +85824,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 206,
-              "predicted": 440,
-              "ci_lower": 370,
-              "ci_upper": 523,
-              "error_pct": 4.5,
-              "abs_error_pct": 4.5,
+              "predicted": 449,
+              "ci_lower": 377,
+              "ci_upper": 533,
+              "error_pct": 6.7,
+              "abs_error_pct": 6.7,
               "in_ci": 1
             },
             {
@@ -85858,11 +85861,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 22,
-              "predicted": 438,
-              "ci_lower": 302,
-              "ci_upper": 636,
-              "error_pct": -5.8,
-              "abs_error_pct": 5.8,
+              "predicted": 450,
+              "ci_lower": 310,
+              "ci_upper": 654,
+              "error_pct": -3.2,
+              "abs_error_pct": 3.2,
               "in_ci": 1
             },
             {
@@ -85898,11 +85901,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 211,
-              "predicted": 418,
-              "ci_lower": 333,
-              "ci_upper": 524,
-              "error_pct": -10.1,
-              "abs_error_pct": 10.1,
+              "predicted": 426,
+              "ci_lower": 340,
+              "ci_upper": 534,
+              "error_pct": -8.4,
+              "abs_error_pct": 8.4,
               "in_ci": 1
             },
             {
@@ -85935,11 +85938,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 5,
-              "predicted": 231,
-              "ci_lower": 171,
-              "ci_upper": 312,
-              "error_pct": -10.8,
-              "abs_error_pct": 10.8,
+              "predicted": 238,
+              "ci_lower": 176,
+              "ci_upper": 321,
+              "error_pct": -8.1,
+              "abs_error_pct": 8.1,
               "in_ci": 1
             },
             {
@@ -85975,11 +85978,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 103,
-              "predicted": 232,
-              "ci_lower": 189,
-              "ci_upper": 284,
-              "error_pct": -10.4,
-              "abs_error_pct": 10.4,
+              "predicted": 236,
+              "ci_lower": 192,
+              "ci_upper": 290,
+              "error_pct": -8.9,
+              "abs_error_pct": 8.9,
               "in_ci": 1
             },
             {
@@ -86012,11 +86015,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 4,
-              "predicted": 304,
-              "ci_lower": 223,
-              "ci_upper": 416,
-              "error_pct": -0.3,
-              "abs_error_pct": 0.3,
+              "predicted": 313,
+              "ci_lower": 229,
+              "ci_upper": 428,
+              "error_pct": 2.6,
+              "abs_error_pct": 2.6,
               "in_ci": 1
             },
             {
@@ -86052,11 +86055,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 114,
-              "predicted": 311,
-              "ci_lower": 262,
-              "ci_upper": 370,
-              "error_pct": 2.0,
-              "abs_error_pct": 2.0,
+              "predicted": 317,
+              "ci_lower": 267,
+              "ci_upper": 377,
+              "error_pct": 3.9,
+              "abs_error_pct": 3.9,
               "in_ci": 1
             },
             {
@@ -86099,11 +86102,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 169,
-              "predicted": 912,
-              "ci_lower": 637,
-              "ci_upper": 1306,
-              "error_pct": 6.0,
-              "abs_error_pct": 6.0,
+              "predicted": 937,
+              "ci_lower": 655,
+              "ci_upper": 1342,
+              "error_pct": 9.0,
+              "abs_error_pct": 9.0,
               "in_ci": 1
             },
             {
@@ -86139,11 +86142,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 494,
-              "predicted": 880,
-              "ci_lower": 746,
-              "ci_upper": 1038,
-              "error_pct": 2.3,
-              "abs_error_pct": 2.3,
+              "predicted": 897,
+              "ci_lower": 761,
+              "ci_upper": 1059,
+              "error_pct": 4.3,
+              "abs_error_pct": 4.3,
               "in_ci": 1
             },
             {
@@ -86186,11 +86189,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 23,
-              "predicted": 155,
-              "ci_lower": 106,
-              "ci_upper": 225,
-              "error_pct": -12.4,
-              "abs_error_pct": 12.4,
+              "predicted": 159,
+              "ci_lower": 109,
+              "ci_upper": 231,
+              "error_pct": -10.2,
+              "abs_error_pct": 10.2,
               "in_ci": 1
             },
             {
@@ -86226,11 +86229,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 97,
-              "predicted": 189,
-              "ci_lower": 155,
-              "ci_upper": 230,
-              "error_pct": 6.8,
-              "abs_error_pct": 6.8,
+              "predicted": 193,
+              "ci_lower": 158,
+              "ci_upper": 234,
+              "error_pct": 9.0,
+              "abs_error_pct": 9.0,
               "in_ci": 1
             },
             {
@@ -86263,11 +86266,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 5,
-              "predicted": 237,
-              "ci_lower": 176,
-              "ci_upper": 321,
-              "error_pct": 16.7,
-              "abs_error_pct": 16.7,
+              "predicted": 244,
+              "ci_lower": 180,
+              "ci_upper": 329,
+              "error_pct": 20.2,
+              "abs_error_pct": 20.2,
               "in_ci": 1
             },
             {
@@ -86303,11 +86306,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 56,
-              "predicted": 202,
-              "ci_lower": 168,
-              "ci_upper": 242,
-              "error_pct": -0.5,
-              "abs_error_pct": 0.5,
+              "predicted": 206,
+              "ci_lower": 172,
+              "ci_upper": 246,
+              "error_pct": 1.5,
+              "abs_error_pct": 1.5,
               "in_ci": 1
             },
             {
@@ -86340,11 +86343,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 3,
-              "predicted": 211,
-              "ci_lower": 145,
-              "ci_upper": 306,
-              "error_pct": 26.3,
-              "abs_error_pct": 26.3,
+              "predicted": 217,
+              "ci_lower": 149,
+              "ci_upper": 315,
+              "error_pct": 29.9,
+              "abs_error_pct": 29.9,
               "in_ci": 1
             },
             {
@@ -86380,11 +86383,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 45,
-              "predicted": 218,
-              "ci_lower": 183,
-              "ci_upper": 259,
-              "error_pct": 30.5,
-              "abs_error_pct": 30.5,
+              "predicted": 222,
+              "ci_lower": 186,
+              "ci_upper": 264,
+              "error_pct": 32.9,
+              "abs_error_pct": 32.9,
               "in_ci": 0
             },
             {
@@ -86444,11 +86447,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 3,
-              "predicted": 7,
+              "predicted": 8,
               "ci_lower": 3,
-              "ci_upper": 21,
-              "error_pct": -90.8,
-              "abs_error_pct": 90.8,
+              "ci_upper": 22,
+              "error_pct": -89.5,
+              "abs_error_pct": 89.5,
               "in_ci": 0
             },
             {
@@ -86484,11 +86487,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 39,
-              "predicted": 79,
-              "ci_lower": 53,
-              "ci_upper": 118,
-              "error_pct": 3.9,
-              "abs_error_pct": 3.9,
+              "predicted": 80,
+              "ci_lower": 54,
+              "ci_upper": 120,
+              "error_pct": 5.3,
+              "abs_error_pct": 5.3,
               "in_ci": 1
             },
             {
@@ -86531,11 +86534,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 22,
-              "predicted": 103,
-              "ci_lower": 73,
-              "ci_upper": 146,
-              "error_pct": -28.0,
-              "abs_error_pct": 28.0,
+              "predicted": 106,
+              "ci_lower": 75,
+              "ci_upper": 150,
+              "error_pct": -25.9,
+              "abs_error_pct": 25.9,
               "in_ci": 1
             },
             {
@@ -86571,11 +86574,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 95,
-              "predicted": 138,
-              "ci_lower": 119,
-              "ci_upper": 160,
-              "error_pct": -3.5,
-              "abs_error_pct": 3.5,
+              "predicted": 141,
+              "ci_lower": 121,
+              "ci_upper": 164,
+              "error_pct": -1.4,
+              "abs_error_pct": 1.4,
               "in_ci": 1
             },
             {
@@ -86618,11 +86621,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 127,
-              "predicted": 1410,
-              "ci_lower": 912,
-              "ci_upper": 2179,
-              "error_pct": 18.0,
-              "abs_error_pct": 18.0,
+              "predicted": 1449,
+              "ci_lower": 938,
+              "ci_upper": 2240,
+              "error_pct": 21.3,
+              "abs_error_pct": 21.3,
               "in_ci": 1
             },
             {
@@ -86658,11 +86661,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 703,
-              "predicted": 1147,
-              "ci_lower": 1065,
-              "ci_upper": 1236,
-              "error_pct": -4.0,
-              "abs_error_pct": 4.0,
+              "predicted": 1170,
+              "ci_lower": 1086,
+              "ci_upper": 1261,
+              "error_pct": -2.1,
+              "abs_error_pct": 2.1,
               "in_ci": 1
             },
             {
@@ -86695,11 +86698,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 14,
-              "predicted": 275,
-              "ci_lower": 189,
-              "ci_upper": 399,
-              "error_pct": -11.9,
-              "abs_error_pct": 11.9,
+              "predicted": 283,
+              "ci_lower": 195,
+              "ci_upper": 410,
+              "error_pct": -9.3,
+              "abs_error_pct": 9.3,
               "in_ci": 1
             },
             {
@@ -86735,11 +86738,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 138,
-              "predicted": 330,
-              "ci_lower": 267,
-              "ci_upper": 407,
-              "error_pct": 5.8,
-              "abs_error_pct": 5.8,
+              "predicted": 336,
+              "ci_lower": 272,
+              "ci_upper": 415,
+              "error_pct": 7.7,
+              "abs_error_pct": 7.7,
               "in_ci": 1
             },
             {
@@ -86802,11 +86805,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 39,
-              "predicted": 96,
-              "ci_lower": 82,
-              "ci_upper": 114,
-              "error_pct": 20.0,
-              "abs_error_pct": 20.0,
+              "predicted": 98,
+              "ci_lower": 83,
+              "ci_upper": 116,
+              "error_pct": 22.5,
+              "abs_error_pct": 22.5,
               "in_ci": 0
             },
             {
@@ -86839,11 +86842,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 3,
-              "predicted": 183,
-              "ci_lower": 126,
-              "ci_upper": 265,
-              "error_pct": 10.2,
-              "abs_error_pct": 10.2,
+              "predicted": 188,
+              "ci_lower": 129,
+              "ci_upper": 272,
+              "error_pct": 13.3,
+              "abs_error_pct": 13.3,
               "in_ci": 1
             },
             {
@@ -86879,11 +86882,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 53,
-              "predicted": 159,
-              "ci_lower": 131,
-              "ci_upper": 193,
-              "error_pct": -4.2,
-              "abs_error_pct": 4.2,
+              "predicted": 162,
+              "ci_lower": 134,
+              "ci_upper": 196,
+              "error_pct": -2.4,
+              "abs_error_pct": 2.4,
               "in_ci": 1
             },
             {
@@ -86946,11 +86949,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 98,
-              "predicted": 302,
-              "ci_lower": 256,
-              "ci_upper": 356,
-              "error_pct": 11.9,
-              "abs_error_pct": 11.9,
+              "predicted": 308,
+              "ci_lower": 261,
+              "ci_upper": 363,
+              "error_pct": 14.1,
+              "abs_error_pct": 14.1,
               "in_ci": 1
             },
             {
@@ -87013,11 +87016,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 80,
-              "predicted": 222,
-              "ci_lower": 188,
-              "ci_upper": 262,
-              "error_pct": -3.9,
-              "abs_error_pct": 3.9,
+              "predicted": 226,
+              "ci_lower": 191,
+              "ci_upper": 267,
+              "error_pct": -2.2,
+              "abs_error_pct": 2.2,
               "in_ci": 1
             },
             {
@@ -87060,11 +87063,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 14,
-              "predicted": 373,
-              "ci_lower": 257,
-              "ci_upper": 540,
-              "error_pct": 3.3,
-              "abs_error_pct": 3.3,
+              "predicted": 383,
+              "ci_lower": 264,
+              "ci_upper": 556,
+              "error_pct": 6.1,
+              "abs_error_pct": 6.1,
               "in_ci": 1
             },
             {
@@ -87100,11 +87103,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 132,
-              "predicted": 329,
-              "ci_lower": 279,
-              "ci_upper": 388,
-              "error_pct": -8.9,
-              "abs_error_pct": 8.9,
+              "predicted": 335,
+              "ci_lower": 285,
+              "ci_upper": 395,
+              "error_pct": -7.2,
+              "abs_error_pct": 7.2,
               "in_ci": 1
             },
             {
@@ -87167,11 +87170,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 73,
-              "predicted": 248,
-              "ci_lower": 209,
-              "ci_upper": 294,
-              "error_pct": -8.1,
-              "abs_error_pct": 8.1,
+              "predicted": 253,
+              "ci_lower": 213,
+              "ci_upper": 300,
+              "error_pct": -6.3,
+              "abs_error_pct": 6.3,
               "in_ci": 1
             },
             {
@@ -87234,11 +87237,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 72,
-              "predicted": 254,
-              "ci_lower": 209,
-              "ci_upper": 309,
-              "error_pct": 4.1,
-              "abs_error_pct": 4.1,
+              "predicted": 259,
+              "ci_lower": 213,
+              "ci_upper": 315,
+              "error_pct": 6.1,
+              "abs_error_pct": 6.1,
               "in_ci": 1
             },
             {
@@ -87301,11 +87304,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 61,
-              "predicted": 183,
-              "ci_lower": 154,
-              "ci_upper": 217,
-              "error_pct": 7.6,
-              "abs_error_pct": 7.6,
+              "predicted": 186,
+              "ci_lower": 157,
+              "ci_upper": 222,
+              "error_pct": 9.4,
+              "abs_error_pct": 9.4,
               "in_ci": 1
             },
             {
@@ -87338,11 +87341,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 1,
-              "predicted": 190,
-              "ci_lower": 140,
-              "ci_upper": 256,
-              "error_pct": 12.4,
-              "abs_error_pct": 12.4,
+              "predicted": 195,
+              "ci_lower": 144,
+              "ci_upper": 264,
+              "error_pct": 15.4,
+              "abs_error_pct": 15.4,
               "in_ci": 1
             },
             {
@@ -87368,11 +87371,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 64,
-              "predicted": 175,
-              "ci_lower": 148,
-              "ci_upper": 207,
-              "error_pct": 3.6,
-              "abs_error_pct": 3.6,
+              "predicted": 179,
+              "ci_lower": 151,
+              "ci_upper": 211,
+              "error_pct": 5.9,
+              "abs_error_pct": 5.9,
               "in_ci": 1
             },
             {
@@ -87405,11 +87408,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 5,
-              "predicted": 342,
-              "ci_lower": 236,
-              "ci_upper": 497,
-              "error_pct": 4.9,
-              "abs_error_pct": 4.9,
+              "predicted": 352,
+              "ci_lower": 242,
+              "ci_upper": 511,
+              "error_pct": 8.0,
+              "abs_error_pct": 8.0,
               "in_ci": 1
             },
             {
@@ -87445,11 +87448,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 123,
-              "predicted": 310,
-              "ci_lower": 263,
-              "ci_upper": 366,
-              "error_pct": -4.9,
-              "abs_error_pct": 4.9,
+              "predicted": 316,
+              "ci_lower": 268,
+              "ci_upper": 373,
+              "error_pct": -3.1,
+              "abs_error_pct": 3.1,
               "in_ci": 1
             },
             {
@@ -87512,11 +87515,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 106,
-              "predicted": 319,
-              "ci_lower": 263,
-              "ci_upper": 387,
-              "error_pct": 17.3,
-              "abs_error_pct": 17.3,
+              "predicted": 325,
+              "ci_lower": 268,
+              "ci_upper": 395,
+              "error_pct": 19.5,
+              "abs_error_pct": 19.5,
               "in_ci": 1
             },
             {
@@ -87559,11 +87562,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 9,
-              "predicted": 337,
-              "ci_lower": 238,
-              "ci_upper": 477,
-              "error_pct": 11.2,
-              "abs_error_pct": 11.2,
+              "predicted": 347,
+              "ci_lower": 245,
+              "ci_upper": 491,
+              "error_pct": 14.5,
+              "abs_error_pct": 14.5,
               "in_ci": 1
             },
             {
@@ -87599,11 +87602,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 110,
-              "predicted": 334,
-              "ci_lower": 280,
-              "ci_upper": 398,
-              "error_pct": 10.2,
-              "abs_error_pct": 10.2,
+              "predicted": 340,
+              "ci_lower": 286,
+              "ci_upper": 405,
+              "error_pct": 12.2,
+              "abs_error_pct": 12.2,
               "in_ci": 1
             },
             {
@@ -87676,11 +87679,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 56,
-              "predicted": 200,
-              "ci_lower": 169,
-              "ci_upper": 238,
-              "error_pct": 0.5,
-              "abs_error_pct": 0.5,
+              "predicted": 204,
+              "ci_lower": 172,
+              "ci_upper": 243,
+              "error_pct": 2.5,
+              "abs_error_pct": 2.5,
               "in_ci": 1
             },
             {
@@ -87723,11 +87726,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 10,
-              "predicted": 498,
-              "ci_lower": 349,
-              "ci_upper": 710,
-              "error_pct": 1.6,
-              "abs_error_pct": 1.6,
+              "predicted": 511,
+              "ci_lower": 358,
+              "ci_upper": 730,
+              "error_pct": 4.3,
+              "abs_error_pct": 4.3,
               "in_ci": 1
             },
             {
@@ -87763,11 +87766,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 223,
-              "predicted": 554,
-              "ci_lower": 467,
-              "ci_upper": 658,
-              "error_pct": 13.1,
-              "abs_error_pct": 13.1,
+              "predicted": 565,
+              "ci_lower": 476,
+              "ci_upper": 671,
+              "error_pct": 15.3,
+              "abs_error_pct": 15.3,
               "in_ci": 1
             },
             {
@@ -87810,11 +87813,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 13,
-              "predicted": 371,
-              "ci_lower": 274,
-              "ci_upper": 501,
-              "error_pct": -10.0,
-              "abs_error_pct": 10.0,
+              "predicted": 381,
+              "ci_lower": 282,
+              "ci_upper": 515,
+              "error_pct": -7.5,
+              "abs_error_pct": 7.5,
               "in_ci": 1
             },
             {
@@ -87850,11 +87853,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 219,
-              "predicted": 412,
-              "ci_lower": 349,
-              "ci_upper": 486,
-              "error_pct": 0.0,
-              "abs_error_pct": 0.0,
+              "predicted": 420,
+              "ci_lower": 356,
+              "ci_upper": 496,
+              "error_pct": 1.9,
+              "abs_error_pct": 1.9,
               "in_ci": 1
             },
             {
@@ -87887,11 +87890,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 15,
-              "predicted": 371,
-              "ci_lower": 262,
-              "ci_upper": 524,
-              "error_pct": 6.0,
-              "abs_error_pct": 6.0,
+              "predicted": 381,
+              "ci_lower": 269,
+              "ci_upper": 539,
+              "error_pct": 8.9,
+              "abs_error_pct": 8.9,
               "in_ci": 1
             },
             {
@@ -87927,11 +87930,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 152,
-              "predicted": 395,
-              "ci_lower": 334,
-              "ci_upper": 467,
-              "error_pct": 12.9,
-              "abs_error_pct": 12.9,
+              "predicted": 402,
+              "ci_lower": 340,
+              "ci_upper": 476,
+              "error_pct": 14.9,
+              "abs_error_pct": 14.9,
               "in_ci": 1
             },
             {
@@ -87964,11 +87967,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 36,
-              "predicted": 656,
-              "ci_lower": 454,
-              "ci_upper": 948,
-              "error_pct": 5.6,
-              "abs_error_pct": 5.6,
+              "predicted": 674,
+              "ci_lower": 466,
+              "ci_upper": 974,
+              "error_pct": 8.5,
+              "abs_error_pct": 8.5,
               "in_ci": 1
             },
             {
@@ -88004,11 +88007,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 303,
-              "predicted": 677,
-              "ci_lower": 574,
-              "ci_upper": 799,
-              "error_pct": 9.0,
-              "abs_error_pct": 9.0,
+              "predicted": 690,
+              "ci_lower": 585,
+              "ci_upper": 814,
+              "error_pct": 11.1,
+              "abs_error_pct": 11.1,
               "in_ci": 1
             },
             {
@@ -88041,11 +88044,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 21,
-              "predicted": 385,
-              "ci_lower": 265,
-              "ci_upper": 559,
-              "error_pct": -1.5,
-              "abs_error_pct": 1.5,
+              "predicted": 396,
+              "ci_lower": 273,
+              "ci_upper": 575,
+              "error_pct": 1.3,
+              "abs_error_pct": 1.3,
               "in_ci": 1
             },
             {
@@ -88081,11 +88084,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 152,
-              "predicted": 389,
-              "ci_lower": 330,
-              "ci_upper": 458,
-              "error_pct": -0.5,
-              "abs_error_pct": 0.5,
+              "predicted": 396,
+              "ci_lower": 336,
+              "ci_upper": 467,
+              "error_pct": 1.3,
+              "abs_error_pct": 1.3,
               "in_ci": 1
             },
             {
@@ -88128,11 +88131,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 60,
               "count_at_T": 324,
-              "predicted": 1094,
-              "ci_lower": 759,
-              "ci_upper": 1577,
-              "error_pct": -0.7,
-              "abs_error_pct": 0.7,
+              "predicted": 1125,
+              "ci_lower": 780,
+              "ci_upper": 1621,
+              "error_pct": 2.1,
+              "abs_error_pct": 2.1,
               "in_ci": 1
             },
             {
@@ -88168,11 +88171,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 7,
               "count_at_T": 812,
-              "predicted": 1105,
-              "ci_lower": 945,
-              "ci_upper": 1293,
-              "error_pct": 0.3,
-              "abs_error_pct": 0.3,
+              "predicted": 1127,
+              "ci_lower": 963,
+              "ci_upper": 1318,
+              "error_pct": 2.3,
+              "abs_error_pct": 2.3,
               "in_ci": 1
             },
             {
@@ -91393,10 +91396,10 @@ const PERFORMANCE_DATA = {
         {
           "T": 3,
           "n": 11,
-          "mae_pct": 6.4,
-          "median_ape_pct": 5.3,
-          "ci_coverage": 73.0,
-          "bias_pct": 5.9
+          "mae_pct": 5.7,
+          "median_ape_pct": 3.3,
+          "ci_coverage": 82.0,
+          "bias_pct": 3.7
         },
         {
           "T": 1,
@@ -91466,11 +91469,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 3,
               "count_at_T": 193,
-              "predicted": 378,
-              "ci_lower": 355,
-              "ci_upper": 402,
-              "error_pct": 5.3,
-              "abs_error_pct": 5.3,
+              "predicted": 370,
+              "ci_lower": 348,
+              "ci_upper": 393,
+              "error_pct": 3.1,
+              "abs_error_pct": 3.1,
               "in_ci": 1
             },
             {
@@ -91543,11 +91546,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 3,
               "count_at_T": 429,
-              "predicted": 679,
-              "ci_lower": 586,
-              "ci_upper": 786,
-              "error_pct": 20.4,
-              "abs_error_pct": 20.4,
+              "predicted": 665,
+              "ci_lower": 577,
+              "ci_upper": 766,
+              "error_pct": 17.9,
+              "abs_error_pct": 17.9,
               "in_ci": 0
             },
             {
@@ -91610,12 +91613,12 @@ const PERFORMANCE_DATA = {
             {
               "T": 3,
               "count_at_T": 289,
-              "predicted": 427,
-              "ci_lower": 390,
-              "ci_upper": 467,
-              "error_pct": 10.3,
-              "abs_error_pct": 10.3,
-              "in_ci": 0
+              "predicted": 418,
+              "ci_lower": 383,
+              "ci_upper": 456,
+              "error_pct": 8.0,
+              "abs_error_pct": 8.0,
+              "in_ci": 1
             },
             {
               "T": 1,
@@ -91677,11 +91680,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 3,
               "count_at_T": 128,
-              "predicted": 238,
-              "ci_lower": 215,
-              "ci_upper": 264,
-              "error_pct": 13.9,
-              "abs_error_pct": 13.9,
+              "predicted": 233,
+              "ci_lower": 211,
+              "ci_upper": 258,
+              "error_pct": 11.5,
+              "abs_error_pct": 11.5,
               "in_ci": 0
             },
             {
@@ -91764,11 +91767,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 3,
               "count_at_T": 395,
-              "predicted": 518,
-              "ci_lower": 480,
-              "ci_upper": 559,
-              "error_pct": 5.3,
-              "abs_error_pct": 5.3,
+              "predicted": 507,
+              "ci_lower": 471,
+              "ci_upper": 546,
+              "error_pct": 3.0,
+              "abs_error_pct": 3.0,
               "in_ci": 1
             },
             {
@@ -91851,11 +91854,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 3,
               "count_at_T": 286,
-              "predicted": 453,
-              "ci_lower": 391,
-              "ci_upper": 526,
-              "error_pct": 6.8,
-              "abs_error_pct": 6.8,
+              "predicted": 444,
+              "ci_lower": 385,
+              "ci_upper": 512,
+              "error_pct": 4.7,
+              "abs_error_pct": 4.7,
               "in_ci": 1
             },
             {
@@ -91928,11 +91931,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 3,
               "count_at_T": 193,
-              "predicted": 315,
-              "ci_lower": 273,
-              "ci_upper": 363,
-              "error_pct": -0.9,
-              "abs_error_pct": 0.9,
+              "predicted": 308,
+              "ci_lower": 269,
+              "ci_upper": 354,
+              "error_pct": -3.1,
+              "abs_error_pct": 3.1,
               "in_ci": 1
             },
             {
@@ -92015,11 +92018,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 3,
               "count_at_T": 185,
-              "predicted": 197,
+              "predicted": 193,
               "ci_lower": 185,
-              "ci_upper": 252,
-              "error_pct": -0.5,
-              "abs_error_pct": 0.5,
+              "ci_upper": 244,
+              "error_pct": -2.5,
+              "abs_error_pct": 2.5,
               "in_ci": 1
             },
             {
@@ -92092,11 +92095,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 3,
               "count_at_T": 42,
-              "predicted": 60,
+              "predicted": 59,
               "ci_lower": 46,
-              "ci_upper": 79,
-              "error_pct": -1.6,
-              "abs_error_pct": 1.6,
+              "ci_upper": 77,
+              "error_pct": -3.3,
+              "abs_error_pct": 3.3,
               "in_ci": 1
             },
             {
@@ -92179,11 +92182,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 3,
               "count_at_T": 1719,
-              "predicted": 1759,
+              "predicted": 1723,
               "ci_lower": 1719,
-              "ci_upper": 2230,
-              "error_pct": 0.3,
-              "abs_error_pct": 0.3,
+              "ci_upper": 2167,
+              "error_pct": -1.7,
+              "abs_error_pct": 1.7,
               "in_ci": 1
             },
             {
@@ -92256,11 +92259,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 3,
               "count_at_T": 117,
-              "predicted": 206,
-              "ci_lower": 188,
-              "ci_upper": 227,
-              "error_pct": 5.6,
-              "abs_error_pct": 5.6,
+              "predicted": 202,
+              "ci_lower": 185,
+              "ci_upper": 221,
+              "error_pct": 3.6,
+              "abs_error_pct": 3.6,
               "in_ci": 1
             },
             {
@@ -92294,26 +92297,26 @@ const PERFORMANCE_DATA = {
       {
         "T": 60,
         "n": 103,
-        "mae_pct": 16.9,
-        "median_ape_pct": 9.2,
+        "mae_pct": 17.0,
+        "median_ape_pct": 8.9,
         "ci_coverage": 85.0,
-        "bias_pct": -3.3
+        "bias_pct": -2.6
       },
       {
         "T": 42,
         "n": 122,
-        "mae_pct": 13.6,
-        "median_ape_pct": 9.9,
+        "mae_pct": 13.5,
+        "median_ape_pct": 10.3,
         "ci_coverage": 77.0,
-        "bias_pct": -1.5
+        "bias_pct": -0.8
       },
       {
         "T": 28,
         "n": 126,
-        "mae_pct": 12.5,
-        "median_ape_pct": 9.0,
+        "mae_pct": 12.4,
+        "median_ape_pct": 8.8,
         "ci_coverage": 82.0,
-        "bias_pct": 0.4
+        "bias_pct": 1.4
       },
       {
         "T": 14,
@@ -92326,18 +92329,18 @@ const PERFORMANCE_DATA = {
       {
         "T": 7,
         "n": 126,
-        "mae_pct": 8.8,
-        "median_ape_pct": 6.6,
+        "mae_pct": 9.0,
+        "median_ape_pct": 6.7,
         "ci_coverage": 86.0,
-        "bias_pct": -0.4
+        "bias_pct": 0.2
       },
       {
         "T": 3,
         "n": 127,
-        "mae_pct": 10.2,
-        "median_ape_pct": 5.8,
-        "ci_coverage": 73.0,
-        "bias_pct": 0.6
+        "mae_pct": 10.1,
+        "median_ape_pct": 5.7,
+        "ci_coverage": 74.0,
+        "bias_pct": 0.4
       },
       {
         "T": 1,
@@ -92377,21 +92380,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 35,
-            "predicted": 289,
-            "ci_lower": 233,
-            "ci_upper": 359,
-            "error_pct": -26.1,
-            "abs_error_pct": 26.1,
+            "predicted": 297,
+            "ci_lower": 239,
+            "ci_upper": 368,
+            "error_pct": -24.0,
+            "abs_error_pct": 24.0,
             "in_ci": 0
           },
           {
             "T": 28,
             "count_at_T": 58,
-            "predicted": 320,
-            "ci_lower": 205,
-            "ci_upper": 498,
-            "error_pct": -18.2,
-            "abs_error_pct": 18.2,
+            "predicted": 331,
+            "ci_lower": 213,
+            "ci_upper": 516,
+            "error_pct": -15.3,
+            "abs_error_pct": 15.3,
             "in_ci": 1
           },
           {
@@ -92464,21 +92467,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 27,
-            "predicted": 362,
-            "ci_lower": 225,
-            "ci_upper": 584,
-            "error_pct": -23.5,
-            "abs_error_pct": 23.5,
+            "predicted": 371,
+            "ci_lower": 230,
+            "ci_upper": 599,
+            "error_pct": -21.6,
+            "abs_error_pct": 21.6,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 56,
-            "predicted": 375,
-            "ci_lower": 241,
-            "ci_upper": 584,
-            "error_pct": -20.7,
-            "abs_error_pct": 20.7,
+            "predicted": 388,
+            "ci_lower": 249,
+            "ci_upper": 605,
+            "error_pct": -18.0,
+            "abs_error_pct": 18.0,
             "in_ci": 1
           },
           {
@@ -92551,21 +92554,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 27,
-            "predicted": 286,
-            "ci_lower": 177,
-            "ci_upper": 461,
-            "error_pct": -2.4,
-            "abs_error_pct": 2.4,
+            "predicted": 293,
+            "ci_lower": 182,
+            "ci_upper": 473,
+            "error_pct": 0.0,
+            "abs_error_pct": 0.0,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 37,
-            "predicted": 263,
-            "ci_lower": 212,
-            "ci_upper": 327,
-            "error_pct": -10.2,
-            "abs_error_pct": 10.2,
+            "predicted": 272,
+            "ci_lower": 219,
+            "ci_upper": 339,
+            "error_pct": -7.2,
+            "abs_error_pct": 7.2,
             "in_ci": 1
           },
           {
@@ -92638,21 +92641,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 31,
-            "predicted": 395,
-            "ci_lower": 245,
-            "ci_upper": 638,
-            "error_pct": -7.3,
-            "abs_error_pct": 7.3,
+            "predicted": 405,
+            "ci_lower": 251,
+            "ci_upper": 654,
+            "error_pct": -4.9,
+            "abs_error_pct": 4.9,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 71,
-            "predicted": 427,
-            "ci_lower": 274,
-            "ci_upper": 665,
-            "error_pct": 0.2,
-            "abs_error_pct": 0.2,
+            "predicted": 442,
+            "ci_lower": 284,
+            "ci_upper": 689,
+            "error_pct": 3.8,
+            "abs_error_pct": 3.8,
             "in_ci": 1
           },
           {
@@ -92725,21 +92728,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 22,
-            "predicted": 351,
-            "ci_lower": 258,
-            "ci_upper": 478,
-            "error_pct": 1.4,
-            "abs_error_pct": 1.4,
+            "predicted": 360,
+            "ci_lower": 265,
+            "ci_upper": 490,
+            "error_pct": 4.0,
+            "abs_error_pct": 4.0,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 43,
-            "predicted": 339,
-            "ci_lower": 272,
-            "ci_upper": 422,
-            "error_pct": -2.0,
-            "abs_error_pct": 2.0,
+            "predicted": 351,
+            "ci_lower": 282,
+            "ci_upper": 436,
+            "error_pct": 1.4,
+            "abs_error_pct": 1.4,
             "in_ci": 1
           },
           {
@@ -92812,21 +92815,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 271,
-            "predicted": 879,
-            "ci_lower": 751,
-            "ci_upper": 1030,
-            "error_pct": -43.2,
-            "abs_error_pct": 43.2,
+            "predicted": 901,
+            "ci_lower": 770,
+            "ci_upper": 1056,
+            "error_pct": -41.8,
+            "abs_error_pct": 41.8,
             "in_ci": 0
           },
           {
             "T": 28,
             "count_at_T": 447,
-            "predicted": 915,
-            "ci_lower": 781,
-            "ci_upper": 1071,
-            "error_pct": -40.9,
-            "abs_error_pct": 40.9,
+            "predicted": 947,
+            "ci_lower": 808,
+            "ci_upper": 1109,
+            "error_pct": -38.8,
+            "abs_error_pct": 38.8,
             "in_ci": 0
           },
           {
@@ -92889,21 +92892,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 22,
-            "predicted": 236,
-            "ci_lower": 173,
-            "ci_upper": 320,
-            "error_pct": -8.2,
-            "abs_error_pct": 8.2,
+            "predicted": 242,
+            "ci_lower": 178,
+            "ci_upper": 329,
+            "error_pct": -5.8,
+            "abs_error_pct": 5.8,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 33,
-            "predicted": 223,
-            "ci_lower": 179,
-            "ci_upper": 277,
-            "error_pct": -13.2,
-            "abs_error_pct": 13.2,
+            "predicted": 231,
+            "ci_lower": 185,
+            "ci_upper": 287,
+            "error_pct": -10.1,
+            "abs_error_pct": 10.1,
             "in_ci": 1
           },
           {
@@ -92966,21 +92969,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 32,
-            "predicted": 224,
-            "ci_lower": 139,
-            "ci_upper": 362,
-            "error_pct": -15.2,
-            "abs_error_pct": 15.2,
+            "predicted": 230,
+            "ci_lower": 143,
+            "ci_upper": 371,
+            "error_pct": -12.9,
+            "abs_error_pct": 12.9,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 47,
-            "predicted": 234,
-            "ci_lower": 151,
-            "ci_upper": 362,
-            "error_pct": -11.4,
-            "abs_error_pct": 11.4,
+            "predicted": 242,
+            "ci_lower": 157,
+            "ci_upper": 374,
+            "error_pct": -8.3,
+            "abs_error_pct": 8.3,
             "in_ci": 1
           },
           {
@@ -93043,21 +93046,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 22,
-            "predicted": 286,
-            "ci_lower": 211,
-            "ci_upper": 390,
-            "error_pct": -12.8,
-            "abs_error_pct": 12.8,
+            "predicted": 294,
+            "ci_lower": 216,
+            "ci_upper": 399,
+            "error_pct": -10.4,
+            "abs_error_pct": 10.4,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 42,
-            "predicted": 280,
-            "ci_lower": 225,
-            "ci_upper": 348,
-            "error_pct": -14.6,
-            "abs_error_pct": 14.6,
+            "predicted": 290,
+            "ci_lower": 233,
+            "ci_upper": 361,
+            "error_pct": -11.6,
+            "abs_error_pct": 11.6,
             "in_ci": 1
           },
           {
@@ -93130,21 +93133,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 27,
-            "predicted": 122,
-            "ci_lower": 59,
-            "ci_upper": 253,
-            "error_pct": -64.6,
-            "abs_error_pct": 64.6,
+            "predicted": 126,
+            "ci_lower": 61,
+            "ci_upper": 259,
+            "error_pct": -63.5,
+            "abs_error_pct": 63.5,
             "in_ci": 0
           },
           {
             "T": 28,
             "count_at_T": 55,
-            "predicted": 216,
-            "ci_lower": 109,
-            "ci_upper": 426,
-            "error_pct": -37.4,
-            "abs_error_pct": 37.4,
+            "predicted": 223,
+            "ci_lower": 113,
+            "ci_upper": 441,
+            "error_pct": -35.4,
+            "abs_error_pct": 35.4,
             "in_ci": 1
           },
           {
@@ -93217,21 +93220,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 34,
-            "predicted": 451,
-            "ci_lower": 363,
-            "ci_upper": 559,
-            "error_pct": 1.3,
-            "abs_error_pct": 1.3,
+            "predicted": 462,
+            "ci_lower": 372,
+            "ci_upper": 573,
+            "error_pct": 3.8,
+            "abs_error_pct": 3.8,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 68,
-            "predicted": 481,
-            "ci_lower": 309,
-            "ci_upper": 749,
-            "error_pct": 8.1,
-            "abs_error_pct": 8.1,
+            "predicted": 497,
+            "ci_lower": 319,
+            "ci_upper": 775,
+            "error_pct": 11.7,
+            "abs_error_pct": 11.7,
             "in_ci": 1
           },
           {
@@ -93304,21 +93307,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 291,
-            "predicted": 1218,
-            "ci_lower": 784,
-            "ci_upper": 1893,
-            "error_pct": 26.9,
-            "abs_error_pct": 26.9,
+            "predicted": 1249,
+            "ci_lower": 804,
+            "ci_upper": 1940,
+            "error_pct": 30.1,
+            "abs_error_pct": 30.1,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 353,
-            "predicted": 1302,
-            "ci_lower": 917,
-            "ci_upper": 1850,
-            "error_pct": 35.6,
-            "abs_error_pct": 35.6,
+            "predicted": 1348,
+            "ci_lower": 949,
+            "ci_upper": 1914,
+            "error_pct": 40.4,
+            "abs_error_pct": 40.4,
             "in_ci": 1
           },
           {
@@ -93391,21 +93394,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 24,
-            "predicted": 122,
-            "ci_lower": 76,
-            "ci_upper": 197,
-            "error_pct": -28.2,
-            "abs_error_pct": 28.2,
+            "predicted": 125,
+            "ci_lower": 78,
+            "ci_upper": 202,
+            "error_pct": -26.5,
+            "abs_error_pct": 26.5,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 28,
-            "predicted": 116,
-            "ci_lower": 72,
-            "ci_upper": 187,
-            "error_pct": -31.8,
-            "abs_error_pct": 31.8,
+            "predicted": 120,
+            "ci_lower": 75,
+            "ci_upper": 193,
+            "error_pct": -29.4,
+            "abs_error_pct": 29.4,
             "in_ci": 1
           },
           {
@@ -93458,21 +93461,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 13,
-            "predicted": 196,
-            "ci_lower": 144,
-            "ci_upper": 267,
-            "error_pct": -13.3,
-            "abs_error_pct": 13.3,
+            "predicted": 201,
+            "ci_lower": 148,
+            "ci_upper": 274,
+            "error_pct": -11.1,
+            "abs_error_pct": 11.1,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 22,
-            "predicted": 193,
-            "ci_lower": 124,
-            "ci_upper": 300,
-            "error_pct": -14.6,
-            "abs_error_pct": 14.6,
+            "predicted": 200,
+            "ci_lower": 129,
+            "ci_upper": 310,
+            "error_pct": -11.5,
+            "abs_error_pct": 11.5,
             "in_ci": 1
           },
           {
@@ -93545,21 +93548,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 483,
-            "predicted": 1281,
-            "ci_lower": 621,
-            "ci_upper": 2642,
-            "error_pct": -3.2,
-            "abs_error_pct": 3.2,
+            "predicted": 1313,
+            "ci_lower": 637,
+            "ci_upper": 2709,
+            "error_pct": -0.8,
+            "abs_error_pct": 0.8,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 538,
-            "predicted": 1339,
-            "ci_lower": 693,
-            "ci_upper": 2588,
-            "error_pct": 1.1,
-            "abs_error_pct": 1.1,
+            "predicted": 1386,
+            "ci_lower": 718,
+            "ci_upper": 2679,
+            "error_pct": 4.7,
+            "abs_error_pct": 4.7,
             "in_ci": 1
           },
           {
@@ -93622,21 +93625,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 25,
-            "predicted": 119,
-            "ci_lower": 74,
-            "ci_upper": 191,
-            "error_pct": 10.2,
-            "abs_error_pct": 10.2,
+            "predicted": 122,
+            "ci_lower": 75,
+            "ci_upper": 196,
+            "error_pct": 13.0,
+            "abs_error_pct": 13.0,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 45,
-            "predicted": 128,
-            "ci_lower": 103,
-            "ci_upper": 160,
-            "error_pct": 18.5,
-            "abs_error_pct": 18.5,
+            "predicted": 133,
+            "ci_lower": 107,
+            "ci_upper": 165,
+            "error_pct": 23.1,
+            "abs_error_pct": 23.1,
             "in_ci": 1
           },
           {
@@ -93699,21 +93702,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 27,
-            "predicted": 291,
-            "ci_lower": 181,
-            "ci_upper": 470,
-            "error_pct": 3.6,
-            "abs_error_pct": 3.6,
+            "predicted": 299,
+            "ci_lower": 185,
+            "ci_upper": 482,
+            "error_pct": 6.4,
+            "abs_error_pct": 6.4,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 39,
-            "predicted": 271,
-            "ci_lower": 218,
-            "ci_upper": 337,
-            "error_pct": -3.6,
-            "abs_error_pct": 3.6,
+            "predicted": 280,
+            "ci_lower": 225,
+            "ci_upper": 348,
+            "error_pct": -0.4,
+            "abs_error_pct": 0.4,
             "in_ci": 1
           },
           {
@@ -93776,21 +93779,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 19,
-            "predicted": 142,
-            "ci_lower": 105,
-            "ci_upper": 194,
-            "error_pct": 29.1,
-            "abs_error_pct": 29.1,
+            "predicted": 146,
+            "ci_lower": 107,
+            "ci_upper": 199,
+            "error_pct": 32.7,
+            "abs_error_pct": 32.7,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 25,
-            "predicted": 139,
-            "ci_lower": 86,
-            "ci_upper": 223,
-            "error_pct": 26.4,
-            "abs_error_pct": 26.4,
+            "predicted": 144,
+            "ci_lower": 89,
+            "ci_upper": 231,
+            "error_pct": 30.9,
+            "abs_error_pct": 30.9,
             "in_ci": 1
           },
           {
@@ -93900,21 +93903,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 13,
-            "predicted": 169,
-            "ci_lower": 89,
-            "ci_upper": 323,
-            "error_pct": -14.6,
-            "abs_error_pct": 14.6,
+            "predicted": 174,
+            "ci_lower": 91,
+            "ci_upper": 331,
+            "error_pct": -12.1,
+            "abs_error_pct": 12.1,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 23,
-            "predicted": 104,
-            "ci_lower": 53,
-            "ci_upper": 204,
-            "error_pct": -47.5,
-            "abs_error_pct": 47.5,
+            "predicted": 107,
+            "ci_lower": 55,
+            "ci_upper": 211,
+            "error_pct": -46.0,
+            "abs_error_pct": 46.0,
             "in_ci": 1
           },
           {
@@ -93967,21 +93970,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 22,
-            "predicted": 315,
-            "ci_lower": 232,
-            "ci_upper": 429,
-            "error_pct": 1.0,
-            "abs_error_pct": 1.0,
+            "predicted": 323,
+            "ci_lower": 238,
+            "ci_upper": 440,
+            "error_pct": 3.5,
+            "abs_error_pct": 3.5,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 35,
-            "predicted": 296,
-            "ci_lower": 238,
-            "ci_upper": 369,
-            "error_pct": -5.1,
-            "abs_error_pct": 5.1,
+            "predicted": 307,
+            "ci_lower": 247,
+            "ci_upper": 382,
+            "error_pct": -1.6,
+            "abs_error_pct": 1.6,
             "in_ci": 1
           },
           {
@@ -94034,21 +94037,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 17,
-            "predicted": 322,
-            "ci_lower": 237,
-            "ci_upper": 438,
-            "error_pct": 15.0,
-            "abs_error_pct": 15.0,
+            "predicted": 330,
+            "ci_lower": 243,
+            "ci_upper": 449,
+            "error_pct": 17.9,
+            "abs_error_pct": 17.9,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 35,
-            "predicted": 309,
-            "ci_lower": 248,
-            "ci_upper": 384,
-            "error_pct": 10.4,
-            "abs_error_pct": 10.4,
+            "predicted": 320,
+            "ci_lower": 257,
+            "ci_upper": 398,
+            "error_pct": 14.3,
+            "abs_error_pct": 14.3,
             "in_ci": 1
           },
           {
@@ -94121,21 +94124,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 30,
-            "predicted": 347,
-            "ci_lower": 215,
-            "ci_upper": 560,
-            "error_pct": -13.9,
-            "abs_error_pct": 13.9,
+            "predicted": 356,
+            "ci_lower": 221,
+            "ci_upper": 574,
+            "error_pct": -11.7,
+            "abs_error_pct": 11.7,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 59,
-            "predicted": 366,
-            "ci_lower": 235,
-            "ci_upper": 570,
-            "error_pct": -9.2,
-            "abs_error_pct": 9.2,
+            "predicted": 379,
+            "ci_lower": 243,
+            "ci_upper": 590,
+            "error_pct": -6.0,
+            "abs_error_pct": 6.0,
             "in_ci": 1
           },
           {
@@ -94208,21 +94211,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 20,
-            "predicted": 202,
-            "ci_lower": 148,
-            "ci_upper": 274,
-            "error_pct": 10.4,
-            "abs_error_pct": 10.4,
+            "predicted": 207,
+            "ci_lower": 152,
+            "ci_upper": 281,
+            "error_pct": 13.1,
+            "abs_error_pct": 13.1,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 29,
-            "predicted": 196,
-            "ci_lower": 122,
-            "ci_upper": 315,
-            "error_pct": 7.1,
-            "abs_error_pct": 7.1,
+            "predicted": 203,
+            "ci_lower": 126,
+            "ci_upper": 326,
+            "error_pct": 10.9,
+            "abs_error_pct": 10.9,
             "in_ci": 1
           },
           {
@@ -94285,21 +94288,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 24,
-            "predicted": 273,
-            "ci_lower": 169,
-            "ci_upper": 440,
-            "error_pct": -7.1,
-            "abs_error_pct": 7.1,
+            "predicted": 280,
+            "ci_lower": 174,
+            "ci_upper": 452,
+            "error_pct": -4.8,
+            "abs_error_pct": 4.8,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 48,
-            "predicted": 287,
-            "ci_lower": 186,
-            "ci_upper": 444,
-            "error_pct": -2.4,
-            "abs_error_pct": 2.4,
+            "predicted": 297,
+            "ci_lower": 192,
+            "ci_upper": 459,
+            "error_pct": 1.0,
+            "abs_error_pct": 1.0,
             "in_ci": 1
           },
           {
@@ -94362,21 +94365,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 21,
-            "predicted": 231,
-            "ci_lower": 170,
-            "ci_upper": 315,
-            "error_pct": -9.8,
-            "abs_error_pct": 9.8,
+            "predicted": 237,
+            "ci_lower": 174,
+            "ci_upper": 323,
+            "error_pct": -7.4,
+            "abs_error_pct": 7.4,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 31,
-            "predicted": 227,
-            "ci_lower": 146,
-            "ci_upper": 354,
-            "error_pct": -11.3,
-            "abs_error_pct": 11.3,
+            "predicted": 235,
+            "ci_lower": 151,
+            "ci_upper": 366,
+            "error_pct": -8.2,
+            "abs_error_pct": 8.2,
             "in_ci": 1
           },
           {
@@ -94449,21 +94452,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 20,
-            "predicted": 196,
-            "ci_lower": 144,
-            "ci_upper": 266,
-            "error_pct": -8.4,
-            "abs_error_pct": 8.4,
+            "predicted": 201,
+            "ci_lower": 148,
+            "ci_upper": 273,
+            "error_pct": -6.1,
+            "abs_error_pct": 6.1,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 29,
-            "predicted": 191,
-            "ci_lower": 119,
-            "ci_upper": 306,
-            "error_pct": -10.7,
-            "abs_error_pct": 10.7,
+            "predicted": 197,
+            "ci_lower": 123,
+            "ci_upper": 317,
+            "error_pct": -7.9,
+            "abs_error_pct": 7.9,
             "in_ci": 1
           },
           {
@@ -94526,21 +94529,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 25,
-            "predicted": 403,
-            "ci_lower": 250,
-            "ci_upper": 650,
-            "error_pct": 8.6,
-            "abs_error_pct": 8.6,
+            "predicted": 413,
+            "ci_lower": 256,
+            "ci_upper": 666,
+            "error_pct": 11.3,
+            "abs_error_pct": 11.3,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 47,
-            "predicted": 399,
-            "ci_lower": 258,
-            "ci_upper": 617,
-            "error_pct": 7.5,
-            "abs_error_pct": 7.5,
+            "predicted": 413,
+            "ci_lower": 267,
+            "ci_upper": 638,
+            "error_pct": 11.3,
+            "abs_error_pct": 11.3,
             "in_ci": 1
           },
           {
@@ -94593,21 +94596,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 15,
-            "predicted": 184,
-            "ci_lower": 135,
-            "ci_upper": 250,
-            "error_pct": -3.2,
-            "abs_error_pct": 3.2,
+            "predicted": 188,
+            "ci_lower": 138,
+            "ci_upper": 256,
+            "error_pct": -1.1,
+            "abs_error_pct": 1.1,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 28,
-            "predicted": 185,
-            "ci_lower": 115,
-            "ci_upper": 298,
-            "error_pct": -2.6,
-            "abs_error_pct": 2.6,
+            "predicted": 192,
+            "ci_lower": 119,
+            "ci_upper": 308,
+            "error_pct": 1.1,
+            "abs_error_pct": 1.1,
             "in_ci": 1
           },
           {
@@ -94670,21 +94673,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 16,
-            "predicted": 302,
-            "ci_lower": 222,
-            "ci_upper": 410,
-            "error_pct": -13.0,
-            "abs_error_pct": 13.0,
+            "predicted": 309,
+            "ci_lower": 227,
+            "ci_upper": 421,
+            "error_pct": -11.0,
+            "abs_error_pct": 11.0,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 35,
-            "predicted": 292,
-            "ci_lower": 235,
-            "ci_upper": 364,
-            "error_pct": -15.9,
-            "abs_error_pct": 15.9,
+            "predicted": 303,
+            "ci_lower": 243,
+            "ci_upper": 377,
+            "error_pct": -12.7,
+            "abs_error_pct": 12.7,
             "in_ci": 1
           },
           {
@@ -94747,11 +94750,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 28,
             "count_at_T": 12,
-            "predicted": 113,
-            "ci_lower": 72,
-            "ci_upper": 175,
-            "error_pct": -18.7,
-            "abs_error_pct": 18.7,
+            "predicted": 117,
+            "ci_lower": 75,
+            "ci_upper": 181,
+            "error_pct": -15.8,
+            "abs_error_pct": 15.8,
             "in_ci": 1
           },
           {
@@ -94814,21 +94817,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 18,
-            "predicted": 343,
-            "ci_lower": 253,
-            "ci_upper": 467,
-            "error_pct": 17.5,
-            "abs_error_pct": 17.5,
+            "predicted": 352,
+            "ci_lower": 259,
+            "ci_upper": 479,
+            "error_pct": 20.5,
+            "abs_error_pct": 20.5,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 32,
-            "predicted": 332,
-            "ci_lower": 213,
-            "ci_upper": 518,
-            "error_pct": 13.7,
-            "abs_error_pct": 13.7,
+            "predicted": 344,
+            "ci_lower": 221,
+            "ci_upper": 536,
+            "error_pct": 17.8,
+            "abs_error_pct": 17.8,
             "in_ci": 1
           },
           {
@@ -94891,21 +94894,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 13,
-            "predicted": 194,
-            "ci_lower": 142,
-            "ci_upper": 263,
-            "error_pct": -13.0,
-            "abs_error_pct": 13.0,
+            "predicted": 199,
+            "ci_lower": 146,
+            "ci_upper": 270,
+            "error_pct": -10.8,
+            "abs_error_pct": 10.8,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 22,
-            "predicted": 191,
-            "ci_lower": 123,
-            "ci_upper": 296,
-            "error_pct": -14.3,
-            "abs_error_pct": 14.3,
+            "predicted": 197,
+            "ci_lower": 127,
+            "ci_upper": 307,
+            "error_pct": -11.7,
+            "abs_error_pct": 11.7,
             "in_ci": 1
           },
           {
@@ -94958,21 +94961,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 11,
-            "predicted": 27,
+            "predicted": 28,
             "ci_lower": 11,
-            "ci_upper": 79,
-            "error_pct": -89.2,
-            "abs_error_pct": 89.2,
+            "ci_upper": 81,
+            "error_pct": -88.8,
+            "abs_error_pct": 88.8,
             "in_ci": 0
           },
           {
             "T": 28,
             "count_at_T": 21,
-            "predicted": 98,
-            "ci_lower": 50,
-            "ci_upper": 193,
-            "error_pct": -60.6,
-            "abs_error_pct": 60.6,
+            "predicted": 101,
+            "ci_lower": 52,
+            "ci_upper": 200,
+            "error_pct": -59.4,
+            "abs_error_pct": 59.4,
             "in_ci": 0
           },
           {
@@ -95045,21 +95048,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 28,
-            "predicted": 479,
-            "ci_lower": 297,
-            "ci_upper": 772,
-            "error_pct": -9.1,
-            "abs_error_pct": 9.1,
+            "predicted": 491,
+            "ci_lower": 304,
+            "ci_upper": 792,
+            "error_pct": -6.8,
+            "abs_error_pct": 6.8,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 59,
-            "predicted": 482,
-            "ci_lower": 309,
-            "ci_upper": 751,
-            "error_pct": -8.5,
-            "abs_error_pct": 8.5,
+            "predicted": 499,
+            "ci_lower": 320,
+            "ci_upper": 777,
+            "error_pct": -5.3,
+            "abs_error_pct": 5.3,
             "in_ci": 1
           },
           {
@@ -95132,21 +95135,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 395,
-            "predicted": 1304,
-            "ci_lower": 817,
-            "ci_upper": 2082,
-            "error_pct": 17.0,
-            "abs_error_pct": 17.0,
+            "predicted": 1338,
+            "ci_lower": 838,
+            "ci_upper": 2135,
+            "error_pct": 20.0,
+            "abs_error_pct": 20.0,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 486,
-            "predicted": 1429,
-            "ci_lower": 991,
-            "ci_upper": 2062,
-            "error_pct": 28.2,
-            "abs_error_pct": 28.2,
+            "predicted": 1479,
+            "ci_lower": 1025,
+            "ci_upper": 2134,
+            "error_pct": 32.6,
+            "abs_error_pct": 32.6,
             "in_ci": 1
           },
           {
@@ -95219,21 +95222,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 70,
-            "predicted": 452,
-            "ci_lower": 333,
-            "ci_upper": 615,
-            "error_pct": 8.9,
-            "abs_error_pct": 8.9,
+            "predicted": 464,
+            "ci_lower": 341,
+            "ci_upper": 631,
+            "error_pct": 11.8,
+            "abs_error_pct": 11.8,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 103,
-            "predicted": 453,
-            "ci_lower": 291,
-            "ci_upper": 705,
-            "error_pct": 9.2,
-            "abs_error_pct": 9.2,
+            "predicted": 468,
+            "ci_lower": 301,
+            "ci_upper": 730,
+            "error_pct": 12.8,
+            "abs_error_pct": 12.8,
             "in_ci": 1
           },
           {
@@ -95296,21 +95299,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 20,
-            "predicted": 354,
-            "ci_lower": 260,
-            "ci_upper": 481,
-            "error_pct": -1.1,
+            "predicted": 362,
+            "ci_lower": 267,
+            "ci_upper": 493,
+            "error_pct": 1.1,
             "abs_error_pct": 1.1,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 39,
-            "predicted": 338,
-            "ci_lower": 272,
-            "ci_upper": 421,
-            "error_pct": -5.6,
-            "abs_error_pct": 5.6,
+            "predicted": 350,
+            "ci_lower": 281,
+            "ci_upper": 436,
+            "error_pct": -2.2,
+            "abs_error_pct": 2.2,
             "in_ci": 1
           },
           {
@@ -95383,21 +95386,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 54,
-            "predicted": 626,
-            "ci_lower": 417,
-            "ci_upper": 939,
-            "error_pct": -1.6,
-            "abs_error_pct": 1.6,
+            "predicted": 642,
+            "ci_lower": 428,
+            "ci_upper": 962,
+            "error_pct": 0.9,
+            "abs_error_pct": 0.9,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 83,
-            "predicted": 610,
-            "ci_lower": 392,
-            "ci_upper": 950,
-            "error_pct": -4.1,
-            "abs_error_pct": 4.1,
+            "predicted": 631,
+            "ci_lower": 405,
+            "ci_upper": 983,
+            "error_pct": -0.8,
+            "abs_error_pct": 0.8,
             "in_ci": 1
           },
           {
@@ -95470,21 +95473,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 22,
-            "predicted": 388,
-            "ci_lower": 285,
-            "ci_upper": 528,
-            "error_pct": 5.7,
-            "abs_error_pct": 5.7,
+            "predicted": 398,
+            "ci_lower": 293,
+            "ci_upper": 541,
+            "error_pct": 8.4,
+            "abs_error_pct": 8.4,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 46,
-            "predicted": 391,
-            "ci_lower": 253,
-            "ci_upper": 604,
-            "error_pct": 6.5,
-            "abs_error_pct": 6.5,
+            "predicted": 405,
+            "ci_lower": 262,
+            "ci_upper": 626,
+            "error_pct": 10.4,
+            "abs_error_pct": 10.4,
             "in_ci": 1
           },
           {
@@ -95547,11 +95550,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 299,
-            "predicted": 1502,
-            "ci_lower": 1357,
-            "ci_upper": 1662,
-            "error_pct": -15.5,
-            "abs_error_pct": 15.5,
+            "predicted": 1544,
+            "ci_lower": 1395,
+            "ci_upper": 1708,
+            "error_pct": -13.1,
+            "abs_error_pct": 13.1,
             "in_ci": 0
           },
           {
@@ -95587,11 +95590,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 1663,
-            "predicted": 1851,
+            "predicted": 1887,
             "ci_lower": 1663,
-            "ci_upper": 2127,
-            "error_pct": 4.2,
-            "abs_error_pct": 4.2,
+            "ci_upper": 2168,
+            "error_pct": 6.2,
+            "abs_error_pct": 6.2,
             "in_ci": 1
           },
           {
@@ -95624,11 +95627,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 2,
-            "predicted": 333,
-            "ci_lower": 246,
-            "ci_upper": 450,
-            "error_pct": -2.6,
-            "abs_error_pct": 2.6,
+            "predicted": 342,
+            "ci_lower": 253,
+            "ci_upper": 462,
+            "error_pct": 0.0,
+            "abs_error_pct": 0.0,
             "in_ci": 1
           },
           {
@@ -95664,11 +95667,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 103,
-            "predicted": 307,
-            "ci_lower": 259,
-            "ci_upper": 363,
-            "error_pct": -10.2,
-            "abs_error_pct": 10.2,
+            "predicted": 313,
+            "ci_lower": 264,
+            "ci_upper": 370,
+            "error_pct": -8.5,
+            "abs_error_pct": 8.5,
             "in_ci": 1
           },
           {
@@ -95701,11 +95704,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 2,
-            "predicted": 414,
-            "ci_lower": 306,
-            "ci_upper": 559,
-            "error_pct": -13.9,
-            "abs_error_pct": 13.9,
+            "predicted": 425,
+            "ci_lower": 315,
+            "ci_upper": 574,
+            "error_pct": -11.6,
+            "abs_error_pct": 11.6,
             "in_ci": 1
           },
           {
@@ -95741,11 +95744,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 154,
-            "predicted": 441,
-            "ci_lower": 374,
-            "ci_upper": 520,
-            "error_pct": -8.3,
-            "abs_error_pct": 8.3,
+            "predicted": 449,
+            "ci_lower": 381,
+            "ci_upper": 530,
+            "error_pct": -6.7,
+            "abs_error_pct": 6.7,
             "in_ci": 1
           },
           {
@@ -95778,11 +95781,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 2,
-            "predicted": 272,
-            "ci_lower": 202,
-            "ci_upper": 368,
-            "error_pct": -7.2,
-            "abs_error_pct": 7.2,
+            "predicted": 280,
+            "ci_lower": 207,
+            "ci_upper": 378,
+            "error_pct": -4.4,
+            "abs_error_pct": 4.4,
             "in_ci": 1
           },
           {
@@ -95818,11 +95821,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 91,
-            "predicted": 259,
-            "ci_lower": 220,
-            "ci_upper": 305,
-            "error_pct": -11.6,
-            "abs_error_pct": 11.6,
+            "predicted": 264,
+            "ci_lower": 224,
+            "ci_upper": 311,
+            "error_pct": -9.9,
+            "abs_error_pct": 9.9,
             "in_ci": 1
           },
           {
@@ -95855,11 +95858,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 15,
-            "predicted": 406,
-            "ci_lower": 283,
-            "ci_upper": 584,
-            "error_pct": -7.9,
-            "abs_error_pct": 7.9,
+            "predicted": 418,
+            "ci_lower": 291,
+            "ci_upper": 600,
+            "error_pct": -5.2,
+            "abs_error_pct": 5.2,
             "in_ci": 1
           },
           {
@@ -95895,11 +95898,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 265,
-            "predicted": 474,
-            "ci_lower": 403,
-            "ci_upper": 558,
-            "error_pct": 7.5,
-            "abs_error_pct": 7.5,
+            "predicted": 483,
+            "ci_lower": 411,
+            "ci_upper": 569,
+            "error_pct": 9.5,
+            "abs_error_pct": 9.5,
             "in_ci": 1
           },
           {
@@ -95962,11 +95965,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 109,
-            "predicted": 278,
-            "ci_lower": 215,
-            "ci_upper": 361,
-            "error_pct": 4.5,
-            "abs_error_pct": 4.5,
+            "predicted": 284,
+            "ci_lower": 219,
+            "ci_upper": 368,
+            "error_pct": 6.8,
+            "abs_error_pct": 6.8,
             "in_ci": 1
           },
           {
@@ -95999,11 +96002,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 9,
-            "predicted": 352,
-            "ci_lower": 242,
-            "ci_upper": 511,
-            "error_pct": -16.4,
-            "abs_error_pct": 16.4,
+            "predicted": 361,
+            "ci_lower": 249,
+            "ci_upper": 525,
+            "error_pct": -14.3,
+            "abs_error_pct": 14.3,
             "in_ci": 1
           },
           {
@@ -96039,11 +96042,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 206,
-            "predicted": 440,
-            "ci_lower": 370,
-            "ci_upper": 523,
-            "error_pct": 4.5,
-            "abs_error_pct": 4.5,
+            "predicted": 449,
+            "ci_lower": 377,
+            "ci_upper": 533,
+            "error_pct": 6.7,
+            "abs_error_pct": 6.7,
             "in_ci": 1
           },
           {
@@ -96076,11 +96079,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 22,
-            "predicted": 438,
-            "ci_lower": 302,
-            "ci_upper": 636,
-            "error_pct": -5.8,
-            "abs_error_pct": 5.8,
+            "predicted": 450,
+            "ci_lower": 310,
+            "ci_upper": 654,
+            "error_pct": -3.2,
+            "abs_error_pct": 3.2,
             "in_ci": 1
           },
           {
@@ -96116,11 +96119,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 211,
-            "predicted": 418,
-            "ci_lower": 333,
-            "ci_upper": 524,
-            "error_pct": -10.1,
-            "abs_error_pct": 10.1,
+            "predicted": 426,
+            "ci_lower": 340,
+            "ci_upper": 534,
+            "error_pct": -8.4,
+            "abs_error_pct": 8.4,
             "in_ci": 1
           },
           {
@@ -96153,11 +96156,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 5,
-            "predicted": 231,
-            "ci_lower": 171,
-            "ci_upper": 312,
-            "error_pct": -10.8,
-            "abs_error_pct": 10.8,
+            "predicted": 238,
+            "ci_lower": 176,
+            "ci_upper": 321,
+            "error_pct": -8.1,
+            "abs_error_pct": 8.1,
             "in_ci": 1
           },
           {
@@ -96193,11 +96196,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 103,
-            "predicted": 232,
-            "ci_lower": 189,
-            "ci_upper": 284,
-            "error_pct": -10.4,
-            "abs_error_pct": 10.4,
+            "predicted": 236,
+            "ci_lower": 192,
+            "ci_upper": 290,
+            "error_pct": -8.9,
+            "abs_error_pct": 8.9,
             "in_ci": 1
           },
           {
@@ -96230,11 +96233,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 4,
-            "predicted": 304,
-            "ci_lower": 223,
-            "ci_upper": 416,
-            "error_pct": -0.3,
-            "abs_error_pct": 0.3,
+            "predicted": 313,
+            "ci_lower": 229,
+            "ci_upper": 428,
+            "error_pct": 2.6,
+            "abs_error_pct": 2.6,
             "in_ci": 1
           },
           {
@@ -96270,11 +96273,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 114,
-            "predicted": 311,
-            "ci_lower": 262,
-            "ci_upper": 370,
-            "error_pct": 2.0,
-            "abs_error_pct": 2.0,
+            "predicted": 317,
+            "ci_lower": 267,
+            "ci_upper": 377,
+            "error_pct": 3.9,
+            "abs_error_pct": 3.9,
             "in_ci": 1
           },
           {
@@ -96317,11 +96320,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 169,
-            "predicted": 912,
-            "ci_lower": 637,
-            "ci_upper": 1306,
-            "error_pct": 6.0,
-            "abs_error_pct": 6.0,
+            "predicted": 937,
+            "ci_lower": 655,
+            "ci_upper": 1342,
+            "error_pct": 9.0,
+            "abs_error_pct": 9.0,
             "in_ci": 1
           },
           {
@@ -96357,11 +96360,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 494,
-            "predicted": 880,
-            "ci_lower": 746,
-            "ci_upper": 1038,
-            "error_pct": 2.3,
-            "abs_error_pct": 2.3,
+            "predicted": 897,
+            "ci_lower": 761,
+            "ci_upper": 1059,
+            "error_pct": 4.3,
+            "abs_error_pct": 4.3,
             "in_ci": 1
           },
           {
@@ -96404,11 +96407,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 23,
-            "predicted": 155,
-            "ci_lower": 106,
-            "ci_upper": 225,
-            "error_pct": -12.4,
-            "abs_error_pct": 12.4,
+            "predicted": 159,
+            "ci_lower": 109,
+            "ci_upper": 231,
+            "error_pct": -10.2,
+            "abs_error_pct": 10.2,
             "in_ci": 1
           },
           {
@@ -96444,11 +96447,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 97,
-            "predicted": 189,
-            "ci_lower": 155,
-            "ci_upper": 230,
-            "error_pct": 6.8,
-            "abs_error_pct": 6.8,
+            "predicted": 193,
+            "ci_lower": 158,
+            "ci_upper": 234,
+            "error_pct": 9.0,
+            "abs_error_pct": 9.0,
             "in_ci": 1
           },
           {
@@ -96481,11 +96484,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 5,
-            "predicted": 237,
-            "ci_lower": 176,
-            "ci_upper": 321,
-            "error_pct": 16.7,
-            "abs_error_pct": 16.7,
+            "predicted": 244,
+            "ci_lower": 180,
+            "ci_upper": 329,
+            "error_pct": 20.2,
+            "abs_error_pct": 20.2,
             "in_ci": 1
           },
           {
@@ -96521,11 +96524,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 56,
-            "predicted": 202,
-            "ci_lower": 168,
-            "ci_upper": 242,
-            "error_pct": -0.5,
-            "abs_error_pct": 0.5,
+            "predicted": 206,
+            "ci_lower": 172,
+            "ci_upper": 246,
+            "error_pct": 1.5,
+            "abs_error_pct": 1.5,
             "in_ci": 1
           },
           {
@@ -96558,11 +96561,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 3,
-            "predicted": 211,
-            "ci_lower": 145,
-            "ci_upper": 306,
-            "error_pct": 26.3,
-            "abs_error_pct": 26.3,
+            "predicted": 217,
+            "ci_lower": 149,
+            "ci_upper": 315,
+            "error_pct": 29.9,
+            "abs_error_pct": 29.9,
             "in_ci": 1
           },
           {
@@ -96598,11 +96601,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 45,
-            "predicted": 218,
-            "ci_lower": 183,
-            "ci_upper": 259,
-            "error_pct": 30.5,
-            "abs_error_pct": 30.5,
+            "predicted": 222,
+            "ci_lower": 186,
+            "ci_upper": 264,
+            "error_pct": 32.9,
+            "abs_error_pct": 32.9,
             "in_ci": 0
           },
           {
@@ -96662,11 +96665,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 3,
-            "predicted": 7,
+            "predicted": 8,
             "ci_lower": 3,
-            "ci_upper": 21,
-            "error_pct": -90.8,
-            "abs_error_pct": 90.8,
+            "ci_upper": 22,
+            "error_pct": -89.5,
+            "abs_error_pct": 89.5,
             "in_ci": 0
           },
           {
@@ -96702,11 +96705,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 39,
-            "predicted": 79,
-            "ci_lower": 53,
-            "ci_upper": 118,
-            "error_pct": 3.9,
-            "abs_error_pct": 3.9,
+            "predicted": 80,
+            "ci_lower": 54,
+            "ci_upper": 120,
+            "error_pct": 5.3,
+            "abs_error_pct": 5.3,
             "in_ci": 1
           },
           {
@@ -96749,11 +96752,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 22,
-            "predicted": 103,
-            "ci_lower": 73,
-            "ci_upper": 146,
-            "error_pct": -28.0,
-            "abs_error_pct": 28.0,
+            "predicted": 106,
+            "ci_lower": 75,
+            "ci_upper": 150,
+            "error_pct": -25.9,
+            "abs_error_pct": 25.9,
             "in_ci": 1
           },
           {
@@ -96789,11 +96792,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 95,
-            "predicted": 138,
-            "ci_lower": 119,
-            "ci_upper": 160,
-            "error_pct": -3.5,
-            "abs_error_pct": 3.5,
+            "predicted": 141,
+            "ci_lower": 121,
+            "ci_upper": 164,
+            "error_pct": -1.4,
+            "abs_error_pct": 1.4,
             "in_ci": 1
           },
           {
@@ -96836,11 +96839,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 127,
-            "predicted": 1410,
-            "ci_lower": 912,
-            "ci_upper": 2179,
-            "error_pct": 18.0,
-            "abs_error_pct": 18.0,
+            "predicted": 1449,
+            "ci_lower": 938,
+            "ci_upper": 2240,
+            "error_pct": 21.3,
+            "abs_error_pct": 21.3,
             "in_ci": 1
           },
           {
@@ -96876,11 +96879,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 703,
-            "predicted": 1147,
-            "ci_lower": 1065,
-            "ci_upper": 1236,
-            "error_pct": -4.0,
-            "abs_error_pct": 4.0,
+            "predicted": 1170,
+            "ci_lower": 1086,
+            "ci_upper": 1261,
+            "error_pct": -2.1,
+            "abs_error_pct": 2.1,
             "in_ci": 1
           },
           {
@@ -96913,11 +96916,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 14,
-            "predicted": 275,
-            "ci_lower": 189,
-            "ci_upper": 399,
-            "error_pct": -11.9,
-            "abs_error_pct": 11.9,
+            "predicted": 283,
+            "ci_lower": 195,
+            "ci_upper": 410,
+            "error_pct": -9.3,
+            "abs_error_pct": 9.3,
             "in_ci": 1
           },
           {
@@ -96953,11 +96956,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 138,
-            "predicted": 330,
-            "ci_lower": 267,
-            "ci_upper": 407,
-            "error_pct": 5.8,
-            "abs_error_pct": 5.8,
+            "predicted": 336,
+            "ci_lower": 272,
+            "ci_upper": 415,
+            "error_pct": 7.7,
+            "abs_error_pct": 7.7,
             "in_ci": 1
           },
           {
@@ -97020,11 +97023,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 39,
-            "predicted": 96,
-            "ci_lower": 82,
-            "ci_upper": 114,
-            "error_pct": 20.0,
-            "abs_error_pct": 20.0,
+            "predicted": 98,
+            "ci_lower": 83,
+            "ci_upper": 116,
+            "error_pct": 22.5,
+            "abs_error_pct": 22.5,
             "in_ci": 0
           },
           {
@@ -97057,11 +97060,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 3,
-            "predicted": 183,
-            "ci_lower": 126,
-            "ci_upper": 265,
-            "error_pct": 10.2,
-            "abs_error_pct": 10.2,
+            "predicted": 188,
+            "ci_lower": 129,
+            "ci_upper": 272,
+            "error_pct": 13.3,
+            "abs_error_pct": 13.3,
             "in_ci": 1
           },
           {
@@ -97097,11 +97100,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 53,
-            "predicted": 159,
-            "ci_lower": 131,
-            "ci_upper": 193,
-            "error_pct": -4.2,
-            "abs_error_pct": 4.2,
+            "predicted": 162,
+            "ci_lower": 134,
+            "ci_upper": 196,
+            "error_pct": -2.4,
+            "abs_error_pct": 2.4,
             "in_ci": 1
           },
           {
@@ -97164,11 +97167,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 98,
-            "predicted": 302,
-            "ci_lower": 256,
-            "ci_upper": 356,
-            "error_pct": 11.9,
-            "abs_error_pct": 11.9,
+            "predicted": 308,
+            "ci_lower": 261,
+            "ci_upper": 363,
+            "error_pct": 14.1,
+            "abs_error_pct": 14.1,
             "in_ci": 1
           },
           {
@@ -97231,11 +97234,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 80,
-            "predicted": 222,
-            "ci_lower": 188,
-            "ci_upper": 262,
-            "error_pct": -3.9,
-            "abs_error_pct": 3.9,
+            "predicted": 226,
+            "ci_lower": 191,
+            "ci_upper": 267,
+            "error_pct": -2.2,
+            "abs_error_pct": 2.2,
             "in_ci": 1
           },
           {
@@ -97278,11 +97281,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 14,
-            "predicted": 373,
-            "ci_lower": 257,
-            "ci_upper": 540,
-            "error_pct": 3.3,
-            "abs_error_pct": 3.3,
+            "predicted": 383,
+            "ci_lower": 264,
+            "ci_upper": 556,
+            "error_pct": 6.1,
+            "abs_error_pct": 6.1,
             "in_ci": 1
           },
           {
@@ -97318,11 +97321,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 132,
-            "predicted": 329,
-            "ci_lower": 279,
-            "ci_upper": 388,
-            "error_pct": -8.9,
-            "abs_error_pct": 8.9,
+            "predicted": 335,
+            "ci_lower": 285,
+            "ci_upper": 395,
+            "error_pct": -7.2,
+            "abs_error_pct": 7.2,
             "in_ci": 1
           },
           {
@@ -97385,11 +97388,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 73,
-            "predicted": 248,
-            "ci_lower": 209,
-            "ci_upper": 294,
-            "error_pct": -8.1,
-            "abs_error_pct": 8.1,
+            "predicted": 253,
+            "ci_lower": 213,
+            "ci_upper": 300,
+            "error_pct": -6.3,
+            "abs_error_pct": 6.3,
             "in_ci": 1
           },
           {
@@ -97452,11 +97455,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 72,
-            "predicted": 254,
-            "ci_lower": 209,
-            "ci_upper": 309,
-            "error_pct": 4.1,
-            "abs_error_pct": 4.1,
+            "predicted": 259,
+            "ci_lower": 213,
+            "ci_upper": 315,
+            "error_pct": 6.1,
+            "abs_error_pct": 6.1,
             "in_ci": 1
           },
           {
@@ -97519,11 +97522,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 61,
-            "predicted": 183,
-            "ci_lower": 154,
-            "ci_upper": 217,
-            "error_pct": 7.6,
-            "abs_error_pct": 7.6,
+            "predicted": 186,
+            "ci_lower": 157,
+            "ci_upper": 222,
+            "error_pct": 9.4,
+            "abs_error_pct": 9.4,
             "in_ci": 1
           },
           {
@@ -97556,11 +97559,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 1,
-            "predicted": 190,
-            "ci_lower": 140,
-            "ci_upper": 256,
-            "error_pct": 12.4,
-            "abs_error_pct": 12.4,
+            "predicted": 195,
+            "ci_lower": 144,
+            "ci_upper": 264,
+            "error_pct": 15.4,
+            "abs_error_pct": 15.4,
             "in_ci": 1
           },
           {
@@ -97586,11 +97589,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 64,
-            "predicted": 175,
-            "ci_lower": 148,
-            "ci_upper": 207,
-            "error_pct": 3.6,
-            "abs_error_pct": 3.6,
+            "predicted": 179,
+            "ci_lower": 151,
+            "ci_upper": 211,
+            "error_pct": 5.9,
+            "abs_error_pct": 5.9,
             "in_ci": 1
           },
           {
@@ -97623,11 +97626,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 5,
-            "predicted": 342,
-            "ci_lower": 236,
-            "ci_upper": 497,
-            "error_pct": 4.9,
-            "abs_error_pct": 4.9,
+            "predicted": 352,
+            "ci_lower": 242,
+            "ci_upper": 511,
+            "error_pct": 8.0,
+            "abs_error_pct": 8.0,
             "in_ci": 1
           },
           {
@@ -97663,11 +97666,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 123,
-            "predicted": 310,
-            "ci_lower": 263,
-            "ci_upper": 366,
-            "error_pct": -4.9,
-            "abs_error_pct": 4.9,
+            "predicted": 316,
+            "ci_lower": 268,
+            "ci_upper": 373,
+            "error_pct": -3.1,
+            "abs_error_pct": 3.1,
             "in_ci": 1
           },
           {
@@ -97730,11 +97733,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 106,
-            "predicted": 319,
-            "ci_lower": 263,
-            "ci_upper": 387,
-            "error_pct": 17.3,
-            "abs_error_pct": 17.3,
+            "predicted": 325,
+            "ci_lower": 268,
+            "ci_upper": 395,
+            "error_pct": 19.5,
+            "abs_error_pct": 19.5,
             "in_ci": 1
           },
           {
@@ -97777,11 +97780,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 9,
-            "predicted": 337,
-            "ci_lower": 238,
-            "ci_upper": 477,
-            "error_pct": 11.2,
-            "abs_error_pct": 11.2,
+            "predicted": 347,
+            "ci_lower": 245,
+            "ci_upper": 491,
+            "error_pct": 14.5,
+            "abs_error_pct": 14.5,
             "in_ci": 1
           },
           {
@@ -97817,11 +97820,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 110,
-            "predicted": 334,
-            "ci_lower": 280,
-            "ci_upper": 398,
-            "error_pct": 10.2,
-            "abs_error_pct": 10.2,
+            "predicted": 340,
+            "ci_lower": 286,
+            "ci_upper": 405,
+            "error_pct": 12.2,
+            "abs_error_pct": 12.2,
             "in_ci": 1
           },
           {
@@ -97894,11 +97897,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 56,
-            "predicted": 200,
-            "ci_lower": 169,
-            "ci_upper": 238,
-            "error_pct": 0.5,
-            "abs_error_pct": 0.5,
+            "predicted": 204,
+            "ci_lower": 172,
+            "ci_upper": 243,
+            "error_pct": 2.5,
+            "abs_error_pct": 2.5,
             "in_ci": 1
           },
           {
@@ -97941,11 +97944,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 10,
-            "predicted": 498,
-            "ci_lower": 349,
-            "ci_upper": 710,
-            "error_pct": 1.6,
-            "abs_error_pct": 1.6,
+            "predicted": 511,
+            "ci_lower": 358,
+            "ci_upper": 730,
+            "error_pct": 4.3,
+            "abs_error_pct": 4.3,
             "in_ci": 1
           },
           {
@@ -97981,11 +97984,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 223,
-            "predicted": 554,
-            "ci_lower": 467,
-            "ci_upper": 658,
-            "error_pct": 13.1,
-            "abs_error_pct": 13.1,
+            "predicted": 565,
+            "ci_lower": 476,
+            "ci_upper": 671,
+            "error_pct": 15.3,
+            "abs_error_pct": 15.3,
             "in_ci": 1
           },
           {
@@ -98028,11 +98031,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 13,
-            "predicted": 371,
-            "ci_lower": 274,
-            "ci_upper": 501,
-            "error_pct": -10.0,
-            "abs_error_pct": 10.0,
+            "predicted": 381,
+            "ci_lower": 282,
+            "ci_upper": 515,
+            "error_pct": -7.5,
+            "abs_error_pct": 7.5,
             "in_ci": 1
           },
           {
@@ -98068,11 +98071,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 219,
-            "predicted": 412,
-            "ci_lower": 349,
-            "ci_upper": 486,
-            "error_pct": 0.0,
-            "abs_error_pct": 0.0,
+            "predicted": 420,
+            "ci_lower": 356,
+            "ci_upper": 496,
+            "error_pct": 1.9,
+            "abs_error_pct": 1.9,
             "in_ci": 1
           },
           {
@@ -98105,11 +98108,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 15,
-            "predicted": 371,
-            "ci_lower": 262,
-            "ci_upper": 524,
-            "error_pct": 6.0,
-            "abs_error_pct": 6.0,
+            "predicted": 381,
+            "ci_lower": 269,
+            "ci_upper": 539,
+            "error_pct": 8.9,
+            "abs_error_pct": 8.9,
             "in_ci": 1
           },
           {
@@ -98145,11 +98148,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 152,
-            "predicted": 395,
-            "ci_lower": 334,
-            "ci_upper": 467,
-            "error_pct": 12.9,
-            "abs_error_pct": 12.9,
+            "predicted": 402,
+            "ci_lower": 340,
+            "ci_upper": 476,
+            "error_pct": 14.9,
+            "abs_error_pct": 14.9,
             "in_ci": 1
           },
           {
@@ -98182,11 +98185,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 36,
-            "predicted": 656,
-            "ci_lower": 454,
-            "ci_upper": 948,
-            "error_pct": 5.6,
-            "abs_error_pct": 5.6,
+            "predicted": 674,
+            "ci_lower": 466,
+            "ci_upper": 974,
+            "error_pct": 8.5,
+            "abs_error_pct": 8.5,
             "in_ci": 1
           },
           {
@@ -98222,11 +98225,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 303,
-            "predicted": 677,
-            "ci_lower": 574,
-            "ci_upper": 799,
-            "error_pct": 9.0,
-            "abs_error_pct": 9.0,
+            "predicted": 690,
+            "ci_lower": 585,
+            "ci_upper": 814,
+            "error_pct": 11.1,
+            "abs_error_pct": 11.1,
             "in_ci": 1
           },
           {
@@ -98259,11 +98262,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 21,
-            "predicted": 385,
-            "ci_lower": 265,
-            "ci_upper": 559,
-            "error_pct": -1.5,
-            "abs_error_pct": 1.5,
+            "predicted": 396,
+            "ci_lower": 273,
+            "ci_upper": 575,
+            "error_pct": 1.3,
+            "abs_error_pct": 1.3,
             "in_ci": 1
           },
           {
@@ -98299,11 +98302,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 152,
-            "predicted": 389,
-            "ci_lower": 330,
-            "ci_upper": 458,
-            "error_pct": -0.5,
-            "abs_error_pct": 0.5,
+            "predicted": 396,
+            "ci_lower": 336,
+            "ci_upper": 467,
+            "error_pct": 1.3,
+            "abs_error_pct": 1.3,
             "in_ci": 1
           },
           {
@@ -98346,11 +98349,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 60,
             "count_at_T": 324,
-            "predicted": 1094,
-            "ci_lower": 759,
-            "ci_upper": 1577,
-            "error_pct": -0.7,
-            "abs_error_pct": 0.7,
+            "predicted": 1125,
+            "ci_lower": 780,
+            "ci_upper": 1621,
+            "error_pct": 2.1,
+            "abs_error_pct": 2.1,
             "in_ci": 1
           },
           {
@@ -98386,11 +98389,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 7,
             "count_at_T": 812,
-            "predicted": 1105,
-            "ci_lower": 945,
-            "ci_upper": 1293,
-            "error_pct": 0.3,
-            "abs_error_pct": 0.3,
+            "predicted": 1127,
+            "ci_lower": 963,
+            "ci_upper": 1318,
+            "error_pct": 2.3,
+            "abs_error_pct": 2.3,
             "in_ci": 1
           },
           {
@@ -101536,11 +101539,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 3,
             "count_at_T": 193,
-            "predicted": 378,
-            "ci_lower": 355,
-            "ci_upper": 402,
-            "error_pct": 5.3,
-            "abs_error_pct": 5.3,
+            "predicted": 370,
+            "ci_lower": 348,
+            "ci_upper": 393,
+            "error_pct": 3.1,
+            "abs_error_pct": 3.1,
             "in_ci": 1
           },
           {
@@ -101613,11 +101616,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 3,
             "count_at_T": 429,
-            "predicted": 679,
-            "ci_lower": 586,
-            "ci_upper": 786,
-            "error_pct": 20.4,
-            "abs_error_pct": 20.4,
+            "predicted": 665,
+            "ci_lower": 577,
+            "ci_upper": 766,
+            "error_pct": 17.9,
+            "abs_error_pct": 17.9,
             "in_ci": 0
           },
           {
@@ -101680,12 +101683,12 @@ const PERFORMANCE_DATA = {
           {
             "T": 3,
             "count_at_T": 289,
-            "predicted": 427,
-            "ci_lower": 390,
-            "ci_upper": 467,
-            "error_pct": 10.3,
-            "abs_error_pct": 10.3,
-            "in_ci": 0
+            "predicted": 418,
+            "ci_lower": 383,
+            "ci_upper": 456,
+            "error_pct": 8.0,
+            "abs_error_pct": 8.0,
+            "in_ci": 1
           },
           {
             "T": 1,
@@ -101747,11 +101750,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 3,
             "count_at_T": 128,
-            "predicted": 238,
-            "ci_lower": 215,
-            "ci_upper": 264,
-            "error_pct": 13.9,
-            "abs_error_pct": 13.9,
+            "predicted": 233,
+            "ci_lower": 211,
+            "ci_upper": 258,
+            "error_pct": 11.5,
+            "abs_error_pct": 11.5,
             "in_ci": 0
           },
           {
@@ -101834,11 +101837,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 3,
             "count_at_T": 395,
-            "predicted": 518,
-            "ci_lower": 480,
-            "ci_upper": 559,
-            "error_pct": 5.3,
-            "abs_error_pct": 5.3,
+            "predicted": 507,
+            "ci_lower": 471,
+            "ci_upper": 546,
+            "error_pct": 3.0,
+            "abs_error_pct": 3.0,
             "in_ci": 1
           },
           {
@@ -101921,11 +101924,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 3,
             "count_at_T": 286,
-            "predicted": 453,
-            "ci_lower": 391,
-            "ci_upper": 526,
-            "error_pct": 6.8,
-            "abs_error_pct": 6.8,
+            "predicted": 444,
+            "ci_lower": 385,
+            "ci_upper": 512,
+            "error_pct": 4.7,
+            "abs_error_pct": 4.7,
             "in_ci": 1
           },
           {
@@ -101998,11 +102001,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 3,
             "count_at_T": 193,
-            "predicted": 315,
-            "ci_lower": 273,
-            "ci_upper": 363,
-            "error_pct": -0.9,
-            "abs_error_pct": 0.9,
+            "predicted": 308,
+            "ci_lower": 269,
+            "ci_upper": 354,
+            "error_pct": -3.1,
+            "abs_error_pct": 3.1,
             "in_ci": 1
           },
           {
@@ -102085,11 +102088,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 3,
             "count_at_T": 185,
-            "predicted": 197,
+            "predicted": 193,
             "ci_lower": 185,
-            "ci_upper": 252,
-            "error_pct": -0.5,
-            "abs_error_pct": 0.5,
+            "ci_upper": 244,
+            "error_pct": -2.5,
+            "abs_error_pct": 2.5,
             "in_ci": 1
           },
           {
@@ -102162,11 +102165,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 3,
             "count_at_T": 42,
-            "predicted": 60,
+            "predicted": 59,
             "ci_lower": 46,
-            "ci_upper": 79,
-            "error_pct": -1.6,
-            "abs_error_pct": 1.6,
+            "ci_upper": 77,
+            "error_pct": -3.3,
+            "abs_error_pct": 3.3,
             "in_ci": 1
           },
           {
@@ -102249,11 +102252,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 3,
             "count_at_T": 1719,
-            "predicted": 1759,
+            "predicted": 1723,
             "ci_lower": 1719,
-            "ci_upper": 2230,
-            "error_pct": 0.3,
-            "abs_error_pct": 0.3,
+            "ci_upper": 2167,
+            "error_pct": -1.7,
+            "abs_error_pct": 1.7,
             "in_ci": 1
           },
           {
@@ -102326,11 +102329,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 3,
             "count_at_T": 117,
-            "predicted": 206,
-            "ci_lower": 188,
-            "ci_upper": 227,
-            "error_pct": 5.6,
-            "abs_error_pct": 5.6,
+            "predicted": 202,
+            "ci_lower": 185,
+            "ci_upper": 221,
+            "error_pct": 3.6,
+            "abs_error_pct": 3.6,
             "in_ci": 1
           },
           {

@@ -399,12 +399,22 @@ class N5v4_Final:
         self.reg_params = {}  # family -> [slope_count, slope_T, intercept]
         self.family_n_editions = {}  # family -> count of training editions
 
-    def fit(self, summary, daily, enrichment_lookup=None, completed_tids=None):
+    def fit(self, summary, daily, enrichment_lookup=None, completed_tids=None,
+            verbose_standings_join=True, all_summary_families=None):
         """Build ratios from completed, non-online, non-covid tournaments.
 
         completed_tids: optional set of 2026 tournament tids that have completed.
             If provided, these are included in training (rolling retraining).
             All other 2026 tournaments are excluded.
+        verbose_standings_join: when False, suppress the orphan-list warning. Set
+            False on backtest folds (04e) so the user-facing pipeline run doesn't
+            emit the same warning N times for N expanding-window cohorts.
+        all_summary_families: optional set of every family in the unfiltered summary.
+            Used as the cross-check basis for validate_standings_join so pre-timestamp
+            families (which are filtered out of the training subset but supplemented
+            from standings later) don't show up as false orphans. If omitted, the
+            current `summary` arg's families are used (less accurate when caller
+            already filtered upstream — e.g., 04d passes train_ts).
         """
         self.enrichment = enrichment_lookup or {}
 
@@ -501,10 +511,23 @@ class N5v4_Final:
             standings = standings[standings['total_players'] > 10]
             standings['tournament_name'] = standings['tournament_name'].replace(
                 STANDINGS_NAME_MAP)
-            # Surface unmapped names so silent drops become visible
+            # Surface unmapped names so silent drops become visible.
+            # Cross-check against the full summary families, not just the
+            # training subset (which excludes pre-timestamp / online / covid
+            # tournaments). Names that are in summary but absent from the
+            # training subset are not data gaps — they're picked up by the
+            # supplementation loop below. Only true orphans (in standings,
+            # absent from summary entirely) get flagged.
+            # Backtest folds (04e) pass verbose_standings_join=False because
+            # each fold's training cohort produces its own list and firing
+            # N copies just buries the real signal.
+            check_against = (all_summary_families
+                             if all_summary_families is not None
+                             else set(summary['family'].dropna().unique()))
             validate_standings_join(
                 standings['tournament_name'].unique(),
-                self.family_mean_final.keys(),
+                check_against,
+                verbose=verbose_standings_join,
             )
             for fam, grp in standings.groupby('tournament_name'):
                 if fam not in self.family_mean_final:
@@ -1310,6 +1333,7 @@ class N5v4_Final:
 
             # Stationarity probe: split records chronologically (older half vs newer half)
             stationarity = None
+            recent_recalibrated = False
             if len(records) >= 6:
                 mid = len(records) // 2
                 old_half = err_arr[:mid]
@@ -1319,6 +1343,25 @@ class N5v4_Final:
                     'new_bias_pct': round(float(np.mean(new_half)) * 100, 1),
                     'delta_pct': round((float(np.mean(new_half)) - float(np.mean(old_half))) * 100, 1),
                 }
+                # AUDIT.md C2 auto-action — when bias is non-stationary across
+                # halves by more than 5pp, refit bias_factor on just the recent
+                # half. Old-cohort behavior (pre-2024 conditions) shouldn't drag
+                # current predictions backward. The records list is also pruned
+                # so the CI scale below is computed from the same recent cohort.
+                if abs(stationarity['delta_pct']) > 5.0:
+                    new_records = records[mid:]
+                    new_trimmed = new_half
+                    nq1, nq3 = np.percentile(new_trimmed, [25, 75])
+                    niqr = nq3 - nq1
+                    nmask = (new_trimmed >= nq1 - 2 * niqr) & (new_trimmed <= nq3 + 2 * niqr)
+                    refit = new_trimmed[nmask] if nmask.sum() >= 3 else new_trimmed
+                    mean_bias = float(np.mean(refit))
+                    bias_factor = 1.0 / (1.0 + mean_bias)
+                    bias_factor = max(0.80, min(1.20, bias_factor))
+                    records = new_records
+                    err_arr = new_half
+                    stationarity['action'] = 'refit-on-recent-half'
+                    recent_recalibrated = True
 
             # ── CI scale (continuous derivation, AUDIT.md C1) ───────────
             # Empirical 80th percentile of normalized residual tells us the scale
@@ -1351,13 +1394,22 @@ class N5v4_Final:
             }
             if stationarity:
                 diag['stationarity'] = stationarity
-                # Loud warning when bias materially differs across halves
+                # Loud notice when bias materially differs across halves;
+                # auto-action above already refit on the recent cohort.
                 if abs(stationarity['delta_pct']) > 5.0:
-                    print(f"  WARNING: T={T} bias non-stationary "
-                          f"(old half: {stationarity['old_bias_pct']}%, "
-                          f"new half: {stationarity['new_bias_pct']}%, "
-                          f"Δ={stationarity['delta_pct']}pp). "
-                          f"Recent-cohort recalibration recommended.")
+                    if recent_recalibrated:
+                        print(f"  NOTICE: T={T} bias non-stationary "
+                              f"(old: {stationarity['old_bias_pct']}%, "
+                              f"new: {stationarity['new_bias_pct']}%, "
+                              f"Δ={stationarity['delta_pct']}pp) — "
+                              f"auto-refit on recent half (n={len(records)}, "
+                              f"bias_factor={diag['bias_factor']}).")
+                    else:
+                        print(f"  WARNING: T={T} bias non-stationary "
+                              f"(old: {stationarity['old_bias_pct']}%, "
+                              f"new: {stationarity['new_bias_pct']}%, "
+                              f"Δ={stationarity['delta_pct']}pp) "
+                              f"but n<6 — kept full-cohort fit.")
             diagnostics[T] = diag
 
         return diagnostics

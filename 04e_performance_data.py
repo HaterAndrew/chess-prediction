@@ -297,7 +297,8 @@ def main():
             # 2026: train on pre-2026 + completed 2026, predict completed 2026
             model = m04c.N5v4_Final()
             model.fit(summary, daily, enrichment_lookup,
-                      completed_tids=completed_2026_tids if completed_2026_tids else None)
+                      completed_tids=completed_2026_tids if completed_2026_tids else None,
+                      verbose_standings_join=False)
 
             # Recalibrate from 2024-2025 + completed 2026
             recal_data = summary[
@@ -338,7 +339,8 @@ def main():
             # Historical: expanding window — train on < year, predict year
             train_summary = summary[summary['tournament_year'] < year].copy()
             model = m04c.N5v4_Final()
-            model.fit(train_summary, daily, enrichment_lookup)
+            model.fit(train_summary, daily, enrichment_lookup,
+                      verbose_standings_join=False)
 
             # Recalibrate from the 2 years before the test year
             recal_years = [year - 2, year - 1]

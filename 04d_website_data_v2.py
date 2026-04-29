@@ -363,7 +363,8 @@ if completed_tids:
 # - rolling retraining: completed 2026 tournaments fold into training data
 prod_model = m04c.N5v4_Final()
 prod_model.fit(train_ts, daily, enrichment_lookup=enrichment_lookup,
-               completed_tids=completed_tids if completed_tids else None)
+               completed_tids=completed_tids if completed_tids else None,
+               all_summary_families=set(summary['family'].dropna().unique()))
 
 # Automated recalibration: learn from ALL completed tournaments (2024-2025 + 2026)
 # Recent data is weighted more heavily (2026 conditions > 2019 conditions)

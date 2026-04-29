@@ -84,14 +84,15 @@ jobs:
               echo "" >> $GITHUB_STEP_SUMMARY
               echo "| Step | Warning |" >> $GITHUB_STEP_SUMMARY
               echo "|------|---------|" >> $GITHUB_STEP_SUMMARY
-              python3 -c "
-              import json
-              data = json.load(open('output/audit_warnings.json'))
-              for w in data['warnings']:
-                  step = w['step'].replace('|', '\\\\|')
-                  text = w['text'].replace('|', '\\\\|')[:200]
-                  print(f'| {step} | {text} |')
-              " >> $GITHUB_STEP_SUMMARY
+              python3 -c "$(cat <<'PYEOF'
+import json
+data = json.load(open('output/audit_warnings.json'))
+for w in data['warnings']:
+    step = w['step'].replace('|', '\\|')
+    text = w['text'].replace('|', '\\|')[:200]
+    print(f'| {step} | {text} |')
+PYEOF
+)" >> $GITHUB_STEP_SUMMARY
             fi
           fi
 

@@ -170,13 +170,19 @@ def format_results(tournament_results):
 
 
 def assert_truth_label_freshness(summary, tolerance=5):
-    """Abort if daily_scrape recorded a higher entry_count than summary.final_count.
+    """Abort if daily_scrape recorded a higher entry_count than summary.final_count
+    for an event that has already ended.
 
     Defense-in-depth: 01_data_prep.py reconciles these values, so this should
     never fire under normal operation. If it does, the snapshot pipeline is
     out of sync with the live scrape and the model would be graded against
     stale truth labels (the bug that produced ACO 2026 final=184 vs real 424).
     Tolerance absorbs small timing differences between snapshot and scrape.
+
+    In-progress events are excluded — their summary.final_count is a moving
+    snapshot, not truth, and naturally lags scrape_peak. The check uses
+    tournament_metadata.end_date < today; events without metadata are
+    conservatively excluded (treated as in-progress).
     """
     scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
     if not os.path.exists(scrape_path):
@@ -186,10 +192,22 @@ def assert_truth_label_freshness(summary, tolerance=5):
                   .max().reset_index()
                   .rename(columns={'entry_count': 'scrape_peak'}))
     merged = summary.merge(peak, on='tournament_name', how='inner')
+
+    meta_path = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
+    today = pd.Timestamp.now().normalize()
+    if os.path.exists(meta_path):
+        meta = pd.read_csv(meta_path)
+        meta['end_date'] = pd.to_datetime(meta['end_date'], errors='coerce')
+        meta_keys = meta[['family', 'year', 'end_date']].rename(
+            columns={'year': 'tournament_year'})
+        merged = merged.merge(meta_keys, on=['family', 'tournament_year'], how='left')
+        completed = merged['end_date'].notna() & (merged['end_date'] < today)
+        merged = merged[completed]
+
     stale = merged[merged['scrape_peak'] > merged['final_count'] + tolerance]
     if len(stale) > 0:
         lines = ["STALE TRUTH LABELS — refusing to grade against snapshot data."]
-        lines.append("daily_scrape.csv recorded higher entry_count than tournament_summary.final_count for:")
+        lines.append("daily_scrape.csv recorded higher entry_count than tournament_summary.final_count for completed events:")
         for _, r in stale.iterrows():
             lines.append(f"  {r['tournament_name']:<55} summary={int(r['final_count']):>5}  scrape_peak={int(r['scrape_peak']):>5}  delta=+{int(r['scrape_peak'] - r['final_count'])}")
         lines.append("Re-run 01_data_prep.py to reconcile, then retry.")

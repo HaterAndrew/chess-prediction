@@ -379,8 +379,13 @@
   <!-- ══════ PERFORMANCE TAB ══════ -->
   <div class="page-tab-panel" id="panel-performance" role="tabpanel" aria-labelledby="ptab-performance">
 
+    <!-- Year selector -->
+    <div id="perfYearSelector" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:18px 0 14px">
+      <span style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px">View:</span>
+    </div>
+
     <!-- Hero: grade + stats -->
-    <div style="display:flex;gap:16px;flex-wrap:wrap;margin:18px 0 22px;align-items:stretch">
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin:0 0 22px;align-items:stretch">
       <div id="perfGradeCard" style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 36px;background:linear-gradient(135deg,rgba(240,192,64,.08),rgba(56,139,253,.04));border:1px solid rgba(240,192,64,.2);border-radius:16px;min-width:140px">
         <div id="perfGradeLetter" style="font-size:4.5rem;font-weight:900;line-height:1;color:var(--gold);text-shadow:0 0 24px rgba(240,192,64,.4)"></div>
         <div id="perfGradeLabel" style="font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:8px"></div>

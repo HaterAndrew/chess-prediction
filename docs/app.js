@@ -554,34 +554,110 @@ function copyEmailHTML() {
 // MODEL PERFORMANCE TAB
 // ══════════════════════════════════════════════════════════
 let perfInited = false;
+let perfSelectedKey = null;
 
 function initPerformanceTab() {
   if (perfInited) return;
   perfInited = true;
 
   const data = typeof PERFORMANCE_DATA !== 'undefined' ? PERFORMANCE_DATA : {};
-  if (!data.aggregate || data.aggregate.length === 0) {
+  const hasYears = data.years && Object.values(data.years).some(y => y && y.n_tournaments > 0);
+  const hasCumulative = data.cumulative && data.cumulative.n_tournaments > 0;
+  const hasFlat = data.aggregate && data.aggregate.length > 0;
+
+  if (!hasYears && !hasCumulative && !hasFlat) {
     document.getElementById('perfGradeLetter').textContent = '--';
     document.getElementById('perfGradeLabel').textContent = 'NO DATA';
     document.getElementById('perfGradeDetail').textContent = 'Performance data will appear once tournaments complete.';
     return;
   }
 
-  const agg = data.aggregate;
+  const selector = document.getElementById('perfYearSelector');
+  if (selector && (hasYears || hasCumulative)) {
+    const buttons = [];
+    const nowYear = new Date().getFullYear();
+    const years = data.years
+      ? Object.keys(data.years).map(Number).filter(y => data.years[y] && data.years[y].n_tournaments > 0).sort()
+      : [];
+    years.forEach(y => buttons.push({key: String(y), label: y === nowYear ? `${y} YTD` : String(y)}));
+    if (hasCumulative) buttons.push({key: 'cumulative', label: 'Cumulative'});
+
+    selector.innerHTML = '<span style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px">View:</span>' +
+      buttons.map(b => `<button onclick="perfSelectYear('${b.key}')" id="perfYearBtn_${b.key}" style="padding:6px 14px;border-radius:8px;font-size:.76rem;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;transition:all .15s">${b.label}</button>`).join('');
+
+    const defaultKey = years.includes(nowYear) ? String(nowYear) : (years.length ? String(years[years.length - 1]) : 'cumulative');
+    perfSelectYear(defaultKey);
+  } else {
+    if (selector) selector.style.display = 'none';
+    perfRenderFlat(data);
+  }
+}
+
+function perfSelectYear(key) {
+  perfSelectedKey = key;
+  document.querySelectorAll('[id^="perfYearBtn_"]').forEach(btn => {
+    const isActive = btn.id === 'perfYearBtn_' + key;
+    btn.style.background = isActive ? 'var(--gold)' : 'var(--surface2)';
+    btn.style.color = isActive ? '#0d1117' : 'var(--text)';
+    btn.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
+  });
+  perfRender();
+}
+
+function perfRender() {
+  const data = PERFORMANCE_DATA;
+  const key = perfSelectedKey;
+  const baseData = key === 'cumulative' ? data.cumulative : (data.years && data.years[key]);
+  if (!baseData) return perfRenderFlat(data);
+
+  const nowYear = new Date().getFullYear();
+  const isYTD = key === String(nowYear);
+  const desc = key === 'cumulative'
+    ? `Blind-tested across ${baseData.n_tournaments} tournaments (all years)`
+    : `Blind-tested on ${baseData.n_tournaments} ${key} tournaments${isYTD ? ' (YTD)' : ''}`;
+
+  perfPaint({
+    aggregate: baseData.aggregate,
+    tournaments: baseData.tournaments || [],
+    grade: baseData.grade,
+    n_tournaments: baseData.n_tournaments,
+    detail: desc,
+    generated: data.generated,
+  });
+}
+
+function perfRenderFlat(data) {
+  perfPaint({
+    aggregate: data.aggregate || [],
+    tournaments: data.tournaments || [],
+    grade: data.grade,
+    n_tournaments: data.n_tournaments,
+    detail: data.grade_detail || `Blind-tested on ${data.n_tournaments} completed tournaments`,
+    generated: data.generated,
+  });
+}
+
+function perfPaint(view) {
+  const agg = view.aggregate || [];
+  const gc = {'A+':'#22c55e','A':'#22c55e','A-':'#4ade80','B+':'#86efac','B':'var(--gold)','B-':'var(--gold)','C+':'#fb923c','C':'#f97316','C-':'#ea580c','D':'#ef4444','F':'#dc2626'};
+  document.getElementById('perfGradeLetter').textContent = view.grade || '--';
+  document.getElementById('perfGradeLetter').style.color = gc[view.grade] || 'var(--muted)';
+  document.getElementById('perfGradeLabel').textContent = 'MODEL GRADE';
+  document.getElementById('perfGradeDetail').textContent = view.detail;
+  document.getElementById('perfGradeMeta').textContent = `N5v4_Final Ensemble \u00b7 Rolling retrain + auto-recalibration \u00b7 Updated ${view.generated || ''}`;
+
+  if (!agg.length) {
+    document.getElementById('perfKPIs').innerHTML = '';
+    document.getElementById('perfHorizonStrip').innerHTML = '';
+    document.getElementById('perfTable').innerHTML = '<div style="color:var(--muted);padding:12px 0;font-size:.78rem">No completed tournaments for this selection.</div>';
+    return;
+  }
+
   const t14 = agg.find(a => a.T === 14) || agg[0];
   const t1 = agg.find(a => a.T === 1);
   const avgCov = Math.round(agg.reduce((s, a) => s + a.ci_coverage, 0) / agg.length);
   const avgBias = +(agg.reduce((s, a) => s + a.bias_pct, 0) / agg.length).toFixed(1);
 
-  // Grade
-  const gc = {'A+':'#22c55e','A':'#22c55e','A-':'#4ade80','B+':'#86efac','B':'var(--gold)','B-':'var(--gold)','C+':'#fb923c','C':'#f97316','C-':'#ea580c','D':'#ef4444','F':'#dc2626'};
-  document.getElementById('perfGradeLetter').textContent = data.grade;
-  document.getElementById('perfGradeLetter').style.color = gc[data.grade] || 'var(--gold)';
-  document.getElementById('perfGradeLabel').textContent = 'MODEL GRADE';
-  document.getElementById('perfGradeDetail').textContent = `Blind-tested on ${data.n_tournaments} completed 2026 tournaments`;
-  document.getElementById('perfGradeMeta').textContent = `N5v4_Final Ensemble \u00b7 Rolling retrain + auto-recalibration \u00b7 Updated ${data.generated}`;
-
-  // KPI cards
   const kpis = [
     {v: t14.mae_pct.toFixed(1) + '%', l: '2-Week Error', s: 'MAE at T-14', c: t14.mae_pct <= 8 ? '#22c55e' : t14.mae_pct <= 15 ? 'var(--gold)' : '#ef4444'},
     {v: t1 ? t1.mae_pct.toFixed(1) + '%' : '--', l: 'Day-Before', s: 'MAE at T-1', c: t1 && t1.mae_pct <= 5 ? '#22c55e' : '#4ade80'},
@@ -595,13 +671,11 @@ function initPerformanceTab() {
       <div style="font-size:.58rem;color:var(--muted);margin-top:1px">${k.s}</div>
     </div>`).join('');
 
-  // Canvas charts
   requestAnimationFrame(() => {
-    perfDrawScatter(data);
-    perfDrawTimeline(data);
+    perfDrawScatter(view);
+    perfDrawTimeline(view);
   });
 
-  // Horizon strip
   const strip = document.getElementById('perfHorizonStrip');
   strip.innerHTML = agg.map(a => {
     const bg = a.mae_pct <= 8 ? 'rgba(34,197,94,.12)' : a.mae_pct <= 12 ? 'rgba(240,192,64,.10)' : 'rgba(239,68,68,.10)';
@@ -614,8 +688,7 @@ function initPerformanceTab() {
     </div>`;
   }).join('');
 
-  // Table
-  perfDrawTable(data);
+  perfDrawTable(view);
 }
 
 function perfDrawScatter(data) {

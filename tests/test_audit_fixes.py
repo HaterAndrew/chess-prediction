@@ -159,6 +159,14 @@ def test_freshness_assertion_fires_on_stale_summary(tmp_path):
         'is_covid': False, 'is_online': False,
     }])
 
+    # Mark event as completed (end_date in past) so the freshness check fires.
+    # In-progress events (end_date in future) are intentionally excluded from
+    # the check because their final_count is a moving snapshot, not truth.
+    pd.DataFrame([{
+        'family': 'Stale Open', 'year': 2026,
+        'start_date': '2026-03-10', 'end_date': '2026-03-14',
+    }]).to_csv(out / "tournament_metadata.csv", index=False)
+
     sys.path.insert(0, PROJECT_DIR)
     perf = import_module("04e_performance_data")
     # Monkeypatch OUTPUT_DIR for the duration of the call
@@ -169,6 +177,48 @@ def test_freshness_assertion_fires_on_stale_summary(tmp_path):
             perf.assert_truth_label_freshness(summary)
         assert '2026 Stale Open' in str(exc.value)
         assert '600' in str(exc.value)  # scrape peak named in error
+    finally:
+        perf.OUTPUT_DIR = orig
+
+
+def test_freshness_assertion_skips_in_progress_events(tmp_path):
+    """In-progress events (end_date in future) must not trip the freshness check —
+    their summary.final_count is a moving snapshot, not truth labels."""
+    from importlib import import_module
+    from datetime import datetime, timedelta
+
+    out = tmp_path / "output"
+    out.mkdir()
+    pd.DataFrame({
+        'date': pd.date_range('2026-04-01', periods=5, freq='D'),
+        'tournament_name': ['2026 Active Open'] * 5,
+        'entry_count': [200, 300, 400, 500, 600],
+        'active_count': [200, 300, 400, 500, 600],
+        'withdrawal_count': [0] * 5,
+        'url': ['http://example.com'] * 5,
+    }).to_csv(out / "daily_scrape.csv", index=False)
+
+    summary = pd.DataFrame([{
+        'tid': 1, 'tournament_name': '2026 Active Open', 'family': 'Active Open',
+        'tournament_year': 2026.0, 'final_count': 100,
+        'has_timestamps': True, 'ts_count': 100,
+        'first_reg': '2025-10-01', 'last_reg': '2026-04-28',
+        'is_covid': False, 'is_online': False,
+    }])
+
+    future = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+    pd.DataFrame([{
+        'family': 'Active Open', 'year': 2026,
+        'start_date': future, 'end_date': future,
+    }]).to_csv(out / "tournament_metadata.csv", index=False)
+
+    sys.path.insert(0, PROJECT_DIR)
+    perf = import_module("04e_performance_data")
+    orig = perf.OUTPUT_DIR
+    perf.OUTPUT_DIR = str(out)
+    try:
+        # Should not raise — event is in-progress, summary is allowed to lag scrape.
+        perf.assert_truth_label_freshness(summary)
     finally:
         perf.OUTPUT_DIR = orig
 

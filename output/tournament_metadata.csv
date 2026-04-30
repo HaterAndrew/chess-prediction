@@ -10,8 +10,8 @@ Atlantic City Open,2026,2026-04-01,2026-04-05,,,,,Atlantic City,NJ
 Atlantic Open,2021,2021-08-26,2021-08-29,,,,,,
 Atlantic Open,2022,2022-08-25,2022-08-28,,,,,,
 Atlantic Open,2023,2023-08-24,2023-08-27,,,,,,
-Atlantic Open,2024,2024-03-27,2024-03-31,2024-03-24,198.0,218.0,230.0,Atlantic City,NJ
-Atlantic Open,2025,2025-03-26,2025-03-30,2025-03-23,208.0,228.0,240.0,Atlantic City,NJ
+Atlantic Open,2024,2024-08-22,2024-08-25,,198.0,218.0,230.0,Atlantic City,NJ
+Atlantic Open,2025,2025-08-21,2025-08-24,,208.0,228.0,240.0,Atlantic City,NJ
 Atlantic Open,2026,2026-08-21,2026-08-23,,,,,Atlantic City,NJ
 August Action,2023,2023-08-17,2023-08-20,,,,,,
 August Open,2021,2021-08-19,2021-08-22,,,,,,
@@ -43,7 +43,7 @@ Chicago Action,2022,2022-05-19,2022-05-22,,,,,,
 Chicago Class,2022,2022-07-14,2022-07-17,,,,,,
 Chicago Class,2023,2023-07-12,2023-07-15,,,,,,
 Chicago Class,2024,2024-07-18,2024-07-21,,,,,,
-Chicago Class,2025,2025-11-14,2025-11-16,2025-11-11,108.0,128.0,140.0,Wheeling,IL
+Chicago Class,2025,2025-07-17,2025-07-20,,108.0,128.0,140.0,Wheeling,IL
 Chicago Class,2026,2026-07-17,2026-07-19,2026-11-10,118.0,138.0,150.0,Wheeling,IL
 Chicago FIDE U2200,2022,2022-05-25,2022-05-28,,,,,,
 Chicago Open,2022,2022-05-26,2022-05-30,2022-03-24,169.0,189.0,210.0,Wheeling,IL
@@ -105,8 +105,8 @@ Golden State Action,2022,2022-01-06,2022-01-09,,,,,,
 Golden State Open,2022,2022-01-13,2022-01-16,,,,,,
 Golden State Open,2023,2023-01-13,2023-01-16,,,,,,
 Golden State Open,2024,2024-01-12,2024-01-15,,,,,,
-Golden State Open,2025,2025-02-14,2025-02-17,2025-02-11,108.0,128.0,140.0,Los Angeles,CA
-Golden State Open,2026,2026-02-13,2026-02-16,2026-02-10,118.0,138.0,150.0,Los Angeles,CA
+Golden State Open,2025,2025-01-16,2025-01-19,,108.0,128.0,140.0,Los Angeles,CA
+Golden State Open,2026,2026-01-16,2026-01-19,,118.0,138.0,150.0,Los Angeles,CA
 Halloween Open,2021,2021-10-28,2021-10-31,,,,,,
 Hartford Open,2022,2022-10-13,2022-10-16,,,,,,
 Hartford Open,2023,2023-10-05,2023-10-08,,,,,,
@@ -224,7 +224,7 @@ Open at Foxwoods,2024,2024-03-27,2024-03-30,,,,,,
 Pacific Coast Open,2022,2022-07-14,2022-07-17,,,,,,
 Pacific Coast Open,2023,2023-07-20,2023-07-23,,,,,,
 Pacific Coast Open,2024,2024-07-18,2024-07-21,,,,,,
-Pacific Coast Open,2025,2025-08-29,2025-08-31,2025-08-26,118.0,138.0,150.0,Los Angeles,CA
+Pacific Coast Open,2025,2025-08-07,2025-08-10,,118.0,138.0,150.0,Los Angeles,CA
 Pacific Coast Open,2026,2026-07-31,2026-08-02,2026-08-25,123.0,143.0,155.0,Los Angeles,CA
 Philadelphia International,2022,2022-06-22,2022-06-25,,,,,,
 Philadelphia International,2023,2023-06-22,2023-06-25,,,,,,
@@ -237,7 +237,7 @@ Philadelphia Open,2025,2025-06-26,2025-06-29,,,,,,
 Pittsburgh Open,2022,2022-07-21,2022-07-24,,,,,,
 Pittsburgh Open,2023,2023-07-20,2023-07-23,,,,,,
 Pittsburgh Open,2024,2024-07-25,2024-07-28,,,,,,
-Pittsburgh Open,2025,2025-04-25,2025-04-27,2025-04-22,88.0,105.0,105.0,Pittsburgh,PA
+Pittsburgh Open,2025,2025-07-16,2025-07-19,,88.0,105.0,105.0,Pittsburgh,PA
 Pittsburgh Open,2026,2026-07-17,2026-07-19,2026-04-21,93.0,110.0,110.0,Pittsburgh,PA
 Princeton Open,2025,2025-04-16,2025-04-19,,,,,,
 September Action,2023,2023-09-21,2023-09-24,,,,,,

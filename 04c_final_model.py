@@ -93,7 +93,8 @@ def reanchor_daily_to_event_start(summary, daily, meta):
     daily = daily.copy()
     # AUDIT.md B3 — track which offset path each tournament took so silent
     # fallback to DEFAULT_EVENT_START_OFFSET=2 surfaces in logs.
-    _offset_source_counts = {'metadata': 0, 'family-median': 0, 'global-default': 0, 'bad-metadata': 0}
+    _offset_source_counts = {'metadata': 0, 'family-median': 0, 'global-default': 0,
+                             'bad-metadata': 0, 'in-progress': 0}
     _global_default_examples = []  # (family, year) of rows hitting global-default
     for _, row in summary.iterrows():
         tid = row['tid']
@@ -105,7 +106,20 @@ def reanchor_daily_to_event_start(summary, daily, meta):
         start = meta_starts.get((fam, yr))
         if start is not None and pd.notna(lr):
             offset = (lr - start).days
-            if offset < 0 or offset > 30:
+            # In-progress event (start_date in the future): negative offsets
+            # are expected (last_reg ≤ today < event_start). The metadata is
+            # not "bad" — the event simply hasn't ended. Use family_median
+            # for offset selection (we have no post-event registration
+            # signal yet) but classify separately so the bad-metadata
+            # counter stays accurate to genuinely-wrong rows.
+            is_in_progress = start > TODAY
+            if is_in_progress and (offset < 0 or offset > 30):
+                _offset_source_counts['in-progress'] += 1
+                if fam in family_median_offset:
+                    offset = family_median_offset[fam]
+                else:
+                    offset = global_median_offset
+            elif offset < 0 or offset > 30:
                 # Bad data — fall back
                 _offset_source_counts['bad-metadata'] += 1
                 if fam in family_median_offset:

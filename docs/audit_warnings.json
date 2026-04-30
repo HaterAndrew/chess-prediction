@@ -1,14 +1,5 @@
 {
-  "generated": "2026-04-30 04:44:51",
-  "count": 2,
-  "warnings": [
-    {
-      "step": "Generate predictions (04d_website_data_v2.py)",
-      "text": "267 tournaments fell back to DEFAULT_EVENT_START_OFFSET=2 (no metadata, no family median). Run update_metadata.py."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "267 tournaments fell back to DEFAULT_EVENT_START_OFFSET=2 (no metadata, no family median). Run update_metadata.py."
-    }
-  ]
+  "generated": "2026-04-30 20:49:31",
+  "count": 0,
+  "warnings": []
 }

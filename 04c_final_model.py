@@ -94,6 +94,7 @@ def reanchor_daily_to_event_start(summary, daily, meta):
     # AUDIT.md B3 — track which offset path each tournament took so silent
     # fallback to DEFAULT_EVENT_START_OFFSET=2 surfaces in logs.
     _offset_source_counts = {'metadata': 0, 'family-median': 0, 'global-default': 0, 'bad-metadata': 0}
+    _global_default_examples = []  # (family, year) of rows hitting global-default
     for _, row in summary.iterrows():
         tid = row['tid']
         fam = row['family']
@@ -120,6 +121,7 @@ def reanchor_daily_to_event_start(summary, daily, meta):
             else:
                 offset = global_median_offset
                 _offset_source_counts['global-default'] += 1
+                _global_default_examples.append((fam, yr))
         else:
             continue  # no timestamp data, skip
 
@@ -152,10 +154,22 @@ def reanchor_daily_to_event_start(summary, daily, meta):
     if total_offsets > 0:
         print(f"  Event-start offset sources (n={total_offsets}): "
               + ", ".join(f"{k}={v}" for k, v in _offset_source_counts.items() if v > 0))
-        if _offset_source_counts['global-default'] > 2:
-            print(f"  WARNING: {_offset_source_counts['global-default']} tournaments fell back to "
+        # Threshold accounts for known noise floor (sub-events with NaN
+        # tournament_year — e.g., Octos pickup events, waitlists — can't be
+        # backfilled by update_metadata.py because there's no year to anchor
+        # the metadata row to). Fire only when the count exceeds that floor
+        # plus a small drift margin.
+        GLOBAL_DEFAULT_NOISE_FLOOR = 5
+        n_global = _offset_source_counts['global-default']
+        if n_global > GLOBAL_DEFAULT_NOISE_FLOOR:
+            sample = ", ".join(
+                f"{fam} ({yr if yr else 'NaN-year'})"
+                for fam, yr in _global_default_examples[:5]
+            )
+            more = f" …and {n_global - 5} more" if n_global > 5 else ""
+            print(f"  WARNING: {n_global} tournaments fell back to "
                   f"DEFAULT_EVENT_START_OFFSET={DEFAULT_EVENT_START_OFFSET} (no metadata, no family median). "
-                  f"Run update_metadata.py.")
+                  f"Run update_metadata.py. Examples: {sample}{more}")
     return daily
 
 

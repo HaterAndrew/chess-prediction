@@ -188,6 +188,95 @@ INFERRED_OFFSET_DAYS = 2
 INFERRED_EVENT_LENGTH_DAYS = 3
 
 
+def repair_bad_offset_rows(summary, meta, today=None):
+    """Repair metadata rows whose (last_reg - meta.start_date) offset is
+    outside the [0, 30] band 04c uses to gate metadata, BUT only for events
+    that have already completed (meta.start_date ≤ today). For in-progress
+    events with future start_date, negative offsets are expected and the
+    metadata is not bad — those rows are left alone.
+
+    Repair: set start_date = last_reg − family_median_offset (if usable;
+    else INFERRED_OFFSET_DAYS) and end_date = start + INFERRED_EVENT_LENGTH_DAYS.
+    Other fields (early_bird_deadline, fees, venue) are preserved.
+
+    The repaired offset matches what 04c was already using via the
+    bad-metadata fallback, so the model receives identical inputs — the
+    repair just makes the row pass 04c's sanity gate and counts it as
+    metadata-direct rather than bad-metadata-fallback.
+
+    Returns (updated_meta, list_of_repaired_rows).
+    """
+    if today is None:
+        today = pd.Timestamp.now().normalize()
+
+    summary = summary.copy()
+    summary['lr_dt'] = pd.to_datetime(summary['last_reg'], errors='coerce')
+    s_idx = summary.set_index(['family', 'tournament_year'])['lr_dt']
+
+    # Per-family offset signal — same recipe as 04c.
+    meta_yr = pd.to_numeric(meta['year'], errors='coerce')
+    meta_start = pd.to_datetime(meta['start_date'], errors='coerce')
+    family_offsets = {}
+    for fam, yr, sd in zip(meta['family'], meta_yr, meta_start):
+        if pd.isna(fam) or pd.isna(yr) or pd.isna(sd) or yr >= 2026:
+            continue
+        try:
+            lr = s_idx.loc[(fam, yr)]
+            if isinstance(lr, pd.Series):
+                lr = lr.iloc[0]
+        except KeyError:
+            continue
+        if pd.isna(lr):
+            continue
+        off = (lr - sd).days
+        if 0 <= off <= 10:
+            family_offsets.setdefault(fam, []).append(off)
+    family_median = {fam: int(np.median(offs)) for fam, offs in family_offsets.items()}
+
+    repaired = []
+    for idx, mrow in meta.iterrows():
+        fam = mrow['family']
+        yr = pd.to_numeric(mrow['year'], errors='coerce')
+        sd = pd.to_datetime(mrow['start_date'], errors='coerce')
+        if pd.isna(fam) or pd.isna(yr) or pd.isna(sd):
+            continue
+        if sd > today:
+            # In-progress event — leave the future start_date alone.
+            continue
+        try:
+            lr = s_idx.loc[(fam, int(yr))]
+            if isinstance(lr, pd.Series):
+                lr = lr.iloc[0]
+        except KeyError:
+            continue
+        if pd.isna(lr):
+            continue
+        offset = (lr - sd).days
+        if 0 <= offset <= 30:
+            continue  # row is fine
+        # Repair: align start_date with last_reg via family_median (or default).
+        target_offset = family_median.get(fam, INFERRED_OFFSET_DAYS)
+        new_start = (lr - pd.Timedelta(days=target_offset)).normalize()
+        new_end = new_start + pd.Timedelta(days=INFERRED_EVENT_LENGTH_DAYS)
+        repaired.append({
+            'family': fam, 'year': int(yr),
+            'old_start': sd.strftime('%Y-%m-%d'),
+            'new_start': new_start.strftime('%Y-%m-%d'),
+            'old_offset': offset,
+            'new_offset': target_offset,
+            'last_reg': lr.strftime('%Y-%m-%d'),
+        })
+        meta.at[idx, 'start_date'] = new_start.strftime('%Y-%m-%d')
+        meta.at[idx, 'end_date'] = new_end.strftime('%Y-%m-%d')
+        # The original early_bird_deadline was anchored to the wrong
+        # start_date, so it's almost certainly wrong too. Clear it so the
+        # spike-detection pass in update_metadata.py can re-estimate it
+        # from registration patterns rather than carry stale data forward.
+        if 'early_bird_deadline' in meta.columns:
+            meta.at[idx, 'early_bird_deadline'] = np.nan
+    return meta, repaired
+
+
 def backfill_inferred_dates(summary, meta):
     """Insert metadata rows for (family, year) pairs in summary that have a
     usable last_reg but no metadata entry — ONLY for families with zero real
@@ -299,7 +388,22 @@ def main():
     summary, daily, meta = load_data()
 
     new_rows = []
+    repaired_rows = []
+
+    # Repair bad-offset rows BEFORE backfill so a repaired row's family
+    # contributes to family_median_offset for any subsequent inference.
     if not args.skip_backfill:
+        meta, repaired_rows = repair_bad_offset_rows(summary, meta)
+        if repaired_rows:
+            print(f"\n── Bad-offset metadata repair ──")
+            print(f"  Repaired {len(repaired_rows)} completed-event row(s) "
+                  f"(offset out of [0, 30]):")
+            for r in repaired_rows:
+                print(f"    {r['family']:<35} {r['year']}  "
+                      f"start: {r['old_start']} → {r['new_start']}  "
+                      f"(offset {r['old_offset']:+d}d → {r['new_offset']:+d}d, "
+                      f"last_reg={r['last_reg']})")
+
         meta, backfilled = backfill_inferred_dates(summary, meta)
         new_rows.extend(backfilled)
         print(f"\n── Inferred-date backfill ──")
@@ -308,8 +412,8 @@ def main():
     expanded, eb_rows = generate_expanded_metadata(summary, daily, meta, year_filter=args.year)
     new_rows.extend(eb_rows)
 
-    if not new_rows:
-        print("\n  No new rows to add. Metadata is up to date.")
+    if not new_rows and not repaired_rows:
+        print("\n  No new rows to add and nothing to repair. Metadata is up to date.")
         return
 
     # Save expanded version

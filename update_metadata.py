@@ -180,16 +180,133 @@ def generate_expanded_metadata(summary, daily, meta, year_filter=None):
     return expanded, new_rows
 
 
+# Empirical median (last_reg - event_start) across CCA tournaments with both
+# metadata and timestamp data. Mirrors 04c_final_model.DEFAULT_EVENT_START_OFFSET.
+INFERRED_OFFSET_DAYS = 2
+# Typical CCA event length (Fri-Sun = 3 days). Used only for end_date
+# inference; downstream code reads end_date for the scrape-coverage horizon.
+INFERRED_EVENT_LENGTH_DAYS = 3
+
+
+def backfill_inferred_dates(summary, meta):
+    """Insert metadata rows for (family, year) pairs in summary that have a
+    usable last_reg but no metadata entry — ONLY for families with zero real
+    metadata.
+
+    Skip criterion: 04c_final_model computes a per-family median offset
+    from metadata rows where year < 2026 (current-year rows are excluded
+    because their final outcome isn't yet observed). Families with at least
+    one such "usable" row contribute a family-median that 04c uses for any
+    missing years — and that estimate is more accurate than the global
+    default. Backfilling those families would override the family-median
+    via the metadata-direct path, so we skip them.
+
+    Families that ONLY have 2026 metadata (or none) have no usable median
+    in 04c — every missing year falls to the global default. For those,
+    inferring metadata here changes the source counter from global-default
+    to metadata-direct without changing the actual offset value (both are
+    last_reg − INFERRED_OFFSET_DAYS), so model behavior is preserved while
+    silencing the fallback warning.
+
+    Inferred fields:
+      start_date = last_reg - INFERRED_OFFSET_DAYS
+      end_date   = start_date + INFERRED_EVENT_LENGTH_DAYS
+
+    Auxiliary fields (early_bird_deadline, fees, venue) are left blank so
+    inferred rows are distinguishable from authentic metadata.
+
+    Returns (expanded_meta_df, list_of_new_rows).
+    """
+    existing = set(zip(meta['family'], pd.to_numeric(meta['year'], errors='coerce').astype('Int64')))
+
+    # Replicate 04c_final_model.reanchor_daily_to_event_start's family_offsets
+    # computation: a metadata row contributes only when its (family, year)
+    # joins to a summary row with last_reg, year < 2026, and the resulting
+    # offset is within [0, 10] (the sanity band 04c uses to reject bad
+    # metadata). Families with at least one contributing row produce a
+    # family-median that 04c will use for any unmapped year — so we skip
+    # those families here to avoid overriding a real signal.
+    meta_yr = pd.to_numeric(meta['year'], errors='coerce')
+    meta_start = pd.to_datetime(meta['start_date'], errors='coerce')
+    summary_last_reg = pd.to_datetime(summary['last_reg'], errors='coerce')
+    s_lookup = pd.DataFrame({
+        'family': summary['family'],
+        'year': pd.to_numeric(summary['tournament_year'], errors='coerce'),
+        'last_reg': summary_last_reg,
+    }).dropna(subset=['family', 'year', 'last_reg'])
+    s_lookup = s_lookup.set_index(['family', 'year'])['last_reg']
+
+    families_with_useful_median = set()
+    for fam, yr, sd in zip(meta['family'], meta_yr, meta_start):
+        if pd.isna(fam) or pd.isna(yr) or pd.isna(sd) or yr >= 2026:
+            continue
+        try:
+            lr = s_lookup.loc[(fam, yr)]
+            if isinstance(lr, pd.Series):
+                lr = lr.iloc[0]
+        except KeyError:
+            continue
+        offset = (lr - sd).days
+        if 0 <= offset <= 10:
+            families_with_useful_median.add(fam)
+
+    new_rows = []
+    for _, row in summary.iterrows():
+        fam = row['family']
+        if pd.isna(fam) or pd.isna(row.get('tournament_year')):
+            continue
+        if fam in families_with_useful_median:
+            # Skip — let 04c's family-median offset estimate stand for any
+            # missing years in this family.
+            continue
+        yr = int(row['tournament_year'])
+        if (fam, yr) in existing:
+            continue
+        lr = pd.to_datetime(row.get('last_reg'), errors='coerce')
+        if pd.isna(lr):
+            continue
+        est_start = (lr - pd.Timedelta(days=INFERRED_OFFSET_DAYS)).normalize()
+        est_end = est_start + pd.Timedelta(days=INFERRED_EVENT_LENGTH_DAYS)
+        new_rows.append({
+            'family': fam,
+            'year': yr,
+            'start_date': est_start.strftime('%Y-%m-%d'),
+            'end_date': est_end.strftime('%Y-%m-%d'),
+            'early_bird_deadline': np.nan,
+            'early_bird_fee': np.nan,
+            'regular_fee': np.nan,
+            'onsite_fee': np.nan,
+            'venue_city': '',
+            'venue_state': '',
+        })
+        existing.add((fam, yr))  # avoid double-insert across summary duplicates
+
+    expanded = pd.concat([meta, pd.DataFrame(new_rows)], ignore_index=True)
+    expanded = expanded.sort_values(['family', 'year']).reset_index(drop=True)
+    return expanded, new_rows
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Expand metadata with early-bird spike estimates")
+    parser = argparse.ArgumentParser(description="Expand metadata with estimated dates and early-bird spikes")
     parser.add_argument('--write', action='store_true',
                         help='Overwrite tournament_metadata.csv with expanded version')
     parser.add_argument('--year', type=int, default=None,
-                        help='Only generate estimates for a specific year')
+                        help='Only generate early-bird estimates for a specific year (does not affect inferred-date backfill)')
+    parser.add_argument('--skip-backfill', action='store_true',
+                        help='Skip the per-row inferred-date backfill step')
     args = parser.parse_args()
 
     summary, daily, meta = load_data()
-    expanded, new_rows = generate_expanded_metadata(summary, daily, meta, year_filter=args.year)
+
+    new_rows = []
+    if not args.skip_backfill:
+        meta, backfilled = backfill_inferred_dates(summary, meta)
+        new_rows.extend(backfilled)
+        print(f"\n── Inferred-date backfill ──")
+        print(f"  New rows from per-row last_reg inference: {len(backfilled)}")
+
+    expanded, eb_rows = generate_expanded_metadata(summary, daily, meta, year_filter=args.year)
+    new_rows.extend(eb_rows)
 
     if not new_rows:
         print("\n  No new rows to add. Metadata is up to date.")
@@ -202,7 +319,8 @@ def main():
 
     if args.write:
         expanded.to_csv(META_PATH, index=False)
-        print(f"  OVERWROTE {META_PATH} with expanded version.")
+        print(f"  OVERWROTE {META_PATH} with expanded version "
+              f"({len(meta)} → {len(expanded)} rows; +{len(new_rows)} inferred).")
     else:
         print(f"  Run with --write to overwrite {META_PATH}")
 

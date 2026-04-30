@@ -1,6 +1,6 @@
 {
   "generated": "2026-04-30",
-  "generated_time": "2026-04-30T00:45:26.362137-04:00",
+  "generated_time": "2026-04-30T14:50:29.013260-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 14,
@@ -4525,8 +4525,8 @@
     {
       "family": "Boston Chess Congress",
       "year": 2026,
-      "event_start": "2026-01-06",
-      "event_end": null,
+      "event_start": "2026-01-01",
+      "event_end": "2026-01-04",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": null,
@@ -5529,8 +5529,8 @@
     {
       "family": "George Washington Open",
       "year": 2026,
-      "event_start": "2026-02-24",
-      "event_end": null,
+      "event_start": "2026-02-26",
+      "event_end": "2026-03-01",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": null,
@@ -5824,8 +5824,8 @@
     {
       "family": "Southwest Class Championships",
       "year": 2026,
-      "event_start": "2026-02-16",
-      "event_end": null,
+      "event_start": "2026-02-11",
+      "event_end": "2026-02-14",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": null,
@@ -6645,7 +6645,7 @@
       "family": "Western Class Championships",
       "year": 2026,
       "event_start": "2026-03-05",
-      "event_end": null,
+      "event_end": "2026-03-08",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": null,
@@ -7256,8 +7256,8 @@
     {
       "family": "New York State High School Championship",
       "year": 2026,
-      "event_start": "2026-02-20",
-      "event_end": null,
+      "event_start": "2026-02-25",
+      "event_end": "2026-02-28",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": null,
@@ -7568,8 +7568,8 @@
     {
       "family": "New York State Senior Championship With Young Adult Mi",
       "year": 2026,
-      "event_start": "2026-02-21",
-      "event_end": null,
+      "event_start": "2026-02-25",
+      "event_end": "2026-02-28",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": null,
@@ -7780,8 +7780,8 @@
     {
       "family": "New York State Scholastic Championships Grades K-8",
       "year": 2026,
-      "event_start": "2026-03-08",
-      "event_end": null,
+      "event_start": "2026-03-04",
+      "event_end": "2026-03-07",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": null,
@@ -8408,8 +8408,8 @@
     {
       "family": "Southern Class",
       "year": 2026,
-      "event_start": "2026-03-16",
-      "event_end": null,
+      "event_start": "2026-03-12",
+      "event_end": "2026-03-15",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": null,
@@ -9148,7 +9148,7 @@
     {
       "family": "Atlantic Open",
       "year": 2022,
-      "event_start": "2022-08-26",
+      "event_start": "2022-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -9460,7 +9460,7 @@
     {
       "family": "Atlantic Open",
       "year": 2023,
-      "event_start": "2023-08-26",
+      "event_start": "2023-08-24",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -11472,7 +11472,7 @@
     {
       "family": "Boston Chess Congress",
       "year": 2023,
-      "event_start": "2023-01-06",
+      "event_start": "2023-01-05",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -11820,7 +11820,7 @@
     {
       "family": "Boston Chess Congress",
       "year": 2024,
-      "event_start": "2024-01-06",
+      "event_start": "2024-01-04",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -12124,7 +12124,7 @@
     {
       "family": "Boston Chess Congress",
       "year": 2025,
-      "event_start": "2025-01-06",
+      "event_start": "2025-01-02",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -12908,7 +12908,7 @@
     {
       "family": "Bradley Open",
       "year": 2022,
-      "event_start": "2022-07-27",
+      "event_start": "2022-07-14",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -13460,7 +13460,7 @@
     {
       "family": "Bradley Open",
       "year": 2024,
-      "event_start": "2024-07-27",
+      "event_start": "2024-07-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -13728,7 +13728,7 @@
     {
       "family": "Bradley Open",
       "year": 2025,
-      "event_start": "2025-07-27",
+      "event_start": "2025-07-24",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -14444,7 +14444,7 @@
     {
       "family": "Central California Open",
       "year": 2022,
-      "event_start": "2022-08-20",
+      "event_start": "2022-08-18",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -14720,7 +14720,7 @@
     {
       "family": "Central California Open",
       "year": 2023,
-      "event_start": "2023-08-20",
+      "event_start": "2023-08-10",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -15004,7 +15004,7 @@
     {
       "family": "Central California Open",
       "year": 2024,
-      "event_start": "2024-08-20",
+      "event_start": "2024-08-07",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -15988,7 +15988,7 @@
     {
       "family": "Central New York Open",
       "year": 2022,
-      "event_start": "2022-10-23",
+      "event_start": "2022-10-20",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -16256,7 +16256,7 @@
     {
       "family": "Central New York Open",
       "year": 2023,
-      "event_start": "2023-10-23",
+      "event_start": "2023-09-21",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -16960,7 +16960,7 @@
     {
       "family": "Chicago Class",
       "year": 2022,
-      "event_start": "2022-07-19",
+      "event_start": "2022-07-14",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -17228,7 +17228,7 @@
     {
       "family": "Chicago Class",
       "year": 2023,
-      "event_start": "2023-07-19",
+      "event_start": "2023-07-12",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -17508,7 +17508,7 @@
     {
       "family": "Chicago Class",
       "year": 2024,
-      "event_start": "2024-07-19",
+      "event_start": "2024-07-18",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -22052,7 +22052,7 @@
     {
       "family": "Continental Class",
       "year": 2023,
-      "event_start": "2023-06-17",
+      "event_start": "2023-06-15",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -23116,7 +23116,7 @@
     {
       "family": "Continental Open",
       "year": 2022,
-      "event_start": "2022-08-15",
+      "event_start": "2022-07-28",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -23396,7 +23396,7 @@
     {
       "family": "Continental Open",
       "year": 2023,
-      "event_start": "2023-08-15",
+      "event_start": "2023-07-13",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -23936,7 +23936,7 @@
     {
       "family": "Continental Open",
       "year": 2025,
-      "event_start": "2025-08-15",
+      "event_start": "2025-08-13",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -24772,7 +24772,7 @@
     {
       "family": "Eastern Chess Congress",
       "year": 2022,
-      "event_start": "2022-10-26",
+      "event_start": "2022-10-27",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -25464,7 +25464,7 @@
     {
       "family": "Eastern Chess Congress",
       "year": 2024,
-      "event_start": "2024-10-26",
+      "event_start": "2024-10-24",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -25804,7 +25804,7 @@
     {
       "family": "Eastern Chess Congress",
       "year": 2025,
-      "event_start": "2025-10-26",
+      "event_start": "2025-10-23",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -26180,7 +26180,7 @@
     {
       "family": "Eastern Class",
       "year": 2022,
-      "event_start": "2022-05-13",
+      "event_start": "2022-04-28",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -26464,7 +26464,7 @@
     {
       "family": "Eastern Class",
       "year": 2023,
-      "event_start": "2023-05-13",
+      "event_start": "2023-03-16",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -26760,7 +26760,7 @@
     {
       "family": "Eastern Class",
       "year": 2024,
-      "event_start": "2024-05-13",
+      "event_start": "2024-06-06",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -27020,7 +27020,7 @@
     {
       "family": "Eastern Class",
       "year": 2025,
-      "event_start": "2025-05-13",
+      "event_start": "2025-06-05",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -27760,7 +27760,7 @@
     {
       "family": "Eastern Open",
       "year": 2022,
-      "event_start": "2022-12-27",
+      "event_start": "2022-12-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -28052,7 +28052,7 @@
     {
       "family": "Eastern Open",
       "year": 2023,
-      "event_start": "2023-12-27",
+      "event_start": "2023-12-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -28352,7 +28352,7 @@
     {
       "family": "Eastern Open",
       "year": 2024,
-      "event_start": "2024-12-27",
+      "event_start": "2024-12-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -28644,7 +28644,7 @@
     {
       "family": "Eastern Open",
       "year": 2025,
-      "event_start": "2025-12-27",
+      "event_start": "2025-12-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -29424,7 +29424,7 @@
     {
       "family": "FIDE U2400 at Foxwoods",
       "year": 2022,
-      "event_start": "2022-04-15",
+      "event_start": "2022-04-13",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -29892,7 +29892,7 @@
     {
       "family": "George Washington Open",
       "year": 2023,
-      "event_start": "2023-02-24",
+      "event_start": "2023-02-23",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -30216,7 +30216,7 @@
     {
       "family": "George Washington Open",
       "year": 2024,
-      "event_start": "2024-02-24",
+      "event_start": "2024-02-22",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -30496,7 +30496,7 @@
     {
       "family": "George Washington Open",
       "year": 2025,
-      "event_start": "2025-02-24",
+      "event_start": "2025-02-20",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -31252,7 +31252,7 @@
     {
       "family": "Golden State Open",
       "year": 2022,
-      "event_start": "2022-01-15",
+      "event_start": "2022-01-13",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -31516,7 +31516,7 @@
     {
       "family": "Golden State Open",
       "year": 2023,
-      "event_start": "2023-01-15",
+      "event_start": "2023-01-13",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -31828,7 +31828,7 @@
     {
       "family": "Golden State Open",
       "year": 2024,
-      "event_start": "2024-01-15",
+      "event_start": "2024-01-12",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -32868,7 +32868,7 @@
     {
       "family": "Hartford Open",
       "year": 2022,
-      "event_start": "2022-10-15",
+      "event_start": "2022-10-13",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -33100,7 +33100,7 @@
     {
       "family": "Hartford Open",
       "year": 2023,
-      "event_start": "2023-10-15",
+      "event_start": "2023-10-05",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -33356,7 +33356,7 @@
     {
       "family": "Hartford Open",
       "year": 2024,
-      "event_start": "2024-10-15",
+      "event_start": "2024-10-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -33608,7 +33608,7 @@
     {
       "family": "Hartford Open",
       "year": 2025,
-      "event_start": "2025-10-15",
+      "event_start": "2025-10-09",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -33880,7 +33880,7 @@
     {
       "family": "ICC March G 60",
       "year": 2023,
-      "event_start": "2023-03-18",
+      "event_start": "2023-03-16",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -34452,7 +34452,7 @@
     {
       "family": "Indianapolis Open",
       "year": 2022,
-      "event_start": "2022-08-26",
+      "event_start": "2022-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -34700,7 +34700,7 @@
     {
       "family": "Indianapolis Open",
       "year": 2023,
-      "event_start": "2023-08-26",
+      "event_start": "2023-08-24",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -34968,7 +34968,7 @@
     {
       "family": "Indianapolis Open",
       "year": 2024,
-      "event_start": "2024-08-26",
+      "event_start": "2024-08-22",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -35224,7 +35224,7 @@
     {
       "family": "Indianapolis Open",
       "year": 2025,
-      "event_start": "2025-08-26",
+      "event_start": "2025-08-21",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -35948,7 +35948,7 @@
     {
       "family": "Kings Island Open",
       "year": 2022,
-      "event_start": "2022-11-13",
+      "event_start": "2022-11-10",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -36276,7 +36276,7 @@
     {
       "family": "Kings Island Open",
       "year": 2023,
-      "event_start": "2023-11-13",
+      "event_start": "2023-11-09",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -36600,7 +36600,7 @@
     {
       "family": "Kings Island Open",
       "year": 2024,
-      "event_start": "2024-11-13",
+      "event_start": "2024-11-14",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -39344,7 +39344,7 @@
     {
       "family": "Los Angeles Open",
       "year": 2022,
-      "event_start": "2022-11-05",
+      "event_start": "2022-11-03",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -39740,7 +39740,7 @@
     {
       "family": "Los Angeles Open",
       "year": 2023,
-      "event_start": "2023-11-05",
+      "event_start": "2023-11-02",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -40160,7 +40160,7 @@
     {
       "family": "Los Angeles Open",
       "year": 2024,
-      "event_start": "2024-11-05",
+      "event_start": "2024-10-31",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -40532,7 +40532,7 @@
     {
       "family": "Los Angeles Open",
       "year": 2025,
-      "event_start": "2025-11-05",
+      "event_start": "2025-11-06",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -43060,7 +43060,7 @@
     {
       "family": "Midwest Chess Congress",
       "year": 2022,
-      "event_start": "2022-06-18",
+      "event_start": "2022-06-16",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -43696,7 +43696,7 @@
     {
       "family": "Midwest Class Championships",
       "year": 2022,
-      "event_start": "2022-10-09",
+      "event_start": "2022-10-06",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -44008,7 +44008,7 @@
     {
       "family": "Midwest Class Championships",
       "year": 2023,
-      "event_start": "2023-10-09",
+      "event_start": "2023-10-05",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -44292,7 +44292,7 @@
     {
       "family": "Midwest Class Championships",
       "year": 2024,
-      "event_start": "2024-10-09",
+      "event_start": "2024-10-10",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -47388,7 +47388,7 @@
     {
       "family": "New York State Championship",
       "year": 2022,
-      "event_start": "2022-09-04",
+      "event_start": "2022-09-02",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -47684,7 +47684,7 @@
     {
       "family": "New York State Championship",
       "year": 2023,
-      "event_start": "2023-09-04",
+      "event_start": "2023-08-31",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -47976,7 +47976,7 @@
     {
       "family": "New York State Championship",
       "year": 2024,
-      "event_start": "2024-09-04",
+      "event_start": "2024-08-30",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -48280,7 +48280,7 @@
     {
       "family": "New York State Championship",
       "year": 2025,
-      "event_start": "2025-09-04",
+      "event_start": "2025-08-29",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -48628,7 +48628,7 @@
     {
       "family": "New York State High School Championship",
       "year": 2025,
-      "event_start": "2025-02-20",
+      "event_start": "2025-03-12",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -49224,7 +49224,7 @@
     {
       "family": "New York State Open",
       "year": 2024,
-      "event_start": "2024-06-19",
+      "event_start": "2024-06-12",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -49436,7 +49436,7 @@
     {
       "family": "New York State Open",
       "year": 2025,
-      "event_start": "2025-06-19",
+      "event_start": "2025-06-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -50284,7 +50284,7 @@
     {
       "family": "New York State Scholastic Championships Grades K-8",
       "year": 2022,
-      "event_start": "2022-03-08",
+      "event_start": "2022-03-09",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -51100,7 +51100,7 @@
     {
       "family": "New York State Scholastic Championships Grades K-8",
       "year": 2024,
-      "event_start": "2024-03-08",
+      "event_start": "2024-03-06",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -51740,7 +51740,7 @@
     {
       "family": "New York State Scholastic Championships Grades K-8",
       "year": 2025,
-      "event_start": "2025-03-08",
+      "event_start": "2025-03-05",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -52328,7 +52328,7 @@
     {
       "family": "New York State Scholastic Championships WAITLIST",
       "year": 2024,
-      "event_start": "2024-03-05",
+      "event_start": "2024-03-03",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -52416,7 +52416,7 @@
     {
       "family": "New York State Senior Championship With Young Adult Mi",
       "year": 2025,
-      "event_start": "2025-02-21",
+      "event_start": "2025-03-13",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -52596,7 +52596,7 @@
     {
       "family": "Niagara Falls Open",
       "year": 2022,
-      "event_start": "2022-05-14",
+      "event_start": "2022-05-12",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -52824,7 +52824,7 @@
     {
       "family": "Niagara Falls Open",
       "year": 2023,
-      "event_start": "2023-05-14",
+      "event_start": "2023-05-04",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -53096,7 +53096,7 @@
     {
       "family": "Niagara Falls Open",
       "year": 2024,
-      "event_start": "2024-05-14",
+      "event_start": "2024-05-29",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -53404,7 +53404,7 @@
     {
       "family": "Niagara Falls Open",
       "year": 2025,
-      "event_start": "2025-05-14",
+      "event_start": "2025-04-30",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -57176,7 +57176,7 @@
     {
       "family": "Northeast Open",
       "year": 2022,
-      "event_start": "2022-08-08",
+      "event_start": "2022-06-09",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -57516,7 +57516,7 @@
     {
       "family": "Atlantic City Open",
       "year": 2022,
-      "event_start": "2022-04-15",
+      "event_start": "2022-04-13",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -57912,7 +57912,7 @@
     {
       "family": "Atlantic City Open",
       "year": 2023,
-      "event_start": "2023-04-15",
+      "event_start": "2023-04-05",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -58252,7 +58252,7 @@
     {
       "family": "Atlantic City Open",
       "year": 2024,
-      "event_start": "2024-04-15",
+      "event_start": "2024-03-27",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -59064,7 +59064,7 @@
     {
       "family": "Pacific Coast Open",
       "year": 2022,
-      "event_start": "2022-07-20",
+      "event_start": "2022-07-14",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -59748,7 +59748,7 @@
     {
       "family": "Pacific Coast Open",
       "year": 2024,
-      "event_start": "2024-07-20",
+      "event_start": "2024-07-18",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -61116,7 +61116,7 @@
     {
       "family": "DC International",
       "year": 2022,
-      "event_start": "2022-06-26",
+      "event_start": "2022-06-22",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -61364,7 +61364,7 @@
     {
       "family": "DC International",
       "year": 2023,
-      "event_start": "2023-06-26",
+      "event_start": "2023-06-22",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -61640,7 +61640,7 @@
     {
       "family": "DC International",
       "year": 2024,
-      "event_start": "2024-06-26",
+      "event_start": "2024-06-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -62008,7 +62008,7 @@
     {
       "family": "DC International",
       "year": 2025,
-      "event_start": "2025-06-26",
+      "event_start": "2025-06-24",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -62784,7 +62784,7 @@
     {
       "family": "DC Open",
       "year": 2022,
-      "event_start": "2022-06-28",
+      "event_start": "2022-06-23",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -63132,7 +63132,7 @@
     {
       "family": "DC Open",
       "year": 2023,
-      "event_start": "2023-06-28",
+      "event_start": "2023-06-22",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -63432,7 +63432,7 @@
     {
       "family": "DC Open",
       "year": 2024,
-      "event_start": "2024-06-28",
+      "event_start": "2024-06-27",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -63776,7 +63776,7 @@
     {
       "family": "DC Open",
       "year": 2025,
-      "event_start": "2025-06-28",
+      "event_start": "2025-06-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -64580,7 +64580,7 @@
     {
       "family": "Pittsburgh Open",
       "year": 2022,
-      "event_start": "2022-07-23",
+      "event_start": "2022-07-21",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -64828,7 +64828,7 @@
     {
       "family": "Pittsburgh Open",
       "year": 2023,
-      "event_start": "2023-07-23",
+      "event_start": "2023-07-20",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -65108,7 +65108,7 @@
     {
       "family": "Pittsburgh Open",
       "year": 2024,
-      "event_start": "2024-07-23",
+      "event_start": "2024-07-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -65612,7 +65612,7 @@
     {
       "family": "Atlantic City Open",
       "year": 2025,
-      "event_start": "2025-04-15",
+      "event_start": "2025-04-16",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -66276,7 +66276,7 @@
     {
       "family": "Southern Class",
       "year": 2022,
-      "event_start": "2022-03-16",
+      "event_start": "2022-03-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -66908,7 +66908,7 @@
     {
       "family": "Southern Class",
       "year": 2024,
-      "event_start": "2024-03-16",
+      "event_start": "2024-03-14",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -67220,7 +67220,7 @@
     {
       "family": "Southern Class",
       "year": 2025,
-      "event_start": "2025-03-16",
+      "event_start": "2025-03-06",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -68428,7 +68428,7 @@
     {
       "family": "Southern Open",
       "year": 2022,
-      "event_start": "2022-07-24",
+      "event_start": "2022-07-20",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -68748,7 +68748,7 @@
     {
       "family": "Southern Open",
       "year": 2023,
-      "event_start": "2023-07-24",
+      "event_start": "2023-07-27",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -69080,7 +69080,7 @@
     {
       "family": "Southern Open",
       "year": 2024,
-      "event_start": "2024-07-24",
+      "event_start": "2024-07-18",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -70088,7 +70088,7 @@
     {
       "family": "Southwest Class Championships",
       "year": 2022,
-      "event_start": "2022-02-16",
+      "event_start": "2022-02-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -70772,7 +70772,7 @@
     {
       "family": "Southwest Class Championships",
       "year": 2024,
-      "event_start": "2024-02-16",
+      "event_start": "2024-02-14",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -71120,7 +71120,7 @@
     {
       "family": "Southwest Class Championships",
       "year": 2025,
-      "event_start": "2025-02-16",
+      "event_start": "2025-02-13",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -72384,7 +72384,7 @@
     {
       "family": "Washington Chess Congress",
       "year": 2023,
-      "event_start": "2023-10-15",
+      "event_start": "2023-10-19",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -72652,7 +72652,7 @@
     {
       "family": "Western Class Championships",
       "year": 2022,
-      "event_start": "2022-03-05",
+      "event_start": "2022-03-03",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -72960,7 +72960,7 @@
     {
       "family": "Western Class Championships",
       "year": 2023,
-      "event_start": "2023-03-05",
+      "event_start": "2023-03-02",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -73728,7 +73728,7 @@
     {
       "family": "Western Class Championships",
       "year": 2024,
-      "event_start": "2024-03-05",
+      "event_start": "2024-02-29",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -74076,7 +74076,7 @@
     {
       "family": "Western Class Championships",
       "year": 2025,
-      "event_start": "2025-03-05",
+      "event_start": "2025-03-06",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -74920,7 +74920,7 @@
     {
       "family": "World Open Under 13 Championship",
       "year": 2022,
-      "event_start": "2022-06-26",
+      "event_start": "2022-06-20",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -75212,7 +75212,7 @@
     {
       "family": "World Open Under 13 Championship",
       "year": 2023,
-      "event_start": "2023-06-26",
+      "event_start": "2023-06-24",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -75476,7 +75476,7 @@
     {
       "family": "World Open Under 13 Championship",
       "year": 2024,
-      "event_start": "2024-06-26",
+      "event_start": "2024-06-24",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -75704,7 +75704,7 @@
     {
       "family": "World Open Under 13 Championship",
       "year": 2025,
-      "event_start": "2025-06-26",
+      "event_start": "2025-06-28",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -75904,7 +75904,7 @@
     {
       "family": "World Open, lower sections",
       "year": 2023,
-      "event_start": "2023-06-26",
+      "event_start": "2023-06-21",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -76440,7 +76440,7 @@
     {
       "family": "World Open, lower sections",
       "year": 2025,
-      "event_start": "2025-06-26",
+      "event_start": "2025-06-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -78342,7 +78342,7 @@
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-04-30 04:44:51",
+  "last_updated": "2026-04-30 20:49:31",
   "is_stale": false,
   "alerts": [
     {

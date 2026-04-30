@@ -247,12 +247,21 @@ def main():
     summary = summary[~wo_mask].copy()
 
     # ── Identify completed 2026 tournaments ──
-    # Scrape-coverage gate: only required for events that ended AFTER the
-    # snapshot was taken. For events that ended BEFORE the snapshot, the
-    # snapshot's final_count is authoritative (registrations were already
-    # closed when the snapshot was exported). Without this distinction the
-    # gate would exclude every event that completed before the scraper
-    # started polling — losing most of the cohort.
+    # Tiered acceptance — replaces the prior binary "scrape coverage required"
+    # gate, which over-rejected events that ended after the snapshot but whose
+    # snapshots otherwise looked intact (e.g. Mid-America Open 2026 — last_reg
+    # was 17 min before the file-level snapshot, registration was effectively
+    # closed, but the daily scraper hadn't tracked it). Tiers, evaluated in
+    # order:
+    #   1. scrape-verified            — name appears in daily_scrape.csv
+    #   2. snapshot-post-event        — file snapshot OR per-row last_reg
+    #                                   covers the event end → walk-ins seen
+    #   3. history-plausibility       — registration captured into the event
+    #                                   AND final_count is within tolerance
+    #                                   of the family's historical median
+    # ACO 2026 (the bug that motivated the original gate) had final=184 vs a
+    # family median in the 400s (~46% ratio). The PLAUSIBILITY_FLOOR below
+    # would still reject that snapshot.
     scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
     scraped_names = set()
     snapshot_date = None
@@ -268,6 +277,18 @@ def main():
     summary_lr = pd.to_datetime(summary[snapshot_col], errors='coerce')
     snapshot_date = summary_lr.max() if summary_lr.notna().any() else None
 
+    # Family historical baseline for Tier 3. Excludes COVID and online seasons
+    # so the median represents normal in-person turnout.
+    history_pool = summary[
+        (summary['tournament_year'] < 2026)
+        & (~summary['is_online'].fillna(False))
+        & (~summary['is_covid'].fillna(False))
+        & (summary['final_count'] > 0)
+    ]
+    PLAUSIBILITY_FLOOR = 0.60   # final_count must be ≥ this fraction of family median
+    PLAUSIBILITY_CEILING = 2.00 # …and ≤ this fraction (catches over-counted snapshots)
+    MIN_FAMILY_HISTORY = 3      # need at least this many prior years to score
+
     completed_2026_all = summary[
         (summary['tournament_year'] == 2026) &
         (~summary['is_online'].fillna(False)) &
@@ -275,32 +296,96 @@ def main():
     ].copy()
     completed_2026_all['last_reg'] = pd.to_datetime(completed_2026_all['last_reg'])
     completed_2026_tids = set()
-    no_scrape_skipped = []
+    no_scrape_skipped = []   # excluded tournaments with reason
+    soft_accepted = []       # accepted via Tier 3 (history-plausibility)
+
     for _, row in completed_2026_all.iterrows():
         lr = row['last_reg']
         if pd.isna(lr) or lr > TODAY:
             continue
         family = row['family']
         m_row = meta[(meta['family'] == family) & (meta['year'] == 2026)]
+        start_date = m_row.iloc[0]['start_date'] if len(m_row) > 0 else pd.NaT
         end_date = m_row.iloc[0]['end_date'] if len(m_row) > 0 else pd.NaT
-        if len(m_row) > 0 and pd.notna(m_row.iloc[0]['start_date']) and m_row.iloc[0]['start_date'] > TODAY:
+        if pd.notna(start_date) and start_date > TODAY:
             continue
-        # Scrape-coverage required only when event ended after snapshot —
-        # otherwise the snapshot was taken when registration was closed.
-        ended_after_snapshot = (
-            snapshot_date is not None
-            and pd.notna(end_date)
-            and pd.to_datetime(end_date) > snapshot_date
+        end_dt = pd.to_datetime(end_date) if pd.notna(end_date) else pd.NaT
+
+        # Tier 1 — scrape-verified.
+        if scraped_names and row['tournament_name'] in scraped_names:
+            completed_2026_tids.add(row['tid'])
+            continue
+
+        # Tier 2 — snapshot is authoritative for this row. The snapshot file
+        # was exported at or after the latest registration moment we know
+        # about: max(last_reg, end_date). When end_date is unknown (no
+        # metadata row), fall back to last_reg alone — if last_reg ≤
+        # snapshot_date, no registrations could have occurred for this row
+        # after the snapshot was taken. Also accept when this row's last_reg
+        # itself reaches end_date (snapshot captured registrations through
+        # the event's last day even if the file snapshot was earlier).
+        horizon_parts = [t for t in (lr, end_dt) if pd.notna(t)]
+        horizon = max(horizon_parts) if horizon_parts else pd.NaT
+        snapshot_covers_horizon = (
+            snapshot_date is not None and pd.notna(horizon) and snapshot_date >= horizon
         )
-        if ended_after_snapshot and scraped_names and row['tournament_name'] not in scraped_names:
-            no_scrape_skipped.append(row['tournament_name'])
+        lastreg_through_end = (
+            pd.notna(end_dt) and lr >= end_dt
+        )
+        if snapshot_covers_horizon or lastreg_through_end:
+            completed_2026_tids.add(row['tid'])
             continue
-        completed_2026_tids.add(row['tid'])
+
+        # Tier 3 — history-plausibility. Requires (a) registration captured
+        # into the event's first day AND (b) final_count within tolerance of
+        # the family's historical median. Catches truncated snapshots
+        # (ACO-2026-style) while admitting events whose daily scraper missed
+        # them but whose snapshot looks intact.
+        reg_captured_into_event = (
+            pd.notna(start_date) and lr >= pd.to_datetime(start_date)
+        )
+        family_hist = history_pool.loc[
+            history_pool['family'] == family, 'final_count'
+        ]
+        if reg_captured_into_event and len(family_hist) >= MIN_FAMILY_HISTORY:
+            median_hist = family_hist.median()
+            ratio = row['final_count'] / median_hist if median_hist else 0.0
+            if PLAUSIBILITY_FLOOR <= ratio <= PLAUSIBILITY_CEILING:
+                completed_2026_tids.add(row['tid'])
+                soft_accepted.append(
+                    (row['tournament_name'], int(row['final_count']),
+                     int(median_hist), round(ratio * 100))
+                )
+                continue
+            if ratio < PLAUSIBILITY_FLOOR:
+                bound_msg = f"below {int(PLAUSIBILITY_FLOOR*100)}% floor (possible truncated snapshot)"
+            else:
+                bound_msg = f"above {int(PLAUSIBILITY_CEILING*100)}% ceiling (possible over-counted snapshot)"
+            no_scrape_skipped.append(
+                (row['tournament_name'],
+                 f"final={int(row['final_count'])} is {round(ratio*100)}% of family "
+                 f"median {int(median_hist)} — {bound_msg}")
+            )
+            continue
+
+        if pd.isna(start_date):
+            reason = "no metadata row (start/end_date unknown)"
+        elif not reg_captured_into_event:
+            reason = "snapshot last_reg precedes event start (registration window not captured)"
+        else:
+            reason = f"insufficient family history ({len(family_hist)} prior year(s)) and no scrape coverage"
+        no_scrape_skipped.append((row['tournament_name'], reason))
+
+    if soft_accepted:
+        print(f"  Accepted {len(soft_accepted)} 2026 tournament(s) via history-plausibility tier "
+              f"(no daily_scrape coverage; final_count within "
+              f"{int(PLAUSIBILITY_FLOOR*100)}–{int(PLAUSIBILITY_CEILING*100)}% of family median):")
+        for name, fc, med, ratio in soft_accepted:
+            print(f"    {name:<55} final={fc:>4}  family_median={med:>4}  ratio={ratio}%")
     if no_scrape_skipped:
-        print(f"  Excluded {len(no_scrape_skipped)} 2026 tournament(s) (event ended after "
-              f"snapshot but no daily_scrape.csv coverage — truth unverifiable):")
-        for n in no_scrape_skipped:
-            print(f"    {n}")
+        print(f"  Excluded {len(no_scrape_skipped)} 2026 tournament(s) (snapshot truth unverifiable):")
+        for name, reason in no_scrape_skipped:
+            print(f"    {name:<55} {reason}")
 
     # ── Evaluate each year ──
     year_results = {}

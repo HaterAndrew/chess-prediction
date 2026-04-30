@@ -792,8 +792,8 @@
 // TOURNAMENT DATA (embedded from model pipeline)
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
-  "generated": "2026-04-29",
-  "generated_time": "2026-04-29T06:39:35.712655-04:00",
+  "generated": "2026-04-30",
+  "generated_time": "2026-04-30T00:45:26.362137-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 14,
@@ -807,13 +807,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": 207.0,
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
-      "current_count": 366,
-      "gross_count": 376,
-      "withdrawal_count": 10,
-      "days_remaining": 22,
-      "point_estimate": 893,
-      "ci_lower": 855,
-      "ci_upper": 933,
+      "current_count": 377,
+      "gross_count": 388,
+      "withdrawal_count": 11,
+      "days_remaining": 21,
+      "point_estimate": 885,
+      "ci_lower": 837,
+      "ci_upper": 936,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1098,6 +1098,10 @@ const TOURNAMENT_DATA = {
         [
           127,
           366
+        ],
+        [
+          128,
+          377
         ]
       ],
       "registration_curve": [
@@ -1154,7 +1158,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 321,
+        "count_at_same_point": 332,
         "final": 899
       },
       "low_confidence": false,
@@ -1163,10 +1167,10 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Chicago Open",
         "status": "on_pace",
-        "actual": 366,
-        "expected": 390,
-        "deviation_pct": -6.0,
-        "message": "Registrations are tracking within normal range (-6%)"
+        "actual": 377,
+        "expected": 395,
+        "deviation_pct": -4.6,
+        "message": "Registrations are tracking within normal range (-5%)"
       }
     },
     {
@@ -1181,10 +1185,10 @@ const TOURNAMENT_DATA = {
       "current_count": 16,
       "gross_count": 16,
       "withdrawal_count": 0,
-      "days_remaining": 37,
-      "point_estimate": 208,
-      "ci_lower": 201,
-      "ci_upper": 214,
+      "days_remaining": 36,
+      "point_estimate": 206,
+      "ci_lower": 200,
+      "ci_upper": 212,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1365,6 +1369,10 @@ const TOURNAMENT_DATA = {
         [
           37,
           16
+        ],
+        [
+          38,
+          16
         ]
       ],
       "registration_curve": [
@@ -1421,7 +1429,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 8,
+        "count_at_same_point": 9,
         "final": 189
       },
       "low_confidence": false,
@@ -1432,8 +1440,8 @@ const TOURNAMENT_DATA = {
         "status": "on_pace",
         "actual": 16,
         "expected": 15,
-        "deviation_pct": 8.0,
-        "message": "Registrations are tracking within normal range (+8%)"
+        "deviation_pct": 3.9,
+        "message": "Registrations are tracking within normal range (+4%)"
       }
     },
     {
@@ -1448,10 +1456,10 @@ const TOURNAMENT_DATA = {
       "current_count": 20,
       "gross_count": 20,
       "withdrawal_count": 0,
-      "days_remaining": 37,
-      "point_estimate": 222,
-      "ci_lower": 210,
-      "ci_upper": 235,
+      "days_remaining": 36,
+      "point_estimate": 219,
+      "ci_lower": 207,
+      "ci_upper": 232,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1632,6 +1640,10 @@ const TOURNAMENT_DATA = {
         [
           37,
           20
+        ],
+        [
+          38,
+          20
         ]
       ],
       "registration_curve": [
@@ -1688,7 +1700,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 9,
+        "count_at_same_point": 11,
         "final": 199
       },
       "low_confidence": false,
@@ -1698,9 +1710,9 @@ const TOURNAMENT_DATA = {
         "family": "Cleveland Open",
         "status": "below_pace",
         "actual": 20,
-        "expected": 39,
-        "deviation_pct": -48.2,
-        "message": "Registrations are 48.2% below historical pace"
+        "expected": 40,
+        "deviation_pct": -49.9,
+        "message": "Registrations are 49.9% below historical pace"
       }
     },
     {
@@ -1712,13 +1724,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 13,
-      "gross_count": 13,
+      "current_count": 14,
+      "gross_count": 14,
       "withdrawal_count": 0,
-      "days_remaining": 51,
-      "point_estimate": 105,
-      "ci_lower": 70,
-      "ci_upper": 156,
+      "days_remaining": 50,
+      "point_estimate": 106,
+      "ci_lower": 71,
+      "ci_upper": 157,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1884,6 +1896,10 @@ const TOURNAMENT_DATA = {
         [
           37,
           13
+        ],
+        [
+          38,
+          14
         ]
       ],
       "registration_curve": [
@@ -1949,10 +1965,10 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "New York State Open",
         "status": "above_pace",
-        "actual": 13,
-        "expected": 8,
-        "deviation_pct": 60.6,
-        "message": "Registrations are 60.6% above historical pace"
+        "actual": 14,
+        "expected": 9,
+        "deviation_pct": 64.0,
+        "message": "Registrations are 64.0% above historical pace"
       }
     },
     {
@@ -1964,13 +1980,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 9,
-      "gross_count": 10,
+      "current_count": 10,
+      "gross_count": 11,
       "withdrawal_count": 1,
-      "days_remaining": 57,
+      "days_remaining": 56,
       "point_estimate": 96,
       "ci_lower": 91,
-      "ci_upper": 101,
+      "ci_upper": 102,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2145,20 +2161,8 @@ const TOURNAMENT_DATA = {
           9
         ],
         [
-          133,
-          9
-        ],
-        [
-          134,
-          9
-        ],
-        [
-          135,
-          9
-        ],
-        [
-          136,
-          9
+          86,
+          10
         ],
         [
           137,
@@ -2196,27 +2200,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -2224,11 +2228,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -2239,7 +2243,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 13,
+        "count_at_same_point": 14,
         "final": 126
       },
       "low_confidence": true,
@@ -2248,10 +2252,10 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "DC International",
         "status": "above_pace",
-        "actual": 9,
+        "actual": 10,
         "expected": 7,
-        "deviation_pct": 30.7,
-        "message": "Registrations are 30.7% above historical pace"
+        "deviation_pct": 37.5,
+        "message": "Registrations are 37.5% above historical pace"
       }
     },
     {
@@ -2266,7 +2270,7 @@ const TOURNAMENT_DATA = {
       "current_count": 6,
       "gross_count": 6,
       "withdrawal_count": 0,
-      "days_remaining": 58,
+      "days_remaining": 57,
       "point_estimate": 138,
       "ci_lower": 105,
       "ci_upper": 182,
@@ -2300,52 +2304,56 @@ const TOURNAMENT_DATA = {
         [
           2,
           6
+        ],
+        [
+          3,
+          6
         ]
       ],
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.02
+          "cumulative_pct": 0.01
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0223
+          "cumulative_pct": 0.0167
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0568
+          "cumulative_pct": 0.0401
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.1029
+          "cumulative_pct": 0.1054
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1825
+          "cumulative_pct": 0.2098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.363
+          "cumulative_pct": 0.3958
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.4815
+          "cumulative_pct": 0.4987
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.6074
+          "cumulative_pct": 0.6172
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.7037
+          "cumulative_pct": 0.7209
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.8254
+          "cumulative_pct": 0.8449
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9237
+          "cumulative_pct": 0.9301
         },
         {
           "days_before": 0,
@@ -2366,9 +2374,9 @@ const TOURNAMENT_DATA = {
         "family": "World Open lower sections",
         "status": "below_pace",
         "actual": 6,
-        "expected": 16,
-        "deviation_pct": -63.0,
-        "message": "Registrations are 63.0% below historical pace"
+        "expected": 18,
+        "deviation_pct": -66.3,
+        "message": "Registrations are 66.3% below historical pace"
       }
     },
     {
@@ -2383,10 +2391,10 @@ const TOURNAMENT_DATA = {
       "current_count": 6,
       "gross_count": 7,
       "withdrawal_count": 1,
-      "days_remaining": 58,
-      "point_estimate": 265,
+      "days_remaining": 57,
+      "point_estimate": 264,
       "ci_lower": 236,
-      "ci_upper": 296,
+      "ci_upper": 294,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2511,6 +2519,10 @@ const TOURNAMENT_DATA = {
         [
           37,
           6
+        ],
+        [
+          38,
+          6
         ]
       ],
       "registration_curve": [
@@ -2524,27 +2536,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -2552,11 +2564,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -2567,7 +2579,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 10,
+        "count_at_same_point": 12,
         "final": 325
       },
       "low_confidence": true,
@@ -2577,9 +2589,9 @@ const TOURNAMENT_DATA = {
         "family": "DC Open",
         "status": "below_pace",
         "actual": 6,
-        "expected": 15,
-        "deviation_pct": -60.6,
-        "message": "Registrations are 60.6% below historical pace"
+        "expected": 16,
+        "deviation_pct": -62.8,
+        "message": "Registrations are 62.8% below historical pace"
       }
     },
     {
@@ -2594,7 +2606,7 @@ const TOURNAMENT_DATA = {
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 61,
+      "days_remaining": 60,
       "point_estimate": 110,
       "ci_lower": 77,
       "ci_upper": 145,
@@ -2643,27 +2655,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -2671,11 +2683,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -2688,8 +2700,8 @@ const TOURNAMENT_DATA = {
         "status": "on_pace",
         "actual": 5,
         "expected": 5,
-        "deviation_pct": -1.1,
-        "message": "Registrations are tracking within normal range (-1%)"
+        "deviation_pct": -4.2,
+        "message": "Registrations are tracking within normal range (-4%)"
       }
     },
     {
@@ -2701,13 +2713,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": 318.0,
       "regular_fee": 328.0,
       "onsite_fee": 350.0,
-      "current_count": 99,
-      "gross_count": 99,
+      "current_count": 103,
+      "gross_count": 103,
       "withdrawal_count": 0,
-      "days_remaining": 63,
-      "point_estimate": 1104,
-      "ci_lower": 969,
-      "ci_upper": 1258,
+      "days_remaining": 62,
+      "point_estimate": 1103,
+      "ci_lower": 968,
+      "ci_upper": 1257,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2864,6 +2876,10 @@ const TOURNAMENT_DATA = {
         [
           49,
           99
+        ],
+        [
+          50,
+          103
         ]
       ],
       "registration_curve": [
@@ -2920,7 +2936,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 85,
+        "count_at_same_point": 89,
         "final": 1165
       },
       "low_confidence": true,
@@ -2929,10 +2945,10 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "World Open top 6 sections",
         "status": "below_pace",
-        "actual": 99,
-        "expected": 135,
-        "deviation_pct": -26.7,
-        "message": "Registrations are 26.7% below historical pace"
+        "actual": 103,
+        "expected": 139,
+        "deviation_pct": -25.8,
+        "message": "Registrations are 25.8% below historical pace"
       }
     },
     {
@@ -2947,9 +2963,9 @@ const TOURNAMENT_DATA = {
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 79,
+      "days_remaining": 78,
       "point_estimate": 276,
-      "ci_lower": 210,
+      "ci_lower": 209,
       "ci_upper": 363,
       "ci_level": 0.8,
       "historical": [
@@ -3131,6 +3147,10 @@ const TOURNAMENT_DATA = {
         [
           37,
           3
+        ],
+        [
+          38,
+          3
         ]
       ],
       "registration_curve": [
@@ -3197,9 +3217,9 @@ const TOURNAMENT_DATA = {
         "family": "Chicago Class",
         "status": "below_pace",
         "actual": 3,
-        "expected": 4,
-        "deviation_pct": -32.0,
-        "message": "Registrations are 32.0% below historical pace"
+        "expected": 5,
+        "deviation_pct": -33.4,
+        "message": "Registrations are 33.4% below historical pace"
       }
     },
     {
@@ -3214,10 +3234,10 @@ const TOURNAMENT_DATA = {
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 79,
-      "point_estimate": 172,
-      "ci_lower": 122,
-      "ci_upper": 243,
+      "days_remaining": 78,
+      "point_estimate": 171,
+      "ci_lower": 121,
+      "ci_upper": 242,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3398,6 +3418,10 @@ const TOURNAMENT_DATA = {
         [
           37,
           5
+        ],
+        [
+          38,
+          5
         ]
       ],
       "registration_curve": [
@@ -3465,8 +3489,8 @@ const TOURNAMENT_DATA = {
         "status": "above_pace",
         "actual": 5,
         "expected": 3,
-        "deviation_pct": 71.1,
-        "message": "Registrations are 71.1% above historical pace"
+        "deviation_pct": 67.3,
+        "message": "Registrations are 67.3% above historical pace"
       }
     },
     {
@@ -3478,10 +3502,10 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 2,
-      "gross_count": 2,
+      "current_count": 3,
+      "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 79,
+      "days_remaining": 78,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -3516,7 +3540,7 @@ const TOURNAMENT_DATA = {
       "daily_data": [
         [
           0,
-          2
+          3
         ]
       ],
       "registration_curve": [
@@ -3573,10 +3597,10 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Southern Open",
         "status": "below_pace",
-        "actual": 2,
-        "expected": 6,
-        "deviation_pct": -68.7,
-        "message": "Registrations are 68.7% below historical pace"
+        "actual": 3,
+        "expected": 7,
+        "deviation_pct": -54.8,
+        "message": "Registrations are 54.8% below historical pace"
       }
     },
     {
@@ -3591,10 +3615,10 @@ const TOURNAMENT_DATA = {
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 86,
-      "point_estimate": 262,
+      "days_remaining": 85,
+      "point_estimate": 261,
       "ci_lower": 195,
-      "ci_upper": 352,
+      "ci_upper": 350,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3777,6 +3801,10 @@ const TOURNAMENT_DATA = {
           4
         ],
         [
+          38,
+          4
+        ],
+        [
           117,
           4
         ],
@@ -3870,8 +3898,8 @@ const TOURNAMENT_DATA = {
         "status": "above_pace",
         "actual": 4,
         "expected": 3,
-        "deviation_pct": 45.1,
-        "message": "Registrations are 45.1% above historical pace"
+        "deviation_pct": 43.6,
+        "message": "Registrations are 43.6% above historical pace"
       }
     },
     {
@@ -3886,7 +3914,7 @@ const TOURNAMENT_DATA = {
       "current_count": 8,
       "gross_count": 8,
       "withdrawal_count": 0,
-      "days_remaining": 93,
+      "days_remaining": 92,
       "point_estimate": 398,
       "ci_lower": 294,
       "ci_upper": 539,
@@ -4070,6 +4098,10 @@ const TOURNAMENT_DATA = {
         [
           37,
           8
+        ],
+        [
+          38,
+          8
         ]
       ],
       "registration_curve": [
@@ -4137,8 +4169,8 @@ const TOURNAMENT_DATA = {
         "status": "above_pace",
         "actual": 8,
         "expected": 5,
-        "deviation_pct": 53.9,
-        "message": "Registrations are 53.9% above historical pace"
+        "deviation_pct": 48.4,
+        "message": "Registrations are 48.4% above historical pace"
       }
     },
     {
@@ -4153,7 +4185,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 106,
+      "days_remaining": 105,
       "point_estimate": 283,
       "ci_lower": 252,
       "ci_upper": 317,
@@ -4247,8 +4279,8 @@ const TOURNAMENT_DATA = {
         "status": "below_pace",
         "actual": 1,
         "expected": 2,
-        "deviation_pct": -54.8,
-        "message": "Registrations are 54.8% below historical pace"
+        "deviation_pct": -55.9,
+        "message": "Registrations are 55.9% below historical pace"
       }
     },
     {
@@ -4263,7 +4295,7 @@ const TOURNAMENT_DATA = {
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 107,
+      "days_remaining": 106,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -4357,8 +4389,8 @@ const TOURNAMENT_DATA = {
         "status": "above_pace",
         "actual": 2,
         "expected": 1,
-        "deviation_pct": 75.2,
-        "message": "Registrations are 75.2% above historical pace"
+        "deviation_pct": 62.7,
+        "message": "Registrations are 62.7% above historical pace"
       }
     },
     {
@@ -4373,7 +4405,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 114,
+      "days_remaining": 113,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -4467,8 +4499,8 @@ const TOURNAMENT_DATA = {
         "status": "below_pace",
         "actual": 1,
         "expected": 1,
-        "deviation_pct": -24.7,
-        "message": "Registrations are 24.7% below historical pace"
+        "deviation_pct": -30.3,
+        "message": "Registrations are 30.3% below historical pace"
       }
     },
     {
@@ -4483,7 +4515,7 @@ const TOURNAMENT_DATA = {
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 114,
+      "days_remaining": 113,
       "point_estimate": 186,
       "ci_lower": 175,
       "ci_upper": 198,
@@ -4593,7 +4625,7 @@ const TOURNAMENT_DATA = {
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 128,
+      "days_remaining": 127,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -4703,7 +4735,7 @@ const TOURNAMENT_DATA = {
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 163,
+      "days_remaining": 162,
       "point_estimate": 313,
       "ci_lower": 296,
       "ci_upper": 338,
@@ -4813,7 +4845,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 170,
+      "days_remaining": 169,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -4836,27 +4868,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -4864,11 +4896,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -4889,7 +4921,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 177,
+      "days_remaining": 176,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -4912,27 +4944,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -4940,11 +4972,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -4954,10 +4986,230 @@ const TOURNAMENT_DATA = {
       "status": "live"
     },
     {
+      "family": "Los Angeles Open",
+      "year": 2026,
+      "event_start": "2026-11-06",
+      "event_end": "2026-11-08",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 190,
+      "point_estimate": 365,
+      "ci_lower": 289,
+      "ci_upper": 413,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 241,
+          "family": "Los Angeles Open"
+        },
+        {
+          "year": 2022,
+          "count": 361,
+          "family": "Los Angeles Open"
+        },
+        {
+          "year": 2023,
+          "count": 415,
+          "family": "Los Angeles Open"
+        },
+        {
+          "year": 2024,
+          "count": 412,
+          "family": "Los Angeles Open"
+        },
+        {
+          "year": 2025,
+          "count": 397,
+          "family": "Los Angeles Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0019
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0133
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0386
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0756
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.1526
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.2552
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.3299
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.4248
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.5696
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7381
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.8982
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "pace_alert": {
+        "family": "Los Angeles Open",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 1,
+        "deviation_pct": -100.0,
+        "message": "Registrations are 100.0% below historical pace"
+      }
+    },
+    {
+      "family": "Kings Island Open",
+      "year": 2026,
+      "event_start": "2026-11-13",
+      "event_end": "2026-11-15",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 197,
+      "point_estimate": 346,
+      "ci_lower": 318,
+      "ci_upper": 364,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 298,
+          "family": "Kings Island Open"
+        },
+        {
+          "year": 2022,
+          "count": 368,
+          "family": "Kings Island Open"
+        },
+        {
+          "year": 2023,
+          "count": 358,
+          "family": "Kings Island Open"
+        },
+        {
+          "year": 2024,
+          "count": 350,
+          "family": "Kings Island Open"
+        },
+        {
+          "year": 2025,
+          "count": 356,
+          "family": "Kings Island Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0022
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0139
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0234
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0473
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0834
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1585
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.2131
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.2972
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4414
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.6279
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.8188
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "pace_alert": {
+        "family": "Kings Island Open",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 1,
+        "deviation_pct": -100.0,
+        "message": "Registrations are 100.0% below historical pace"
+      }
+    },
+    {
       "family": "National Chess Congress",
       "year": 2026,
-      "event_start": "2026-11-28",
-      "event_end": "2026-11-30",
+      "event_start": "2026-11-27",
+      "event_end": "2026-11-29",
       "early_bird_deadline": "2026-11-25",
       "early_bird_fee": 138.0,
       "regular_fee": 160.0,
@@ -4965,7 +5217,7 @@ const TOURNAMENT_DATA = {
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 213,
+      "days_remaining": 211,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -7131,27 +7383,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -7159,11 +7411,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -10924,27 +11176,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -10952,11 +11204,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -11012,27 +11264,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -11040,11 +11292,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -11104,27 +11356,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -11132,11 +11384,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -11188,27 +11440,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -11216,11 +11468,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -22788,27 +23040,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -22816,11 +23068,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -22872,27 +23124,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -22900,11 +23152,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -22960,27 +23212,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -22988,11 +23240,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -23052,27 +23304,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -23080,11 +23332,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -23148,27 +23400,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -23176,11 +23428,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -24804,27 +25056,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -24832,11 +25084,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -27876,27 +28128,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -27904,11 +28156,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -27964,27 +28216,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -27992,11 +28244,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -28056,27 +28308,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -28084,11 +28336,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -28152,27 +28404,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -28180,11 +28432,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -28252,27 +28504,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -28280,11 +28532,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -29540,27 +29792,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -29568,11 +29820,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -29628,27 +29880,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -29656,11 +29908,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -29720,27 +29972,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -29748,11 +30000,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -29816,27 +30068,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -29844,11 +30096,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -29916,27 +30168,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -29944,11 +30196,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -30024,27 +30276,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -30052,11 +30304,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -34484,27 +34736,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -34512,11 +34764,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -41504,27 +41756,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -41532,11 +41784,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -41592,27 +41844,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -41620,11 +41872,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -41684,27 +41936,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -41712,11 +41964,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -41780,27 +42032,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -41808,11 +42060,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -41880,27 +42132,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -41908,11 +42160,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -43728,27 +43980,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -43756,11 +44008,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -50228,27 +50480,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -50256,11 +50508,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -50316,27 +50568,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -50344,11 +50596,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -52908,27 +53160,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -52936,11 +53188,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -57292,27 +57544,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -57320,11 +57572,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -57380,27 +57632,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -57408,11 +57660,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -57472,27 +57724,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -57500,11 +57752,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -57568,27 +57820,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -57596,11 +57848,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -57668,27 +57920,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -57696,11 +57948,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -57924,27 +58176,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -57952,11 +58204,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -61052,27 +61304,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -61080,11 +61332,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -61140,27 +61392,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -61168,11 +61420,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -61232,27 +61484,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -61260,11 +61512,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -66516,27 +66768,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -66544,11 +66796,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -66600,27 +66852,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -66628,11 +66880,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -66684,27 +66936,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -66712,11 +66964,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -66768,27 +67020,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -66796,11 +67048,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -68084,27 +68336,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -68112,11 +68364,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -68172,27 +68424,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -68200,11 +68452,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -68264,27 +68516,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -68292,11 +68544,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -68360,27 +68612,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -68388,11 +68640,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -68460,27 +68712,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -68488,11 +68740,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -70204,27 +70456,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -70232,11 +70484,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -70292,27 +70544,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -70320,11 +70572,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -70384,27 +70636,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -70412,11 +70664,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -70480,27 +70732,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -70508,11 +70760,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -70580,27 +70832,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -70608,11 +70860,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -72140,27 +72392,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -72168,11 +72420,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -72228,27 +72480,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -72256,11 +72508,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -72320,27 +72572,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -72348,11 +72600,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -72416,27 +72668,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -72444,11 +72696,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -72500,27 +72752,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -72528,11 +72780,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -72588,27 +72840,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -72616,11 +72868,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -72680,27 +72932,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -72708,11 +72960,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -72776,27 +73028,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -72804,11 +73056,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -72876,27 +73128,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -72904,11 +73156,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -73144,27 +73396,27 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0261
+          "cumulative_pct": 0.0258
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0472
+          "cumulative_pct": 0.0473
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1015
+          "cumulative_pct": 0.1019
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1809
+          "cumulative_pct": 0.1815
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.25
+          "cumulative_pct": 0.2502
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3353
+          "cumulative_pct": 0.3355
         },
         {
           "days_before": 7,
@@ -73172,11 +73424,11 @@ const TOURNAMENT_DATA = {
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.6964
+          "cumulative_pct": 0.6985
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9079
+          "cumulative_pct": 0.9087
         },
         {
           "days_before": 0,
@@ -76644,47 +76896,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.02
+          "cumulative_pct": 0.01
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0223
+          "cumulative_pct": 0.0167
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0568
+          "cumulative_pct": 0.0401
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.1029
+          "cumulative_pct": 0.1054
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1825
+          "cumulative_pct": 0.2098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.363
+          "cumulative_pct": 0.3958
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.4815
+          "cumulative_pct": 0.4987
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.6074
+          "cumulative_pct": 0.6172
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.7037
+          "cumulative_pct": 0.7209
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.8254
+          "cumulative_pct": 0.8449
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9237
+          "cumulative_pct": 0.9301
         },
         {
           "days_before": 0,
@@ -76924,47 +77176,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.02
+          "cumulative_pct": 0.01
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0223
+          "cumulative_pct": 0.0167
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0568
+          "cumulative_pct": 0.0401
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.1029
+          "cumulative_pct": 0.1054
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1825
+          "cumulative_pct": 0.2098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.363
+          "cumulative_pct": 0.3958
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.4815
+          "cumulative_pct": 0.4987
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.6074
+          "cumulative_pct": 0.6172
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.7037
+          "cumulative_pct": 0.7209
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.8254
+          "cumulative_pct": 0.8449
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9237
+          "cumulative_pct": 0.9301
         },
         {
           "days_before": 0,
@@ -77204,47 +77456,47 @@ const TOURNAMENT_DATA = {
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.02
+          "cumulative_pct": 0.01
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0223
+          "cumulative_pct": 0.0167
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0568
+          "cumulative_pct": 0.0401
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.1029
+          "cumulative_pct": 0.1054
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1825
+          "cumulative_pct": 0.2098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.363
+          "cumulative_pct": 0.3958
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.4815
+          "cumulative_pct": 0.4987
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.6074
+          "cumulative_pct": 0.6172
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.7037
+          "cumulative_pct": 0.7209
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.8254
+          "cumulative_pct": 0.8449
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9237
+          "cumulative_pct": 0.9301
         },
         {
           "days_before": 0,
@@ -78883,144 +79135,144 @@ const TOURNAMENT_DATA = {
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-04-29 10:39:07",
+  "last_updated": "2026-04-30 04:44:51",
   "is_stale": false,
   "alerts": [
     {
       "family": "Chicago Open",
       "status": "on_pace",
-      "actual": 366,
-      "expected": 390,
-      "deviation_pct": -6.0,
-      "message": "Registrations are tracking within normal range (-6%)"
+      "actual": 377,
+      "expected": 395,
+      "deviation_pct": -4.6,
+      "message": "Registrations are tracking within normal range (-5%)"
     },
     {
       "family": "Hartford Open",
       "status": "on_pace",
       "actual": 16,
       "expected": 15,
-      "deviation_pct": 8.0,
-      "message": "Registrations are tracking within normal range (+8%)"
+      "deviation_pct": 3.9,
+      "message": "Registrations are tracking within normal range (+4%)"
     },
     {
       "family": "Cleveland Open",
       "status": "below_pace",
       "actual": 20,
-      "expected": 39,
-      "deviation_pct": -48.2,
-      "message": "Registrations are 48.2% below historical pace"
+      "expected": 40,
+      "deviation_pct": -49.9,
+      "message": "Registrations are 49.9% below historical pace"
     },
     {
       "family": "New York State Open",
       "status": "above_pace",
-      "actual": 13,
-      "expected": 8,
-      "deviation_pct": 60.6,
-      "message": "Registrations are 60.6% above historical pace"
+      "actual": 14,
+      "expected": 9,
+      "deviation_pct": 64.0,
+      "message": "Registrations are 64.0% above historical pace"
     },
     {
       "family": "DC International",
       "status": "above_pace",
-      "actual": 9,
+      "actual": 10,
       "expected": 7,
-      "deviation_pct": 30.7,
-      "message": "Registrations are 30.7% above historical pace"
+      "deviation_pct": 37.5,
+      "message": "Registrations are 37.5% above historical pace"
     },
     {
       "family": "World Open lower sections",
       "status": "below_pace",
       "actual": 6,
-      "expected": 16,
-      "deviation_pct": -63.0,
-      "message": "Registrations are 63.0% below historical pace"
+      "expected": 18,
+      "deviation_pct": -66.3,
+      "message": "Registrations are 66.3% below historical pace"
     },
     {
       "family": "DC Open",
       "status": "below_pace",
       "actual": 6,
-      "expected": 15,
-      "deviation_pct": -60.6,
-      "message": "Registrations are 60.6% below historical pace"
+      "expected": 16,
+      "deviation_pct": -62.8,
+      "message": "Registrations are 62.8% below historical pace"
     },
     {
       "family": "World Open Under 13 Championship",
       "status": "on_pace",
       "actual": 5,
       "expected": 5,
-      "deviation_pct": -1.1,
-      "message": "Registrations are tracking within normal range (-1%)"
+      "deviation_pct": -4.2,
+      "message": "Registrations are tracking within normal range (-4%)"
     },
     {
       "family": "World Open top 6 sections",
       "status": "below_pace",
-      "actual": 99,
-      "expected": 135,
-      "deviation_pct": -26.7,
-      "message": "Registrations are 26.7% below historical pace"
+      "actual": 103,
+      "expected": 139,
+      "deviation_pct": -25.8,
+      "message": "Registrations are 25.8% below historical pace"
     },
     {
       "family": "Chicago Class",
       "status": "below_pace",
       "actual": 3,
-      "expected": 4,
-      "deviation_pct": -32.0,
-      "message": "Registrations are 32.0% below historical pace"
+      "expected": 5,
+      "deviation_pct": -33.4,
+      "message": "Registrations are 33.4% below historical pace"
     },
     {
       "family": "Pittsburgh Open",
       "status": "above_pace",
       "actual": 5,
       "expected": 3,
-      "deviation_pct": 71.1,
-      "message": "Registrations are 71.1% above historical pace"
+      "deviation_pct": 67.3,
+      "message": "Registrations are 67.3% above historical pace"
     },
     {
       "family": "Southern Open",
       "status": "below_pace",
-      "actual": 2,
-      "expected": 6,
-      "deviation_pct": -68.7,
-      "message": "Registrations are 68.7% below historical pace"
+      "actual": 3,
+      "expected": 7,
+      "deviation_pct": -54.8,
+      "message": "Registrations are 54.8% below historical pace"
     },
     {
       "family": "Bradley Open",
       "status": "above_pace",
       "actual": 4,
       "expected": 3,
-      "deviation_pct": 45.1,
-      "message": "Registrations are 45.1% above historical pace"
+      "deviation_pct": 43.6,
+      "message": "Registrations are 43.6% above historical pace"
     },
     {
       "family": "Pacific Coast Open",
       "status": "above_pace",
       "actual": 8,
       "expected": 5,
-      "deviation_pct": 53.9,
-      "message": "Registrations are 53.9% above historical pace"
+      "deviation_pct": 48.4,
+      "message": "Registrations are 48.4% above historical pace"
     },
     {
       "family": "Continental Open",
       "status": "below_pace",
       "actual": 1,
       "expected": 2,
-      "deviation_pct": -54.8,
-      "message": "Registrations are 54.8% below historical pace"
+      "deviation_pct": -55.9,
+      "message": "Registrations are 55.9% below historical pace"
     },
     {
       "family": "Central California Open",
       "status": "above_pace",
       "actual": 2,
       "expected": 1,
-      "deviation_pct": 75.2,
-      "message": "Registrations are 75.2% above historical pace"
+      "deviation_pct": 62.7,
+      "message": "Registrations are 62.7% above historical pace"
     },
     {
       "family": "Atlantic Open",
       "status": "below_pace",
       "actual": 1,
       "expected": 1,
-      "deviation_pct": -24.7,
-      "message": "Registrations are 24.7% below historical pace"
+      "deviation_pct": -30.3,
+      "message": "Registrations are 30.3% below historical pace"
     },
     {
       "family": "Indianapolis Open",
@@ -79047,6 +79299,22 @@ const TOURNAMENT_DATA = {
       "message": "Registrations are 82.4% above historical pace"
     },
     {
+      "family": "Los Angeles Open",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 1,
+      "deviation_pct": -100.0,
+      "message": "Registrations are 100.0% below historical pace"
+    },
+    {
+      "family": "Kings Island Open",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 1,
+      "deviation_pct": -100.0,
+      "message": "Registrations are 100.0% below historical pace"
+    },
+    {
       "family": "National Chess Congress",
       "status": "below_pace",
       "actual": 0,
@@ -79061,143 +79329,153 @@ const TOURNAMENT_DATA = {
 // PUZZLE DATA (embedded from puzzle pipeline)
 // ══════════════════════════════════════════════════════════
 const PUZZLE_DATA = {
-  "date": "2026-04-29",
+  "date": "2026-04-30",
   "puzzles": [
     {
-      "id": "06njT",
-      "fen": "5r2/2R2ppk/4p2p/4P3/1p1P1Q2/6P1/P4PKP/1q6 w - - 6 37",
-      "moves": "c7f7 f8f7 f4f7 b1a2 g2h3 a2c4",
-      "rating": 2796,
+      "id": "0Y6oJ",
+      "fen": "8/8/Pn3k2/1P3p2/4P1pp/3B1K2/8/8 w - - 0 55",
+      "moves": "f3g2 f5f4 d3e2 h4h3 g2h2 f4f3 e2d1 f6e5",
+      "rating": 2763,
       "themes": [
         "crushing",
         "endgame",
-        "long"
-      ],
-      "url": "https://lichess.org/training/06njT",
-      "game_url": "https://lichess.org/mU4BZMKO#73"
-    },
-    {
-      "id": "0Q0pq",
-      "fen": "r3qrk1/pp5p/2pp2p1/8/2P1B1nR/8/PPQ2PPP/R5K1 b - - 3 20",
-      "moves": "g4f2 e4f3 f2h3 h4h3",
-      "rating": 2180,
-      "themes": [
-        "advantage",
-        "middlegame",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0Q0pq",
-      "game_url": "https://lichess.org/wv34dFsy/black#40"
-    },
-    {
-      "id": "0uM0n",
-      "fen": "r3k2N/ppp1q1pp/5n2/2bp4/2BnP1b1/2N2P2/PPPP2PP/R1BQK2R w KQq - 0 10",
-      "moves": "c3d5 f6d5 c4d5 d4f3 g2f3 e7h4 e1e2 h4f2",
-      "rating": 2206,
-      "themes": [
-        "advantage",
-        "middlegame",
-        "pin",
-        "sacrifice",
+        "exposedKing",
+        "quietMove",
         "veryLong"
       ],
-      "url": "https://lichess.org/training/0uM0n",
-      "game_url": "https://lichess.org/L9SuDZs2#19"
+      "url": "https://lichess.org/training/0Y6oJ",
+      "game_url": "https://lichess.org/2XHlsaHn#109"
     },
     {
-      "id": "0eqFQ",
-      "fen": "rnbq1rk1/pp3pp1/4p2p/2pp3Q/7P/1BPP4/P1P2P2/R1B1K2R b KQ - 1 14",
-      "moves": "b7b5 c1h6 d8f6 h6g7 f6g7 e1e2 g7h7 a1g1 g8h8 h5f3 f7f6 g1g5",
-      "rating": 3029,
-      "themes": [
-        "advantage",
-        "clearance",
-        "middlegame",
-        "veryLong"
-      ],
-      "url": "https://lichess.org/training/0eqFQ",
-      "game_url": "https://lichess.org/1cowY9ze/black#28"
-    },
-    {
-      "id": "0BAMa",
-      "fen": "4r1k1/2Q4p/4q1p1/1p6/p1pB4/P1P1n3/1P4PP/5RK1 w - - 0 36",
-      "moves": "d4e3 e6e3 g1h1 e3f2 f1g1 e8e1",
-      "rating": 2029,
-      "themes": [
-        "clearance",
-        "crushing",
-        "endgame",
-        "long"
-      ],
-      "url": "https://lichess.org/training/0BAMa",
-      "game_url": "https://lichess.org/FJ5mzUbS#71"
-    },
-    {
-      "id": "0EOmJ",
-      "fen": "4r2k/p5pp/1pp2q2/2b5/P7/1P1B1pPb/2PB1P1P/1RQ3K1 w - - 4 24",
-      "moves": "d2g5 f6d4 c1d2 e8e2",
-      "rating": 2278,
-      "themes": [
-        "crushing",
-        "middlegame",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0EOmJ",
-      "game_url": "https://lichess.org/WAwWbf1u#47"
-    },
-    {
-      "id": "0brEY",
-      "fen": "1r4k1/1b3pp1/pR2p1np/1p2P3/8/1B3PB1/PP4PP/6K1 b - - 0 28",
-      "moves": "g8f8 b3c2 b8c8 c2g6 c8c1 g1f2 f7g6 b6b7",
-      "rating": 2416,
-      "themes": [
-        "crushing",
-        "endgame",
-        "veryLong"
-      ],
-      "url": "https://lichess.org/training/0brEY",
-      "game_url": "https://lichess.org/4wyWerxS/black#56"
-    },
-    {
-      "id": "0Q9d9",
-      "fen": "r3r1k1/ppp2pb1/1q2bn2/6N1/4PR1Q/P2P4/6PP/5R1K b - - 0 23",
-      "moves": "a8d8 e4e5 f6h5 h4h5",
-      "rating": 2596,
-      "themes": [
-        "advantage",
-        "middlegame",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0Q9d9",
-      "game_url": "https://lichess.org/G0SZTdJk/black#46"
-    },
-    {
-      "id": "0pRMu",
-      "fen": "7k/2pp3p/pb5q/n4B2/8/8/P4P1P/4R1RK b - - 0 27",
-      "moves": "h6c6 g1g2 d7d6 e1e7 c6c1 g2g1",
-      "rating": 2393,
+      "id": "0QuFa",
+      "fen": "8/8/1p6/8/2k5/5PK1/8/8 w - - 0 59",
+      "moves": "g3g4 b6b5 f3f4 b5b4 f4f5 c4d5",
+      "rating": 2313,
       "themes": [
         "crushing",
         "defensiveMove",
         "endgame",
-        "long"
+        "long",
+        "pawnEndgame",
+        "quietMove"
       ],
-      "url": "https://lichess.org/training/0pRMu",
-      "game_url": "https://lichess.org/y8nYWdKh/black#54"
+      "url": "https://lichess.org/training/0QuFa",
+      "game_url": "https://lichess.org/sCjatqsz#117"
     },
     {
-      "id": "0D2Fc",
-      "fen": "6k1/pQ3ppp/4R1r1/8/3q4/P4P2/BPR2KPP/3r4 w - - 3 26",
-      "moves": "e6e3 d4h4 g2g3 h4h2",
-      "rating": 2040,
+      "id": "0erEu",
+      "fen": "8/8/8/8/6pp/5B1k/P7/4K3 w - - 0 63",
+      "moves": "f3h1 h3h2 h1f3 g4g3",
+      "rating": 2079,
       "themes": [
+        "bishopEndgame",
+        "crushing",
+        "endgame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0erEu",
+      "game_url": "https://lichess.org/u1g37Gb0#125"
+    },
+    {
+      "id": "0asGa",
+      "fen": "8/5p2/pp2p1k1/3pP3/3P2KP/4P3/P7/8 w - - 3 38",
+      "moves": "g4f4 f7f5 e5f6 g6f6 h4h5 b6b5",
+      "rating": 2868,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "endgame",
+        "long",
+        "pawnEndgame",
+        "quietMove"
+      ],
+      "url": "https://lichess.org/training/0asGa",
+      "game_url": "https://lichess.org/K8g24rbo#75"
+    },
+    {
+      "id": "12vQQ",
+      "fen": "6k1/p6p/6p1/2PP2B1/7P/5P2/r5P1/6K1 b - - 0 27",
+      "moves": "g8f7 c5c6 a2a5 d5d6",
+      "rating": 2197,
+      "themes": [
+        "advantage",
+        "endgame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/12vQQ",
+      "game_url": "https://lichess.org/2rslVDA1/black#54"
+    },
+    {
+      "id": "0YCer",
+      "fen": "2b2r2/5pkp/P5p1/2pq4/8/3B1P2/P2Q2PP/1r2R1K1 w - - 0 28",
+      "moves": "e1b1 d5d4 d2f2 d4d3",
+      "rating": 2158,
+      "themes": [
+        "advantage",
+        "deflection",
+        "endgame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0YCer",
+      "game_url": "https://lichess.org/Xna4qcLV#55"
+    },
+    {
+      "id": "0nTlQ",
+      "fen": "3q1r1k/6Rp/3p2NQ/p3p1R1/2p1b3/P6P/1rp2P2/2K5 b - - 1 29",
+      "moves": "e4g6 g7h7 g6h7 h6g7",
+      "rating": 2109,
+      "themes": [
+        "clearance",
         "mate",
         "mateIn2",
         "middlegame",
+        "sacrifice",
         "short"
       ],
-      "url": "https://lichess.org/training/0D2Fc",
-      "game_url": "https://lichess.org/SMPaxUkG#51"
+      "url": "https://lichess.org/training/0nTlQ",
+      "game_url": "https://lichess.org/ZGM4GZ9W/black#58"
+    },
+    {
+      "id": "03xYR",
+      "fen": "6k1/5pp1/4p2p/4P1q1/2pP4/1rn3P1/2R1QK1P/R7 w - - 0 29",
+      "moves": "e2c4 g5f5 f2g1 f5c2 a1a8 g8h7",
+      "rating": 2021,
+      "themes": [
+        "crushing",
+        "endgame",
+        "fork",
+        "long"
+      ],
+      "url": "https://lichess.org/training/03xYR",
+      "game_url": "https://lichess.org/betBXznP#57"
+    },
+    {
+      "id": "0YWy3",
+      "fen": "1r3rk1/5pbp/p1pp2p1/q7/P1PB1P2/2PQ3P/6P1/3R1RK1 b - - 1 21",
+      "moves": "a5a4 d4g7 g8g7 d1a1 a4b3 f1b1 b3b1 a1b1 b8b1 d3b1",
+      "rating": 2431,
+      "themes": [
+        "advantage",
+        "clearance",
+        "middlegame",
+        "trappedPiece",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/0YWy3",
+      "game_url": "https://lichess.org/C6Ssg4HF/black#42"
+    },
+    {
+      "id": "0w3fw",
+      "fen": "6k1/5p2/p3p1p1/4P2P/4B3/qr6/3r1PQ1/5RK1 b - - 0 29",
+      "moves": "g8f8 h5g6 f7g6 g2g5 d2d7 g5f6 d7f7 f6h8",
+      "rating": 2775,
+      "themes": [
+        "crushing",
+        "endgame",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/0w3fw",
+      "game_url": "https://lichess.org/X3GzKHgM/black#58"
     }
   ]
 };
@@ -81043,7 +81321,7 @@ const CHESS_HISTORY = {
 // PERFORMANCE DATA (model blind test results)
 // ══════════════════════════════════════════════════════════
 const PERFORMANCE_DATA = {
-  "generated": "2026-04-29",
+  "generated": "2026-04-30",
   "model": "N5v4_Final",
   "n_tournaments": 11,
   "grade": "A+",

@@ -1191,6 +1191,8 @@ function puzzleSolved() {
   puzzleStatus('&#9733; Puzzle solved!', 'var(--green)');
   renderPuzzleProgress();
   document.getElementById('puzzleRetry').style.display = 'none';
+  // Round 32: tactile reward — short success pattern (Android only; iOS no-ops).
+  _haptic([20, 40, 30]);
 }
 
 function puzzleFailed() {
@@ -1199,6 +1201,8 @@ function puzzleFailed() {
   puzzleStatus('&#10007; Incorrect — try again or click Retry', 'var(--red)');
   renderPuzzleProgress();
   document.getElementById('puzzleRetry').style.display = '';
+  // Round 32: tactile error — single longer buzz.
+  _haptic(40);
 }
 
 function puzzleGiveHint() {
@@ -1654,6 +1658,8 @@ function selectFromDrop(idx) {
 // ══════════════════════════════════════════════════════════
 let _tourneyTab = 'live';
 let _tourneyPickerOpen = false;
+// Round 32: a11y. Save the trigger so we can restore focus on close per WAI-ARIA dialog pattern.
+let _pickerLastFocus = null;
 
 function maybeOpenTourneyPicker(e) {
   if (!_mobileVP()) return;                                     // desktop: do nothing
@@ -1666,18 +1672,23 @@ function openTourneyPicker(initialTab) {
   if (initialTab) _tourneyTab = initialTab;
   else if (t) _tourneyTab = t.status === 'live' ? 'live' : t.status === 'complete' ? 'complete' : 'hist';
   if (_mobileVP()) _haptic(15);
+  _pickerLastFocus = document.activeElement;
   renderTourneyPicker();
   const menu = document.getElementById('dropMenu_tourney');
   if (!menu) return;
   menu.style.display = 'block';
   document.body.classList.add('drawer-open');
   _tourneyPickerOpen = true;
-  // Focus search input if Historical, else first item
+  // Move focus into drawer per WAI-ARIA dialog pattern.
   setTimeout(() => {
     if (_tourneyTab === 'hist') {
       const inp = document.getElementById('tourneyHistSearch');
-      if (inp) inp.focus();
+      if (inp) { inp.focus(); return; }
     }
+    const activeSeg = menu.querySelector('.seg-btn.active');
+    if (activeSeg) { activeSeg.focus(); return; }
+    const firstFocusable = menu.querySelector('button, [tabindex="0"], input');
+    if (firstFocusable) firstFocusable.focus();
   }, 80);
 }
 
@@ -1686,6 +1697,13 @@ function closeTourneyPicker() {
   if (menu) menu.style.display = 'none';
   document.body.classList.remove('drawer-open');
   _tourneyPickerOpen = false;
+  // Return focus to the element that opened the drawer (WAI-ARIA dialog pattern).
+  try {
+    if (_pickerLastFocus && typeof _pickerLastFocus.focus === 'function' && document.contains(_pickerLastFocus)) {
+      _pickerLastFocus.focus();
+    }
+  } catch (_) { /* element may have been re-rendered; ignore */ }
+  _pickerLastFocus = null;
 }
 
 function setTourneyTab(which) {
@@ -1776,9 +1794,25 @@ document.addEventListener('click', e => {
   if (e.target.closest('#headerTournLabel')) return;           // re-tap on trigger handled separately
   closeTourneyPicker();
 });
-// Esc to close
+// Esc to close + Tab focus trap inside the drawer (Round 32 a11y).
 document.addEventListener('keydown', e => {
-  if (_tourneyPickerOpen && e.key === 'Escape') closeTourneyPicker();
+  if (!_tourneyPickerOpen) return;
+  if (e.key === 'Escape') { closeTourneyPicker(); return; }
+  if (e.key !== 'Tab') return;
+  const menu = document.getElementById('dropMenu_tourney');
+  if (!menu) return;
+  const focusables = menu.querySelectorAll(
+    'button:not([disabled]), input:not([disabled]), [tabindex="0"]'
+  );
+  if (!focusables.length) return;
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+  const active = document.activeElement;
+  if (e.shiftKey) {
+    if (active === first || !menu.contains(active)) { e.preventDefault(); last.focus(); }
+  } else {
+    if (active === last) { e.preventDefault(); first.focus(); }
+  }
 });
 
 // ── Dropdown keyboard navigation helpers ──

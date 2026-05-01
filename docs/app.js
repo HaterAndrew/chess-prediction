@@ -2469,7 +2469,11 @@ function renderChart(t) {
       'rgba(139,148,158,0.18)',
       'rgba(139,148,158,0.12)',
     ];
-    const recent = t.historical.slice(-5); // show up to 5 years
+    // Cap historical lines: 1 on mobile (just the most recent year for context),
+    // 5 on desktop. Mobile chart is too narrow for all 5 dashed lines + actual +
+    // projected + CI band — turns into visual mush. The dedicated Historical
+    // Comparison panel further down already shows all years.
+    const recent = t.historical.slice(_mobileVP() ? -1 : -5);
     recent.forEach((h, i) => {
       const hData = [];
       const sorted = [...t.registration_curve].sort((a, b) => b.days_before - a.days_before);
@@ -2746,14 +2750,19 @@ function renderChart(t) {
       scales: {
         x: {
           type: 'time',
-          time: { unit: 'week', displayFormats: { week: 'MMM d' } },
+          // Mobile: month-level labels (Mar/Apr/May) so the time axis isn't crowded.
+          // Chart.js's time scale ignores maxTicksLimit on weekly units; switching
+          // to monthly is the documented way to sparsen X labels.
+          time: _mobileVP()
+            ? { unit: 'month', displayFormats: { month: 'MMM' } }
+            : { unit: 'week', displayFormats: { week: 'MMM d' } },
           grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false },
-          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, maxRotation: 0 }
+          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxRotation: 0 }
         },
         y: {
           beginAtZero: true,
           grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false },
-          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
+          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxTicksLimit: _mobileVP() ? 4 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
         }
       },
       layout: { padding: { top: _mobileVP() ? 8 : 18 } }

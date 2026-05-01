@@ -2,31 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="description" content="Predict chess tournament entries using historical registration patterns from 192K CCA records. Point estimates and 80% confidence intervals for tournament directors.">
 <title>CCA Entry Predictor — Chess Tournament Registration Forecasting</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♔</text></svg>">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#f0c040">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CCA Predictor">
+<meta name="format-detection" content="telephone=no">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=1">
+<link rel="stylesheet" href="styles.css?v=2">
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 </head>
 <body>
 
 <!-- ══════════════════ STALE DATA BANNER ══════════════════ -->
-<div id="staleBanner" style="display:none; position:fixed; top:0; left:0; right:0; z-index:99999;
-  background:#f59e0b; color:#1a1a1a; padding:10px 48px 10px 16px; font-size:14px; font-weight:600;
-  text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.3); font-family:Inter,system-ui,sans-serif;">
+<div id="staleBanner" class="stale-banner" style="display:none">
   <span id="staleBannerText"></span>
   <button onclick="document.getElementById('staleBanner').style.display='none'"
-    style="position:absolute; right:12px; top:50%; transform:translateY(-50%);
-    background:none; border:none; color:#1a1a1a; font-size:20px; cursor:pointer;
-    line-height:1; padding:4px 8px;" aria-label="Dismiss">&times;</button>
+    class="stale-banner-dismiss" aria-label="Dismiss">&times;</button>
 </div>
 
 <!-- ══════════════════ SPLASH SCREEN ══════════════════ -->
@@ -370,7 +370,11 @@
         <button id="emailCopyHtmlBtn" onclick="copyEmailHTML()" class="email-copy-btn" style="display:none">Copy HTML</button>
       </div>
     </div>
-    <div class="email-split" id="emailSplit">
+    <div class="email-split-tabs" id="emailSplitTabs" role="tablist" aria-label="Email view" style="display:none">
+      <button class="email-split-tab active" data-tab="source" role="tab" aria-selected="true" onclick="setEmailSplitTab('source')">Source</button>
+      <button class="email-split-tab" data-tab="preview" role="tab" aria-selected="false" onclick="setEmailSplitTab('preview')">Preview</button>
+    </div>
+    <div class="email-split" id="emailSplit" data-tab="source">
       <div id="emailOutput" class="email-output"></div>
       <iframe id="emailPreview" class="email-preview" title="Email preview" sandbox="allow-same-origin" style="display:none"></iframe>
     </div>
@@ -386,7 +390,7 @@
 
     <!-- Hero: grade + stats -->
     <div style="display:flex;gap:16px;flex-wrap:wrap;margin:0 0 22px;align-items:stretch">
-      <div id="perfGradeCard" style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 36px;background:linear-gradient(135deg,rgba(240,192,64,.08),rgba(56,139,253,.04));border:1px solid rgba(240,192,64,.2);border-radius:16px;min-width:140px">
+      <div id="perfGradeCard" class="perf-grade-card">
         <div id="perfGradeLetter" style="font-size:4.5rem;font-weight:900;line-height:1;color:var(--gold);text-shadow:0 0 24px rgba(240,192,64,.4)"></div>
         <div id="perfGradeLabel" style="font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:8px"></div>
       </div>
@@ -398,7 +402,7 @@
     </div>
 
     <!-- Two-column chart area -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px">
+    <div class="perf-charts-grid">
       <!-- Predicted vs Actual -->
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px">
         <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">

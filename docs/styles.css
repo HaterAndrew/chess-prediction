@@ -67,8 +67,10 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
   overflow-x: clip;
+  overscroll-behavior-y: contain;
   background-image: radial-gradient(ellipse at 50% 0%, rgba(56,139,253,.03) 0%, transparent 60%);
   background-attachment: fixed;
 }
@@ -108,7 +110,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 @keyframes splashFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 .splash-piece {
-  font-size: clamp(3.5rem, 12vw, 5rem); line-height: 1;
+  font-size: clamp(2.5rem, 11vw, 5rem); line-height: 1;
   filter: drop-shadow(0 0 30px rgba(240,192,64,.6)) drop-shadow(0 0 60px rgba(240,192,64,.3));
   animation: splashPulse 2.5s ease-in-out infinite;
 }
@@ -198,7 +200,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
    ══════════════════════════════════════════════════════ */
 header {
   border-bottom: 1px solid var(--border);
-  padding: var(--s-3) 0;
+  padding: max(var(--s-3), env(safe-area-inset-top)) 0 var(--s-3);
   position: sticky; top: 0; z-index: 100;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -233,7 +235,7 @@ header {
 }
 .header-tourn-label #tournLabel {
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  max-width: 12ch;
+  max-width: 16ch;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -359,7 +361,7 @@ header {
   justify-content: center; height: calc(100% - 18px);
 }
 .hero-kpis {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-template-columns: repeat(2, 1fr);
   gap: var(--s-2);
 }
 .hero-label {
@@ -368,7 +370,7 @@ header {
   margin-bottom: 6px;
 }
 .hero-number {
-  font-size: clamp(2.75rem, 10vw, 4.5rem);
+  font-size: clamp(2.5rem, 10vw, 4.5rem);
   font-weight: 900;
   line-height: 1; letter-spacing: -2px;
   background: linear-gradient(135deg, var(--gold), #e6a817, var(--gold-bright));
@@ -470,6 +472,10 @@ header {
 .chart-subtitle { font-size: .76rem; color: var(--muted); margin-top: 2px; }
 .chart-legend { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; }
 .legend-item { display: flex; align-items: center; gap: 6px; font-size: .72rem; color: var(--muted); }
+@media (max-width: 639px) {
+  .chart-legend { gap: var(--s-2); }
+  .legend-item { font-size: .68rem; gap: 4px; }
+}
 .legend-swatch { width: 16px; height: 3px; border-radius: 2px; }
 .legend-swatch.dashed { background: repeating-linear-gradient(90deg, var(--gold) 0 6px, transparent 6px 10px); }
 .legend-swatch.band { width: 16px; height: 10px; border-radius: 2px; opacity: .4; }
@@ -504,7 +510,7 @@ header {
    ══════════════════════════════════════════════════════ */
 .timeline {
   position: relative;
-  display: grid; grid-template-columns: repeat(2, 1fr);
+  display: grid; grid-template-columns: 1fr;
   gap: var(--s-3);
   padding: var(--s-4) 0 var(--s-2);
 }
@@ -563,6 +569,45 @@ header {
 .delta-pos { color: var(--green); }
 .delta-neg { color: var(--red); }
 
+/* ── Mobile card layout for comp-table (year-over-year, < 640px) ── */
+@media (max-width: 639px) {
+  .comp-table-wrap { overflow-x: visible; margin: 0; padding: 0; }
+  .comp-table { display: block; min-width: 0; }
+  .comp-table thead { display: none; }
+  .comp-table tbody { display: block; }
+  .comp-table tr {
+    display: block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+  }
+  .comp-table tr.current-year {
+    border-color: var(--gold);
+    background: var(--gold-dim);
+  }
+  .comp-table tr.current-year td { background: transparent; }
+  .comp-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-3);
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .comp-table td::before {
+    content: attr(data-label);
+    font-size: .66rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .comp-table tr td:last-child { border-bottom: none; }
+}
+
 /* ══════════════════════════════════════════════════════
    MODEL INFO
    ══════════════════════════════════════════════════════ */
@@ -617,6 +662,55 @@ header {
   border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 6px;
 }
 .pace-bar-fill { height: 100%; border-radius: 3px; transition: width .4s; }
+
+/* ── Mobile card layout for tournament table (< 640px) ── */
+@media (max-width: 639px) {
+  .tourney-table-wrap { overflow-x: visible; margin: 0; padding: 0; }
+  .tourney-table { display: block; min-width: 0; }
+  .tourney-table thead { display: none; }
+  .tourney-table tbody { display: block; }
+  .tourney-table tr {
+    display: block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+  }
+  .tourney-table tbody tr:nth-child(even) td,
+  .tourney-table tbody tr:hover td,
+  .tourney-table tbody tr:active td { background: transparent; }
+  .tourney-table tr:active { background: var(--surface3); }
+  .tourney-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-3);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: .85rem;
+  }
+  .tourney-table td::before {
+    content: attr(data-label);
+    font-size: .66rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .tourney-table td:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding-top: 0;
+    padding-bottom: var(--s-2);
+    margin-bottom: var(--s-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .tourney-table td:first-child::before { display: none; }
+  .tourney-table td:last-child { border-bottom: none; padding-bottom: 0; }
+}
 
 /* ══════════════════════════════════════════════════════
    UPCOMING MINI CARDS
@@ -675,6 +769,15 @@ header {
 .page-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
 .page-tab-panel { display: none; }
 .page-tab-panel.active { display: block; }
+
+/* ── Edge fade hint for scrollable tab strip on mobile ── */
+@media (max-width: 639px) {
+  .page-tabs {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+    scroll-behavior: smooth;
+  }
+}
 
 /* ══════════════════════════════════════════════════════
    CHESS PUZZLE BOARD
@@ -801,6 +904,48 @@ header {
 .de-saved-msg { color: var(--green); font-size: .75rem; margin-left: var(--s-3); opacity: 0; transition: opacity .3s; }
 .de-saved-msg.show { opacity: 1; }
 
+/* ── Mobile card layout for data-entry table (< 640px) ── */
+@media (max-width: 639px) {
+  .de-table { display: block; min-width: 0; }
+  .de-table thead { display: none; }
+  .de-table tbody { display: block; }
+  .de-table tr {
+    display: block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+  }
+  .de-table td {
+    display: block;
+    padding: 4px 0 8px;
+    border-bottom: none;
+  }
+  .de-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: .66rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .de-table td.fam-name {
+    font-size: 1rem;
+    font-weight: 700;
+    padding-bottom: var(--s-2);
+    margin-bottom: var(--s-2);
+    border-bottom: 1px solid var(--border);
+    white-space: normal;
+  }
+  .de-table td.fam-name::before { display: none; }
+  .de-table input[type="number"],
+  .de-table input[type="date"],
+  .de-table input[type="text"] { min-height: var(--touch); }
+}
+
 /* ══════════════════════════════════════════════════════
    EMAIL GENERATOR
    ══════════════════════════════════════════════════════ */
@@ -897,6 +1042,25 @@ header {
 }
 .email-copy-btn:hover { border-color: var(--blue); color: var(--blue); }
 .email-copy-btn.copied { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+.email-split-tabs {
+  display: flex; gap: 0;
+  margin-bottom: var(--s-2);
+  border-bottom: 1px solid var(--border);
+}
+.email-split-tab {
+  flex: 1;
+  background: none; border: none; color: var(--muted);
+  padding: 10px 16px;
+  min-height: var(--touch);
+  font-size: .82rem; font-weight: 600;
+  border-bottom: 2px solid transparent;
+  cursor: pointer; transition: color .15s, border-color .15s;
+}
+.email-split-tab:hover { color: var(--text); }
+.email-split-tab.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
 .email-split {
   display: grid; grid-template-columns: 1fr;
   gap: var(--s-3);
@@ -1050,20 +1214,96 @@ header {
 .compare-table tr:last-child td { border-bottom: none; }
 .compare-table td { font-variant-numeric: tabular-nums; }
 .compare-stat-label { font-weight: 600; color: var(--muted); font-size: .8rem; text-transform: none; letter-spacing: 0; }
+
+/* ── Mobile card layout for compare-table (transposed stats, < 640px) ── */
+@media (max-width: 639px) {
+  .compare-table-wrap { overflow-x: visible; margin: 0; padding: 0 0 var(--s-4); }
+  .compare-table { display: block; min-width: 0; }
+  .compare-table thead { display: none; }
+  .compare-table tbody { display: block; }
+  .compare-table tr {
+    display: block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+  }
+  .compare-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-3);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: .85rem;
+  }
+  .compare-table td.compare-stat-label {
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--text);
+    padding-bottom: var(--s-2);
+    margin-bottom: var(--s-2);
+    border-bottom: 1px solid var(--border);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .compare-table td:not(.compare-stat-label)::before {
+    content: attr(data-label);
+    font-size: .66rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .compare-table tr td:last-child { border-bottom: none; }
+}
 .compare-chart-wrap {
   background: var(--surface2); border: 1px solid var(--border);
   border-radius: var(--radius); padding: var(--s-4);
-  height: 300px; position: relative;
+  height: min(300px, 55vh); position: relative;
 }
 
 /* ══════════════════════════════════════════════════════
    FOOTER
    ══════════════════════════════════════════════════════ */
 footer {
-  border-top: 1px solid var(--border); padding: var(--s-5) 0;
+  border-top: 1px solid var(--border);
+  padding: var(--s-5) 0 max(var(--s-5), env(safe-area-inset-bottom));
   text-align: center; font-size: .72rem; color: var(--muted);
 }
 footer a { color: var(--muted); }
+
+/* ══════════════════════════════════════════════════════
+   PERFORMANCE TAB
+   ══════════════════════════════════════════════════════ */
+.perf-grade-card {
+  flex: 0 0 auto;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 28px 36px;
+  background: linear-gradient(135deg, rgba(240,192,64,.08), rgba(56,139,253,.04));
+  border: 1px solid rgba(240,192,64,.2);
+  border-radius: 16px;
+  min-width: 140px;
+}
+.perf-charts-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-bottom: 22px;
+}
+@media (max-width: 639px) {
+  .perf-charts-grid { grid-template-columns: 1fr; }
+  .perf-grade-card { padding: 20px 24px; }
+}
+
+/* ── Narrow-phone card padding tightening (< 420px) ── */
+@media (max-width: 419px) {
+  .chart-card, .panel { padding: var(--s-3); }
+  .mini-card { padding: var(--s-3); }
+  .kpi-card { padding: var(--s-2) var(--s-3); }
+  .hero-label { letter-spacing: 1.2px; }
+}
 
 /* ══════════════════════════════════════════════════════
    TRANSITIONS
@@ -1081,7 +1321,9 @@ footer a { color: var(--muted); }
    BACK TO TOP BUTTON
    ══════════════════════════════════════════════════════ */
 .back-to-top {
-  position: fixed; bottom: 20px; right: 20px; z-index: 900;
+  position: fixed;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  right: 20px; z-index: 900;
   width: var(--touch); height: var(--touch); border-radius: 50%;
   background: var(--surface2); border: 1px solid var(--border);
   color: var(--muted); font-size: 1.1rem; cursor: pointer;
@@ -1120,6 +1362,14 @@ footer a { color: var(--muted); }
 .skeleton-text:nth-child(3) { width: 70%; }
 .skeleton-text:nth-child(4) { width: 50%; }
 .skeleton-card { height: 80px; width: 100%; border-radius: var(--radius); }
+@media (max-width: 639px) {
+  /* Hero on mobile is ~150–180px tall (number + label + CI + 2-up KPIs).
+     Bumping skeleton-card from 80px reduces CLS when real content lands. */
+  .skeleton-card { height: 160px; }
+  .skeleton-chart { height: 240px; }
+  /* Tighten empty-state vertical padding so they don't dominate mobile screens */
+  .fav-empty, .compare-empty { padding: var(--s-5) var(--s-4); }
+}
 
 /* ══════════════════════════════════════════════════════
    ACCESSIBILITY
@@ -1139,11 +1389,18 @@ footer a { color: var(--muted); }
    BREAKPOINTS (mobile-first, min-width only)
    ══════════════════════════════════════════════════════ */
 
+/* ── 480px: mid-size phones ── */
+@media (min-width: 480px) {
+  .timeline { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* ── 640px: larger phones / small tablets ── */
 @media (min-width: 640px) {
   :root { --gutter: 20px; }
   .logo { font-size: 1.15rem; }
   .header-tourn-label #tournLabel { max-width: 20ch; }
+  .hero { grid-template-columns: auto 1fr; }
+  .hero-kpis { grid-template-columns: repeat(3, 1fr); }
   .kpi-row { grid-template-columns: repeat(3, 1fr); }
   .kpi-value { font-size: 1.4rem; }
   .chart-wrap { height: 320px; }
@@ -1196,6 +1453,152 @@ footer a { color: var(--muted); }
 /* ── 1440px: widescreen ── */
 @media (min-width: 1440px) {
   .container { max-width: 1400px; }
+}
+
+/* ══════════════════════════════════════════════════════
+   LANDSCAPE PHONE
+   ══════════════════════════════════════════════════════ */
+@media (orientation: landscape) and (max-height: 500px) {
+  .drop-menu, .tab-search-results, .drop-menu-search .tab-search-results {
+    max-height: 40vh;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   MOBILE BOTTOM-SHEET DROPDOWNS (< 640px)
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 639px) {
+  .drop-menu {
+    position: fixed;
+    left: 0; right: 0; top: auto; bottom: 0;
+    width: 100%; max-width: 100%;
+    max-height: 75vh;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: 0 -8px 24px rgba(0,0,0,.4);
+    padding-bottom: env(safe-area-inset-bottom);
+    animation: dropSlideUp .2s ease;
+    z-index: 300;
+  }
+  .drop-menu::before {
+    content: '';
+    display: block;
+    width: 40px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 10px auto 6px;
+  }
+  .drop-menu-search .tab-search-results { max-height: 60vh; }
+  .tab-search-panel {
+    position: fixed;
+    left: 0; right: 0; top: auto; bottom: 0;
+    max-width: 100%;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: 0 -8px 24px rgba(0,0,0,.4);
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 300;
+  }
+  .tab-search-results { max-height: 60vh; }
+}
+@keyframes dropSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Mobile drawer backdrop scrim (< 640px) ── */
+@media (max-width: 639px) {
+  body.drawer-open::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 250;
+    animation: scrimFadeIn .2s ease;
+    pointer-events: none;
+  }
+}
+@keyframes scrimFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ══════════════════════════════════════════════════════
+   MOBILE PERF — REDUCE EXPENSIVE EFFECTS
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 639px) {
+  /* Backdrop blur is expensive on every scroll-paint; drop blur on phones,
+     keep the alpha-tinted background so the sticky header still feels separated. */
+  header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(13,17,23,.95);
+  }
+  /* Splash piece glow: cut second drop-shadow to halve filter cost on weak GPUs */
+  .splash-piece { filter: drop-shadow(0 0 20px rgba(240,192,64,.5)); }
+  /* Hero number gradient text already costs; trim the 20px shadow blur */
+  .hero-number { filter: drop-shadow(0 0 10px rgba(240,192,64,.18)); }
+  /* Live-glow on chart-card uses two large box-shadows; tone down */
+  .chart-card.live-glow { box-shadow: 0 0 20px rgba(56,139,253,.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash-piece { animation: none; filter: drop-shadow(0 0 20px rgba(240,192,64,.5)); }
+}
+
+/* ══════════════════════════════════════════════════════
+   STALE DATA BANNER
+   ══════════════════════════════════════════════════════ */
+.stale-banner {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 99999;
+  background: #f59e0b; color: #1a1a1a;
+  padding: max(10px, env(safe-area-inset-top)) 48px 10px 16px;
+  font-size: 14px; font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  font-family: Inter, system-ui, sans-serif;
+}
+.stale-banner-dismiss {
+  position: absolute; right: 12px;
+  top: max(50%, env(safe-area-inset-top));
+  transform: translateY(-50%);
+  background: none; border: none; color: #1a1a1a;
+  font-size: 20px; line-height: 1;
+  padding: 4px 8px;
+  min-width: var(--touch); min-height: var(--touch);
+  cursor: pointer;
+}
+@media (max-width: 639px) {
+  .stale-banner {
+    font-size: 13px;
+    padding-left: 12px;
+    padding-right: 44px;
+    text-align: left;
+    line-height: 1.35;
+  }
+  .stale-banner-dismiss { right: 6px; }
+}
+
+/* ══════════════════════════════════════════════════════
+   TOUCH FEEDBACK
+   ══════════════════════════════════════════════════════ */
+/* Suppress the iOS gray tap-highlight flash; custom :active states below provide feedback. */
+* { -webkit-tap-highlight-color: transparent; }
+
+/* Subtle press feedback on interactive elements that mostly relied on :hover */
+.mini-card, .fav-card, .puzzle-btn, .de-save-btn,
+.email-generate-btn, .email-copy-btn, .email-link-btn,
+.email-split-tab, .compare-add-btn, .fav-btn {
+  transition: transform .12s ease, opacity .12s ease,
+    color .15s, border-color .15s, background .15s, box-shadow .2s;
+}
+.mini-card:active, .fav-card:active { transform: scale(.985); }
+.puzzle-btn:active, .de-save-btn:active, .email-generate-btn:active,
+.email-copy-btn:active, .email-link-btn:active, .email-split-tab:active,
+.compare-add-btn:active, .fav-btn:active { transform: scale(.96); opacity: .85; }
+
+/* Prevent iOS auto-zoom on focused inputs (fires when computed font-size < 16px) */
+@media (max-width: 639px) {
+  .tab-search-input,
+  .email-meta-input,
+  .de-table input[type="text"],
+  .de-table input[type="number"],
+  .de-table input[type="date"] {
+    font-size: 16px;
+  }
 }
 
 /* ══════════════════════════════════════════════════════

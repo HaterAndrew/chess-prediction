@@ -434,19 +434,27 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   /* Hide the 3 cat-btn pills entirely on phones — picker covers all 3 */
   #panel-predictions > #tabBar { display: none; }
 
-  /* Trigger affordance: chevron after the tournament name + tap feedback */
+  /* Trigger affordance: clearly button-like (subtle chip with border + colored
+     chevron) so users discover that the tournament name is the picker. */
   #headerTournLabel {
     cursor: pointer;
-    border-radius: 6px;
-    padding: 4px 6px;
-    transition: background .15s;
+    border-radius: 8px;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    transition: background .15s, border-color .15s, transform .12s;
   }
-  #headerTournLabel:active { background: var(--surface3); }
+  #headerTournLabel:active {
+    background: var(--surface3);
+    border-color: var(--blue);
+    transform: scale(.98);
+  }
   #tournLabel::after {
     content: ' \25BE';
-    font-size: .6rem;
-    color: var(--muted);
-    margin-left: 4px;
+    font-size: .72rem;
+    color: var(--blue);
+    margin-left: 6px;
+    font-weight: 700;
   }
 
   /* Picker drawer base styles inherit from .drop-menu (round 12 bottom-sheet);

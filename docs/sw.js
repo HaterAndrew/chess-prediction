@@ -3,7 +3,7 @@
 // Cache name is bumped on each deploy that reshapes caching behavior so
 // old caches from prior SW versions get purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v22';
+const CACHE_NAME = 'cca-predictor-v23';
 
 const OFFLINE_FALLBACKS = [
   './',

@@ -17,10 +17,13 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=7">
+<link rel="stylesheet" href="styles.css?v=8">
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 </head>
 <body>
+
+<!-- Mobile unified tournament picker (modal bottom sheet, MD3 + iOS HIG) -->
+<div id="dropMenu_tourney" class="drop-menu drop-menu-tourney" role="dialog" aria-label="Tournament picker" aria-modal="true" style="display:none"></div>
 
 <!-- ══════════════════ STALE DATA BANNER ══════════════════ -->
 <div id="staleBanner" class="stale-banner" style="display:none">
@@ -69,10 +72,10 @@
       CCA Entry <span>Predictor</span>
     </div>
     <div class="header-right">
-      <div class="header-tourn-label" id="headerTournLabel">
+      <div class="header-tourn-label" id="headerTournLabel" onclick="maybeOpenTourneyPicker(event)">
         <span class="live-dot" id="tournDot" style="display:none"></span>
         <span id="tournLabel" style="font-weight:700;font-size:.88rem">Loading...</span>
-        <button class="compare-add-btn" id="compareAddBtn" onclick="addToCompareSelected()" title="Add to Compare">&#9878;</button>
+        <button class="compare-add-btn" id="compareAddBtn" onclick="addToCompareSelected();event.stopPropagation()" title="Add to Compare">&#9878;</button>
       </div>
       <span style="width:1px;height:18px;background:var(--border);margin:0 4px"></span>
       <div class="header-meta">Updated: <span id="lastUpdated"></span></div>

@@ -424,6 +424,117 @@ header {
 body.drawer-open { overflow: hidden; touch-action: none; }
 
 /* ══════════════════════════════════════════════════════
+   MOBILE UNIFIED TOURNAMENT PICKER (< 640px only)
+   ──────────────────────────────────────────────────────
+   Modal bottom sheet with iOS HIG segmented control + filterable lists.
+   Replaces the 3 cat-btn pills (still used on desktop). Trigger is the
+   header tournament label (Spotify "Now Playing" pattern).
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 639px) {
+  /* Hide the 3 cat-btn pills entirely on phones — picker covers all 3 */
+  #panel-predictions > #tabBar { display: none; }
+
+  /* Trigger affordance: chevron after the tournament name + tap feedback */
+  #headerTournLabel {
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 4px 6px;
+    transition: background .15s;
+  }
+  #headerTournLabel:active { background: var(--surface3); }
+  #tournLabel::after {
+    content: ' \25BE';
+    font-size: .6rem;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+
+  /* Picker drawer base styles inherit from .drop-menu (round 12 bottom-sheet);
+     this overrides the layout for the unified picker shell. */
+  .drop-menu-tourney {
+    padding: 0;
+  }
+  .drop-menu-tourney::before {
+    /* drag handle inherited from .drop-menu, ensure it's visible */
+    margin: 10px auto 6px;
+  }
+  .tourney-picker-header {
+    padding: var(--s-2) var(--s-4) 0;
+    background: transparent;
+  }
+  .tourney-picker-body {
+    padding: var(--s-2) 0 var(--s-4);
+    overflow-y: auto;
+    max-height: calc(82vh - 72px);
+  }
+  .tourney-picker-body .tab-search-bar {
+    margin: 0 var(--s-4) var(--s-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface2);
+  }
+
+  /* Segmented control (iOS HIG ≤5 segments — we have 3) */
+  .seg-control {
+    display: flex;
+    gap: 2px;
+    background: var(--surface3);
+    padding: 3px;
+    border-radius: 10px;
+    margin: 0 0 var(--s-2);
+  }
+  .seg-btn {
+    flex: 1 1 0;
+    padding: 8px 10px;
+    min-height: 36px;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: inherit;
+  }
+  .seg-btn .seg-count {
+    font-size: .62rem;
+    background: rgba(255,255,255,.06);
+    padding: 1px 6px;
+    border-radius: 100px;
+    color: var(--muted);
+  }
+  .seg-btn.active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0,0,0,.25);
+  }
+  .seg-btn.active .seg-count { background: var(--gold-dim); color: var(--gold); }
+  .seg-btn:active { transform: scale(.97); }
+
+  /* List styles inside the picker — full-width tap targets */
+  .tourney-list { padding: 0 var(--s-2); }
+  .tourney-list .cat-item {
+    padding: 12px var(--s-3);
+    border-radius: 8px;
+  }
+  .tourney-list .cat-item.active {
+    background: var(--gold-dim);
+    color: var(--gold);
+  }
+}
+@media (min-width: 640px) {
+  /* Desktop safety: ensure the unified picker is fully suppressed and the
+     trigger affordance never shows. */
+  #dropMenu_tourney { display: none !important; }
+  #tournLabel::after { content: none; }
+}
+
+/* ══════════════════════════════════════════════════════
    HERO KPI
    ══════════════════════════════════════════════════════ */
 .hero {

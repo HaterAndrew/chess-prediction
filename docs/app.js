@@ -3059,8 +3059,8 @@ function renderHistorical(t) {
         });
       },
       scales: {
-        x: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: 10 } } },
-        y: { beginAtZero: true, grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false }, ticks: { color: '#8b949e', font: { size: 10 }, callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k' : v } }
+        x: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: _mobileVP() ? 9 : 10 }, maxRotation: 0 } },
+        y: { beginAtZero: true, grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false }, ticks: { color: '#8b949e', font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 4 : 6, callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k' : v } }
       }
     }
   });
@@ -3209,13 +3209,14 @@ function renderRegCurve(t) {
       scales: {
         x: {
           grid: { display: false },
-          ticks: { color: '#8b949e', font: { size: 9 }, maxRotation: 0 }
+          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 8 : 9 }, maxRotation: 0, maxTicksLimit: _mobileVP() ? 6 : 12 }
         },
         y: {
           min: 0, max: 105,
           grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false },
           ticks: {
-            color: '#8b949e', font: { size: 9 },
+            color: '#8b949e', font: { size: _mobileVP() ? 8 : 9 },
+            maxTicksLimit: _mobileVP() ? 4 : 6,
             callback: v => v + '%'
           }
         }

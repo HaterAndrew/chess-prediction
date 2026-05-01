@@ -1662,7 +1662,7 @@ function renderTourneyPicker() {
   const hist = ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'historical');
 
   const seg = (k, label, count) =>
-    `<button class="seg-btn ${_tourneyTab === k ? 'active' : ''}" role="tab" aria-selected="${_tourneyTab === k}" onclick="setTourneyTab('${k}')">${label}<span class="seg-count">${count}</span></button>`;
+    `<button class="seg-btn ${_tourneyTab === k ? 'active' : ''}" role="tab" aria-selected="${_tourneyTab === k}" data-seg="${k}" onclick="event.stopPropagation();setTourneyTab('${k}')">${label}<span class="seg-count">${count}</span></button>`;
 
   let html = '';
   html += '<div class="tourney-picker-header">';

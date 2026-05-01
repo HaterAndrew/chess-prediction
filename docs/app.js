@@ -1602,6 +1602,137 @@ function selectFromDrop(idx) {
   selectTournament(idx);
 }
 
+// ══════════════════════════════════════════════════════════
+// MOBILE UNIFIED TOURNAMENT PICKER (Material 3 modal bottom sheet
+// with iOS HIG segmented control). Replaces the 3 cat-btn pills on
+// phones; desktop still uses the original 3 dropdowns.
+// ══════════════════════════════════════════════════════════
+let _tourneyTab = 'live';
+let _tourneyPickerOpen = false;
+
+function maybeOpenTourneyPicker(e) {
+  if (!_mobileVP()) return;                                     // desktop: do nothing
+  if (e && e.target && e.target.closest('.compare-add-btn')) return; // compare button has its own handler
+  openTourneyPicker();
+}
+
+function openTourneyPicker(initialTab) {
+  const t = TOURNAMENT_DATA.tournaments[selectedIndex];
+  if (initialTab) _tourneyTab = initialTab;
+  else if (t) _tourneyTab = t.status === 'live' ? 'live' : t.status === 'complete' ? 'complete' : 'hist';
+  renderTourneyPicker();
+  const menu = document.getElementById('dropMenu_tourney');
+  if (!menu) return;
+  menu.style.display = 'block';
+  document.body.classList.add('drawer-open');
+  _tourneyPickerOpen = true;
+  // Focus search input if Historical, else first item
+  setTimeout(() => {
+    if (_tourneyTab === 'hist') {
+      const inp = document.getElementById('tourneyHistSearch');
+      if (inp) inp.focus();
+    }
+  }, 80);
+}
+
+function closeTourneyPicker() {
+  const menu = document.getElementById('dropMenu_tourney');
+  if (menu) menu.style.display = 'none';
+  document.body.classList.remove('drawer-open');
+  _tourneyPickerOpen = false;
+}
+
+function setTourneyTab(which) {
+  _tourneyTab = which;
+  renderTourneyPicker();
+  if (which === 'hist') {
+    setTimeout(() => {
+      const inp = document.getElementById('tourneyHistSearch');
+      if (inp) inp.focus();
+    }, 30);
+  }
+}
+
+function renderTourneyPicker() {
+  const menu = document.getElementById('dropMenu_tourney');
+  if (!menu) return;
+  const ts = TOURNAMENT_DATA.tournaments;
+  const live = ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'live').sort((a, b) => a.t.days_remaining - b.t.days_remaining);
+  const complete = ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'complete');
+  const hist = ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'historical');
+
+  const seg = (k, label, count) =>
+    `<button class="seg-btn ${_tourneyTab === k ? 'active' : ''}" role="tab" aria-selected="${_tourneyTab === k}" onclick="setTourneyTab('${k}')">${label}<span class="seg-count">${count}</span></button>`;
+
+  let html = '';
+  html += '<div class="tourney-picker-header">';
+  html += `<div class="seg-control" role="tablist" aria-label="Tournament category">${seg('live', 'Upcoming', live.length)}${seg('complete', 'Complete', complete.length)}${seg('hist', 'Historical', hist.length)}</div>`;
+  html += '</div>';
+
+  html += '<div class="tourney-picker-body">';
+  if (_tourneyTab === 'live') {
+    html += '<div class="tourney-list">';
+    live.forEach(({t, i}) => {
+      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromTourneyPicker(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectFromTourneyPicker(${i})}" tabindex="0" role="option">`;
+      html += `<span class="cat-item-name"><span class="live-dot"></span>${esc(t.family)}</span>`;
+      html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)} reg · ${t.days_remaining}d</span>`;
+      html += '</div>';
+    });
+    html += '</div>';
+  } else if (_tourneyTab === 'complete') {
+    html += '<div class="tourney-list">';
+    complete.forEach(({t, i}) => {
+      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromTourneyPicker(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectFromTourneyPicker(${i})}" tabindex="0" role="option">`;
+      html += `<span class="cat-item-name">${esc(t.family)}</span>`;
+      html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)}</span>`;
+      html += '</div>';
+    });
+    html += '</div>';
+  } else if (_tourneyTab === 'hist') {
+    html += '<div class="tab-search-bar">';
+    html += '<span style="opacity:.5">&#128269;</span>';
+    html += '<input class="tab-search-input" id="tourneyHistSearch" type="text" placeholder="Search tournaments..." oninput="filterTourneyHistResults(this.value)" autocomplete="off">';
+    html += '</div>';
+    html += '<div class="tourney-list" id="tourneyHistList">';
+    hist.forEach(({t, i}) => {
+      const dataName = String(t.family || '').toLowerCase();
+      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-name="${esc(dataName)}" onclick="selectFromTourneyPicker(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectFromTourneyPicker(${i})}" tabindex="0" role="option">`;
+      html += `<span class="cat-item-name">${esc(t.family)} ${t.year}</span>`;
+      html += `<span class="cat-item-meta">${fmt(t.current_count)}</span>`;
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+
+  menu.innerHTML = html;
+}
+
+function filterTourneyHistResults(query) {
+  const q = (query || '').toLowerCase().trim();
+  document.querySelectorAll('#tourneyHistList .cat-item').forEach(el => {
+    const name = el.dataset.name || '';
+    el.style.display = (q === '' || name.includes(q)) ? '' : 'none';
+  });
+}
+
+function selectFromTourneyPicker(idx) {
+  closeTourneyPicker();
+  selectTournament(idx);
+}
+
+// Close picker on outside-click (the scrim has pointer-events:none, so clicks bubble to document)
+document.addEventListener('click', e => {
+  if (!_tourneyPickerOpen) return;
+  if (e.target.closest('.drop-menu-tourney')) return;          // click inside drawer — keep open
+  if (e.target.closest('#headerTournLabel')) return;           // re-tap on trigger handled separately
+  closeTourneyPicker();
+});
+// Esc to close
+document.addEventListener('keydown', e => {
+  if (_tourneyPickerOpen && e.key === 'Escape') closeTourneyPicker();
+});
+
 // ── Dropdown keyboard navigation helpers ──
 
 /** Get array of {idx, name} for simple (non-virtual) dropdown items */

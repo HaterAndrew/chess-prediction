@@ -15,6 +15,13 @@ let histChartObj = null;
 // HELPERS
 // ══════════════════════════════════════════════════════════
 function _mobileVP() { return window.matchMedia('(max-width: 639px)').matches; }
+// Progressive-enhancement haptic. Android Chrome/Firefox supported; iOS Safari
+// no-ops. Respects prefers-reduced-motion. Round 31.
+function _haptic(ms) {
+  if (typeof navigator === 'undefined' || !navigator.vibrate) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  try { navigator.vibrate(ms || 12); } catch (_) {}
+}
 function hideSkeletons() {
   document.querySelectorAll('.skeleton').forEach(el => el.style.display = 'none');
   const loader = document.getElementById('skeletonLoader');
@@ -103,6 +110,7 @@ function renderPaceBanner(t) {
 // ══════════════════════════════════════════════════════════
 let _currentTab = 'predictions';
 function switchPageTab(tab, skipHash) {
+  if (_mobileVP() && _currentTab !== tab) _haptic(8);
   _currentTab = tab;
   document.querySelectorAll('.page-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
   document.querySelectorAll('.page-tab-panel').forEach(p => p.classList.remove('active'));
@@ -798,7 +806,11 @@ function perfDrawScatter(data) {
   const ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
 
-  const pad = {t:8, r:12, b:28, l:44};
+  const isM = _mobileVP();
+  const pad = {t:8, r:12, b:28, l: isM ? 36 : 44};
+  const tickFont = isM ? '10px system-ui' : '9px system-ui';
+  const noteFont = isM ? '9px system-ui' : '8px system-ui';
+  const axisFont = isM ? '10px system-ui' : '9px system-ui';
   const pw = W - pad.l - pad.r; const ph = H - pad.t - pad.b;
 
   const pts = [];
@@ -817,7 +829,7 @@ function perfDrawScatter(data) {
   for (let i = 1; i <= 4; i++) {
     const v = Math.round(maxV / 4 * i);
     ctx.beginPath(); ctx.moveTo(pad.l, y(v)); ctx.lineTo(pad.l + pw, y(v)); ctx.stroke();
-    ctx.fillStyle = '#8b949e'; ctx.font = '9px system-ui'; ctx.textAlign = 'right';
+    ctx.fillStyle = '#8b949e'; ctx.font = tickFont; ctx.textAlign = 'right';
     ctx.fillText(v.toLocaleString(), pad.l - 5, y(v) + 3);
   }
   ctx.setLineDash([]);
@@ -827,7 +839,7 @@ function perfDrawScatter(data) {
   ctx.setLineDash([8, 5]);
   ctx.beginPath(); ctx.moveTo(pad.l, pad.t + ph); ctx.lineTo(pad.l + pw, pad.t); ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle = 'rgba(240,192,64,.35)'; ctx.font = '8px system-ui'; ctx.textAlign = 'right';
+  ctx.fillStyle = 'rgba(240,192,64,.35)'; ctx.font = noteFont; ctx.textAlign = 'right';
   ctx.fillText('Perfect prediction', pad.l + pw - 2, pad.t + 10);
 
   // CI whiskers + dots
@@ -847,7 +859,7 @@ function perfDrawScatter(data) {
   });
 
   // Axis labels
-  ctx.fillStyle = '#8b949e'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+  ctx.fillStyle = '#8b949e'; ctx.font = axisFont; ctx.textAlign = 'center';
   ctx.fillText('Actual Entries', pad.l + pw / 2, H - 6);
   ctx.save(); ctx.translate(10, pad.t + ph / 2); ctx.rotate(-Math.PI / 2);
   ctx.fillText('Predicted', 0, 0); ctx.restore();
@@ -861,7 +873,12 @@ function perfDrawTimeline(data) {
   const ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
 
-  const pad = {t:20, r:14, b:28, l:36};
+  const isM = _mobileVP();
+  const pad = {t:20, r:14, b:28, l: isM ? 30 : 36};
+  const tickFont = isM ? '9px system-ui' : '8px system-ui';
+  const valFont = isM ? 'bold 10px system-ui' : 'bold 9px system-ui';
+  const tFont = isM ? '10px system-ui' : '9px system-ui';
+  const axisFont = isM ? '10px system-ui' : '9px system-ui';
   const pw = W - pad.l - pad.r; const ph = H - pad.t - pad.b;
   const agg = [...data.aggregate].sort((a, b) => b.T - a.T);
   if (!agg.length) return;
@@ -879,7 +896,7 @@ function perfDrawTimeline(data) {
   ctx.strokeStyle = '#30363d'; ctx.lineWidth = 0.5; ctx.setLineDash([3, 3]);
   [5, 10, 15].filter(v => v < maxMAE).forEach(v => {
     ctx.beginPath(); ctx.moveTo(pad.l, yp(v)); ctx.lineTo(pad.l + pw, yp(v)); ctx.stroke();
-    ctx.fillStyle = '#8b949e'; ctx.font = '8px system-ui'; ctx.textAlign = 'right';
+    ctx.fillStyle = '#8b949e'; ctx.font = tickFont; ctx.textAlign = 'right';
     ctx.fillText(v + '%', pad.l - 4, yp(v) + 3);
   });
   ctx.setLineDash([]);
@@ -906,15 +923,15 @@ function perfDrawTimeline(data) {
     ctx.shadowBlur = 0;
     ctx.strokeStyle = '#161b22'; ctx.lineWidth = 1.5; ctx.stroke();
     // Value
-    ctx.fillStyle = '#e6edf3'; ctx.font = 'bold 9px system-ui'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#e6edf3'; ctx.font = valFont; ctx.textAlign = 'center';
     ctx.fillText(a.mae_pct.toFixed(1) + '%', cx, cy - 10);
     // T label
-    ctx.fillStyle = '#8b949e'; ctx.font = '9px system-ui';
+    ctx.fillStyle = '#8b949e'; ctx.font = tFont;
     ctx.fillText('T-' + a.T, cx, pad.t + ph + 14);
   });
 
   // Axis
-  ctx.fillStyle = '#8b949e'; ctx.font = '9px system-ui'; ctx.textAlign = 'center';
+  ctx.fillStyle = '#8b949e'; ctx.font = axisFont; ctx.textAlign = 'center';
   ctx.fillText('Days Before Event', pad.l + pw / 2, H - 5);
 }
 
@@ -933,18 +950,18 @@ function perfDrawTable(data) {
   data.tournaments.forEach((t, idx) => {
     const bg = idx % 2 ? 'background:var(--surface2)' : '';
     html += `<tr style="border-bottom:1px solid rgba(48,54,61,.4);${bg}">
-      <td style="padding:5px 10px;white-space:nowrap;font-weight:500">${esc(t.family)}</td>
-      <td style="padding:5px 8px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums">${t.final_count.toLocaleString()}</td>`;
+      <td data-label="Tournament" style="padding:5px 10px;white-space:nowrap;font-weight:500">${esc(t.family)}</td>
+      <td data-label="Final" style="padding:5px 8px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums">${t.final_count.toLocaleString()}</td>`;
     tPoints.forEach(T => {
       const p = t.predictions.find(p => p.T === T);
       if (p) {
         const ec = Math.abs(p.error_pct) <= 5 ? '#22c55e' : Math.abs(p.error_pct) <= 15 ? 'var(--gold)' : '#ef4444';
         const ci = p.in_ci ? '\u2713' : '\u2717';
         const cic = p.in_ci ? '#22c55e' : '#ef4444';
-        html += `<td style="padding:5px 4px;text-align:center;font-size:.7rem" title="Pred ${p.predicted} from ${p.count_at_T} reg, CI [${p.ci_lower}-${p.ci_upper}]">
+        html += `<td data-label="T-${T}" style="padding:5px 4px;text-align:center;font-size:.7rem" title="Pred ${p.predicted} from ${p.count_at_T} reg, CI [${p.ci_lower}-${p.ci_upper}]">
           <span style="color:${ec};font-weight:600;font-variant-numeric:tabular-nums">${p.error_pct > 0 ? '+' : ''}${p.error_pct}%</span><span style="color:${cic};font-size:.58rem;margin-left:2px">${ci}</span></td>`;
       } else {
-        html += `<td style="padding:5px 4px;text-align:center;color:var(--muted)">\u2014</td>`;
+        html += `<td data-label="T-${T}" style="padding:5px 4px;text-align:center;color:var(--muted)">\u2014</td>`;
       }
     });
     html += '</tr>';
@@ -952,14 +969,14 @@ function perfDrawTable(data) {
 
   // Aggregate
   html += `<tr style="border-top:2px solid var(--border);font-weight:700;background:rgba(240,192,64,.04)">
-    <td style="padding:8px 10px" colspan="2">Average (${data.n_tournaments})</td>`;
+    <td data-label="Average" style="padding:8px 10px" colspan="2">Average (${data.n_tournaments})</td>`;
   tPoints.forEach(T => {
     const a = agg.find(x => x.T === T);
     if (a) {
-      html += `<td style="padding:8px 4px;text-align:center;font-size:.68rem">
+      html += `<td data-label="T-${T}" style="padding:8px 4px;text-align:center;font-size:.68rem">
         <div style="color:var(--text)">${a.mae_pct}%</div>
         <div style="font-size:.56rem;color:var(--muted);font-weight:400">CI ${a.ci_coverage}%</div></td>`;
-    } else html += '<td>\u2014</td>';
+    } else html += `<td data-label="T-${T}">\u2014</td>`;
   });
   html += '</tr></tbody></table>';
   table.innerHTML = html;
@@ -1588,6 +1605,7 @@ function toggleDrop(which, e) {
   e && e.stopPropagation();
   if (openDrop === which) { closeDrop(); return; }
   closeDrop();
+  if (_mobileVP()) _haptic(15);
   openDrop = which;
   _kbHighlightIdx = -1;
   _kbTypeBuffer = '';
@@ -1624,6 +1642,7 @@ function closeDrop() {
 }
 
 function selectFromDrop(idx) {
+  if (_mobileVP()) _haptic(10);
   closeDrop();
   selectTournament(idx);
 }
@@ -1646,6 +1665,7 @@ function openTourneyPicker(initialTab) {
   const t = TOURNAMENT_DATA.tournaments[selectedIndex];
   if (initialTab) _tourneyTab = initialTab;
   else if (t) _tourneyTab = t.status === 'live' ? 'live' : t.status === 'complete' ? 'complete' : 'hist';
+  if (_mobileVP()) _haptic(15);
   renderTourneyPicker();
   const menu = document.getElementById('dropMenu_tourney');
   if (!menu) return;
@@ -1669,6 +1689,7 @@ function closeTourneyPicker() {
 }
 
 function setTourneyTab(which) {
+  if (_tourneyTab !== which) _haptic(8);
   _tourneyTab = which;
   renderTourneyPicker();
   if (which === 'hist') {
@@ -1743,6 +1764,7 @@ function filterTourneyHistResults(query) {
 }
 
 function selectFromTourneyPicker(idx) {
+  _haptic(10);
   closeTourneyPicker();
   selectTournament(idx);
 }

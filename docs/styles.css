@@ -558,7 +558,13 @@ body.drawer-open { overflow: hidden; touch-action: none; }
      this gives ≈225px of actual chart vs ≈185px before. */
   .chart-wrap { height: 300px; }
   /* Subtitle smaller — mobile users can tap to see full context. */
-  .chart-subtitle { font-size: .7rem; }
+  .chart-subtitle { font-size: .7rem; line-height: 1.35; }
+  /* Stack chart title + legend vertically on mobile so neither is cramped. */
+  .chart-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-2);
+  }
   /* Compare/hist chart inline-height divs also need the bump. */
   #histChart, #regCurveChart { /* canvas inherits parent height attr */ }
 }
@@ -1231,6 +1237,29 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   margin-left: auto;
 }
 .email-generate-btn:hover { background: var(--blue-bright); }
+
+/* ── Email toolbar mobile polish (< 640px) ── */
+@media (max-width: 639px) {
+  .email-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--s-2);
+  }
+  .email-toolbar-label { width: 100%; }
+  .email-toolbar .email-link-btn {
+    padding: 10px 12px;
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  .email-generate-btn {
+    margin-left: 0;
+    width: 100%;
+    padding: 12px 18px;
+    font-size: .9rem;
+  }
+  .email-seg { width: 100%; display: flex; }
+  .email-seg button { flex: 1 1 0; }
+}
 .email-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -1497,6 +1526,59 @@ footer {
   text-align: center; font-size: .72rem; color: var(--muted);
 }
 footer a { color: var(--muted); }
+
+/* ══════════════════════════════════════════════════════
+   ABOUT TAB — sub-model grid (collapses on mobile)
+   ══════════════════════════════════════════════════════ */
+.about-submodels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+@media (max-width: 639px) {
+  .about-submodels { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* ══════════════════════════════════════════════════════
+   PERFORMANCE TAB — tournament-results table (mobile cards)
+   Direct port of round-4 .tourney-table flip pattern.
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 639px) {
+  #perfTable { overflow-x: visible !important; }
+  #perfTable table { display: block; min-width: 0; }
+  #perfTable thead { display: none; }
+  #perfTable tbody { display: block; }
+  #perfTable tr {
+    display: block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+  }
+  #perfTable td {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: var(--s-3); padding: 4px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: .82rem; text-align: left !important;
+    white-space: normal !important;
+  }
+  #perfTable td::before {
+    content: attr(data-label);
+    font-size: .66rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  #perfTable td:first-child {
+    flex-direction: column; align-items: flex-start; gap: 2px;
+    padding-top: 0; padding-bottom: var(--s-2); margin-bottom: var(--s-2);
+    border-bottom: 1px solid var(--border);
+    font-weight: 700; font-size: 1rem;
+  }
+  #perfTable td:first-child::before { display: none; }
+  #perfTable td:last-child { border-bottom: none; }
+}
 
 /* ══════════════════════════════════════════════════════
    PERFORMANCE TAB

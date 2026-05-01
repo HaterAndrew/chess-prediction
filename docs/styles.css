@@ -340,37 +340,65 @@ header {
 .delta-value.gold { color: var(--gold-bright); }
 .delta-value.red { color: var(--red); }
 
-/* ── Above-the-fold mobile decompression (< 640px) ── */
+/* ══════════════════════════════════════════════════════
+   MOBILE PREDICTIONS REORIENTATION (< 640px)
+   ──────────────────────────────────────────────────────
+   Flips #panel-predictions into a flex-column on mobile so we can use
+   `order:` to put the hero (882) ABOVE the tournament-browser dropdowns,
+   following the inverted-pyramid dashboard pattern. Source order in
+   index.html stays the same so desktop (>=640px) is completely untouched.
+   ══════════════════════════════════════════════════════ */
 @media (max-width: 639px) {
-  /* Summary bar duplicates info shown in the dropdown pills + mini-grid. Hide on phones.
-     !important needed because the element has inline style="display:flex". */
-  #summaryBar { display: none !important; }
-  /* "Updated: ..." timestamp is fine in desktop header but eats vertical space on phone. */
-  .header-meta { display: none; }
-  /* Delta banner: tighter padding, smaller text, compact value */
+  /* --- Hide redundant chrome on phones --- */
+  #summaryBar { display: none !important; }   /* duplicates dropdown counts + mini-grid */
+  .header-meta { display: none; }              /* "Updated:" timestamp eats vertical space */
+  #paceBannerArea { display: none; }           /* "tracking within normal range" — redundant with delta banner */
+
+  /* --- Predictions panel: flex column with explicit order --- */
+  #panel-predictions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+  /* Reset margin/padding on direct children so the gap controls vertical rhythm */
+  #panel-predictions > * { margin-top: 0; margin-bottom: 0; }
+
+  /* Inverted-pyramid order (smaller = higher on screen) */
+  #panel-predictions > #skeletonLoader { order: 0; }
+  #panel-predictions > .hero           { order: 1; }
+  #panel-predictions > .delta-banner   { order: 2; }
+  #panel-predictions > .chart-card     { order: 3; }
+  #panel-predictions > #tabBar         { order: 4; }   /* 3 category dropdowns, now below the hero+chart */
+  #panel-predictions > .mini-grid      { order: 5; }
+  #panel-predictions > .kpi-row        { order: 6; }
+  #panel-predictions > .progress-row   { order: 7; }
+  #panel-predictions > .grid-2         { order: 8; }
+  #panel-predictions > .all-tournaments,
+  #panel-predictions > .panel.model-info { order: 9; }
+
+  /* --- Delta banner: tighter, single-row feel --- */
   .delta-banner {
     padding: var(--s-2) var(--s-3);
-    margin: var(--s-3) 0;
+    margin: 0;
     gap: var(--s-2);
   }
   .delta-icon { font-size: 1rem; }
   .delta-main { font-size: .85rem; }
   .delta-sub { font-size: .7rem; line-height: 1.35; margin-top: 1px; }
   .delta-value { font-size: 1.15rem; }
-  /* Pace alert: tighter when it shows */
-  #paceBannerArea > * { padding: var(--s-2) var(--s-3) !important; font-size: .82rem !important; }
-  /* Give the hero breathing room from the dense controls above it */
-  .hero { padding-top: var(--s-4); padding-bottom: var(--s-3); }
-  /* Stack dropdown pills full-width — no more wrapping onto two lines.
-     One clean row each. Drop-wrap needs width:100% so the pill fills. */
-  .tab-bar {
+
+  /* --- Hero: a touch more vertical breathing as the hero card --- */
+  .hero { padding-top: var(--s-3); padding-bottom: var(--s-3); }
+
+  /* --- Tournament browser (3 dropdowns) stacks full-width below the trend chart --- */
+  #tabBar.tab-bar {
     flex-direction: column;
     align-items: stretch;
     gap: var(--s-2);
-    padding: var(--s-3) 0 var(--s-3);
+    padding: var(--s-2) 0;
   }
-  .tab-bar .drop-wrap { width: 100%; }
-  .cat-btn {
+  #tabBar.tab-bar .drop-wrap { width: 100%; }
+  #tabBar.tab-bar .cat-btn {
     width: 100%;
     justify-content: space-between;
     padding: 12px 16px;

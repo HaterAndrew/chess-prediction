@@ -2,6 +2,10 @@
 // ══════════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════════
+// Opt out of browser scroll-restoration. With the mobile reorientation
+// (round Path A) doing CSS-order shuffling, restored scroll positions from
+// prior visits land users mid-page on reload. Always start fresh at top.
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 let selectedIndex = 0;
 let chart = null;
 let histChartObj = null;
@@ -1270,6 +1274,8 @@ function initPuzzles() {
 function dismissSplash() {
   document.getElementById('splash').classList.add('hidden');
   setTimeout(() => document.getElementById('mainContent').classList.add('visible'), 100);
+  // Always land at the top of the dashboard, regardless of browser scroll-restoration.
+  window.scrollTo(0, 0);
 }
 
 function showSplash() {

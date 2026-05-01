@@ -265,6 +265,32 @@ window.addEventListener('resize', () => {
   if (typeof emailFormat !== 'undefined') applyEmailViewState();
 });
 
+// Re-apply mobile-aware chart options on viewport change (orientation flip,
+// devtools emulation toggle, browser resize). Without this, charts initialized
+// at one viewport keep their original tick density / time unit even after
+// the layout crosses the 640px breakpoint.
+let _chartResizeT;
+window.addEventListener('resize', () => {
+  clearTimeout(_chartResizeT);
+  _chartResizeT = setTimeout(() => {
+    const isM = _mobileVP();
+    if (chart && chart.options && chart.options.scales) {
+      const xs = chart.options.scales.x;
+      const ys = chart.options.scales.y;
+      if (xs && xs.time) {
+        xs.time.unit = isM ? 'month' : 'week';
+        xs.time.displayFormats = isM ? { month: 'MMM' } : { week: 'MMM d' };
+      }
+      if (xs && xs.ticks) xs.ticks.font = { size: isM ? 10 : 11 };
+      if (ys && ys.ticks) {
+        ys.ticks.font = { size: isM ? 10 : 11 };
+        ys.ticks.maxTicksLimit = isM ? 4 : 8;
+      }
+      chart.update('none');
+    }
+  }, 200);
+});
+
 function emailLastYear(t) {
   if (!t.historical || !t.historical.length) return null;
   return [...t.historical].sort((a, b) => b.year - a.year)[0];

@@ -2472,6 +2472,11 @@ function renderChart(t) {
       if (!isDone(t)) lines.push({ date: new Date(TOURNAMENT_DATA.generated + 'T00:00:00'), label: 'Today', color: '#58a6ff' });
       if (t.event_start) lines.push({ date: new Date(t.event_start + 'T00:00:00'), label: 'Event', color: '#f85149' });
 
+      const isMobile = _mobileVP();
+      const annoFont = isMobile ? 'bold 9px' : 'bold 11px';
+      const pillH = isMobile ? 14 : 16;
+      const pillYOff = isMobile ? 16 : 18;
+      const textYOff = isMobile ? 5 : 6;
       lines.forEach(line => {
         const x = xScale.getPixelForValue(line.date);
         if (x < xScale.left || x > xScale.right) return;
@@ -2486,14 +2491,13 @@ function renderChart(t) {
         ctx2.stroke();
         ctx2.setLineDash([]);
         ctx2.globalAlpha = 1;
-        ctx2.font = 'bold 11px -apple-system, system-ui, sans-serif';
+        ctx2.font = `${annoFont} -apple-system, system-ui, sans-serif`;
         ctx2.textAlign = 'center';
         // Draw background pill behind label
         const textW = ctx2.measureText(line.label).width;
         const pillX = x - textW / 2 - 5;
-        const pillY = yScale.top - 18;
+        const pillY = yScale.top - pillYOff;
         const pillW = textW + 10;
-        const pillH = 16;
         ctx2.fillStyle = 'rgba(13,17,23,0.85)';
         ctx2.beginPath();
         ctx2.roundRect(pillX, pillY, pillW, pillH, 4);
@@ -2505,7 +2509,7 @@ function renderChart(t) {
         ctx2.globalAlpha = 1;
         // Draw label text
         ctx2.fillStyle = line.color;
-        ctx2.fillText(line.label, x, yScale.top - 6);
+        ctx2.fillText(line.label, x, yScale.top - textYOff);
         ctx2.restore();
       });
     }

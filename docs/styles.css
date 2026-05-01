@@ -340,6 +340,28 @@ header {
 .delta-value.gold { color: var(--gold-bright); }
 .delta-value.red { color: var(--red); }
 
+/* ── Above-the-fold mobile decompression (< 640px) ── */
+@media (max-width: 639px) {
+  /* Summary bar duplicates info shown in the dropdown pills + mini-grid. Hide on phones. */
+  #summaryBar { display: none; }
+  /* Delta banner: tighter padding, smaller text, compact value */
+  .delta-banner {
+    padding: var(--s-2) var(--s-3);
+    margin: var(--s-3) 0;
+    gap: var(--s-2);
+  }
+  .delta-icon { font-size: 1rem; }
+  .delta-main { font-size: .85rem; }
+  .delta-sub { font-size: .7rem; line-height: 1.35; margin-top: 1px; }
+  .delta-value { font-size: 1.15rem; }
+  /* Pace alert: tighter when it shows */
+  #paceBannerArea > * { padding: var(--s-2) var(--s-3) !important; font-size: .82rem !important; }
+  /* Give the hero some breathing room from the dense controls above it */
+  .hero { padding-top: var(--s-4); padding-bottom: var(--s-3); }
+  /* Put a hair more space between the tab-bar pills and what's below */
+  .tab-bar { padding-bottom: var(--s-2); }
+}
+
 /* ══════════════════════════════════════════════════════
    HERO KPI
    ══════════════════════════════════════════════════════ */

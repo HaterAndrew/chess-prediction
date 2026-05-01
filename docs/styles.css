@@ -345,6 +345,8 @@ header {
   /* Summary bar duplicates info shown in the dropdown pills + mini-grid. Hide on phones.
      !important needed because the element has inline style="display:flex". */
   #summaryBar { display: none !important; }
+  /* "Updated: ..." timestamp is fine in desktop header but eats vertical space on phone. */
+  .header-meta { display: none; }
   /* Delta banner: tighter padding, smaller text, compact value */
   .delta-banner {
     padding: var(--s-2) var(--s-3);
@@ -357,10 +359,22 @@ header {
   .delta-value { font-size: 1.15rem; }
   /* Pace alert: tighter when it shows */
   #paceBannerArea > * { padding: var(--s-2) var(--s-3) !important; font-size: .82rem !important; }
-  /* Give the hero some breathing room from the dense controls above it */
+  /* Give the hero breathing room from the dense controls above it */
   .hero { padding-top: var(--s-4); padding-bottom: var(--s-3); }
-  /* Put a hair more space between the tab-bar pills and what's below */
-  .tab-bar { padding-bottom: var(--s-2); }
+  /* Stack dropdown pills full-width — no more wrapping onto two lines.
+     One clean row each. Drop-wrap needs width:100% so the pill fills. */
+  .tab-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--s-2);
+    padding: var(--s-3) 0 var(--s-3);
+  }
+  .tab-bar .drop-wrap { width: 100%; }
+  .cat-btn {
+    width: 100%;
+    justify-content: space-between;
+    padding: 12px 16px;
+  }
 }
 
 /* ══════════════════════════════════════════════════════

@@ -1906,6 +1906,36 @@ footer a { color: var(--muted); }
   }
 }
 
+/* ── Puzzles tab mobile polish (< 640px) — Round 32 ──
+   - Button row: 2-col grid; primary "Next" spans full width as the prominent CTA.
+   - Rating prominence: bump font-size, add letter-spacing.
+   - Info card: tighten padding, larger status text. */
+@media (max-width: 639px) {
+  .puzzle-layout { gap: var(--s-3); }
+  .puzzle-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+  }
+  .puzzle-nav .puzzle-btn {
+    width: 100%;
+    padding: 12px 12px;
+    font-size: .88rem;
+    margin: 0;
+  }
+  .puzzle-nav .puzzle-btn.primary { grid-column: 1 / -1; }
+  .puzzle-rating { font-size: 2.1rem; letter-spacing: -.5px; }
+  .puzzle-info { padding: var(--s-3); }
+  .puzzle-status { font-size: .92rem; min-height: 24px; margin: var(--s-2) 0; }
+  .puzzle-themes { gap: 4px; margin-top: 6px; }
+  .puzzle-theme-tag { font-size: .62rem; padding: 2px 8px; }
+  .puzzle-progress { gap: 4px; margin: var(--s-2) 0; }
+  .puzzle-dot { width: 9px; height: 9px; }
+  .puzzle-score { font-size: .76rem; }
+  .chess-board-wrap { max-width: 100%; }
+}
+
 /* ══════════════════════════════════════════════════════
    REDUCED MOTION
    ══════════════════════════════════════════════════════ */

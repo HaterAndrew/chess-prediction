@@ -390,20 +390,38 @@ header {
   /* --- Hero: a touch more vertical breathing as the hero card --- */
   .hero { padding-top: var(--s-3); padding-bottom: var(--s-3); }
 
-  /* --- Tournament browser (3 dropdowns) stacks full-width below the trend chart --- */
+  /* --- Tournament browser: slim horizontal chip strip (compact, all 3 visible) --- */
   #tabBar.tab-bar {
-    flex-direction: column;
+    flex-direction: row;
     align-items: stretch;
-    gap: var(--s-2);
+    gap: 6px;
     padding: var(--s-2) 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, #000, #000 calc(100% - 12px), transparent);
+    mask-image: linear-gradient(to right, #000, #000 calc(100% - 12px), transparent);
   }
-  #tabBar.tab-bar .drop-wrap { width: 100%; }
+  #tabBar.tab-bar::-webkit-scrollbar { display: none; }
+  #tabBar.tab-bar .drop-wrap { width: auto; flex-shrink: 0; }
   #tabBar.tab-bar .cat-btn {
-    width: 100%;
-    justify-content: space-between;
-    padding: 12px 16px;
+    width: auto;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 12px;
+    font-size: .78rem;
+    border-left-width: 0 !important;        /* override the inline 3px colored border */
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    min-height: 40px;
   }
+  #tabBar.tab-bar .cat-btn .cat-count { font-size: .62rem; padding: 1px 6px; }
+  #tabBar.tab-bar .cat-btn .cat-arrow { font-size: .5rem; }
 }
+
+/* Lock body scroll while a bottom-sheet drawer is open (feels native, prevents
+   the page from scrolling behind the drawer). Round 16 added the scrim; this
+   completes the modal lock. */
+body.drawer-open { overflow: hidden; touch-action: none; }
 
 /* ══════════════════════════════════════════════════════
    HERO KPI
@@ -1537,7 +1555,7 @@ footer a { color: var(--muted); }
     position: fixed;
     left: 0; right: 0; top: auto; bottom: 0;
     width: 100%; max-width: 100%;
-    max-height: 75vh;
+    max-height: 82vh;
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     box-shadow: 0 -8px 24px rgba(0,0,0,.4);
     padding-bottom: env(safe-area-inset-bottom);

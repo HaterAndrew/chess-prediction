@@ -99,6 +99,32 @@ h1 { font-size: 1.5rem; margin-bottom: 4px; }
 .btn-copy.copied {
   background: var(--green); color: #000; border-color: var(--green);
 }
+
+/* Editable greeting/sign-off */
+.field-row {
+  display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.field-group {
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.field-label {
+  font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--muted);
+}
+.text-field {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  width: 140px;
+}
+.text-field:focus {
+  outline: none; border-color: var(--gold);
+}
 .select-actions { display: flex; gap: 8px; margin-left: auto; }
 .select-actions button {
   font-size: 0.8rem; color: var(--blue); background: none;
@@ -150,6 +176,16 @@ h1 { font-size: 1.5rem; margin-bottom: 4px; }
 <div class="section">
   <div class="section-label">Options</div>
   <div class="card">
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label" for="greetingInput">Greeting</label>
+        <input type="text" id="greetingInput" class="text-field" value="Team" autocomplete="off">
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="signoffInput">Sign-off</label>
+        <input type="text" id="signoffInput" class="text-field" value="Dave" autocomplete="off">
+      </div>
+    </div>
     <div class="controls">
       <div class="length-toggle" id="lengthToggle">
         <button data-len="short" onclick="setLength('short')">Short</button>
@@ -190,6 +226,22 @@ function init() {
       <span class="meta">${t.days_remaining}d</span>
     `;
     grid.appendChild(el);
+  });
+
+  // Hydrate greeting / sign-off from localStorage and persist edits
+  const greetingInput = document.getElementById('greetingInput');
+  const signoffInput  = document.getElementById('signoffInput');
+  try {
+    const g = localStorage.getItem('emailgen.greeting');
+    const s = localStorage.getItem('emailgen.signoff');
+    if (g !== null) greetingInput.value = g;
+    if (s !== null) signoffInput.value = s;
+  } catch (e) { /* localStorage may be blocked on file:// */ }
+  greetingInput.addEventListener('input', e => {
+    try { localStorage.setItem('emailgen.greeting', e.target.value); } catch (e) {}
+  });
+  signoffInput.addEventListener('input', e => {
+    try { localStorage.setItem('emailgen.signoff', e.target.value); } catch (e) {}
   });
 }
 
@@ -248,6 +300,80 @@ function buildTable(headers, rows) {
   return [hdr, ...body].map(l => '    ' + l).join('\n');
 }
 
+// ── Variant pools and seeded picker ──
+// First entry in each pool is closest to Dave's existing wording; alternates rotate by day.
+
+const PHRASES = {
+  paceAhead: [
+    "we're ahead of pace",
+    "we're tracking ahead of last year's pace",
+    "we're running a bit ahead"
+  ],
+  paceBehind: [
+    "we're a bit behind",
+    "we're trailing last year's pace",
+    "slightly behind last year"
+  ],
+  lyMedAhead:  ["we're ahead", "we're tracking ahead", "we're ahead of that"],
+  lyMedBehind: ["we're still behind", "we're still trailing", "we're still off last year's pace"],
+  lyMedSlight: ["we're a little behind", "we're a touch behind", "we're slightly behind"],
+  lyLongStrongAhead: [
+    "the projection has us well ahead",
+    "that puts us well ahead of last year",
+    "we're well ahead of last year's mark"
+  ],
+  lyLongAhead:    ["we're tracking ahead", "we're running ahead of that", "we're ahead of last year's pace"],
+  lyLongClose:    ["we're in the same neighborhood", "we're roughly even", "we're about the same as last year"],
+  lyLongBehind:   ["we're still a bit behind", "we're still trailing a little", "we haven't caught up yet"],
+  lyLongLagging:  ["we're lagging", "we're well off last year's mark", "we're trailing badly"],
+  avgBelow: ["below the historical norm", "still below the norm", "under the historical average"],
+  avgAbove: ["trending above average", "running above the historical average", "above the long-run norm"],
+  themeSteady: [
+    "Things are holding steady across the board.",
+    "Pretty steady across the board this week.",
+    "Holding steady across the board."
+  ],
+  themeAllUp: [
+    "Improvement across the board.",
+    "Good news across the board — we're up everywhere.",
+    "Up across the board."
+  ],
+  themeAllDown: [
+    "Still lagging across the board.",
+    "We're behind everywhere.",
+    "Lagging across the board."
+  ],
+  themeMixedUp: [
+    "Mixed bag — some improvement, but we're still behind on a few events.",
+    "A mixed picture — improvement on most, still off on a few.",
+    "Mostly improving, but a few events are still behind."
+  ],
+  themeMixedDown: [
+    "Some improvement, but we're still lagging overall.",
+    "A bit of improvement, but more events are still behind than ahead.",
+    "Some bright spots, but we're still trailing on the majority."
+  ]
+};
+
+function dayOfYear(d = new Date()) {
+  const start = new Date(d.getFullYear(), 0, 0);
+  return Math.floor((d - start) / 86400000);
+}
+
+function hashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+function seedFor(t, len, salt = '') {
+  return hashStr(t.family + len + dayOfYear() + salt);
+}
+
+function pick(pool, seed) {
+  return pool[seed % pool.length];
+}
+
 // ── Email generation in Dave's voice ──
 
 function formatTournament(t, len) {
@@ -256,39 +382,42 @@ function formatTournament(t, len) {
   const pace = t.prior_year_pace;
   const name = t.family.toUpperCase();
   const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
+  const seedFn = (salt) => seedFor(t, len, salt);
+  const headline = `${name}:  We're at ${t.current_count}, projecting to ${t.point_estimate} (${t.ci_lower}-${t.ci_upper}).`;
+
+  function paceLine() {
+    if (!pace) return null;
+    const d = t.current_count - pace.count_at_same_point;
+    const base = `Same point last year: ${pace.count_at_same_point} (finished ${pace.final})`;
+    if (d > 0) return `${base} — ${pick(PHRASES.paceAhead, seedFn('pace'))}.`;
+    if (d < 0) return `${base} — ${pick(PHRASES.paceBehind, seedFn('pace'))}.`;
+    return `${base}.`;
+  }
 
   // ── SHORT ──
   if (len === 'short') {
     const lines = [];
-    let s = `${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`;
-    if (ly) s += `  Last year was ${ly.count}.`;
+    let s = headline;
+    if (ly) s += `  Last year: ${ly.count}.`;
     lines.push(s);
-    if (pace) {
-      const d = t.current_count - pace.count_at_same_point;
-      if (d > 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`);
-      else if (d < 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`);
-      else lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
-    }
+    const p = paceLine();
+    if (p) lines.push(p);
     return lines.join('  ');
   }
 
   // ── MEDIUM ──
   if (len === 'medium') {
     const lines = [];
-    lines.push(`${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`);
+    lines.push(headline);
     if (ly) {
       const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
-      if (pct > 10) lines.push(`Last year was ${ly.count}, so we are ahead.`);
-      else if (pct < -10) lines.push(`Last year was ${ly.count}, so we are still behind.`);
-      else if (pct < -3) lines.push(`Last year was ${ly.count}, so we are a little behind.`);
-      else lines.push(`Last year was ${ly.count}.`);
+      if (pct > 10)       lines.push(`Last year was ${ly.count}, so ${pick(PHRASES.lyMedAhead, seedFn('ly'))}.`);
+      else if (pct < -10) lines.push(`Last year was ${ly.count}, so ${pick(PHRASES.lyMedBehind, seedFn('ly'))}.`);
+      else if (pct < -3)  lines.push(`Last year was ${ly.count}, so ${pick(PHRASES.lyMedSlight, seedFn('ly'))}.`);
+      else                lines.push(`Last year was ${ly.count}.`);
     }
-    if (pace) {
-      const d = t.current_count - pace.count_at_same_point;
-      if (d > 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are ahead of pace.`);
-      else if (d < 0) lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}, so we are a bit behind.`);
-      else lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
-    }
+    const p = paceLine();
+    if (p) lines.push(p);
     if (sorted.length >= 2) {
       const rows = [['2026', t.current_count, t.point_estimate, '']];
       sorted.forEach(h => rows.push([String(h.year), '', '', h.count]));
@@ -300,33 +429,30 @@ function formatTournament(t, len) {
 
   // ── LONG ──
   const lines = [];
-  lines.push(`${name}:  We are at ${t.current_count} entries which projects to ${t.point_estimate} with a range of ${t.ci_lower} to ${t.ci_upper}.`);
+  lines.push(headline);
   if (ly) {
     const pct = Math.round((t.point_estimate - ly.count) / ly.count * 100);
-    if (pct > 15) lines.push(`Last year was ${ly.count}, so the projection has us well ahead.`);
-    else if (pct > 5) lines.push(`Last year was ${ly.count}, so we are tracking ahead.`);
-    else if (pct > -5) lines.push(`Last year was ${ly.count}, so we are in the same neighborhood.`);
-    else if (pct > -15) lines.push(`Last year was ${ly.count}, so we are still a bit behind.`);
-    else lines.push(`Last year was ${ly.count}, so we are lagging.`);
+    if (pct > 15)       lines.push(`Last year was ${ly.count}, so ${pick(PHRASES.lyLongStrongAhead, seedFn('ly'))}.`);
+    else if (pct > 5)   lines.push(`Last year was ${ly.count}, so ${pick(PHRASES.lyLongAhead, seedFn('ly'))}.`);
+    else if (pct > -5)  lines.push(`Last year was ${ly.count}, so ${pick(PHRASES.lyLongClose, seedFn('ly'))}.`);
+    else if (pct > -15) lines.push(`Last year was ${ly.count}, so ${pick(PHRASES.lyLongBehind, seedFn('ly'))}.`);
+    else                lines.push(`Last year was ${ly.count}, so ${pick(PHRASES.lyLongLagging, seedFn('ly'))}.`);
   }
   if (avg && sorted.length >= 3) {
     const pct = Math.round((t.point_estimate - avg) / avg * 100);
-    if (pct < -10) lines.push(`The historical average is ${avg}, so we are still below the norm.`);
-    else if (pct > 10) lines.push(`The historical average is ${avg}, so we are trending above average.`);
+    if (pct < -10)     lines.push(`The historical average is ${avg}, so we're ${pick(PHRASES.avgBelow, seedFn('avg'))}.`);
+    else if (pct > 10) lines.push(`The historical average is ${avg}, so we're ${pick(PHRASES.avgAbove, seedFn('avg'))}.`);
   }
-  if (pace) {
-    const d = t.current_count - pace.count_at_same_point;
-    lines.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}` +
-      (d > 0 ? `, so we are ahead of pace.` : d < 0 ? `, so we are behind.` : `.`));
-  }
+  const p = paceLine();
+  if (p) lines.push(p);
   if (sorted.length >= 3) {
     const counts = sorted.map(h => h.count);
     const worst = Math.min(...counts);
     const best = Math.max(...counts);
     const worstYr = sorted.find(h => h.count === worst).year;
     const bestYr = sorted.find(h => h.count === best).year;
-    if (t.point_estimate < worst) lines.push(`The last time we were this low was ${worstYr} when we got ${worst}.`);
-    else if (t.point_estimate > best) lines.push(`If we hit the projection, it would be the best year since at least ${bestYr} (${best}).`);
+    if (t.point_estimate < worst) lines.push(`Last time we were this low was ${worstYr} (${worst}).`);
+    else if (t.point_estimate > best) lines.push(`If we hit the projection, that'd be the best year since at least ${bestYr} (${best}).`);
   }
   if (sorted.length >= 2) {
     const rows = [['2026', t.current_count, t.point_estimate, `${t.ci_lower}-${t.ci_upper}`, '']];
@@ -349,12 +475,13 @@ function generateOverallTheme(selected) {
     else if (pct < -0.05) behind++;
   });
 
+  const seed = hashStr(selected.map(t => t.family).join('|') + dayOfYear());
   const total = ahead + behind;
-  if (total === 0) return 'Things are holding steady across the board.';
-  if (behind === 0) return 'The overall theme is improvement across the board.';
-  if (ahead === 0) return 'The overall theme is we are still lagging across the board.';
-  if (ahead >= behind) return 'The overall theme is a mixed bag \u2014 some improvement, but we are still behind on a few events.';
-  return 'The overall theme today is there has been some improvement, but we are still lagging.';
+  if (total === 0) return pick(PHRASES.themeSteady, seed);
+  if (behind === 0) return pick(PHRASES.themeAllUp, seed);
+  if (ahead === 0) return pick(PHRASES.themeAllDown, seed);
+  if (ahead >= behind) return pick(PHRASES.themeMixedUp, seed);
+  return pick(PHRASES.themeMixedDown, seed);
 }
 
 function generate() {
@@ -367,7 +494,10 @@ function generate() {
   const len = selectedLength;
   const lines = [];
 
-  lines.push('Team');
+  const greeting = (document.getElementById('greetingInput').value || '').trim() || 'Team';
+  const signoff  = (document.getElementById('signoffInput').value  || '').trim() || 'Dave';
+
+  lines.push(greeting);
   lines.push('');
 
   // Theme line for medium and long
@@ -383,13 +513,10 @@ function generate() {
   });
 
   lines.push('');
-  lines.push('Dave');
+  lines.push(signoff);
 
   document.getElementById('output').textContent = lines.join('\n');
-  // Reset copy button
-  const btn = document.getElementById('copyBtn');
-  btn.textContent = 'Copy to clipboard';
-  btn.classList.remove('copied');
+  copyOutput();
 }
 
 function copyOutput() {

@@ -342,8 +342,9 @@ header {
 
 /* ── Above-the-fold mobile decompression (< 640px) ── */
 @media (max-width: 639px) {
-  /* Summary bar duplicates info shown in the dropdown pills + mini-grid. Hide on phones. */
-  #summaryBar { display: none; }
+  /* Summary bar duplicates info shown in the dropdown pills + mini-grid. Hide on phones.
+     !important needed because the element has inline style="display:flex". */
+  #summaryBar { display: none !important; }
   /* Delta banner: tighter padding, smaller text, compact value */
   .delta-banner {
     padding: var(--s-2) var(--s-3);

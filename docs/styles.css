@@ -535,6 +535,27 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 }
 
 /* ══════════════════════════════════════════════════════
+   MOBILE CHART COMPACTNESS (< 640px)
+   ──────────────────────────────────────────────────────
+   Reclaim chrome (title/legend/card padding) so the actual plot area
+   gets more screen real estate. Also widen the tournament label cap
+   to fit "Chicago Open 2026 ▾" without ellipsis.
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 639px) {
+  /* Header tournament label: 16ch was tight once we added the chevron after. */
+  .header-tourn-label #tournLabel { max-width: 19ch; }
+  /* Tighter chart-card padding gives the canvas ≈16px more horizontal room. */
+  .chart-card { padding: var(--s-3); }
+  /* More plot area on mobile (was 260px). With title+legend ~75px overhead,
+     this gives ≈225px of actual chart vs ≈185px before. */
+  .chart-wrap { height: 300px; }
+  /* Subtitle smaller — mobile users can tap to see full context. */
+  .chart-subtitle { font-size: .7rem; }
+  /* Compare/hist chart inline-height divs also need the bump. */
+  #histChart, #regCurveChart { /* canvas inherits parent height attr */ }
+}
+
+/* ══════════════════════════════════════════════════════
    HERO KPI
    ══════════════════════════════════════════════════════ */
 .hero {

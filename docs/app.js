@@ -2141,6 +2141,44 @@ function renderHero(t) {
     <div class="kpi-sub">No pace data</div>
   `;
 
+  // 4th card — Progress to predicted final (mobile fills 2x2 grid cleanly)
+  const kpiProg = document.getElementById('kpiProgress');
+  if (kpiProg) {
+    if (isDone(t)) {
+      // For complete tournaments, show YoY change vs last year
+      const lastYr = emailLastYear ? emailLastYear(t) : null;
+      if (lastYr && lastYr.count) {
+        const diff = t.current_count - lastYr.count;
+        const pct = ((diff / lastYr.count) * 100).toFixed(0);
+        kpiProg.innerHTML = `
+          <div class="kpi-label">vs ${lastYr.year}</div>
+          <div class="kpi-value ${diff >= 0 ? 'v-green' : 'v-red'}">${diff >= 0 ? '+' : ''}${pct}%</div>
+          <div class="kpi-sub">${fmt(lastYr.count)} prior</div>
+        `;
+      } else {
+        kpiProg.innerHTML = `
+          <div class="kpi-label">Status</div>
+          <div class="kpi-value v-green" style="font-size:1.1rem">Final</div>
+          <div class="kpi-sub">${fmtDate(t.event_start)}</div>
+        `;
+      }
+    } else if (t.point_estimate > 0) {
+      const pct = Math.min(100, Math.round(t.current_count / t.point_estimate * 100));
+      const color = pct >= 80 ? 'v-green' : pct >= 40 ? 'v-gold' : 'v-blue';
+      kpiProg.innerHTML = `
+        <div class="kpi-label">Progress</div>
+        <div class="kpi-value ${color}">${pct}%</div>
+        <div class="kpi-sub">of predicted</div>
+      `;
+    } else {
+      kpiProg.innerHTML = `
+        <div class="kpi-label">Progress</div>
+        <div class="kpi-value" style="font-size:1.1rem;color:var(--muted)">–</div>
+        <div class="kpi-sub">No prediction</div>
+      `;
+    }
+  }
+
   // ── Last 7 days breakdown ──
   const weekEl = document.getElementById('weekBreakdown');
   const barsEl = document.getElementById('weekBars');
@@ -2468,9 +2506,12 @@ function renderChart(t) {
       const xScale = chartInstance.scales.x;
       const yScale = chartInstance.scales.y;
       const lines = [];
-      if (t.early_bird_deadline) lines.push({ date: new Date(t.early_bird_deadline + 'T00:00:00'), label: 'Early Bird', color: '#3fb950' });
+      const _isM = _mobileVP();
+      // On mobile, only the Today line — Early Bird and Event labels overlap on
+      // narrow screens (the days-to-event KPI card tells the user already).
+      if (!_isM && t.early_bird_deadline) lines.push({ date: new Date(t.early_bird_deadline + 'T00:00:00'), label: 'Early Bird', color: '#3fb950' });
       if (!isDone(t)) lines.push({ date: new Date(TOURNAMENT_DATA.generated + 'T00:00:00'), label: 'Today', color: '#58a6ff' });
-      if (t.event_start) lines.push({ date: new Date(t.event_start + 'T00:00:00'), label: 'Event', color: '#f85149' });
+      if (!_isM && t.event_start) lines.push({ date: new Date(t.event_start + 'T00:00:00'), label: 'Event', color: '#f85149' });
 
       const isMobile = _mobileVP();
       const annoFont = isMobile ? 'bold 9px' : 'bold 11px';

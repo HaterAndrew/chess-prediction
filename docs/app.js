@@ -10,6 +10,7 @@ let histChartObj = null;
 // ══════════════════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════════════════
+function _mobileVP() { return window.matchMedia('(max-width: 639px)').matches; }
 function hideSkeletons() {
   document.querySelectorAll('.skeleton').forEach(el => el.style.display = 'none');
   const loader = document.getElementById('skeletonLoader');
@@ -101,8 +102,14 @@ function switchPageTab(tab, skipHash) {
   _currentTab = tab;
   document.querySelectorAll('.page-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
   document.querySelectorAll('.page-tab-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('ptab-' + tab).classList.add('active');
-  document.getElementById('ptab-' + tab).setAttribute('aria-selected', 'true');
+  const tabBtn = document.getElementById('ptab-' + tab);
+  tabBtn.classList.add('active');
+  tabBtn.setAttribute('aria-selected', 'true');
+  // Scroll active tab into view only when the strip actually overflows
+  const tabsContainer = tabBtn.closest('.page-tabs');
+  if (tabsContainer && tabsContainer.scrollWidth > tabsContainer.clientWidth + 1) {
+    tabBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
   const panel = document.getElementById('panel-' + tab);
   panel.classList.add('active');
   if (tab === 'puzzles') initPuzzles();
@@ -116,6 +123,33 @@ function switchPageTab(tab, skipHash) {
   panel.focus({ preventScroll: true });
   if (!skipHash) updateHash();
 }
+
+// Mobile swipe-between-tabs navigation
+const PAGE_TAB_ORDER = ['predictions', 'dataentry', 'compare', 'email', 'performance', 'about', 'puzzles'];
+(function setupSwipeNav() {
+  if (typeof window === 'undefined' || !('ontouchstart' in window)) return;
+  let startX = 0, startY = 0, startT = 0;
+  const SWIPE_THRESHOLD = 60, VERTICAL_LIMIT = 50, TIME_LIMIT = 500, EDGE_GUARD = 28;
+  const ignoreIn = el => !!(el && el.closest && el.closest('canvas, .tourney-table-wrap, .compare-chart-wrap, .drop-menu, .tab-search-panel, .email-output, .email-preview, iframe, .chess-board, .de-table input'));
+  document.addEventListener('touchstart', e => {
+    if (!_mobileVP() || e.touches.length !== 1) return;
+    const t = e.touches[0];
+    if (t.clientX < EDGE_GUARD || t.clientX > window.innerWidth - EDGE_GUARD) return;
+    if (ignoreIn(e.target)) { startX = 0; return; }
+    startX = t.clientX; startY = t.clientY; startT = Date.now();
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (!startX) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - startX, dy = t.clientY - startY, dt = Date.now() - startT;
+    startX = 0;
+    if (dt > TIME_LIMIT || Math.abs(dy) > VERTICAL_LIMIT || Math.abs(dx) < SWIPE_THRESHOLD) return;
+    const idx = PAGE_TAB_ORDER.indexOf(_currentTab);
+    if (idx < 0) return;
+    if (dx < 0 && idx < PAGE_TAB_ORDER.length - 1) switchPageTab(PAGE_TAB_ORDER[idx + 1]);
+    else if (dx > 0 && idx > 0) switchPageTab(PAGE_TAB_ORDER[idx - 1]);
+  }, { passive: true });
+})();
 
 // ══════════════════════════════════════════════════════════
 // EMAIL GENERATOR
@@ -177,20 +211,55 @@ function setEmailFormat(fmt) {
   document.querySelectorAll('#emailFormatToggle button').forEach(b => {
     b.classList.toggle('active', b.dataset.fmt === fmt);
   });
-  // Toggle output mode styling + preview visibility
+  applyEmailViewState();
+}
+
+function setEmailSplitTab(tab) {
+  const split = document.getElementById('emailSplit');
+  if (!split) return;
+  split.dataset.tab = tab;
+  document.querySelectorAll('#emailSplitTabs .email-split-tab').forEach(btn => {
+    const active = btn.dataset.tab === tab;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  applyEmailViewState();
+}
+
+function applyEmailViewState() {
   const out = document.getElementById('emailOutput');
   const pv = document.getElementById('emailPreview');
+  const split = document.getElementById('emailSplit');
+  const tabs = document.getElementById('emailSplitTabs');
   const copyHtmlBtn = document.getElementById('emailCopyHtmlBtn');
-  if (fmt === 'html') {
+  if (!out || !pv) return;
+  const tab = (split && split.dataset.tab) || 'source';
+  const isMobile = window.matchMedia('(max-width: 639px)').matches;
+
+  if (emailFormat === 'html') {
     out.classList.add('mode-html');
-    pv.style.display = '';
     if (copyHtmlBtn) copyHtmlBtn.style.display = '';
+    if (isMobile) {
+      if (tabs) tabs.style.display = '';
+      out.style.display = (tab === 'source') ? '' : 'none';
+      pv.style.display = (tab === 'preview') ? '' : 'none';
+    } else {
+      if (tabs) tabs.style.display = 'none';
+      out.style.display = '';
+      pv.style.display = '';
+    }
   } else {
     out.classList.remove('mode-html');
-    pv.style.display = 'none';
     if (copyHtmlBtn) copyHtmlBtn.style.display = 'none';
+    if (tabs) tabs.style.display = 'none';
+    out.style.display = '';
+    pv.style.display = 'none';
   }
 }
+
+window.addEventListener('resize', () => {
+  if (typeof emailFormat !== 'undefined') applyEmailViewState();
+});
 
 function emailLastYear(t) {
   if (!t.historical || !t.historical.length) return null;
@@ -1495,6 +1564,7 @@ function toggleDrop(which, e) {
   btn.setAttribute('aria-expanded', 'true');
   const menu = document.getElementById('dropMenu_' + which);
   menu.style.display = 'block';
+  document.body.classList.add('drawer-open');
   if (which === 'hist') {
     const inp = document.getElementById('histSearchInput');
     inp.value = '';
@@ -1515,6 +1585,7 @@ function closeDrop() {
   const menu = document.getElementById('dropMenu_' + openDrop);
   if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
   if (menu) menu.style.display = 'none';
+  document.body.classList.remove('drawer-open');
   _kbHighlightIdx = -1;
   _kbTypeBuffer = '';
   openDrop = null;
@@ -2495,15 +2566,15 @@ function renderChart(t) {
           type: 'time',
           time: { unit: 'week', displayFormats: { week: 'MMM d' } },
           grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false },
-          ticks: { color: '#8b949e', font: { size: 11 } }
+          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, maxRotation: 0 }
         },
         y: {
           beginAtZero: true,
           grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false },
-          ticks: { color: '#8b949e', font: { size: 11 }, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
+          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
         }
       },
-      layout: { padding: { top: 18 } }
+      layout: { padding: { top: _mobileVP() ? 8 : 18 } }
     }
   });
 
@@ -2786,7 +2857,7 @@ function renderHistorical(t) {
     const cls = diff > 0 ? 'delta-pos' : diff < 0 ? 'delta-neg' : '';
     const yearLabel = h.isCurrent ? `${h.year} ${isDone(t) ? '(final)' : '(est)'}` : String(h.year);
     const rowClass = h.isCurrent ? ' class="current-year"' : '';
-    return `<tr${rowClass}><td>${yearLabel}</td><td>${fmt(h.count)}</td><td class="${cls}">${diff != null ? (diff > 0 ? '+' : '') + fmt(diff) : '–'}</td><td class="${cls}">${pct != null ? (diff > 0 ? '+' : '') + pct + '%' : '–'}</td></tr>`;
+    return `<tr${rowClass}><td data-label="Year">${yearLabel}</td><td data-label="Count">${fmt(h.count)}</td><td data-label="YoY" class="${cls}">${diff != null ? (diff > 0 ? '+' : '') + fmt(diff) : '–'}</td><td data-label="Change" class="${cls}">${pct != null ? (diff > 0 ? '+' : '') + pct + '%' : '–'}</td></tr>`;
   }).join('');
 
   wrap.innerHTML = `
@@ -3082,13 +3153,13 @@ function renderAllTournaments() {
     }
 
     return `<tr onclick="selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})" onkeydown="if(event.key==='Enter'){selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})}" tabindex="0" style="cursor:pointer">
-      <td><div class="t-name">${esc(t.family)}</div><div class="t-sub">${t.year}${isLive ? ' · ' + t.days_remaining + 'd out' : ''}</div></td>
-      <td>${pill}</td>
-      <td>${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
-      <td style="font-weight:600;color:var(--blue)">${fmt(t.current_count)} ${paceStr}</td>
-      <td style="font-weight:700;color:var(--gold)">${fmt(t.point_estimate)}</td>
-      <td style="font-size:.82rem;color:var(--muted)">${ci}</td>
-      <td>
+      <td data-label="Tournament"><div class="t-name">${esc(t.family)}</div><div class="t-sub">${t.year}${isLive ? ' · ' + t.days_remaining + 'd out' : ''}</div></td>
+      <td data-label="Status">${pill}</td>
+      <td data-label="Event Date">${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
+      <td data-label="Current" style="font-weight:600;color:var(--blue)">${fmt(t.current_count)} ${paceStr}</td>
+      <td data-label="Predicted" style="font-weight:700;color:var(--gold)">${fmt(t.point_estimate)}</td>
+      <td data-label="80% CI" style="font-size:.82rem;color:var(--muted)">${ci}</td>
+      <td data-label="Progress">
         <span class="pace-bar-wrap"><span class="pace-bar-fill" style="width:${pct}%;background:${paceColor}"></span></span>
         <span style="font-size:.72rem;color:var(--muted)">${pct}%</span>
       </td>
@@ -3491,13 +3562,13 @@ function renderDataEntry() {
     const regFee = o.regular_fee !== undefined ? o.regular_fee : (t.regular_fee || '');
     const onsiteFee = o.onsite_fee !== undefined ? o.onsite_fee : (t.onsite_fee || '');
     return `<tr>
-      <td class="fam-name">${esc(t.family)}</td>
-      <td><input type="number" data-family="${esc(t.family)}" data-field="current_count" value="${entries}" min="0"></td>
-      <td><input type="date" data-family="${esc(t.family)}" data-field="event_start" value="${start}"></td>
-      <td><input type="date" data-family="${esc(t.family)}" data-field="early_bird_deadline" value="${ebDeadline}"></td>
-      <td><input type="number" data-family="${esc(t.family)}" data-field="early_bird_fee" value="${ebFee}" min="0"></td>
-      <td><input type="number" data-family="${esc(t.family)}" data-field="regular_fee" value="${regFee}" min="0"></td>
-      <td><input type="number" data-family="${esc(t.family)}" data-field="onsite_fee" value="${onsiteFee}" min="0"></td>
+      <td class="fam-name" data-label="Tournament">${esc(t.family)}</td>
+      <td data-label="Entries"><input type="number" data-family="${esc(t.family)}" data-field="current_count" value="${entries}" min="0"></td>
+      <td data-label="Event Start"><input type="date" data-family="${esc(t.family)}" data-field="event_start" value="${start}"></td>
+      <td data-label="Early Bird Deadline"><input type="date" data-family="${esc(t.family)}" data-field="early_bird_deadline" value="${ebDeadline}"></td>
+      <td data-label="Early Bird Fee"><input type="number" data-family="${esc(t.family)}" data-field="early_bird_fee" value="${ebFee}" min="0"></td>
+      <td data-label="Reg Fee"><input type="number" data-family="${esc(t.family)}" data-field="regular_fee" value="${regFee}" min="0"></td>
+      <td data-label="Onsite Fee"><input type="number" data-family="${esc(t.family)}" data-field="onsite_fee" value="${onsiteFee}" min="0"></td>
     </tr>`;
   }).join('');
 }
@@ -3790,8 +3861,8 @@ function renderCompareTab() {
     ];
 
     rows.forEach(row => {
-      statsHTML += `<tr><td class="compare-stat-label">${row.label}</td>`;
-      selected.forEach(s => { statsHTML += `<td>${row.fn(s.t)}</td>`; });
+      statsHTML += `<tr><td class="compare-stat-label" data-stat="${esc(row.label)}">${row.label}</td>`;
+      selected.forEach(s => { statsHTML += `<td data-label="${esc(s.t.family)} ${s.t.year}">${row.fn(s.t)}</td>`; });
       statsHTML += '</tr>';
     });
     statsHTML += '</tbody></table></div>';
@@ -3907,15 +3978,15 @@ function renderCompareChart(selected) {
         x: {
           type: 'linear',
           reverse: true,
-          title: { display: true, text: 'Days Before Event', color: 'rgba(139,148,158,0.8)', font: { size: 11 } },
-          ticks: { color: 'rgba(139,148,158,0.6)', font: { size: 10 },
+          title: { display: !_mobileVP(), text: 'Days Before Event', color: 'rgba(139,148,158,0.8)', font: { size: 11 } },
+          ticks: { color: 'rgba(139,148,158,0.6)', font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 5 : 8, maxRotation: 0,
             callback(v) { return v === 0 ? 'Event' : v + 'd'; }
           },
           grid: { color: 'rgba(48,54,61,0.4)' }
         },
         y: {
-          title: { display: true, text: '% of Final Entries', color: 'rgba(139,148,158,0.8)', font: { size: 11 } },
-          ticks: { color: 'rgba(139,148,158,0.6)', font: { size: 10 },
+          title: { display: !_mobileVP(), text: '% of Final Entries', color: 'rgba(139,148,158,0.8)', font: { size: 11 } },
+          ticks: { color: 'rgba(139,148,158,0.6)', font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 5 : 8,
             callback(v) { return v + '%'; }
           },
           grid: { color: 'rgba(48,54,61,0.4)' },
@@ -3927,7 +3998,9 @@ function renderCompareChart(selected) {
           display: true,
           labels: {
             color: '#c9d1d9',
-            font: { size: 11 },
+            font: { size: _mobileVP() ? 10 : 11 },
+            boxWidth: _mobileVP() ? 8 : 12,
+            padding: _mobileVP() ? 6 : 10,
             filter(item) { return !item.text.includes('— Today'); },
             usePointStyle: true, pointStyle: 'line'
           }

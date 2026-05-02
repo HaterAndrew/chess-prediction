@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-01",
+  "generated": "2026-05-02",
   "model": "N5v4_Final",
   "n_tournaments": 12,
   "grade": "A",
@@ -1155,11 +1155,11 @@
             {
               "T": 7,
               "count_at_T": 134,
-              "predicted": 304,
+              "predicted": 305,
               "ci_lower": 237,
               "ci_upper": 391,
-              "error_pct": -22.3,
-              "abs_error_pct": 22.3,
+              "error_pct": -22.0,
+              "abs_error_pct": 22.0,
               "in_ci": 1
             },
             {
@@ -1465,7 +1465,7 @@
               "count_at_T": 10,
               "predicted": 368,
               "ci_lower": 238,
-              "ci_upper": 568,
+              "ci_upper": 569,
               "error_pct": 6.4,
               "abs_error_pct": 6.4,
               "in_ci": 1
@@ -1781,11 +1781,11 @@
             {
               "T": 60,
               "count_at_T": 13,
-              "predicted": 278,
+              "predicted": 279,
               "ci_lower": 180,
               "ci_upper": 430,
-              "error_pct": -15.2,
-              "abs_error_pct": 15.2,
+              "error_pct": -14.9,
+              "abs_error_pct": 14.9,
               "in_ci": 1
             },
             {
@@ -1996,7 +1996,7 @@
               "T": 7,
               "count_at_T": 196,
               "predicted": 471,
-              "ci_lower": 368,
+              "ci_lower": 369,
               "ci_upper": 603,
               "error_pct": 5.8,
               "abs_error_pct": 5.8,
@@ -2044,7 +2044,7 @@
               "count_at_T": 239,
               "predicted": 959,
               "ci_lower": 621,
-              "ci_upper": 1482,
+              "ci_upper": 1483,
               "error_pct": -0.1,
               "abs_error_pct": 0.1,
               "in_ci": 1
@@ -2324,7 +2324,7 @@
               "T": 7,
               "count_at_T": 813,
               "predicted": 1232,
-              "ci_lower": 972,
+              "ci_lower": 973,
               "ci_upper": 1561,
               "error_pct": -6.9,
               "abs_error_pct": 6.9,
@@ -3872,7 +3872,7 @@
               "count_at_T": 288,
               "predicted": 1088,
               "ci_lower": 703,
-              "ci_upper": 1685,
+              "ci_upper": 1686,
               "error_pct": -2.4,
               "abs_error_pct": 2.4,
               "in_ci": 1
@@ -4210,7 +4210,7 @@
               "count_at_T": 7,
               "predicted": 411,
               "ci_lower": 266,
-              "ci_upper": 634,
+              "ci_upper": 635,
               "error_pct": 12.0,
               "abs_error_pct": 12.0,
               "in_ci": 1
@@ -11524,11 +11524,11 @@
           {
             "T": 7,
             "count_at_T": 134,
-            "predicted": 304,
+            "predicted": 305,
             "ci_lower": 237,
             "ci_upper": 391,
-            "error_pct": -22.3,
-            "abs_error_pct": 22.3,
+            "error_pct": -22.0,
+            "abs_error_pct": 22.0,
             "in_ci": 1
           },
           {
@@ -11834,7 +11834,7 @@
             "count_at_T": 10,
             "predicted": 368,
             "ci_lower": 238,
-            "ci_upper": 568,
+            "ci_upper": 569,
             "error_pct": 6.4,
             "abs_error_pct": 6.4,
             "in_ci": 1
@@ -12150,11 +12150,11 @@
           {
             "T": 60,
             "count_at_T": 13,
-            "predicted": 278,
+            "predicted": 279,
             "ci_lower": 180,
             "ci_upper": 430,
-            "error_pct": -15.2,
-            "abs_error_pct": 15.2,
+            "error_pct": -14.9,
+            "abs_error_pct": 14.9,
             "in_ci": 1
           },
           {
@@ -12365,7 +12365,7 @@
             "T": 7,
             "count_at_T": 196,
             "predicted": 471,
-            "ci_lower": 368,
+            "ci_lower": 369,
             "ci_upper": 603,
             "error_pct": 5.8,
             "abs_error_pct": 5.8,
@@ -12413,7 +12413,7 @@
             "count_at_T": 239,
             "predicted": 959,
             "ci_lower": 621,
-            "ci_upper": 1482,
+            "ci_upper": 1483,
             "error_pct": -0.1,
             "abs_error_pct": 0.1,
             "in_ci": 1
@@ -12693,7 +12693,7 @@
             "T": 7,
             "count_at_T": 813,
             "predicted": 1232,
-            "ci_lower": 972,
+            "ci_lower": 973,
             "ci_upper": 1561,
             "error_pct": -6.9,
             "abs_error_pct": 6.9,
@@ -14241,7 +14241,7 @@
             "count_at_T": 288,
             "predicted": 1088,
             "ci_lower": 703,
-            "ci_upper": 1685,
+            "ci_upper": 1686,
             "error_pct": -2.4,
             "abs_error_pct": 2.4,
             "in_ci": 1
@@ -14579,7 +14579,7 @@
             "count_at_T": 7,
             "predicted": 411,
             "ci_lower": 266,
-            "ci_upper": 634,
+            "ci_upper": 635,
             "error_pct": 12.0,
             "abs_error_pct": 12.0,
             "in_ci": 1

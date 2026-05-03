@@ -565,7 +565,7 @@
     <div class="splash-eyebrow">CCA · Powered by AI</div>
     <div class="splash-title">Chess Tournament<br><em>Predictor</em></div>
     <div class="splash-divider"></div>
-    <div class="splash-tagline">Double-sigmoid entry forecasting for tournament directors — built on real CCA registration data.</div>
+    <div class="splash-tagline">Double-sigmoid entry forecasting for tournament directors: built on real CCA registration data.</div>
     <div class="splash-stats">
       <div class="splash-stat">
         <div class="splash-stat-num gold" id="ss-tournaments">0</div>
@@ -650,7 +650,7 @@
   <!-- Delta Banner (Primary KPI) -->
   <div class="delta-banner green" id="delta-banner">
     <div>
-      <div class="delta-main" id="delta-main">✓ Tracking on model — registrations matching predicted trajectory</div>
+      <div class="delta-main" id="delta-main">✓ Tracking on model: registrations matching predicted trajectory</div>
       <div class="delta-sub" id="delta-sub">Current 20 vs. model prediction of 20 entries today</div>
     </div>
     <div id="delta-right" style="margin-left:auto;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px">
@@ -764,7 +764,7 @@
 
       </div>
 
-      <!-- Model Parameters — full width -->
+      <!-- Model Parameters: full width -->
       <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
         <div class="override-section-title" style="margin-bottom:10px">Model Parameters</div>
         <div class="ov-params-grid" style="grid-template-columns:repeat(6,1fr);gap:8px">
@@ -797,7 +797,7 @@
 
       <div class="ov-footer">
         <button class="ov-reset-btn" onclick="resetManualOverrides()">↺ Reset to Defaults</button>
-        <span class="ov-active-msg" id="ov-active-msg" style="display:none">⚠ Overrides active — chart and KPIs reflect adjusted values</span>
+        <span class="ov-active-msg" id="ov-active-msg" style="display:none">⚠ Overrides active: chart and KPIs reflect adjusted values</span>
       </div>
     </div>
   </div>
@@ -807,7 +807,7 @@
     <div class="chart-header">
       <div>
         <div style="display:flex;align-items:center;gap:12px">
-          <div class="chart-title" id="chart-title">World Open 2026 — Cumulative Registration Curve</div>
+          <div class="chart-title" id="chart-title">World Open 2026: Cumulative Registration Curve</div>
           <button class="hist-btn" id="history-btn" onclick="toggleHistoryPanel()" title="See past editions of this tournament">📋 History</button>
         </div>
         <div class="chart-subtitle" id="chart-subtitle">Philadelphia, PA · 6 sections · Prize fund: ~$50,000+ · 2-Wave (Early Bird)</div>
@@ -877,7 +877,7 @@
         <span class="param-val v-gold" id="p-asymptote">277 entries</span>
       </div>
       <div id="prior-params-note" style="display:none;margin-top:10px;padding:8px 10px;background:var(--yellow-dim);border:1px solid var(--yellow);border-radius:6px;font-size:.75rem;color:var(--yellow)">
-        Using WO2026 prior params (scaled) — will refine once 5+ data points collected
+        Using WO2026 prior params (scaled): will refine once 5+ data points collected
       </div>
     </div>
 
@@ -1610,7 +1610,7 @@
             <th>Entry List</th>
           </tr></thead>
           <tbody id="past-tbody">
-            <tr><td colspan="4" class="past-empty">Type to search — e.g. "Chicago Open" or "World Open"</td></tr>
+            <tr><td colspan="4" class="past-empty">Type to search: e.g. "Chicago Open" or "World Open"</td></tr>
           </tbody>
         </table>
       </div>
@@ -1630,7 +1630,7 @@
       <div class="de-header">
         <div>
           <div class="de-title" id="de-title">Entry Data</div>
-          <div class="de-subtitle" id="de-subtitle">Edit cumulative registration data by date — changes feed directly into the model</div>
+          <div class="de-subtitle" id="de-subtitle">Edit cumulative registration data by date: changes feed directly into the model</div>
         </div>
         <div class="de-actions">
           <button class="de-btn" onclick="addEmptyRow()">+ Add Row</button>
@@ -1646,7 +1646,7 @@
         Enter cumulative entries per date, or paste directly from Excel
         (<kbd style="background:var(--surface);border:1px solid var(--border);padding:1px 5px;border-radius:3px;font-size:.75rem">Ctrl+C</kbd> in Excel → click <strong>Paste from Excel</strong>).
         Expected columns: <strong>Date</strong>, <strong>Cumulative Entries</strong>.
-        Click <strong style="color:var(--blue)">Apply &amp; Re-fit Model</strong> when done — the chart and all KPIs update immediately.
+        Click <strong style="color:var(--blue)">Apply &amp; Re-fit Model</strong> when done: the chart and all KPIs update immediately.
         With 4+ data points the model is automatically re-fitted.
       </div>
 
@@ -1663,7 +1663,7 @@
             </tr>
           </thead>
           <tbody id="de-tbody">
-            <tr><td colspan="6" style="color:var(--muted);text-align:center;padding:24px;font-size:.85rem">No data yet — click "+ Add Row" or paste from Excel</td></tr>
+            <tr><td colspan="6" style="color:var(--muted);text-align:center;padding:24px;font-size:.85rem">No data yet: click "+ Add Row" or paste from Excel</td></tr>
           </tbody>
         </table>
       </div>
@@ -1676,7 +1676,7 @@
 
       <div class="de-paste-zone" id="de-paste-zone" onclick="pasteFromClipboard()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDataDrop(event)">
         📋 Click to paste from clipboard, or drag &amp; drop a CSV/text file here<br>
-        <span style="font-size:.72rem">Format: Date (any), Cumulative Entries — tab or comma separated, one row per line</span>
+        <span style="font-size:.72rem">Format: Date (any), Cumulative Entries: tab or comma separated, one row per line</span>
       </div>
 
       <div class="de-status" id="de-status"></div>
@@ -1762,7 +1762,7 @@
             style="width:100%;accent-color:var(--gold);cursor:pointer"
             oninput="onEloSlider(this.value)" />
           <div style="display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);margin-top:4px">
-            <span>1000 — Beginner</span><span>2400 — Expert</span>
+            <span>1000: Beginner</span><span>2400: Expert</span>
           </div>
           <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
             <button class="puzzle-hint-btn" onclick="setElo(1100)" style="font-size:.7rem;padding:4px 8px">Beginner</button>
@@ -2070,7 +2070,7 @@ function computeEnsembleModels(tid) {
     if (sf) { T._singleParams = sf; singlePred = Math.round(sf.L); }
   }
 
-  // Model 3: Monte Carlo — parametric bootstrap on final count
+  // Model 3: Monte Carlo: parametric bootstrap on final count
   const mcSamples = 500;
   const finals = [];
   const mcScale = Math.min(0.25, (params.rmse || 1) / asymptote * 4);
@@ -2081,13 +2081,13 @@ function computeEnsembleModels(tid) {
   const mcP10 = Math.round(finals[Math.floor(mcSamples * 0.10)]);
   const mcP90 = Math.round(finals[Math.floor(mcSamples * 0.90)]);
 
-  // Model 4: Nonlinear Bayes — Normal-Normal conjugate posterior
+  // Model 4: Nonlinear Bayes: Normal-Normal conjugate posterior
   const histStd = asymptote * 0.15;
   const wt = Math.min(1, Math.sqrt(n / 20));
   const bayesPred = Math.round(wt * asymptote + (1 - wt) * asymptote);
   const bayesCI = Math.round(histStd * (1 - wt * 0.5));
 
-  // Model 5: Thompson Sampling — sequential Bayesian update on N_final
+  // Model 5: Thompson Sampling: sequential Bayesian update on N_final
   const tsPriorVar = (asymptote * 0.15) ** 2;
   const tsSampleVar = (asymptote * 0.10) ** 2;
   const tsPostVar = 1 / (1/tsPriorVar + n/tsSampleVar);
@@ -2150,7 +2150,7 @@ function renderEnsembleDisplay(tid) {
     </button>`;
   }).join('');
 
-  // Model cards — click sets chart model
+  // Model cards: click sets chart model
   const cardHtml = Object.entries(models).map(([key, m]) => {
     const meta = MODEL_META[key];
     const inEnsemble = ensembleEnabled[key];
@@ -2265,7 +2265,7 @@ function renderStaticEnsemble(tid) {
 //  TOURNAMENT DATA
 // ═══════════════════════════════════════════════════
 
-// World Open 2026 — pre-fitted parameters from prototype (March 9, 2026, 20 entries)
+// World Open 2026: pre-fitted parameters from prototype (March 9, 2026, 20 entries)
 // t-axis calibration: t=154 corresponds to March 9, 2026; scale ≈ 1.29 days/unit
 const WO_PARAMS = { L1: 20.6, k1: 0.0468, m1: 79.2, L2: 256.7, k2: 0.2512, m2: 246.7, r2: 0.964, rmse: 1.09 };
 const WO_CALIB  = { t0: 154, date0: new Date('2026-03-09'), scale: 1.29 };
@@ -2279,7 +2279,7 @@ function tToDate_WO(t) {
   return new Date(WO_CALIB.date0.getTime() + days * 86400000);
 }
 
-// Chicago Open 2022 — approximate daily cumulative data (days from Jan 7, 2022)
+// Chicago Open 2022: approximate daily cumulative data (days from Jan 7, 2022)
 // Derived from registration CSV (943 total entries, tournament May 27-30)
 const CHICAGO_DATA = [
   [0,1],[4,2],[11,3],[14,5],[23,7],[26,8],[28,9],[29,10],[30,11],[32,12],
@@ -2297,7 +2297,7 @@ const CHICAGO_DATA = [
   [136,724],[137,774],[138,824],[139,854],[140,864],[141,874],[142,877]
 ];
 
-// ── Static upcoming data — injected by scrape_upcoming.py each run.
+// ── Static upcoming data: injected by scrape_upcoming.py each run.
 // Enables the dashboard to display live entry counts even without the API server running.
 // Format matches the /upcoming API response (tournaments array with entry_count, location, etc.)
 // SCRAPER_INJECT_UPCOMING_DATA
@@ -2431,7 +2431,7 @@ async function loadFamilyOverlay(tid) {
     // Re-render if this is still the active tournament
     if (currentTournament === tid) renderChart(tid);
   } catch (_) {
-    // API not running — silently skip overlay; local data still renders correctly
+    // API not running: silently skip overlay; local data still renders correctly
   }
 }
 
@@ -2579,7 +2579,7 @@ function renderChart(tid) {
     ctx.fillText('Event', x, PAD.top + 16);
   }
 
-    // ── Model curve — driven by T._chartModel (set via ensemble panel)
+    // ── Model curve: driven by T._chartModel (set via ensemble panel)
   const chartModel = T._chartModel || 'auto';
   const useDouble = chartModel === 'single' ? false
                   : chartModel === 'double' ? true
@@ -2643,7 +2643,7 @@ function renderChart(tid) {
   ctx.lineWidth = chartModel === 'auto' ? 2.5 : 2.5;
   ctx.stroke();
 
-  // ── Comparison model (thin dashed, opposite wave type) — only in auto mode
+  // ── Comparison model (thin dashed, opposite wave type): only in auto mode
   if (chartModel === 'auto' && wr && T._singleParams && useDouble) {
     ctx.beginPath();
     for (let i = 0; i <= 120; i++) {
@@ -2782,7 +2782,7 @@ function updateUI(tid) {
   const params = T.params || (tid === 'chicago' ? chicagoParams : null);
 
   // Chart
-  document.getElementById('chart-title').textContent = T.name + ' — Cumulative Registration Curve';
+  document.getElementById('chart-title').textContent = T.name + ': Cumulative Registration Curve';
 
   // Wave detection (run before renderChart so bands use correct wave type)
   if (params && T.actualData.length >= 3) {
@@ -2840,13 +2840,13 @@ function updateUI(tid) {
 
   if (T.status === 'complete') {
     banner.className = 'delta-banner green';
-    deltaMain.textContent = 'Registration complete — ' + T.currentEntries.toLocaleString() + ' total entries';
+    deltaMain.textContent = 'Registration complete: ' + T.currentEntries.toLocaleString() + ' total entries';
     deltaSub.textContent = T.name + ' · Final R² = ' + params.r2.toFixed(3) + ' · RMSE = ' + params.rmse.toFixed(2);
     deltaPct.textContent = T.currentEntries.toLocaleString(); deltaPct.className = 'delta-pct green';
     if (rawDiffEl) rawDiffEl.textContent = '';
   } else if (Math.abs(deltaVsModel) < 10) {
     banner.className = 'delta-banner green';
-    deltaMain.textContent = '✓ Tracking on model — registrations matching predicted trajectory';
+    deltaMain.textContent = '✓ Tracking on model: registrations matching predicted trajectory';
     deltaSub.textContent = 'Current ' + current + ' vs. model prediction of ' + Math.round(modelToday) + ' entries today';
     deltaPct.textContent = (deltaVsModel >= 0 ? '+' : '') + deltaVsModel.toFixed(1) + '%';
     deltaPct.className = 'delta-pct green';
@@ -2854,8 +2854,8 @@ function updateUI(tid) {
   } else if (deltaVsModel < -10 && deltaVsModel > -25) {
     banner.className = 'delta-banner yellow';
     deltaMain.textContent = daysToEvent < 100
-      ? '⚠ Alert — running below model pace with event approaching'
-      : '⚠ Watch — running slightly below predicted pace';
+      ? '⚠ Alert: running below model pace with event approaching'
+      : '⚠ Watch: running slightly below predicted pace';
     deltaSub.textContent = 'Current ' + current + ' vs. model prediction of ' + Math.round(modelToday) + ' entries today';
     deltaPct.textContent = deltaVsModel.toFixed(1) + '%';
     deltaPct.className = 'delta-pct yellow';
@@ -2863,15 +2863,15 @@ function updateUI(tid) {
   } else if (deltaVsModel < -25) {
     banner.className = 'delta-banner red';
     deltaMain.textContent = daysToEvent < 100
-      ? '🔴 Alert — tracking significantly below model projection'
-      : '📉 Below model — tracking significantly behind predicted pace';
+      ? '🔴 Alert: tracking significantly below model projection'
+      : '📉 Below model: tracking significantly behind predicted pace';
     deltaSub.textContent = 'Current ' + current + ' vs. model prediction of ' + Math.round(modelToday) + ' entries today';
     deltaPct.textContent = deltaVsModel.toFixed(1) + '%';
     deltaPct.className = 'delta-pct red';
     if (rawDiffEl) { rawDiffEl.textContent = rawDiff + ' entries vs model'; rawDiffEl.style.color = 'var(--red)'; }
   } else {
     banner.className = 'delta-banner green';
-    deltaMain.textContent = '📈 Above model — registrations exceeding predictions';
+    deltaMain.textContent = '📈 Above model: registrations exceeding predictions';
     deltaSub.textContent = 'Current ' + current + ' vs. model prediction of ' + Math.round(modelToday) + ' entries today';
     deltaPct.textContent = '+' + deltaVsModel.toFixed(1) + '%';
     deltaPct.className = 'delta-pct green';
@@ -3187,7 +3187,7 @@ function populateOverrideControls(tid) {
     ['ov-L1','ov-L2','ov-k1','ov-k2','ov-m1','ov-m2'].forEach(id => set(id, ''));
   }
 
-  // Early bird yes/no — reflects _modelForce if set, otherwise infer from feeDeadlines
+  // Early bird yes/no: reflects _modelForce if set, otherwise infer from feeDeadlines
   const hasEB = T._modelForce === 'single' ? false
               : T._modelForce === 'double' ? true
               : !!(T.feeDeadlines[0]);
@@ -3357,7 +3357,7 @@ function init() {
   populateOverrideControls('worldopen');
   updateUI('worldopen');
   updateWhatIf();
-  loadFamilyOverlay('worldopen'); // async — re-renders chart when API responds
+  loadFamilyOverlay('worldopen'); // async: re-renders chart when API responds
 
   // Resize handler
   window.addEventListener('resize', () => {
@@ -3627,7 +3627,7 @@ function addDynamicTournament(key, apiT) {
     familyTraces: [],
   };
 
-  // Add item to tournament dropdown — upcoming group
+  // Add item to tournament dropdown: upcoming group
   const upcomingGroup = document.getElementById('tdg-upcoming');
   if (upcomingGroup) {
     upcomingGroup.style.display = '';
@@ -3665,7 +3665,7 @@ async function loadUpcomingEvents() {
       }
       if (key === 'chi2022' || key === 'nao2024') continue; // historical, skip
 
-      // New upcoming tournament — add tab
+      // New upcoming tournament: add tab
       if (!TOURNAMENTS[key]) {
         addDynamicTournament(key, t);
       } else if (t.entry_count > 0) {
@@ -3950,7 +3950,7 @@ function searchPastEvents() {
   const data = window.PAST_EVENTS_DATA || [];
 
   if (!query && !yearFilter) {
-    tbody.innerHTML = '<tr><td colspan="4" class="past-empty">Type to search — e.g. "Chicago Open" or "World Open"</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="4" class="past-empty">Type to search: e.g. "Chicago Open" or "World Open"</td></tr>';
     if (countEl) countEl.textContent = '';
     return;
   }
@@ -3978,7 +3978,7 @@ function searchPastEvents() {
     <td><a href="${e.u}" target="_blank" rel="noopener">View Entries</a></td>
   </tr>`);
 
-  if (results.length > 200) rows.push(`<tr><td colspan="4" style="text-align:center;color:var(--muted);font-size:.78rem;padding:10px">Showing 200 of ${results.length} — refine your search</td></tr>`);
+  if (results.length > 200) rows.push(`<tr><td colspan="4" style="text-align:center;color:var(--muted);font-size:.78rem;padding:10px">Showing 200 of ${results.length}: refine your search</td></tr>`);
   tbody.innerHTML = rows.join('');
 }
 
@@ -4114,7 +4114,7 @@ const dataEntryRows = {}; // keyed by tid: [{ date: 'YYYY-MM-DD', count: number,
 
 function renderDataGrid(tid) {
   const T = TOURNAMENTS[tid];
-  document.getElementById('de-title').textContent = T.name + ' — Entry Data';
+  document.getElementById('de-title').textContent = T.name + ': Entry Data';
   document.getElementById('de-subtitle').textContent =
     T.location + ' · Registration opens ' + T.firstRegDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) +
     ' · Event starts ' + T.tournamentStart.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
@@ -4136,7 +4136,7 @@ function rebuildDataTable(tid) {
   const tbody = document.getElementById('de-tbody');
 
   if (rows.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:24px;font-size:.85rem">No data yet — click "+ Add Row" or paste from Excel</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:24px;font-size:.85rem">No data yet: click "+ Add Row" or paste from Excel</td></tr>';
     document.getElementById('de-row-count').textContent = '0 rows';
     document.getElementById('de-summary').style.display = 'none';
     return;
@@ -4281,7 +4281,7 @@ function applyDataEntries() {
           'success'
         );
       } else {
-        showDeStatus('Could not fit model — try adding more spread-out data points. Data was still applied.', 'error');
+        showDeStatus('Could not fit model: try adding more spread-out data points. Data was still applied.', 'error');
       }
       // Save new state as the new defaults so reset works correctly
       TOURNAMENT_DEFAULTS[tid] = null; // clear old defaults so saveDefaults re-saves
@@ -4325,7 +4325,7 @@ async function pasteFromClipboard() {
     const handler = (ev) => {
       const text = ev.clipboardData?.getData('text') || '';
       if (text) { parseAndLoadData(text); ev.preventDefault(); }
-      zone.innerHTML = '📋 Click to paste from clipboard, or drag &amp; drop a CSV/text file here<br><span style="font-size:.72rem">Format: Date (any), Cumulative Entries — tab or comma separated, one row per line</span>';
+      zone.innerHTML = '📋 Click to paste from clipboard, or drag &amp; drop a CSV/text file here<br><span style="font-size:.72rem">Format: Date (any), Cumulative Entries: tab or comma separated, one row per line</span>';
       zone.style.borderColor = 'var(--border)';
       document.removeEventListener('paste', handler);
     };
@@ -4494,7 +4494,7 @@ const ALL_PUZZLES = [
 
   { elo:1500, title:'Zwischenzug',       theme:'In-between Move', toMove:'w',
     desc:'White to move. Before you react, look harder.',
-    hint:'Before you recapture, check — is there a forcing move that wins more?',
+    hint:'Before you recapture, check: is there a forcing move that wins more?',
     fen:'r1bqkb1r/ppp2ppp/2n2n2/1B1pp3/4P3/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 0 5',
     solution:[{from:'b5',to:'c6'},{from:'d8',to:'d1'},{from:'e1',to:'d1'},{from:'b7',to:'c6'}] },
 
@@ -4568,7 +4568,7 @@ const ALL_PUZZLES = [
 
   { elo:2300, title:'Reti Maneuver',     theme:'King Activity', toMove:'w',
     desc:'White to move. The king is more powerful than it looks from here.',
-    hint:'Walk the king diagonally — it threatens both to catch the pawn and support its own.',
+    hint:'Walk the king diagonally: it threatens both to catch the pawn and support its own.',
     fen:'8/8/8/8/8/k7/p7/1K6 w - - 0 1',
     solution:[{from:'b1',to:'c2'},{from:'a3',to:'b4'},{from:'c2',to:'b2'},{from:'a2',to:'a1'},{from:'b2',to:'a1'}] },
 
@@ -4718,7 +4718,7 @@ function renderBoard() {
       /* highlights */
       if (pzState.selected && pzState.selected.r === r && pzState.selected.c === c)
         sq.classList.add('sel');
-      /* hint is text-only — no square highlight so it stays a clue, not a spoiler */
+      /* hint is text-only: no square highlight so it stays a clue, not a spoiler */
 
       board.appendChild(sq);
     }
@@ -4788,7 +4788,7 @@ function attemptMove(fr, fc, tr, tc) {
     if (pzState.stepIdx >= pz.solution.length) {
       pzState.locked = true;
       pzState.solved.add(pz.title);
-      setFeedback('✅', 'Brilliant!', pz.theme + ' — well spotted!');
+      setFeedback('✅', 'Brilliant!', pz.theme + ': well spotted!');
       document.getElementById('pz-next-btn').style.display = '';
       renderProgress();
       return;
@@ -4807,7 +4807,7 @@ function attemptMove(fr, fc, tr, tc) {
       if (pzState.stepIdx >= pz.solution.length) {
         pzState.locked = true;
         pzState.solved.add(pz.title);
-        setFeedback('✅', 'Brilliant!', pz.theme + ' — well spotted!');
+        setFeedback('✅', 'Brilliant!', pz.theme + ': well spotted!');
         document.getElementById('pz-next-btn').style.display = '';
         renderProgress();
       } else {
@@ -4817,7 +4817,7 @@ function attemptMove(fr, fc, tr, tc) {
     }, 550);
   } else {
     flashSquare(tr, tc, 'wrong-flash');
-    setFeedback('❌', 'Not quite', 'Try again — look for the ' + pz.theme.toLowerCase());
+    setFeedback('❌', 'Not quite', 'Try again: look for the ' + pz.theme.toLowerCase());
     pzState.selected = null;
     renderBoard();
   }
@@ -4874,7 +4874,7 @@ function renderProgress() {
 (function initSplash() {
   /* ── Chess board background on canvas ── */
   const canvas = document.getElementById('splash-canvas');
-  /* shared board metrics — read by knight positioning */
+  /* shared board metrics: read by knight positioning */
   let _sq = 60, _ox = 0, _oy = 0, _cols = 16, _rows = 12;
 
   function drawBoard() {

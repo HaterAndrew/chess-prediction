@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<title>CCA Prediction Update — Email Generator</title>
+<title>CCA Prediction Update: Email Generator</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♔</text></svg>">
 <style>
 :root {
@@ -335,7 +335,7 @@ const PHRASES = {
   ],
   themeAllUp: [
     "Improvement across the board.",
-    "Good news across the board — we're up everywhere.",
+    "Good news across the board: we're up everywhere.",
     "Up across the board."
   ],
   themeAllDown: [
@@ -344,8 +344,8 @@ const PHRASES = {
     "Lagging across the board."
   ],
   themeMixedUp: [
-    "Mixed bag — some improvement, but we're still behind on a few events.",
-    "A mixed picture — improvement on most, still off on a few.",
+    "Mixed bag: some improvement, but we're still behind on a few events.",
+    "A mixed picture: improvement on most, still off on a few.",
     "Mostly improving, but a few events are still behind."
   ],
   themeMixedDown: [
@@ -389,8 +389,8 @@ function formatTournament(t, len) {
     if (!pace) return null;
     const d = t.current_count - pace.count_at_same_point;
     const base = `Same point last year: ${pace.count_at_same_point} (finished ${pace.final})`;
-    if (d > 0) return `${base} — ${pick(PHRASES.paceAhead, seedFn('pace'))}.`;
-    if (d < 0) return `${base} — ${pick(PHRASES.paceBehind, seedFn('pace'))}.`;
+    if (d > 0) return `${base}: ${pick(PHRASES.paceAhead, seedFn('pace'))}.`;
+    if (d < 0) return `${base}: ${pick(PHRASES.paceBehind, seedFn('pace'))}.`;
     return `${base}.`;
   }
 

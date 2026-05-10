@@ -126,6 +126,43 @@ def is_wo_excluded(family_name):
     return bool(WO_EXCLUDE_PATTERN.search(family_name))
 
 
+# ── World Open pre-split top-6 adjustments ───────────────────────────────
+# Pre-2023, CCA tracked the World Open as a single tid covering all 9 sections
+# (Open, U2200, U2000, U1800, U1600, U1400, U1200, U900, Unrated). Starting
+# 2023 they split the registration page into "top 6 sections" (Open..U1400)
+# and "lower sections" (U1200, U900). When comparing the post-split top-6
+# series against pre-split editions, the bare "World Open" totals are
+# apples-to-oranges: they include U1200 + U900 + Unrated.
+#
+# Adjusted top-6 estimates below subtract the lower sections so cross-year
+# comparison is consistent. Estimates use chessevents.com final-standings
+# breakdowns where available (2019, 2021) and the closest-year ratio for
+# years where the archive is missing (2022).
+WO_TOP6_ADJUSTED = {
+    # 2019: standings Open..U1400 = 1261, U1200+U900 = 203, Unrated = 18.
+    # Lower-fraction (U1200+U900+Unrated)/total = 221/1482 = 0.1491.
+    # Apply to registration count 1269 → 1269 * (1 - 0.1491) = 1080.
+    2019: 1080,
+    # 2022: archive.chessevents.com has no 2022 World Open standings page.
+    # Use 2021 lower-fraction (U1100+Unrated)/(top6+U1100+Unrated) ≈ 0.1075
+    # (closest pre-split year with full breakdown).
+    # Apply to registration count 1491 → 1491 * (1 - 0.1075) = 1331.
+    2022: 1331,
+}
+
+
+def adjust_wo_top6_count(year, count):
+    """Return top-6-comparable count for a pre-split World Open year.
+
+    Pre-2023 the bare 'World Open' family count includes lower sections
+    (U1200, U900, Unrated). For year-over-year comparison against the
+    explicit 2023+ 'World Open top 6 sections' tids, scale the count down
+    using known final-standings ratios. Returns the original count if the
+    year has no override (e.g. recent years already split at registration).
+    """
+    return WO_TOP6_ADJUSTED.get(int(year), count)
+
+
 # ── historical_standings.csv name → canonical family ────────────────────
 # chessevents.com uses URL-derived names (lowercase concat, missing punctuation).
 # Single source of truth, used by 04c_final_model.py and 06_walk_in_multipliers.py.

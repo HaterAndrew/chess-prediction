@@ -3851,6 +3851,12 @@ function renderDataEntry() {
   const live = ts.filter(t => t.status === 'live').sort((a,b) => a.days_remaining - b.days_remaining);
   const overrides = JSON.parse(localStorage.getItem('cca_overrides') || '{}');
 
+  // Each input carries data-pristine (the pipeline value at render time) and
+  // data-saved (the value already persisted to localStorage, if any). On save
+  // we only write fields where the current input value differs from BOTH —
+  // this prevents the long-standing bug where opening the panel and clicking
+  // Save froze every visible field as an override even if the user only
+  // touched one row.
   body.innerHTML = live.map(t => {
     const o = overrides[t.family] || {};
     const entries = o.current_count !== undefined ? o.current_count : t.current_count;
@@ -3859,14 +3865,15 @@ function renderDataEntry() {
     const ebFee = o.early_bird_fee !== undefined ? o.early_bird_fee : (t.early_bird_fee || '');
     const regFee = o.regular_fee !== undefined ? o.regular_fee : (t.regular_fee || '');
     const onsiteFee = o.onsite_fee !== undefined ? o.onsite_fee : (t.onsite_fee || '');
+    const pristine = (k, v) => `data-pristine="${v == null ? '' : esc(String(v))}" data-saved="${o[k] != null ? esc(String(o[k])) : ''}"`;
     return `<tr>
       <td class="fam-name" data-label="Tournament">${esc(t.family)}</td>
-      <td data-label="Entries"><input type="number" data-family="${esc(t.family)}" data-field="current_count" value="${entries}" min="0"></td>
-      <td data-label="Event Start"><input type="date" data-family="${esc(t.family)}" data-field="event_start" value="${start}"></td>
-      <td data-label="Early Bird Deadline"><input type="date" data-family="${esc(t.family)}" data-field="early_bird_deadline" value="${ebDeadline}"></td>
-      <td data-label="Early Bird Fee"><input type="number" data-family="${esc(t.family)}" data-field="early_bird_fee" value="${ebFee}" min="0"></td>
-      <td data-label="Reg Fee"><input type="number" data-family="${esc(t.family)}" data-field="regular_fee" value="${regFee}" min="0"></td>
-      <td data-label="Onsite Fee"><input type="number" data-family="${esc(t.family)}" data-field="onsite_fee" value="${onsiteFee}" min="0"></td>
+      <td data-label="Entries"><input type="number" data-family="${esc(t.family)}" data-field="current_count" ${pristine('current_count', t.current_count)} value="${entries}" min="0"></td>
+      <td data-label="Event Start"><input type="date" data-family="${esc(t.family)}" data-field="event_start" ${pristine('event_start', t.event_start || '')} value="${start}"></td>
+      <td data-label="Early Bird Deadline"><input type="date" data-family="${esc(t.family)}" data-field="early_bird_deadline" ${pristine('early_bird_deadline', t.early_bird_deadline || '')} value="${ebDeadline}"></td>
+      <td data-label="Early Bird Fee"><input type="number" data-family="${esc(t.family)}" data-field="early_bird_fee" ${pristine('early_bird_fee', t.early_bird_fee || '')} value="${ebFee}" min="0"></td>
+      <td data-label="Reg Fee"><input type="number" data-family="${esc(t.family)}" data-field="regular_fee" ${pristine('regular_fee', t.regular_fee || '')} value="${regFee}" min="0"></td>
+      <td data-label="Onsite Fee"><input type="number" data-family="${esc(t.family)}" data-field="onsite_fee" ${pristine('onsite_fee', t.onsite_fee || '')} value="${onsiteFee}" min="0"></td>
     </tr>`;
   }).join('');
 }
@@ -3878,8 +3885,23 @@ function saveDataEntry() {
   inputs.forEach(inp => {
     const family = inp.dataset.family;
     const field = inp.dataset.field;
-    if (!overrides[family]) overrides[family] = {};
     const val = inp.value;
+    const pristine = inp.dataset.pristine || '';
+    const saved = inp.dataset.saved || '';
+    // Skip fields the user didn't touch: if the input still matches the pipeline
+    // value AND no override was previously saved for this field, do nothing.
+    // If an override WAS saved and the user reverted to the pipeline value, drop it.
+    const isPipelineValue = val === pristine;
+    const hadSavedOverride = saved !== '';
+    if (isPipelineValue && !hadSavedOverride) return;
+    if (isPipelineValue && hadSavedOverride) {
+      if (overrides[family]) {
+        delete overrides[family][field];
+        if (Object.keys(overrides[family]).length === 0) delete overrides[family];
+      }
+      return;
+    }
+    if (!overrides[family]) overrides[family] = {};
     if (field === 'current_count' || field.includes('fee')) {
       overrides[family][field] = val !== '' ? Number(val) : undefined;
     } else {

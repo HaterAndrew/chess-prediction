@@ -2131,7 +2131,15 @@ function renderDelta(t) {
 // ══════════════════════════════════════════════════════════
 function renderHero(t) {
   const statusPrefix = t.status === 'historical' ? `${t.year} ` : '';
-  document.getElementById('heroLabel').textContent = isDone(t) ? `${statusPrefix}Final Entries` : 'Predicted Final Entries';
+  const heroLabel = document.getElementById('heroLabel');
+  if (isDone(t)) {
+    heroLabel.textContent = `${statusPrefix}Final Entries`;
+    heroLabel.removeAttribute('title');
+    heroLabel.style.cursor = '';
+  } else {
+    heroLabel.innerHTML = 'Predicted Final Entries <span style="opacity:.55;font-weight:400;cursor:help" title="Ensemble of pace-ratio extrapolation + family regression. At T &gt; 7 the regression dominates (70%) so early ahead-of-pace leads are discounted — 2026 backtest shows the model is calibrated for this season&apos;s actual fade pattern (12 events, +10.9% avg over-prediction when ratio weighted higher).">ⓘ</span>';
+    heroLabel.style.cursor = 'default';
+  }
   const heroNum = document.getElementById('heroNumber');
   // Animate number count-up
   const target = t.point_estimate;

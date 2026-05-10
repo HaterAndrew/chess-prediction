@@ -4379,6 +4379,23 @@ function renderCompareChart(selected) {
 
 
 
+// One-shot migration: the previous saveDataEntry() iterated every input and
+// persisted every visible field as an override, freezing pipeline values for
+// tournaments the user never intended to override. Wipe legacy overrides once
+// per client (flagged in localStorage so it runs exactly once).
+(function purgeLegacyOverrides() {
+  const FLAG = 'cca_overrides_purged_v35';
+  if (localStorage.getItem(FLAG)) return;
+  try {
+    const existing = JSON.parse(localStorage.getItem('cca_overrides') || '{}');
+    if (existing && typeof existing === 'object' && Object.keys(existing).length > 0) {
+      localStorage.removeItem('cca_overrides');
+      console.info('[CCA] Cleared stale overrides on upgrade. Re-set any deliberate overrides in Data Entry.');
+    }
+  } catch (e) {}
+  localStorage.setItem(FLAG, '1');
+})();
+
 applyOverrides();
 
 init();

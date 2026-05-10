@@ -2059,10 +2059,18 @@ function renderDelta(t) {
   // Live tournament — compare to historical pace
   if (t.historical && t.historical.length > 0) {
     const lastYr = t.historical[t.historical.length - 1];
-    // Estimate what last year's count was at this T using the curve
-    const lastYrAtT = t.registration_curve
-      ? Math.round(lastYr.count * interpCurve(t.registration_curve, t.days_remaining))
-      : null;
+    // Prefer the explicit prior_year_pace.count_at_same_point — it's derived
+    // from last year's actual daily registrations on this calendar day.
+    // Fall back to the family-average curve only when the explicit field is
+    // missing (no 2025 daily data for this family). Curve-derived estimates
+    // can drift wildly from reality when the prior year's curve was unusual.
+    const priorPace = t.prior_year_pace;
+    const lastYrAtT = (priorPace && priorPace.count_at_same_point != null)
+      ? priorPace.count_at_same_point
+      : (t.registration_curve
+          ? Math.round(lastYr.count * interpCurve(t.registration_curve, t.days_remaining))
+          : null);
+    const lastYrLabel = priorPace?.year ?? lastYr.year;
 
     if (lastYrAtT && lastYrAtT > 0) {
       const diff = t.current_count - lastYrAtT;
@@ -2086,21 +2094,21 @@ function renderDelta(t) {
       if (diff > 0) {
         banner.className = 'delta-banner green';
         icon.innerHTML = '&#9650;';
-        main.textContent = `Tracking ahead of ${lastYr.year} pace`;
-        sub.textContent = `${fmt(t.current_count)} registered now vs ~${fmt(lastYrAtT)} at this point in ${lastYr.year}${paceSuffix}`;
+        main.textContent = `Tracking ahead of ${lastYrLabel} pace`;
+        sub.textContent = `${fmt(t.current_count)} registered now vs ${fmt(lastYrAtT)} at this point in ${lastYrLabel}${paceSuffix}`;
         val.textContent = `+${absPct}%`;
         val.className = 'delta-value green';
       } else if (diff < 0) {
         banner.className = 'delta-banner red';
         icon.innerHTML = '&#9660;';
-        main.textContent = `Tracking behind ${lastYr.year} pace`;
-        sub.textContent = `${fmt(t.current_count)} registered now vs ~${fmt(lastYrAtT)} at this point in ${lastYr.year}${paceSuffix}`;
+        main.textContent = `Tracking behind ${lastYrLabel} pace`;
+        sub.textContent = `${fmt(t.current_count)} registered now vs ${fmt(lastYrAtT)} at this point in ${lastYrLabel}${paceSuffix}`;
         val.textContent = `-${absPct}%`;
         val.className = 'delta-value red';
       } else {
         banner.className = 'delta-banner gold';
         icon.innerHTML = '&#9654;';
-        main.textContent = `Tracking on pace with ${lastYr.year}`;
+        main.textContent = `Tracking on pace with ${lastYrLabel}`;
         sub.textContent = `${fmt(t.current_count)} registered${paceSuffix}`;
         val.textContent = '0%';
         val.className = 'delta-value gold';

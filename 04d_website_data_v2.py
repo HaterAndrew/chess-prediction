@@ -15,13 +15,51 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from importlib import import_module
 m04c = import_module("04c_final_model")
-from tournament_aliases import canonicalize_family
+from tournament_aliases import canonicalize_family, adjust_wo_top6_count
 
 
 def _fam_eq(series, name):
     """Family equality that tolerates comma/whitespace variants via aliases."""
     canon = canonicalize_family(name)
     return series.map(canonicalize_family) == canon
+
+
+# Canonical names that count as the post-split top-6 series
+_WO_TOP6_TARGETS = {
+    'World Open top 6 sections',
+    'World Open, top 6 sections',
+}
+
+
+def _apply_wo_top6_adjustment(target_family, entries, strip_family=False):
+    """Scale pre-split 'World Open' historical entries down to top-6-comparable
+    counts when the chart's target series is the post-split top-6 family.
+
+    Pre-2023 'World Open' totals include U1200, U900, and Unrated; the post-2023
+    'World Open top 6 sections' tids exclude them. Without this adjustment the
+    2019/2022 bars get plotted alongside a series that drops the bottom of the
+    field, making year-over-year comparison apples-to-oranges.
+
+    Returns the entries list (mutated copy) with adjusted counts and an
+    'adjusted' flag on rows that were rewritten. If strip_family=True, the
+    'family' key is removed from each entry (the third call site doesn't
+    serialize it).
+    """
+    target_norm = (target_family or '').replace(',', '').strip()
+    is_wo_top6 = target_norm == 'World Open top 6 sections'
+    out = []
+    for h in entries:
+        h = dict(h)
+        if is_wo_top6 and h.get('family') == 'World Open':
+            adjusted = adjust_wo_top6_count(h['year'], h['count'])
+            if adjusted != h['count']:
+                h['count_raw'] = h['count']
+                h['count'] = int(adjusted)
+                h['adjusted'] = 'top6_pre_split'
+        if strip_family:
+            h.pop('family', None)
+        out.append(h)
+    return out
 
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
@@ -487,9 +525,11 @@ for _, row in t2026.iterrows():
         (summary['tournament_year'] < 2026) &
         (summary['tournament_year'] >= 2019)
     ].sort_values('tournament_year')
-    historical = [{"year": int(h['tournament_year']), "count": int(h['final_count']),
-                   "family": h['family']}
-                  for _, h in hist.iterrows()]
+    historical = _apply_wo_top6_adjustment(family, [
+        {"year": int(h['tournament_year']), "count": int(h['final_count']),
+         "family": h['family']}
+        for _, h in hist.iterrows()
+    ])
 
     # Predictions — use production model with guardrails
     hist_counts = [h['count'] for h in historical]
@@ -696,9 +736,11 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
         (summary['tournament_year'] < 2026) &
         (summary['tournament_year'] >= 2019)
     ].sort_values('tournament_year')
-    historical = [{"year": int(h['tournament_year']), "count": int(h['final_count']),
-                   "family": h['family']}
-                  for _, h in hist.iterrows()]
+    historical = _apply_wo_top6_adjustment(mfamily, [
+        {"year": int(h['tournament_year']), "count": int(h['final_count']),
+         "family": h['family']}
+        for _, h in hist.iterrows()
+    ])
     # Predict from historical data with proper variance-based CI
     hist_counts = [h['count'] for h in historical]
     hist_mean = np.mean(hist_counts) if hist_counts else 100
@@ -805,8 +847,11 @@ for _, row in historical_valid.iterrows():
         (historical_valid['family'].isin(hist_families)) &
         (historical_valid['tournament_year'] <= yr)
     ].sort_values('tournament_year')
-    historical = [{"year": int(h['tournament_year']), "count": int(h['final_count'])}
-                  for _, h in hist.iterrows()]
+    historical = _apply_wo_top6_adjustment(display_family, [
+        {"year": int(h['tournament_year']), "count": int(h['final_count']),
+         "family": h['family']}
+        for _, h in hist.iterrows()
+    ], strip_family=True)
 
     # Registration curve
     curve = curves.get(family, curves.get('__global__', {}))

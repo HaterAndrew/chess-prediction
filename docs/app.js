@@ -3015,7 +3015,9 @@ function renderHistorical(t) {
   }
 
   const hist = t.historical.slice(-6);
-  const labels = [...hist.map(h => String(h.year)), String(t.year)];
+  const histFlags = hist.map(h => h.adjusted ? { kind: h.adjusted, raw: h.count_raw } : null);
+  const hasAdjusted = histFlags.some(Boolean);
+  const labels = [...hist.map(h => h.adjusted ? `${h.year}*` : String(h.year)), String(t.year)];
   const counts = [...hist.map(h => h.count), isDone(t) ? t.current_count : t.point_estimate];
   const colors = counts.map((_, i) => i === counts.length-1 ? 'rgba(240,192,64,0.75)' : 'rgba(88,166,255,0.45)');
   const borders = counts.map((_, i) => i === counts.length-1 ? '#f0c040' : '#58a6ff');
@@ -3089,6 +3091,11 @@ function renderHistorical(t) {
               const diffAvg = ((val - histAvg) / histAvg * 100).toFixed(1);
               const signA = diffAvg > 0 ? '+' : '';
               lines.push(`  vs avg: ${signA}${diffAvg}%`);
+              // Flag pre-split top-6 adjustment (idx into hist array, exclude current year)
+              if (idx < histFlags.length && histFlags[idx]) {
+                const flag = histFlags[idx];
+                lines.push(`  * adjusted from ${fmt(flag.raw)} (excludes lower sections)`);
+              }
               return lines;
             },
             footer(items) {
@@ -3128,10 +3135,18 @@ function renderHistorical(t) {
     const diff = prev ? h.count - prev : null;
     const pct = prev ? ((diff / prev) * 100).toFixed(1) : null;
     const cls = diff > 0 ? 'delta-pos' : diff < 0 ? 'delta-neg' : '';
-    const yearLabel = h.isCurrent ? `${h.year} ${isDone(t) ? '(final)' : '(est)'}` : String(h.year);
+    const star = h.adjusted ? '*' : '';
+    const yearLabel = h.isCurrent ? `${h.year} ${isDone(t) ? '(final)' : '(est)'}` : `${h.year}${star}`;
     const rowClass = h.isCurrent ? ' class="current-year"' : '';
-    return `<tr${rowClass}><td data-label="Year">${yearLabel}</td><td data-label="Count">${fmt(h.count)}</td><td data-label="YoY" class="${cls}">${diff != null ? (diff > 0 ? '+' : '') + fmt(diff) : '–'}</td><td data-label="Change" class="${cls}">${pct != null ? (diff > 0 ? '+' : '') + pct + '%' : '–'}</td></tr>`;
+    const countCell = h.adjusted
+      ? `${fmt(h.count)} <span style="color:var(--muted);font-size:.75rem">(was ${fmt(h.count_raw)})</span>`
+      : fmt(h.count);
+    return `<tr${rowClass}><td data-label="Year">${yearLabel}</td><td data-label="Count">${countCell}</td><td data-label="YoY" class="${cls}">${diff != null ? (diff > 0 ? '+' : '') + fmt(diff) : '–'}</td><td data-label="Change" class="${cls}">${pct != null ? (diff > 0 ? '+' : '') + pct + '%' : '–'}</td></tr>`;
   }).join('');
+
+  const footnote = hasAdjusted
+    ? `<div style="margin-top:8px;color:var(--muted);font-size:.72rem;line-height:1.45">* 2019 and 2022 World Open were a single combined registration page (9 sections). Counts adjusted to top-6 only for apples-to-apples vs the 2023+ split. Estimates use chessevents.com final-standings ratios.</div>`
+    : '';
 
   wrap.innerHTML = `
     <div class="comp-table-wrap">
@@ -3140,6 +3155,7 @@ function renderHistorical(t) {
       <tbody>${rows}</tbody>
     </table>
     </div>
+    ${footnote}
   `;
 }
 

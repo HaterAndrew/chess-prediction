@@ -2129,6 +2129,35 @@ function renderDelta(t) {
 // ══════════════════════════════════════════════════════════
 // HERO + KPI
 // ══════════════════════════════════════════════════════════
+
+// Build the prediction-tile tooltip from live PERFORMANCE_DATA so every
+// pipeline run (daily auto_update + monthly recalibration) refreshes the
+// numbers automatically. No hardcoded counts/biases.
+function _calibrationTooltip() {
+  const fallback = 'Ensemble of pace-ratio extrapolation + family regression. At T > 7 the regression dominates so early ahead-of-pace leads are discounted.';
+  if (typeof PERFORMANCE_DATA === 'undefined' || !PERFORMANCE_DATA) return fallback;
+  const yr = String(new Date().getFullYear());
+  const yearData = (PERFORMANCE_DATA.years || {})[yr] || PERFORMANCE_DATA;
+  const agg = yearData.aggregate || PERFORMANCE_DATA.aggregate || [];
+  if (!agg.length) return fallback;
+  // n-weighted mean of |bias_pct| across T-points: how much the model
+  // typically over- or under-shoots in the current year.
+  let nSum = 0, biasNum = 0;
+  for (const a of agg) {
+    if (typeof a.bias_pct === 'number' && typeof a.n === 'number') {
+      biasNum += a.bias_pct * a.n;
+      nSum += a.n;
+    }
+  }
+  const meanBias = nSum > 0 ? biasNum / nSum : null;
+  const nEvents = yearData.n_tournaments ?? PERFORMANCE_DATA.n_tournaments ?? null;
+  const asof = PERFORMANCE_DATA.generated || '';
+  if (meanBias == null || nEvents == null) return fallback;
+  const dir = meanBias > 0 ? 'over-predicting' : 'under-predicting';
+  const absBias = Math.abs(meanBias).toFixed(1);
+  return `Ensemble of pace-ratio extrapolation + family regression. At T > 7 the regression dominates so early ahead-of-pace leads are discounted. ${yr} backtest (${nEvents} events, asof ${asof}) shows the model has been ${dir} by ${absBias}% on avg — kept conservative on purpose. See Performance tab for full breakdown.`;
+}
+
 function renderHero(t) {
   const statusPrefix = t.status === 'historical' ? `${t.year} ` : '';
   const heroLabel = document.getElementById('heroLabel');
@@ -2137,7 +2166,7 @@ function renderHero(t) {
     heroLabel.removeAttribute('title');
     heroLabel.style.cursor = '';
   } else {
-    heroLabel.innerHTML = 'Predicted Final Entries <span style="opacity:.55;font-weight:400;cursor:help" title="Ensemble of pace-ratio extrapolation + family regression. At T &gt; 7 the regression dominates (70%) so early ahead-of-pace leads are discounted — 2026 backtest shows the model is calibrated for this season&apos;s actual fade pattern (12 events, +10.9% avg over-prediction when ratio weighted higher).">ⓘ</span>';
+    heroLabel.innerHTML = `Predicted Final Entries <span style="opacity:.55;font-weight:400;cursor:help" title="${esc(_calibrationTooltip())}">ⓘ</span>`;
     heroLabel.style.cursor = 'default';
   }
   const heroNum = document.getElementById('heroNumber');

@@ -2531,15 +2531,51 @@ function renderChart(t) {
     order: 2
   });
 
+  // Build (year -> historical edition with daily_data) lookup once so both
+  // the projection block (scrape-ratio scaling) and the historical-line
+  // block (real-data overlays) can share it. Only years with multi-point
+  // daily series qualify.
+  const histLookup = {};
+  (TOURNAMENT_DATA.tournaments || []).forEach(other => {
+    if (other.family === t.family && other.status === 'historical' &&
+        Array.isArray(other.daily_data) && other.daily_data.length > 1) {
+      histLookup[other.year] = other;
+    }
+  });
+  // Scrape ratio = avg(scrape_end / final) across historical years with real
+  // daily data. For events with significant day-of registration (Cleveland
+  // Open: ratio ~0.34), the daily scrape only ever captures ~34% of the
+  // final count; the rest arrives day-of or via post-event reconciliation.
+  // Using this ratio lets the projection line visually match historical
+  // lines on the chart (which now terminate at scrape-end, not final).
+  let scrapeRatio = 1.0;
+  {
+    const ratios = [];
+    Object.values(histLookup).forEach(other => {
+      const dd = other.daily_data;
+      const scrapeEnd = dd[dd.length - 1][1];
+      const final = other.current_count;
+      if (final > 0 && scrapeEnd > 0) ratios.push(scrapeEnd / final);
+    });
+    if (ratios.length >= 2) {
+      scrapeRatio = ratios.reduce((s, r) => s + r, 0) / ratios.length;
+    }
+  }
+
   // Projection + CI band for live
   if (!isDone(t) && t.registration_curve) {
     const projData = [];
     const todayDB = t.days_remaining;
     const todayPct = interpCurve(t.registration_curve, todayDB);
 
-    // Use point_estimate to derive scale — handles floored predictions correctly
-    // (e.g. Pittsburgh: 2 regs but predicted 176 from historical median)
-    const scaleFactor = todayPct > 0 ? t.point_estimate / interpCurve(t.registration_curve, 0) : t.point_estimate;
+    // Scale projection to the SCRAPE-EQUIVALENT target (point_estimate ×
+    // scrapeRatio), not point_estimate itself. The chart visualizes online
+    // registration trajectories — the day-of/reconciliation surge is shown
+    // separately via a "Predicted Final" marker at event day below. Without
+    // this, projection ramps to point_estimate while historical lines end at
+    // ~34% of their finals, producing the May-17 hockey-stick artifact.
+    const projectionTarget = t.point_estimate * scrapeRatio;
+    const scaleFactor = todayPct > 0 ? projectionTarget / interpCurve(t.registration_curve, 0) : projectionTarget;
 
     // Start projection from the last actual data point to avoid a gap
     const lastActual = actualData.length > 0 ? actualData[actualData.length - 1] : null;
@@ -2570,11 +2606,33 @@ function renderChart(t) {
       order: 3
     });
 
-    // CI band — full range from today to event
+    // Predicted Final marker — same visual treatment as historical final
+    // dots, but in projection color. Sits at event day at the full
+    // point_estimate so the user can see where the model thinks the year
+    // actually lands (after day-of / reconciliation).
+    datasets.push({
+      label: 'Predicted Final',
+      data: [{ x: addDays(eventStart, 0), y: t.point_estimate }],
+      showLine: false,
+      backgroundColor: '#f0c040',
+      borderColor: '#f0c040',
+      pointStyle: 'circle',
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      order: 1
+    });
+
+    // CI band — scaled to the same scrape-equivalent target as projection
+    // so it stays visually anchored to the dashed projection line rather
+    // than ballooning out into the day-of region.
     const ciUp = [], ciLo = [];
     const pctAt0 = interpCurve(t.registration_curve, 0);
-    const ciUpperScale = pctAt0 > 0 ? t.ci_upper / pctAt0 : t.ci_upper;
-    const ciLowerScale = pctAt0 > 0 ? t.ci_lower / pctAt0 : t.ci_lower;
+    const ciUpperTarget = t.ci_upper * scrapeRatio;
+    const ciLowerTarget = t.ci_lower * scrapeRatio;
+    const ciUpperScale = pctAt0 > 0 ? ciUpperTarget / pctAt0 : ciUpperTarget;
+    const ciLowerScale = pctAt0 > 0 ? ciLowerTarget / pctAt0 : ciLowerTarget;
     for (let db = todayDB; db >= 0; db--) {
       const date = addDays(eventStart, -db);
       const pctAtDb = interpCurve(t.registration_curve, db);
@@ -2604,23 +2662,10 @@ function renderChart(t) {
       'rgba(139,148,158,0.18)',
       'rgba(139,148,158,0.12)',
     ];
-    // Build a (family,year) -> real historical edition lookup. Only years
-    // with real scraped daily series get a chart line — synthesizing a year
-    // from the family-aggregate curve × final count inflates early-T values
-    // for events that front-load late (Cleveland 2019 final 224 × generic
-    // curve at T-20 = 80, even though we have no idea what 2019 actually
-    // looked like at T-20). The "Historical Comparison" panel below still
-    // shows all final counts; the chart shows only what we can plot honestly.
-    const histLookup = {};
-    (TOURNAMENT_DATA.tournaments || []).forEach(other => {
-      if (other.family === t.family && other.status === 'historical' &&
-          Array.isArray(other.daily_data) && other.daily_data.length > 1) {
-        histLookup[other.year] = other;
-      }
-    });
-    // Cap to most recent N years that HAVE real daily data: 1 on mobile,
-    // 5 on desktop. Mobile chart is too narrow for multiple dashed lines +
-    // actual + projected + CI band.
+    // histLookup is built once at the top of renderChart (above the
+    // projection block) so the scrape-ratio computation and the historical
+    // line overlays share one source of truth. Cap to most recent N years
+    // that HAVE real daily data: 1 on mobile, 5 on desktop.
     const realYears = t.historical.filter(h => histLookup[h.year]);
     const recent = realYears.slice(_mobileVP() ? -1 : -5);
     recent.forEach((h, i) => {

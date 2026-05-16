@@ -9,7 +9,7 @@ const OFFLINE_FALLBACKS = [
   './',
   'index.html',
   'styles.css?v=12',
-  'app.js?v=7',
+  'app.js?v=8',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js',
   'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js'
 ];

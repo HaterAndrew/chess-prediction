@@ -2604,17 +2604,13 @@ function renderChart(t) {
       'rgba(139,148,158,0.18)',
       'rgba(139,148,158,0.12)',
     ];
-    // Cap historical lines: 1 on mobile (just the most recent year for context),
-    // 5 on desktop. Mobile chart is too narrow for all 5 dashed lines + actual +
-    // projected + CI band — turns into visual mush. The dedicated Historical
-    // Comparison panel further down already shows all years.
-    const recent = t.historical.slice(_mobileVP() ? -1 : -5);
-    // Build a (family,year) -> real historical edition lookup so we can plot
-    // the year's actual daily_data instead of synthesizing a curve from the
-    // family-aggregate registration curve × final count. The synthesized line
-    // was grossly wrong for events that front-load late (Cleveland Open: real
-    // 2025 at T-20 was 18, the synthesized line read 71). Fall back to the
-    // curve only when no real daily series exists for that year.
+    // Build a (family,year) -> real historical edition lookup. Only years
+    // with real scraped daily series get a chart line — synthesizing a year
+    // from the family-aggregate curve × final count inflates early-T values
+    // for events that front-load late (Cleveland 2019 final 224 × generic
+    // curve at T-20 = 80, even though we have no idea what 2019 actually
+    // looked like at T-20). The "Historical Comparison" panel below still
+    // shows all final counts; the chart shows only what we can plot honestly.
     const histLookup = {};
     (TOURNAMENT_DATA.tournaments || []).forEach(other => {
       if (other.family === t.family && other.status === 'historical' &&
@@ -2622,36 +2618,28 @@ function renderChart(t) {
         histLookup[other.year] = other;
       }
     });
+    // Cap to most recent N years that HAVE real daily data: 1 on mobile,
+    // 5 on desktop. Mobile chart is too narrow for multiple dashed lines +
+    // actual + projected + CI band.
+    const realYears = t.historical.filter(h => histLookup[h.year]);
+    const recent = realYears.slice(_mobileVP() ? -1 : -5);
     recent.forEach((h, i) => {
-      const hData = [];
       const real = histLookup[h.year];
-      if (real) {
-        // Real daily data: anchor each point by T (days before event) onto
-        // this year's event calendar so all lines overlay cleanly.
-        const dd = real.daily_data;
-        const maxDay = dd[dd.length - 1][0];
-        dd.forEach(p => {
-          const T = maxDay - p[0];
-          if (T >= 0 && T <= 120) {
-            hData.push({ x: addDays(eventStart, -T), y: p[1] });
-          }
-        });
-        // Always anchor the final point at event-day for visual continuity
-        hData.push({ x: addDays(eventStart, 0), y: h.count });
-        hData.sort((a, b) => a.x - b.x);
-      } else {
-        // Fallback: synthesize from family curve × final count (pre-fix path).
-        // Used only when the year predates daily scraping (typically <= 2019).
-        for (let db = 120; db >= 0; db -= 2) {
-          const pct = interpCurve(t.registration_curve, db);
-          hData.push({ x: addDays(eventStart, -db), y: Math.round(h.count * pct) });
+      const hData = [];
+      const dd = real.daily_data;
+      const maxDay = dd[dd.length - 1][0];
+      dd.forEach(p => {
+        const T = maxDay - p[0];
+        if (T >= 0 && T <= 120) {
+          hData.push({ x: addDays(eventStart, -T), y: p[1] });
         }
-        hData.push({ x: addDays(eventStart, 0), y: h.count });
-      }
+      });
+      // Anchor the final point at event-day for visual continuity
+      hData.push({ x: addDays(eventStart, 0), y: h.count });
+      hData.sort((a, b) => a.x - b.x);
       const colorIdx = recent.length - 1 - i;
-      const labelSuffix = real ? '' : ' (est)';
       datasets.push({
-        label: `${h.year}${labelSuffix}`,
+        label: `${h.year}`,
         data: hData,
         borderColor: histColors[colorIdx] || histColors[histColors.length - 1],
         borderWidth: 1.5,
@@ -2793,6 +2781,25 @@ function renderChart(t) {
     };
   }
 
+  // Custom tooltip positioner: pin to the chart corner OPPOSITE the cursor's
+  // x-position so the tooltip never occludes the line you're inspecting.
+  // Stakeholder feedback: default 'average' position floated on top of the
+  // data, blocking the chart while reading values.
+  if (!Chart.Tooltip.positioners.cornerAway) {
+    Chart.Tooltip.positioners.cornerAway = function(elements, eventPos) {
+      const chartArea = this.chart.chartArea;
+      if (!chartArea) return false;
+      const midX = (chartArea.left + chartArea.right) / 2;
+      const onRight = eventPos.x > midX;
+      // Anchor to top-left when cursor is on the right half, and vice versa.
+      // y stays high so the tooltip lives in the chart's top band.
+      return {
+        x: onRight ? chartArea.left + 8 : chartArea.right - 8,
+        y: chartArea.top + 8,
+      };
+    };
+  }
+
   chart = new Chart(ctx, {
     type: 'line',
     data: { datasets },
@@ -2804,6 +2811,9 @@ function renderChart(t) {
       plugins: {
         legend: { display: false },
         tooltip: {
+          position: 'cornerAway',
+          xAlign: undefined, yAlign: 'top',
+          caretSize: 0,
           backgroundColor: 'rgba(13,17,23,0.95)', borderColor: 'rgba(48,54,61,0.8)', borderWidth: 1,
           titleColor: '#e6edf3', bodyColor: '#c9d1d9', footerColor: '#8b949e',
           padding: 12, cornerRadius: 8,

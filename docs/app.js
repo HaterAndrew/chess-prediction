@@ -2876,16 +2876,21 @@ function renderChart(t) {
                   lines.push(`  80% CI: ${fmt(ciLo.raw.y)} – ${fmt(ciUp.raw.y)}`);
                 }
               }
-              // Pace vs. historical average
-              if (t.historical && t.historical.length > 0) {
-                const hAvg = Math.round(t.historical.reduce((s, h) => s + h.count, 0) / t.historical.length);
+              // Pace vs. historical average AT THE SAME T (not vs final).
+              // Comparing today's 32 to final-avg 203 read "-84%" even when
+              // current is genuinely ahead of every historical year at this T.
+              // Use the items already in the tooltip — each historical year
+              // dataset reports its y at the hovered date.
+              const yearItems = items.filter(i => /^\d{4}( \(est\))?$/.test(i.dataset.label));
+              if (yearItems.length > 0) {
+                const hAvgAtT = Math.round(yearItems.reduce((s, i) => s + i.raw.y, 0) / yearItems.length);
                 const actual = items.find(i => i.dataset.label === 'Actual Entries');
                 const projected = items.find(i => i.dataset.label === 'Projected');
                 const ref = actual || projected;
-                if (ref && ref.raw.y > 0) {
-                  const pct = ((ref.raw.y - hAvg) / hAvg * 100).toFixed(1);
+                if (ref && ref.raw.y > 0 && hAvgAtT > 0) {
+                  const pct = ((ref.raw.y - hAvgAtT) / hAvgAtT * 100).toFixed(1);
                   const sign = pct > 0 ? '+' : '';
-                  lines.push(`  vs hist avg (${fmt(hAvg)}): ${sign}${pct}%`);
+                  lines.push(`  vs ${yearItems.length}-yr avg @ this T (${fmt(hAvgAtT)}): ${sign}${pct}%`);
                 }
               }
               return lines;

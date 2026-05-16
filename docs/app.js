@@ -2634,8 +2634,13 @@ function renderChart(t) {
           hData.push({ x: addDays(eventStart, -T), y: p[1] });
         }
       });
-      // Anchor the final point at event-day for visual continuity
-      hData.push({ x: addDays(eventStart, 0), y: h.count });
+      // DO NOT inject a [event_day, h.count] final anchor here. For events
+      // like Cleveland Open, the daily scrape captures only ~30-35% of the
+      // final count: the rest is day-of registrations or post-event roster
+      // reconciliation. Anchoring to the final created a misleading vertical
+      // spike at event day and inflated the historical line's height in the
+      // T-3..T-0 region. Honest line ends where the scrape ends. The
+      // Historical Comparison panel below shows the authoritative finals.
       hData.sort((a, b) => a.x - b.x);
       const colorIdx = recent.length - 1 - i;
       datasets.push({

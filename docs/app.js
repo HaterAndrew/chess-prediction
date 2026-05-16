@@ -102,7 +102,13 @@ function renderPaceBanner(t) {
   const el = document.getElementById('paceBannerArea');
   if (!el) return;
   const alert = getPaceAlert(t);
-  el.innerHTML = alert ? paceBannerHTML(alert) : '';
+  // Suppress the historical-curve banner whenever we have a prior-year
+  // same-day comparator on the YoY delta banner above — showing both leads
+  // to contradictions like "+78% YoY" stacked with "-56% historical pace"
+  // for the same event. The YoY headline is the operational metric; the
+  // historical-curve number only fills in when 2025 daily data is missing.
+  const hasYoY = !!(t && t.prior_year_pace && t.prior_year_pace.count_at_same_point != null && t.prior_year_pace.count_at_same_point > 0);
+  el.innerHTML = (alert && !hasYoY) ? paceBannerHTML(alert) : '';
 }
 
 // ══════════════════════════════════════════════════════════
@@ -2731,17 +2737,22 @@ function renderChart(t) {
       chart2.data.datasets.forEach((ds, dsIdx) => {
         const meta = chart2.getDatasetMeta(dsIdx);
         if (!meta.visible || !meta.data.length) return;
-        // Determine the pixel range this dataset covers
-        const firstPx = meta.data[0].x;
+        // Projection's index-0 point is a visual duplicate of Actual's last point
+        // (glued together so the lines connect). Skip it for hit-testing so the
+        // tooltip title doesn't get hijacked by Projected when the user is
+        // actually hovering the Actual line near today/yesterday.
+        const skipFirst = ds.label === 'Projected' && meta.data.length > 1;
+        const firstHitIdx = skipFirst ? 1 : 0;
+        if (firstHitIdx >= meta.data.length) return;
+        const firstPx = meta.data[firstHitIdx].x;
         const lastPx = meta.data[meta.data.length - 1].x;
-        const margin = 15; // px tolerance beyond endpoints
-        // Skip if mouse is outside this dataset's x-range
+        const margin = 15;
         if (mouseX < firstPx - margin || mouseX > lastPx + margin) return;
         let bestIdx = -1, bestDist = Infinity;
-        meta.data.forEach((el, idx) => {
-          const dist = Math.abs(el.x - mouseX);
+        for (let idx = firstHitIdx; idx < meta.data.length; idx++) {
+          const dist = Math.abs(meta.data[idx].x - mouseX);
           if (dist < bestDist) { bestDist = dist; bestIdx = idx; }
-        });
+        }
         if (bestIdx >= 0 && bestDist < 50) {
           items.push({ datasetIndex: dsIdx, index: bestIdx, element: meta.data[bestIdx] });
         }
@@ -3536,11 +3547,22 @@ function renderMiniCards() {
   el.innerHTML = live.map(({t, i}) => {
     const isSelected = i === selectedIndex;
     const pct = t.point_estimate > 0 ? (t.current_count / t.point_estimate * 100).toFixed(0) : 0;
-    // Pace comparison — is registration ahead or behind the expected curve?
+    // Pace comparison — same metric as the detail-view YoY banner:
+    // compare current_count to prior_year_pace.count_at_same_point. Falls
+    // back to last-year × curve-pct only when 2025 daily data is missing.
+    // Previously used point_estimate × curve%, which produced a third
+    // disagreeing pace metric on the same screen.
     let paceIndicator = '';
-    if (t.registration_curve && t.historical && t.historical.length > 0) {
+    let expectedCount = null;
+    if (t.prior_year_pace && t.prior_year_pace.count_at_same_point > 0) {
+      expectedCount = t.prior_year_pace.count_at_same_point;
+    } else if (t.registration_curve && t.historical && t.historical.length > 0) {
+      const lastYr = t.historical[t.historical.length - 1];
       const expectedPct = interpCurve(t.registration_curve, t.days_remaining);
-      const expectedCount = Math.round(t.point_estimate * expectedPct);
+      const c = Math.round(lastYr.count * expectedPct);
+      if (c > 0) expectedCount = c;
+    }
+    if (expectedCount != null) {
       if (t.current_count > expectedCount * 1.05) {
         paceIndicator = `<span style="color:var(--green);font-size:.68rem">&#9650; ahead</span>`;
       } else if (t.current_count < expectedCount * 0.95) {

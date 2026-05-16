@@ -2657,6 +2657,24 @@ function renderChart(t) {
         tension: 0.3,
         order: 6
       });
+      // Final-count marker, plotted as a single point (no line) at event day
+      // in the same color as the year line. Lets the user see the gap between
+      // what the daily scrape captured and where the year actually finished —
+      // which is the day-of / post-event reconciliation surge.
+      const markerColor = histColors[colorIdx] || histColors[histColors.length - 1];
+      datasets.push({
+        label: `${h.year} final`,
+        data: [{ x: addDays(eventStart, 0), y: h.count }],
+        showLine: false,
+        backgroundColor: markerColor,
+        borderColor: markerColor,
+        pointStyle: 'circle',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBorderColor: '#e6edf3',
+        pointBorderWidth: 1.5,
+        order: 4
+      });
     });
   }
 
@@ -2946,6 +2964,10 @@ function renderChart(t) {
           time: _mobileVP()
             ? { unit: 'month', displayFormats: { month: 'MMM' } }
             : { unit: 'week', displayFormats: { week: 'MMM d' } },
+          // Extend the axis 5 days past event day so the finals-marker dot for
+          // each historical year has visible space and is clearly separate
+          // from the chart's data region (the day-of / post-event surge).
+          max: t.event_start ? addDays(new Date(t.event_start + 'T00:00:00'), 5) : undefined,
           grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false },
           ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxRotation: 0 }
         },

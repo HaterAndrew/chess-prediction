@@ -95,20 +95,22 @@ function paceBannerHTML(alert) {
   const cls = alert.status === 'above_pace' ? 'above' : alert.status === 'below_pace' ? 'below' : 'on';
   const icon = '\u26A1';
   const pctText = alert.deviation_pct > 0 ? `+${alert.deviation_pct}%` : `${alert.deviation_pct}%`;
-  return `<div class="pace-banner ${cls}"><span class="pace-banner-icon">${icon}</span><span>${esc(alert.message)}</span><span class="pace-banner-pct">${pctText}</span></div>`;
+  // Relabel the message so it's unambiguous which metric this banner reports.
+  // The YoY headline above it reads "vs 2025"; this one is the multi-year
+  // historical curve. Stakeholders asked for both, clearly labeled.
+  const msg = (alert.message || '').replace(/historical pace/g, '5-year historical pace');
+  const tip = 'Compares current count to a 5-year average of final entries scaled by the family registration curve. The YoY banner above compares against 2025 only.';
+  return `<div class="pace-banner ${cls}" title="${esc(tip)}"><span class="pace-banner-icon">${icon}</span><span>${esc(msg)}</span><span class="pace-banner-pct">${pctText}</span></div>`;
 }
 
 function renderPaceBanner(t) {
   const el = document.getElementById('paceBannerArea');
   if (!el) return;
   const alert = getPaceAlert(t);
-  // Suppress the historical-curve banner whenever we have a prior-year
-  // same-day comparator on the YoY delta banner above — showing both leads
-  // to contradictions like "+78% YoY" stacked with "-56% historical pace"
-  // for the same event. The YoY headline is the operational metric; the
-  // historical-curve number only fills in when 2025 daily data is missing.
-  const hasYoY = !!(t && t.prior_year_pace && t.prior_year_pace.count_at_same_point != null && t.prior_year_pace.count_at_same_point > 0);
-  el.innerHTML = (alert && !hasYoY) ? paceBannerHTML(alert) : '';
+  // Show both the YoY headline (delta banner above) and the 5-year historical
+  // pace banner here. They measure different things; the labels make that
+  // clear. Stakeholders explicitly asked for both metrics back on screen.
+  el.innerHTML = alert ? paceBannerHTML(alert) : '';
 }
 
 // ══════════════════════════════════════════════════════════
@@ -2607,19 +2609,49 @@ function renderChart(t) {
     // projected + CI band — turns into visual mush. The dedicated Historical
     // Comparison panel further down already shows all years.
     const recent = t.historical.slice(_mobileVP() ? -1 : -5);
+    // Build a (family,year) -> real historical edition lookup so we can plot
+    // the year's actual daily_data instead of synthesizing a curve from the
+    // family-aggregate registration curve × final count. The synthesized line
+    // was grossly wrong for events that front-load late (Cleveland Open: real
+    // 2025 at T-20 was 18, the synthesized line read 71). Fall back to the
+    // curve only when no real daily series exists for that year.
+    const histLookup = {};
+    (TOURNAMENT_DATA.tournaments || []).forEach(other => {
+      if (other.family === t.family && other.status === 'historical' &&
+          Array.isArray(other.daily_data) && other.daily_data.length > 1) {
+        histLookup[other.year] = other;
+      }
+    });
     recent.forEach((h, i) => {
       const hData = [];
-      const sorted = [...t.registration_curve].sort((a, b) => b.days_before - a.days_before);
-      const pctFn = (pt) => pt.cumulative_pct !== undefined ? pt.cumulative_pct : (pt.pct || 0);
-      // Generate more data points for smoother dashed curves
-      for (let db = 120; db >= 0; db -= 2) {
-        const pct = interpCurve(t.registration_curve, db);
-        hData.push({ x: addDays(eventStart, -db), y: Math.round(h.count * pct) });
+      const real = histLookup[h.year];
+      if (real) {
+        // Real daily data: anchor each point by T (days before event) onto
+        // this year's event calendar so all lines overlay cleanly.
+        const dd = real.daily_data;
+        const maxDay = dd[dd.length - 1][0];
+        dd.forEach(p => {
+          const T = maxDay - p[0];
+          if (T >= 0 && T <= 120) {
+            hData.push({ x: addDays(eventStart, -T), y: p[1] });
+          }
+        });
+        // Always anchor the final point at event-day for visual continuity
+        hData.push({ x: addDays(eventStart, 0), y: h.count });
+        hData.sort((a, b) => a.x - b.x);
+      } else {
+        // Fallback: synthesize from family curve × final count (pre-fix path).
+        // Used only when the year predates daily scraping (typically <= 2019).
+        for (let db = 120; db >= 0; db -= 2) {
+          const pct = interpCurve(t.registration_curve, db);
+          hData.push({ x: addDays(eventStart, -db), y: Math.round(h.count * pct) });
+        }
+        hData.push({ x: addDays(eventStart, 0), y: h.count });
       }
-      hData.push({ x: addDays(eventStart, 0), y: h.count }); // final point
       const colorIdx = recent.length - 1 - i;
+      const labelSuffix = real ? '' : ' (est)';
       datasets.push({
-        label: `${h.year}`,
+        label: `${h.year}${labelSuffix}`,
         data: hData,
         borderColor: histColors[colorIdx] || histColors[histColors.length - 1],
         borderWidth: 1.5,

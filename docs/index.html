@@ -80,6 +80,10 @@
       <!-- Sticky scroll-context strip: appears when the hero scrolls out of view
            so the user always knows the key numbers without scrolling back. -->
       <div class="header-stats" id="headerStats" aria-hidden="true"></div>
+      <button class="search-btn" id="searchBtn" onclick="openCmdK()" aria-label="Search tournaments">
+        <span class="search-btn-icon" aria-hidden="true">&#128269;</span>
+        <span class="search-btn-text">Search</span>
+      </button>
       <span style="width:1px;height:18px;background:var(--border);margin:0 4px"></span>
       <div class="header-meta">Updated: <span id="lastUpdated"></span></div>
     </div>
@@ -118,6 +122,19 @@
       <span class="bn-label">More</span>
     </button>
   </nav>
+
+  <!-- ── Search dialog (opens from the header Search button) ── -->
+  <div class="cmdk" id="cmdkRoot" role="dialog" aria-modal="true" aria-label="Search tournaments" hidden>
+    <div class="cmdk-backdrop" onclick="closeCmdK()"></div>
+    <div class="cmdk-panel">
+      <div class="cmdk-input-wrap">
+        <span class="cmdk-input-icon" aria-hidden="true">&#128269;</span>
+        <input type="search" class="cmdk-input" id="cmdkInput" placeholder="Search tournaments..." autocomplete="off" aria-controls="cmdkResults">
+        <button class="cmdk-close" onclick="closeCmdK()" aria-label="Close search">&times;</button>
+      </div>
+      <div class="cmdk-results" id="cmdkResults" role="listbox"></div>
+    </div>
+  </div>
 
   <!-- ══════ PREDICTIONS TAB ══════ -->
   <div class="page-tab-panel active" id="panel-predictions" role="tabpanel" aria-labelledby="ptab-predictions">

@@ -2227,10 +2227,32 @@ function renderHero(t) {
     ? ` <span title="Prediction used the '${t.prediction_tier}' fallback path. 'family-alias' pools history from related families; 'size-matched' uses families with comparable historical size when this family has no direct history." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:700;background:rgba(0,0,0,.3);border:1px solid var(--blue);color:var(--blue);margin-left:6px;vertical-align:middle;cursor:help">${t.prediction_tier.replace('-',' ')}</span>`
     : '';
 
-  const ciText = t.ci_lower === t.ci_upper
-    ? `<span style="color:var(--text2)">${fmt(t.current_count)} total entries</span>${confBadge}${tierBadge}`
-    : `<span style="color:var(--text2);font-weight:600">${fmt(t.ci_lower)}</span> <span style="opacity:.5">–</span> <span style="color:var(--text2);font-weight:600">${fmt(t.ci_upper)}</span> <span style="opacity:.7">(${Math.round((t.ci_level || .8) * 100)}% CI)</span>${confBadge}${tierBadge}`;
-  document.getElementById('heroCi').innerHTML = ciText;
+  // Confidence interval visualization. For completed tournaments we still
+  // just show the final count (no CI to visualize). For live tournaments
+  // with a real CI range, render a horizontal bar with the point estimate
+  // marker positioned by where it sits inside [ci_lower, ci_upper].
+  const ciLevel = Math.round((t.ci_level || .8) * 100);
+  let ciHtml;
+  if (t.ci_lower === t.ci_upper) {
+    ciHtml = `<span class="ci-final">${fmt(t.current_count)} total entries</span>${confBadge}${tierBadge}`;
+  } else {
+    const lo = t.ci_lower, hi = t.ci_upper, pe = t.point_estimate;
+    // Position 0-100% along the CI span. Clamp so off-band point estimates
+    // (rare model edge cases) still render visibly inside the bar.
+    const pct = Math.max(0, Math.min(100, ((pe - lo) / (hi - lo)) * 100));
+    ciHtml = `
+      <div class="ci-bar" role="img" aria-label="80% confidence interval from ${fmt(lo)} to ${fmt(hi)}, point estimate ${fmt(pe)}">
+        <span class="ci-bound ci-bound-lo">${fmt(lo)}</span>
+        <div class="ci-track">
+          <div class="ci-track-fill"></div>
+          <div class="ci-marker" style="left:${pct.toFixed(2)}%" title="Point estimate: ${fmt(pe)}"></div>
+        </div>
+        <span class="ci-bound ci-bound-hi">${fmt(hi)}</span>
+      </div>
+      <div class="ci-meta">${ciLevel}% CI${confBadge}${tierBadge}</div>
+    `;
+  }
+  document.getElementById('heroCi').innerHTML = ciHtml;
 
   // Side KPI cards
   document.getElementById('kpiCurrent').innerHTML = `

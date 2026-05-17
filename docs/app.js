@@ -3195,18 +3195,33 @@ function renderMilestones(t) {
 
   if (milestones.length === 0) { el.innerHTML = ''; return; }
 
-  // Show last ~5 milestones
+  // Show the most relevant milestones — keep early bird (if any) + 5 nearest
+  // upcoming checkpoints. The full table view (replaced by this strip) used
+  // .slice(0, 6) which was already the same shape, so no change in density.
   const shown = milestones.slice(0, 6);
-  let html = `<table class="milestone-table">
-    <thead><tr><th>Milestone</th><th>Est. Count</th><th>Status</th></tr></thead><tbody>`;
+
+  // Horizontal timeline. Each milestone is a node with a status-colored dot,
+  // a label, the date, and the predicted entry count at that point. A
+  // continuous gradient line runs behind the nodes; the gradient stop matches
+  // the boundary between "past" and "now/future" nodes so the user sees
+  // visually where the present is on the journey.
+  const firstNonPast = shown.findIndex(m => m.status !== 'past');
+  const pastPct = firstNonPast === -1
+    ? 100
+    : Math.max(0, Math.min(100, (firstNonPast / (shown.length - 1)) * 100));
+
+  let html = `<div class="ms-strip" role="list" aria-label="Tournament milestones">
+    <div class="ms-line"><div class="ms-line-past" style="width:${pastPct}%"></div></div>`;
   shown.forEach(m => {
-    const badge = m.status === 'past' ? '<span class="ms-badge ms-past">Passed</span>'
-      : m.status === 'now' ? '<span class="ms-badge ms-now">Now</span>'
-      : '<span class="ms-badge ms-future">Upcoming</span>';
-    const count = m.actual || (m.est ? `<strong style="color:var(--gold)">~${fmt(m.est)}</strong>` : '–');
-    html += `<tr><td>${m.label}<div style="font-size:.7rem;color:var(--muted)">${m.date}</div></td><td>${count}</td><td>${badge}</td></tr>`;
+    const count = m.actual || (m.est ? `~${fmt(m.est)}` : '');
+    html += `<div class="ms-node ms-${m.status}" role="listitem">
+      <div class="ms-dot" aria-hidden="true"></div>
+      <div class="ms-node-label">${m.label}</div>
+      <div class="ms-node-date">${m.date}</div>
+      ${count ? `<div class="ms-node-count">${count}</div>` : ''}
+    </div>`;
   });
-  html += '</tbody></table>';
+  html += '</div>';
   el.innerHTML = html;
 }
 

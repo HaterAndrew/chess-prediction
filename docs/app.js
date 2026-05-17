@@ -2336,6 +2336,10 @@ function renderHero(t) {
   // multi-sub-event festival (e.g. World Open). No-op otherwise.
   renderFestivalCluster(t);
 
+  // Confidence breakdown — populates the collapsible "Why this prediction"
+  // panel beneath the festival cluster. Pre-collapsed by default.
+  renderConfidencePanel(t);
+
   // Side KPI cards
   document.getElementById('kpiCurrent').innerHTML = `
     <div class="kpi-label">Registered</div>
@@ -3887,6 +3891,102 @@ function renderMovements() {
   });
   html += '</div>';
   el.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════════
+// CONFIDENCE BREAKDOWN PANEL ("Why this prediction")
+// ══════════════════════════════════════════════════════════
+// Open-the-hood view of the model's certainty. Surfaces the four
+// factors that drive the confidence badge so a skeptical reader
+// can see the math: historical depth, prediction tier, CI width,
+// year-over-year volatility. Collapsed by default; users expand
+// to verify.
+function renderConfidencePanel(t) {
+  const el = document.getElementById('confidenceBody');
+  if (!el) return;
+  if (!t || isDone(t)) {
+    // Completed tournaments have no prediction-confidence story; hide.
+    document.getElementById('confidencePanel').style.display = 'none';
+    return;
+  }
+  document.getElementById('confidencePanel').style.display = '';
+
+  const rows = [];
+
+  // Historical depth — count of qualifying editions feeding the model.
+  const nHist = t.n_historical_editions ?? (t.historical ? t.historical.length : 0);
+  const histVerdict = nHist >= 8 ? { cls: 'pos', text: 'Strong' }
+                    : nHist >= 4 ? { cls: 'flat', text: 'Adequate' }
+                    : nHist >= 2 ? { cls: 'neg', text: 'Thin' }
+                    : { cls: 'neg', text: 'Very thin' };
+  rows.push({
+    label: 'Historical depth',
+    value: `${nHist} qualifying edition${nHist === 1 ? '' : 's'}`,
+    verdict: histVerdict,
+    detail: 'Years of comparable data feeding the model. <4 editions triggers the low-confidence badge.',
+  });
+
+  // Prediction tier — which model path was used.
+  const tier = t.prediction_tier || 'family-direct';
+  const tierVerdict = tier === 'family-direct' ? { cls: 'pos', text: 'Direct' }
+                    : tier === 'family-alias'  ? { cls: 'flat', text: 'Aliased' }
+                    : { cls: 'neg', text: 'Fallback' };
+  const tierDetail = tier === 'family-direct'
+    ? 'Trained directly on this family’s history.'
+    : tier === 'family-alias'
+      ? 'Pools history from related family lineages (e.g. venue moves).'
+      : 'No direct history; uses tournaments of comparable size as a fallback.';
+  rows.push({
+    label: 'Prediction tier',
+    value: tier.replace('-', ' '),
+    verdict: tierVerdict,
+    detail: tierDetail,
+  });
+
+  // CI width — how tight the prediction interval is, as % of point estimate.
+  if (t.ci_lower != null && t.ci_upper != null && t.point_estimate > 0) {
+    const widthPct = ((t.ci_upper - t.ci_lower) / t.point_estimate) * 100;
+    const widthVerdict = widthPct <= 20 ? { cls: 'pos', text: 'Tight' }
+                       : widthPct <= 40 ? { cls: 'flat', text: 'Moderate' }
+                       : { cls: 'neg', text: 'Wide' };
+    rows.push({
+      label: '80% CI width',
+      value: `${widthPct.toFixed(0)}% of prediction`,
+      verdict: widthVerdict,
+      detail: 'Narrower band = more model agreement across feature pathways.',
+    });
+  }
+
+  // Year-over-year volatility — std dev of historical finals as % of mean.
+  if (t.historical && t.historical.length >= 3) {
+    const counts = t.historical.map(h => h.count).filter(n => n > 0);
+    if (counts.length >= 3) {
+      const mean = counts.reduce((s, n) => s + n, 0) / counts.length;
+      const variance = counts.reduce((s, n) => s + (n - mean) ** 2, 0) / counts.length;
+      const std = Math.sqrt(variance);
+      const cv = (std / mean) * 100;
+      const volVerdict = cv <= 12 ? { cls: 'pos', text: 'Stable' }
+                       : cv <= 25 ? { cls: 'flat', text: 'Variable' }
+                       : { cls: 'neg', text: 'Volatile' };
+      rows.push({
+        label: 'Year-over-year swing',
+        value: `±${cv.toFixed(0)}% (CV)`,
+        verdict: volVerdict,
+        detail: 'How much finals have swung historically. Higher CV widens the CI.',
+      });
+    }
+  }
+
+  el.innerHTML = rows.map(r => `
+    <div class="cp-row">
+      <div class="cp-row-top">
+        <span class="cp-row-label">${esc(r.label)}</span>
+        <span class="cp-row-verdict cp-${r.verdict.cls}">${esc(r.verdict.text)}</span>
+      </div>
+      <div class="cp-row-value">${esc(r.value)}</div>
+      <div class="cp-row-detail">${r.detail}</div>
+    </div>
+  `).join('');
 }
 
 // ══════════════════════════════════════════════════════════

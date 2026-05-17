@@ -9,15 +9,13 @@ compatibility_flags = ["nodejs_compat"]
 ALLOWED_ORIGIN = "https://haterandrew.github.io,http://localhost:8080,http://127.0.0.1:8080"
 DATA_URL = "https://haterandrew.github.io/chess-prediction/website_data.json"
 MODEL = "claude-sonnet-4-6"
-DAILY_BUDGET_USD = "2.00"
+DAILY_BUDGET_USD = "1.00"
 RATE_LIMIT_PER_MIN = "20"
 
-# KV namespace for rate-limit buckets + daily-cost counter.
-# Create with: wrangler kv:namespace create CHESS_ASK_KV
-# Then paste the returned id below.
-# [[kv_namespaces]]
-# binding = "KV"
-# id = "<paste-id-here>"
+# KV namespace: rate-limit buckets + daily-cost counter
+[[kv_namespaces]]
+binding = "KV"
+id = "3a7c98e0906c4d9eb355647a5a77feb7"
 
 # Secret (set via `wrangler secret put ANTHROPIC_API_KEY`):
 #   ANTHROPIC_API_KEY

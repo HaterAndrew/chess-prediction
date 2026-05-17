@@ -442,12 +442,13 @@ header {
   #panel-predictions > .chart-card     { order: 3; }
   #panel-predictions > #tabBar         { order: 4; }   /* 3 category dropdowns, now below the hero+chart */
   #panel-predictions > .movements-strip { order: 5; }
-  #panel-predictions > .mini-grid      { order: 6; }
-  #panel-predictions > .kpi-row        { order: 7; }
-  #panel-predictions > .progress-row   { order: 8; }
-  #panel-predictions > .grid-2         { order: 9; }
+  #panel-predictions > .calendar-strip { order: 6; }
+  #panel-predictions > .mini-grid      { order: 7; }
+  #panel-predictions > .kpi-row        { order: 8; }
+  #panel-predictions > .progress-row   { order: 9; }
+  #panel-predictions > .grid-2         { order: 10; }
   #panel-predictions > .all-tournaments,
-  #panel-predictions > .panel.model-info { order: 10; }
+  #panel-predictions > .panel.model-info { order: 11; }
 
   /* --- Delta banner: tighter, single-row feel --- */
   .delta-banner {
@@ -1276,6 +1277,92 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   }
   .tourney-table td:first-child::before { display: none; }
   .tourney-table td:last-child { border-bottom: none; padding-bottom: 0; }
+}
+
+/* ══════════════════════════════════════════════════════
+   UPCOMING-EVENTS CALENDAR STRIP
+   ══════════════════════════════════════════════════════ */
+.calendar-strip:empty { display: none; }
+.calendar-strip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--s-3) var(--s-4) var(--s-4);
+  margin: var(--s-3) 0;
+}
+.cal-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 10px; gap: var(--s-3);
+}
+.cal-title {
+  font-size: .68rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .6px; font-weight: 700;
+}
+.cal-legend {
+  display: flex; gap: var(--s-3);
+  font-size: .68rem; color: var(--muted);
+  flex-wrap: wrap;
+}
+.cal-legend-item { display: inline-flex; align-items: center; gap: 5px; }
+.cal-dot-mini {
+  display: inline-block; width: 8px; height: 8px; border-radius: 100px;
+}
+.cal-pace-pos { background: var(--green); }
+.cal-pace-flat { background: var(--gold); }
+.cal-pace-neg { background: var(--red); }
+.cal-track-wrap {
+  position: relative;
+  padding: 14px 14px 26px;
+}
+.cal-track {
+  position: relative;
+  height: 30px;
+  background: linear-gradient(180deg, transparent 13px, var(--border) 13px,
+    var(--border) 17px, transparent 17px);
+  border-radius: 2px;
+}
+/* "Today" marker — gold vertical line at x=0 (leftmost). */
+.cal-axis-now {
+  position: absolute; left: 0; top: -4px; bottom: -4px;
+  width: 2px;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(240,192,64,.5);
+  border-radius: 100px;
+  pointer-events: none;
+}
+.cal-dot {
+  position: absolute; top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--gold);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--border-light);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: transform .2s cubic-bezier(.22,1,.36,1), box-shadow .2s;
+  padding: 0;
+}
+.cal-dot.cal-pace-pos { background: var(--green); box-shadow: 0 0 0 1px rgba(63,185,80,.4), 0 0 12px rgba(63,185,80,.3); }
+.cal-dot.cal-pace-flat { background: var(--gold); box-shadow: 0 0 0 1px rgba(240,192,64,.4), 0 0 12px rgba(240,192,64,.2); }
+.cal-dot.cal-pace-neg { background: var(--red); box-shadow: 0 0 0 1px rgba(248,81,73,.4), 0 0 12px rgba(248,81,73,.3); }
+.cal-dot:hover, .cal-dot:focus-visible {
+  transform: translate(-50%, -50%) scale(1.25);
+  z-index: 2;
+  box-shadow: 0 0 0 2px var(--text), 0 4px 16px rgba(0,0,0,.4);
+}
+.cal-axis {
+  position: relative; height: 14px;
+  margin-top: 6px;
+}
+.cal-axis-tick {
+  position: absolute; transform: translateX(-50%);
+  font-size: .62rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px;
+  white-space: nowrap;
+}
+@media (max-width: 639px) {
+  .cal-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .cal-legend { gap: var(--s-2); font-size: .62rem; }
+  .cal-axis-tick { font-size: .56rem; }
 }
 
 /* ══════════════════════════════════════════════════════

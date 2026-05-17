@@ -3,12 +3,12 @@
 // Cache name is bumped on each deploy that reshapes caching behavior so
 // old caches from prior SW versions get purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v66';
+const CACHE_NAME = 'cca-predictor-v67';
 
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
-  'styles.css?v=25',
+  'styles.css?v=26',
   'app.js?v=29',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js',
   'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js'

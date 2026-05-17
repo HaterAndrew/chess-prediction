@@ -2353,14 +2353,37 @@ function renderHero(t) {
     if (recent.length >= 2) {
       const daySpan = recent[recent.length-1][0] - recent[0][0];
       const regSpan = recent[recent.length-1][1] - recent[0][1];
-      const rate = daySpan > 0 ? (regSpan / daySpan).toFixed(1) : '0';
+      const rateNum = daySpan > 0 ? regSpan / daySpan : 0;
+      const rate = rateNum.toFixed(1);
       // Expected remaining registrations per day to hit prediction
       const remaining = t.point_estimate - t.current_count;
-      const neededRate = t.days_remaining > 0 ? (remaining / t.days_remaining).toFixed(1) : '–';
+      const neededNum = t.days_remaining > 0 ? remaining / t.days_remaining : 0;
+      const neededRate = neededNum >= 0.05 ? neededNum.toFixed(1) : '0';
+      // Ratio of current rate to needed rate. >=1 means on/ahead-of pace.
+      const ratio = neededNum > 0 ? rateNum / neededNum : (rateNum > 0 ? 1.5 : 0);
+      // SVG arc gauge: 180-degree semicircle, fill proportional to
+      // min(ratio, 1.5) so the gauge maxes at 150% of needed (deep green).
+      const gaugeCap = 1.5;
+      const gaugePct = Math.max(0, Math.min(gaugeCap, ratio)) / gaugeCap;
+      const arcColor = ratio >= 0.95 ? 'var(--green)'
+                     : ratio >= 0.6 ? 'var(--gold)'
+                     : 'var(--red)';
+      // Semicircle path: arc from (10, 30) to (70, 30), radius 30.
+      // Length of full half-arc = pi*r = 94.25; dasharray uses that to
+      // encode fill percentage.
+      const arcLen = 94.25;
+      const dash = (gaugePct * arcLen).toFixed(2);
       paceHtml = `
         <div class="kpi-label">Daily Pace</div>
-        <div class="kpi-value v-gold">${rate}</div>
-        <div class="kpi-sub">entries/day · need ${neededRate}/day</div>
+        <div class="kpi-gauge" aria-label="Pace gauge: ${rate} per day, need ${neededRate} per day">
+          <svg class="kpi-gauge-svg" viewBox="0 0 80 42" aria-hidden="true">
+            <path class="kpi-gauge-track" d="M 10 32 A 30 30 0 0 1 70 32" />
+            <path class="kpi-gauge-fill" d="M 10 32 A 30 30 0 0 1 70 32"
+              style="stroke:${arcColor}; stroke-dasharray:${dash} ${arcLen};" />
+          </svg>
+          <div class="kpi-gauge-value">${rate}<span class="kpi-gauge-unit">/d</span></div>
+        </div>
+        <div class="kpi-sub">need ${neededRate}/day</div>
       `;
     }
   } else if (isDone(t) && t.historical && t.historical.length > 0) {

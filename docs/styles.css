@@ -839,6 +839,52 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   transition: border-color .2s, box-shadow .2s, transform .2s;
 }
 .kpi-card:hover { border-color: var(--border-light); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+/* Daily-pace gauge — semicircle arc inside the Daily Pace KPI tile.
+   Track is faint, fill animates from 0 with a smooth ease-out curve,
+   and the rate number sits inside the gauge so eyes land on the value
+   before parsing the arc. */
+.kpi-gauge {
+  position: relative;
+  width: 100%;
+  max-width: 110px;
+  margin: 2px 0 4px;
+}
+.kpi-gauge-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.kpi-gauge-track {
+  fill: none;
+  stroke: var(--surface3);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+.kpi-gauge-fill {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dasharray .6s cubic-bezier(.22,1,.36,1),
+              stroke .3s ease;
+}
+.kpi-gauge-value {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  text-align: center;
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.01em;
+  color: var(--gold);
+}
+.kpi-gauge-unit {
+  font-size: .6rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-left: 2px;
+}
 .kpi-label {
   font-size: .66rem; color: var(--muted);
   text-transform: uppercase; letter-spacing: .5px; font-weight: 600;

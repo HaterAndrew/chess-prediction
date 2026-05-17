@@ -1807,9 +1807,11 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   white-space: nowrap;
 }
 @media (max-width: 639px) {
-  .cal-head { flex-direction: column; align-items: flex-start; gap: 6px; }
-  .cal-legend { gap: var(--s-2); font-size: .62rem; }
-  .cal-axis-tick { font-size: .56rem; }
+  /* Calendar-strip is hover-driven and the dots are <14px each — they tap
+     poorly on phones, the custom tooltip can't fit, and 26 events cluster
+     unreadably on a 375px viewport. The mini-cards grid below already
+     covers the "what's upcoming" job on mobile, so hide the strip outright. */
+  .calendar-strip { display: none; }
 }
 
 /* Portfolio movements strip removed in iter 24 — duplicated the

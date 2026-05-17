@@ -3900,6 +3900,27 @@ function selectTournament(index, skipHash) {
   dot.style.display = t.status === 'live' ? '' : 'none';
   document.getElementById('tournLabel').textContent = `${t.family} ${t.year}`;
   document.title = `${t.family} ${t.year} — CCA Entry Predictor`;
+
+  // Sticky scroll-context strip in the header. Populated on every tournament
+  // switch; visibility is toggled by the heroSection IntersectionObserver
+  // (see _initHeaderStatsObserver). Shows current / predicted / T-N for live
+  // tournaments, or final count for completed.
+  const hs = document.getElementById('headerStats');
+  if (hs) {
+    if (t.status === 'live') {
+      hs.innerHTML = `
+        <span class="hs-pair"><span class="hs-num">${fmt(t.current_count)}</span><span class="hs-lab">now</span></span>
+        <span class="hs-sep">/</span>
+        <span class="hs-pair"><span class="hs-num hs-gold">${fmt(t.point_estimate)}</span><span class="hs-lab">pred</span></span>
+        <span class="hs-sep">&middot;</span>
+        <span class="hs-pair"><span class="hs-num">T-${t.days_remaining}</span></span>
+      `;
+    } else {
+      hs.innerHTML = `
+        <span class="hs-pair"><span class="hs-num hs-blue">${fmt(t.current_count)}</span><span class="hs-lab">final</span></span>
+      `;
+    }
+  }
   updateFavButton(t.family);
   updateCompareBtn();
 
@@ -4086,6 +4107,21 @@ function renderModelHealth() {
     .catch(() => { warnEl.innerHTML = ''; });
 }
 
+
+// IntersectionObserver that toggles the .visible class on #headerStats
+// when the hero section scrolls out of view. Falls back to no-op on
+// browsers without IO support (header stats simply stay visible).
+function _initHeaderStatsObserver() {
+  const hero = document.getElementById('heroSection');
+  const stats = document.getElementById('headerStats');
+  if (!hero || !stats || typeof IntersectionObserver !== 'function') return;
+  const io = new IntersectionObserver(entries => {
+    const heroVisible = entries[0].isIntersecting;
+    stats.classList.toggle('visible', !heroVisible);
+    stats.setAttribute('aria-hidden', heroVisible ? 'true' : 'false');
+  }, { threshold: 0, rootMargin: '-60px 0px 0px 0px' });
+  io.observe(hero);
+}
 
 function init() {
   // --- Stale data warning banner ---
@@ -4720,6 +4756,7 @@ function renderCompareChart(selected) {
 applyOverrides();
 
 init();
+_initHeaderStatsObserver();
 
 // ══════════════════════════════════════════════════════════
 // CHART-HIGHLIGHT STYLE (injected for click-to-table feature)

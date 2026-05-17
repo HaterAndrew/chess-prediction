@@ -772,6 +772,71 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 @media (max-width: 639px) {
   .hero-narrative { font-size: .82rem; line-height: 1.5; margin-top: 10px; }
 }
+
+/* Festival cluster — sibling sub-events of a multi-event festival
+   (e.g. World Open's three sub-events). Renders below the hero
+   narrative when applicable. Each card switches the selected
+   tournament; the active one carries a gold border. */
+.festival-cluster:empty { display: none; }
+.festival-cluster {
+  margin-top: 16px;
+  max-width: 560px;
+}
+.fc-head {
+  display: flex; align-items: baseline; gap: var(--s-2);
+  margin-bottom: 8px;
+}
+.fc-title {
+  font-size: .68rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .6px; font-weight: 700;
+}
+.fc-sub {
+  font-size: .62rem; color: var(--muted);
+  opacity: .7;
+}
+.fc-rows {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 6px;
+}
+.fc-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .2s, background .2s, transform .2s;
+  min-width: 0;
+}
+.fc-card:hover {
+  border-color: var(--gold);
+  background: var(--surface2);
+  transform: translateY(-1px);
+}
+.fc-card-active {
+  border-color: var(--gold);
+  background: var(--gold-dim);
+  box-shadow: 0 0 0 1px var(--gold);
+}
+.fc-card-label {
+  font-size: .68rem; font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase; letter-spacing: .4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.fc-card-active .fc-card-label { color: var(--gold); }
+.fc-card-num {
+  font-size: 1.15rem; font-weight: 800;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.01em;
+  margin: 2px 0;
+}
+.fc-card-sub {
+  font-size: .64rem; color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
 .hero-ci strong { color: var(--text); font-weight: 700; }
 .ci-final { color: var(--text2); font-weight: 600; }
 

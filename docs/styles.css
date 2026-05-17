@@ -544,16 +544,15 @@ header {
   #panel-predictions > .delta-banner   { order: 2; }
   #panel-predictions > .chart-card     { order: 3; }
   #panel-predictions > #tabBar         { order: 4; }   /* 3 category dropdowns, now below the hero+chart */
-  #panel-predictions > .movements-strip { order: 5; }
-  #panel-predictions > .calendar-strip { order: 6; }
-  #panel-predictions > .accuracy-strip { order: 7; }
-  #panel-predictions > .recent-results { order: 8; }
-  #panel-predictions > .mini-grid      { order: 9; }
-  #panel-predictions > .kpi-row        { order: 10; }
-  #panel-predictions > .progress-row   { order: 11; }
-  #panel-predictions > .grid-2         { order: 12; }
+  #panel-predictions > .calendar-strip { order: 5; }
+  #panel-predictions > .accuracy-strip { order: 6; }
+  #panel-predictions > .recent-results { order: 7; }
+  #panel-predictions > .mini-grid      { order: 8; }
+  #panel-predictions > .kpi-row        { order: 9; }
+  #panel-predictions > .progress-row   { order: 10; }
+  #panel-predictions > .grid-2         { order: 11; }
   #panel-predictions > .all-tournaments,
-  #panel-predictions > .panel.model-info { order: 13; }
+  #panel-predictions > .panel.model-info { order: 12; }
 
   /* --- Delta banner: tighter, single-row feel --- */
   .delta-banner {
@@ -1830,75 +1829,8 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   .cal-axis-tick { font-size: .56rem; }
 }
 
-/* ══════════════════════════════════════════════════════
-   PORTFOLIO MOVEMENTS STRIP (today's biggest movers)
-   ══════════════════════════════════════════════════════ */
-.movements-strip:empty { display: none; }
-.movements-strip {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: var(--s-3) var(--s-4);
-  margin: var(--s-4) 0 var(--s-3);
-}
-.movements-head {
-  display: flex; justify-content: space-between; align-items: baseline;
-  gap: var(--s-3); margin-bottom: 10px;
-}
-.movements-title {
-  font-size: .68rem; color: var(--muted);
-  text-transform: uppercase; letter-spacing: .6px; font-weight: 700;
-}
-.movements-total {
-  font-size: .82rem; font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-.movements-pos { color: var(--green); }
-.movements-neg { color: var(--red); }
-.movements-flat { color: var(--muted); }
-.movements-rows {
-  display: flex; flex-direction: column; gap: 2px;
-}
-.movements-row {
-  display: grid;
-  grid-template-columns: 1fr 84px 60px;
-  align-items: center; gap: var(--s-3);
-  width: 100%;
-  padding: 6px 8px;
-  background: none; border: none;
-  border-radius: var(--radius-sm);
-  text-align: left;
-  cursor: pointer;
-  transition: background .15s;
-}
-.movements-row:hover { background: var(--surface2); }
-.mv-name {
-  font-size: .82rem; font-weight: 600; color: var(--text);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.mv-spark {
-  display: flex; align-items: flex-end; justify-content: flex-end;
-  gap: 2px; height: 16px;
-}
-.mv-spark-bar {
-  display: inline-block;
-  width: 6px; min-height: 2px;
-  background: var(--blue);
-  border-radius: 2px;
-  opacity: .6;
-}
-.movements-row:hover .mv-spark-bar { opacity: 1; }
-.mv-delta {
-  font-size: .92rem; font-weight: 800;
-  font-variant-numeric: tabular-nums; text-align: right;
-}
-@media (max-width: 639px) {
-  .movements-row { grid-template-columns: 1fr 60px 52px; gap: var(--s-2); }
-  .mv-name { font-size: .78rem; }
-  .mv-delta { font-size: .85rem; }
-  .mv-spark { height: 14px; }
-  .mv-spark-bar { width: 4px; }
-}
+/* Portfolio movements strip removed in iter 24 — duplicated the
+   mini-card delta chips (iter 9). */
 
 /* ══════════════════════════════════════════════════════
    UPCOMING MINI CARDS

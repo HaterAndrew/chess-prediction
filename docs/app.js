@@ -1972,7 +1972,7 @@ function renderTabs() {
 
   // ── Upcoming dropdown ──
   html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn" id="dropBtn_live" onclick="toggleDrop('live',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('live',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true" style="border-left:3px solid var(--green)">`;
+  html += `<div class="cat-btn cat-btn--live" id="dropBtn_live" onclick="toggleDrop('live',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('live',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
   html += `<span class="live-dot"></span>Upcoming <span class="cat-count" style="background:var(--green-dim);color:var(--green)">${live.length}</span> <span class="cat-arrow">&#9662;</span></div>`;
   html += `<div class="drop-menu" id="dropMenu_live" role="listbox" aria-label="Upcoming tournaments">`;
   live.sort((a, b) => a.t.days_remaining - b.t.days_remaining).forEach(({t, i}) => {
@@ -1984,7 +1984,7 @@ function renderTabs() {
 
   // ── Complete dropdown ──
   html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn" id="dropBtn_complete" onclick="toggleDrop('complete',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('complete',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true" style="border-left:3px solid var(--blue)">`;
+  html += `<div class="cat-btn cat-btn--complete" id="dropBtn_complete" onclick="toggleDrop('complete',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('complete',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
   html += `Complete <span class="cat-count">${complete.length}</span> <span class="cat-arrow">&#9662;</span></div>`;
   html += `<div class="drop-menu" id="dropMenu_complete" role="listbox" aria-label="Completed tournaments">`;
   complete.forEach(({t, i}) => {
@@ -1996,7 +1996,7 @@ function renderTabs() {
 
   // ── Historical search dropdown ──
   html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn" id="dropBtn_hist" onclick="toggleDrop('hist',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('hist',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true" style="border-left:3px solid var(--purple)">`;
+  html += `<div class="cat-btn cat-btn--hist" id="dropBtn_hist" onclick="toggleDrop('hist',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('hist',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
   html += `<span style="opacity:.6">&#128269;</span> Historical <span class="cat-count" style="background:var(--purple-dim);color:var(--purple)">${nHist}</span> <span class="cat-arrow">&#9662;</span></div>`;
   html += `<div class="drop-menu drop-menu-search" id="dropMenu_hist" role="listbox" aria-label="Historical tournaments">`;
   html += `<div class="tab-search-bar">`;
@@ -2759,9 +2759,14 @@ function renderChart(t) {
     _mouseX: null,
     afterEvent(chartInstance, args) {
       const evt = args.event;
-      if (evt.type === 'mousemove' || evt.type === 'click') {
+      // Mouse events power desktop crosshair; touch events power mobile.
+      // Without the touch branches, tapping the chart on a phone tooltips
+      // but never shows the helpful vertical crosshair line.
+      if (evt.type === 'mousemove' || evt.type === 'click' ||
+          evt.type === 'touchmove' || evt.type === 'touchstart') {
         this._mouseX = evt.x;
-      } else if (evt.type === 'mouseout') {
+      } else if (evt.type === 'mouseout' || evt.type === 'touchend' ||
+                 evt.type === 'touchcancel') {
         this._mouseX = null;
       }
     },
@@ -2856,11 +2861,18 @@ function renderChart(t) {
           caretSize: 0,
           backgroundColor: 'rgba(13,17,23,0.95)', borderColor: 'rgba(48,54,61,0.8)', borderWidth: 1,
           titleColor: '#e6edf3', bodyColor: '#c9d1d9', footerColor: '#8b949e',
-          padding: 12, cornerRadius: 8,
+          padding: _mobileVP() ? 9 : 12, cornerRadius: 8,
+          // Mobile tooltip: tighter padding, smaller text, smaller point swatches,
+          // capped width so a long historical comparison list can't overflow the
+          // chart area or the viewport. Desktop unchanged.
+          boxPadding: 4,
+          boxWidth: _mobileVP() ? 6 : 10,
           displayColors: true,
-          titleFont: { size: 14, weight: 'bold' }, bodyFont: { size: 12 }, footerFont: { size: 11, style: 'italic' },
-          titleMarginBottom: 8, bodySpacing: 5,
-          usePointStyle: true, pointStyleWidth: 8,
+          titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' },
+          bodyFont: { size: _mobileVP() ? 11 : 12 },
+          footerFont: { size: _mobileVP() ? 10 : 11, style: 'italic' },
+          titleMarginBottom: 8, bodySpacing: _mobileVP() ? 4 : 5,
+          usePointStyle: true, pointStyleWidth: _mobileVP() ? 6 : 8,
           callbacks: {
             title(items) {
               if (!items.length) return '';

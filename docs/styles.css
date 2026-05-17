@@ -23,7 +23,9 @@
   --red: #f85149;
   --red-dim: rgba(248,81,73,.10);
   --orange: #d29922;
+  --orange-bright: #f59e0b;
   --orange-dim: rgba(210,153,34,.10);
+  --ink: #1a1a1a;
   --purple: #bc8cff;
   --purple-dim: rgba(188,140,255,.10);
   --radius: 12px;
@@ -332,6 +334,18 @@ header {
 .delta-text { flex: 1 1 200px; min-width: 0; }
 .delta-main { font-size: .9rem; font-weight: 700; }
 .delta-sub { font-size: .76rem; color: var(--muted); margin-top: 2px; }
+/* Multi-year at-T pace context. Lives inside the delta banner as a sub-line
+   beneath delta-sub, replacing the standalone "lightning bolt" banner that
+   used to stack below this one. Hidden via :empty so tournaments without a
+   pace_alert don't render an extra gap. */
+.delta-context {
+  font-size: .72rem;
+  color: var(--muted);
+  opacity: .75;
+  margin-top: 4px;
+  line-height: 1.35;
+}
+.delta-context:empty { display: none; }
 .delta-value {
   font-size: 1.4rem; font-weight: 900; margin-left: auto;
   font-variant-numeric: tabular-nums;
@@ -352,7 +366,6 @@ header {
   /* --- Hide redundant chrome on phones --- */
   #summaryBar { display: none !important; }   /* duplicates dropdown counts + mini-grid */
   .header-meta { display: none; }              /* "Updated:" timestamp eats vertical space */
-  #paceBannerArea { display: none; }           /* "tracking within normal range" — redundant with delta banner */
 
   /* --- Predictions panel: flex column with explicit order --- */
   #panel-predictions {
@@ -554,11 +567,20 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   .header-tourn-label #tournLabel { max-width: 19ch; }
   /* Tighter chart-card padding gives the canvas ≈16px more horizontal room. */
   .chart-card { padding: var(--s-3); }
-  /* More plot area on mobile (was 260px). With title+legend ~75px overhead,
-     this gives ≈225px of actual chart vs ≈185px before. */
-  .chart-wrap { height: 300px; }
-  /* Subtitle smaller — mobile users can tap to see full context. */
-  .chart-subtitle { font-size: .7rem; line-height: 1.35; }
+  /* More plot area on mobile (was 300px). With title+legend ~75px overhead,
+     this gives ≈265px of actual chart so the trajectory line reads cleanly
+     at phone widths. */
+  .chart-wrap { height: 340px; }
+  /* Subtitle smaller AND single-line on mobile — wrapping to 2-3 lines
+     was eating ~30px of plot area on long family names ("World Open
+     Under 13 Championship 2026 — Registration Trajectory · Early bird
+     in 16d"). Truncate with ellipsis; full text is still visible via
+     the title attribute on long-press. */
+  .chart-subtitle {
+    font-size: .68rem; line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 100%;
+  }
   /* Stack chart title + legend vertically on mobile so neither is cramped. */
   .chart-top {
     flex-direction: column;
@@ -602,12 +624,8 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   font-size: clamp(2.5rem, 10vw, 4.5rem);
   font-weight: 900;
   line-height: 1; letter-spacing: -2px;
-  background: linear-gradient(135deg, var(--gold), #e6a817, var(--gold-bright));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 20px rgba(240,192,64,.2));
+  color: var(--gold);
   position: relative;
-  transition: filter .3s;
 }
 .hero-number::after {
   content: '';
@@ -630,7 +648,8 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: var(--s-3) var(--s-4);
+  /* Desktop: more breathing room. Mobile compresses back via media query below. */
+  padding: var(--s-4) var(--s-5);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -638,8 +657,8 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 }
 .kpi-card:hover { border-color: var(--border-light); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
 .kpi-label {
-  font-size: .62rem; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+  font-size: .66rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px; font-weight: 600;
   margin-bottom: 6px;
 }
 .kpi-value {
@@ -708,7 +727,7 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 .legend-swatch { width: 16px; height: 3px; border-radius: 2px; }
 .legend-swatch.dashed { background: repeating-linear-gradient(90deg, var(--gold) 0 6px, transparent 6px 10px); }
 .legend-swatch.band { width: 16px; height: 10px; border-radius: 2px; opacity: .4; }
-.chart-wrap { position: relative; height: 260px; }
+.chart-wrap { position: relative; height: 320px; }
 .chart-wrap canvas { border-radius: 8px; }
 
 /* ══════════════════════════════════════════════════════
@@ -1002,8 +1021,10 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 /* ── Edge fade hint for scrollable tab strip on mobile ── */
 @media (max-width: 639px) {
   .page-tabs {
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
-    mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+    /* Widened fade region (was 16px) so tab labels with emoji/icons
+       don't clip visibly before content wraps. */
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
     scroll-behavior: smooth;
   }
 }
@@ -1446,7 +1467,8 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   display: flex; flex-direction: column; gap: var(--s-2);
 }
 .compare-insight {
-  padding: var(--s-3); background: var(--surface2); border-left: 3px solid var(--blue);
+  padding: var(--s-3); background: var(--blue-dim);
+  border: 1px solid rgba(56,139,253,.25);
   border-radius: var(--radius-sm); font-size: .85rem; line-height: 1.5;
 }
 .compare-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter) var(--s-4); }
@@ -1849,7 +1871,7 @@ footer a { color: var(--muted); }
    ══════════════════════════════════════════════════════ */
 .stale-banner {
   position: fixed; top: 0; left: 0; right: 0; z-index: 99999;
-  background: #f59e0b; color: #1a1a1a;
+  background: var(--orange-bright); color: var(--ink);
   padding: max(10px, env(safe-area-inset-top)) 48px 10px 16px;
   font-size: 14px; font-weight: 600;
   text-align: center;
@@ -1860,7 +1882,7 @@ footer a { color: var(--muted); }
   position: absolute; right: 12px;
   top: max(50%, env(safe-area-inset-top));
   transform: translateY(-50%);
-  background: none; border: none; color: #1a1a1a;
+  background: none; border: none; color: var(--ink);
   font-size: 20px; line-height: 1;
   padding: 4px 8px;
   min-width: var(--touch); min-height: var(--touch);

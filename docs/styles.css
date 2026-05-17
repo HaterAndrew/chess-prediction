@@ -2729,3 +2729,91 @@ footer a { color: var(--muted); }
     scroll-behavior: auto !important;
   }
 }
+
+/* ══════════════════════════════════════════════════════
+   PRINT — clean one-page tournament report
+   ──────────────────────────────────────────────────────
+   Older stakeholder prints tournament status for handouts /
+   email attachments. Strip dark-mode chrome, kill chrome that
+   doesn't translate (sticky header, page tabs, mini-cards,
+   search bar), and lay the hero + chart + milestones + data
+   table on white for legibility.
+   ══════════════════════════════════════════════════════ */
+@media print {
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface2: #f5f5f5;
+    --surface3: #ebebeb;
+    --text: #111;
+    --text2: #222;
+    --muted: #555;
+    --border: #c8c8c8;
+    --border-light: #d8d8d8;
+  }
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 11pt;
+    padding-bottom: 0 !important;
+  }
+  /* Suppress chrome that doesn't translate to print. */
+  header,
+  .page-tabs,
+  .tab-bar,
+  .cmdk,
+  .search-btn,
+  .splash-bg,
+  .stale-banner,
+  #overrideBanner,
+  .compare-add-btn,
+  .calendar-strip,
+  .accuracy-strip,
+  .all-tournaments,
+  .panel.model-info,
+  .mini-grid,
+  .back-to-top,
+  #weekBreakdown,
+  .chart-card .vert-lines {
+    display: none !important;
+  }
+  /* Only show the active tab panel. */
+  .page-tab-panel:not(.active) { display: none !important; }
+  /* No glow, no blur, no shadows on print. */
+  *, *::before, *::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  /* Card surfaces become bordered light boxes. */
+  .chart-card, .panel, .delta-banner {
+    background: #fff !important;
+    border: 1px solid var(--border) !important;
+    page-break-inside: avoid;
+  }
+  /* Hero number printable in black + gold tint. */
+  .hero-number {
+    color: #111 !important;
+    font-size: 36pt !important;
+  }
+  .hero-number::after { display: none !important; }
+  .hero-narrative strong { color: #000 !important; }
+  .hn-pos { color: #1a6f30 !important; }
+  .hn-neg { color: #a32a23 !important; }
+  .hn-flat { color: #8a6b00 !important; }
+  /* Delta banner becomes a plain bordered box on print. */
+  .delta-banner.green, .delta-banner.red, .delta-banner.gold,
+  .delta-banner.muted {
+    background: #fff !important;
+    border: 1px solid var(--border) !important;
+  }
+  /* Chart canvas: ensure it stays at a reasonable height. */
+  .chart-wrap { height: 280px !important; }
+  /* Milestone strip: dots become solid black; status colors keep. */
+  .ms-line { background: #ddd !important; }
+  .ms-line-past { background: #b88c00 !important; }
+  /* Page break opportunities */
+  .grid-2 { page-break-inside: avoid; }
+  a[href]:after { content: ""; }
+}

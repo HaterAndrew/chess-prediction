@@ -887,76 +887,8 @@ body.drawer-open { overflow: hidden; touch-action: none; }
    serves both desktop and mobile; the duplicate bottom nav was extra
    chrome for an audience that isn't gesture/thumb-first. */
 
-/* Confidence breakdown panel — collapsible "open the hood" view of
-   why the model is or isn't confident in the prediction. <details>
-   element so it's keyboard-accessible by default. */
-.confidence-panel {
-  margin-top: 14px;
-  max-width: 560px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-.cp-summary {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 14px;
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-}
-.cp-summary::-webkit-details-marker { display: none; }
-.cp-summary-text {
-  font-size: .72rem; color: var(--text2);
-  text-transform: uppercase; letter-spacing: .6px; font-weight: 700;
-}
-.cp-chev {
-  font-size: 1rem; color: var(--muted);
-  transition: transform .25s cubic-bezier(.22,1,.36,1);
-}
-.confidence-panel[open] .cp-chev { transform: rotate(90deg); }
-.cp-body {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 0 14px 14px;
-}
-.cp-row {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 10px 12px;
-}
-.cp-row-top {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 4px;
-}
-.cp-row-label {
-  font-size: .64rem; color: var(--muted);
-  text-transform: uppercase; letter-spacing: .5px; font-weight: 700;
-}
-.cp-row-verdict {
-  font-size: .65rem; font-weight: 700;
-  padding: 1px 7px;
-  border-radius: 100px;
-}
-.cp-pos { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
-.cp-flat { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(240,192,64,.3); }
-.cp-neg { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,81,73,.3); }
-.cp-row-value {
-  font-size: .92rem; font-weight: 700;
-  color: var(--text);
-  font-variant-numeric: tabular-nums;
-  margin-bottom: 4px;
-  text-transform: capitalize;
-}
-.cp-row-detail {
-  font-size: .68rem; color: var(--muted);
-  line-height: 1.4;
-}
-@media (max-width: 639px) {
-  .cp-body { grid-template-columns: 1fr; gap: 8px; }
-  .cp-row { padding: 8px 10px; }
-}
+/* Confidence breakdown panel removed in iter 25 — the hero narrative +
+   confidence badge cover the same ground in plain English. */
 
 /* Festival cluster — sibling sub-events of a multi-event festival
    (e.g. World Open's three sub-events). Renders below the hero

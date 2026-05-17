@@ -620,8 +620,12 @@ for _, row in t2026.iterrows():
         pct = curve.get(db, 0)
         reg_curve.append({"days_before": db, "cumulative_pct": round(float(pct), 4)})
 
-    # Fix known typos in family names
-    display_family = family
+    # Canonicalize family name so live and historical rows agree on form
+    # (CCA emits "World Open, lower sections" with comma; canonical is the
+    # no-comma form per tournament_aliases.FAMILY_GROUPS). Without this the
+    # chart's histLookup and alerts.py's at-T comparator can't match the
+    # 2026 live row against its 2023-2025 historical editions.
+    display_family = canonicalize_family(family)
 
     # YoY pacing context: what was the count at the same T last year?
     prior_year_pace = None
@@ -829,7 +833,9 @@ for _, row in historical_valid.iterrows():
     count = int(row['final_count'])
     # Remap alias families to their 2026 canonical name
     # e.g. historical "Philadelphia International" → "DC International"
-    display_family = _alias_to_2026.get(family, family)
+    # Then canonicalize to strip comma variants (e.g. "World Open, lower
+    # sections" → "World Open lower sections") so live/historical match.
+    display_family = canonicalize_family(_alias_to_2026.get(family, family))
 
     # Get event date
     event_date = get_event_date(family, yr)

@@ -381,6 +381,35 @@ daily_path = os.path.join(OUTPUT_DIR, "daily_registration_counts.csv")
 daily_counts.to_csv(daily_path, index=False)
 print(f"Saved daily registration counts to {daily_path}")
 
+# ── Data-quality check: scrape coverage vs final count ─────────────────────
+# When scrape_end << final_count for a historical edition, it's a signal that
+# either (a) the daily scraper stopped running before event day, (b) the
+# recorded event_start date is wrong (so the daily series got truncated at
+# the wrong T), or (c) the family has a real late-arriving registration tail
+# our pipeline doesn't capture. The Cleveland Open 2025 metadata date bug
+# manifested as ratios of ~0.31 across 4 years before the date fix; now
+# ratios sit around 0.85-0.95. Anything < 0.5 is worth flagging for human
+# review. Warnings only — emitted as "WARNING:" so auto_update.py harvests
+# them into output/audit_warnings.json.
+_dq_threshold = 0.5
+# scrape_end = peak cum_regs per tid in daily_counts; final = summary.final_count
+_scrape_peak = daily_counts.groupby('tid')['cum_regs'].max().reset_index()
+_scrape_peak = _scrape_peak.rename(columns={'cum_regs': 'scrape_peak'})
+_dq = summary[['tid', 'family', 'tournament_year', 'final_count']].merge(
+    _scrape_peak, on='tid', how='left'
+).fillna({'scrape_peak': 0})
+_dq = _dq[(_dq['final_count'] > 0) & (_dq['scrape_peak'] > 0)]
+_dq['ratio'] = _dq['scrape_peak'] / _dq['final_count']
+_dq_flagged = _dq[_dq['ratio'] < _dq_threshold].sort_values('ratio')
+if len(_dq_flagged) > 0:
+    print(f"\n  Data-quality: {len(_dq_flagged)} edition(s) with scrape coverage < {_dq_threshold:.0%}")
+    for _, row in _dq_flagged.iterrows():
+        print(f"  WARNING: low scrape coverage — {row['family']} {int(row['tournament_year'])}: "
+              f"scrape={int(row['scrape_peak'])}/final={int(row['final_count'])} "
+              f"(ratio={row['ratio']:.2f})")
+else:
+    print(f"\n  Data-quality: all editions have scrape coverage >= {_dq_threshold:.0%}")
+
 # ── EDA: Chicago Open Cumulative Curves ─────────────────────────────────────
 print("\n── Chicago Open Analysis ──")
 

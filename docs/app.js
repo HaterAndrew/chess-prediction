@@ -3863,6 +3863,58 @@ function renderMovements() {
 }
 
 // ══════════════════════════════════════════════════════════
+// INLINE MODEL ACCURACY STRIP (Predictions tab)
+// ══════════════════════════════════════════════════════════
+// Compact "the model has been right X% of the time at T-14" strip that
+// pulls from PERFORMANCE_DATA. Surfaces trustworthiness inline without
+// making the user click into the Performance tab. Three cells: grade,
+// T-14 MAE, T-14 CI coverage. Click the strip to jump to the full
+// Performance tab.
+function renderAccuracyStrip() {
+  const el = document.getElementById('accuracyStrip');
+  if (!el) return;
+  const data = (typeof PERFORMANCE_DATA !== 'undefined') ? PERFORMANCE_DATA : null;
+  if (!data) { el.innerHTML = ''; return; }
+  const cumulative = data.cumulative || data;
+  if (!cumulative || !cumulative.aggregate) { el.innerHTML = ''; return; }
+  const agg = cumulative.aggregate;
+  // Find the T-14 bucket if it exists; fall back to nearest under-21d.
+  let t14 = agg.find(a => a.T === 14);
+  if (!t14) t14 = agg.find(a => a.T >= 7 && a.T <= 21);
+  const grade = cumulative.grade || data.grade || '–';
+  const nEvents = cumulative.n_tournaments ?? data.n_tournaments ?? null;
+  const mae = t14 ? t14.mae_pct : null;
+  const cov = t14 ? t14.ci_coverage : null;
+
+  // Grade-color mapping (matches the Performance tab letter conventions).
+  function gradeCls(g) {
+    if (!g) return 'flat';
+    const first = g[0];
+    if (first === 'A') return 'pos';
+    if (first === 'B') return 'flat';
+    return 'neg';
+  }
+
+  el.innerHTML = `
+    <button class="acc-row" onclick="switchPageTab('performance')" aria-label="Open full model performance tab">
+      <span class="acc-cell acc-grade">
+        <span class="acc-grade-letter acc-${gradeCls(grade)}">${grade}</span>
+        <span class="acc-grade-label">Model grade${nEvents ? ` · ${nEvents} tests` : ''}</span>
+      </span>
+      ${mae != null ? `<span class="acc-cell">
+        <span class="acc-num">${mae.toFixed(1)}%</span>
+        <span class="acc-lab">T-14 mean error</span>
+      </span>` : ''}
+      ${cov != null ? `<span class="acc-cell">
+        <span class="acc-num">${Math.round(cov * 100)}%</span>
+        <span class="acc-lab">T-14 in 80% CI</span>
+      </span>` : ''}
+      <span class="acc-cta">View details &rarr;</span>
+    </button>
+  `;
+}
+
+// ══════════════════════════════════════════════════════════
 // UPCOMING-EVENTS CALENDAR TIMELINE
 // ══════════════════════════════════════════════════════════
 // Horizontal timeline of all live tournaments by event date. Each dot is
@@ -4091,6 +4143,7 @@ function selectTournament(index, skipHash) {
     renderTabs();
     renderMovements();
     renderCalendar();
+    renderAccuracyStrip();
     renderMiniCards();
     renderDelta(t);
     renderHero(t);

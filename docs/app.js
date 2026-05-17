@@ -2477,7 +2477,12 @@ function renderHero(t) {
         }
       }
     }
-    if (days.length >= 2) {
+    if (days.length === 0 || days.every(n => n === 0)) {
+      // No recent activity — render a quiet placeholder instead of nothing
+      // so the hero-week column doesn't suddenly collapse to zero height.
+      barsEl.innerHTML = `<div class="hero-week-empty">No registrations in the last 7 days</div>`;
+      weekEl.style.display = '';
+    } else if (days.length >= 2) {
       const maxNew = Math.max(...days, 1);
       const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
       const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];

@@ -674,6 +674,14 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   display: flex; flex-direction: column; gap: 2px;
   justify-content: center; height: calc(100% - 18px);
 }
+.hero-week-empty {
+  font-size: .7rem;
+  color: var(--muted);
+  font-style: italic;
+  text-align: center;
+  padding: 12px 8px;
+  opacity: .7;
+}
 .hero-kpis {
   display: grid; grid-template-columns: repeat(2, 1fr);
   gap: var(--s-2);

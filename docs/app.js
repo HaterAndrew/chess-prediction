@@ -3617,12 +3617,35 @@ function sortTable(col, ev) {
   renderAllTournaments();
 }
 
+// Filter state for the all-tournaments table. status filter is one of
+// 'all' | 'live' | 'complete'; query is a free-text substring match against
+// family/year/state/city. Both apply on top of the existing sort.
+let _ttStatusFilter = 'all';
+function filterTourneyTable(status) {
+  if (status) {
+    _ttStatusFilter = status;
+    document.querySelectorAll('.tt-filter').forEach(b =>
+      b.classList.toggle('tt-filter-active', b.dataset.filter === status));
+  }
+  renderAllTournaments();
+}
+
 function renderAllTournaments() {
   const body = document.getElementById('tourneyBody');
+  const filterInput = document.getElementById('tourneyFilter');
+  const q = filterInput ? filterInput.value.trim().toLowerCase() : '';
   // Only show upcoming + complete (not 361 historical rows)
   const active = TOURNAMENT_DATA.tournaments
     .map((t, i) => ({t, i}))
-    .filter(({t}) => t.status === 'live' || t.status === 'complete');
+    .filter(({t}) => {
+      if (t.status !== 'live' && t.status !== 'complete') return false;
+      if (_ttStatusFilter !== 'all' && t.status !== _ttStatusFilter) return false;
+      if (q) {
+        const hay = `${t.family} ${t.year} ${t.venue_city || ''} ${t.venue_state || ''}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
 
   // Sort
   const dir = tableSortDir === 'asc' ? 1 : -1;
@@ -3679,6 +3702,9 @@ function renderAllTournaments() {
       </td>
     </tr>`;
   }).join('');
+  if (active.length === 0) {
+    body.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:32px 0;color:var(--muted);font-size:.85rem">No tournaments match the current filter.</td></tr>`;
+  }
 }
 
 // ══════════════════════════════════════════════════════════

@@ -17,7 +17,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=18">
+<link rel="stylesheet" href="styles.css?v=24">
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 </head>
 <body>
@@ -173,7 +173,6 @@
       <div class="kpi-card" id="kpiCurrent"></div>
       <div class="kpi-card" id="kpiDays"></div>
       <div class="kpi-card" id="kpiPace"></div>
-      <div class="kpi-card" id="kpiProgress"></div>
     </div>
   </div>
 
@@ -353,6 +352,19 @@
       Update tournament data below. Changes save to your browser and override scraped data.
     </div>
     <table class="de-table">
+      <colgroup>
+        <col class="de-col-name">
+        <col class="de-col-count">
+      </colgroup>
+      <colgroup class="de-colgroup-dates">
+        <col class="de-col-date">
+        <col class="de-col-date">
+      </colgroup>
+      <colgroup class="de-colgroup-fees">
+        <col class="de-col-fee">
+        <col class="de-col-fee">
+        <col class="de-col-fee">
+      </colgroup>
       <thead>
         <tr>
           <th>Tournament</th>
@@ -486,10 +498,19 @@
   <div class="page-tab-panel" id="panel-about" role="tabpanel" aria-labelledby="ptab-about">
 
     <!-- Title -->
-    <div style="margin:18px 0 28px">
+    <div style="margin:18px 0 14px">
       <h2 style="font-size:1.5rem;font-weight:800;color:var(--gold);margin-bottom:4px">CCA Tournament Entry Prediction Model</h2>
       <p style="font-size:.82rem;color:var(--muted)">A plain-English explanation of how the model works, how it was tested, and where it falls short.</p>
     </div>
+
+    <!-- Inline jump strip — anchor links to deep sections. Kept single-line, muted, not a card. -->
+    <nav class="about-jump" aria-label="Jump to about section">
+      Jump to:
+      <a href="#about-core">Core idea</a> &middot;
+      <a href="#about-equation">Ensemble equation</a> &middot;
+      <a href="#about-ratio">Ratio model</a> &middot;
+      <a href="#about-regression">Regression model</a>
+    </nav>
 
     <!-- Model Health (audit-derived telemetry): populated by renderModelHealth() at init -->
     <div id="modelHealthPanel" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
@@ -505,7 +526,7 @@
     </div>
 
     <!-- The Core Idea -->
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+    <div id="about-core" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px;scroll-margin-top:80px">
       <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:10px">The Core Idea</h3>
       <p style="font-size:.84rem;color:var(--text2);line-height:1.7">
         Every CCA tournament follows a registration curve &mdash; entries trickle in slowly, then accelerate as the event nears.
@@ -528,7 +549,7 @@
     </div>
 
     <!-- Ensemble Equation -->
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px">
+    <div id="about-equation" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:18px;scroll-margin-top:80px">
       <h3 style="font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:12px">Ensemble Equation</h3>
       <p style="font-size:.84rem;color:var(--text2);line-height:1.7;margin-bottom:14px">
         The predicted final entry count is a weighted blend of the two sub-models:
@@ -559,7 +580,7 @@
     <!-- Two sub-model cards -->
     <div class="about-submodels">
       <!-- Ratio Model -->
-      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px">
+      <div id="about-ratio" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;scroll-margin-top:80px">
         <h3 style="font-size:.9rem;font-weight:700;color:var(--blue);margin-bottom:10px">Historical Ratio Model (Primary)</h3>
         <p style="font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:10px">
           For each tournament family at lead time T, compute final/current ratios from every prior year. Central estimate uses
@@ -573,7 +594,7 @@
         </p>
       </div>
       <!-- Regression Model -->
-      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px">
+      <div id="about-regression" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px 24px;scroll-margin-top:80px">
         <h3 style="font-size:.9rem;font-weight:700;color:var(--blue);margin-bottom:10px">Huber Regression Model (Secondary)</h3>
         <p style="font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:10px">
           Per-family robust linear regression (Huber loss, &epsilon; = 1.35) trained on all historical (count, T) &rarr; final pairs.
@@ -104416,6 +104437,6 @@ const PERFORMANCE_DATA = {
 };
 
 </script>
-<script src="app.js?v=21"></script>
+<script src="app.js?v=25"></script>
 </body>
 </html>

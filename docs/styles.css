@@ -635,6 +635,52 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   display: grid; grid-template-columns: repeat(2, 1fr);
   gap: var(--s-2);
 }
+/* Desktop / tablet: editorial stat strip. Strip the card chrome
+   (background, border, hover transform, box-shadow) and replace
+   internal cards with vertical-divider columns. Numbers grow,
+   labels shrink, the whole hero KPI row reads as a single
+   instrument cluster rather than four floating boxes. */
+@media (min-width: 768px) {
+  .hero-kpis {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: var(--s-3) 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.01), transparent);
+  }
+  .hero-kpis .kpi-card {
+    background: none;
+    border: none;
+    border-left: 1px solid var(--border);
+    border-radius: 0;
+    padding: 0 var(--s-4);
+    transition: none;
+  }
+  .hero-kpis .kpi-card:first-child { border-left: none; }
+  .hero-kpis .kpi-card:hover {
+    border-color: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+  .hero-kpis .kpi-card:first-child:hover { border-left: none; }
+  .hero-kpis .kpi-card:not(:first-child):hover { border-left-color: var(--border); }
+  .hero-kpis .kpi-label {
+    font-size: .62rem;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .hero-kpis .kpi-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.015em;
+  }
+  .hero-kpis .kpi-sub {
+    font-size: .68rem;
+    margin-top: 6px;
+  }
+}
 .hero-label {
   font-size: .72rem; color: var(--muted);
   text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700;

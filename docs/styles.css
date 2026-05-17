@@ -79,7 +79,17 @@ body {
 img, canvas, svg, video { max-width: 100%; height: auto; display: block; }
 ::selection { background: rgba(240,192,64,.25); color: var(--text); }
 a { color: var(--blue); text-decoration: none; }
-:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 4px rgba(240,192,64,.18);
+}
+/* Don't double-paint the ring on inputs that already light their border on
+   focus (data-entry tables, email inputs, compare dropdown). */
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  box-shadow: none;
+}
 button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 
 /* Scrollbar */
@@ -258,6 +268,16 @@ header {
 }
 .cat-btn:hover { border-color: var(--blue); color: var(--text); background: var(--surface3); }
 .cat-btn.open { border-color: var(--blue); background: var(--blue-dim); color: var(--text); }
+/* Category tint replaces the prior `border-left: 3px solid <color>`
+   side-stripe inline style (banned side-stripe anti-pattern). The full
+   1px border picks up the category color at low opacity; background
+   sits at the matching -dim token. */
+.cat-btn--live      { border-color: rgba(63,185,80,.45);  background: rgba(63,185,80,.06); }
+.cat-btn--complete  { border-color: rgba(56,139,253,.45); background: rgba(56,139,253,.06); }
+.cat-btn--hist      { border-color: rgba(188,140,255,.45); background: rgba(188,140,255,.06); }
+.cat-btn--live:hover,
+.cat-btn--complete:hover,
+.cat-btn--hist:hover { color: var(--text); background: var(--surface3); }
 .cat-btn .cat-count {
   background: var(--surface3); padding: 1px 7px; border-radius: 100px;
   font-size: .62rem; color: var(--muted);
@@ -616,9 +636,9 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   gap: var(--s-2);
 }
 .hero-label {
-  font-size: .7rem; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
-  margin-bottom: 6px;
+  font-size: .72rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700;
+  margin-bottom: 8px;
 }
 .hero-number {
   font-size: clamp(2.5rem, 10vw, 4.5rem);
@@ -635,8 +655,11 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   z-index: -1;
   pointer-events: none;
 }
-.hero-ci { font-size: .88rem; color: var(--muted); margin-top: 8px; }
-.hero-ci strong { color: var(--text2); font-weight: 600; }
+.hero-ci {
+  font-size: .92rem; color: var(--muted); margin-top: 10px;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.005em;
+}
+.hero-ci strong { color: var(--text); font-weight: 700; }
 
 /* KPI Cards */
 .kpi-row {
@@ -662,8 +685,9 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   margin-bottom: 6px;
 }
 .kpi-value {
-  font-size: 1.25rem; font-weight: 800; line-height: 1;
+  font-size: 1.45rem; font-weight: 800; line-height: 1;
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
 }
 .kpi-sub { font-size: .7rem; color: var(--muted); margin-top: 6px; }
 .v-blue { color: var(--blue); }
@@ -706,7 +730,9 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   transition: opacity .25s ease, border-color .3s;
   position: relative;
 }
-.chart-card:hover { border-color: rgba(88,166,255,.25); }
+/* Chart card has no click affordance, so don't fake one on hover.
+   Keep the .live-glow accent (separate rule below) since that's
+   semantic — live tournaments visually distinct from completed. */
 .chart-card.live-glow {
   border-color: rgba(56,139,253,.3);
   box-shadow: 0 0 30px rgba(56,139,253,.06), 0 0 60px rgba(240,192,64,.03);
@@ -781,9 +807,9 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 /* Milestone Table */
 .milestone-table { width: 100%; border-collapse: collapse; }
 .milestone-table th {
-  text-align: left; font-size: .64rem; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 1px;
-  padding: 6px 8px; border-bottom: 1px solid var(--border);
+  text-align: left; font-size: .72rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px; font-weight: 600;
+  padding: 8px; border-bottom: 1px solid var(--border);
 }
 .milestone-table td {
   padding: 8px; font-size: .8rem;
@@ -804,9 +830,9 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 .comp-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter); }
 .comp-table { width: 100%; border-collapse: collapse; min-width: 420px; }
 .comp-table th {
-  text-align: left; font-size: .66rem; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 1px;
-  padding: 7px 10px; border-bottom: 1px solid var(--border);
+  text-align: left; font-size: .72rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px; font-weight: 600;
+  padding: 8px 10px; border-bottom: 1px solid var(--border);
 }
 .comp-table td {
   padding: 9px 10px; font-size: .84rem;
@@ -1754,6 +1780,17 @@ footer a { color: var(--muted); }
   .puzzle-layout { grid-template-columns: 1fr 1fr; }
   .compare-selectors { grid-template-columns: repeat(3, 1fr); }
   .mini-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+
+/* ── 768px: tablets (iPad portrait, large phones landscape) ──
+   Bridges mobile (<640px) and laptop (>=1024px) which previously
+   inherited mobile defaults at this range and wasted horizontal
+   real estate. */
+@media (min-width: 768px) {
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .progress-row { grid-template-columns: 1fr 1fr; }
+  .chart-wrap { height: 360px; }
+  .skeleton-chart { height: 360px; }
 }
 
 /* ── 1024px: small laptops ── */

@@ -17,7 +17,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=24">
+<link rel="stylesheet" href="styles.css?v=25">
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 </head>
 <body>
@@ -93,7 +93,6 @@
   <!-- ── Page-Level Tabs ── -->
   <div class="page-tabs" role="tablist">
     <button class="page-tab active" onclick="switchPageTab('predictions')" role="tab" aria-selected="true" aria-controls="panel-predictions" id="ptab-predictions">Predictions</button>
-    <button class="page-tab" onclick="switchPageTab('dataentry')" role="tab" aria-selected="false" aria-controls="panel-dataentry" id="ptab-dataentry">Data Entry</button>
     <button class="page-tab" onclick="switchPageTab('compare')" role="tab" aria-selected="false" aria-controls="panel-compare" id="ptab-compare">&#9878; Compare</button>
     <button class="page-tab" onclick="switchPageTab('email')" role="tab" aria-selected="false" aria-controls="panel-email" id="ptab-email">&#9993; Email</button>
     <button class="page-tab" onclick="switchPageTab('performance')" role="tab" aria-selected="false" aria-controls="panel-performance" id="ptab-performance">&#9733; Performance</button>
@@ -196,15 +195,16 @@
   <!-- ── Upcoming-events calendar timeline ── -->
   <div id="calendarStrip" class="calendar-strip" aria-label="Upcoming tournaments timeline"></div>
 
-  <!-- ── Inline model accuracy strip (Predictions tab) ── -->
-  <div id="accuracyStrip" class="accuracy-strip" aria-label="Model accuracy summary"></div>
+  <!-- Inline model accuracy strip removed — that summary lives on the
+       Performance tab now to keep the Predictions home page focused. -->
+  <div id="accuracyStrip" class="accuracy-strip" aria-label="Model accuracy summary" hidden></div>
 
 
   <!-- ── Upcoming Mini Cards ── -->
   <div class="mini-grid" id="miniGrid" style="margin-top:16px"></div>
 
   <!-- ── KPI Row ── -->
-  <div class="kpi-row" id="kpiRow"></div>
+  <div class="kpi-row" id="kpiRow" hidden></div>
 
   <!-- ── Progress Bars ── -->
   <div class="progress-row" id="progressRow"></div>
@@ -346,44 +346,9 @@
     </div>
   </div><!-- /panel-puzzles -->
 
-  <!-- ══════ DATA ENTRY TAB ══════ -->
-  <div class="page-tab-panel" id="panel-dataentry" role="tabpanel" aria-labelledby="ptab-dataentry">
-    <div style="font-size:.72rem;color:var(--muted);margin:12px 0">
-      Update tournament data below. Changes save to your browser and override scraped data.
-    </div>
-    <table class="de-table">
-      <colgroup>
-        <col class="de-col-name">
-        <col class="de-col-count">
-      </colgroup>
-      <colgroup class="de-colgroup-dates">
-        <col class="de-col-date">
-        <col class="de-col-date">
-      </colgroup>
-      <colgroup class="de-colgroup-fees">
-        <col class="de-col-fee">
-        <col class="de-col-fee">
-        <col class="de-col-fee">
-      </colgroup>
-      <thead>
-        <tr>
-          <th>Tournament</th>
-          <th style="width:80px">Entries</th>
-          <th style="width:120px">Event Start</th>
-          <th style="width:120px">Early Bird Deadline</th>
-          <th style="width:80px">Early Bird Fee</th>
-          <th style="width:80px">Reg Fee</th>
-          <th style="width:80px">Onsite Fee</th>
-        </tr>
-      </thead>
-      <tbody id="deBody"></tbody>
-    </table>
-    <div style="display:flex;align-items:center;margin-top:12px">
-      <button class="de-save-btn" onclick="saveDataEntry()">Save Changes</button>
-      <span class="de-saved-msg" id="deSavedMsg">Saved!</span>
-      <button style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:6px;padding:6px 14px;color:var(--muted);font-size:.72rem;cursor:pointer" onclick="clearDataEntry()">Reset to Default</button>
-    </div>
-  </div><!-- /panel-dataentry -->
+  <!-- Data Entry tab removed — overrides flow through the maintainer; users
+       just report bad data and it gets fixed at the source. -->
+
 
   <!-- ══════ EMAIL TAB ══════ -->
   <div class="page-tab-panel" id="panel-email" role="tabpanel" aria-labelledby="ptab-email">
@@ -104437,6 +104402,6 @@ const PERFORMANCE_DATA = {
 };
 
 </script>
-<script src="app.js?v=25"></script>
+<script src="app.js?v=27"></script>
 </body>
 </html>

@@ -3886,6 +3886,72 @@ function renderMovements() {
 }
 
 // ══════════════════════════════════════════════════════════
+// RECENT RESULTS (last completed tournaments + model verdict)
+// ══════════════════════════════════════════════════════════
+// Tournaments that wrapped up recently with their actual final
+// count and how it compared to the model's locked prediction. Lets
+// users see the model getting graded in real time, not just in
+// the dedicated Performance tab.
+function renderRecentResults() {
+  const el = document.getElementById('recentResults');
+  if (!el) return;
+  const ts = TOURNAMENT_DATA.tournaments;
+  const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
+
+  // "Recently completed" = status complete AND event_end within the last
+  // 60 days. Sort by event_end descending so newest lands first.
+  const recent = [];
+  ts.forEach((t, idx) => {
+    if (t.status !== 'complete' || !t.event_start) return;
+    const end = new Date((t.event_end || t.event_start) + 'T00:00:00');
+    const ageDays = Math.round((today - end) / 86400000);
+    if (ageDays < 0 || ageDays > 60) return;
+    recent.push({ idx, t, end, ageDays });
+  });
+  if (recent.length === 0) { el.innerHTML = ''; return; }
+  recent.sort((a, b) => b.end - a.end);
+  const shown = recent.slice(0, 6);
+
+  let html = `<div class="rr-head">
+    <div class="rr-title">Recent finishes</div>
+    <div class="rr-sub">Last 60 days · model graded</div>
+  </div>
+  <div class="rr-rows">`;
+  shown.forEach(r => {
+    const t = r.t;
+    const actual = t.current_count;
+    // The locked prediction is preserved in t.final_prediction if the
+    // pipeline kept it; otherwise fall back to the live point_estimate
+    // (which for complete rows is usually the same as the final).
+    const pred = (t.final_prediction != null) ? t.final_prediction
+               : (t.locked_prediction != null) ? t.locked_prediction
+               : (t.point_estimate != null) ? t.point_estimate
+               : null;
+    let verdictHtml = '';
+    if (pred != null && pred > 0 && actual != null) {
+      const diff = actual - pred;
+      const pct = Math.round((diff / pred) * 100);
+      const inCi = (t.ci_lower != null && t.ci_upper != null && t.ci_lower !== t.ci_upper)
+        ? (actual >= t.ci_lower && actual <= t.ci_upper) : null;
+      const cls = inCi === true ? 'pos' : Math.abs(pct) <= 5 ? 'flat' : 'neg';
+      const sign = diff > 0 ? '+' : '';
+      verdictHtml = `<span class="rr-verdict rr-${cls}" title="${inCi === true ? 'Final landed inside the 80% CI' : inCi === false ? 'Final outside the 80% CI' : ''}">${sign}${pct}% vs pred</span>`;
+    }
+    const ageText = r.ageDays === 0 ? 'today'
+                  : r.ageDays === 1 ? 'yesterday'
+                  : `${r.ageDays} days ago`;
+    html += `<button class="rr-row" onclick="selectTournament(${r.idx})" aria-label="Open ${esc(t.family)}">
+      <span class="rr-name">${esc(t.family)} <span class="rr-year">${t.year}</span></span>
+      <span class="rr-final"><span class="rr-final-num">${fmt(actual)}</span><span class="rr-final-lab">final</span></span>
+      ${verdictHtml}
+      <span class="rr-age">${ageText}</span>
+    </button>`;
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════════
 // INLINE MODEL ACCURACY STRIP (Predictions tab)
 // ══════════════════════════════════════════════════════════
 // Compact "the model has been right X% of the time at T-14" strip that
@@ -4167,6 +4233,7 @@ function selectTournament(index, skipHash) {
     renderMovements();
     renderCalendar();
     renderAccuracyStrip();
+    renderRecentResults();
     renderMiniCards();
     renderDelta(t);
     renderHero(t);

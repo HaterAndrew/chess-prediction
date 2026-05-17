@@ -1341,6 +1341,14 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 .badge-complete { background: var(--surface3); color: var(--muted); border: 1px solid var(--border); }
 .badge-upcoming { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(56,139,253,.3); }
 .mini-card-number { font-size: 1.4rem; font-weight: 800; color: var(--gold); line-height: 1; }
+.mini-card-chips { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.mini-card-delta {
+  font-size: .68rem; font-weight: 800;
+  padding: 2px 7px; border-radius: 100px;
+  font-variant-numeric: tabular-nums;
+}
+.mini-card-delta.pos { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+.mini-card-delta.neg { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,81,73,.3); }
 .mini-card-details { font-size: .72rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
 
 /* ══════════════════════════════════════════════════════

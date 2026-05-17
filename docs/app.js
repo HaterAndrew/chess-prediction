@@ -3796,6 +3796,16 @@ function renderMiniCards() {
   el.innerHTML = live.map(({t, i}) => {
     const isSelected = i === selectedIndex;
     const pct = t.point_estimate > 0 ? (t.current_count / t.point_estimate * 100).toFixed(0) : 0;
+    // Today's delta (latest scrape - prior scrape) surfaces velocity on the
+    // selector card itself instead of forcing a click through to see it.
+    let todayDelta = null;
+    if (t.daily_data && t.daily_data.length >= 2) {
+      todayDelta = t.daily_data[t.daily_data.length - 1][1]
+                 - t.daily_data[t.daily_data.length - 2][1];
+    }
+    const deltaChip = todayDelta != null && todayDelta !== 0
+      ? `<span class="mini-card-delta ${todayDelta > 0 ? 'pos' : 'neg'}" title="Today's change">${todayDelta > 0 ? '+' : ''}${todayDelta}</span>`
+      : '';
     // Pace comparison — same metric as the detail-view YoY banner:
     // compare current_count to prior_year_pace.count_at_same_point. Falls
     // back to last-year × curve-pct only when 2025 daily data is missing.
@@ -3823,7 +3833,10 @@ function renderMiniCards() {
     return `<div class="mini-card ${isSelected ? 'mini-card-active' : ''}" onclick="selectTournament(${i})" onkeydown="if(event.key==='Enter')selectTournament(${i})" tabindex="0" role="button" aria-label="${esc(t.family)} - ${fmt(t.point_estimate)} predicted">
       <div class="mini-card-header">
         <span class="mini-card-name">${esc(t.family)}</span>
-        <span class="mini-badge badge-live"><span class="live-dot" style="width:5px;height:5px"></span>T-${t.days_remaining}</span>
+        <div class="mini-card-chips">
+          ${deltaChip}
+          <span class="mini-badge badge-live"><span class="live-dot" style="width:5px;height:5px"></span>T-${t.days_remaining}</span>
+        </div>
       </div>
       <div style="display:flex;align-items:baseline;gap:8px">
         <div class="mini-card-number">${fmt(t.point_estimate)}</div>

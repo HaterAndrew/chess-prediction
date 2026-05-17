@@ -138,16 +138,37 @@ _DATE_LOOSE = (
     r'|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2}(?:,?\s*\d{2,4})?)'
 )
 
-# Regex for a fee tier line: "$207 by 3/21" or "$250 onsite/at door/after"
+# Regex for a fee tier line. CCA flyers vary wildly in spacing/markup:
+#   "$207 by 3/19"
+#   "$118 online at chessaction.com by 6/2"
+#   "$148 if rec'd by 1/2"
+# We allow up to 40 chars of letters / commas / periods / dots between the
+# money and the deadline keyword, but no other dollar signs or digits in
+# that gap (so we don't accidentally span two prize lines).
 _FEE_TIER_RE = re.compile(
-    rf'({_MONEY})\s*'
+    rf'({_MONEY})'
+    rf'(?:[A-Za-z\s,.\'"]{{0,40}})?\s*'
     rf'(?:if\s+(?:rec[\x27\u2019]?d?|postmarked|received)[\s,]*(?:by\s+)?|by|before|until|through|thru|b4)\s*'
     rf'({_DATE_LOOSE})',
     re.IGNORECASE,
 )
 
+# Fallback for the "$158 1/3-1/15" middle-tier pattern CCA uses when there's
+# no "by" keyword \u2014 a bare date range right after the dollar amount. We
+# capture the END of the range as the tier's deadline ($158 applies through
+# 1/15, then prices step up). Requires the range form to limit false hits
+# from prize lists like "$1000-600-400".
+_FEE_TIER_RANGE_RE = re.compile(
+    rf'({_MONEY})\s+'
+    r'\d{1,2}/\d{1,2}\s*[\-\u2013to ]+\s*'
+    r'(\d{1,2}/\d{1,2}(?:/\d{2,4})?)',
+    re.IGNORECASE,
+)
+
 _ONSITE_RE = re.compile(
-    rf'({_MONEY})\s*(?:on\s*-?\s*site|at\s+(?:the\s+)?door|after|at\s+site|walk[\s-]*in)',
+    rf'({_MONEY})'
+    rf'(?:[A-Za-z\s,.\'"]{{0,30}})?\s*'
+    rf'(?:on\s*-?\s*site|at\s+(?:the\s+)?door|after|at\s+site|walk[\s-]*in)',
     re.IGNORECASE,
 )
 
@@ -155,6 +176,36 @@ _PRIZE_RE = re.compile(
     rf'(?:prize\s+fund|prizes?|guaranteed|based\s+on)[:\s]*({_MONEY})',
     re.IGNORECASE,
 )
+
+# Phrasing that signals an actual early-bird marketing structure (not just
+# advance vs onsite). Combined with the 14-day gap rule below, this lets us
+# distinguish Chicago Open ("early bird ends 3/19", T-63) from Cleveland
+# ("online by 6/2", T-3 — just an advance/onsite step).
+_EARLY_BIRD_PHRASE_RE = re.compile(
+    r'\b(early[\s\-]?bird|early\s+registration|early\s+entry|advance\s+registration\s+discount)\b',
+    re.IGNORECASE,
+)
+
+# Event date heuristic. Tolerates CCA's multi-schedule headers, e.g.
+# "May 21-25, 22-25, 23-25, or 24-25, 2026" or "July 17-19 or 18-19, 2026"
+# or the simple "May 5, 2026". We capture month + FIRST day, then accept
+# up to 80 chars of glue (digits, dashes, commas, "or", whitespace) before
+# the 4-digit year. The non-greedy gap stops at the first plausible year.
+_EVENT_DATE_RE = re.compile(
+    r'(?P<month>'
+    r'January|February|March|April|May|June|July|August|September|October|November|December'
+    r'|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec'
+    r')\.?'
+    r'\s+(?P<day>\d{1,2})'
+    r'(?:[\s\-–,]|\d|or)*?'
+    r'(?P<year>20\d{2})',
+    re.IGNORECASE,
+)
+
+# An early bird is only real when the deadline is at least this many days
+# before the event. Mirrors EARLY_BIRD_MIN_GAP_DAYS in 04d_website_data_v2.py
+# and the JS gate in docs/app.js. 14 days = "well before the event."
+EARLY_BIRD_MIN_GAP_DAYS = 14
 
 _TITLE_GUESSES = [
     re.compile(r'<title[^>]*>(.*?)</title>', re.IGNORECASE | re.DOTALL),
@@ -233,10 +284,51 @@ def _guess_title(html, url):
     return fname
 
 
+def _guess_event_start(html, year_hint):
+    """Pull the event start date out of a CCA flyer.
+
+    CCA flyers consistently lead with a header like 'May 21-25, 2026' or
+    'July 17-19 or 18-19, 2026'. We take the FIRST date hit on the page.
+    Returns YYYY-MM-DD or None.
+    """
+    text = _clean(html)
+    m = _EVENT_DATE_RE.search(text)
+    if not m:
+        return None
+    raw = f"{m.group('month').strip('.')} {m.group('day')} {m.group('year')}"
+    for fmt in ("%B %d %Y", "%b %d %Y"):
+        try:
+            dt = datetime.strptime(raw, fmt)
+            return dt.strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+    return None
+
+
+def _days_gap(deadline_iso, event_iso):
+    """Days between deadline and event_start. None if either is unparseable."""
+    try:
+        d = datetime.strptime(deadline_iso, "%Y-%m-%d")
+        e = datetime.strptime(event_iso, "%Y-%m-%d")
+        return (e - d).days
+    except (TypeError, ValueError):
+        return None
+
+
 def parse_flyer(html, url):
     """Extract fee/deadline data from a chesstour.com flyer page.
 
     Returns a dict with the parsed fields, or None if nothing useful found.
+
+    Guardrails (in order of application):
+      1. early_bird_fee / early_bird_deadline are populated ONLY when the
+         cheapest tier's deadline lands ≥EARLY_BIRD_MIN_GAP_DAYS before
+         event_start. CCA's advance/onsite step (T-3 days) is NOT an early
+         bird and gets demoted to the regular slot.
+      2. If event_start can't be determined, EB fields stay blank — fail
+         loud rather than guess.
+      3. The cheapest tier must be strictly less than the next tier
+         (no flat "early bird = regular" placeholders).
     """
     year = _guess_year_from_url(url)
     title = _guess_title(html, url)
@@ -244,6 +336,9 @@ def parse_flyer(html, url):
     # Work with the visible text (tags stripped) for regex matching,
     # but keep original for structured tag searches
     text = _clean(html)
+    event_start = _guess_event_start(html, year)
+
+    has_eb_phrase = bool(_EARLY_BIRD_PHRASE_RE.search(text))
 
     # --- Fee tiers (date-bound) ---
     tiers = []
@@ -259,7 +354,28 @@ def parse_flyer(html, url):
         if (fee, deadline) not in tiers:
             tiers.append((fee, deadline))
 
-    # Sort tiers by fee amount (cheapest first = early bird)
+    # Catch the keyword-less "$158 1/3-1/15" middle-tier pattern. We deduplicate
+    # against tiers we already have.
+    for m in _FEE_TIER_RANGE_RE.finditer(text):
+        fee = _parse_fee(m.group(1))
+        deadline = _normalise_date(m.group(2), year_hint=year)
+        if (fee, deadline) not in tiers:
+            tiers.append((fee, deadline))
+
+    # Collapse per-deadline to the HIGHEST fee at that deadline. CCA pages
+    # usually list "Top 5 sections $X by Y, all $Z at site" and then a
+    # lower section ("Under 1200: $X-20 by Y"). Without this step, the
+    # sub-section's $X-20 sorts as "cheapest" and pollutes the early-bird
+    # detection. Top-section pricing is what we want to publish.
+    by_deadline = {}
+    for fee, deadline in tiers:
+        if not isinstance(fee, int):
+            continue
+        if deadline not in by_deadline or fee > by_deadline[deadline]:
+            by_deadline[deadline] = fee
+    tiers = [(fee, dl) for dl, fee in by_deadline.items()]
+
+    # Sort tiers by fee amount (cheapest first)
     tiers.sort(key=lambda t: t[0] if isinstance(t[0], int) else 0)
 
     # --- Onsite fee ---
@@ -287,22 +403,83 @@ def parse_flyer(html, url):
         log.debug("No fee data found on %s", url)
         return None
 
-    early_bird_fee = tiers[0][0] if len(tiers) >= 1 else ""
-    early_bird_deadline = tiers[0][1] if len(tiers) >= 1 else ""
-    regular_fee = tiers[1][0] if len(tiers) >= 2 else ""
-    regular_deadline = tiers[1][1] if len(tiers) >= 2 else ""
+    # ── Apply early-bird guardrails ────────────────────────────────────
+    # An "early bird" is a price hike WELL BEFORE the event during the
+    # advance-registration window — not the 3-day-out advance/onsite step
+    # that nearly every CCA event has.
+    early_bird_fee = ""
+    early_bird_deadline = ""
+    regular_fee = ""
+    regular_deadline = ""
+    eb_demoted_reason = None
+
+    if len(tiers) >= 2 and isinstance(tiers[0][0], int) and isinstance(tiers[1][0], int):
+        cheapest_fee, cheapest_deadline = tiers[0]
+        second_fee, second_deadline = tiers[1]
+        gap = _days_gap(cheapest_deadline, event_start) if event_start else None
+
+        if cheapest_fee >= second_fee:
+            eb_demoted_reason = f"cheapest tier ${cheapest_fee} not less than next tier ${second_fee}"
+        elif event_start is None:
+            eb_demoted_reason = "could not parse event_start from flyer"
+        elif gap is None:
+            eb_demoted_reason = f"could not compute gap (deadline={cheapest_deadline}, event={event_start})"
+        elif gap < EARLY_BIRD_MIN_GAP_DAYS:
+            eb_demoted_reason = (
+                f"deadline {cheapest_deadline} is T-{gap} (< T-{EARLY_BIRD_MIN_GAP_DAYS}) "
+                f"vs event {event_start} — advance/onsite step, not early bird"
+            )
+
+        if eb_demoted_reason is None:
+            early_bird_fee = cheapest_fee
+            early_bird_deadline = cheapest_deadline
+            regular_fee = second_fee
+            regular_deadline = second_deadline
+            if not has_eb_phrase:
+                log.info(
+                    "  EB-NOTE  %s — accepted on gap (T-%d) but flyer lacks explicit "
+                    "'early bird' phrasing; double-check the source if values look off",
+                    url, gap,
+                )
+        else:
+            log.info("  EB-DEMOTE  %s — %s", url, eb_demoted_reason)
+            regular_fee = cheapest_fee
+            regular_deadline = cheapest_deadline
+            # Promote the second tier toward onsite if we don't have one yet
+            if onsite_fee is None:
+                onsite_fee = second_fee
+    elif len(tiers) == 1 and isinstance(tiers[0][0], int):
+        # Single date-bound tier = advance fee, no early bird possible.
+        # Treat as the same "advance/onsite step" we filter elsewhere so the
+        # validator can flag it consistently.
+        regular_fee, regular_deadline = tiers[0]
+        gap = _days_gap(regular_deadline, event_start) if event_start else None
+        if event_start is None:
+            eb_demoted_reason = "could not parse event_start from flyer"
+        elif gap is None:
+            eb_demoted_reason = f"could not compute gap (deadline={regular_deadline}, event={event_start})"
+        else:
+            eb_demoted_reason = (
+                f"only one date-bound tier (${regular_fee} by {regular_deadline}, T-{gap}) — "
+                f"advance/onsite step, not early bird"
+            )
+        log.info("  EB-DEMOTE  %s — %s", url, eb_demoted_reason)
+
     if onsite_fee is None and len(tiers) >= 3:
         onsite_fee = tiers[-1][0]
 
     return {
         "tournament_name": title,
         "year": year or "",
+        "event_start": event_start or "",
         "early_bird_fee": early_bird_fee,
         "early_bird_deadline": early_bird_deadline,
         "regular_fee": regular_fee,
         "regular_deadline": regular_deadline,
         "onsite_fee": onsite_fee or "",
         "prize_fund": prize_fund or "",
+        "has_eb_phrasing": has_eb_phrase,
+        "eb_demoted_reason": eb_demoted_reason or "",
         "url": url,
     }
 
@@ -314,12 +491,15 @@ def parse_flyer(html, url):
 CSV_COLUMNS = [
     "tournament_name",
     "year",
+    "event_start",
     "early_bird_fee",
     "early_bird_deadline",
     "regular_fee",
     "regular_deadline",
     "onsite_fee",
     "prize_fund",
+    "has_eb_phrasing",
+    "eb_demoted_reason",
     "url",
 ]
 

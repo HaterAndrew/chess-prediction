@@ -39,7 +39,7 @@
   <div class="splash-content">
     <div class="splash-piece">&#9812;</div>
     <div class="splash-eyebrow">CCA &middot; AI-Powered Forecasting</div>
-    <div class="splash-title">Chess Tournament<br><em>Entry Predictor</em></div>
+    <h1 class="splash-title">Chess Tournament<br><em>Entry Predictor</em></h1>
     <div class="splash-scrape-date" id="splashScrapeDate"></div>
     <div class="splash-divider"></div>
     <div class="splash-tagline">Predict tournament entries using historical patterns from 192K Continental Chess Association (CCA) records. Point estimates and confidence intervals for tournament directors.</div>
@@ -75,11 +75,12 @@
       <div class="header-tourn-label" id="headerTournLabel" onclick="maybeOpenTourneyPicker(event)">
         <span class="live-dot" id="tournDot" style="display:none"></span>
         <span id="tournLabel" style="font-weight:700;font-size:.88rem">Loading...</span>
-        <button class="compare-add-btn" id="compareAddBtn" onclick="addToCompareSelected();event.stopPropagation()" title="Add to Compare">&#9878;</button>
+        <button class="compare-add-btn" id="compareAddBtn" onclick="addToCompareSelected();event.stopPropagation()" title="Add to Compare" aria-label="Add tournament to compare">&#9878;</button>
       </div>
       <button class="search-btn" id="searchBtn" onclick="openCmdK()" aria-label="Search tournaments">
         <span class="search-btn-icon" aria-hidden="true">&#128269;</span>
-        <span class="search-btn-text">Search</span>
+        <span class="search-btn-text">Search tournaments</span>
+        <kbd class="search-btn-kbd" aria-hidden="true">&#8984;K</kbd>
       </button>
       <span style="width:1px;height:18px;background:var(--border);margin:0 4px"></span>
       <div class="header-meta">Updated: <span id="lastUpdated"></span></div>
@@ -180,7 +181,7 @@
   <div class="chart-card" id="chartCard">
     <div class="chart-top">
       <div>
-        <div class="chart-title" id="chartTitle">Cumulative Entries</div>
+        <h2 class="chart-title" id="chartTitle">Cumulative Entries</h2>
         <div class="chart-subtitle" id="chartSubtitle"></div>
       </div>
       <div class="chart-legend" id="chartLegend"></div>
@@ -188,6 +189,9 @@
     <div class="chart-wrap">
       <canvas id="mainChart" aria-label="Cumulative entries chart showing predicted and actual registration counts over time" role="img"></canvas>
     </div>
+    <!-- Mobile-only inline date strip: replaces the EB/Event pill annotations
+         hidden on phones so the user can still see those dates at a glance. -->
+    <div id="chartMobileDates" class="chart-mobile-dates" aria-hidden="true"></div>
   </div>
 
   <!-- ── Upcoming-events calendar timeline ── -->
@@ -210,12 +214,12 @@
   <!-- ── Timeline + Historical ── -->
   <div class="grid-2" style="margin-top:4px">
     <div class="panel">
-      <div class="panel-title">Key Milestones</div>
+      <h3 class="panel-title">Key Milestones</h3>
       <div class="timeline" id="timeline"></div>
       <div id="milestoneTable" style="margin-top:16px"></div>
     </div>
     <div class="panel">
-      <div class="panel-title">Historical Comparison</div>
+      <h3 class="panel-title">Historical Comparison</h3>
       <div style="height:180px;margin-bottom:12px"><canvas id="histChart" aria-label="Historical comparison chart showing past tournament entry counts" role="img"></canvas></div>
       <div id="compTableWrap"></div>
     </div>
@@ -224,19 +228,19 @@
   <!-- ── Registration Curve + Fees ── -->
   <div class="grid-2" id="curveAndFeeRow">
     <div class="panel" id="regCurvePanel">
-      <div class="panel-title">Registration Curve Pattern</div>
+      <h3 class="panel-title">Registration Curve Pattern</h3>
       <div style="height:200px;margin-bottom:12px"><canvas id="regCurveChart" aria-label="Registration curve chart showing predicted entries over time" role="img"></canvas></div>
       <div id="regCurveCaption" style="font-size:.78rem;color:var(--muted)"></div>
     </div>
     <div class="panel" id="feePanel">
-      <div class="panel-title">Registration Fees</div>
+      <h3 class="panel-title">Registration Fees</h3>
       <div id="feeContent"></div>
     </div>
   </div>
 
   <!-- ── Model Info (compact) ── -->
   <div class="panel model-info" style="margin-bottom:24px">
-    <div class="panel-title">About This Model</div>
+    <h3 class="panel-title">About This Model</h3>
     <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap">
       <p style="flex:1;min-width:240px;margin:0">Historical ratio model: predicts final count as current entries × median historical ratio at each lead time. 80% confidence intervals (CIs) from lognormal fits with IQR outlier removal. Blind-tested on held-out 2024–2025 data.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-self:center">
@@ -268,7 +272,7 @@
   <div class="all-tournaments">
     <div class="panel" style="padding:22px">
       <div class="tt-head">
-        <div class="panel-title" style="margin-bottom:0">2026 Tournament Overview</div>
+        <h3 class="panel-title" style="margin-bottom:0">2026 Tournament Overview</h3>
         <div class="tt-controls">
           <div class="tt-filters" role="tablist" aria-label="Filter by status">
             <button class="tt-filter tt-filter-active" data-filter="all" onclick="filterTourneyTable('all')" type="button">All</button>
@@ -397,7 +401,7 @@
     </div>
     <div id="emailGrid" class="email-grid"></div>
 
-    <!-- Length + format + generate -->
+    <!-- Length + format settings -->
     <div class="email-toolbar">
       <span class="email-toolbar-label">Length</span>
       <div class="email-seg" id="emailLenToggle">
@@ -410,20 +414,17 @@
         <button data-fmt="plain" onclick="setEmailFormat('plain')" class="active">Plain text</button>
         <button data-fmt="html" onclick="setEmailFormat('html')">HTML</button>
       </div>
-      <button onclick="generateEmail()" class="email-generate-btn">Generate</button>
     </div>
 
-    <!-- Output area: split source + preview (preview hidden when plain) -->
-    <div class="email-output-header">
-      <span class="email-toolbar-label">Output</span>
-      <div class="email-copy-row">
-        <button id="emailCopyBtn" onclick="copyEmail()" class="email-copy-btn">Copy</button>
-        <button id="emailCopyHtmlBtn" onclick="copyEmailHTML()" class="email-copy-btn" style="display:none">Copy HTML</button>
+    <!-- Unified action bar: Generate + Copy + Source/Preview toggle, sticky above output -->
+    <div class="email-action-bar">
+      <button onclick="generateEmail()" class="email-generate-btn">Generate</button>
+      <button id="emailCopyBtn" onclick="copyEmail()" class="email-copy-btn">Copy</button>
+      <button id="emailCopyHtmlBtn" onclick="copyEmailHTML()" class="email-copy-btn" style="display:none">Copy HTML</button>
+      <div class="email-split-tabs" id="emailSplitTabs" role="tablist" aria-label="Email view" style="display:none;margin-left:auto">
+        <button class="email-split-tab active" data-tab="source" role="tab" aria-selected="true" onclick="setEmailSplitTab('source')">Source</button>
+        <button class="email-split-tab" data-tab="preview" role="tab" aria-selected="false" onclick="setEmailSplitTab('preview')">Preview</button>
       </div>
-    </div>
-    <div class="email-split-tabs" id="emailSplitTabs" role="tablist" aria-label="Email view" style="display:none">
-      <button class="email-split-tab active" data-tab="source" role="tab" aria-selected="true" onclick="setEmailSplitTab('source')">Source</button>
-      <button class="email-split-tab" data-tab="preview" role="tab" aria-selected="false" onclick="setEmailSplitTab('preview')">Preview</button>
     </div>
     <div class="email-split" id="emailSplit" data-tab="source">
       <div id="emailOutput" class="email-output"></div>
@@ -442,8 +443,8 @@
     <!-- Hero: grade + stats -->
     <div style="display:flex;gap:16px;flex-wrap:wrap;margin:0 0 22px;align-items:stretch">
       <div id="perfGradeCard" class="perf-grade-card">
-        <div id="perfGradeLetter" style="font-size:4.5rem;font-weight:900;line-height:1;color:var(--gold);text-shadow:0 0 24px rgba(240,192,64,.4)"></div>
-        <div id="perfGradeLabel" style="font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:8px"></div>
+        <div id="perfGradeLetter" style="font-size:2.5rem;font-weight:900;line-height:1"></div>
+        <div id="perfGradeLabel" style="font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:6px"></div>
       </div>
       <div style="flex:1;display:flex;flex-direction:column;gap:10px;min-width:240px">
         <div id="perfGradeDetail" style="font-size:.82rem;color:var(--text);font-weight:600"></div>
@@ -839,7 +840,7 @@
     </div>
   </div>
 </footer>
-<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">&#9650;</button>
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top" aria-label="Back to top">&#9650;</button>
 </div>
 
 <script>
@@ -104415,6 +104416,6 @@ const PERFORMANCE_DATA = {
 };
 
 </script>
-<script src="app.js?v=20"></script>
+<script src="app.js?v=21"></script>
 </body>
 </html>

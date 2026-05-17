@@ -33,6 +33,10 @@ def tmp_output(tmp_path):
     out.mkdir()
     for fname in os.listdir(FIXTURES_DIR):
         src = os.path.join(FIXTURES_DIR, fname)
+        # Subdirectories (e.g. flyers/ for scraper regression tests) aren't
+        # part of the frozen-CSV layout and get skipped.
+        if os.path.isdir(src):
+            continue
         # Map fixture names to production names
         dest_name = fname
         if fname == "test_summary.csv":

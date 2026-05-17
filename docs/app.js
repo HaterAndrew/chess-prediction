@@ -2689,6 +2689,12 @@ function renderChart(t) {
       const pillH = isMobile ? 14 : 16;
       const pillYOff = isMobile ? 16 : 18;
       const textYOff = isMobile ? 5 : 6;
+      const rowGap = 3;
+      // Track drawn pill bounding boxes so a new pill that horizontally
+      // overlaps any drawn pill stacks onto a higher row instead of
+      // colliding (e.g. Early Bird + Event when their dates are 3 days
+      // apart — pills are ~60-70px wide so they always overlap).
+      const drawn = [];
       lines.forEach(line => {
         const x = xScale.getPixelForValue(line.date);
         if (x < xScale.left || x > xScale.right) return;
@@ -2705,11 +2711,23 @@ function renderChart(t) {
         ctx2.globalAlpha = 1;
         ctx2.font = `${annoFont} -apple-system, system-ui, sans-serif`;
         ctx2.textAlign = 'center';
-        // Draw background pill behind label
         const textW = ctx2.measureText(line.label).width;
-        const pillX = x - textW / 2 - 5;
-        const pillY = yScale.top - pillYOff;
         const pillW = textW + 10;
+        // Clamp pill horizontally so it never spills past the chart area.
+        // Right-edge clipping was visible on tournaments where the Event
+        // line sits at the far right of the extended axis.
+        let pillX = x - textW / 2 - 5;
+        if (pillX + pillW > xScale.right) pillX = xScale.right - pillW;
+        if (pillX < xScale.left) pillX = xScale.left;
+        // Pick a vertical row that doesn't horizontally overlap a drawn
+        // pill. Row 0 = original Y; row N stacks upward by pillH + gap.
+        let row = 0;
+        while (drawn.some(d => d.row === row &&
+                                !(pillX + pillW < d.x || pillX > d.x2))) {
+          row++;
+        }
+        const pillY = yScale.top - pillYOff - row * (pillH + rowGap);
+        drawn.push({ x: pillX, x2: pillX + pillW, row });
         ctx2.fillStyle = 'rgba(13,17,23,0.85)';
         ctx2.beginPath();
         ctx2.roundRect(pillX, pillY, pillW, pillH, 4);
@@ -2719,9 +2737,10 @@ function renderChart(t) {
         ctx2.globalAlpha = 0.6;
         ctx2.stroke();
         ctx2.globalAlpha = 1;
-        // Draw label text
+        // Draw label text centered on the pill (not on the line) so the
+        // clamp + stack stay legible.
         ctx2.fillStyle = line.color;
-        ctx2.fillText(line.label, x, yScale.top - textYOff);
+        ctx2.fillText(line.label, pillX + pillW / 2, pillY + pillH - textYOff);
         ctx2.restore();
       });
     }
@@ -2986,7 +3005,9 @@ function renderChart(t) {
           ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxTicksLimit: _mobileVP() ? 4 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
         }
       },
-      layout: { padding: { top: _mobileVP() ? 8 : 18 } }
+      // Top padding fits two rows of annotation pills so when Early Bird
+      // and Event lines overlap horizontally they can stack vertically.
+      layout: { padding: { top: _mobileVP() ? 18 : 40 } }
     }
   });
 

@@ -9,64 +9,54 @@ can display colored badges and banners without a backend server.
 from datetime import datetime
 
 
-def _historical_expected(tournament):
-    """Estimate expected registrations at this point using the registration curve.
+def _at_T_historical_avg(tournament, all_tournaments):
+    """Find the average historical count at the same T (days_before_event)
+    as the current tournament's days_remaining.
 
-    Uses the tournament's registration_curve (cumulative % at each T) and
-    historical final counts to derive what we'd expect right now.
+    Looks up every prior edition of the same family in all_tournaments
+    that has multi-point daily_data, picks the daily point nearest to
+    target_T, and averages those values. Returns (avg, n_years) or
+    (None, 0) if we don't have enough real data.
+
+    This is the at-T comparator. Previous _historical_expected used
+    avg_final * curve_pct which, for events whose scrape diverges from
+    final count (Cleveland Open: scrape captures ~30% of final), wildly
+    overstates expected and produces false "below pace" readings.
     """
-    hist = tournament.get("historical", [])
-    curve = tournament.get("registration_curve", [])
-    days_remaining = tournament.get("days_remaining")
-
-    if not hist or not curve or days_remaining is None:
-        return None
-
-    # Average historical final count
-    finals = [h["count"] for h in hist if h.get("count")]
-    if not finals:
-        return None
-    avg_final = sum(finals) / len(finals)
-
-    # Interpolate cumulative % at current days_remaining from the curve
-    # curve is sorted by days_before descending (120, 90, 75, ... 0)
-    sorted_curve = sorted(curve, key=lambda c: c["days_before"], reverse=True)
-
-    pct_at_T = None
-    for i, pt in enumerate(sorted_curve):
-        if pt["days_before"] == days_remaining:
-            pct_at_T = pt["cumulative_pct"]
-            break
-        if pt["days_before"] < days_remaining:
-            # Interpolate between this point and the previous one
-            if i == 0:
-                pct_at_T = pt["cumulative_pct"]
-            else:
-                prev = sorted_curve[i - 1]
-                curr = pt
-                span = prev["days_before"] - curr["days_before"]
-                if span == 0:
-                    pct_at_T = curr["cumulative_pct"]
-                else:
-                    frac = (prev["days_before"] - days_remaining) / span
-                    pct_at_T = prev["cumulative_pct"] + frac * (curr["cumulative_pct"] - prev["cumulative_pct"])
-            break
-
-    if pct_at_T is None:
-        # days_remaining is beyond the curve range — use the last point
-        if sorted_curve:
-            pct_at_T = sorted_curve[-1]["cumulative_pct"]
-        else:
-            return None
-
-    if pct_at_T <= 0:
-        return None
-
-    return avg_final * pct_at_T
+    family = tournament.get("family")
+    target_T = tournament.get("days_remaining")
+    if family is None or target_T is None:
+        return None, 0
+    values = []
+    for other in all_tournaments:
+        if other.get("family") != family:
+            continue
+        if other.get("status") != "historical":
+            continue
+        dd = other.get("daily_data") or []
+        if len(dd) < 2:
+            continue
+        max_day = dd[-1][0]
+        best_y, best_dist = None, float("inf")
+        for p in dd:
+            T = max_day - p[0]
+            dist = abs(T - target_T)
+            if dist < best_dist:
+                best_dist = dist
+                best_y = p[1]
+        if best_y is not None:
+            values.append(best_y)
+    if len(values) < 2:
+        return None, 0
+    return sum(values) / len(values), len(values)
 
 
 def compute_pace_alerts(website_data):
     """Compute pace alerts for all live tournaments.
+
+    Compares current_count to the average historical count at the same T
+    using real per-year daily_data when available. Falls through with no
+    alert when we don't have at least 2 years of real at-T data.
 
     Returns a list of alert dicts:
         {family, status, actual, expected, deviation_pct, message}
@@ -79,23 +69,24 @@ def compute_pace_alerts(website_data):
             continue
 
         actual = t.get("current_count", 0)
-        expected = _historical_expected(t)
+        expected, n_years = _at_T_historical_avg(t, tournaments)
 
         if expected is None or expected <= 0:
             continue
 
         deviation = (actual - expected) / expected
         deviation_pct = round(deviation * 100, 1)
+        n_label = f"{n_years}-year"
 
         if actual > expected * 1.2:
             status = "above_pace"
-            msg = f"Registrations are {abs(deviation_pct)}% above historical pace"
+            msg = f"Registrations are {abs(deviation_pct)}% above {n_label} at-this-point pace"
         elif actual < expected * 0.8:
             status = "below_pace"
-            msg = f"Registrations are {abs(deviation_pct)}% below historical pace"
+            msg = f"Registrations are {abs(deviation_pct)}% below {n_label} at-this-point pace"
         else:
             status = "on_pace"
-            msg = f"Registrations are tracking within normal range ({deviation_pct:+.0f}%)"
+            msg = f"Registrations are tracking within normal range vs {n_label} at-this-point pace ({deviation_pct:+.0f}%)"
 
         alerts.append({
             "family": t["family"],

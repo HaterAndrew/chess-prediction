@@ -50,7 +50,7 @@
   --gutter: 12px;
 
   /* Touch target minimum (WCAG 2.5.5) */
-  --touch: 44px;
+  --touch: 48px;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -494,18 +494,18 @@ header {
 .delta-banner.muted { background: var(--surface2); border: 1px solid var(--border); }
 .delta-icon { font-size: 1.2rem; }
 .delta-text { flex: 1 1 200px; min-width: 0; }
-.delta-main { font-size: .9rem; font-weight: 700; }
-.delta-sub { font-size: .76rem; color: var(--muted); margin-top: 2px; }
+.delta-main { font-size: 1rem; font-weight: 700; }
+.delta-sub { font-size: .84rem; color: var(--muted); margin-top: 3px; }
 /* Multi-year at-T pace context. Lives inside the delta banner as a sub-line
    beneath delta-sub, replacing the standalone "lightning bolt" banner that
    used to stack below this one. Hidden via :empty so tournaments without a
    pace_alert don't render an extra gap. */
 .delta-context {
-  font-size: .72rem;
+  font-size: .8rem;
   color: var(--muted);
-  opacity: .75;
-  margin-top: 4px;
-  line-height: 1.35;
+  opacity: .8;
+  margin-top: 5px;
+  line-height: 1.4;
 }
 .delta-context:empty { display: none; }
 .delta-value {
@@ -854,20 +854,20 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   pointer-events: none;
 }
 .hero-ci {
-  font-size: .92rem; color: var(--muted); margin-top: 12px;
+  font-size: 1rem; color: var(--muted); margin-top: 14px;
   font-variant-numeric: tabular-nums; letter-spacing: -0.005em;
-  max-width: 320px;
+  max-width: 360px;
 }
 /* Hero narrative — plain-English summary beneath the CI bar. Reads as a
    single short paragraph; the comparison verdict is highlighted via
    .hn-verdict pos/neg/flat colors so the eye lands on the qualitative
    call before parsing the rest. */
 .hero-narrative {
-  margin-top: 14px;
-  font-size: .95rem;
-  line-height: 1.55;
+  margin-top: 16px;
+  font-size: 1rem;
+  line-height: 1.6;
   color: var(--text2);
-  max-width: 560px;
+  max-width: 600px;
 }
 .hero-narrative p { margin: 0; }
 .hero-narrative strong {
@@ -967,7 +967,7 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   font-variant-numeric: tabular-nums;
 }
 .ci-bound {
-  font-size: .8rem; font-weight: 700; color: var(--text2);
+  font-size: .9rem; font-weight: 700; color: var(--text2);
   flex-shrink: 0; min-width: 2.5ch; text-align: center;
 }
 .ci-bound-lo { text-align: right; }
@@ -1068,7 +1068,7 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   margin-left: 2px;
 }
 .kpi-label {
-  font-size: .66rem; color: var(--muted);
+  font-size: .72rem; color: var(--muted);
   text-transform: uppercase; letter-spacing: .5px; font-weight: 600;
   margin-bottom: 6px;
 }
@@ -1077,7 +1077,7 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }
-.kpi-sub { font-size: .7rem; color: var(--muted); margin-top: 6px; }
+.kpi-sub { font-size: .78rem; color: var(--muted); margin-top: 6px; }
 .v-blue { color: var(--blue); }
 .v-gold { color: var(--gold); }
 .v-green { color: var(--green); }

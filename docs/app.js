@@ -2332,6 +2332,10 @@ function renderHero(t) {
   // current pace implies, what milestone is next.
   document.getElementById('heroNarrative').innerHTML = buildHeroNarrative(t);
 
+  // Festival cluster — renders inline if this tournament is part of a
+  // multi-sub-event festival (e.g. World Open). No-op otherwise.
+  renderFestivalCluster(t);
+
   // Side KPI cards
   document.getElementById('kpiCurrent').innerHTML = `
     <div class="kpi-label">Registered</div>
@@ -3879,6 +3883,73 @@ function renderMovements() {
       <span class="mv-name">${esc(r.t.family)}</span>
       <span class="mv-spark" aria-hidden="true">${spark}</span>
       <span class="mv-delta movements-${cls}">${sign}${r.delta}</span>
+    </button>`;
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════════
+// FESTIVAL CLUSTER (e.g. World Open's 3 sub-events as one festival)
+// ══════════════════════════════════════════════════════════
+// When the selected tournament is one of several sub-events that
+// share a festival lineage (currently World Open's top 6 / lower
+// sections / Under 13), surface the sibling sub-events inline so
+// the user can switch between them without navigating back out to
+// the selector. Each sibling shows its current count + predicted
+// final + days until its own event_start.
+const FESTIVAL_GROUPS = [
+  {
+    name: 'World Open',
+    families: [
+      'World Open top 6 sections',
+      'World Open lower sections',
+      'World Open Under 13 Championship',
+    ],
+  },
+];
+
+function renderFestivalCluster(t) {
+  const el = document.getElementById('festivalCluster');
+  if (!el) return;
+  if (!t || !t.family || !t.year) { el.innerHTML = ''; return; }
+  const group = FESTIVAL_GROUPS.find(g =>
+    g.families.includes(t.family) ||
+    g.families.some(f => t.family.startsWith(f.split(' ').slice(0, 2).join(' '))));
+  if (!group) { el.innerHTML = ''; return; }
+  // Find sibling tournaments — same year, family in the group.
+  const siblings = TOURNAMENT_DATA.tournaments
+    .map((tt, idx) => ({ tt, idx }))
+    .filter(({ tt }) => tt.year === t.year && group.families.includes(tt.family));
+  if (siblings.length < 2) { el.innerHTML = ''; return; }
+
+  // Sort by event_start so sub-events appear in chronological order.
+  siblings.sort((a, b) => (a.tt.event_start || '').localeCompare(b.tt.event_start || ''));
+
+  let html = `<div class="fc-head">
+    <span class="fc-title">${esc(group.name)} ${t.year} festival</span>
+    <span class="fc-sub">${siblings.length} sub-events</span>
+  </div>
+  <div class="fc-rows">`;
+  siblings.forEach(({ tt, idx }) => {
+    const isActive = idx === selectedIndex;
+    // Short label — strip the redundant "World Open " prefix.
+    const shortName = tt.family.replace(/^World Open\s*/, '').trim() || 'World Open';
+    const subLabel = shortName.replace('top 6 sections', 'Top 6')
+                              .replace('lower sections', 'Lower')
+                              .replace('Under 13 Championship', 'Under 13');
+    const current = isDone(tt) ? tt.current_count : tt.current_count;
+    const pred = tt.point_estimate;
+    const eventDate = tt.event_start
+      ? new Date(tt.event_start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      : '—';
+    html += `<button class="fc-card ${isActive ? 'fc-card-active' : ''}"
+      onclick="selectTournament(${idx})"
+      aria-current="${isActive ? 'true' : 'false'}"
+      aria-label="${esc(subLabel)} — predicted ${fmt(pred)}, ${fmt(current)} registered">
+      <div class="fc-card-label">${esc(subLabel)}</div>
+      <div class="fc-card-num">${fmt(pred)}</div>
+      <div class="fc-card-sub">${fmt(current)} reg · ${eventDate}</div>
     </button>`;
   });
   html += '</div>';

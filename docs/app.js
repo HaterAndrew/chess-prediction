@@ -3957,61 +3957,9 @@ function renderSummaryBar() {
   `;
 }
 
-// ══════════════════════════════════════════════════════════
-// TODAY'S PORTFOLIO MOVEMENTS
-// ══════════════════════════════════════════════════════════
-// Surfaces the registration delta from the most recent scrape across all
-// live tournaments. Sorted by absolute movement so the biggest swings —
-// up or down — land at the top. Each row is a click-target that selects
-// the underlying tournament so the user can drill in.
-function renderMovements() {
-  const el = document.getElementById('movementsStrip');
-  if (!el) return;
-  const ts = TOURNAMENT_DATA.tournaments;
-  const rows = [];
-  ts.forEach((t, idx) => {
-    if (t.status !== 'live') return;
-    const dd = t.daily_data;
-    if (!dd || dd.length < 2) return;
-    const last = dd[dd.length - 1];
-    const prev = dd[dd.length - 2];
-    const delta = last[1] - prev[1];
-    rows.push({ idx, t, delta, current: last[1] });
-  });
-  if (rows.length === 0) { el.innerHTML = ''; return; }
-  // Sort by absolute delta desc; show top 5 movers.
-  rows.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
-  const shown = rows.slice(0, 5);
-  const totalDelta = rows.reduce((s, r) => s + r.delta, 0);
-  const totalText = totalDelta > 0 ? `+${totalDelta}` : `${totalDelta}`;
-  const totalCls = totalDelta > 0 ? 'pos' : totalDelta < 0 ? 'neg' : 'flat';
-
-  let html = `<div class="movements-head">
-    <div class="movements-title">Today's portfolio</div>
-    <div class="movements-total movements-${totalCls}">${totalText} entries · ${rows.length} live</div>
-  </div>
-  <div class="movements-rows">`;
-  shown.forEach(r => {
-    const cls = r.delta > 0 ? 'pos' : r.delta < 0 ? 'neg' : 'flat';
-    const sign = r.delta > 0 ? '+' : '';
-    // Compact sparkline of last 7 days from daily_data (cumulative -> deltas).
-    const recent = r.t.daily_data.slice(-8);
-    const days = [];
-    for (let i = 1; i < recent.length; i++) {
-      days.push(Math.max(0, recent[i][1] - recent[i-1][1]));
-    }
-    const peak = Math.max(...days, 1);
-    const spark = days.map(n =>
-      `<span class="mv-spark-bar" style="height:${Math.max(2, (n/peak)*100)}%"></span>`).join('');
-    html += `<button class="movements-row" onclick="selectTournament(${r.idx})" aria-label="Select ${esc(r.t.family)} — ${sign}${r.delta} today">
-      <span class="mv-name">${esc(r.t.family)}</span>
-      <span class="mv-spark" aria-hidden="true">${spark}</span>
-      <span class="mv-delta movements-${cls}">${sign}${r.delta}</span>
-    </button>`;
-  });
-  html += '</div>';
-  el.innerHTML = html;
-}
+// Movements widget removed in iter 24 — today's delta is already on each
+// mini-card via the delta chip (iter 9). Calendar timeline still surfaces
+// the portfolio view by event date.
 
 // ══════════════════════════════════════════════════════════
 // CONFIDENCE BREAKDOWN PANEL ("Why this prediction")
@@ -4501,7 +4449,6 @@ function selectTournament(index, skipHash) {
 
   setTimeout(() => {
     renderTabs();
-    renderMovements();
     renderCalendar();
     renderAccuracyStrip();
     renderRecentResults();

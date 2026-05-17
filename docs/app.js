@@ -101,24 +101,11 @@ function paceBadgeHTML(alert) {
   const icon = alert.status === 'above_pace' ? '\uD83D\uDFE2' : alert.status === 'below_pace' ? '\uD83D\uDD34' : '\uD83D\uDFE1';
   return `<span class="pace-badge ${cls}">${icon}</span>`;
 }
-function paceBannerHTML(alert) {
-  if (!alert) return '';
-  const cls = alert.status === 'above_pace' ? 'above' : alert.status === 'below_pace' ? 'below' : 'on';
-  const icon = '\u26A1';
-  const pctText = alert.deviation_pct > 0 ? `+${alert.deviation_pct}%` : `${alert.deviation_pct}%`;
-  const tip = `Compares current count to past years at the same T (days before event), averaging real scrape counts at that point. Expected \u2248 ${fmt(alert.expected)}.`;
-  return `<div class="pace-banner ${cls}" title="${esc(tip)}"><span class="pace-banner-icon">${icon}</span><span>${esc(alert.message)}</span><span class="pace-banner-pct">${pctText}</span></div>`;
-}
-
-function renderPaceBanner(t) {
-  const el = document.getElementById('paceBannerArea');
-  if (!el) return;
-  const alert = getPaceAlert(t);
-  // Show both the YoY headline (delta banner above) and the 5-year historical
-  // pace banner here. They measure different things; the labels make that
-  // clear. Stakeholders explicitly asked for both metrics back on screen.
-  el.innerHTML = alert ? paceBannerHTML(alert) : '';
-}
+// The multi-year at-T context (alert.message from alerts.py) used to render
+// as its own separate banner below the YoY delta banner. Two stacked
+// indicators competing for attention; the lightning-bolt one duplicated
+// the parenthetical pct already inside the message ("(-1%)" + "-0.8%").
+// Now it ships as a sub-line inside the delta banner via renderDelta().
 
 // ══════════════════════════════════════════════════════════
 // PAGE TABS
@@ -2030,7 +2017,16 @@ function renderDelta(t) {
   const icon = document.getElementById('deltaIcon');
   const main = document.getElementById('deltaMain');
   const sub = document.getElementById('deltaSub');
+  const ctx = document.getElementById('deltaContext');
   const val = document.getElementById('deltaValue');
+
+  // Multi-year at-T context (alerts.py output). Stripped from a separate
+  // banner; lives here as a sub-line. Empty for tournaments without a
+  // pace_alert (insufficient historical daily data).
+  if (ctx) {
+    const alert = getPaceAlert(t);
+    ctx.textContent = (alert && alert.message) ? alert.message : '';
+  }
 
   if (isDone(t)) {
     // Compare to historical average
@@ -2361,7 +2357,7 @@ function renderHero(t) {
         return `<div style="display:flex;align-items:center;gap:6px">
           <span style="font-size:.6rem;color:var(--muted);width:62px;text-align:right;white-space:nowrap">${label}</span>
           <div style="flex:1;height:11px;background:var(--surface2);border-radius:2px;overflow:hidden">
-            <div style="width:${pct}%;height:100%;background:${color};border-radius:2px;transition:width .3s"></div>
+            <div style="width:${pct}%;height:100%;background:${color};border-radius:2px;transition:width .35s cubic-bezier(.22,1,.36,1)"></div>
           </div>
           <span style="font-size:.64rem;color:var(--text2);width:24px;font-weight:${n === maxNew ? '700' : '400'}">+${n}</span>
         </div>`;
@@ -3013,12 +3009,15 @@ function renderChart(t) {
         y: {
           beginAtZero: true,
           grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false },
-          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxTicksLimit: _mobileVP() ? 4 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
+          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
         }
       },
-      // Top padding fits two rows of annotation pills so when Early Bird
-      // and Event lines overlap horizontally they can stack vertically.
-      layout: { padding: { top: _mobileVP() ? 18 : 40 } }
+      // Desktop top padding fits two rows of annotation pills so when
+      // Early Bird and Event lines overlap horizontally they can stack
+      // vertically. Mobile only renders the "Today" pill (Early Bird +
+      // Event are gated by !_isM in vertLinePlugin), so 14px is plenty —
+      // any more steals plot area on phones.
+      layout: { padding: { top: _mobileVP() ? 14 : 40 } }
     }
   });
 
@@ -3047,7 +3046,12 @@ function renderChart(t) {
       sub += ` · Early bird in ${Math.ceil((ebD - today) / 86400000)}d`;
     }
   }
-  document.getElementById('chartSubtitle').textContent = sub;
+  const subEl = document.getElementById('chartSubtitle');
+  subEl.textContent = sub;
+  // Mobile truncates the subtitle with ellipsis (long family names eat
+  // plot area). Mirror full text in the title attribute so long-press
+  // / hover reveals it.
+  subEl.setAttribute('title', sub);
 }
 
 // (What-If panel removed)
@@ -3764,7 +3768,6 @@ function selectTournament(index, skipHash) {
     renderTabs();
     renderMiniCards();
     renderDelta(t);
-    renderPaceBanner(t);
     renderHero(t);
     renderKPIRow(t);
     renderProgress(t);

@@ -135,6 +135,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   color: var(--gold); opacity: .8;
 }
 .splash-title {
+  margin: 0;
   font-size: clamp(1.6rem, 7vw, 3.5rem); font-weight: 900;
   line-height: 1.1; letter-spacing: -1.5px; color: var(--text);
 }
@@ -261,8 +262,17 @@ header {
   color: var(--text);
 }
 .search-btn-icon { font-size: .9rem; opacity: .8; }
+.search-btn-kbd {
+  display: inline-block; margin-left: 4px;
+  padding: 1px 6px; border-radius: 4px;
+  background: var(--surface3); border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: .62rem; font-weight: 600;
+  line-height: 1.4;
+}
 @media (max-width: 639px) {
-  .search-btn-text { display: none; }
+  .search-btn-text, .search-btn-kbd { display: none; }
   .search-btn { padding: 6px 10px; }
 }
 
@@ -332,6 +342,24 @@ header {
   color: var(--muted);
   font-size: .85rem;
 }
+.cmdk-recent {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 8px; padding: 8px 10px;
+  border-bottom: 1px dashed var(--border-light);
+  margin-bottom: 6px;
+}
+.cmdk-recent-label {
+  font-size: .68rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+}
+.cmdk-recent-chip {
+  padding: 6px 10px; min-height: 32px;
+  border-radius: 100px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); font-size: .76rem; font-weight: 600;
+  cursor: pointer; transition: border-color .15s, color .15s;
+}
+.cmdk-recent-chip:hover { border-color: var(--blue); color: var(--blue); }
 .cmdk-row {
   display: grid;
   grid-template-columns: 56px 1fr auto;
@@ -489,7 +517,7 @@ header {
   transition: all .3s ease;
 }
 .delta-banner.green { background: var(--green-dim); border: 1px solid rgba(63,185,80,.35); box-shadow: 0 0 30px rgba(63,185,80,.05); }
-.delta-banner.gold { background: var(--gold-dim); border: 1px solid rgba(240,192,64,.35); }
+.delta-banner.gold { background: var(--surface2); border: 1px solid var(--border); color: var(--text2); }
 .delta-banner.red { background: var(--red-dim); border: 1px solid rgba(248,81,73,.35); box-shadow: 0 0 30px rgba(248,81,73,.05); }
 .delta-banner.muted { background: var(--surface2); border: 1px solid var(--border); }
 .delta-icon { font-size: 1.2rem; }
@@ -575,8 +603,8 @@ header {
     padding: var(--s-2) 0;
     overflow-x: auto;
     scrollbar-width: none;
-    -webkit-mask-image: linear-gradient(to right, #000, #000 calc(100% - 12px), transparent);
-    mask-image: linear-gradient(to right, #000, #000 calc(100% - 12px), transparent);
+    -webkit-mask-image: linear-gradient(to right, #000, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, #000, #000 calc(100% - 24px), transparent);
   }
   #tabBar.tab-bar::-webkit-scrollbar { display: none; }
   #tabBar.tab-bar .drop-wrap { width: auto; flex-shrink: 0; }
@@ -584,12 +612,12 @@ header {
     width: auto;
     justify-content: center;
     gap: 6px;
-    padding: 8px 12px;
+    padding: 10px 14px;
     font-size: .78rem;
     border-left-width: 0 !important;        /* override the inline 3px colored border */
     border: 1px solid var(--border);
     background: var(--surface2);
-    min-height: 40px;
+    min-height: 44px;
   }
   #tabBar.tab-bar .cat-btn .cat-count { font-size: .62rem; padding: 1px 6px; }
   #tabBar.tab-bar .cat-btn .cat-arrow { font-size: .5rem; }
@@ -728,9 +756,9 @@ body.drawer-open { overflow: hidden; touch-action: none; }
    ══════════════════════════════════════════════════════ */
 @media (max-width: 639px) {
   /* Header tournament label: 16ch was tight once we added the chevron after. */
-  .header-tourn-label #tournLabel { max-width: 19ch; }
+  .header-tourn-label #tournLabel { max-width: 22ch; }
   /* Tighter chart-card padding gives the canvas ≈16px more horizontal room. */
-  .chart-card { padding: var(--s-3); }
+  .chart-card { padding: var(--s-3); min-height: 280px; }
   /* More plot area on mobile (was 300px). With title+legend ~75px overhead,
      this gives ≈265px of actual chart so the trajectory line reads cleanly
      at phone widths. */
@@ -931,9 +959,9 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   transform: translateY(-1px);
 }
 .fc-card-active {
-  border-color: var(--gold);
-  background: var(--gold-dim);
-  box-shadow: 0 0 0 1px var(--gold);
+  border-color: var(--blue);
+  background: var(--blue-dim);
+  box-shadow: 0 0 0 1px var(--blue);
 }
 .fc-card-label {
   font-size: .68rem; font-weight: 700;
@@ -941,7 +969,7 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   text-transform: uppercase; letter-spacing: .4px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.fc-card-active .fc-card-label { color: var(--gold); }
+.fc-card-active .fc-card-label { color: var(--blue); }
 .fc-card-num {
   font-size: 1.15rem; font-weight: 800;
   color: var(--gold);
@@ -990,9 +1018,9 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 .ci-marker {
   position: absolute; top: 50%;
   width: 14px; height: 14px; border-radius: 100px;
-  background: var(--gold);
+  background: var(--text);
   border: 2px solid var(--bg);
-  box-shadow: 0 0 0 1px var(--gold), 0 2px 6px rgba(240,192,64,.4);
+  box-shadow: 0 0 0 1px var(--text2), 0 2px 6px rgba(0,0,0,.4);
   transform: translate(-50%, -50%);
   transition: left .5s cubic-bezier(.22,1,.36,1);
   pointer-events: auto; cursor: help;
@@ -1130,7 +1158,7 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   align-items: flex-start; margin-bottom: var(--s-3);
   flex-wrap: wrap; gap: var(--s-3);
 }
-.chart-title { font-weight: 700; font-size: .95rem; }
+.chart-title { margin: 0; font-weight: 700; font-size: .95rem; }
 .chart-subtitle { font-size: .76rem; color: var(--muted); margin-top: 2px; }
 .chart-legend { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; }
 .legend-item { display: flex; align-items: center; gap: 6px; font-size: .72rem; color: var(--muted); }
@@ -1143,6 +1171,17 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 .legend-swatch.band { width: 16px; height: 10px; border-radius: 2px; opacity: .4; }
 .chart-wrap { position: relative; height: 320px; }
 .chart-wrap canvas { border-radius: 8px; }
+.chart-mobile-dates { display: none; }
+@media (max-width: 639px) {
+  .chart-mobile-dates {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    margin-top: 8px; padding: 6px 2px 0;
+    font-size: .72rem; color: var(--muted);
+    border-top: 1px dashed var(--border-light);
+  }
+  .chart-mobile-dates .cmd-eb { color: #3fb950; font-weight: 600; }
+  .chart-mobile-dates .cmd-event { color: #f85149; font-weight: 600; }
+}
 
 /* ══════════════════════════════════════════════════════
    TWO-COL GRID
@@ -1160,6 +1199,7 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 }
 .panel:hover { border-color: rgba(88,166,255,.15); box-shadow: 0 2px 12px rgba(0,0,0,.15); }
 .panel-title {
+  margin-top: 0;
   font-size: .7rem; font-weight: 700; color: var(--muted);
   text-transform: uppercase; letter-spacing: 1.5px;
   margin-bottom: var(--s-3);
@@ -1190,7 +1230,7 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 .timeline-dot.future { background: var(--surface3); border-color: var(--muted); }
 .timeline-label { font-size: .68rem; color: var(--muted); text-align: center; }
 .timeline-date { font-size: .76rem; font-weight: 600; color: var(--text2); text-align: center; }
-.timeline-count { font-size: .7rem; color: var(--gold); margin-top: 2px; text-align: center; }
+.timeline-count { font-size: .7rem; color: var(--text2); margin-top: 2px; text-align: center; }
 
 /* ── Milestone horizontal timeline strip ──
    Replaces the prior table layout. Each node is a stacked dot + label +
@@ -1212,7 +1252,7 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   z-index: 0;
 }
 .ms-line-past {
-  height: 100%; background: var(--gold); border-radius: 100px;
+  height: 100%; background: var(--text3, var(--muted)); border-radius: 100px;
   transition: width .5s cubic-bezier(.22,1,.36,1);
 }
 .ms-node {
@@ -1230,8 +1270,8 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   transition: background .25s, box-shadow .25s, transform .25s;
 }
 .ms-node.ms-past .ms-dot {
-  background: var(--gold);
-  box-shadow: 0 0 0 1px var(--gold);
+  background: var(--text3, var(--muted));
+  box-shadow: 0 0 0 1px var(--text3, var(--muted));
 }
 .ms-node.ms-now .ms-dot {
   background: var(--blue);
@@ -1279,6 +1319,13 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   .ms-line { display: none; }
   .ms-node-label { font-size: .64rem; }
   .ms-node-count { font-size: .78rem; }
+  /* When the strip has 6+ nodes, drop dot size and column gap so labels stay readable. */
+  .ms-strip:has(.ms-node:nth-child(7)) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--s-2) 2px;
+  }
+  .ms-strip:has(.ms-node:nth-child(7)) .ms-dot { width: 10px; height: 10px; }
+  .ms-strip:has(.ms-node:nth-child(7)) .ms-node-label { font-size: .6rem; }
 }
 
 /* Legacy milestone table CSS retained but unused (rendering now uses
@@ -1416,13 +1463,13 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 }
 .tt-filter {
   background: none; border: none;
-  padding: 5px 12px;
+  padding: 10px 14px;
   font-size: .72rem; font-weight: 600;
   color: var(--muted);
   border-radius: 100px;
   cursor: pointer;
   transition: color .15s, background .15s;
-  min-height: 28px;
+  min-height: 44px;
 }
 .tt-filter:hover { color: var(--text); }
 .tt-filter-active {
@@ -1756,7 +1803,7 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   flex-shrink: 0;
 }
 .page-tab:hover { color: var(--text); }
-.page-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.page-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
 .page-tab-panel { display: none; }
 .page-tab-panel.active { display: block; }
 
@@ -1884,7 +1931,23 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   min-height: 36px; font-family: inherit;
 }
 .de-table input:focus { border-color: var(--blue); outline: none; }
+.de-table input.de-input-invalid,
+.de-table input:invalid { border-color: var(--red); background: rgba(248,81,73,.08); }
 .de-table .fam-name { font-weight: 600; font-size: .82rem; white-space: nowrap; }
+.de-toast {
+  position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%) translateY(20px);
+  padding: 10px 18px; border-radius: var(--radius-sm);
+  background: var(--surface2); color: var(--text);
+  border: 1px solid var(--border);
+  font-size: .84rem; font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0,0,0,.35);
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s ease-out, transform .25s ease-out;
+  z-index: 10000;
+}
+.de-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.de-toast-success { border-color: var(--green); color: var(--green); }
+.de-toast-error { border-color: var(--red); color: var(--red); }
 .de-save-btn {
   background: var(--green); color: #000; border: none; border-radius: 6px;
   padding: 12px 20px;
@@ -2047,6 +2110,12 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   margin-bottom: var(--s-2); gap: var(--s-2); flex-wrap: wrap;
 }
 .email-copy-row { display: flex; gap: var(--s-2); }
+.email-action-bar {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; gap: var(--s-2); align-items: center; flex-wrap: wrap;
+  padding: var(--s-3) 0; margin: 0 0 var(--s-2);
+  background: var(--bg); border-bottom: 1px solid var(--border-light);
+}
 .email-copy-btn {
   padding: 8px 14px; min-height: var(--touch);
   border-radius: var(--radius-sm);
@@ -2812,7 +2881,7 @@ footer a { color: var(--muted); }
   .chart-wrap { height: 280px !important; }
   /* Milestone strip: dots become solid black; status colors keep. */
   .ms-line { background: #ddd !important; }
-  .ms-line-past { background: #b88c00 !important; }
+  .ms-line-past { background: #888 !important; }
   /* Page break opportunities */
   .grid-2 { page-break-inside: avoid; }
   a[href]:after { content: ""; }

@@ -1,0 +1,3 @@
+# Copy this to .dev.vars (gitignored) and paste your Anthropic API key.
+# `wrangler dev` reads .dev.vars and injects these into the Worker env.
+ANTHROPIC_API_KEY=sk-ant-...

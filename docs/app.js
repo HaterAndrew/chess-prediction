@@ -2192,16 +2192,15 @@ function renderHero(t) {
     if (p < 1) requestAnimationFrame(animHero);
   }
   requestAnimationFrame(animHero);
-  // Gold gradient for predictions, blue for finals
-  if (isDone(t)) {
-    heroNum.style.background = 'linear-gradient(135deg, var(--blue), var(--blue-bright))';
-    heroNum.style.backgroundClip = 'text';
-    heroNum.style.webkitBackgroundClip = 'text';
-  } else {
-    heroNum.style.background = 'linear-gradient(135deg, var(--gold), #e6a817, var(--gold-bright))';
-    heroNum.style.backgroundClip = 'text';
-    heroNum.style.webkitBackgroundClip = 'text';
-  }
+  // Solid color: gold for live predictions, blue for completed totals.
+  // Prior gradient-text + background-clip path was killed in iter 1 of
+  // this UX pass (banned anti-pattern, mushy at small sizes). Re-applying
+  // the gradient inline here would have undone that fix.
+  heroNum.style.background = '';
+  heroNum.style.backgroundClip = '';
+  heroNum.style.webkitBackgroundClip = '';
+  heroNum.style.webkitTextFillColor = '';
+  heroNum.style.color = isDone(t) ? 'var(--blue-bright)' : 'var(--gold)';
 
   // Audit telemetry: prefer explicit low_confidence flag over derived nHist count.
   // n_historical_editions is the audit-canonical count (excludes COVID/online); fall back

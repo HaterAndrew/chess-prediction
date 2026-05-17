@@ -1984,13 +1984,20 @@ footer a { color: var(--muted); }
 /* ══════════════════════════════════════════════════════
    TRANSITIONS
    ══════════════════════════════════════════════════════ */
-.fade-enter { animation: fadeSlideIn .35s ease forwards; }
+.fade-enter { animation: fadeSlideIn .45s cubic-bezier(.22,1,.36,1) forwards; }
 @keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.hero, .chart-card, .delta-banner, .kpi-row, .progress-row, .grid-2, .all-tournaments {
-  transition: opacity .3s ease, transform .3s ease;
+.hero, .chart-card, .delta-banner, .kpi-row, .progress-row, .grid-2,
+.all-tournaments, .movements-strip {
+  transition: opacity .35s cubic-bezier(.22,1,.36,1),
+              transform .35s cubic-bezier(.22,1,.36,1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade-enter { animation: none; }
+  .hero, .chart-card, .delta-banner, .kpi-row, .progress-row, .grid-2,
+  .all-tournaments, .movements-strip { transition: none; }
 }
 
 /* ══════════════════════════════════════════════════════

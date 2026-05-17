@@ -443,12 +443,13 @@ header {
   #panel-predictions > #tabBar         { order: 4; }   /* 3 category dropdowns, now below the hero+chart */
   #panel-predictions > .movements-strip { order: 5; }
   #panel-predictions > .calendar-strip { order: 6; }
-  #panel-predictions > .mini-grid      { order: 7; }
-  #panel-predictions > .kpi-row        { order: 8; }
-  #panel-predictions > .progress-row   { order: 9; }
-  #panel-predictions > .grid-2         { order: 10; }
+  #panel-predictions > .accuracy-strip { order: 7; }
+  #panel-predictions > .mini-grid      { order: 8; }
+  #panel-predictions > .kpi-row        { order: 9; }
+  #panel-predictions > .progress-row   { order: 10; }
+  #panel-predictions > .grid-2         { order: 11; }
   #panel-predictions > .all-tournaments,
-  #panel-predictions > .panel.model-info { order: 11; }
+  #panel-predictions > .panel.model-info { order: 12; }
 
   /* --- Delta banner: tighter, single-row feel --- */
   .delta-banner {
@@ -1300,6 +1301,72 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   }
   .tourney-table td:first-child::before { display: none; }
   .tourney-table td:last-child { border-bottom: none; padding-bottom: 0; }
+}
+
+/* ══════════════════════════════════════════════════════
+   INLINE MODEL ACCURACY STRIP
+   ══════════════════════════════════════════════════════ */
+.accuracy-strip:empty { display: none; }
+.acc-row {
+  display: grid;
+  grid-template-columns: minmax(0,1.4fr) repeat(2, minmax(0,1fr)) auto;
+  align-items: center;
+  gap: var(--s-4);
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--s-3) var(--s-4);
+  margin: var(--s-3) 0;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .2s, background .2s, transform .2s;
+}
+.acc-row:hover {
+  border-color: var(--blue);
+  background: var(--surface2);
+  transform: translateY(-1px);
+}
+.acc-cell { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.acc-grade { flex-direction: row; align-items: center; gap: var(--s-3); }
+.acc-grade-letter {
+  font-size: 1.6rem; font-weight: 900;
+  font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+  line-height: 1;
+  min-width: 1.4em; text-align: center;
+}
+.acc-pos { color: var(--green); }
+.acc-flat { color: var(--gold); }
+.acc-neg { color: var(--red); }
+.acc-grade-label {
+  font-size: .68rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px; font-weight: 700;
+}
+.acc-num {
+  font-size: 1.15rem; font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums; letter-spacing: -.01em;
+}
+.acc-lab {
+  font-size: .66rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px; font-weight: 600;
+}
+.acc-cta {
+  font-size: .8rem; color: var(--blue);
+  font-weight: 600;
+  white-space: nowrap;
+}
+@media (max-width: 639px) {
+  .acc-row {
+    grid-template-columns: auto 1fr 1fr;
+    gap: var(--s-3);
+    padding: var(--s-3);
+  }
+  .acc-cta { display: none; }
+  .acc-grade-letter { font-size: 1.35rem; }
+  .acc-num { font-size: 1rem; }
+  .acc-grade { flex-direction: column; align-items: flex-start; gap: 0; }
+  .acc-grade-label { white-space: nowrap; }
 }
 
 /* ══════════════════════════════════════════════════════

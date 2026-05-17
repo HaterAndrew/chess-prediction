@@ -249,7 +249,7 @@ function buildHeroNarrative(t) {
       : pa.status === 'above_pace'
         ? 'tracking ahead of pace'
         : 'tracking behind pace';
-    parts.push(`<strong>${fmt(t.current_count)}</strong> of a predicted <strong>${fmt(t.point_estimate)}</strong> — <span class="hn-verdict hn-${cls}">${phrase} (${devText} vs at-T history)</span>.`);
+    parts.push(`<strong>${fmt(t.current_count)}</strong> of a predicted <strong>${fmt(t.point_estimate)}</strong> — <span class="hn-verdict hn-${cls}">${phrase} (${devText} vs prior years at this point)</span>.`);
   } else {
     // No pace_alert (typically: not enough historical daily data).
     parts.push(`<strong>${fmt(t.current_count)}</strong> registered so far of a predicted <strong>${fmt(t.point_estimate)}</strong>.`);
@@ -2652,7 +2652,7 @@ function renderKPIRow(t) {
   if (t.historical && t.historical.length > 0) {
     const avg = Math.round(t.historical.reduce((s,h) => s+h.count, 0) / t.historical.length);
     cards.push(`<div class="kpi-card">
-      <div class="kpi-label">Hist. Average</div>
+      <div class="kpi-label">Past Average</div>
       <div class="kpi-value v-purple">${fmt(avg)}</div>
       <div class="kpi-sub">${t.historical.length} editions</div>
     </div>`);
@@ -3202,7 +3202,7 @@ function renderChart(t) {
                 const ciLo = items.find(i => i.dataset.label === 'CI Lower');
                 if (ciUp && ciLo) {
                   lines.push('');
-                  lines.push(`  80% CI: ${fmt(ciLo.raw.y)} – ${fmt(ciUp.raw.y)}`);
+                  lines.push(`  Likely range: ${fmt(ciLo.raw.y)} – ${fmt(ciUp.raw.y)}`);
                 }
               }
               // Pace vs. historical average AT THE SAME T (not vs final).
@@ -3289,7 +3289,7 @@ function renderChart(t) {
   let legendHtml = '<div class="legend-item"><div class="legend-swatch" style="background:#58a6ff"></div>Actual</div>';
   if (!isDone(t)) {
     legendHtml += '<div class="legend-item"><div class="legend-swatch dashed"></div>Projected</div>';
-    legendHtml += '<div class="legend-item"><div class="legend-swatch band" style="background:#f0c040"></div>80% CI</div>';
+    legendHtml += '<div class="legend-item"><div class="legend-swatch band" style="background:#f0c040"></div>Likely range</div>';
   }
   if (t.historical) {
     legendHtml += '<div class="legend-item"><div class="legend-swatch dashed" style="background:repeating-linear-gradient(90deg,rgba(139,148,158,0.5) 0 4px,transparent 4px 8px)"></div>Historical</div>';
@@ -3329,7 +3329,7 @@ function renderTimeline(t) {
     el.innerHTML = `
       <div class="timeline-node"><div class="timeline-dot past"></div><div class="timeline-label">Event Date</div><div class="timeline-date">${fmtDate(t.event_start)}</div></div>
       <div class="timeline-node"><div class="timeline-dot past"></div><div class="timeline-label">Final Count</div><div class="timeline-date" style="color:var(--gold);font-size:.9rem">${fmt(t.current_count)}</div></div>
-      ${avg ? `<div class="timeline-node"><div class="timeline-dot future"></div><div class="timeline-label">Hist Average</div><div class="timeline-date">${fmt(avg)}</div></div>` : ''}
+      ${avg ? `<div class="timeline-node"><div class="timeline-dot future"></div><div class="timeline-label">Past Average</div><div class="timeline-date">${fmt(avg)}</div></div>` : ''}
     `;
     return;
   }
@@ -3922,7 +3922,7 @@ function renderAllTournaments() {
       <td data-label="Event Date">${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
       <td data-label="Current" style="font-weight:600;color:var(--blue)">${fmt(t.current_count)} ${paceStr}</td>
       <td data-label="Predicted" style="font-weight:700;color:var(--gold)">${fmt(t.point_estimate)}</td>
-      <td data-label="80% CI" style="font-size:.82rem;color:var(--muted)">${ci}</td>
+      <td data-label="Likely Range" style="font-size:.82rem;color:var(--muted)">${ci}</td>
       <td data-label="Progress">
         <span class="pace-bar-wrap"><span class="pace-bar-fill" style="width:${pct}%;background:${paceColor}"></span></span>
         <span style="font-size:.72rem;color:var(--muted)">${pct}%</span>
@@ -4077,11 +4077,11 @@ function renderAccuracyStrip() {
       </span>
       ${mae != null ? `<span class="acc-cell">
         <span class="acc-num">${mae.toFixed(1)}%</span>
-        <span class="acc-lab">T-14 mean error</span>
+        <span class="acc-lab">Avg miss at 2 weeks out</span>
       </span>` : ''}
       ${cov != null ? `<span class="acc-cell">
         <span class="acc-num">${Math.round(cov * 100)}%</span>
-        <span class="acc-lab">T-14 in 80% CI</span>
+        <span class="acc-lab">In range at 2 weeks out</span>
       </span>` : ''}
       <span class="acc-cta">View details &rarr;</span>
     </button>

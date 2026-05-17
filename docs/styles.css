@@ -920,54 +920,9 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   .hero-narrative { font-size: .82rem; line-height: 1.5; margin-top: 10px; }
 }
 
-/* Mobile bottom-nav — fixed thumb-reach primary nav on phones. Mirrors
-   the top page-tabs but reduced to the four most-used destinations
-   (Predict / Compare / Model / More). Hidden entirely on >=640px so
-   desktop continues to use only the top tab strip. */
-.bottom-nav {
-  display: none;
-}
-@media (max-width: 639px) {
-  .bottom-nav {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    z-index: 99;
-    background: rgba(13,17,23,.92);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-top: 1px solid var(--border);
-    padding: 4px 0 max(4px, env(safe-area-inset-bottom));
-    box-shadow: 0 -2px 12px rgba(0,0,0,.4);
-  }
-  /* Push page content above the fixed nav so the last section isn't
-     hidden behind it. */
-  body { padding-bottom: 64px; padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
-  /* Hide top page tabs on mobile — bottom nav replaces them as primary.
-     Top tabs still work as a fallback if user scrolls there. */
-}
-.bn-btn {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  gap: 2px;
-  background: none; border: none;
-  padding: 8px 4px;
-  color: var(--muted);
-  font-size: .6rem; font-weight: 600;
-  cursor: pointer;
-  transition: color .15s, background .15s;
-  min-height: 48px;
-  border-radius: var(--radius-sm);
-}
-.bn-btn:hover { color: var(--text2); }
-.bn-btn:active { background: var(--surface2); }
-.bn-icon { font-size: 1.2rem; line-height: 1; }
-.bn-label { letter-spacing: .3px; }
-.bn-active {
-  color: var(--gold);
-}
-.bn-active .bn-icon { transform: scale(1.05); }
+/* Mobile bottom-nav: removed in iter 22. Top page-tabs strip already
+   serves both desktop and mobile; the duplicate bottom nav was extra
+   chrome for an audience that isn't gesture/thumb-first. */
 
 /* Confidence breakdown panel — collapsible "open the hood" view of
    why the model is or isn't confident in the prediction. <details>

@@ -307,16 +307,6 @@ function switchPageTab(tab, skipHash) {
   const tabBtn = document.getElementById('ptab-' + tab);
   tabBtn.classList.add('active');
   tabBtn.setAttribute('aria-selected', 'true');
-  // Mirror the active state to the mobile bottom-nav. The bottom-nav only
-  // surfaces the four primary tabs (predictions/compare/performance/about);
-  // other top-tab destinations map to 'about' as the catch-all.
-  const bnMap = { predictions: 'predictions', compare: 'compare',
-    performance: 'performance', about: 'about', email: 'about',
-    dataentry: 'about', puzzles: 'about' };
-  const bnActive = bnMap[tab] || 'predictions';
-  document.querySelectorAll('.bn-btn').forEach(b => {
-    b.classList.toggle('bn-active', b.dataset.tab === bnActive);
-  });
   // Scroll active tab into view only when the strip actually overflows
   const tabsContainer = tabBtn.closest('.page-tabs');
   if (tabsContainer && tabsContainer.scrollWidth > tabsContainer.clientWidth + 1) {

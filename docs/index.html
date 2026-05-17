@@ -103,26 +103,6 @@
     <button class="page-tab" onclick="switchPageTab('puzzles')" role="tab" aria-selected="false" aria-controls="panel-puzzles" id="ptab-puzzles">&#9822; Puzzles</button>
   </div>
 
-  <!-- ── Mobile bottom nav (mirrors page tabs in thumb-reach format) ── -->
-  <nav class="bottom-nav" id="bottomNav" aria-label="Primary mobile navigation">
-    <button class="bn-btn bn-active" data-tab="predictions" onclick="switchPageTab('predictions')" aria-label="Predictions">
-      <span class="bn-icon" aria-hidden="true">&#128202;</span>
-      <span class="bn-label">Predict</span>
-    </button>
-    <button class="bn-btn" data-tab="compare" onclick="switchPageTab('compare')" aria-label="Compare tournaments">
-      <span class="bn-icon" aria-hidden="true">&#9878;</span>
-      <span class="bn-label">Compare</span>
-    </button>
-    <button class="bn-btn" data-tab="performance" onclick="switchPageTab('performance')" aria-label="Model performance">
-      <span class="bn-icon" aria-hidden="true">&#9733;</span>
-      <span class="bn-label">Model</span>
-    </button>
-    <button class="bn-btn" data-tab="about" onclick="switchPageTab('about')" aria-label="About">
-      <span class="bn-icon" aria-hidden="true">&#9881;</span>
-      <span class="bn-label">More</span>
-    </button>
-  </nav>
-
   <!-- ── Search dialog (opens from the header Search button) ── -->
   <div class="cmdk" id="cmdkRoot" role="dialog" aria-modal="true" aria-label="Search tournaments" hidden>
     <div class="cmdk-backdrop" onclick="closeCmdK()"></div>

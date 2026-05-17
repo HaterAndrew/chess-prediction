@@ -81,8 +81,74 @@ function interpCurve(curve, daysBefore) {
 // ══════════════════════════════════════════════════════════
 // PACE ALERT HELPERS
 // ══════════════════════════════════════════════════════════
+// Recompute pace_alert client-side using REAL historical at-T counts
+// instead of the server-side (curve × avg-final) heuristic. The server
+// formula in alerts.py compares current_count to avg_final × curve_pct(T),
+// which for events whose daily scrape diverges from final count (Cleveland
+// Open: scrape ends ~30% of final) produces wildly inflated "expected"
+// values. Example: Cleveland 2026 T-19 actual avg across past 4 years is
+// 23.8 entries, but server says expected=78 because it uses avg-final 203
+// × curve 0.36. That makes 33 today read "-57% below pace" when it's
+// really +39% above the at-this-point historical average.
+//
+// Strategy: look up each historical edition's daily_data, find the count
+// at the closest T to current days_remaining, average them. Compare
+// current count to that. Falls back to server-computed pace_alert when
+// real at-T data is unavailable.
+function _atTHistoricalCounts(t) {
+  if (!t || t.days_remaining == null) return [];
+  const targetT = t.days_remaining;
+  const values = [];
+  (TOURNAMENT_DATA.tournaments || []).forEach(other => {
+    if (other.family === t.family && other.status === 'historical' &&
+        Array.isArray(other.daily_data) && other.daily_data.length > 1) {
+      const dd = other.daily_data;
+      const maxDay = dd[dd.length - 1][0];
+      let bestY = null, bestDist = Infinity;
+      for (const p of dd) {
+        const T = maxDay - p[0];
+        const dist = Math.abs(T - targetT);
+        if (dist < bestDist) { bestDist = dist; bestY = p[1]; }
+      }
+      if (bestY != null) values.push(bestY);
+    }
+  });
+  return values;
+}
+
 function getPaceAlert(t) {
-  return t && t.pace_alert ? t.pace_alert : null;
+  if (!t) return null;
+  const atT = _atTHistoricalCounts(t);
+  if (atT.length >= 2) {
+    const avgAtT = atT.reduce((s, v) => s + v, 0) / atT.length;
+    if (avgAtT > 0) {
+      const actual = t.current_count;
+      const deviation = (actual - avgAtT) / avgAtT;
+      const deviation_pct = Math.round(deviation * 1000) / 10;
+      let status, msg;
+      if (actual > avgAtT * 1.2) {
+        status = 'above_pace';
+        msg = `Registrations are ${Math.abs(deviation_pct)}% above ${atT.length}-year at-this-point pace`;
+      } else if (actual < avgAtT * 0.8) {
+        status = 'below_pace';
+        msg = `Registrations are ${Math.abs(deviation_pct)}% below ${atT.length}-year at-this-point pace`;
+      } else {
+        status = 'on_pace';
+        const sign = deviation_pct >= 0 ? '+' : '';
+        msg = `Registrations are tracking within normal range vs ${atT.length}-year at-this-point pace (${sign}${deviation_pct.toFixed(0)}%)`;
+      }
+      return {
+        family: t.family,
+        status,
+        actual,
+        expected: Math.round(avgAtT),
+        deviation_pct,
+        message: msg,
+        _source: 'client_at_T'
+      };
+    }
+  }
+  return t.pace_alert || null;
 }
 function paceBadgeHTML(alert) {
   if (!alert) return '';
@@ -95,11 +161,16 @@ function paceBannerHTML(alert) {
   const cls = alert.status === 'above_pace' ? 'above' : alert.status === 'below_pace' ? 'below' : 'on';
   const icon = '\u26A1';
   const pctText = alert.deviation_pct > 0 ? `+${alert.deviation_pct}%` : `${alert.deviation_pct}%`;
-  // Relabel the message so it's unambiguous which metric this banner reports.
-  // The YoY headline above it reads "vs 2025"; this one is the multi-year
-  // historical curve. Stakeholders asked for both, clearly labeled.
-  const msg = (alert.message || '').replace(/historical pace/g, '5-year historical pace');
-  const tip = 'Compares current count to a 5-year average of final entries scaled by the family registration curve. The YoY banner above compares against 2025 only.';
+  // For client-recomputed alerts, the message is already self-describing
+  // ("vs N-year at-this-point pace"). For server-fallback alerts, add the
+  // 5-year qualifier so the banner is never silently ambiguous.
+  const msg = alert._source === 'client_at_T'
+    ? alert.message
+    : (alert.message || '').replace(/historical pace/g, '5-year historical pace')
+                            .replace(/tracking within normal range/g, 'tracking within normal range vs 5-year pace');
+  const tip = alert._source === 'client_at_T'
+    ? `Compares current count to past years at the same T (days before event), averaging real scrape counts at that point. Expected \u2248 ${fmt(alert.expected)}.`
+    : 'Compares current count to a 5-year average of final entries scaled by the family registration curve. The YoY banner above compares against 2025 only.';
   return `<div class="pace-banner ${cls}" title="${esc(tip)}"><span class="pace-banner-icon">${icon}</span><span>${esc(msg)}</span><span class="pace-banner-pct">${pctText}</span></div>`;
 }
 

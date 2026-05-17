@@ -81,74 +81,8 @@ function interpCurve(curve, daysBefore) {
 // ══════════════════════════════════════════════════════════
 // PACE ALERT HELPERS
 // ══════════════════════════════════════════════════════════
-// Recompute pace_alert client-side using REAL historical at-T counts
-// instead of the server-side (curve × avg-final) heuristic. The server
-// formula in alerts.py compares current_count to avg_final × curve_pct(T),
-// which for events whose daily scrape diverges from final count (Cleveland
-// Open: scrape ends ~30% of final) produces wildly inflated "expected"
-// values. Example: Cleveland 2026 T-19 actual avg across past 4 years is
-// 23.8 entries, but server says expected=78 because it uses avg-final 203
-// × curve 0.36. That makes 33 today read "-57% below pace" when it's
-// really +39% above the at-this-point historical average.
-//
-// Strategy: look up each historical edition's daily_data, find the count
-// at the closest T to current days_remaining, average them. Compare
-// current count to that. Falls back to server-computed pace_alert when
-// real at-T data is unavailable.
-function _atTHistoricalCounts(t) {
-  if (!t || t.days_remaining == null) return [];
-  const targetT = t.days_remaining;
-  const values = [];
-  (TOURNAMENT_DATA.tournaments || []).forEach(other => {
-    if (other.family === t.family && other.status === 'historical' &&
-        Array.isArray(other.daily_data) && other.daily_data.length > 1) {
-      const dd = other.daily_data;
-      const maxDay = dd[dd.length - 1][0];
-      let bestY = null, bestDist = Infinity;
-      for (const p of dd) {
-        const T = maxDay - p[0];
-        const dist = Math.abs(T - targetT);
-        if (dist < bestDist) { bestDist = dist; bestY = p[1]; }
-      }
-      if (bestY != null) values.push(bestY);
-    }
-  });
-  return values;
-}
-
 function getPaceAlert(t) {
-  if (!t) return null;
-  const atT = _atTHistoricalCounts(t);
-  if (atT.length >= 2) {
-    const avgAtT = atT.reduce((s, v) => s + v, 0) / atT.length;
-    if (avgAtT > 0) {
-      const actual = t.current_count;
-      const deviation = (actual - avgAtT) / avgAtT;
-      const deviation_pct = Math.round(deviation * 1000) / 10;
-      let status, msg;
-      if (actual > avgAtT * 1.2) {
-        status = 'above_pace';
-        msg = `Registrations are ${Math.abs(deviation_pct)}% above ${atT.length}-year at-this-point pace`;
-      } else if (actual < avgAtT * 0.8) {
-        status = 'below_pace';
-        msg = `Registrations are ${Math.abs(deviation_pct)}% below ${atT.length}-year at-this-point pace`;
-      } else {
-        status = 'on_pace';
-        const sign = deviation_pct >= 0 ? '+' : '';
-        msg = `Registrations are tracking within normal range vs ${atT.length}-year at-this-point pace (${sign}${deviation_pct.toFixed(0)}%)`;
-      }
-      return {
-        family: t.family,
-        status,
-        actual,
-        expected: Math.round(avgAtT),
-        deviation_pct,
-        message: msg,
-        _source: 'client_at_T'
-      };
-    }
-  }
-  return t.pace_alert || null;
+  return t && t.pace_alert ? t.pace_alert : null;
 }
 function paceBadgeHTML(alert) {
   if (!alert) return '';
@@ -161,17 +95,8 @@ function paceBannerHTML(alert) {
   const cls = alert.status === 'above_pace' ? 'above' : alert.status === 'below_pace' ? 'below' : 'on';
   const icon = '\u26A1';
   const pctText = alert.deviation_pct > 0 ? `+${alert.deviation_pct}%` : `${alert.deviation_pct}%`;
-  // For client-recomputed alerts, the message is already self-describing
-  // ("vs N-year at-this-point pace"). For server-fallback alerts, add the
-  // 5-year qualifier so the banner is never silently ambiguous.
-  const msg = alert._source === 'client_at_T'
-    ? alert.message
-    : (alert.message || '').replace(/historical pace/g, '5-year historical pace')
-                            .replace(/tracking within normal range/g, 'tracking within normal range vs 5-year pace');
-  const tip = alert._source === 'client_at_T'
-    ? `Compares current count to past years at the same T (days before event), averaging real scrape counts at that point. Expected \u2248 ${fmt(alert.expected)}.`
-    : 'Compares current count to a 5-year average of final entries scaled by the family registration curve. The YoY banner above compares against 2025 only.';
-  return `<div class="pace-banner ${cls}" title="${esc(tip)}"><span class="pace-banner-icon">${icon}</span><span>${esc(msg)}</span><span class="pace-banner-pct">${pctText}</span></div>`;
+  const tip = `Compares current count to past years at the same T (days before event), averaging real scrape counts at that point. Expected \u2248 ${fmt(alert.expected)}.`;
+  return `<div class="pace-banner ${cls}" title="${esc(tip)}"><span class="pace-banner-icon">${icon}</span><span>${esc(alert.message)}</span><span class="pace-banner-pct">${pctText}</span></div>`;
 }
 
 function renderPaceBanner(t) {
@@ -2602,10 +2527,9 @@ function renderChart(t) {
     order: 2
   });
 
-  // Build (year -> historical edition with daily_data) lookup once so both
-  // the projection block (scrape-ratio scaling) and the historical-line
-  // block (real-data overlays) can share it. Only years with multi-point
-  // daily series qualify.
+  // Build (year -> historical edition with daily_data) lookup once for the
+  // historical-line overlay block below. Only years with multi-point daily
+  // series qualify.
   const histLookup = {};
   (TOURNAMENT_DATA.tournaments || []).forEach(other => {
     if (other.family === t.family && other.status === 'historical' &&
@@ -2613,25 +2537,6 @@ function renderChart(t) {
       histLookup[other.year] = other;
     }
   });
-  // Scrape ratio = avg(scrape_end / final) across historical years with real
-  // daily data. For events with significant day-of registration (Cleveland
-  // Open: ratio ~0.34), the daily scrape only ever captures ~34% of the
-  // final count; the rest arrives day-of or via post-event reconciliation.
-  // Using this ratio lets the projection line visually match historical
-  // lines on the chart (which now terminate at scrape-end, not final).
-  let scrapeRatio = 1.0;
-  {
-    const ratios = [];
-    Object.values(histLookup).forEach(other => {
-      const dd = other.daily_data;
-      const scrapeEnd = dd[dd.length - 1][1];
-      const final = other.current_count;
-      if (final > 0 && scrapeEnd > 0) ratios.push(scrapeEnd / final);
-    });
-    if (ratios.length >= 2) {
-      scrapeRatio = ratios.reduce((s, r) => s + r, 0) / ratios.length;
-    }
-  }
 
   // Projection + CI band for live
   if (!isDone(t) && t.registration_curve) {
@@ -2639,14 +2544,10 @@ function renderChart(t) {
     const todayDB = t.days_remaining;
     const todayPct = interpCurve(t.registration_curve, todayDB);
 
-    // Scale projection to the SCRAPE-EQUIVALENT target (point_estimate ×
-    // scrapeRatio), not point_estimate itself. The chart visualizes online
-    // registration trajectories — the day-of/reconciliation surge is shown
-    // separately via a "Predicted Final" marker at event day below. Without
-    // this, projection ramps to point_estimate while historical lines end at
-    // ~34% of their finals, producing the May-17 hockey-stick artifact.
-    const projectionTarget = t.point_estimate * scrapeRatio;
-    const scaleFactor = todayPct > 0 ? projectionTarget / interpCurve(t.registration_curve, 0) : projectionTarget;
+    // Project to the full point_estimate. The label says "Projected" and
+    // the user reads it as "where will this finish" — silently discounting
+    // it to a scrape-equivalent value is the wrong contract.
+    const scaleFactor = todayPct > 0 ? t.point_estimate / interpCurve(t.registration_curve, 0) : t.point_estimate;
 
     // Start projection from the last actual data point to avoid a gap
     const lastActual = actualData.length > 0 ? actualData[actualData.length - 1] : null;
@@ -2677,33 +2578,11 @@ function renderChart(t) {
       order: 3
     });
 
-    // Predicted Final marker — same visual treatment as historical final
-    // dots, but in projection color. Sits at event day at the full
-    // point_estimate so the user can see where the model thinks the year
-    // actually lands (after day-of / reconciliation).
-    datasets.push({
-      label: 'Predicted Final',
-      data: [{ x: addDays(eventStart, 0), y: t.point_estimate }],
-      showLine: false,
-      backgroundColor: '#f0c040',
-      borderColor: '#f0c040',
-      pointStyle: 'circle',
-      pointRadius: 5,
-      pointHoverRadius: 7,
-      pointBorderColor: '#fff',
-      pointBorderWidth: 2,
-      order: 1
-    });
-
-    // CI band — scaled to the same scrape-equivalent target as projection
-    // so it stays visually anchored to the dashed projection line rather
-    // than ballooning out into the day-of region.
+    // CI band — full ci_upper/ci_lower from the model, anchored to event day.
     const ciUp = [], ciLo = [];
     const pctAt0 = interpCurve(t.registration_curve, 0);
-    const ciUpperTarget = t.ci_upper * scrapeRatio;
-    const ciLowerTarget = t.ci_lower * scrapeRatio;
-    const ciUpperScale = pctAt0 > 0 ? ciUpperTarget / pctAt0 : ciUpperTarget;
-    const ciLowerScale = pctAt0 > 0 ? ciLowerTarget / pctAt0 : ciLowerTarget;
+    const ciUpperScale = pctAt0 > 0 ? t.ci_upper / pctAt0 : t.ci_upper;
+    const ciLowerScale = pctAt0 > 0 ? t.ci_lower / pctAt0 : t.ci_lower;
     for (let db = todayDB; db >= 0; db--) {
       const date = addDays(eventStart, -db);
       const pctAtDb = interpCurve(t.registration_curve, db);
@@ -2750,13 +2629,10 @@ function renderChart(t) {
           hData.push({ x: addDays(eventStart, -T), y: p[1] });
         }
       });
-      // DO NOT inject a [event_day, h.count] final anchor here. For events
-      // like Cleveland Open, the daily scrape captures only ~30-35% of the
-      // final count: the rest is day-of registrations or post-event roster
-      // reconciliation. Anchoring to the final created a misleading vertical
-      // spike at event day and inflated the historical line's height in the
-      // T-3..T-0 region. Honest line ends where the scrape ends. The
-      // Historical Comparison panel below shows the authoritative finals.
+      // Don't connect scrape-end to final with a line — the few remaining
+      // entries (~10% gap, typically) get logged in the days after event day
+      // when we're no longer scraping, so we don't know their exact timing.
+      // The final-count marker dot below shows where the year ended.
       hData.sort((a, b) => a.x - b.x);
       const colorIdx = recent.length - 1 - i;
       datasets.push({
@@ -2774,9 +2650,8 @@ function renderChart(t) {
         order: 6
       });
       // Final-count marker, plotted as a single point (no line) at event day
-      // in the same color as the year line. Lets the user see the gap between
-      // what the daily scrape captured and where the year actually finished —
-      // which is the day-of / post-event reconciliation surge.
+      // in the same color as the year line. Shows the small gap between
+      // scrape-end and the eventual final after post-event reconciliation.
       const markerColor = histColors[colorIdx] || histColors[histColors.length - 1];
       datasets.push({
         label: `${h.year} final`,

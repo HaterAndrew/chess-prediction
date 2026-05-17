@@ -44,6 +44,20 @@ function isDone(t) { return t.status === 'complete' || t.status === 'historical'
 // substring + token match scoring — no fuse.js dependency.
 let _cmdkActive = -1;
 let _cmdkMatches = [];
+const RECENT_KEY = 'cca_recentTournaments';
+const RECENT_MAX = 3;
+function _getRecentTournaments() {
+  try {
+    const raw = localStorage.getItem(RECENT_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) { return []; }
+}
+function _pushRecentTournament(idx) {
+  let arr = _getRecentTournaments().filter(i => i !== idx);
+  arr.unshift(idx);
+  arr = arr.slice(0, RECENT_MAX);
+  try { localStorage.setItem(RECENT_KEY, JSON.stringify(arr)); } catch (e) {}
+}
 function openCmdK() {
   const root = document.getElementById('cmdkRoot');
   if (!root) return;
@@ -95,7 +109,19 @@ function _renderCmdK(query) {
     list.innerHTML = `<div class="cmdk-empty">No tournaments match "${esc(query)}"</div>`;
     return;
   }
-  list.innerHTML = _cmdkMatches.map((m, i) => {
+  // Recent strip: only when query is empty and we have prior selections.
+  let recentHTML = '';
+  if (!query) {
+    const recents = _getRecentTournaments().filter(i => ts[i]).slice(0, RECENT_MAX);
+    if (recents.length > 0) {
+      const chips = recents.map(i => {
+        const t = ts[i];
+        return `<button class="cmdk-recent-chip" onclick="_cmdkSelect(${i})">${esc(t.family)} ${t.year}</button>`;
+      }).join('');
+      recentHTML = `<div class="cmdk-recent"><span class="cmdk-recent-label">Recent:</span>${chips}</div>`;
+    }
+  }
+  list.innerHTML = recentHTML + _cmdkMatches.map((m, i) => {
     const t = m.t;
     const statusCls = t.status === 'live' ? 'live' : t.status === 'complete' ? 'complete' : 'hist';
     const statusLabel = t.status === 'live' ? `T-${t.days_remaining ?? '?'}`
@@ -111,6 +137,7 @@ function _renderCmdK(query) {
   }).join('');
 }
 function _cmdkSelect(idx) {
+  _pushRecentTournament(idx);
   closeCmdK();
   // Make sure we're on the Predictions tab before scrolling/selecting.
   switchPageTab('predictions');
@@ -249,7 +276,7 @@ function buildHeroNarrative(t) {
       : pa.status === 'above_pace'
         ? 'tracking ahead of pace'
         : 'tracking behind pace';
-    parts.push(`<strong>${fmt(t.current_count)}</strong> of a predicted <strong>${fmt(t.point_estimate)}</strong> — <span class="hn-verdict hn-${cls}">${phrase} (${devText} vs prior years at this point)</span>.`);
+    parts.push(`<strong>${fmt(t.current_count)}</strong> of a predicted <strong>${fmt(t.point_estimate)}</strong> — <span class="hn-verdict hn-${cls}">${phrase} (${devText} vs prior years at the same days-to-event mark)</span>.`);
   } else {
     // No pace_alert (typically: not enough historical daily data).
     parts.push(`<strong>${fmt(t.current_count)}</strong> registered so far of a predicted <strong>${fmt(t.point_estimate)}</strong>.`);
@@ -2296,14 +2323,14 @@ function renderDelta(t) {
         banner.className = 'delta-banner green';
         icon.innerHTML = '&#9650;';
         main.textContent = `Tracking ahead of ${lastYrLabel} pace`;
-        sub.textContent = `${fmt(t.current_count)} registered now vs ${fmt(lastYrAtT)} at this point in ${lastYrLabel}${paceSuffix}`;
+        sub.textContent = `${fmt(t.current_count)} registered now vs ${fmt(lastYrAtT)} at the same days-to-event mark in ${lastYrLabel}${paceSuffix}`;
         val.textContent = `+${absPct}%`;
         val.className = 'delta-value green';
       } else if (diff < 0) {
         banner.className = 'delta-banner red';
         icon.innerHTML = '&#9660;';
         main.textContent = `Tracking behind ${lastYrLabel} pace`;
-        sub.textContent = `${fmt(t.current_count)} registered now vs ${fmt(lastYrAtT)} at this point in ${lastYrLabel}${paceSuffix}`;
+        sub.textContent = `${fmt(t.current_count)} registered now vs ${fmt(lastYrAtT)} at the same days-to-event mark in ${lastYrLabel}${paceSuffix}`;
         val.textContent = `-${absPct}%`;
         val.className = 'delta-value red';
       } else {
@@ -2412,8 +2439,14 @@ function renderHero(t) {
     : '';
 
   // Audit telemetry: surface fallback tier when prediction didn't use direct family ratios.
+  // Expand tier badge text so the meaning is visible without a tooltip dive.
+  const tierLabelMap = {
+    'family-direct': 'direct · 5+ yr history',
+    'family-alias':  'family alias · pooled history',
+    'size-matched':  'size matched · no family history',
+  };
   const tierBadge = (!isDone(t) && t.prediction_tier && t.prediction_tier !== 'family-direct')
-    ? ` <span title="Prediction used the '${t.prediction_tier}' fallback path. 'family-alias' pools history from related families; 'size-matched' uses families with comparable historical size when this family has no direct history." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:700;background:rgba(0,0,0,.3);border:1px solid var(--blue);color:var(--blue);margin-left:6px;vertical-align:middle;cursor:help">${t.prediction_tier.replace('-',' ')}</span>`
+    ? ` <span title="Prediction used the '${t.prediction_tier}' fallback path. 'family-alias' pools history from related families; 'size-matched' uses families with comparable historical size when this family has no direct history." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:700;background:rgba(0,0,0,.3);border:1px solid var(--blue);color:var(--blue);margin-left:6px;vertical-align:middle;cursor:help">${tierLabelMap[t.prediction_tier] || t.prediction_tier.replace('-',' ')}</span>`
     : '';
 
   // Confidence interval visualization. For completed tournaments we still
@@ -2429,15 +2462,28 @@ function renderHero(t) {
     // Position 0-100% along the CI span. Clamp so off-band point estimates
     // (rare model edge cases) still render visibly inside the bar.
     const pct = Math.max(0, Math.min(100, ((pe - lo) / (hi - lo)) * 100));
+    // Inline confidence rationale: surface WHY the model is N% confident.
+    // Maps the qualitative confidence label + tier to a one-sentence reason.
+    const conf = (t.confidence_label || '').toLowerCase();
+    const tier = (t.prediction_tier || 'family-direct').toLowerCase();
+    let reason;
+    if (tier === 'family-direct' && conf.includes('high')) reason = 'Strong prior data — 5+ years of same-month history for this family.';
+    else if (tier === 'family-direct' && conf.includes('medium')) reason = 'Moderate prior data — 3–4 years of comparable history.';
+    else if (tier === 'family-direct' && conf.includes('low') && !conf.includes('very')) reason = 'Sparse prior data — under 3 comparable years.';
+    else if (conf.includes('very')) reason = 'Limited or no comparable history; estimate falls back to family average.';
+    else if (tier === 'family-alias') reason = 'No direct history — pooled from related families for this prediction.';
+    else if (tier === 'size-matched') reason = 'No family history — drawn from families with comparable historical size.';
+    else reason = `${t.confidence_label || 'Confidence'} based on ${tier.replace('-',' ')} history.`;
     ciHtml = `
-      <div class="ci-bar" role="img" aria-label="80% confidence interval from ${fmt(lo)} to ${fmt(hi)}, point estimate ${fmt(pe)}">
+      <div class="ci-bar" role="img" aria-label="${ciLevel}% confidence interval from ${fmt(lo)} to ${fmt(hi)}, point estimate ${fmt(pe)}. ${reason}" title="${reason}">
         <span class="ci-bound ci-bound-lo">${fmt(lo)}</span>
         <div class="ci-track">
           <div class="ci-track-fill"></div>
-          <div class="ci-marker" style="left:${pct.toFixed(2)}%" title="Point estimate: ${fmt(pe)}"></div>
+          <div class="ci-marker" style="left:${pct.toFixed(2)}%" title="Point estimate: ${fmt(pe)} — ${reason}"></div>
         </div>
         <span class="ci-bound ci-bound-hi">${fmt(hi)}</span>
       </div>
+      <div class="ci-caption" style="font-size:.7rem;color:var(--muted);margin-top:2px">Estimated final entries — ${ciLevel}% range</div>
       <div class="ci-meta">${ciLevel}% CI${confBadge}${tierBadge}</div>
     `;
   }
@@ -3313,6 +3359,17 @@ function renderChart(t) {
   // plot area). Mirror full text in the title attribute so long-press
   // / hover reveals it.
   subEl.setAttribute('title', sub);
+
+  // Mobile date strip: shows the EB + Event dates inline below the chart since
+  // the pill annotations for those are hidden on phones. Desktop CSS hides
+  // this element so it does not duplicate the pills.
+  const datesEl = document.getElementById('chartMobileDates');
+  if (datesEl) {
+    const parts = [];
+    if (hasValidEarlyBird(t)) parts.push(`<span class="cmd-eb">EB · ${fmtDate(t.early_bird_deadline)}</span>`);
+    if (t.event_start) parts.push(`<span class="cmd-event">Event · ${fmtDate(t.event_start)}</span>`);
+    datesEl.innerHTML = parts.join(' &middot; ');
+  }
 }
 
 // (What-If panel removed)
@@ -3917,7 +3974,7 @@ function renderAllTournaments() {
     }
 
     return `<tr onclick="selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})" onkeydown="if(event.key==='Enter'){selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})}" tabindex="0" style="cursor:pointer">
-      <td data-label="Tournament"><div class="t-name">${esc(t.family)}</div><div class="t-sub">${t.year}${isLive ? ' · ' + t.days_remaining + 'd out' : ''}</div></td>
+      <td data-label="Tournament"><div class="t-name" title="${esc(t.family)} ${t.year}">${esc(t.family)}</div><div class="t-sub">${t.year}${isLive ? ' · ' + t.days_remaining + 'd out' : ''}</div></td>
       <td data-label="Status">${pill}</td>
       <td data-label="Event Date">${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
       <td data-label="Current" style="font-weight:600;color:var(--blue)">${fmt(t.current_count)} ${paceStr}</td>
@@ -4217,7 +4274,7 @@ function renderMiniCards() {
     }
     return `<div class="mini-card ${isSelected ? 'mini-card-active' : ''}" onclick="selectTournament(${i})" onkeydown="if(event.key==='Enter')selectTournament(${i})" tabindex="0" role="button" aria-label="${esc(t.family)} - ${fmt(t.point_estimate)} predicted">
       <div class="mini-card-header">
-        <span class="mini-card-name">${esc(t.family)}</span>
+        <span class="mini-card-name" title="${esc(t.family)} ${t.year}">${esc(t.family)}</span>
         <div class="mini-card-chips">
           ${deltaChip}
           <span class="mini-badge badge-live"><span class="live-dot" style="width:5px;height:5px"></span>T-${t.days_remaining}</span>
@@ -4283,7 +4340,9 @@ function selectTournament(index, skipHash) {
   // Update header label and page title
   const dot = document.getElementById('tournDot');
   dot.style.display = t.status === 'live' ? '' : 'none';
-  document.getElementById('tournLabel').textContent = `${t.family} ${t.year}`;
+  const tournLabel = document.getElementById('tournLabel');
+  tournLabel.textContent = `${t.family} ${t.year}`;
+  tournLabel.title = `${t.family} ${t.year}`;
   document.title = `${t.family} ${t.year} — CCA Entry Predictor`;
 
   updateFavButton(t.family);
@@ -4590,6 +4649,22 @@ function saveDataEntry() {
   const inputs = document.querySelectorAll('#deBody input');
   const overrides = JSON.parse(localStorage.getItem('cca_overrides') || '{}');
 
+  // Pre-flight validation: type="date" / type="number" + min="0" enforce format
+  // at the browser level. Collect any input that fails checkValidity() and
+  // abort the save with a visible banner before touching localStorage.
+  const invalid = [];
+  inputs.forEach(inp => {
+    inp.classList.remove('de-input-invalid');
+    if (inp.value !== '' && !inp.checkValidity()) {
+      inp.classList.add('de-input-invalid');
+      invalid.push(`${inp.dataset.family} · ${inp.dataset.field}`);
+    }
+  });
+  if (invalid.length > 0) {
+    showDataEntryBanner(`${invalid.length} field${invalid.length === 1 ? '' : 's'} need fixing — see highlighted rows.`, 'error');
+    return;
+  }
+
   inputs.forEach(inp => {
     const family = inp.dataset.family;
     const field = inp.dataset.field;
@@ -4625,10 +4700,25 @@ function saveDataEntry() {
   // Re-render the current tournament view
   selectTournament(selectedIndex);
 
-  // Show saved message
+  // Show saved message (legacy inline + new toast)
   const msg = document.getElementById('deSavedMsg');
   msg.classList.add('show');
   setTimeout(() => msg.classList.remove('show'), 2000);
+  showDataEntryBanner('Saved.', 'success');
+}
+
+function showDataEntryBanner(text, kind) {
+  let toast = document.getElementById('deToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'deToast';
+    toast.className = 'de-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = text;
+  toast.className = `de-toast de-toast-${kind} show`;
+  clearTimeout(showDataEntryBanner._t);
+  showDataEntryBanner._t = setTimeout(() => { toast.className = 'de-toast'; }, 2500);
 }
 
 function clearDataEntry() {
@@ -4870,8 +4960,23 @@ function renderCompareTab() {
   _compareSlots = getCompareSlots();
   const tournaments = TOURNAMENT_DATA.tournaments;
 
+  // Empty state: pre-fill with active tournament + same family last year so
+  // the panel opens with a useful default view. User can still pick others;
+  // we only seed in-memory, don't persist to localStorage until user adds.
+  if (_compareSlots.length === 0 && typeof selectedIndex === 'number' && tournaments[selectedIndex]) {
+    const active = tournaments[selectedIndex];
+    _compareSlots = [selectedIndex];
+    const priorIdx = tournaments.findIndex((t, i) =>
+      i !== selectedIndex && t.family === active.family && Number(t.year) === Number(active.year) - 1
+    );
+    if (priorIdx >= 0) _compareSlots.push(priorIdx);
+  }
+
+  // One-line caption above the selectors
+  let captionHTML = '<div class="compare-caption" style="font-size:.78rem;color:var(--muted);margin:0 0 10px">Pick up to 3 tournaments to compare entry trajectories side-by-side.</div>';
+
   // Build selector UI
-  let selectorHTML = '<div class="compare-selectors">';
+  let selectorHTML = captionHTML + '<div class="compare-selectors">';
   for (let s = 0; s < 3; s++) {
     const currentIdx = _compareSlots[s];
     const colorDot = `<span class="compare-color-dot" style="background:${COMPARE_COLORS[s]}"></span>`;

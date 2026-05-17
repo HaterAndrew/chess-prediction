@@ -44,7 +44,7 @@ Chicago Class,2022,2022-07-15,2022-07-17,,,,,,
 Chicago Class,2023,2023-07-14,2023-07-16,,,,,,
 Chicago Class,2024,2024-07-19,2024-07-21,,,,,,
 Chicago Class,2025,2025-07-18,2025-07-20,,108.0,128.0,140.0,Wheeling,IL
-Chicago Class,2026,2026-07-17,2026-07-19,,,148.0,170.0,Wheeling,IL
+Chicago Class,2026,2026-07-17,2026-07-19,,118.0,138.0,150.0,Wheeling,IL
 Chicago FIDE U2200,2022,2022-05-25,2022-05-28,,,,,,
 Chicago Open,2022,2022-05-26,2022-05-30,2022-03-24,169.0,189.0,210.0,Wheeling,IL
 Chicago Open,2023,2023-05-25,2023-05-29,2023-03-23,179.0,199.0,220.0,Wheeling,IL
@@ -56,7 +56,7 @@ Chicago Open Blitz,2024,2024-05-24,2024-05-27,,,,,,
 Chicago Open Blitz,2025,2025-05-23,2025-05-26,,,,,,
 Chicago Open Blitz,2026,2026-05-24,2026-05-24,,,,,,Illinois
 Cleveland Open,2025,2025-06-13,2025-06-15,2025-06-03,88.0,105.0,105.0,Independence,OH
-Cleveland Open,2026,2026-06-05,2026-06-07,,,118.0,130.0,Independence,OH
+Cleveland Open,2026,2026-06-05,2026-06-07,2026-06-02,93.0,110.0,110.0,Independence,OH
 Continental Action,2022,2022-07-21,2022-07-24,,,,,,
 Continental Class,2023,2023-06-15,2023-06-18,,,,,,
 Continental Open,2021,2021-08-12,2021-08-15,,,,,,
@@ -106,7 +106,7 @@ Golden State Open,2022,2022-01-13,2022-01-16,,,,,,
 Golden State Open,2023,2023-01-13,2023-01-16,,,,,,
 Golden State Open,2024,2024-01-12,2024-01-15,,,,,,
 Golden State Open,2025,2025-01-16,2025-01-19,,108.0,128.0,140.0,Los Angeles,CA
-Golden State Open,2026,2026-01-16,2026-01-19,,,138.0,180.0,Los Angeles,CA
+Golden State Open,2026,2026-01-16,2026-01-19,,118.0,138.0,150.0,Los Angeles,CA
 Halloween Open,2021,2021-10-28,2021-10-31,,,,,,
 Hartford Open,2022,2022-10-14,2022-10-16,,,,,,
 Hartford Open,2023,2023-10-06,2023-10-08,,,,,,
@@ -143,7 +143,7 @@ Kings Island Open Warmup,2021,2021-11-04,2021-11-07,,,,,,
 Liberty Bell Action,2022,2021-12-31,2022-01-03,,,,,,
 Liberty Bell Open,2024,2024-01-12,2024-01-15,2024-01-09,128.0,148.0,160.0,Philadelphia,PA
 Liberty Bell Open,2025,2025-01-17,2025-01-20,2025-01-14,128.0,148.0,160.0,Philadelphia,PA
-Liberty Bell Open,2026,2026-01-16,2026-01-19,2026-01-02,148.0,158.0,180.0,Philadelphia,PA
+Liberty Bell Open,2026,2026-01-16,2026-01-19,2026-01-13,138.0,158.0,170.0,Philadelphia,PA
 Los Angeles Open,2021,2021-11-04,2021-11-07,,,,,,
 Los Angeles Open,2022,2022-11-04,2022-11-06,,,,,,
 Los Angeles Open,2023,2023-11-03,2023-11-05,,,,,,
@@ -160,7 +160,7 @@ May Open,2023,2023-05-04,2023-05-07,,,,,,
 Mid-America Action,2022,2022-03-17,2022-03-20,,,,,,
 Mid-America Open,2024,2024-03-22,2024-03-24,2024-03-19,113.0,130.0,130.0,St. Louis,MO
 Mid-America Open,2025,2025-03-21,2025-03-23,2025-03-18,118.0,135.0,135.0,St. Louis,MO
-Mid-America Open,2026,2026-03-20,2026-03-22,,,123.0,140.0,St. Louis,MO
+Mid-America Open,2026,2026-03-20,2026-03-22,2026-03-17,123.0,140.0,140.0,St. Louis,MO
 Midwest Action,2022,2022-09-22,2022-09-25,,,,,,
 Midwest Chess Congress,2022,2022-06-16,2022-06-19,,,,,,
 Midwest Class Championships,2021,2021-10-07,2021-10-10,,,,,,
@@ -172,7 +172,7 @@ Midwest Class Championships,2026,2026-10-09,2026-10-11,,,,,,Illinois
 National Chess Congress,2023,2023-11-24,2023-11-26,2023-11-21,118.0,140.0,140.0,Philadelphia,PA
 National Chess Congress,2024,2024-11-29,2024-12-01,2024-11-26,128.0,150.0,150.0,Philadelphia,PA
 National Chess Congress,2025,2025-11-28,2025-11-30,2025-11-25,128.0,150.0,150.0,Philadelphia,PA
-National Chess Congress,2026,2026-11-27,2026-11-29,,,,,Philadelphia,PA
+National Chess Congress,2026,2026-11-27,2026-11-29,2026-11-25,138.0,160.0,160.0,Philadelphia,PA
 National Chess Congress Action,2022,2022-11-17,2022-11-20,,,,,,
 National Chess Congress Warmup,2021,2021-11-02,2021-11-05,,,,,,
 New York State Championship,2021,2021-09-03,2021-09-06,,,,,,
@@ -225,7 +225,7 @@ Pacific Coast Open,2022,2022-07-15,2022-07-17,,,,,,
 Pacific Coast Open,2023,2023-07-21,2023-07-23,,,,,,
 Pacific Coast Open,2024,2024-07-19,2024-07-21,,,,,,
 Pacific Coast Open,2025,2025-08-08,2025-08-10,,118.0,138.0,150.0,Los Angeles,CA
-Pacific Coast Open,2026,2026-07-31,2026-08-02,,,158.0,180.0,Los Angeles,CA
+Pacific Coast Open,2026,2026-07-31,2026-08-02,,123.0,143.0,155.0,Los Angeles,CA
 Philadelphia International,2022,2022-06-22,2022-06-25,,,,,,
 Philadelphia International,2023,2023-06-22,2023-06-25,,,,,,
 Philadelphia International,2024,2024-06-25,2024-06-28,,,,,,
@@ -238,7 +238,7 @@ Pittsburgh Open,2022,2022-07-22,2022-07-24,,,,,,
 Pittsburgh Open,2023,2023-07-21,2023-07-23,,,,,,
 Pittsburgh Open,2024,2024-07-26,2024-07-28,,,,,,
 Pittsburgh Open,2025,2025-07-18,2025-07-20,,88.0,105.0,105.0,Pittsburgh,PA
-Pittsburgh Open,2026,2026-07-17,2026-07-19,,,118.0,130.0,Pittsburgh,PA
+Pittsburgh Open,2026,2026-07-17,2026-07-19,2026-04-21,93.0,110.0,110.0,Pittsburgh,PA
 Princeton Open,2025,2025-04-16,2025-04-19,,,,,,
 September Action,2023,2023-09-21,2023-09-24,,,,,,
 September Open,2021,2021-09-09,2021-09-12,,,,,,

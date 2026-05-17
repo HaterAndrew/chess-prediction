@@ -67,6 +67,45 @@ CHOP_POINTS = [120, 90, 60, 42, 28, 14, 7, 3, 1, 0]
 T_GRID = np.arange(0, 121)
 TODAY = pd.Timestamp.now().normalize()
 
+# Early-bird sanitization. Must match the display-layer rule in docs/app.js
+# (hasValidEarlyBird). Defense-in-depth: drop bad EB data here so it never
+# reaches the JSON output, even if a manual edit or future scraper writes
+# bogus values into tournament_metadata.csv.
+EARLY_BIRD_MIN_GAP_DAYS = 14
+
+
+def sanitize_early_bird(family, year, eb_deadline, eb_fee, reg_fee, event_start):
+    """Return (eb_deadline, eb_fee) after applying real-EB rules.
+
+    Rules:
+      * eb_deadline AND eb_fee AND reg_fee must all be present
+      * eb_fee < reg_fee (must be a real price hike, not a flat advance fee)
+      * deadline must land at least EARLY_BIRD_MIN_GAP_DAYS before event_start
+        (filters CCA advance/onsite 3-day steps like Cleveland, Pittsburgh,
+        Mid-America, Golden State).
+    On rejection, returns (None, None) and logs a one-line warning so the
+    drift is visible at build time.
+    """
+    if eb_deadline is None or eb_fee is None or reg_fee is None:
+        return None, None
+    if event_start is None:
+        # Without an anchor we can't check the gap. Be conservative: drop.
+        print(f"  ⚠ EB-sanitize {family} {year}: dropping EB — no event_start to anchor gap check")
+        return None, None
+    if eb_fee >= reg_fee:
+        print(f"  ⚠ EB-sanitize {family} {year}: dropping EB — eb_fee ${eb_fee} >= reg_fee ${reg_fee} (no price hike)")
+        return None, None
+    try:
+        gap = (pd.Timestamp(event_start) - pd.Timestamp(eb_deadline)).days
+    except (TypeError, ValueError):
+        print(f"  ⚠ EB-sanitize {family} {year}: dropping EB — unparseable dates eb={eb_deadline} ev={event_start}")
+        return None, None
+    if gap < EARLY_BIRD_MIN_GAP_DAYS:
+        print(f"  ⚠ EB-sanitize {family} {year}: dropping EB — deadline T-{gap} < T-{EARLY_BIRD_MIN_GAP_DAYS} (advance/onsite step, not early bird)")
+        return None, None
+    return eb_deadline, eb_fee
+
+
 # Load data
 summary = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_summary.csv"))
 # Coerce tournament_year: fill NaN with 0, convert to int for clean comparisons
@@ -512,6 +551,7 @@ for _, row in t2026.iterrows():
     eb_fee = float(m.iloc[0]['early_bird_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('early_bird_fee')) else None
     reg_fee = float(m.iloc[0]['regular_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('regular_fee')) else None
     onsite_fee = float(m.iloc[0]['onsite_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('onsite_fee')) else None
+    eb_deadline, eb_fee = sanitize_early_bird(family, 2026, eb_deadline, eb_fee, reg_fee, event_start)
 
     # Historical data (needed for guardrails and output)
     # Include alias families for tournaments with no direct history
@@ -772,12 +812,14 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
     eb_fee = float(mrow['early_bird_fee']) if pd.notna(mrow.get('early_bird_fee')) else None
     reg_fee = float(mrow['regular_fee']) if pd.notna(mrow.get('regular_fee')) else None
     onsite_fee = float(mrow['onsite_fee']) if pd.notna(mrow.get('onsite_fee')) else None
+    _eb_dl_norm = str(eb_deadline)[:10] if pd.notna(eb_deadline) and str(eb_deadline) != 'nan' else None
+    _eb_dl_norm, eb_fee = sanitize_early_bird(mfamily, 2026, _eb_dl_norm, eb_fee, reg_fee, event_date.strftime('%Y-%m-%d'))
     t_out = {
         "family": mfamily,
         "year": 2026,
         "event_start": event_date.strftime('%Y-%m-%d'),
         "event_end": str(mrow['end_date'])[:10] if pd.notna(mrow.get('end_date')) else None,
-        "early_bird_deadline": str(eb_deadline)[:10] if pd.notna(eb_deadline) and str(eb_deadline) != 'nan' else None,
+        "early_bird_deadline": _eb_dl_norm,
         "early_bird_fee": eb_fee,
         "regular_fee": reg_fee,
         "onsite_fee": onsite_fee,

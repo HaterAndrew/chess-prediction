@@ -57,3 +57,7 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db
+
+# Pre-audit backups (debug artifacts from one-off data repairs)
+*.bak.preaudit
+*.bak

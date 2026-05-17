@@ -178,6 +178,23 @@ def step_walkin_multipliers():
              [sys.executable, "06_walk_in_multipliers.py"])
 
 
+def step_verify_dates():
+    """Verify current-year tournament_metadata.csv dates against
+    chesstour.com canonical schedule.
+
+    Warning-only by design — drift > 1 day gets harvested into
+    audit_warnings.json via the "WARNING:" line format. Source-fetch
+    failures don't block the pipeline either; they just emit a warning
+    that the daily run wasn't independently verified.
+
+    Originally added after the d76ea14 incident where wrong event_start
+    dates (Cleveland 2025 off by 7 days) silently propagated through
+    the T-axis, daily_data anchors, and pace alerts.
+    """
+    run_step("Verify dates against canonical sources (tools/verify_dates.py)",
+             [sys.executable, "tools/verify_dates.py"])
+
+
 def step_update_model():
     """Re-run the prediction model and website data generator."""
     # 04d_website_data_v2.py imports and runs 04c_final_model internally
@@ -454,6 +471,7 @@ def main():
             # Fresh data — refresh summary from snapshot+scrape, then regenerate model
             step_data_prep()
             step_walkin_multipliers()
+            step_verify_dates()
             step_update_model()
             step_performance()
 

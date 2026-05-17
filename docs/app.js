@@ -356,7 +356,7 @@ function switchPageTab(tab, skipHash) {
 }
 
 // Mobile swipe-between-tabs navigation
-const PAGE_TAB_ORDER = ['predictions', 'dataentry', 'compare', 'email', 'performance', 'about', 'puzzles'];
+const PAGE_TAB_ORDER = ['predictions', 'compare', 'email', 'performance', 'about', 'puzzles'];
 (function setupSwipeNav() {
   if (typeof window === 'undefined' || !('ontouchstart' in window)) return;
   let startX = 0, startY = 0, startT = 0;
@@ -4202,9 +4202,19 @@ function renderCalendar() {
     const sizePx = Math.max(10, Math.min(28, 10 + 18 * Math.sqrt((e.t.point_estimate || 0) / maxPred)));
     const pace = paceClass(e.t);
     const monthDay = e.d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const longDate = e.d.toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric' });
+    const paceLabel = pace === 'pos' ? 'Ahead of pace'
+                    : pace === 'neg' ? 'Behind pace'
+                    : 'On pace';
     const ariaLabel = `${e.t.family} on ${monthDay}, T-${e.daysOut}, predicted ${fmt(e.t.point_estimate || 0)}`;
     html += `<button class="cal-dot cal-pace-${pace}" style="left:${xPct.toFixed(2)}%;width:${sizePx}px;height:${sizePx}px"
-      onclick="selectTournament(${e.idx})" title="${esc(e.t.family)} — ${monthDay} (T-${e.daysOut})"
+      onclick="selectTournament(${e.idx})"
+      data-tip-name="${esc(e.t.family)} ${e.t.year}"
+      data-tip-date="${esc(longDate)}"
+      data-tip-days="${e.daysOut}"
+      data-tip-pred="${fmt(e.t.point_estimate || 0)}"
+      data-tip-pace="${esc(paceLabel)}"
+      data-tip-paceclass="${pace}"
       aria-label="${esc(ariaLabel)}"></button>`;
   });
   // Month axis labels — find each month boundary in the visible range.
@@ -4223,6 +4233,70 @@ function renderCalendar() {
   });
   html += '</div></div>';
   el.innerHTML = html;
+  _bindCalendarTooltips(el);
+}
+
+// Floating premium tooltip for the upcoming-events dots. One shared
+// element gets repositioned over the hovered/focused dot. Native title=
+// is intentionally NOT set on the dot anymore so the browser's plain
+// yellow tooltip doesn't double up with our custom one.
+function _bindCalendarTooltips(scopeEl) {
+  let tip = document.getElementById('calTooltip');
+  if (!tip) {
+    tip = document.createElement('div');
+    tip.id = 'calTooltip';
+    tip.className = 'cal-tooltip';
+    tip.setAttribute('role', 'tooltip');
+    tip.hidden = true;
+    document.body.appendChild(tip);
+  }
+  const dots = scopeEl.querySelectorAll('.cal-dot');
+  const show = (dot) => {
+    const name = dot.dataset.tipName || '';
+    const date = dot.dataset.tipDate || '';
+    const days = dot.dataset.tipDays || '';
+    const pred = dot.dataset.tipPred || '';
+    const pace = dot.dataset.tipPace || '';
+    const cls  = dot.dataset.tipPaceclass || 'flat';
+    tip.innerHTML = `
+      <div class="cal-tip-name">${name}</div>
+      <div class="cal-tip-meta">
+        <span class="cal-tip-date">${date}</span>
+        <span class="cal-tip-sep" aria-hidden="true">&middot;</span>
+        <span class="cal-tip-days">T&minus;${days}</span>
+      </div>
+      <div class="cal-tip-row">
+        <span class="cal-tip-label">Predicted</span>
+        <span class="cal-tip-value">${pred}</span>
+      </div>
+      <div class="cal-tip-row">
+        <span class="cal-tip-label">Pace</span>
+        <span class="cal-tip-value cal-tip-pace-${cls}">${pace}</span>
+      </div>
+    `;
+    tip.hidden = false;
+    tip.classList.remove('cal-tooltip-pos', 'cal-tooltip-flat', 'cal-tooltip-neg');
+    tip.classList.add(`cal-tooltip-${cls}`);
+    // Position above the dot, centered. Clamp to viewport horizontally.
+    const r = dot.getBoundingClientRect();
+    const tr = tip.getBoundingClientRect();
+    let left = r.left + r.width / 2 - tr.width / 2;
+    left = Math.max(8, Math.min(window.innerWidth - tr.width - 8, left));
+    const top = r.top - tr.height - 10 + window.scrollY;
+    tip.style.left = `${left}px`;
+    tip.style.top  = `${top}px`;
+    requestAnimationFrame(() => tip.classList.add('cal-tooltip-show'));
+  };
+  const hide = () => {
+    tip.classList.remove('cal-tooltip-show');
+    setTimeout(() => { if (!tip.classList.contains('cal-tooltip-show')) tip.hidden = true; }, 160);
+  };
+  dots.forEach(dot => {
+    dot.addEventListener('mouseenter', () => show(dot));
+    dot.addEventListener('mouseleave', hide);
+    dot.addEventListener('focus', () => show(dot));
+    dot.addEventListener('blur', hide);
+  });
 }
 
 // ══════════════════════════════════════════════════════════
@@ -4297,7 +4371,7 @@ function renderMiniCards() {
 // ══════════════════════════════════════════════════════════
 // DEEP LINKING (hash routing)
 // ══════════════════════════════════════════════════════════
-const VALID_TABS = ['predictions', 'dataentry', 'email', 'performance', 'about', 'puzzles'];
+const VALID_TABS = ['predictions', 'compare', 'email', 'performance', 'about', 'puzzles'];
 
 function updateHash() {
   const tab = _currentTab || 'predictions';
@@ -4355,11 +4429,13 @@ function selectTournament(index, skipHash) {
   setTimeout(() => {
     renderTabs();
     renderCalendar();
-    renderAccuracyStrip();
+    // Model accuracy summary lives on the Performance tab; removed from home.
     renderMiniCards();
     renderDelta(t);
     renderHero(t);
-    renderKPIRow(t);
+    // KPI row removed: % Registered duplicates the CI bar, Early Bird is in
+    // the chart annotations + subtitle, Past Average shows in Historical
+    // Comparison, CI Width is the CI bar itself, Regular Fee has its own panel.
     renderProgress(t);
     renderChart(t);
     renderTimeline(t);

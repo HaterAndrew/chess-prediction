@@ -1732,6 +1732,70 @@ body.drawer-open { overflow: hidden; touch-action: none; }
   z-index: 2;
   box-shadow: 0 0 0 2px var(--text), 0 4px 16px rgba(0,0,0,.4);
 }
+
+/* Premium hover tooltip for upcoming-events dots. One floating element
+   repositioned per dot; fades in, pace-tinted accent border, generous
+   typography hierarchy so the tournament name reads first. */
+.cal-tooltip {
+  position: absolute;
+  z-index: 9999;
+  min-width: 220px; max-width: 320px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .16s ease-out, transform .16s ease-out;
+  font-family: inherit;
+}
+.cal-tooltip[hidden] { display: none; }
+.cal-tooltip.cal-tooltip-show { opacity: 1; transform: translateY(0); }
+.cal-tooltip::after {
+  content: ''; position: absolute;
+  left: 50%; bottom: -6px; transform: translateX(-50%) rotate(45deg);
+  width: 10px; height: 10px;
+  background: var(--surface2);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.cal-tip-name {
+  font-size: .94rem; font-weight: 800; color: var(--text);
+  letter-spacing: -.01em; line-height: 1.25;
+  margin-bottom: 4px;
+}
+.cal-tip-meta {
+  display: flex; align-items: center; gap: 6px;
+  font-size: .72rem; color: var(--muted);
+  margin-bottom: 10px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-light);
+}
+.cal-tip-date { font-weight: 600; color: var(--text2); }
+.cal-tip-days { font-variant-numeric: tabular-nums; }
+.cal-tip-sep { opacity: .6; }
+.cal-tip-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: .76rem;
+  margin-top: 4px;
+}
+.cal-tip-label {
+  color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px;
+  font-size: .62rem; font-weight: 700;
+}
+.cal-tip-value {
+  font-weight: 700; color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.cal-tip-pace-pos { color: var(--green); }
+.cal-tip-pace-flat { color: var(--text2); }
+.cal-tip-pace-neg { color: var(--red); }
+/* Pace-tinted left edge: subtle vertical accent ribbon matching dot color. */
+.cal-tooltip-pos  { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3), inset 3px 0 0 var(--green); }
+.cal-tooltip-flat { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3), inset 3px 0 0 var(--gold); }
+.cal-tooltip-neg  { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3), inset 3px 0 0 var(--red); }
 .cal-axis {
   position: relative; height: 14px;
   margin-top: 6px;

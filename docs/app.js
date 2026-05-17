@@ -2863,6 +2863,10 @@ function renderChart(t) {
               const isHistorical = isDone(t);
               const isPastOrToday = hoveredDate <= today;
 
+              // Per-year "final" marker is consolidated into the year line below;
+              // suppress its own row so the tooltip doesn't double up.
+              if (/^\d{4} final$/.test(item.dataset.label)) return null;
+
               if (item.dataset.label === 'Actual Entries') {
                 // Only show actual line when hovering over real data (past/today),
                 // not when hovering over future projected points
@@ -2883,7 +2887,21 @@ function renderChart(t) {
                 return ` Projected: ${val}`;
               }
 
-              // Historical year labels
+              // Historical year row — pair the at-this-T value with the final
+              // count if the matching "YYYY final" dataset exists. Reads off
+              // chart.data.datasets so we don't depend on hover proximity to
+              // the final-day marker dot.
+              const yearMatch = item.dataset.label.match(/^(\d{4})( \(est\))?$/);
+              if (yearMatch) {
+                const finalDs = item.chart.data.datasets.find(
+                  d => d.label === `${yearMatch[1]} final`);
+                if (finalDs && finalDs.data.length > 0) {
+                  return ` ${item.dataset.label}: ${val} → ${fmt(finalDs.data[0].y)}`;
+                }
+                return ` ${item.dataset.label}: ${val}`;
+              }
+
+              // Anything else
               return ` ${item.dataset.label}: ${val}`;
             },
             afterBody(items) {

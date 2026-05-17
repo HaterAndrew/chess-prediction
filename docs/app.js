@@ -149,18 +149,20 @@ document.addEventListener('input', e => {
   if (e.target && e.target.id === 'cmdkInput') _renderCmdK(e.target.value);
 });
 
-// An "early bird" only exists when there's an actual price hike between the
-// early-bird window and the regular window. Just having a deadline isn't
-// enough — if early_bird_fee == regular_fee (or either is missing), the
-// "deadline" is cosmetic and we shouldn't render an Early Bird phase.
-// Deadline must also land strictly before event_start; CCA metadata
-// occasionally carries impossible deadlines (e.g. Chicago Class 2026 had
-// EB=Nov 10 with event=Jul 17).
+// An "early bird" only exists when there's an actual price hike BETWEEN an
+// early-bird window and a regular window, AND the deadline lands well before
+// the event. Just having a deadline isn't enough — many CCA events publish a
+// $X advance / $X+ onsite step 2-3 days out (Cleveland Open 2026: $93→$110
+// with 3d gap), which is a late-registration penalty, not an early bird.
+// Threshold: at least 14 days between early_bird_deadline and event_start.
+// CCA metadata also occasionally carries impossible deadlines (e.g. Chicago
+// Class 2026 had EB=Nov 10 with event=Jul 17), which the gap check excludes.
+const EARLY_BIRD_MIN_GAP_DAYS = 14;
 function hasValidEarlyBird(t) {
-  if (!t.early_bird_deadline) return false;
-  if (t.event_start && t.early_bird_deadline >= t.event_start) return false;
+  if (!t.early_bird_deadline || !t.event_start) return false;
   if (t.early_bird_fee == null || t.regular_fee == null) return false;
-  return t.early_bird_fee < t.regular_fee;
+  if (t.early_bird_fee >= t.regular_fee) return false;
+  return daysBetween(t.early_bird_deadline, t.event_start) >= EARLY_BIRD_MIN_GAP_DAYS;
 }
 function fmtDate(s) {
   if (!s) return '–';
@@ -2451,10 +2453,6 @@ function renderHero(t) {
   // multi-sub-event festival (e.g. World Open). No-op otherwise.
   renderFestivalCluster(t);
 
-  // Confidence breakdown — populates the collapsible "Why this prediction"
-  // panel beneath the festival cluster. Pre-collapsed by default.
-  renderConfidencePanel(t);
-
   // Side KPI cards
   document.getElementById('kpiCurrent').innerHTML = `
     <div class="kpi-label">Registered</div>
@@ -3961,101 +3959,10 @@ function renderSummaryBar() {
 // mini-card via the delta chip (iter 9). Calendar timeline still surfaces
 // the portfolio view by event date.
 
-// ══════════════════════════════════════════════════════════
-// CONFIDENCE BREAKDOWN PANEL ("Why this prediction")
-// ══════════════════════════════════════════════════════════
-// Open-the-hood view of the model's certainty. Surfaces the four
-// factors that drive the confidence badge so a skeptical reader
-// can see the math: historical depth, prediction tier, CI width,
-// year-over-year volatility. Collapsed by default; users expand
-// to verify.
-function renderConfidencePanel(t) {
-  const el = document.getElementById('confidenceBody');
-  if (!el) return;
-  if (!t || isDone(t)) {
-    // Completed tournaments have no prediction-confidence story; hide.
-    document.getElementById('confidencePanel').style.display = 'none';
-    return;
-  }
-  document.getElementById('confidencePanel').style.display = '';
-
-  const rows = [];
-
-  // Historical depth — count of qualifying editions feeding the model.
-  const nHist = t.n_historical_editions ?? (t.historical ? t.historical.length : 0);
-  const histVerdict = nHist >= 8 ? { cls: 'pos', text: 'Strong' }
-                    : nHist >= 4 ? { cls: 'flat', text: 'Adequate' }
-                    : nHist >= 2 ? { cls: 'neg', text: 'Thin' }
-                    : { cls: 'neg', text: 'Very thin' };
-  rows.push({
-    label: 'Historical depth',
-    value: `${nHist} qualifying edition${nHist === 1 ? '' : 's'}`,
-    verdict: histVerdict,
-    detail: 'Years of comparable data feeding the model. <4 editions triggers the low-confidence badge.',
-  });
-
-  // Prediction tier — which model path was used.
-  const tier = t.prediction_tier || 'family-direct';
-  const tierVerdict = tier === 'family-direct' ? { cls: 'pos', text: 'Direct' }
-                    : tier === 'family-alias'  ? { cls: 'flat', text: 'Aliased' }
-                    : { cls: 'neg', text: 'Fallback' };
-  const tierDetail = tier === 'family-direct'
-    ? 'Trained directly on this family’s history.'
-    : tier === 'family-alias'
-      ? 'Pools history from related family lineages (e.g. venue moves).'
-      : 'No direct history; uses tournaments of comparable size as a fallback.';
-  rows.push({
-    label: 'Prediction tier',
-    value: tier.replace('-', ' '),
-    verdict: tierVerdict,
-    detail: tierDetail,
-  });
-
-  // CI width — how tight the prediction interval is, as % of point estimate.
-  if (t.ci_lower != null && t.ci_upper != null && t.point_estimate > 0) {
-    const widthPct = ((t.ci_upper - t.ci_lower) / t.point_estimate) * 100;
-    const widthVerdict = widthPct <= 20 ? { cls: 'pos', text: 'Tight' }
-                       : widthPct <= 40 ? { cls: 'flat', text: 'Moderate' }
-                       : { cls: 'neg', text: 'Wide' };
-    rows.push({
-      label: '80% CI width',
-      value: `${widthPct.toFixed(0)}% of prediction`,
-      verdict: widthVerdict,
-      detail: 'Narrower band = more model agreement across feature pathways.',
-    });
-  }
-
-  // Year-over-year volatility — std dev of historical finals as % of mean.
-  if (t.historical && t.historical.length >= 3) {
-    const counts = t.historical.map(h => h.count).filter(n => n > 0);
-    if (counts.length >= 3) {
-      const mean = counts.reduce((s, n) => s + n, 0) / counts.length;
-      const variance = counts.reduce((s, n) => s + (n - mean) ** 2, 0) / counts.length;
-      const std = Math.sqrt(variance);
-      const cv = (std / mean) * 100;
-      const volVerdict = cv <= 12 ? { cls: 'pos', text: 'Stable' }
-                       : cv <= 25 ? { cls: 'flat', text: 'Variable' }
-                       : { cls: 'neg', text: 'Volatile' };
-      rows.push({
-        label: 'Year-over-year swing',
-        value: `±${cv.toFixed(0)}% (CV)`,
-        verdict: volVerdict,
-        detail: 'How much finals have swung historically. Higher CV widens the CI.',
-      });
-    }
-  }
-
-  el.innerHTML = rows.map(r => `
-    <div class="cp-row">
-      <div class="cp-row-top">
-        <span class="cp-row-label">${esc(r.label)}</span>
-        <span class="cp-row-verdict cp-${r.verdict.cls}">${esc(r.verdict.text)}</span>
-      </div>
-      <div class="cp-row-value">${esc(r.value)}</div>
-      <div class="cp-row-detail">${r.detail}</div>
-    </div>
-  `).join('');
-}
+// Confidence breakdown panel removed in iter 25 — the hero narrative +
+// confidence badge already say "tracking on pace" or "low confidence
+// (3 editions)" in plain English, which is the same info this 4-row
+// audit panel surfaced more verbosely.
 
 // ══════════════════════════════════════════════════════════
 // FESTIVAL CLUSTER (e.g. World Open's 3 sub-events as one festival)

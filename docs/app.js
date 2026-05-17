@@ -2237,12 +2237,25 @@ function renderDelta(t) {
   const ctx = document.getElementById('deltaContext');
   const val = document.getElementById('deltaValue');
 
-  // Multi-year at-T context (alerts.py output). Stripped from a separate
-  // banner; lives here as a sub-line. Empty for tournaments without a
-  // pace_alert (insufficient historical daily data).
+  // Multi-year at-T context — stakeholder-requested sub-line under the YoY
+  // headline. Verdict-first phrasing ("Tracking [ahead/behind/on pace] with
+  // N-year pace") so the eye lands on the direction before parsing the %.
   if (ctx) {
     const alert = getPaceAlert(t);
-    ctx.textContent = (alert && alert.message) ? alert.message : '';
+    if (alert && alert.status) {
+      const verdict = alert.status === 'above_pace' ? 'ahead of'
+                    : alert.status === 'below_pace' ? 'behind'
+                    : 'on pace with';
+      // Prefer the explicit n_years field (pipeline 2026-05-17+); fall back
+      // to regex on the older message string for any stale website_data.json.
+      const n = alert.n_years || ((alert.message || '').match(/(\d+)-year/) || [])[1];
+      const yrs = n ? `${n}-year aggregate` : 'multi-year aggregate';
+      const dev = alert.deviation_pct;
+      const devStr = (dev > 0 ? `+${dev}` : `${dev}`) + '%';
+      ctx.textContent = `Tracking ${verdict} ${yrs} pace (${devStr})`;
+    } else {
+      ctx.textContent = '';
+    }
   }
 
   if (isDone(t)) {

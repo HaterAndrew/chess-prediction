@@ -94,6 +94,7 @@ def compute_pace_alerts(website_data):
             "actual": actual,
             "expected": round(expected),
             "deviation_pct": deviation_pct,
+            "n_years": n_years,
             "message": msg,
         })
 

@@ -244,8 +244,19 @@
   <!-- ── All Tournaments Table ── -->
   <div class="all-tournaments">
     <div class="panel" style="padding:22px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div class="tt-head">
         <div class="panel-title" style="margin-bottom:0">2026 Tournament Overview</div>
+        <div class="tt-controls">
+          <div class="tt-filters" role="tablist" aria-label="Filter by status">
+            <button class="tt-filter tt-filter-active" data-filter="all" onclick="filterTourneyTable('all')" type="button">All</button>
+            <button class="tt-filter" data-filter="live" onclick="filterTourneyTable('live')" type="button">Live</button>
+            <button class="tt-filter" data-filter="complete" onclick="filterTourneyTable('complete')" type="button">Complete</button>
+          </div>
+          <div class="tt-search">
+            <span class="tt-search-icon" aria-hidden="true">&#128269;</span>
+            <input id="tourneyFilter" type="search" placeholder="Filter tournaments..." oninput="filterTourneyTable()" autocomplete="off" aria-label="Filter tournament rows">
+          </div>
+        </div>
       </div>
       <div style="overflow-x:auto">
         <table class="tourney-table" id="tourneyTable">

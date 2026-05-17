@@ -2489,11 +2489,11 @@ function renderHero(t) {
   }
   document.getElementById('heroCi').innerHTML = ciHtml;
 
-  // Hero narrative — a one-or-two sentence summary that ties the headline
-  // numbers together in plain English. Surfaces context the hero KPIs
-  // alone don't make obvious: how this tracks vs prior years, what the
-  // current pace implies, what milestone is next.
-  document.getElementById('heroNarrative').innerHTML = buildHeroNarrative(t);
+  // Hero narrative removed — the pace verdict is already in the delta banner
+  // above and the daily-pace KPI shows current vs needed rate, so the
+  // paragraph here just duplicated info and threw the hero row out of
+  // vertical balance with the week bars + KPI strip.
+  document.getElementById('heroNarrative').innerHTML = '';
 
   // Festival cluster — renders inline if this tournament is part of a
   // multi-sub-event festival (e.g. World Open). No-op otherwise.

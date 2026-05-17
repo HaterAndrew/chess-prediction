@@ -36,6 +36,17 @@ function esc(s) {
 }
 function fmt(n) { return n == null ? '–' : n.toLocaleString(); }
 function isDone(t) { return t.status === 'complete' || t.status === 'historical'; }
+
+// True only when the early-bird deadline both exists and is strictly before
+// the event_start. CCA metadata occasionally carries a deadline that lands
+// AFTER the event (e.g. Chicago Class 2026 had EB=Nov 10 with event=Jul 17),
+// which previously made every EB-aware surface render a nonsense indicator.
+// Treat impossible deadlines as "no early bird".
+function hasValidEarlyBird(t) {
+  if (!t.early_bird_deadline) return false;
+  if (!t.event_start) return true;
+  return t.early_bird_deadline < t.event_start;
+}
 function fmtDate(s) {
   if (!s) return '–';
   const d = new Date(s + 'T00:00:00');
@@ -2380,7 +2391,7 @@ function renderKPIRow(t) {
   }
 
   // Early bird info
-  if (t.early_bird_deadline) {
+  if (hasValidEarlyBird(t)) {
     const ebDate = new Date(t.early_bird_deadline + 'T00:00:00');
     const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
     const ebPassed = ebDate <= today;
@@ -2680,7 +2691,7 @@ function renderChart(t) {
       const _isM = _mobileVP();
       // On mobile, only the Today line — Early Bird and Event labels overlap on
       // narrow screens (the days-to-event KPI card tells the user already).
-      if (!_isM && t.early_bird_deadline) lines.push({ date: new Date(t.early_bird_deadline + 'T00:00:00'), label: 'Early Bird', color: '#3fb950' });
+      if (!_isM && hasValidEarlyBird(t)) lines.push({ date: new Date(t.early_bird_deadline + 'T00:00:00'), label: 'Early Bird', color: '#3fb950' });
       if (!isDone(t)) lines.push({ date: new Date(TOURNAMENT_DATA.generated + 'T00:00:00'), label: 'Today', color: '#58a6ff' });
       if (!_isM && t.event_start) lines.push({ date: new Date(t.event_start + 'T00:00:00'), label: 'Event', color: '#f85149' });
 
@@ -3027,7 +3038,7 @@ function renderChart(t) {
 
   // Subtitle
   let sub = `${t.family} ${t.year} — Registration Trajectory`;
-  if (!isDone(t) && t.early_bird_deadline) {
+  if (!isDone(t) && hasValidEarlyBird(t)) {
     const ebD = new Date(t.early_bird_deadline + 'T00:00:00');
     const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
     if (ebD < today) {
@@ -3061,7 +3072,7 @@ function renderTimeline(t) {
   const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
   const nodes = [];
 
-  if (t.early_bird_deadline) {
+  if (hasValidEarlyBird(t)) {
     const d = new Date(t.early_bird_deadline + 'T00:00:00');
     const status = d < today ? 'past' : 'future';
     const estCount = t.registration_curve
@@ -3106,7 +3117,7 @@ function renderMilestones(t) {
   ];
 
   // Add early bird if present
-  if (t.early_bird_deadline) {
+  if (hasValidEarlyBird(t)) {
     const ebDB = daysBetween(t.early_bird_deadline, t.event_start);
     const ebD = new Date(t.early_bird_deadline + 'T00:00:00');
     const status = ebD < today ? 'past' : 'future';
@@ -3486,7 +3497,7 @@ function renderFees(t) {
   const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
   let currentFee = null;
   let feeStatus = '';
-  if (t.early_bird_deadline) {
+  if (hasValidEarlyBird(t)) {
     const ebD = new Date(t.early_bird_deadline + 'T00:00:00');
     if (ebD >= today) {
       currentFee = t.early_bird_fee;

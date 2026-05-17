@@ -1,0 +1,20 @@
+{
+  "name": "chess-ask-worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cloudflare Worker proxy for the Chess Entry Predictor Ask tab. Holds the Anthropic API key and answers tournament questions over a 5-tool function-calling loop.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.96.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260101.0",
+    "typescript": "^5.4.0",
+    "wrangler": "^3.80.0"
+  }
+}

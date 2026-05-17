@@ -1,0 +1,23 @@
+name = "chess-ask"
+main = "src/index.ts"
+compatibility_date = "2026-05-01"
+compatibility_flags = ["nodejs_compat"]
+
+# CORS allowlist origin (set this to the deployed site).
+# The Worker uses this to set Access-Control-Allow-Origin.
+[vars]
+ALLOWED_ORIGIN = "https://haterandrew.github.io,http://localhost:8080,http://127.0.0.1:8080"
+DATA_URL = "https://haterandrew.github.io/chess-prediction/website_data.json"
+MODEL = "claude-sonnet-4-6"
+DAILY_BUDGET_USD = "2.00"
+RATE_LIMIT_PER_MIN = "20"
+
+# KV namespace for rate-limit buckets + daily-cost counter.
+# Create with: wrangler kv:namespace create CHESS_ASK_KV
+# Then paste the returned id below.
+# [[kv_namespaces]]
+# binding = "KV"
+# id = "<paste-id-here>"
+
+# Secret (set via `wrangler secret put ANTHROPIC_API_KEY`):
+#   ANTHROPIC_API_KEY

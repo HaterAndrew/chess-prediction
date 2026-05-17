@@ -349,6 +349,7 @@ function switchPageTab(tab, skipHash) {
   if (tab === 'performance') initPerformanceTab();
   if (tab === 'favorites') renderFavoritesTab();
   if (tab === 'compare') renderCompareTab();
+  if (tab === 'ask') initAskTab();
   // Focus management: move focus to new panel for screen readers
   panel.setAttribute('tabindex', '-1');
   panel.focus({ preventScroll: true });
@@ -356,7 +357,7 @@ function switchPageTab(tab, skipHash) {
 }
 
 // Mobile swipe-between-tabs navigation
-const PAGE_TAB_ORDER = ['predictions', 'compare', 'email', 'performance', 'about', 'puzzles'];
+const PAGE_TAB_ORDER = ['predictions', 'compare', 'email', 'performance', 'about', 'puzzles', 'ask'];
 (function setupSwipeNav() {
   if (typeof window === 'undefined' || !('ontouchstart' in window)) return;
   let startX = 0, startY = 0, startT = 0;
@@ -4384,7 +4385,7 @@ function renderMiniCards() {
 // ══════════════════════════════════════════════════════════
 // DEEP LINKING (hash routing)
 // ══════════════════════════════════════════════════════════
-const VALID_TABS = ['predictions', 'compare', 'email', 'performance', 'about', 'puzzles'];
+const VALID_TABS = ['predictions', 'compare', 'email', 'performance', 'about', 'puzzles', 'ask'];
 
 function updateHash() {
   const tab = _currentTab || 'predictions';
@@ -5356,7 +5357,249 @@ function renderCompareChart(selected) {
 
 applyOverrides();
 
+// ══════════════════════════════════════════════════════════
+// ASK TAB — chatbot UI
+// (declarations must precede init() — init() may invoke initAskTab via
+//  navigateToHash if the URL contains #ask, which would TDZ-throw on these
+//  consts/lets if they're declared after init().)
+// ══════════════════════════════════════════════════════════
+const ASK_ENDPOINT = (function() {
+  const h = (typeof location !== 'undefined') ? location.hostname : '';
+  if (h === 'localhost' || h === '127.0.0.1' || h === '') return 'http://localhost:8787/ask';
+  return 'https://chess-ask.hater-andrewd.workers.dev/ask';
+})();
+const ASK_SUGGESTIONS = [
+  'When does Liberty Bell start?',
+  'How big will Continental get?',
+  'Top 5 biggest tournaments right now',
+  'Did North American Open grow last year?',
+  "What's the early bird fee for World Open?",
+  'Which live tournament has the most entries?',
+];
+const ASK_HISTORY_KEY = 'cep:ask:history';
+let askInited = false;
+let askInFlight = false;
+
 init();
+
+function initAskTab() {
+  if (askInited) return;
+  askInited = true;
+  const info = document.getElementById('askDataInfo');
+  if (info && typeof TOURNAMENT_DATA !== 'undefined' && TOURNAMENT_DATA && TOURNAMENT_DATA.generated) {
+    info.textContent = `Plain English works. Data is current as of ${TOURNAMENT_DATA.generated}.`;
+  }
+  const chipsHost = document.getElementById('askChips');
+  if (chipsHost) {
+    chipsHost.innerHTML = '';
+    ASK_SUGGESTIONS.forEach(q => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'ask-chip';
+      b.textContent = q;
+      b.addEventListener('click', () => askRun(q));
+      chipsHost.appendChild(b);
+    });
+  }
+  const input = document.getElementById('askInput');
+  if (input) {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        askSubmit();
+      }
+    });
+  }
+  const btn = document.getElementById('askSubmit');
+  if (btn) {
+    btn.addEventListener('click', askSubmit);
+  }
+  renderAskRecent();
+}
+
+function askSubmit() {
+  if (askSubmit._busy) return;
+  askSubmit._busy = true;
+  setTimeout(() => { askSubmit._busy = false; }, 250);
+  const input = document.getElementById('askInput');
+  if (!input) return;
+  let q = input.value.trim();
+  if (!q) {
+    q = ASK_SUGGESTIONS[0];
+    input.value = q;
+    showAskBanner('warn', 'Empty input — running the first suggestion. Type your own question and press Ask.');
+  }
+  askRun(q);
+}
+
+async function askRun(question) {
+  if (askInFlight) return;
+  askInFlight = true;
+  const input = document.getElementById('askInput');
+  const btn = document.getElementById('askSubmit');
+  const banner = document.getElementById('askBanner');
+  const answer = document.getElementById('askAnswer');
+  if (input) input.value = question;
+  if (btn) { btn.disabled = true; btn.textContent = 'Thinking…'; }
+  if (banner) { banner.hidden = true; banner.textContent = ''; banner.className = 'ask-banner'; }
+  if (answer) {
+    answer.className = 'ask-answer is-loading';
+    answer.textContent = 'Thinking…';
+  }
+
+  try {
+    const resp = await fetch(ASK_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question }),
+    });
+    const data = await resp.json().catch(() => ({}));
+
+    if (!resp.ok) {
+      const isRateLimit = resp.status === 429;
+      const isBudget = resp.status === 503 && data.error === 'daily_budget_exhausted';
+      const msg = data.message || `Error ${resp.status}.`;
+      if (isRateLimit || isBudget) {
+        showAskBanner('warn', msg);
+        renderAnswerText('');
+      } else {
+        showAskBanner('error', msg + ' Falling back to keyword search.');
+        renderFallback(question);
+      }
+      return;
+    }
+
+    renderAnswerText(data.answer || '(no answer returned)', {
+      model: data.model,
+      latency_ms: data.latency_ms,
+      data_generated: data.data_generated,
+      tools_used: data.tools_used,
+    });
+    pushAskHistory(question);
+  } catch (e) {
+    showAskBanner('error', 'AI is unavailable right now — here are keyword matches instead:');
+    renderFallback(question);
+  } finally {
+    askInFlight = false;
+    if (btn) { btn.disabled = false; btn.textContent = 'Ask'; }
+  }
+}
+
+function renderAnswerText(text, meta) {
+  const el = document.getElementById('askAnswer');
+  if (!el) return;
+  el.className = 'ask-answer';
+  el.innerHTML = '';
+  const body = document.createElement('div');
+  body.textContent = text;
+  el.appendChild(body);
+  if (meta) {
+    const m = document.createElement('div');
+    m.className = 'ask-answer-meta';
+    const parts = [];
+    if (meta.model) parts.push(esc(meta.model));
+    if (typeof meta.latency_ms === 'number') parts.push((meta.latency_ms / 1000).toFixed(1) + 's');
+    if (meta.data_generated) parts.push('data: ' + esc(meta.data_generated));
+    if (Array.isArray(meta.tools_used) && meta.tools_used.length) {
+      parts.push('tools: ' + meta.tools_used.map(esc).join(', '));
+    }
+    m.innerHTML = parts.join(' &middot; ');
+    el.appendChild(m);
+  }
+}
+
+function showAskBanner(kind, message) {
+  const banner = document.getElementById('askBanner');
+  if (!banner) return;
+  banner.hidden = false;
+  banner.className = 'ask-banner is-' + kind;
+  banner.textContent = message;
+}
+
+function renderFallback(query) {
+  const el = document.getElementById('askAnswer');
+  if (!el || !TOURNAMENT_DATA || !TOURNAMENT_DATA.tournaments) return;
+  const q = query.toLowerCase();
+  const tokens = q.split(/\s+/).filter(Boolean);
+  const matches = TOURNAMENT_DATA.tournaments
+    .map(t => {
+      const name = (t.family + ' ' + t.year).toLowerCase();
+      let s = 0;
+      if (name === q) s = 100;
+      else if (name.includes(q)) s = 30;
+      else if (tokens.length && tokens.every(tok => name.includes(tok))) s = 10;
+      return { t, s };
+    })
+    .filter(x => x.s > 0)
+    .sort((a, b) => b.s - a.s)
+    .slice(0, 8);
+
+  el.className = 'ask-answer';
+  el.innerHTML = '';
+  if (matches.length === 0) {
+    el.textContent = 'No keyword matches in the local data.';
+    return;
+  }
+  const head = document.createElement('div');
+  head.textContent = 'Keyword matches:';
+  el.appendChild(head);
+  const list = document.createElement('div');
+  list.className = 'ask-fallback-results';
+  matches.forEach(({ t }) => {
+    const row = document.createElement('div');
+    row.className = 'ask-fallback-item';
+    const name = document.createElement('div');
+    name.innerHTML = '<strong>' + esc(t.family + ' ' + t.year) + '</strong>';
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    const bits = [];
+    if (t.status) bits.push(esc(t.status));
+    if (t.event_start) bits.push(esc(t.event_start));
+    if (typeof t.current_count === 'number') bits.push(t.current_count.toLocaleString() + ' entries');
+    else if (typeof t.point_estimate === 'number') bits.push('predicted ' + t.point_estimate.toLocaleString());
+    meta.textContent = bits.join(' · ');
+    row.appendChild(name);
+    row.appendChild(meta);
+    list.appendChild(row);
+  });
+  el.appendChild(list);
+}
+
+function loadAskHistory() {
+  try {
+    const raw = localStorage.getItem(ASK_HISTORY_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+}
+function pushAskHistory(q) {
+  let h = loadAskHistory().filter(x => x !== q);
+  h.unshift(q);
+  h = h.slice(0, 5);
+  try { localStorage.setItem(ASK_HISTORY_KEY, JSON.stringify(h)); } catch {}
+  renderAskRecent();
+}
+function renderAskRecent() {
+  const host = document.getElementById('askRecent');
+  if (!host) return;
+  const h = loadAskHistory();
+  host.innerHTML = '';
+  if (!h.length) return;
+  const title = document.createElement('div');
+  title.className = 'ask-recent-title';
+  title.textContent = 'Recent';
+  host.appendChild(title);
+  const list = document.createElement('div');
+  list.className = 'ask-recent-list';
+  h.forEach(q => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'ask-recent-item';
+    b.textContent = q;
+    b.onclick = () => askRun(q);
+    list.appendChild(b);
+  });
+  host.appendChild(list);
+}
 
 // ══════════════════════════════════════════════════════════
 // CHART-HIGHLIGHT STYLE (injected for click-to-table feature)

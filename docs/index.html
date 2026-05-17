@@ -14,10 +14,10 @@
 <meta name="apple-mobile-web-app-title" content="CCA Predictor">
 <meta name="format-detection" content="telephone=no">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://*.workers.dev">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=26">
+<link rel="stylesheet" href="styles.css?v=27">
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 </head>
 <body>
@@ -92,6 +92,7 @@
     <button class="page-tab" onclick="switchPageTab('performance')" role="tab" aria-selected="false" aria-controls="panel-performance" id="ptab-performance">&#9733; Performance</button>
     <button class="page-tab" onclick="switchPageTab('about')" role="tab" aria-selected="false" aria-controls="panel-about" id="ptab-about">&#9881; About the Model</button>
     <button class="page-tab" onclick="switchPageTab('puzzles')" role="tab" aria-selected="false" aria-controls="panel-puzzles" id="ptab-puzzles">&#9822; Puzzles</button>
+    <button class="page-tab" onclick="switchPageTab('ask')" role="tab" aria-selected="false" aria-controls="panel-ask" id="ptab-ask">&#128172; Ask</button>
   </div>
 
   <!-- ── Search dialog (opens from the header Search button) ── -->
@@ -806,6 +807,24 @@
   <!-- ══════ COMPARE TAB ══════ -->
   <div class="page-tab-panel" id="panel-compare" role="tabpanel" aria-labelledby="ptab-compare">
     <div id="compareContent"></div>
+  </div>
+
+  <!-- ══════ ASK TAB ══════ -->
+  <div class="page-tab-panel" id="panel-ask" role="tabpanel" aria-labelledby="ptab-ask">
+    <div class="ask-wrap">
+      <div class="ask-header">
+        <h2 class="ask-title">Ask a question about the tournaments</h2>
+        <div class="ask-sub" id="askDataInfo">Plain English works. Numbers, schedules, comparisons.</div>
+      </div>
+      <div class="ask-input-row">
+        <textarea id="askInput" class="ask-input" rows="2" placeholder="e.g. When does Liberty Bell start?" aria-label="Your question"></textarea>
+        <button id="askSubmit" type="button" class="ask-submit">Ask</button>
+      </div>
+      <div class="ask-chips" id="askChips" aria-label="Suggested questions"></div>
+      <div class="ask-banner" id="askBanner" hidden></div>
+      <div class="ask-answer" id="askAnswer" aria-live="polite"></div>
+      <div class="ask-recent" id="askRecent" aria-label="Recent questions"></div>
+    </div>
   </div>
 
 </main>
@@ -104396,6 +104415,6 @@ const PERFORMANCE_DATA = {
 };
 
 </script>
-<script src="app.js?v=29"></script>
+<script src="app.js?v=38"></script>
 </body>
 </html>

@@ -328,19 +328,29 @@ function paceBadgeHTML(alert) {
 // PAGE TABS
 // ══════════════════════════════════════════════════════════
 let _currentTab = 'predictions';
+const MORE_MENU_TABS = ['compare', 'email', 'performance', 'about', 'puzzles'];
 function switchPageTab(tab, skipHash) {
   if (_mobileVP() && _currentTab !== tab) _haptic(8);
   _currentTab = tab;
   document.querySelectorAll('.page-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+  document.querySelectorAll('.page-tab-drop .cat-item').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.page-tab-panel').forEach(p => p.classList.remove('active'));
   const tabBtn = document.getElementById('ptab-' + tab);
-  tabBtn.classList.add('active');
-  tabBtn.setAttribute('aria-selected', 'true');
-  // Scroll active tab into view only when the strip actually overflows
-  const tabsContainer = tabBtn.closest('.page-tabs');
-  if (tabsContainer && tabsContainer.scrollWidth > tabsContainer.clientWidth + 1) {
-    tabBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  if (tabBtn) {
+    tabBtn.classList.add('active');
+    tabBtn.setAttribute('aria-selected', 'true');
+    // Scroll active tab into view only when the strip actually overflows
+    const tabsContainer = tabBtn.closest('.page-tabs');
+    if (tabsContainer && tabsContainer.scrollWidth > tabsContainer.clientWidth + 1) {
+      tabBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
   }
+  // Mirror active underline onto the "Menu" page-tab when current tab is in the dropdown
+  if (MORE_MENU_TABS.includes(tab)) {
+    const moreBtn = document.getElementById('ptab-more');
+    if (moreBtn) { moreBtn.classList.add('active'); moreBtn.removeAttribute('aria-selected'); }
+  }
+  closeMoreMenu();
   const panel = document.getElementById('panel-' + tab);
   panel.classList.add('active');
   if (tab === 'puzzles') initPuzzles();
@@ -382,6 +392,47 @@ const PAGE_TAB_ORDER = ['predictions', 'compare', 'email', 'performance', 'about
     else if (dx > 0 && idx > 0) switchPageTab(PAGE_TAB_ORDER[idx - 1]);
   }, { passive: true });
 })();
+
+// ── "Menu" dropdown holding overflow tabs ──
+function toggleMoreMenu(e) {
+  if (e) e.stopPropagation();
+  const drop = document.getElementById('moreMenuDrop');
+  const btn = document.getElementById('ptab-more');
+  if (!drop || !btn) return;
+  if (drop.classList.contains('open')) { closeMoreMenu(); return; }
+  const r = btn.getBoundingClientRect();
+  // Anchor below the button; clamp to viewport
+  const desiredLeft = r.left;
+  drop.style.top = (r.bottom + 6) + 'px';
+  drop.style.left = '0px';
+  drop.classList.add('open');
+  // Now that it's rendered, clamp horizontally
+  const dw = drop.offsetWidth;
+  const maxLeft = Math.max(8, window.innerWidth - dw - 8);
+  drop.style.left = Math.min(desiredLeft, maxLeft) + 'px';
+  btn.setAttribute('aria-expanded', 'true');
+}
+function closeMoreMenu() {
+  const drop = document.getElementById('moreMenuDrop');
+  const btn = document.getElementById('ptab-more');
+  if (!drop) return;
+  drop.classList.remove('open');
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+function pickMoreTab(tab) {
+  closeMoreMenu();
+  switchPageTab(tab);
+}
+document.addEventListener('click', (e) => {
+  const wrap = document.getElementById('moreMenuWrap');
+  if (!wrap) return;
+  if (!wrap.contains(e.target)) closeMoreMenu();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeMoreMenu();
+});
+window.addEventListener('resize', closeMoreMenu);
+window.addEventListener('scroll', closeMoreMenu, { passive: true });
 
 // ══════════════════════════════════════════════════════════
 // EMAIL GENERATOR

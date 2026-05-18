@@ -1,10 +1,5 @@
 {
-  "generated": "2026-05-17 11:52:40",
-  "count": 1,
-  "warnings": [
-    {
-      "step": "Refresh tournament summary (01_data_prep.py)",
-      "text": "low scrape coverage \u2014 Continental Open 2021: scrape=159/final=393 (ratio=0.40)"
-    }
-  ]
+  "generated": "2026-05-18 05:18:27",
+  "count": 0,
+  "warnings": []
 }

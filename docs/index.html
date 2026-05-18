@@ -87,12 +87,17 @@
   <!-- ── Page-Level Tabs ── -->
   <div class="page-tabs" role="tablist">
     <button class="page-tab active" onclick="switchPageTab('predictions')" role="tab" aria-selected="true" aria-controls="panel-predictions" id="ptab-predictions">Predictions</button>
-    <button class="page-tab" onclick="switchPageTab('compare')" role="tab" aria-selected="false" aria-controls="panel-compare" id="ptab-compare">&#9878; Compare</button>
-    <button class="page-tab" onclick="switchPageTab('email')" role="tab" aria-selected="false" aria-controls="panel-email" id="ptab-email">&#9993; Email</button>
-    <button class="page-tab" onclick="switchPageTab('performance')" role="tab" aria-selected="false" aria-controls="panel-performance" id="ptab-performance">&#9733; Performance</button>
-    <button class="page-tab" onclick="switchPageTab('about')" role="tab" aria-selected="false" aria-controls="panel-about" id="ptab-about">&#9881; About the Model</button>
-    <button class="page-tab" onclick="switchPageTab('puzzles')" role="tab" aria-selected="false" aria-controls="panel-puzzles" id="ptab-puzzles">&#9822; Puzzles</button>
     <button class="page-tab" onclick="switchPageTab('ask')" role="tab" aria-selected="false" aria-controls="panel-ask" id="ptab-ask">&#128172; Ask</button>
+    <div class="drop-wrap page-tab-more-wrap" id="moreMenuWrap">
+      <button class="page-tab page-tab-more" id="ptab-more" onclick="toggleMoreMenu(event)" aria-haspopup="menu" aria-expanded="false" aria-controls="moreMenuDrop">Other <span class="menu-caret" aria-hidden="true">&#9662;</span></button>
+      <div class="drop-menu page-tab-drop" id="moreMenuDrop" role="menu" aria-labelledby="ptab-more">
+        <button class="cat-item" role="menuitem" id="ptab-compare" aria-controls="panel-compare" onclick="pickMoreTab('compare')">&#9878; Compare</button>
+        <button class="cat-item" role="menuitem" id="ptab-email" aria-controls="panel-email" onclick="pickMoreTab('email')">&#9993; Email</button>
+        <button class="cat-item" role="menuitem" id="ptab-performance" aria-controls="panel-performance" onclick="pickMoreTab('performance')">&#9733; Performance</button>
+        <button class="cat-item" role="menuitem" id="ptab-about" aria-controls="panel-about" onclick="pickMoreTab('about')">&#9881; About the Model</button>
+        <button class="cat-item" role="menuitem" id="ptab-puzzles" aria-controls="panel-puzzles" onclick="pickMoreTab('puzzles')">&#9822; Puzzles</button>
+      </div>
+    </div>
   </div>
 
   <!-- ── Search dialog (opens from the header Search button) ── -->

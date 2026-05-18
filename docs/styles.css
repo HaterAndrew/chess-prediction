@@ -1883,6 +1883,30 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 .page-tab-panel { display: none; }
 .page-tab-panel.active { display: block; }
 
+/* ── "Menu" page-tab dropdown ── */
+.page-tab-more-wrap { display: inline-flex; flex-shrink: 0; }
+.page-tab-more { display: inline-flex; align-items: center; gap: 6px; }
+.page-tab-more .menu-caret { font-size: .6rem; opacity: .85; transition: transform .15s ease; }
+.page-tab-more[aria-expanded="true"] .menu-caret { transform: rotate(180deg); }
+.page-tab-drop {
+  position: fixed; top: 0; left: 0;
+  display: none;
+  min-width: 220px; max-width: min(320px, calc(100vw - 24px));
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(0,0,0,.15);
+  z-index: 300;
+  animation: dropSlide .15s ease;
+  padding: 4px 0;
+}
+.page-tab-drop.open { display: block; }
+.page-tab-drop .cat-item {
+  width: 100%; text-align: left;
+  background: none; border: none; cursor: pointer;
+  font: inherit; font-size: .85rem; font-weight: 600;
+  color: var(--text2);
+}
+.page-tab-drop .cat-item.active { color: var(--blue); background: var(--blue-dim); }
+
 /* ── Edge fade hint for scrollable tab strip on mobile ── */
 @media (max-width: 639px) {
   .page-tabs {
@@ -2910,6 +2934,7 @@ footer a { color: var(--muted); }
   /* Suppress chrome that doesn't translate to print. */
   header,
   .page-tabs,
+  .page-tab-drop,
   .tab-bar,
   .cmdk,
   .search-btn,

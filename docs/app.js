@@ -307,7 +307,11 @@ function buildHeroNarrative(t) {
       parts.push(`Early bird closes in ${ebDays} day${ebDays === 1 ? '' : 's'}.`);
     }
   } else if (t.days_remaining != null && t.days_remaining <= 14 && t.days_remaining > 0) {
-    parts.push(`Event opens in ${t.days_remaining} day${t.days_remaining === 1 ? '' : 's'}.`);
+    const evStarted = t.event_start &&
+      new Date(t.event_start + 'T00:00:00') <= new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
+    parts.push(evStarted
+      ? `Online registration closes in ${t.days_remaining} day${t.days_remaining === 1 ? '' : 's'}.`
+      : `Event opens in ${t.days_remaining} day${t.days_remaining === 1 ? '' : 's'}.`);
   }
 
   return `<p>${parts.join(' ')}</p>`;
@@ -2414,7 +2418,12 @@ function renderDelta(t) {
   banner.className = 'delta-banner gold';
   icon.innerHTML = '&#9654;';
   main.textContent = `${t.family} — Registration in progress`;
-  sub.textContent = `${fmt(t.current_count)} entries registered · ${t.days_remaining} days until event · predicted final: ${fmt(t.point_estimate)}`;
+  const _evStarted = t.event_start &&
+    new Date(t.event_start + 'T00:00:00') <= new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
+  const _countdown = _evStarted
+    ? `${t.days_remaining} days of online registration left`
+    : `${t.days_remaining} days until event`;
+  sub.textContent = `${fmt(t.current_count)} entries registered · ${_countdown} · predicted final: ${fmt(t.point_estimate)}`;
   val.textContent = `T-${t.days_remaining}`;
   val.className = 'delta-value gold';
 }

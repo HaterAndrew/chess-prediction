@@ -2564,7 +2564,7 @@ function renderHero(t) {
   document.getElementById('heroCi').innerHTML = ciHtml;
 
   // Hero narrative removed — the pace verdict is already in the delta banner
-  // above and the daily-pace KPI shows current vs needed rate, so the
+  // above and the daily-pace KPI shows the 7-day pace, so the
   // paragraph here just duplicated info and threw the hero row out of
   // vertical balance with the week bars + KPI strip.
   document.getElementById('heroNarrative').innerHTML = '';
@@ -2581,10 +2581,28 @@ function renderHero(t) {
   `;
 
   const daysColor = isDone(t) ? '' : t.days_remaining <= 7 ? 'v-red' : t.days_remaining <= 28 ? 'v-orange' : t.days_remaining <= 60 ? 'v-gold' : '';
+  // Once the event has started, the live countdown is to online-registration
+  // close (the 2-day schedule), not to an event start that already passed.
+  const evStarted = !isDone(t) && t.event_start &&
+    new Date(t.event_start + 'T00:00:00') <= new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
+  let daysLabel, daysValue, daysSub;
+  if (isDone(t)) {
+    daysLabel = 'Event Date';
+    daysValue = fmtDate(t.event_start);
+    daysSub = t.event_end ? fmtDate(t.event_start) + ' – ' + fmtDate(t.event_end) : '';
+  } else if (evStarted) {
+    daysLabel = 'Days to Reg. Close';
+    daysValue = t.days_remaining;
+    daysSub = t.registration_close ? fmtDate(t.registration_close) : 'event underway';
+  } else {
+    daysLabel = 'Days to Event';
+    daysValue = t.days_remaining;
+    daysSub = fmtDate(t.event_start);
+  }
   document.getElementById('kpiDays').innerHTML = `
-    <div class="kpi-label">${isDone(t) ? 'Event Date' : 'Days to Event'}</div>
-    <div class="kpi-value ${daysColor}">${isDone(t) ? fmtDate(t.event_start) : t.days_remaining}</div>
-    <div class="kpi-sub">${isDone(t) ? (t.event_end ? fmtDate(t.event_start) + ' – ' + fmtDate(t.event_end) : '') : fmtDate(t.event_start)}</div>
+    <div class="kpi-label">${daysLabel}</div>
+    <div class="kpi-value ${daysColor}">${daysValue}</div>
+    <div class="kpi-sub">${daysSub}</div>
   `;
 
   // Pace/velocity card
@@ -2596,35 +2614,10 @@ function renderHero(t) {
       const regSpan = recent[recent.length-1][1] - recent[0][1];
       const rateNum = daySpan > 0 ? regSpan / daySpan : 0;
       const rate = rateNum.toFixed(1);
-      // Expected remaining registrations per day to hit prediction
-      const remaining = t.point_estimate - t.current_count;
-      const neededNum = t.days_remaining > 0 ? remaining / t.days_remaining : 0;
-      const neededRate = neededNum >= 0.05 ? neededNum.toFixed(1) : '0';
-      // Ratio of current rate to needed rate. >=1 means on/ahead-of pace.
-      const ratio = neededNum > 0 ? rateNum / neededNum : (rateNum > 0 ? 1.5 : 0);
-      // SVG arc gauge: 180-degree semicircle, fill proportional to
-      // min(ratio, 1.5) so the gauge maxes at 150% of needed (deep green).
-      const gaugeCap = 1.5;
-      const gaugePct = Math.max(0, Math.min(gaugeCap, ratio)) / gaugeCap;
-      const arcColor = ratio >= 0.95 ? 'var(--green)'
-                     : ratio >= 0.6 ? 'var(--gold)'
-                     : 'var(--red)';
-      // Semicircle path: arc from (10, 30) to (70, 30), radius 30.
-      // Length of full half-arc = pi*r = 94.25; dasharray uses that to
-      // encode fill percentage.
-      const arcLen = 94.25;
-      const dash = (gaugePct * arcLen).toFixed(2);
       paceHtml = `
-        <div class="kpi-label">Daily Pace</div>
-        <div class="kpi-gauge" aria-label="Pace gauge: ${rate} per day, need ${neededRate} per day">
-          <svg class="kpi-gauge-svg" viewBox="0 0 80 42" aria-hidden="true">
-            <path class="kpi-gauge-track" d="M 10 32 A 30 30 0 0 1 70 32" />
-            <path class="kpi-gauge-fill" d="M 10 32 A 30 30 0 0 1 70 32"
-              style="stroke:${arcColor}; stroke-dasharray:${dash} ${arcLen};" />
-          </svg>
-          <div class="kpi-gauge-value">${rate}<span class="kpi-gauge-unit">/d</span></div>
-        </div>
-        <div class="kpi-sub">need ${neededRate}/day</div>
+        <div class="kpi-label">7-Day Pace</div>
+        <div class="kpi-value">${rate}</div>
+        <div class="kpi-sub">entries / day</div>
       `;
     }
   } else if (isDone(t) && t.historical && t.historical.length > 0) {

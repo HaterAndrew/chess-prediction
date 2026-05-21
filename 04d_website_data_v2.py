@@ -755,6 +755,8 @@ for _, row in t2026.iterrows():
         "year": 2026,
         "event_start": event_date.strftime('%Y-%m-%d') if event_date else None,
         "event_end": None,
+        "registration_close": (registration_close.strftime('%Y-%m-%d')
+                               if registration_close is not None else None),
         "early_bird_deadline": str(eb_deadline)[:10] if eb_deadline and str(eb_deadline) != 'nan' else None,
         "early_bird_fee": eb_fee,
         "regular_fee": reg_fee,

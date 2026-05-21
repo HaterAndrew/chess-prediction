@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from importlib import import_module
 m04c = import_module("04c_final_model")
 from tournament_aliases import canonicalize_family, adjust_wo_top6_count
+from prediction_window import registration_close_date, window_decayed_estimate
 
 
 def _fam_eq(series, name):
@@ -380,11 +381,14 @@ def get_event_end_date(family, year):
     return None
 
 
-def determine_status(row, event_date, event_end_date=None):
+def determine_status(row, event_date, event_end_date=None, registration_close=None):
     """Determine if tournament is live, in_progress, or complete.
 
-    live: event hasn't started yet (pre-event, model predicts)
-    in_progress: event is underway (start <= today <= end, scrape passthrough)
+    live: online registration still open — the model predicts. Includes the
+          post-start window for multi-schedule events, where the 5-day
+          schedule has begun but 4/3/2-day online entries are still arriving.
+    in_progress: online registration has closed, event still running — the
+          live scrape is the count, the model no longer predicts forward.
     complete: event is over (today > end)
     """
     if event_date is None:
@@ -392,10 +396,13 @@ def determine_status(row, event_date, event_end_date=None):
 
     # Use event_end if available; otherwise estimate as start + 5 days
     end = event_end_date if event_end_date else event_date + pd.Timedelta(days=5)
+    # registration_close drives the live->in_progress flip. Without it, fall
+    # back to event_date (legacy behaviour: stop predicting on start day).
+    close = registration_close if registration_close is not None else event_date
 
     if TODAY > end:
         return 'complete'
-    elif event_date <= TODAY:
+    elif TODAY >= close:
         return 'in_progress'
     else:
         return 'live'
@@ -531,19 +538,33 @@ for _, row in t2026.iterrows():
 
     event_date = get_event_date(family, 2026)
     event_end_date = get_event_end_date(family, 2026)
-    status = determine_status(row, event_date, event_end_date)
+    registration_close = registration_close_date(event_date, event_end_date)
+    status = determine_status(row, event_date, event_end_date, registration_close)
 
+    # Two horizons. days_to_start drives the ratio model (training is anchored
+    # to event_start). days_to_close is the online-registration horizon — for
+    # multi-schedule events that runs days past event_start. days_into_window /
+    # window_len locate TODAY inside the post-start registration window.
     if event_date is not None:
-        days_remaining = max((event_date - TODAY).days, 0)
+        days_to_start = max((event_date - TODAY).days, 0)
+        days_into_window = max((TODAY - pd.Timestamp(event_date)).days, 0)
     else:
-        days_remaining = 60
+        days_to_start = 60
+        days_into_window = 0
+    if event_date is not None and registration_close is not None:
+        days_to_close = max((registration_close - TODAY).days, 0)
+        window_len = max((registration_close - pd.Timestamp(event_date)).days, 0)
+    else:
+        days_to_close = days_to_start
+        window_len = 0
+
+    # Displayed countdown: days to event_start before the event, then days to
+    # registration close once the event is underway (entries still arriving).
+    days_remaining = days_to_start if days_to_start > 0 else days_to_close
 
     # Exclude tournaments too far out — predictions are meaningless with 1-3 registrants
-    if days_remaining > 250:
+    if days_to_start > 250:
         continue
-
-    # T = days_remaining (days to event_start). Training data is anchored to
-    # event_start after reanchor_daily_to_event_start(), so pass directly.
 
     # Get metadata
     m = meta[_fam_eq(meta['family'], family) & (meta['year'] == 2026)]
@@ -578,18 +599,33 @@ for _, row in t2026.iterrows():
         point, ci_lo, ci_hi = current_count, current_count, current_count
         prediction_source = 'final'
     elif status == 'in_progress':
-        # Event is underway — pass through scraped count directly.
-        # Model stops predicting at event_start; live scrape is the real count.
+        # Online registration has closed (the 2-day schedule, the last entry
+        # point, has started) — pass through the scraped count directly.
         # Does NOT include on-site/walk-up registrations (online pre-reg only).
         point, ci_lo, ci_hi = current_count, current_count, current_count
         prediction_source = 'live_scrape'
     elif status == 'live' and days_remaining > 0:
-        point, ci_lo, ci_hi = prod_model.predict_nowcast(
-            current_count, days_remaining, family,
-            early_bird_deadline=eb_deadline,
-            event_start_date=event_date)
-        if point is None:
-            point, ci_lo, ci_hi = predict_with_lognormal_ci(current_count, days_remaining, family, ratios)
+        if days_to_start == 0 and window_len > 0:
+            # Post-start online-registration window: the 5-day schedule has
+            # begun but 4/3/2-day online entries are still arriving. Take the
+            # event-start (T=0) ratio bucket — the full count-at-start -> final
+            # multiplier — and decay it toward 1.0 as registration close nears.
+            # build_ratio_model's `ratios` carry a real T=0 bucket;
+            # prod_model.predict_nowcast's finest bucket is T-1, so at T=0 it
+            # would over-extrapolate from a one-day-earlier ratio.
+            p0, lo0, hi0 = predict_with_lognormal_ci(
+                current_count, 0, family, ratios)
+            point, ci_lo, ci_hi = window_decayed_estimate(
+                current_count, p0, lo0, hi0, days_into_window, window_len)
+            prediction_source = 'model_online_window'
+        else:
+            point, ci_lo, ci_hi = prod_model.predict_nowcast(
+                current_count, days_to_start, family,
+                early_bird_deadline=eb_deadline,
+                event_start_date=event_date)
+            if point is None:
+                point, ci_lo, ci_hi = predict_with_lognormal_ci(
+                    current_count, days_to_start, family, ratios)
 
         # Plausibility check: if point estimate is far outside historical range,
         # blend with historical median but preserve model's CI width
@@ -683,8 +719,10 @@ for _, row in t2026.iterrows():
             prior_tid = prior_hist.iloc[0]['tid']
             prior_daily = daily[daily['tid'] == prior_tid]
             if len(prior_daily) > 0:
-                # Find count at closest T to current days_remaining
-                prior_at_T = prior_daily[prior_daily['T'] >= days_remaining].sort_values('T')
+                # Find prior count at the same days-to-event-start point
+                # (prior_daily T is event_start-anchored, so compare against
+                # days_to_start, not days_remaining which counts to reg close).
+                prior_at_T = prior_daily[prior_daily['T'] >= days_to_start].sort_values('T')
                 if len(prior_at_T) > 0:
                     prior_count_at_T = int(prior_at_T.iloc[0]['cum_regs'])
                     prior_year_val = int(prior_hist.iloc[0]['tournament_year'])
@@ -705,7 +743,12 @@ for _, row in t2026.iterrows():
         if hasattr(prod_model, 'family_n_editions') else 0
     )
     low_confidence = n_editions_for_family < 4
-    tier_used = getattr(prod_model, '_last_tier', None) if status == 'live' else None
+    # prod_model._last_tier only describes a predict_nowcast() call. The
+    # online-window path uses predict_with_lognormal_ci instead, so leave the
+    # tier null there rather than reporting a stale value from another row.
+    tier_used = (getattr(prod_model, '_last_tier', None)
+                 if status == 'live' and prediction_source != 'model_online_window'
+                 else None)
 
     t_out = {
         "family": display_family,

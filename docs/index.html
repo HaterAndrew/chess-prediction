@@ -853,7 +853,7 @@
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
   "generated": "2026-05-21",
-  "generated_time": "2026-05-21T01:21:45.433335-04:00",
+  "generated_time": "2026-05-21T12:24:52.219311-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 15,
@@ -868,12 +868,12 @@ const TOURNAMENT_DATA = {
       "regular_fee": 227.0,
       "onsite_fee": 250.0,
       "current_count": 806,
-      "gross_count": 844,
-      "withdrawal_count": 38,
-      "days_remaining": 0,
-      "point_estimate": 806,
-      "ci_lower": 806,
-      "ci_upper": 806,
+      "gross_count": 848,
+      "withdrawal_count": 42,
+      "days_remaining": 3,
+      "point_estimate": 871,
+      "ci_lower": 817,
+      "ci_upper": 929,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1367,19 +1367,23 @@ const TOURNAMENT_DATA = {
         }
       ],
       "status": "live",
-      "prediction_source": "live_scrape",
-      "prior_year_pace": null,
+      "prediction_source": "model_online_window",
+      "prior_year_pace": {
+        "year": 2025,
+        "count_at_same_point": 825,
+        "final": 899
+      },
       "low_confidence": false,
       "n_historical_editions": 5,
       "prediction_tier": null,
       "pace_alert": {
         "family": "Chicago Open",
-        "status": "on_pace",
+        "status": "above_pace",
         "actual": 806,
-        "expected": 847,
-        "deviation_pct": -4.8,
+        "expected": 639,
+        "deviation_pct": 26.1,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-5%)"
+        "message": "Registrations are 26.1% above 4-year at-this-point pace"
       }
     },
     {
@@ -1391,13 +1395,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 51,
-      "gross_count": 51,
+      "current_count": 53,
+      "gross_count": 53,
       "withdrawal_count": 0,
       "days_remaining": 15,
-      "point_estimate": 217,
-      "ci_lower": 206,
-      "ci_upper": 230,
+      "point_estimate": 221,
+      "ci_lower": 208,
+      "ci_upper": 233,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1665,7 +1669,7 @@ const TOURNAMENT_DATA = {
         ],
         [
           59,
-          51
+          53
         ]
       ],
       "registration_curve": [
@@ -1731,11 +1735,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Hartford Open",
         "status": "above_pace",
-        "actual": 51,
+        "actual": 53,
         "expected": 39,
-        "deviation_pct": 29.9,
+        "deviation_pct": 35.0,
         "n_years": 4,
-        "message": "Registrations are 29.9% above 4-year at-this-point pace"
+        "message": "Registrations are 35.0% above 4-year at-this-point pace"
       }
     },
     {
@@ -3405,13 +3409,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 326,
-      "gross_count": 326,
+      "current_count": 327,
+      "gross_count": 327,
       "withdrawal_count": 0,
       "days_remaining": 41,
-      "point_estimate": 1109,
+      "point_estimate": 1110,
       "ci_lower": 987,
-      "ci_upper": 1246,
+      "ci_upper": 1247,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3659,7 +3663,7 @@ const TOURNAMENT_DATA = {
         ],
         [
           71,
-          326
+          327
         ]
       ],
       "registration_curve": [
@@ -3725,11 +3729,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "World Open top 6 sections",
         "status": "on_pace",
-        "actual": 326,
+        "actual": 327,
         "expected": 386,
-        "deviation_pct": -15.6,
+        "deviation_pct": -15.4,
         "n_years": 3,
-        "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-16%)"
+        "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-15%)"
       }
     },
     {
@@ -5288,8 +5292,8 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 2,
-      "gross_count": 2,
+      "current_count": 3,
+      "gross_count": 3,
       "withdrawal_count": 0,
       "days_remaining": 84,
       "point_estimate": 283,
@@ -5326,7 +5330,7 @@ const TOURNAMENT_DATA = {
       "daily_data": [
         [
           0,
-          2
+          3
         ]
       ],
       "registration_curve": [
@@ -5382,12 +5386,12 @@ const TOURNAMENT_DATA = {
       "status": "live",
       "pace_alert": {
         "family": "Continental Open",
-        "status": "below_pace",
-        "actual": 2,
+        "status": "on_pace",
+        "actual": 3,
         "expected": 4,
-        "deviation_pct": -46.7,
+        "deviation_pct": -20.0,
         "n_years": 4,
-        "message": "Registrations are 46.7% below 4-year at-this-point pace"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-20%)"
       }
     },
     {
@@ -80721,26 +80725,26 @@ const TOURNAMENT_DATA = {
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-05-21 05:21:07",
+  "last_updated": "2026-05-21 16:24:16",
   "is_stale": false,
   "alerts": [
     {
       "family": "Chicago Open",
-      "status": "on_pace",
+      "status": "above_pace",
       "actual": 806,
-      "expected": 847,
-      "deviation_pct": -4.8,
+      "expected": 639,
+      "deviation_pct": 26.1,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-5%)"
+      "message": "Registrations are 26.1% above 4-year at-this-point pace"
     },
     {
       "family": "Hartford Open",
       "status": "above_pace",
-      "actual": 51,
+      "actual": 53,
       "expected": 39,
-      "deviation_pct": 29.9,
+      "deviation_pct": 35.0,
       "n_years": 4,
-      "message": "Registrations are 29.9% above 4-year at-this-point pace"
+      "message": "Registrations are 35.0% above 4-year at-this-point pace"
     },
     {
       "family": "Cleveland Open",
@@ -80799,11 +80803,11 @@ const TOURNAMENT_DATA = {
     {
       "family": "World Open top 6 sections",
       "status": "on_pace",
-      "actual": 326,
+      "actual": 327,
       "expected": 386,
-      "deviation_pct": -15.6,
+      "deviation_pct": -15.4,
       "n_years": 3,
-      "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-16%)"
+      "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-15%)"
     },
     {
       "family": "Chicago Class",
@@ -80852,12 +80856,12 @@ const TOURNAMENT_DATA = {
     },
     {
       "family": "Continental Open",
-      "status": "below_pace",
-      "actual": 2,
+      "status": "on_pace",
+      "actual": 3,
       "expected": 4,
-      "deviation_pct": -46.7,
+      "deviation_pct": -20.0,
       "n_years": 4,
-      "message": "Registrations are 46.7% below 4-year at-this-point pace"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-20%)"
     },
     {
       "family": "Central California Open",

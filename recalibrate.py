@@ -23,16 +23,36 @@ OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 UPDATE_LOG = os.path.join(OUTPUT_DIR, "update_log.csv")
 ACCURACY_LOG = os.path.join(OUTPUT_DIR, "prediction_accuracy_log.csv")
 
+sys.path.insert(0, PROJECT_DIR)
+from pipeline_utils import is_event_complete
+
 
 def load_actuals():
-    """Load tournament summary to get actual final counts for completed events."""
+    """Load tournament summary to get actual final counts for completed events.
+
+    Excludes 2026 events whose end_date is today or later — their
+    summary.final_count is a moving mid-event scrape (01_data_prep raises it
+    via raise-only merge), not a real final. Scoring against that value would
+    write false APE rows into prediction_accuracy_log.csv.
+    """
     summary = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_summary.csv"))
-    # Completed 2026 tournaments: use the latest data as ground truth
     completed = summary[
         (summary['tournament_year'] == 2026) &
         (~summary['is_online'].fillna(False)) &
         (~summary['is_covid'].fillna(False))
     ][['family', 'final_count']].copy()
+
+    meta_path = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
+    if os.path.exists(meta_path):
+        meta = pd.read_csv(meta_path)
+        meta_2026 = meta[meta['year'] == 2026][['family', 'end_date']].copy()
+        meta_2026['end_date'] = pd.to_datetime(meta_2026['end_date'], errors='coerce')
+        completed = completed.merge(meta_2026, on='family', how='left')
+        today = pd.Timestamp.now().normalize()
+        completed = completed[completed['end_date'].apply(
+            lambda d: is_event_complete(d, today)
+        )].drop(columns=['end_date'])
+
     completed.rename(columns={'final_count': 'actual'}, inplace=True)
     return completed
 

@@ -575,3 +575,116 @@ def test_reanchor_logs_offset_source_distribution(capsys):
     m04c.reanchor_daily_to_event_start(summary, daily, meta)
     captured = capsys.readouterr()
     assert 'offset sources' in captured.out or 'global-default' in captured.out
+
+
+# ── In-progress event leakage — five-script guard ─────────────────────────
+# Regression for the Chicago Open 2026 incident: an event running May 21–25
+# was admitted to 04e's completed_2026_tids (Tier 1 = name in daily_scrape.csv)
+# while 01_data_prep had raised its summary.final_count from the mid-event
+# scrape — producing fake 8–42% errors on the Performance tab and corrupting
+# prod_model training. The single source of truth for "completed" is now
+# pipeline_utils.is_event_complete(end_date, today), applied by 04e, 04d,
+# recalibrate.py, and 06_walk_in_multipliers.py.
+
+def test_is_event_complete_predicate():
+    """end_date strictly < today → True; today, future, NaT → False."""
+    from pipeline_utils import is_event_complete
+    today = pd.Timestamp('2026-05-24').normalize()
+    assert is_event_complete('2026-05-23', today) is True
+    assert is_event_complete('2026-05-24', today) is False  # last day still in progress
+    assert is_event_complete('2026-05-25', today) is False
+    assert is_event_complete(None, today) is False
+    assert is_event_complete(pd.NaT, today) is False
+    assert is_event_complete('not-a-date', today) is False
+    assert is_event_complete(pd.Timestamp('2026-05-23'), today) is True
+
+
+def test_04e_completed_tids_excludes_in_progress_events():
+    """Reproduces the Chicago Open bug: event in daily_scrape.csv but end_date
+    in the future must be excluded from perf eval."""
+    from pipeline_utils import is_event_complete
+    today = pd.Timestamp('2026-05-24').normalize()
+    # Chicago-like: scraped, started, but not yet over
+    chicago_end = pd.Timestamp('2026-05-25')
+    assert is_event_complete(chicago_end, today) is False, \
+        "Chicago Open (May 21–25) on May 24 must NOT be 'complete'"
+    # Mid-America-like: scraped, ended in March
+    midamerica_end = pd.Timestamp('2026-03-22')
+    assert is_event_complete(midamerica_end, today) is True
+
+
+def test_recalibrate_excludes_in_progress_events(tmp_path):
+    """recalibrate.load_actuals() must drop 2026 rows whose end_date is today
+    or later, regardless of what tournament_summary.final_count says."""
+    from importlib import import_module
+
+    out = tmp_path / "output"
+    out.mkdir()
+
+    pd.DataFrame([
+        {'family': 'Chicago Open', 'tournament_year': 2026.0, 'final_count': 629,
+         'is_online': False, 'is_covid': False},
+        {'family': 'Atlantic City Open', 'tournament_year': 2026.0, 'final_count': 424,
+         'is_online': False, 'is_covid': False},
+    ]).to_csv(out / "tournament_summary.csv", index=False)
+
+    today = pd.Timestamp.now().normalize()
+    future = (today + pd.Timedelta(days=1)).strftime('%Y-%m-%d')
+    past = (today - pd.Timedelta(days=30)).strftime('%Y-%m-%d')
+    pd.DataFrame([
+        {'family': 'Chicago Open', 'year': 2026, 'start_date': past, 'end_date': future},
+        {'family': 'Atlantic City Open', 'year': 2026, 'start_date': past, 'end_date': past},
+    ]).to_csv(out / "tournament_metadata.csv", index=False)
+
+    sys.path.insert(0, PROJECT_DIR)
+    recal = import_module("recalibrate")
+    orig = recal.OUTPUT_DIR
+    recal.OUTPUT_DIR = str(out)
+    try:
+        actuals = recal.load_actuals()
+        families = set(actuals['family'])
+        assert 'Chicago Open' not in families, \
+            "in-progress event must not appear in actuals"
+        assert 'Atlantic City Open' in families, \
+            "completed event must remain in actuals"
+    finally:
+        recal.OUTPUT_DIR = orig
+
+
+def test_06_walk_in_excludes_in_progress_2026_events(tmp_path, monkeypatch):
+    """06_walk_in_multipliers.load_summary() must drop 2026 rows for events
+    whose end_date is today or later — their final_count is a moving scrape."""
+    from importlib import import_module
+
+    out = tmp_path / "output"
+    out.mkdir()
+
+    pd.DataFrame([
+        {'tid': 1, 'tournament_name': '2026 Chicago Open', 'family': 'Chicago Open',
+         'tournament_year': 2026.0, 'final_count': 629, 'is_online': False, 'is_covid': False},
+        {'tid': 2, 'tournament_name': '2026 Atlantic City Open', 'family': 'Atlantic City Open',
+         'tournament_year': 2026.0, 'final_count': 424, 'is_online': False, 'is_covid': False},
+        {'tid': 3, 'tournament_name': '2024 Chicago Open', 'family': 'Chicago Open',
+         'tournament_year': 2024.0, 'final_count': 860, 'is_online': False, 'is_covid': False},
+    ]).to_csv(out / "tournament_summary.csv", index=False)
+
+    today = pd.Timestamp.now().normalize()
+    future = (today + pd.Timedelta(days=1)).strftime('%Y-%m-%d')
+    past = (today - pd.Timedelta(days=30)).strftime('%Y-%m-%d')
+    pd.DataFrame([
+        {'family': 'Chicago Open', 'year': 2026, 'start_date': past, 'end_date': future},
+        {'family': 'Atlantic City Open', 'year': 2026, 'start_date': past, 'end_date': past},
+    ]).to_csv(out / "tournament_metadata.csv", index=False)
+
+    sys.path.insert(0, PROJECT_DIR)
+    walkin = import_module("06_walk_in_multipliers")
+    monkeypatch.setattr(walkin, 'SUMMARY_CSV', str(out / "tournament_summary.csv"))
+    monkeypatch.setattr(walkin, 'METADATA_CSV', str(out / "tournament_metadata.csv"))
+
+    summary = walkin.load_summary()
+    assert ('Chicago Open', 2026) not in summary, \
+        "in-progress 2026 event must be excluded"
+    assert ('Atlantic City Open', 2026) in summary, \
+        "completed 2026 event must remain"
+    assert ('Chicago Open', 2024) in summary, \
+        "pre-2026 rows are unconditionally final and must remain"

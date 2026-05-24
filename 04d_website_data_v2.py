@@ -17,6 +17,7 @@ from importlib import import_module
 m04c = import_module("04c_final_model")
 from tournament_aliases import canonicalize_family, adjust_wo_top6_count
 from prediction_window import registration_close_date, window_decayed_estimate
+from pipeline_utils import is_event_complete
 
 
 def _fam_eq(series, name):
@@ -432,9 +433,12 @@ for _, row in completed_2026.iterrows():
     lr = row['last_reg']
     if pd.isna(lr) or lr > TODAY:
         continue
-    # Check metadata — if event_start is in the future, it's still live
-    m_row = meta[_fam_eq(meta['family'], family) & (meta['year'] == 2026)]
-    if len(m_row) > 0 and pd.notna(m_row.iloc[0]['start_date']) and m_row.iloc[0]['start_date'] > TODAY:
+    # Require event end_date strictly in the past. A start_date-only check
+    # admitted mid-event tournaments (Chicago Open, May 21–25) whose
+    # summary.final_count was still being raised by daily scrapes — corrupting
+    # prod_model.fit() and recalibrate() with non-final truth labels.
+    end_dt = get_event_end_date(family, 2026)
+    if not is_event_complete(end_dt, TODAY):
         continue
     completed_tids.add(row['tid'])
 

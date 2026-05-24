@@ -18,6 +18,7 @@ from datetime import datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from importlib import import_module
 m04c = import_module("04c_final_model")
+from pipeline_utils import is_event_complete
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 TODAY = pd.Timestamp.now().normalize()
@@ -310,6 +311,16 @@ def main():
         if pd.notna(start_date) and start_date > TODAY:
             continue
         end_dt = pd.to_datetime(end_date) if pd.notna(end_date) else pd.NaT
+
+        # In-progress events must not be evaluated: summary.final_count for a
+        # live tournament reflects the latest scrape (which 01_data_prep raises
+        # via raise-only merge), not the true final. Tier 1's "name in
+        # daily_scrape.csv" is necessary but not sufficient — Chicago Open's
+        # name appears the moment the scraper starts tracking it, weeks before
+        # the event ends.
+        if not is_event_complete(end_dt, TODAY):
+            no_scrape_skipped.append((row['tournament_name'], 'event still in progress (end_date >= today)'))
+            continue
 
         # Tier 1 — scrape-verified.
         if scraped_names and row['tournament_name'] in scraped_names:

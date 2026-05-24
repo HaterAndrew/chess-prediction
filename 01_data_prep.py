@@ -217,6 +217,26 @@ if os.path.exists(scrape_path):
     else:
         print("  No final_count reconciliation needed.")
 
+    # Audit-warning trip: if any bumped row belongs to an event whose end_date
+    # is today or later, the live tile needs the bump but downstream consumers
+    # (04e perf eval, 04d retraining, recalibrate, 06 walk-in) must filter it
+    # out via is_event_complete. The auto_update.py harvester picks "WARNING:"
+    # lines into output/audit_warnings.json automatically.
+    if len(bumped) > 0:
+        meta_path = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
+        if os.path.exists(meta_path):
+            _meta = pd.read_csv(meta_path)
+            _meta['end_date'] = pd.to_datetime(_meta['end_date'], errors='coerce')
+            _today = pd.Timestamp.now().normalize()
+            _live = _meta[_meta['end_date'] >= _today][['family', 'year', 'end_date']]
+            _live = _live.rename(columns={'year': 'tournament_year'})
+            _check = bumped.merge(_live, on=['family', 'tournament_year'], how='inner')
+            if len(_check) > 0:
+                names = ", ".join(_check['tournament_name'].tolist())
+                print(f"  WARNING: raised final_count for {len(_check)} in-progress 2026 event(s) "
+                      f"(end_date >= today): {names}. Downstream perf/recalibration "
+                      f"scripts must exclude these via is_event_complete.")
+
     # 2) Rebase last_reg where scrape extends past snapshot
     summary['last_reg'] = pd.to_datetime(summary['last_reg'])
     rebase_mask = (summary['scrape_last_date'].notna() &

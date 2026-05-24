@@ -14,13 +14,16 @@ import csv
 import os
 import re
 import statistics
+import sys
 from collections import defaultdict
+from datetime import datetime
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 
 STANDINGS_CSV = os.path.join(OUTPUT_DIR, "historical_standings.csv")
 SUMMARY_CSV = os.path.join(OUTPUT_DIR, "tournament_summary.csv")
+METADATA_CSV = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
 MULTIPLIER_CSV = os.path.join(OUTPUT_DIR, "walk_in_multipliers.csv")
 FAMILY_STATS_CSV = os.path.join(OUTPUT_DIR, "walk_in_family_stats.csv")
 
@@ -63,8 +66,41 @@ def load_standings():
     return standings
 
 
+def load_in_progress_2026_families():
+    """Return the set of 2026 families whose event end_date is today or later.
+
+    Their summary.final_count is a moving mid-event scrape (01_data_prep raises
+    it via raise-only merge) and must not feed walk-in ratios — the standings
+    join would compare a partial post-hoc actual against a still-rising
+    pre-registration count.
+    """
+    sys.path.insert(0, PROJECT_DIR)
+    from pipeline_utils import is_event_complete
+    in_progress = set()
+    if not os.path.exists(METADATA_CSV):
+        return in_progress
+    today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    with open(METADATA_CSV, "r") as f:
+        for row in csv.DictReader(f):
+            try:
+                year = int(float(row["year"]))
+            except (ValueError, KeyError, TypeError):
+                continue
+            if year != 2026:
+                continue
+            end = row.get("end_date") or None
+            if not is_event_complete(end, today):
+                in_progress.add(row["family"])
+    return in_progress
+
+
 def load_summary():
-    """Load pre-registration final counts from tournament summary."""
+    """Load pre-registration final counts from tournament summary.
+
+    2026 events whose end_date is today or later are excluded — their
+    final_count is a moving mid-event scrape, not a real final.
+    """
+    in_progress = load_in_progress_2026_families()
     summary = {}  # (family, year) -> final_count
     with open(SUMMARY_CSV, "r") as f:
         for row in csv.DictReader(f):
@@ -78,6 +114,8 @@ def load_summary():
             if count < 10:
                 continue
             family = row["family"]
+            if year == 2026 and family in in_progress:
+                continue
             summary[(family, year)] = count
     return summary
 

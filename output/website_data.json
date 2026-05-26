@@ -1,535 +1,10 @@
 {
-  "generated": "2026-05-24",
-  "generated_time": "2026-05-24T01:14:12.241863-04:00",
+  "generated": "2026-05-26",
+  "generated_time": "2026-05-26T01:43:05.349252-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 16,
   "tournaments": [
-    {
-      "family": "Chicago Open",
-      "year": 2026,
-      "event_start": "2026-05-21",
-      "event_end": "2026-05-25",
-      "registration_close": "2026-05-24",
-      "early_bird_deadline": "2026-03-19",
-      "early_bird_fee": 207.0,
-      "regular_fee": 227.0,
-      "onsite_fee": 250.0,
-      "current_count": 872,
-      "gross_count": 917,
-      "withdrawal_count": 45,
-      "days_remaining": 0,
-      "point_estimate": 872,
-      "ci_lower": 872,
-      "ci_upper": 872,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 843,
-          "family": "Chicago Open"
-        },
-        {
-          "year": 2022,
-          "count": 944,
-          "family": "Chicago Open"
-        },
-        {
-          "year": 2023,
-          "count": 960,
-          "family": "Chicago Open"
-        },
-        {
-          "year": 2024,
-          "count": 860,
-          "family": "Chicago Open"
-        },
-        {
-          "year": 2025,
-          "count": 899,
-          "family": "Chicago Open"
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          1
-        ],
-        [
-          19,
-          2
-        ],
-        [
-          20,
-          4
-        ],
-        [
-          23,
-          6
-        ],
-        [
-          25,
-          7
-        ],
-        [
-          36,
-          8
-        ],
-        [
-          37,
-          11
-        ],
-        [
-          45,
-          13
-        ],
-        [
-          46,
-          15
-        ],
-        [
-          47,
-          16
-        ],
-        [
-          52,
-          17
-        ],
-        [
-          53,
-          18
-        ],
-        [
-          55,
-          19
-        ],
-        [
-          57,
-          22
-        ],
-        [
-          58,
-          24
-        ],
-        [
-          61,
-          25
-        ],
-        [
-          62,
-          27
-        ],
-        [
-          64,
-          28
-        ],
-        [
-          67,
-          29
-        ],
-        [
-          68,
-          30
-        ],
-        [
-          71,
-          31
-        ],
-        [
-          74,
-          34
-        ],
-        [
-          78,
-          35
-        ],
-        [
-          81,
-          37
-        ],
-        [
-          82,
-          38
-        ],
-        [
-          87,
-          39
-        ],
-        [
-          89,
-          40
-        ],
-        [
-          90,
-          42
-        ],
-        [
-          91,
-          45
-        ],
-        [
-          92,
-          46
-        ],
-        [
-          93,
-          47
-        ],
-        [
-          94,
-          49
-        ],
-        [
-          95,
-          53
-        ],
-        [
-          96,
-          54
-        ],
-        [
-          97,
-          56
-        ],
-        [
-          98,
-          57
-        ],
-        [
-          99,
-          59
-        ],
-        [
-          100,
-          61
-        ],
-        [
-          101,
-          63
-        ],
-        [
-          102,
-          65
-        ],
-        [
-          103,
-          68
-        ],
-        [
-          105,
-          71
-        ],
-        [
-          106,
-          73
-        ],
-        [
-          107,
-          77
-        ],
-        [
-          109,
-          180
-        ],
-        [
-          110,
-          180
-        ],
-        [
-          111,
-          183
-        ],
-        [
-          113,
-          183
-        ],
-        [
-          114,
-          185
-        ],
-        [
-          115,
-          190
-        ],
-        [
-          116,
-          198
-        ],
-        [
-          117,
-          200
-        ],
-        [
-          118,
-          205
-        ],
-        [
-          119,
-          208
-        ],
-        [
-          120,
-          210
-        ],
-        [
-          121,
-          214
-        ],
-        [
-          122,
-          218
-        ],
-        [
-          123,
-          221
-        ],
-        [
-          124,
-          226
-        ],
-        [
-          125,
-          234
-        ],
-        [
-          126,
-          237
-        ],
-        [
-          127,
-          244
-        ],
-        [
-          128,
-          247
-        ],
-        [
-          129,
-          257
-        ],
-        [
-          130,
-          263
-        ],
-        [
-          131,
-          265
-        ],
-        [
-          132,
-          272
-        ],
-        [
-          133,
-          276
-        ],
-        [
-          134,
-          277
-        ],
-        [
-          135,
-          288
-        ],
-        [
-          136,
-          290
-        ],
-        [
-          137,
-          296
-        ],
-        [
-          138,
-          306
-        ],
-        [
-          139,
-          310
-        ],
-        [
-          140,
-          313
-        ],
-        [
-          141,
-          317
-        ],
-        [
-          142,
-          317
-        ],
-        [
-          143,
-          324
-        ],
-        [
-          144,
-          343
-        ],
-        [
-          145,
-          353
-        ],
-        [
-          146,
-          366
-        ],
-        [
-          147,
-          377
-        ],
-        [
-          148,
-          383
-        ],
-        [
-          149,
-          391
-        ],
-        [
-          150,
-          398
-        ],
-        [
-          151,
-          409
-        ],
-        [
-          152,
-          424
-        ],
-        [
-          153,
-          430
-        ],
-        [
-          154,
-          441
-        ],
-        [
-          155,
-          456
-        ],
-        [
-          156,
-          467
-        ],
-        [
-          157,
-          480
-        ],
-        [
-          158,
-          496
-        ],
-        [
-          159,
-          513
-        ],
-        [
-          160,
-          527
-        ],
-        [
-          161,
-          540
-        ],
-        [
-          162,
-          564
-        ],
-        [
-          163,
-          579
-        ],
-        [
-          164,
-          610
-        ],
-        [
-          165,
-          644
-        ],
-        [
-          166,
-          708
-        ],
-        [
-          167,
-          790
-        ],
-        [
-          168,
-          872
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.017
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0342
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0613
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.2115
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.3122
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.394
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.4386
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.5379
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.644
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7667
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9171
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live",
-      "prediction_source": "live_scrape",
-      "prior_year_pace": null,
-      "low_confidence": false,
-      "n_historical_editions": 5,
-      "prediction_tier": null,
-      "pace_alert": {
-        "family": "Chicago Open",
-        "status": "on_pace",
-        "actual": 872,
-        "expected": 847,
-        "deviation_pct": 3.0,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+3%)"
-      }
-    },
     {
       "family": "Hartford Open",
       "year": 2026,
@@ -540,13 +15,13 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 57,
-      "gross_count": 57,
+      "current_count": 63,
+      "gross_count": 63,
       "withdrawal_count": 0,
-      "days_remaining": 12,
-      "point_estimate": 211,
-      "ci_lower": 202,
-      "ci_upper": 221,
+      "days_remaining": 10,
+      "point_estimate": 208,
+      "ci_lower": 200,
+      "ci_upper": 216,
       "ci_level": 0.8,
       "historical": [
         {
@@ -578,15 +53,7 @@
       "daily_data": [
         [
           0,
-          3
-        ],
-        [
-          1,
-          3
-        ],
-        [
-          2,
-          3
+          1
         ],
         [
           3,
@@ -602,43 +69,43 @@
         ],
         [
           6,
-          4
+          3
         ],
         [
           7,
-          4
+          3
         ],
         [
           8,
-          4
+          3
         ],
         [
           9,
-          5
+          4
         ],
         [
           10,
-          5
+          4
         ],
         [
           11,
-          8
+          4
         ],
         [
           12,
-          8
+          5
         ],
         [
           13,
-          9
+          5
         ],
         [
           14,
-          9
+          8
         ],
         [
           15,
-          9
+          8
         ],
         [
           16,
@@ -646,27 +113,27 @@
         ],
         [
           17,
-          11
+          9
         ],
         [
           18,
-          11
+          9
         ],
         [
           19,
-          11
+          9
         ],
         [
           20,
-          12
+          11
         ],
         [
           21,
-          12
+          11
         ],
         [
           22,
-          12
+          11
         ],
         [
           23,
@@ -690,15 +157,15 @@
         ],
         [
           28,
-          13
+          12
         ],
         [
           29,
-          13
+          12
         ],
         [
           30,
-          13
+          12
         ],
         [
           31,
@@ -718,15 +185,15 @@
         ],
         [
           35,
-          16
+          13
         ],
         [
           36,
-          16
+          13
         ],
         [
           37,
-          16
+          13
         ],
         [
           38,
@@ -738,95 +205,111 @@
         ],
         [
           40,
-          17
+          16
         ],
         [
           41,
-          19
+          16
         ],
         [
           42,
-          21
+          16
         ],
         [
           43,
-          25
+          17
         ],
         [
           44,
-          28
+          19
         ],
         [
           45,
-          29
+          21
         ],
         [
           46,
-          30
+          25
         ],
         [
           47,
-          34
+          28
         ],
         [
           48,
-          36
+          29
         ],
         [
           49,
-          37
+          30
         ],
         [
           50,
-          37
+          34
         ],
         [
           51,
-          38
+          36
         ],
         [
           52,
-          39
+          37
         ],
         [
           53,
-          41
+          37
         ],
         [
           54,
-          41
+          38
         ],
         [
           55,
-          41
+          39
         ],
         [
           56,
-          43
+          41
         ],
         [
           57,
-          45
+          41
         ],
         [
           58,
-          49
+          41
         ],
         [
           59,
-          53
+          43
         ],
         [
           60,
-          54
+          45
         ],
         [
           61,
-          55
+          49
         ],
         [
           62,
+          53
+        ],
+        [
+          63,
+          54
+        ],
+        [
+          64,
+          55
+        ],
+        [
+          65,
           57
+        ],
+        [
+          67,
+          63
         ]
       ],
       "registration_curve": [
@@ -840,7 +323,7 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0091
+          "cumulative_pct": 0.0224
         },
         {
           "days_before": 60,
@@ -883,7 +366,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 41,
+        "count_at_same_point": 47,
         "final": 189
       },
       "low_confidence": false,
@@ -891,12 +374,12 @@
       "prediction_tier": "family-direct",
       "pace_alert": {
         "family": "Hartford Open",
-        "status": "above_pace",
-        "actual": 57,
-        "expected": 46,
-        "deviation_pct": 23.2,
+        "status": "on_pace",
+        "actual": 63,
+        "expected": 54,
+        "deviation_pct": 16.7,
         "n_years": 4,
-        "message": "Registrations are 23.2% above 4-year at-this-point pace"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+17%)"
       }
     },
     {
@@ -909,13 +392,13 @@
       "early_bird_fee": null,
       "regular_fee": 118.0,
       "onsite_fee": 130.0,
-      "current_count": 44,
-      "gross_count": 45,
+      "current_count": 48,
+      "gross_count": 49,
       "withdrawal_count": 1,
-      "days_remaining": 12,
-      "point_estimate": 191,
-      "ci_lower": 177,
-      "ci_upper": 205,
+      "days_remaining": 10,
+      "point_estimate": 189,
+      "ci_lower": 178,
+      "ci_upper": 202,
       "ci_level": 0.8,
       "historical": [
         {
@@ -950,244 +433,248 @@
           1
         ],
         [
-          1,
-          2
-        ],
-        [
-          2,
-          2
-        ],
-        [
-          3,
-          2
-        ],
-        [
-          4,
-          2
-        ],
-        [
-          5,
-          2
-        ],
-        [
-          6,
-          2
-        ],
-        [
-          7,
-          3
-        ],
-        [
-          8,
-          3
-        ],
-        [
-          9,
-          3
-        ],
-        [
           10,
-          4
+          2
         ],
         [
           11,
-          4
+          2
         ],
         [
           12,
-          5
+          2
         ],
         [
           13,
-          5
+          2
         ],
         [
           14,
-          5
+          2
         ],
         [
           15,
-          5
+          2
         ],
         [
           16,
-          5
+          3
         ],
         [
           17,
-          6
+          3
         ],
         [
           18,
-          6
+          3
         ],
         [
           19,
-          6
+          4
         ],
         [
           20,
-          7
+          4
         ],
         [
           21,
-          7
+          5
         ],
         [
           22,
-          7
+          5
         ],
         [
           23,
-          7
+          5
         ],
         [
           24,
-          8
+          5
         ],
         [
           25,
-          8
+          5
         ],
         [
           26,
-          8
+          6
         ],
         [
           27,
-          8
+          6
         ],
         [
           28,
-          8
+          6
         ],
         [
           29,
-          9
+          7
         ],
         [
           30,
-          10
+          7
         ],
         [
           31,
-          11
+          7
         ],
         [
           32,
-          13
+          7
         ],
         [
           33,
-          13
+          8
         ],
         [
           34,
-          14
+          8
         ],
         [
           35,
-          15
+          8
         ],
         [
           36,
-          16
+          8
         ],
         [
           37,
-          16
+          8
         ],
         [
           38,
-          20
+          9
         ],
         [
           39,
-          20
+          10
         ],
         [
           40,
-          21
+          11
         ],
         [
           41,
-          21
+          13
         ],
         [
           42,
-          24
+          13
         ],
         [
           43,
-          25
+          14
+        ],
+        [
+          44,
+          15
+        ],
+        [
+          45,
+          16
+        ],
+        [
+          46,
+          16
         ],
         [
           47,
-          25
+          20
         ],
         [
           48,
-          26
+          20
         ],
         [
           49,
-          26
+          21
         ],
         [
           50,
-          28
+          21
         ],
         [
           51,
-          28
+          24
         ],
         [
           52,
-          30
-        ],
-        [
-          53,
-          31
-        ],
-        [
-          54,
-          31
-        ],
-        [
-          55,
-          32
+          25
         ],
         [
           56,
-          33
+          25
         ],
         [
           57,
-          33
+          26
         ],
         [
           58,
-          36
+          26
         ],
         [
           59,
-          37
+          28
         ],
         [
           60,
-          39
+          28
         ],
         [
           61,
-          39
+          30
         ],
         [
           62,
-          43
+          31
         ],
         [
           63,
+          31
+        ],
+        [
+          64,
+          32
+        ],
+        [
+          65,
+          33
+        ],
+        [
+          66,
+          33
+        ],
+        [
+          67,
+          36
+        ],
+        [
+          68,
+          37
+        ],
+        [
+          69,
+          39
+        ],
+        [
+          70,
+          39
+        ],
+        [
+          71,
+          43
+        ],
+        [
+          72,
           44
+        ],
+        [
+          74,
+          48
         ]
       ],
       "registration_curve": [
@@ -1244,7 +731,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 44,
+        "count_at_same_point": 51,
         "final": 199
       },
       "low_confidence": false,
@@ -1253,11 +740,11 @@
       "pace_alert": {
         "family": "Cleveland Open",
         "status": "on_pace",
-        "actual": 44,
-        "expected": 46,
-        "deviation_pct": -4.9,
+        "actual": 48,
+        "expected": 54,
+        "deviation_pct": -11.1,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-5%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-11%)"
       }
     },
     {
@@ -1270,11 +757,11 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 31,
-      "gross_count": 32,
+      "current_count": 35,
+      "gross_count": 36,
       "withdrawal_count": 1,
-      "days_remaining": 26,
-      "point_estimate": 98,
+      "days_remaining": 24,
+      "point_estimate": 99,
       "ci_lower": 66,
       "ci_upper": 148,
       "ci_level": 0.8,
@@ -1542,6 +1029,14 @@
         [
           62,
           31
+        ],
+        [
+          64,
+          35
+        ],
+        [
+          88,
+          36
         ]
       ],
       "registration_curve": [
@@ -1559,11 +1054,11 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.047
+          "cumulative_pct": 0.0295
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1379
+          "cumulative_pct": 0.1579
         },
         {
           "days_before": 28,
@@ -1598,7 +1093,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 16,
+        "count_at_same_point": 19,
         "final": 83
       },
       "low_confidence": true,
@@ -1607,11 +1102,11 @@
       "pace_alert": {
         "family": "New York State Open",
         "status": "above_pace",
-        "actual": 31,
-        "expected": 18,
-        "deviation_pct": 77.1,
+        "actual": 35,
+        "expected": 20,
+        "deviation_pct": 75.0,
         "n_years": 2,
-        "message": "Registrations are 77.1% above 2-year at-this-point pace"
+        "message": "Registrations are 75.0% above 2-year at-this-point pace"
       }
     },
     {
@@ -1627,10 +1122,10 @@
       "current_count": 46,
       "gross_count": 47,
       "withdrawal_count": 1,
-      "days_remaining": 32,
-      "point_estimate": 118,
-      "ci_lower": 106,
-      "ci_upper": 131,
+      "days_remaining": 30,
+      "point_estimate": 113,
+      "ci_lower": 103,
+      "ci_upper": 124,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1677,236 +1172,252 @@
           4
         ],
         [
-          67,
-          5
-        ],
-        [
-          68,
-          5
-        ],
-        [
-          69,
-          5
-        ],
-        [
-          70,
-          5
-        ],
-        [
-          71,
-          5
-        ],
-        [
-          72,
-          5
-        ],
-        [
-          73,
-          5
-        ],
-        [
-          74,
-          5
-        ],
-        [
-          75,
-          5
-        ],
-        [
           76,
           5
         ],
         [
           77,
-          6
+          5
         ],
         [
           78,
-          6
+          5
         ],
         [
           79,
-          6
+          5
         ],
         [
           80,
-          6
+          5
         ],
         [
           81,
-          6
+          5
         ],
         [
           82,
-          7
+          5
         ],
         [
           83,
-          7
+          5
         ],
         [
           84,
-          7
+          5
         ],
         [
           85,
-          7
+          5
         ],
         [
           86,
-          8
+          6
+        ],
+        [
+          87,
+          6
+        ],
+        [
+          88,
+          6
+        ],
+        [
+          89,
+          6
+        ],
+        [
+          90,
+          6
+        ],
+        [
+          91,
+          7
         ],
         [
           92,
-          8
+          7
         ],
         [
           93,
-          8
+          7
         ],
         [
           94,
-          8
+          7
         ],
         [
           95,
           8
         ],
         [
-          96,
-          9
-        ],
-        [
-          97,
-          9
-        ],
-        [
-          98,
-          9
-        ],
-        [
-          99,
-          9
-        ],
-        [
-          100,
-          9
-        ],
-        [
           101,
-          9
+          8
         ],
         [
           102,
-          9
+          8
         ],
         [
           103,
-          9
+          8
         ],
         [
           104,
-          9
+          8
         ],
         [
           105,
-          10
+          9
         ],
         [
           106,
-          10
+          9
         ],
         [
           107,
-          11
+          9
         ],
         [
           108,
-          11
+          9
         ],
         [
           109,
-          11
+          9
         ],
         [
           110,
-          13
+          9
         ],
         [
           111,
-          14
+          9
         ],
         [
           112,
-          14
+          9
         ],
         [
           113,
-          14
+          9
         ],
         [
           114,
-          16
+          10
         ],
         [
           115,
-          17
+          10
         ],
         [
           116,
-          17
+          11
         ],
         [
           117,
-          20
+          11
         ],
         [
           118,
-          21
+          11
         ],
         [
           119,
-          28
+          13
         ],
         [
           120,
-          35
+          14
         ],
         [
           121,
-          42
+          14
         ],
         [
           122,
-          42
+          14
         ],
         [
           123,
-          43
+          16
         ],
         [
           124,
-          44
+          17
         ],
         [
           125,
-          44
+          17
         ],
         [
           126,
-          44
+          20
         ],
         [
           127,
-          45
+          21
         ],
         [
           128,
-          45
+          28
         ],
         [
           129,
+          35
+        ],
+        [
+          130,
+          42
+        ],
+        [
+          131,
+          42
+        ],
+        [
+          132,
+          43
+        ],
+        [
+          133,
+          44
+        ],
+        [
+          134,
+          44
+        ],
+        [
+          135,
+          44
+        ],
+        [
+          136,
+          45
+        ],
+        [
+          137,
+          45
+        ],
+        [
+          138,
           46
+        ],
+        [
+          140,
+          46
+        ],
+        [
+          168,
+          46
+        ],
+        [
+          169,
+          46
+        ],
+        [
+          170,
+          47
         ]
       ],
       "registration_curve": [
@@ -1920,19 +1431,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -1963,7 +1474,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 43,
+        "count_at_same_point": 44,
         "final": 126
       },
       "low_confidence": true,
@@ -1973,10 +1484,10 @@
         "family": "DC International",
         "status": "on_pace",
         "actual": 46,
-        "expected": 46,
-        "deviation_pct": 0.0,
+        "expected": 47,
+        "deviation_pct": -2.1,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-2%)"
       }
     },
     {
@@ -1992,10 +1503,10 @@
       "current_count": 23,
       "gross_count": 23,
       "withdrawal_count": 0,
-      "days_remaining": 33,
-      "point_estimate": 138,
-      "ci_lower": 105,
-      "ci_upper": 180,
+      "days_remaining": 31,
+      "point_estimate": 136,
+      "ci_lower": 106,
+      "ci_upper": 174,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2126,6 +1637,10 @@
         [
           27,
           23
+        ],
+        [
+          29,
+          23
         ]
       ],
       "registration_curve": [
@@ -2182,7 +1697,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 51,
+        "count_at_same_point": 52,
         "final": 135
       },
       "low_confidence": true,
@@ -2192,10 +1707,10 @@
         "family": "World Open lower sections",
         "status": "below_pace",
         "actual": 23,
-        "expected": 43,
-        "deviation_pct": -46.5,
+        "expected": 44,
+        "deviation_pct": -47.7,
         "n_years": 3,
-        "message": "Registrations are 46.5% below 3-year at-this-point pace"
+        "message": "Registrations are 47.7% below 3-year at-this-point pace"
       }
     },
     {
@@ -2208,13 +1723,13 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 30,
-      "gross_count": 31,
+      "current_count": 31,
+      "gross_count": 32,
       "withdrawal_count": 1,
-      "days_remaining": 33,
-      "point_estimate": 283,
-      "ci_lower": 247,
-      "ci_upper": 323,
+      "days_remaining": 31,
+      "point_estimate": 279,
+      "ci_lower": 245,
+      "ci_upper": 319,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2439,6 +1954,14 @@
         [
           62,
           30
+        ],
+        [
+          64,
+          31
+        ],
+        [
+          95,
+          31
         ]
       ],
       "registration_curve": [
@@ -2452,19 +1975,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -2495,7 +2018,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 54,
+        "count_at_same_point": 56,
         "final": 325
       },
       "low_confidence": true,
@@ -2504,11 +2027,11 @@
       "pace_alert": {
         "family": "DC Open",
         "status": "below_pace",
-        "actual": 30,
-        "expected": 46,
-        "deviation_pct": -35.5,
+        "actual": 31,
+        "expected": 48,
+        "deviation_pct": -35.4,
         "n_years": 4,
-        "message": "Registrations are 35.5% below 4-year at-this-point pace"
+        "message": "Registrations are 35.4% below 4-year at-this-point pace"
       }
     },
     {
@@ -2523,7 +2046,7 @@
       "current_count": 18,
       "gross_count": 18,
       "withdrawal_count": 0,
-      "days_remaining": 36,
+      "days_remaining": 34,
       "point_estimate": 110,
       "ci_lower": 77,
       "ci_upper": 145,
@@ -2572,19 +2095,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -2616,10 +2139,10 @@
         "family": "World Open Under 13 Championship",
         "status": "on_pace",
         "actual": 18,
-        "expected": 18,
-        "deviation_pct": 0.0,
+        "expected": 19,
+        "deviation_pct": -5.3,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-5%)"
       }
     },
     {
@@ -2632,13 +2155,13 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 343,
-      "gross_count": 343,
+      "current_count": 351,
+      "gross_count": 351,
       "withdrawal_count": 0,
-      "days_remaining": 38,
-      "point_estimate": 1109,
-      "ci_lower": 994,
-      "ci_upper": 1237,
+      "days_remaining": 36,
+      "point_estimate": 1107,
+      "ci_lower": 997,
+      "ci_upper": 1228,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2899,6 +2422,10 @@
         [
           74,
           343
+        ],
+        [
+          76,
+          351
         ]
       ],
       "registration_curve": [
@@ -2955,7 +2482,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 359,
+        "count_at_same_point": 366,
         "final": 1165
       },
       "low_confidence": true,
@@ -2964,9 +2491,9 @@
       "pace_alert": {
         "family": "World Open top 6 sections",
         "status": "on_pace",
-        "actual": 343,
-        "expected": 399,
-        "deviation_pct": -14.0,
+        "actual": 351,
+        "expected": 407,
+        "deviation_pct": -13.8,
         "n_years": 3,
         "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-14%)"
       }
@@ -2981,13 +2508,13 @@
       "early_bird_fee": null,
       "regular_fee": 148.0,
       "onsite_fee": 170.0,
-      "current_count": 4,
-      "gross_count": 4,
+      "current_count": 5,
+      "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 54,
-      "point_estimate": 271,
-      "ci_lower": 206,
-      "ci_upper": 357,
+      "days_remaining": 52,
+      "point_estimate": 272,
+      "ci_lower": 207,
+      "ci_upper": 359,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3270,16 +2797,8 @@
           4
         ],
         [
-          114,
-          4
-        ],
-        [
-          115,
-          4
-        ],
-        [
-          116,
-          4
+          64,
+          5
         ]
       ],
       "registration_curve": [
@@ -3336,7 +2855,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 4,
+        "count_at_same_point": 5,
         "final": 294
       },
       "low_confidence": false,
@@ -3345,11 +2864,11 @@
       "pace_alert": {
         "family": "Chicago Class",
         "status": "below_pace",
-        "actual": 4,
+        "actual": 5,
         "expected": 8,
-        "deviation_pct": -46.7,
+        "deviation_pct": -39.4,
         "n_years": 4,
-        "message": "Registrations are 46.7% below 4-year at-this-point pace"
+        "message": "Registrations are 39.4% below 4-year at-this-point pace"
       }
     },
     {
@@ -3362,13 +2881,13 @@
       "early_bird_fee": null,
       "regular_fee": 118.0,
       "onsite_fee": 130.0,
-      "current_count": 11,
-      "gross_count": 11,
+      "current_count": 13,
+      "gross_count": 13,
       "withdrawal_count": 0,
-      "days_remaining": 54,
-      "point_estimate": 180,
-      "ci_lower": 137,
-      "ci_upper": 237,
+      "days_remaining": 52,
+      "point_estimate": 184,
+      "ci_lower": 140,
+      "ci_upper": 242,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3649,6 +3168,10 @@
         [
           62,
           11
+        ],
+        [
+          64,
+          13
         ]
       ],
       "registration_curve": [
@@ -3705,7 +3228,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 3,
+        "count_at_same_point": 5,
         "final": 152
       },
       "low_confidence": false,
@@ -3714,11 +3237,11 @@
       "pace_alert": {
         "family": "Pittsburgh Open",
         "status": "above_pace",
-        "actual": 11,
-        "expected": 6,
-        "deviation_pct": 76.0,
+        "actual": 13,
+        "expected": 7,
+        "deviation_pct": 92.6,
         "n_years": 4,
-        "message": "Registrations are 76.0% above 4-year at-this-point pace"
+        "message": "Registrations are 92.6% above 4-year at-this-point pace"
       }
     },
     {
@@ -3730,10 +3253,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 9,
-      "gross_count": 9,
+      "current_count": 11,
+      "gross_count": 11,
       "withdrawal_count": 0,
-      "days_remaining": 54,
+      "days_remaining": 52,
       "point_estimate": 232,
       "ci_lower": 183,
       "ci_upper": 282,
@@ -3768,7 +3291,7 @@
       "daily_data": [
         [
           0,
-          9
+          11
         ]
       ],
       "registration_curve": [
@@ -3824,12 +3347,12 @@
       "status": "live",
       "pace_alert": {
         "family": "Southern Open",
-        "status": "below_pace",
-        "actual": 9,
+        "status": "on_pace",
+        "actual": 11,
         "expected": 12,
-        "deviation_pct": -21.7,
+        "deviation_pct": -10.2,
         "n_years": 4,
-        "message": "Registrations are 21.7% below 4-year at-this-point pace"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-10%)"
       }
     },
     {
@@ -3845,10 +3368,10 @@
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 61,
-      "point_estimate": 254,
+      "days_remaining": 59,
+      "point_estimate": 253,
       "ci_lower": 193,
-      "ci_upper": 335,
+      "ci_upper": 334,
       "ci_level": 0.8,
       "historical": [
         {
@@ -4129,6 +3652,34 @@
         [
           62,
           5
+        ],
+        [
+          64,
+          5
+        ],
+        [
+          117,
+          5
+        ],
+        [
+          118,
+          5
+        ],
+        [
+          119,
+          5
+        ],
+        [
+          120,
+          5
+        ],
+        [
+          121,
+          5
+        ],
+        [
+          122,
+          5
         ]
       ],
       "registration_curve": [
@@ -4185,7 +3736,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 3,
+        "count_at_same_point": 4,
         "final": 246
       },
       "low_confidence": false,
@@ -4196,9 +3747,9 @@
         "status": "on_pace",
         "actual": 5,
         "expected": 6,
-        "deviation_pct": -13.0,
+        "deviation_pct": -20.0,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-13%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-20%)"
       }
     },
     {
@@ -4211,13 +3762,13 @@
       "early_bird_fee": null,
       "regular_fee": 158.0,
       "onsite_fee": 180.0,
-      "current_count": 13,
-      "gross_count": 13,
+      "current_count": 15,
+      "gross_count": 15,
       "withdrawal_count": 0,
-      "days_remaining": 68,
-      "point_estimate": 382,
-      "ci_lower": 290,
-      "ci_upper": 503,
+      "days_remaining": 66,
+      "point_estimate": 384,
+      "ci_lower": 292,
+      "ci_upper": 505,
       "ci_level": 0.8,
       "historical": [
         {
@@ -4498,6 +4049,10 @@
         [
           62,
           13
+        ],
+        [
+          64,
+          15
         ]
       ],
       "registration_curve": [
@@ -4554,7 +4109,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 18,
+        "count_at_same_point": 19,
         "final": 391
       },
       "low_confidence": false,
@@ -4563,11 +4118,11 @@
       "pace_alert": {
         "family": "Pacific Coast Open",
         "status": "on_pace",
-        "actual": 13,
+        "actual": 15,
         "expected": 14,
-        "deviation_pct": -3.7,
+        "deviation_pct": 3.4,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-4%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+3%)"
       }
     },
     {
@@ -4579,10 +4134,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 3,
-      "gross_count": 3,
+      "current_count": 4,
+      "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 81,
+      "days_remaining": 79,
       "point_estimate": 283,
       "ci_lower": 252,
       "ci_upper": 317,
@@ -4617,7 +4172,7 @@
       "daily_data": [
         [
           0,
-          3
+          4
         ]
       ],
       "registration_curve": [
@@ -4673,12 +4228,12 @@
       "status": "live",
       "pace_alert": {
         "family": "Continental Open",
-        "status": "below_pace",
-        "actual": 3,
+        "status": "on_pace",
+        "actual": 4,
         "expected": 4,
-        "deviation_pct": -25.0,
+        "deviation_pct": -5.9,
         "n_years": 4,
-        "message": "Registrations are 25.0% below 4-year at-this-point pace"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-6%)"
       }
     },
     {
@@ -4693,7 +4248,7 @@
       "current_count": 2,
       "gross_count": 3,
       "withdrawal_count": 1,
-      "days_remaining": 82,
+      "days_remaining": 80,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -4804,7 +4359,7 @@
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 89,
+      "days_remaining": 87,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -4898,9 +4453,9 @@
         "status": "below_pace",
         "actual": 2,
         "expected": 3,
-        "deviation_pct": -27.3,
+        "deviation_pct": -33.3,
         "n_years": 4,
-        "message": "Registrations are 27.3% below 4-year at-this-point pace"
+        "message": "Registrations are 33.3% below 4-year at-this-point pace"
       }
     },
     {
@@ -4915,7 +4470,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 89,
+      "days_remaining": 87,
       "point_estimate": 186,
       "ci_lower": 175,
       "ci_upper": 198,
@@ -5026,7 +4581,7 @@
       "current_count": 8,
       "gross_count": 8,
       "withdrawal_count": 0,
-      "days_remaining": 103,
+      "days_remaining": 101,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -5137,7 +4692,7 @@
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 138,
+      "days_remaining": 136,
       "point_estimate": 313,
       "ci_lower": 296,
       "ci_upper": 338,
@@ -5248,7 +4803,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 145,
+      "days_remaining": 143,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -5271,19 +4826,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -5324,7 +4879,7 @@
       "current_count": 1,
       "gross_count": 2,
       "withdrawal_count": 1,
-      "days_remaining": 152,
+      "days_remaining": 150,
       "point_estimate": 100,
       "ci_lower": 70,
       "ci_upper": 130,
@@ -5347,19 +4902,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -5400,7 +4955,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 166,
+      "days_remaining": 164,
       "point_estimate": 365,
       "ci_lower": 289,
       "ci_upper": 413,
@@ -5511,7 +5066,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 173,
+      "days_remaining": 171,
       "point_estimate": 346,
       "ci_lower": 318,
       "ci_upper": 364,
@@ -5622,7 +5177,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 187,
+      "days_remaining": 185,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -5733,7 +5288,7 @@
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 216,
+      "days_remaining": 214,
       "point_estimate": 1081,
       "ci_lower": 946,
       "ci_upper": 1199,
@@ -7906,19 +7461,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -9725,6 +9280,555 @@
       "total_estimate": 1703,
       "total_ci_lower": 1703,
       "total_ci_upper": 1703
+    },
+    {
+      "family": "Chicago Open",
+      "year": 2026,
+      "event_start": "2026-05-21",
+      "event_end": "2026-05-25",
+      "registration_close": "2026-05-24",
+      "early_bird_deadline": "2026-03-19",
+      "early_bird_fee": 207.0,
+      "regular_fee": 227.0,
+      "onsite_fee": 250.0,
+      "current_count": 872,
+      "gross_count": 917,
+      "withdrawal_count": 45,
+      "days_remaining": 0,
+      "point_estimate": 872,
+      "ci_lower": 872,
+      "ci_upper": 872,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 843,
+          "family": "Chicago Open"
+        },
+        {
+          "year": 2022,
+          "count": 944,
+          "family": "Chicago Open"
+        },
+        {
+          "year": 2023,
+          "count": 960,
+          "family": "Chicago Open"
+        },
+        {
+          "year": 2024,
+          "count": 860,
+          "family": "Chicago Open"
+        },
+        {
+          "year": 2025,
+          "count": 899,
+          "family": "Chicago Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          1
+        ],
+        [
+          19,
+          2
+        ],
+        [
+          20,
+          4
+        ],
+        [
+          23,
+          6
+        ],
+        [
+          25,
+          7
+        ],
+        [
+          36,
+          8
+        ],
+        [
+          37,
+          11
+        ],
+        [
+          45,
+          13
+        ],
+        [
+          46,
+          15
+        ],
+        [
+          47,
+          16
+        ],
+        [
+          52,
+          17
+        ],
+        [
+          53,
+          18
+        ],
+        [
+          55,
+          19
+        ],
+        [
+          57,
+          22
+        ],
+        [
+          58,
+          24
+        ],
+        [
+          61,
+          25
+        ],
+        [
+          62,
+          27
+        ],
+        [
+          64,
+          28
+        ],
+        [
+          67,
+          29
+        ],
+        [
+          68,
+          30
+        ],
+        [
+          71,
+          31
+        ],
+        [
+          74,
+          34
+        ],
+        [
+          78,
+          35
+        ],
+        [
+          81,
+          37
+        ],
+        [
+          82,
+          38
+        ],
+        [
+          87,
+          39
+        ],
+        [
+          89,
+          40
+        ],
+        [
+          90,
+          42
+        ],
+        [
+          91,
+          45
+        ],
+        [
+          92,
+          46
+        ],
+        [
+          93,
+          47
+        ],
+        [
+          94,
+          49
+        ],
+        [
+          95,
+          53
+        ],
+        [
+          96,
+          54
+        ],
+        [
+          97,
+          56
+        ],
+        [
+          98,
+          57
+        ],
+        [
+          99,
+          59
+        ],
+        [
+          100,
+          61
+        ],
+        [
+          101,
+          63
+        ],
+        [
+          102,
+          65
+        ],
+        [
+          103,
+          68
+        ],
+        [
+          105,
+          71
+        ],
+        [
+          106,
+          73
+        ],
+        [
+          107,
+          77
+        ],
+        [
+          109,
+          83
+        ],
+        [
+          110,
+          97
+        ],
+        [
+          111,
+          112
+        ],
+        [
+          112,
+          140
+        ],
+        [
+          113,
+          173
+        ],
+        [
+          114,
+          179
+        ],
+        [
+          116,
+          180
+        ],
+        [
+          117,
+          180
+        ],
+        [
+          118,
+          183
+        ],
+        [
+          119,
+          183
+        ],
+        [
+          120,
+          183
+        ],
+        [
+          121,
+          189
+        ],
+        [
+          122,
+          194
+        ],
+        [
+          123,
+          202
+        ],
+        [
+          124,
+          204
+        ],
+        [
+          125,
+          209
+        ],
+        [
+          126,
+          212
+        ],
+        [
+          127,
+          214
+        ],
+        [
+          128,
+          218
+        ],
+        [
+          129,
+          222
+        ],
+        [
+          130,
+          225
+        ],
+        [
+          131,
+          230
+        ],
+        [
+          132,
+          239
+        ],
+        [
+          133,
+          242
+        ],
+        [
+          134,
+          249
+        ],
+        [
+          135,
+          252
+        ],
+        [
+          136,
+          262
+        ],
+        [
+          137,
+          268
+        ],
+        [
+          138,
+          270
+        ],
+        [
+          139,
+          277
+        ],
+        [
+          140,
+          282
+        ],
+        [
+          141,
+          283
+        ],
+        [
+          142,
+          294
+        ],
+        [
+          143,
+          296
+        ],
+        [
+          144,
+          302
+        ],
+        [
+          145,
+          313
+        ],
+        [
+          146,
+          317
+        ],
+        [
+          147,
+          321
+        ],
+        [
+          148,
+          325
+        ],
+        [
+          149,
+          326
+        ],
+        [
+          150,
+          333
+        ],
+        [
+          151,
+          352
+        ],
+        [
+          152,
+          362
+        ],
+        [
+          153,
+          376
+        ],
+        [
+          154,
+          388
+        ],
+        [
+          155,
+          394
+        ],
+        [
+          156,
+          403
+        ],
+        [
+          157,
+          410
+        ],
+        [
+          158,
+          421
+        ],
+        [
+          159,
+          436
+        ],
+        [
+          160,
+          443
+        ],
+        [
+          161,
+          454
+        ],
+        [
+          162,
+          469
+        ],
+        [
+          163,
+          481
+        ],
+        [
+          164,
+          495
+        ],
+        [
+          165,
+          511
+        ],
+        [
+          166,
+          528
+        ],
+        [
+          167,
+          543
+        ],
+        [
+          168,
+          558
+        ],
+        [
+          169,
+          583
+        ],
+        [
+          170,
+          598
+        ],
+        [
+          171,
+          629
+        ],
+        [
+          172,
+          664
+        ],
+        [
+          173,
+          733
+        ],
+        [
+          174,
+          820
+        ],
+        [
+          175,
+          872
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.017
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0342
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0613
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.2117
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.2854
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.3785
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.4386
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.5354
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.644
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7667
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9171
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
+      "n_historical_editions": 5,
+      "prediction_tier": null,
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 959,
+      "total_ci_lower": 959,
+      "total_ci_upper": 959
     },
     {
       "family": "Southern Class Championships",
@@ -11721,19 +11825,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -11809,19 +11913,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -11901,19 +12005,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -11985,19 +12089,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -17878,7 +17982,7 @@
     {
       "family": "Chicago Class",
       "year": 2015,
-      "event_start": "2015-07-17",
+      "event_start": "2015-07-19",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -17962,7 +18066,7 @@
     {
       "family": "Chicago Class",
       "year": 2016,
-      "event_start": "2016-07-17",
+      "event_start": "2016-07-19",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -18050,7 +18154,7 @@
     {
       "family": "Chicago Class",
       "year": 2017,
-      "event_start": "2017-07-17",
+      "event_start": "2017-07-19",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -18142,7 +18246,7 @@
     {
       "family": "Chicago Class",
       "year": 2018,
-      "event_start": "2018-07-17",
+      "event_start": "2018-07-19",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -18238,7 +18342,7 @@
     {
       "family": "Chicago Class",
       "year": 2019,
-      "event_start": "2019-07-17",
+      "event_start": "2019-07-19",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -19482,7 +19586,7 @@
     {
       "family": "Chicago Open",
       "year": 2015,
-      "event_start": "2015-05-25",
+      "event_start": "2015-05-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -19521,15 +19625,15 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.2115
+          "cumulative_pct": 0.2117
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.3122
+          "cumulative_pct": 0.2854
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.394
+          "cumulative_pct": 0.3785
         },
         {
           "days_before": 21,
@@ -19537,7 +19641,7 @@
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.5379
+          "cumulative_pct": 0.5354
         },
         {
           "days_before": 7,
@@ -19566,7 +19670,7 @@
     {
       "family": "Chicago Open",
       "year": 2016,
-      "event_start": "2016-05-25",
+      "event_start": "2016-05-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -19609,15 +19713,15 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.2115
+          "cumulative_pct": 0.2117
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.3122
+          "cumulative_pct": 0.2854
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.394
+          "cumulative_pct": 0.3785
         },
         {
           "days_before": 21,
@@ -19625,7 +19729,7 @@
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.5379
+          "cumulative_pct": 0.5354
         },
         {
           "days_before": 7,
@@ -19654,7 +19758,7 @@
     {
       "family": "Chicago Open",
       "year": 2017,
-      "event_start": "2017-05-25",
+      "event_start": "2017-05-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -19701,15 +19805,15 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.2115
+          "cumulative_pct": 0.2117
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.3122
+          "cumulative_pct": 0.2854
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.394
+          "cumulative_pct": 0.3785
         },
         {
           "days_before": 21,
@@ -19717,7 +19821,7 @@
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.5379
+          "cumulative_pct": 0.5354
         },
         {
           "days_before": 7,
@@ -19746,7 +19850,7 @@
     {
       "family": "Chicago Open",
       "year": 2018,
-      "event_start": "2018-05-25",
+      "event_start": "2018-05-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -19797,15 +19901,15 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.2115
+          "cumulative_pct": 0.2117
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.3122
+          "cumulative_pct": 0.2854
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.394
+          "cumulative_pct": 0.3785
         },
         {
           "days_before": 21,
@@ -19813,7 +19917,7 @@
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.5379
+          "cumulative_pct": 0.5354
         },
         {
           "days_before": 7,
@@ -19842,7 +19946,7 @@
     {
       "family": "Chicago Open",
       "year": 2019,
-      "event_start": "2019-05-25",
+      "event_start": "2019-05-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -19897,15 +20001,15 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.2115
+          "cumulative_pct": 0.2117
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.3122
+          "cumulative_pct": 0.2854
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.394
+          "cumulative_pct": 0.3785
         },
         {
           "days_before": 21,
@@ -19913,7 +20017,7 @@
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.5379
+          "cumulative_pct": 0.5354
         },
         {
           "days_before": 7,
@@ -20385,15 +20489,15 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.2115
+          "cumulative_pct": 0.2117
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.3122
+          "cumulative_pct": 0.2854
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.394
+          "cumulative_pct": 0.3785
         },
         {
           "days_before": 21,
@@ -20401,7 +20505,7 @@
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.5379
+          "cumulative_pct": 0.5354
         },
         {
           "days_before": 7,
@@ -20933,15 +21037,15 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.2115
+          "cumulative_pct": 0.2117
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.3122
+          "cumulative_pct": 0.2854
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.394
+          "cumulative_pct": 0.3785
         },
         {
           "days_before": 21,
@@ -20949,7 +21053,7 @@
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.5379
+          "cumulative_pct": 0.5354
         },
         {
           "days_before": 7,
@@ -21445,15 +21549,15 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.2115
+          "cumulative_pct": 0.2117
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.3122
+          "cumulative_pct": 0.2854
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.394
+          "cumulative_pct": 0.3785
         },
         {
           "days_before": 21,
@@ -21461,7 +21565,7 @@
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.5379
+          "cumulative_pct": 0.5354
         },
         {
           "days_before": 7,
@@ -21973,15 +22077,15 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.2115
+          "cumulative_pct": 0.2117
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.3122
+          "cumulative_pct": 0.2854
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.394
+          "cumulative_pct": 0.3785
         },
         {
           "days_before": 21,
@@ -21989,7 +22093,7 @@
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.5379
+          "cumulative_pct": 0.5354
         },
         {
           "days_before": 7,
@@ -23757,19 +23861,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -23841,19 +23945,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -23929,19 +24033,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -24021,19 +24125,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -24117,19 +24221,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -25738,7 +25842,7 @@
     {
       "family": "DC International",
       "year": 2015,
-      "event_start": "2015-06-24",
+      "event_start": "2015-06-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -25773,19 +25877,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -28861,19 +28965,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -28949,19 +29053,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -29041,19 +29145,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -29137,19 +29241,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -29237,19 +29341,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -30525,19 +30629,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -30613,19 +30717,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -30705,19 +30809,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -30801,19 +30905,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -30901,19 +31005,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -31009,19 +31113,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -33969,7 +34073,7 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0091
+          "cumulative_pct": 0.0224
         },
         {
           "days_before": 60,
@@ -34057,7 +34161,7 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0091
+          "cumulative_pct": 0.0224
         },
         {
           "days_before": 60,
@@ -34149,7 +34253,7 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0091
+          "cumulative_pct": 0.0224
         },
         {
           "days_before": 60,
@@ -34245,7 +34349,7 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0091
+          "cumulative_pct": 0.0224
         },
         {
           "days_before": 60,
@@ -34345,7 +34449,7 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0091
+          "cumulative_pct": 0.0224
         },
         {
           "days_before": 60,
@@ -34581,7 +34685,7 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0091
+          "cumulative_pct": 0.0224
         },
         {
           "days_before": 60,
@@ -34841,7 +34945,7 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0091
+          "cumulative_pct": 0.0224
         },
         {
           "days_before": 60,
@@ -35097,7 +35201,7 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0091
+          "cumulative_pct": 0.0224
         },
         {
           "days_before": 60,
@@ -35373,7 +35477,7 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0091
+          "cumulative_pct": 0.0224
         },
         {
           "days_before": 60,
@@ -35485,19 +35589,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -42553,19 +42657,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -42641,19 +42745,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -42733,19 +42837,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -42829,19 +42933,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -42929,19 +43033,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -44777,19 +44881,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -50570,7 +50674,7 @@
     {
       "family": "New York State Open",
       "year": 2015,
-      "event_start": "2015-06-17",
+      "event_start": "2015-06-19",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -50609,11 +50713,11 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.047
+          "cumulative_pct": 0.0295
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1379
+          "cumulative_pct": 0.1579
         },
         {
           "days_before": 28,
@@ -50654,7 +50758,7 @@
     {
       "family": "New York State Open",
       "year": 2016,
-      "event_start": "2016-06-17",
+      "event_start": "2016-06-19",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -50697,11 +50801,11 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.047
+          "cumulative_pct": 0.0295
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1379
+          "cumulative_pct": 0.1579
         },
         {
           "days_before": 28,
@@ -50742,7 +50846,7 @@
     {
       "family": "New York State Open",
       "year": 2017,
-      "event_start": "2017-06-17",
+      "event_start": "2017-06-19",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -50789,11 +50893,11 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.047
+          "cumulative_pct": 0.0295
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1379
+          "cumulative_pct": 0.1579
         },
         {
           "days_before": 28,
@@ -51009,11 +51113,11 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.047
+          "cumulative_pct": 0.0295
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1379
+          "cumulative_pct": 0.1579
         },
         {
           "days_before": 28,
@@ -51233,11 +51337,11 @@
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.047
+          "cumulative_pct": 0.0295
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1379
+          "cumulative_pct": 0.1579
         },
         {
           "days_before": 28,
@@ -51313,19 +51417,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -51401,19 +51505,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -53993,19 +54097,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -58377,19 +58481,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -58465,19 +58569,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -58557,19 +58661,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -58653,19 +58757,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -58753,19 +58857,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -59009,19 +59113,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -60230,7 +60334,7 @@
     {
       "family": "Pacific Coast Open",
       "year": 2015,
-      "event_start": "2015-07-17",
+      "event_start": "2015-07-20",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -60314,7 +60418,7 @@
     {
       "family": "Pacific Coast Open",
       "year": 2016,
-      "event_start": "2016-07-17",
+      "event_start": "2016-07-20",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -60402,7 +60506,7 @@
     {
       "family": "Pacific Coast Open",
       "year": 2017,
-      "event_start": "2017-07-17",
+      "event_start": "2017-07-20",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -60494,7 +60598,7 @@
     {
       "family": "Pacific Coast Open",
       "year": 2018,
-      "event_start": "2018-07-17",
+      "event_start": "2018-07-20",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -60590,7 +60694,7 @@
     {
       "family": "Pacific Coast Open",
       "year": 2019,
-      "event_start": "2019-07-17",
+      "event_start": "2019-07-20",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -62153,19 +62257,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -62241,19 +62345,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -62333,19 +62437,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -62382,7 +62486,7 @@
     {
       "family": "DC International",
       "year": 2016,
-      "event_start": "2016-06-24",
+      "event_start": "2016-06-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -62470,7 +62574,7 @@
     {
       "family": "DC International",
       "year": 2017,
-      "event_start": "2017-06-24",
+      "event_start": "2017-06-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -62562,7 +62666,7 @@
     {
       "family": "DC International",
       "year": 2018,
-      "event_start": "2018-06-24",
+      "event_start": "2018-06-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -62658,7 +62762,7 @@
     {
       "family": "DC International",
       "year": 2019,
-      "event_start": "2019-06-24",
+      "event_start": "2019-06-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -63966,7 +64070,7 @@
     {
       "family": "DC Open",
       "year": 2015,
-      "event_start": "2015-06-25",
+      "event_start": "2015-06-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -64050,7 +64154,7 @@
     {
       "family": "DC Open",
       "year": 2016,
-      "event_start": "2016-06-25",
+      "event_start": "2016-06-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -64138,7 +64242,7 @@
     {
       "family": "DC Open",
       "year": 2017,
-      "event_start": "2017-06-25",
+      "event_start": "2017-06-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -64230,7 +64334,7 @@
     {
       "family": "DC Open",
       "year": 2018,
-      "event_start": "2018-06-25",
+      "event_start": "2018-06-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -64326,7 +64430,7 @@
     {
       "family": "DC Open",
       "year": 2019,
-      "event_start": "2019-06-25",
+      "event_start": "2019-06-26",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -65762,7 +65866,7 @@
     {
       "family": "Pittsburgh Open",
       "year": 2015,
-      "event_start": "2015-07-22",
+      "event_start": "2015-07-23",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -65846,7 +65950,7 @@
     {
       "family": "Pittsburgh Open",
       "year": 2016,
-      "event_start": "2016-07-22",
+      "event_start": "2016-07-23",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -65934,7 +66038,7 @@
     {
       "family": "Pittsburgh Open",
       "year": 2017,
-      "event_start": "2017-07-22",
+      "event_start": "2017-07-23",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -66026,7 +66130,7 @@
     {
       "family": "Pittsburgh Open",
       "year": 2018,
-      "event_start": "2018-07-22",
+      "event_start": "2018-07-23",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -66122,7 +66226,7 @@
     {
       "family": "Pittsburgh Open",
       "year": 2019,
-      "event_start": "2019-07-22",
+      "event_start": "2019-07-23",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -67637,19 +67741,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -67721,19 +67825,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -67805,19 +67909,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -67889,19 +67993,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -69205,19 +69309,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -69293,19 +69397,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -69385,19 +69489,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -69481,19 +69585,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -69581,19 +69685,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -71345,19 +71449,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -71433,19 +71537,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -71525,19 +71629,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -71621,19 +71725,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -71721,19 +71825,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -73281,19 +73385,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -73369,19 +73473,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -73461,19 +73565,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -73557,19 +73661,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -73641,19 +73745,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -73729,19 +73833,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -73821,19 +73925,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -73917,19 +74021,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -74017,19 +74121,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -74285,19 +74389,19 @@
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0253
+          "cumulative_pct": 0.0255
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0465
+          "cumulative_pct": 0.0461
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0993
+          "cumulative_pct": 0.098
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1776
+          "cumulative_pct": 0.1774
         },
         {
           "days_before": 21,
@@ -80024,143 +80128,134 @@
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-05-24 05:13:33",
+  "last_updated": "2026-05-26 07:41:39",
   "is_stale": false,
   "alerts": [
     {
-      "family": "Chicago Open",
-      "status": "on_pace",
-      "actual": 872,
-      "expected": 847,
-      "deviation_pct": 3.0,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+3%)"
-    },
-    {
       "family": "Hartford Open",
-      "status": "above_pace",
-      "actual": 57,
-      "expected": 46,
-      "deviation_pct": 23.2,
+      "status": "on_pace",
+      "actual": 63,
+      "expected": 54,
+      "deviation_pct": 16.7,
       "n_years": 4,
-      "message": "Registrations are 23.2% above 4-year at-this-point pace"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+17%)"
     },
     {
       "family": "Cleveland Open",
       "status": "on_pace",
-      "actual": 44,
-      "expected": 46,
-      "deviation_pct": -4.9,
+      "actual": 48,
+      "expected": 54,
+      "deviation_pct": -11.1,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-5%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-11%)"
     },
     {
       "family": "New York State Open",
       "status": "above_pace",
-      "actual": 31,
-      "expected": 18,
-      "deviation_pct": 77.1,
+      "actual": 35,
+      "expected": 20,
+      "deviation_pct": 75.0,
       "n_years": 2,
-      "message": "Registrations are 77.1% above 2-year at-this-point pace"
+      "message": "Registrations are 75.0% above 2-year at-this-point pace"
     },
     {
       "family": "DC International",
       "status": "on_pace",
       "actual": 46,
-      "expected": 46,
-      "deviation_pct": 0.0,
+      "expected": 47,
+      "deviation_pct": -2.1,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-2%)"
     },
     {
       "family": "World Open lower sections",
       "status": "below_pace",
       "actual": 23,
-      "expected": 43,
-      "deviation_pct": -46.5,
+      "expected": 44,
+      "deviation_pct": -47.7,
       "n_years": 3,
-      "message": "Registrations are 46.5% below 3-year at-this-point pace"
+      "message": "Registrations are 47.7% below 3-year at-this-point pace"
     },
     {
       "family": "DC Open",
       "status": "below_pace",
-      "actual": 30,
-      "expected": 46,
-      "deviation_pct": -35.5,
+      "actual": 31,
+      "expected": 48,
+      "deviation_pct": -35.4,
       "n_years": 4,
-      "message": "Registrations are 35.5% below 4-year at-this-point pace"
+      "message": "Registrations are 35.4% below 4-year at-this-point pace"
     },
     {
       "family": "World Open Under 13 Championship",
       "status": "on_pace",
       "actual": 18,
-      "expected": 18,
-      "deviation_pct": 0.0,
+      "expected": 19,
+      "deviation_pct": -5.3,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-5%)"
     },
     {
       "family": "World Open top 6 sections",
       "status": "on_pace",
-      "actual": 343,
-      "expected": 399,
-      "deviation_pct": -14.0,
+      "actual": 351,
+      "expected": 407,
+      "deviation_pct": -13.8,
       "n_years": 3,
       "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-14%)"
     },
     {
       "family": "Chicago Class",
       "status": "below_pace",
-      "actual": 4,
+      "actual": 5,
       "expected": 8,
-      "deviation_pct": -46.7,
+      "deviation_pct": -39.4,
       "n_years": 4,
-      "message": "Registrations are 46.7% below 4-year at-this-point pace"
+      "message": "Registrations are 39.4% below 4-year at-this-point pace"
     },
     {
       "family": "Pittsburgh Open",
       "status": "above_pace",
-      "actual": 11,
-      "expected": 6,
-      "deviation_pct": 76.0,
+      "actual": 13,
+      "expected": 7,
+      "deviation_pct": 92.6,
       "n_years": 4,
-      "message": "Registrations are 76.0% above 4-year at-this-point pace"
+      "message": "Registrations are 92.6% above 4-year at-this-point pace"
     },
     {
       "family": "Southern Open",
-      "status": "below_pace",
-      "actual": 9,
+      "status": "on_pace",
+      "actual": 11,
       "expected": 12,
-      "deviation_pct": -21.7,
+      "deviation_pct": -10.2,
       "n_years": 4,
-      "message": "Registrations are 21.7% below 4-year at-this-point pace"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-10%)"
     },
     {
       "family": "Bradley Open",
       "status": "on_pace",
       "actual": 5,
       "expected": 6,
-      "deviation_pct": -13.0,
+      "deviation_pct": -20.0,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-13%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-20%)"
     },
     {
       "family": "Pacific Coast Open",
       "status": "on_pace",
-      "actual": 13,
+      "actual": 15,
       "expected": 14,
-      "deviation_pct": -3.7,
+      "deviation_pct": 3.4,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-4%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+3%)"
     },
     {
       "family": "Continental Open",
-      "status": "below_pace",
-      "actual": 3,
+      "status": "on_pace",
+      "actual": 4,
       "expected": 4,
-      "deviation_pct": -25.0,
+      "deviation_pct": -5.9,
       "n_years": 4,
-      "message": "Registrations are 25.0% below 4-year at-this-point pace"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-6%)"
     },
     {
       "family": "Central California Open",
@@ -80176,9 +80271,9 @@
       "status": "below_pace",
       "actual": 2,
       "expected": 3,
-      "deviation_pct": -27.3,
+      "deviation_pct": -33.3,
       "n_years": 4,
-      "message": "Registrations are 27.3% below 4-year at-this-point pace"
+      "message": "Registrations are 33.3% below 4-year at-this-point pace"
     },
     {
       "family": "Indianapolis Open",

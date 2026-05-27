@@ -1,14 +1,10 @@
 {
-  "generated": "2026-05-26 07:41:39",
-  "count": 2,
+  "generated": "2026-05-27 05:42:41",
+  "count": 1,
   "warnings": [
     {
-      "step": "Refresh tournament summary (01_data_prep.py)",
-      "text": "raised final_count for 9 in-progress 2026 event(s) (end_date >= today): 2026 DC International, 2026 New York State Open, 2026 DC Open, 2026 Chicago Class, 2026 Bradley Open, 2026 Hartford Open, 2026 Pittsburgh Open, 2026 Pacific Coast Open, 2026 Cleveland Open. Downstream perf/recalibration scripts must exclude these via is_event_complete."
-    },
-    {
-      "step": "Refresh tournament summary (01_data_prep.py)",
-      "text": "low scrape coverage \u2014 Continental Open 2021: scrape=159/final=393 (ratio=0.40)"
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 Chicago Open 2026: pattern \"Chicago Open\" not found in chesstour.com schedule"
     }
   ]
 }

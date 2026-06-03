@@ -68,26 +68,20 @@ def find_gaps(csv_path=CSV_PATH):
 
 def backfill_date(date_str):
     """Scrape CCA and return rows tagged with date_str."""
-    from scrape_entries import init_driver, scrape_index, consolidate_world_open
+    from scrape_entries import scrape_index, consolidate_world_open
 
     rate_limit(min_delay=1.0, max_delay=2.0)
     logger.info("Scraping CCA for backfill date %s ...", date_str)
-    driver = None
-    try:
-        driver = init_driver()
-        tournaments = scrape_index(driver)
-        if not tournaments:
-            logger.warning("No tournaments returned for %s", date_str)
-            return []
-        consolidated = consolidate_world_open(tournaments)
-        rows = [{"date": date_str, "tournament_name": t["name"],
-                 "entry_count": str(t["entry_count"]), "url": t["url"]}
-                for t in consolidated]
-        logger.info("Scraped %d tournaments for %s", len(rows), date_str)
-        return rows
-    finally:
-        if driver:
-            driver.quit()
+    tournaments = scrape_index()
+    if not tournaments:
+        logger.warning("No tournaments returned for %s", date_str)
+        return []
+    consolidated = consolidate_world_open(tournaments)
+    rows = [{"date": date_str, "tournament_name": t["name"],
+             "entry_count": str(t["entry_count"]), "url": t["url"]}
+            for t in consolidated]
+    logger.info("Scraped %d tournaments for %s", len(rows), date_str)
+    return rows
 
 
 def merge_backfill(existing_csv, new_rows, dry_run=False):

@@ -30,18 +30,6 @@ from datetime import date, datetime, timedelta
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import (
-    TimeoutException,
-    NoSuchElementException,
-    StaleElementReferenceException,
-    WebDriverException,
-)
-
 from scraper_utils import rate_limit
 
 # ---------------------------------------------------------------------------
@@ -54,13 +42,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Selenium exceptions worth retrying on
+# Transient failures worth retrying on
 RETRY_EXCEPTIONS = (
-    TimeoutException,
-    NoSuchElementException,
-    StaleElementReferenceException,
-    WebDriverException,
-    ValueError,  # raised when regex matches 0 tournaments
+    requests.RequestException,
+    ValueError,  # raised when regex matches 0 tournaments (endpoint/page changed)
 )
 
 # ---------------------------------------------------------------------------
@@ -141,6 +126,25 @@ _ACTIVE_ONLY_PATTERN = re.compile(
 ENTRY_LIST_URL_TEMPLATE = (
     'https://www.chessaction.com/tournaments/advlists/CCA/'
     'CCA_{code}{yy}/CCA_{code}{yy}_alp_n.html'
+)
+
+# CCA tournament-list data source. The chessaction.com homepage renders its
+# tournament cards by POSTing to this AJAX endpoint; the vendor id is baked
+# into the site's own JS (3 = Continental Chess Association) and length=-1
+# means "all rows". We hit it directly because the former
+# /CCA/index.php?vendor=... page now 302-redirects to the generic homepage
+# (which carries no tournament list), which is what broke the 2026-06-03 run.
+CCA_TOURLIST_URL = 'https://www.chessaction.com/ajaxFrontGetTourListNew.php'
+CCA_VENDOR_ID = 3
+
+# Extract per-card: link, name, start date, end date, state, entry count.
+_INDEX_PATTERN = re.compile(
+    r'<a href="(tournaments/index\.php\?view=[^"]+tid=[^"]+)">([^<]+)</a>'
+    r'.*?<div class="text-muted small">'
+    r'([A-Z][a-z]{2} \d{1,2}, \d{4})\s*-\s*([A-Z][a-z]{2} \d{1,2}, \d{4})'
+    r'\s*(?:&nbsp;\s*)*State:\s*([^<]+?)\s*</div>'
+    r'.*?Entry List \[(\d+)\]',
+    re.DOTALL,
 )
 
 
@@ -274,78 +278,63 @@ def scrape_withdrawals(tournaments, year=2026):
     return tournaments
 
 
-def init_driver():
-    """Set up headless Chrome with polite identification and timeouts."""
-    opts = Options()
-    opts.add_argument('--headless')
-    opts.add_argument('--no-sandbox')
-    opts.add_argument('--disable-dev-shm-usage')
-    opts.add_argument(
-        '--user-agent=CCA-Entry-Predictor/1.0 '
-        '(chess tournament prediction tool; contact: github.com/HaterAndrew)'
-    )
-    # Only set binary_location if the local path exists; on GitHub Actions
-    # the browser-actions/setup-chrome action puts chrome on PATH instead.
-    local_chrome = '/usr/bin/google-chrome'
-    if os.path.exists(local_chrome):
-        opts.binary_location = local_chrome
-    driver = webdriver.Chrome(options=opts)
-    driver.set_page_load_timeout(30)
-    driver.implicitly_wait(10)
-    return driver
+def _parse_index(html):
+    """Parse a CCA tournament-list HTML response into 2026 tournament dicts.
 
-
-def scrape_index(driver, max_retries=3, backoff=15):
+    Pure function (no network) so it can be regression-tested against a
+    captured response. Each dict carries name, url, start/end date (ISO),
+    state, and entry_count. Rows that are not 2026 events are skipped.
     """
-    Load CCA index page and extract all 2026 tournaments with their
+    tournaments = []
+    for rel_url, name, start_date, end_date, state, count in _INDEX_PATTERN.findall(html):
+        if '2026' not in name and '2026' not in rel_url:
+            continue
+        full_url = f'https://www.chessaction.com/{rel_url}'.replace('&amp;', '&')
+        start_iso = datetime.strptime(start_date.strip(), '%b %d, %Y').strftime('%Y-%m-%d')
+        end_iso = datetime.strptime(end_date.strip(), '%b %d, %Y').strftime('%Y-%m-%d')
+        tournaments.append({
+            'name': name.strip(),
+            'url': full_url,
+            'start_date': start_iso,
+            'end_date': end_iso,
+            'state': state.strip(),
+            'entry_count': int(count),
+        })
+    return tournaments
+
+
+def scrape_index(max_retries=3, backoff=15):
+    """
+    Fetch the CCA tournament list and extract all 2026 tournaments with their
     name, URL, dates, state, and entry count in a single pass.
-    Retries up to max_retries times with backoff between attempts.
+
+    POSTs directly to the homepage's AJAX data source (ajaxFrontGetTourListNew)
+    rather than rendering the page, which sidesteps the AJAX load race and the
+    /CCA/ -> homepage redirect. Retries up to max_retries with backoff.
     """
-    url = 'https://chessaction.com/CCA/index.php?vendor=Continental%20Chess%20Association'
-
-    # Extract: link, name, start date, end date, state, entry count
-    pattern = (
-        r'<a href="(tournaments/index\.php\?view=[^"]+tid=[^"]+)">([^<]+)</a>'
-        r'.*?<div class="text-muted small">'
-        r'([A-Z][a-z]{2} \d{1,2}, \d{4})\s*-\s*([A-Z][a-z]{2} \d{1,2}, \d{4})'
-        r'\s*(?:&nbsp;\s*)*State:\s*([^<]+?)\s*</div>'
-        r'.*?Entry List \[(\d+)\]'
-    )
-
+    session = _create_session()
     for attempt in range(1, max_retries + 1):
         try:
             rate_limit(min_delay=1.0, max_delay=2.0)
-            print(f"Loading CCA index (attempt {attempt}/{max_retries}): {url}")
-            driver.get(url)
-            print("Waiting 10s for AJAX content...")
-            time.sleep(10)
+            print(f"Fetching CCA tournament list (attempt {attempt}/{max_retries}): {CCA_TOURLIST_URL}")
+            resp = session.post(
+                CCA_TOURLIST_URL,
+                data={'vendor_search': CCA_VENDOR_ID, 'length': '-1'},
+                headers={'X-Requested-With': 'XMLHttpRequest'},
+                timeout=30,
+            )
+            resp.raise_for_status()
 
-            page_source = driver.page_source
-            matches = re.findall(pattern, page_source, re.DOTALL)
-
-            if not matches:
-                raise ValueError("Regex matched 0 tournaments — page may not have loaded")
-
-            tournaments = []
-            for rel_url, name, start_date, end_date, state, count in matches:
-                if '2026' not in name and '2026' not in rel_url:
-                    continue
-                full_url = f'https://chessaction.com/{rel_url}'.replace('&amp;', '&')
-                start_iso = datetime.strptime(start_date.strip(), '%b %d, %Y').strftime('%Y-%m-%d')
-                end_iso = datetime.strptime(end_date.strip(), '%b %d, %Y').strftime('%Y-%m-%d')
-                tournaments.append({
-                    'name': name.strip(),
-                    'url': full_url,
-                    'start_date': start_iso,
-                    'end_date': end_iso,
-                    'state': state.strip(),
-                    'entry_count': int(count),
-                })
+            tournaments = _parse_index(resp.text)
+            if not tournaments:
+                raise ValueError(
+                    "Regex matched 0 tournaments — endpoint response may have changed"
+                )
 
             print(f"Found {len(tournaments)} tournaments for 2026")
             return tournaments
 
-        except Exception as e:
+        except RETRY_EXCEPTIONS as e:
             print(f"  Attempt {attempt} failed: {e}")
             if attempt < max_retries:
                 print(f"  Retrying in {backoff}s...")
@@ -542,41 +531,34 @@ def run_scrape_pipeline():
     Execute the full scrape-consolidate-save pipeline once.
     Returns normally on success; raises on any failure.
     """
-    driver = None
-    try:
-        driver = init_driver()
-        logger.info("Scraping CCA tournaments for %s ...", TODAY)
+    logger.info("Scraping CCA tournaments for %s ...", TODAY)
 
-        # Step 1: Extract all data from index page (single page load)
-        tournaments = scrape_index(driver)
-        if not tournaments:
-            raise ValueError("No 2026 tournaments found on CCA index page.")
+    # Step 1: Extract all data from the tournament-list endpoint
+    tournaments = scrape_index()
+    if not tournaments:
+        raise ValueError("No 2026 tournaments found on CCA index page.")
 
-        for t in tournaments:
-            logger.info("  %s  %s - %s  [%d]",
-                        t['name'].ljust(45), t['start_date'], t['end_date'], t['entry_count'])
+    for t in tournaments:
+        logger.info("  %s  %s - %s  [%d]",
+                    t['name'].ljust(45), t['start_date'], t['end_date'], t['entry_count'])
 
-        # Step 2: Scrape withdrawal counts from entry list pages
-        scrape_withdrawals(tournaments)
+    # Step 2: Scrape withdrawal counts from entry list pages
+    scrape_withdrawals(tournaments)
 
-        # Step 3: Filter World Open to only Under 13, top 6, lower sections
-        consolidated = consolidate_world_open(tournaments)
-        logger.info("Filtered to %d rows (kept 3 WO sub-events, dropped others)", len(consolidated))
+    # Step 3: Filter World Open to only Under 13, top 6, lower sections
+    consolidated = consolidate_world_open(tournaments)
+    logger.info("Filtered to %d rows (kept 3 WO sub-events, dropped others)", len(consolidated))
 
-        # Step 4: Update daily_scrape.csv (idempotent)
-        all_rows = update_csv(consolidated)
-        logger.info("Saved to %s", CSV_PATH)
+    # Step 4: Update daily_scrape.csv (idempotent)
+    all_rows = update_csv(consolidated)
+    logger.info("Saved to %s", CSV_PATH)
 
-        # Step 5: Sync dates to tournament_metadata.csv
-        logger.info("── Metadata sync ──")
-        sync_metadata(consolidated)
+    # Step 5: Sync dates to tournament_metadata.csv
+    logger.info("── Metadata sync ──")
+    sync_metadata(consolidated)
 
-        # Step 6: Print comparison
-        print_comparison(all_rows)
-
-    finally:
-        if driver:
-            driver.quit()
+    # Step 6: Print comparison
+    print_comparison(all_rows)
 
 
 def main():

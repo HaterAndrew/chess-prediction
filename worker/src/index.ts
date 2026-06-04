@@ -10,6 +10,8 @@ export interface Env {
   DAILY_BUDGET_USD: string;
   RATE_LIMIT_PER_MIN: string;
   KV?: KVNamespace;
+  // Shared secret gating the /cca-tourlist scrape proxy (see proxyCcaTourList).
+  CCA_PROXY_KEY?: string;
 }
 
 interface AskRequest {
@@ -282,6 +284,54 @@ async function runAgentLoop(
   };
 }
 
+// ── CCA tournament-list fetch proxy ────────────────────────────────────────
+// chessaction.com started 403-blocking GitHub Actions' Azure IP ranges, which
+// breaks the daily scraper in CI (a residential IP and Cloudflare's edge both
+// still get 200). This route lets the GH Action fetch the tournament list
+// THROUGH Cloudflare's edge instead of hitting the site directly. It replays
+// the exact AJAX POST the scraper would have made and returns the upstream
+// bytes verbatim, so the Python parser is unchanged. Gated by a shared secret
+// (X-Proxy-Key) so it isn't an open proxy.
+const CCA_TOURLIST_URL = "https://www.chessaction.com/ajaxFrontGetTourListNew.php";
+const CCA_VENDOR_ID = "3";
+
+async function proxyCcaTourList(env: Env, request: Request): Promise<Response> {
+  const expected = env.CCA_PROXY_KEY;
+  const provided = request.headers.get("X-Proxy-Key");
+  // Require the secret to be configured AND matched. Fail closed.
+  if (!expected || provided !== expected) {
+    return new Response("Forbidden", { status: 403 });
+  }
+
+  try {
+    const upstream = await fetch(CCA_TOURLIST_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-Requested-With": "XMLHttpRequest",
+        "User-Agent":
+          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        Accept: "text/html,*/*",
+        Referer: "https://www.chessaction.com/",
+      },
+      body: `vendor_search=${CCA_VENDOR_ID}&length=-1`,
+    });
+
+    const text = await upstream.text();
+    return new Response(text, {
+      status: upstream.status,
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "no-store",
+        // Surface the upstream status to the caller for diagnostics.
+        "X-Upstream-Status": String(upstream.status),
+      },
+    });
+  } catch (e) {
+    return new Response(`Upstream fetch failed: ${(e as Error).message}`, { status: 502 });
+  }
+}
+
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     if (request.method === "OPTIONS") return corsPreflight(env, request);
@@ -289,6 +339,9 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === "/health") {
       return jsonResponse({ ok: true, model: env.MODEL, file_id: cached?.fileId ?? null }, { status: 200 }, env, request);
+    }
+    if (url.pathname === "/cca-tourlist") {
+      return proxyCcaTourList(env, request);
     }
     if (url.pathname !== "/ask" || request.method !== "POST") {
       return jsonResponse({ error: "Not found" }, { status: 404 }, env, request);

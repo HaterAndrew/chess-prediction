@@ -27,6 +27,12 @@ jobs:
 
       - name: Run scraper
         id: scrape
+        # chessaction.com 403s GitHub's IP ranges, so route the tournament-list
+        # fetch through the Cloudflare Worker proxy (a non-blocked egress).
+        # CCA_PROXY_URL is a repo variable; CCA_PROXY_KEY is a repo secret.
+        env:
+          CCA_PROXY_URL: ${{ vars.CCA_PROXY_URL }}
+          CCA_PROXY_KEY: ${{ secrets.CCA_PROXY_KEY }}
         run: |
           cd $GITHUB_WORKSPACE
           python scrape_entries.py

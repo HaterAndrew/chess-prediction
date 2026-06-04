@@ -303,29 +303,60 @@ def _parse_index(html):
     return tournaments
 
 
+def _fetch_tourlist_html(session, timeout=30):
+    """Fetch the raw CCA tournament-list HTML, returning the response text.
+
+    Two egress paths, selected at runtime:
+
+    * Direct (default, used for local runs): POST the chessaction AJAX endpoint.
+      Works from residential IPs and from Cloudflare's edge.
+    * Proxy (used in CI): if CCA_PROXY_URL is set, GET it with the shared-secret
+      X-Proxy-Key header instead. A Cloudflare Worker replays the same POST from
+      a non-blocked egress. This exists because chessaction.com now 403-blocks
+      GitHub Actions' Azure IP ranges, which breaks a direct fetch from CI.
+
+    Raises for any non-2xx status (incl. a 403 from either path) so the caller's
+    retry / circuit-breaker logic still fires — fail loud, never fake.
+    """
+    proxy_url = os.environ.get('CCA_PROXY_URL')
+    if proxy_url:
+        print(f"Fetching CCA tournament list via proxy: {proxy_url}")
+        resp = session.get(
+            proxy_url,
+            headers={'X-Proxy-Key': os.environ.get('CCA_PROXY_KEY', '')},
+            timeout=timeout,
+        )
+    else:
+        print(f"Fetching CCA tournament list (direct): {CCA_TOURLIST_URL}")
+        resp = session.post(
+            CCA_TOURLIST_URL,
+            data={'vendor_search': CCA_VENDOR_ID, 'length': '-1'},
+            headers={'X-Requested-With': 'XMLHttpRequest'},
+            timeout=timeout,
+        )
+    resp.raise_for_status()
+    return resp.text
+
+
 def scrape_index(max_retries=3, backoff=15):
     """
     Fetch the CCA tournament list and extract all 2026 tournaments with their
     name, URL, dates, state, and entry count in a single pass.
 
-    POSTs directly to the homepage's AJAX data source (ajaxFrontGetTourListNew)
-    rather than rendering the page, which sidesteps the AJAX load race and the
-    /CCA/ -> homepage redirect. Retries up to max_retries with backoff.
+    Pulls the homepage's AJAX data source (ajaxFrontGetTourListNew) rather than
+    rendering the page, which sidesteps the AJAX load race and the /CCA/ ->
+    homepage redirect. In CI the fetch is routed through a Cloudflare Worker
+    proxy (CCA_PROXY_URL) because chessaction.com 403s GitHub's IP ranges; see
+    _fetch_tourlist_html. Retries up to max_retries with backoff.
     """
     session = _create_session()
     for attempt in range(1, max_retries + 1):
         try:
             rate_limit(min_delay=1.0, max_delay=2.0)
-            print(f"Fetching CCA tournament list (attempt {attempt}/{max_retries}): {CCA_TOURLIST_URL}")
-            resp = session.post(
-                CCA_TOURLIST_URL,
-                data={'vendor_search': CCA_VENDOR_ID, 'length': '-1'},
-                headers={'X-Requested-With': 'XMLHttpRequest'},
-                timeout=30,
-            )
-            resp.raise_for_status()
+            print(f"Fetching CCA tournament list (attempt {attempt}/{max_retries})")
+            html = _fetch_tourlist_html(session)
 
-            tournaments = _parse_index(resp.text)
+            tournaments = _parse_index(html)
             if not tournaments:
                 raise ValueError(
                     "Regex matched 0 tournaments — endpoint response may have changed"

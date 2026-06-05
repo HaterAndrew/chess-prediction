@@ -13,6 +13,8 @@ CCA_CANONICALIZE: maps scraped CCA names → canonical family name (strips year
 prefix first). Only needed when CCA uses a different name than the canonical.
 """
 
+import re
+
 # ── Tournament family groups ─────────────────────────────────────────────
 # Each group = same tournament lineage. First entry = canonical 2026 name.
 FAMILY_GROUPS = [
@@ -63,12 +65,33 @@ CCA_CANONICALIZE = {
 }
 
 
+# Trailing "(in <location>)" venue qualifier. CCA titles a relocated edition
+# "Eastern Class Championships (in Connecticut)" / "Eastern Chess Congress (in
+# New Jersey)"; without stripping it the edition reads as a brand-new family
+# with zero history and the model falls back to a flat default. Scoped to
+# "(in ...)" so genuinely distinct parentheticals (e.g. "(Open Section)") stay.
+_VENUE_SUFFIX_RE = re.compile(r'\s*\(\s*in\s+[^)]+\)\s*$', re.IGNORECASE)
+
+
+def strip_venue_suffix(name):
+    """Drop a trailing "(in <location>)" venue-relocation qualifier.
+
+    No-op on names without that exact suffix. Single source of truth shared by
+    both canonicalize_family implementations and the date verifier so a
+    venue-of-the-year rename folds onto its historical series everywhere.
+    """
+    if not isinstance(name, str):
+        return name
+    return _VENUE_SUFFIX_RE.sub('', name).strip()
+
+
 def canonicalize_family(name):
     """Return the canonical family string for equality comparison.
 
-    Matching is comma- and whitespace-insensitive. If the name is a variant
-    listed in any FAMILY_GROUPS entry, returns the group's canonical (first)
-    name. Otherwise returns the original name unchanged.
+    Matching is comma- and whitespace-insensitive. A trailing "(in
+    <location>)" venue qualifier is stripped first (see strip_venue_suffix).
+    If the name is a variant listed in any FAMILY_GROUPS entry, returns the
+    group's canonical (first) name. Otherwise returns the name unchanged.
 
     Intended for unifying CSV/scrape/meta joins where historical data uses
     `World Open top 6 sections` (no comma) but CCA emits `World Open, top 6
@@ -77,6 +100,8 @@ def canonicalize_family(name):
     """
     if not isinstance(name, str):
         return name
+
+    name = strip_venue_suffix(name)
 
     def _norm(s):
         return ' '.join(s.strip().replace(',', '').split())

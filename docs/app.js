@@ -2518,6 +2518,7 @@ function renderHero(t) {
     'family-direct': 'direct · 5+ yr history',
     'family-alias':  'family alias · pooled history',
     'size-matched':  'size matched · no family history',
+    'roster-pending': 'interim · not in roster yet',
   };
   const tierBadge = (!isDone(t) && t.prediction_tier && t.prediction_tier !== 'family-direct')
     ? ` <span title="Prediction used the '${t.prediction_tier}' fallback path. 'family-alias' pools history from related families; 'size-matched' uses families with comparable historical size when this family has no direct history." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:700;background:rgba(0,0,0,.3);border:1px solid var(--blue);color:var(--blue);margin-left:6px;vertical-align:middle;cursor:help">${tierLabelMap[t.prediction_tier] || t.prediction_tier.replace('-',' ')}</span>`

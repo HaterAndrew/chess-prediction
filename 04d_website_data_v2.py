@@ -802,10 +802,41 @@ if os.path.exists(scrape_path):
         wd = int(s.get('withdrawal_count', 0)) if pd.notna(s.get('withdrawal_count')) else 0
         _scrape_lookup[fam] = {'net': net, 'gross': gross, 'wd': wd}
 
-existing_families = {t['family'] for t in tournaments_out}
+def _scrape_daily_series(family_name, fallback_count):
+    """Real [day_index, cumulative_count] entry-bar history for a 2026 event,
+    read straight from daily_scrape.csv and matched by family name. Mirrors the
+    main path's cummax cleaning. Falls back to a single point only when fewer
+    than two scrapes exist — the chart needs >=3 points to draw bars, so the old
+    hardcoded [[0, count]] rendered nothing for these events."""
+    if not os.path.exists(scrape_path):
+        return [[0, int(fallback_count)]]
+
+    def _strip_year(n):
+        return n[5:] if isinstance(n, str) and n.startswith('2026 ') else n
+
+    ev = scrape[scrape['tournament_name'].apply(_strip_year) == family_name].sort_values('date')
+    if len(ev) < 2:
+        return [[0, int(fallback_count)]]
+    by_day = {}
+    min_date = ev['date'].min()
+    for _, r in ev.iterrows():
+        cnt = int(r['active_count']) if pd.notna(r.get('active_count')) and r['active_count'] > 0 else int(r['entry_count'])
+        day = int((r['date'] - min_date).days)
+        by_day[day] = max(by_day.get(day, 0), cnt)
+    peak, series = 0, []
+    for day in sorted(by_day):
+        peak = max(peak, by_day[day])
+        series.append([day, peak])
+    return series
+
+
+# Canonical-aware so a metadata event ("... (in Connecticut)") isn't re-added
+# when the main path already emitted its folded form ("Eastern Class
+# Championships") once a fresh export pulls it into the roster.
+existing_families = {canonicalize_family(t['family']) for t in tournaments_out}
 for _, mrow in meta[meta['year'] == 2026].iterrows():
     mfamily = mrow['family']
-    if mfamily in existing_families or mfamily in EXCLUDE_FAMILIES:
+    if canonicalize_family(mfamily) in existing_families or mfamily in EXCLUDE_FAMILIES:
         continue
     event_date = pd.to_datetime(mrow['start_date'])
     if event_date <= TODAY:
@@ -818,10 +849,17 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
     current_count = scrape_info.get('net', 0)
     gross_count = scrape_info.get('gross', current_count)
     withdrawal_count = scrape_info.get('wd', 0)
-    # Historical data (expand aliases for renamed tournaments)
-    hist_families = [mfamily]
-    if hasattr(m04c, 'FAMILY_ALIASES') and mfamily in m04c.FAMILY_ALIASES:
-        hist_families.extend(m04c.FAMILY_ALIASES[mfamily])
+    # Historical data. Canonicalize first so a relocated edition ("... (in
+    # Connecticut)") and CCA name variants ("World Open Under 13 Championship")
+    # match their historical series via FAMILY_GROUPS/aliases instead of reading
+    # as a brand-new family with zero history.
+    canon_family = canonicalize_family(mfamily)
+    _aliases = getattr(m04c, 'FAMILY_ALIASES', {})
+    hist_families = list(dict.fromkeys(
+        [mfamily, canon_family]
+        + _aliases.get(mfamily, [])
+        + _aliases.get(canon_family, [])
+    ))
     hist = summary[
         (summary['family'].isin(hist_families)) &
         (~summary['is_online'].fillna(False)) &
@@ -834,7 +872,11 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
          "family": h['family']}
         for _, h in hist.iterrows()
     ])
-    # Predict from historical data with proper variance-based CI
+    # This event isn't in the trained model roster yet (registration opened
+    # after the last all_registrations.csv export). Until a fresh export pulls
+    # it into the main path, give an INTERIM estimate that still tracks live
+    # registrations instead of a frozen historical average, and flag it
+    # low-confidence so the card discloses the degraded mode.
     hist_counts = [h['count'] for h in historical]
     hist_mean = np.mean(hist_counts) if hist_counts else 100
     # Sanity check: 0 registrations close to event = likely cancelled/not tracked
@@ -842,16 +884,47 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
         status_label = "not_tracked"
     else:
         status_label = "live"
-    # Use actual variance for CI when enough history exists
-    if len(hist_counts) >= 5:
-        ci_lo = int(np.percentile(hist_counts, 10))
-        ci_hi = int(np.percentile(hist_counts, 90))
-    elif len(hist_counts) >= 2:
-        ci_lo = int(min(hist_counts))
-        ci_hi = int(max(hist_counts))
+
+    days_to_start = max((pd.Timestamp(event_date) - TODAY).days, 0)
+    prediction_source = "metadata_historical_avg"
+    # Only extrapolate from live pace when the signal is informative: close to
+    # the event AND enough registrations that 1-2 early sign-ups don't get
+    # multiplied into an absurd projection (a 1-registrant event 170 days out
+    # has no usable pace). Otherwise lean on the historical average — still
+    # flagged low-confidence below.
+    pace_usable = current_count >= 10 and days_to_start <= 45
+    if hist_counts and pace_usable and status_label == "live":
+        # Resolve the name the ratio model trained under (summary uses
+        # 01_data_prep's canonical form, which can differ from the FAMILY_GROUPS
+        # head — e.g. "World Open Under 13"); else predict falls to global ratios.
+        ratio_family = canon_family
+        for cand in hist_families:
+            if cand in ratios:
+                ratio_family = cand
+                break
+        p, lo, hi = predict_with_lognormal_ci(
+            current_count, days_to_start, ratio_family, ratios)
+        # Clamp into a sane band around observed history so a sparse, far-out
+        # count can't produce an absurd interim number.
+        lo_band, hi_band = min(hist_counts) * 0.6, max(hist_counts) * 1.5
+        point_estimate = int(min(max(p, lo_band), hi_band))
+        ci_lo = int(min(max(lo, lo_band), hi_band))
+        ci_hi = int(min(max(hi, lo_band), hi_band))
+        if ci_hi <= ci_lo:
+            ci_lo, ci_hi = int(min(hist_counts)), int(max(hist_counts))
+        prediction_source = "metadata_pace"
     else:
-        ci_lo = int(hist_mean * 0.7)
-        ci_hi = int(hist_mean * 1.3)
+        point_estimate = int(hist_mean)
+        # Variance-based CI from history when no live pace signal is usable.
+        if len(hist_counts) >= 5:
+            ci_lo = int(np.percentile(hist_counts, 10))
+            ci_hi = int(np.percentile(hist_counts, 90))
+        elif len(hist_counts) >= 2:
+            ci_lo = int(min(hist_counts))
+            ci_hi = int(max(hist_counts))
+        else:
+            ci_lo = int(hist_mean * 0.7)
+            ci_hi = int(hist_mean * 1.3)
     curve = curves.get(mfamily, curves.get('__global__', {}))
     reg_curve = []
     for db in [120, 90, 75, 60, 42, 28, 21, 14, 7, 3, 1, 0]:
@@ -876,17 +949,24 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
         "gross_count": int(gross_count),
         "withdrawal_count": int(withdrawal_count),
         "days_remaining": int(days_remaining),
-        "point_estimate": int(hist_mean),
+        "point_estimate": point_estimate,
         "ci_lower": ci_lo,
         "ci_upper": ci_hi,
         "ci_level": 0.80,
         "historical": historical,
-        "daily_data": [[0, current_count]],
+        "daily_data": _scrape_daily_series(mfamily, current_count),
         "registration_curve": reg_curve,
         "status": status_label,
+        # Interim roster-fallback disclosure (see estimate logic above).
+        "n_historical_editions": len(hist_counts),
+        "low_confidence": True,
+        "prediction_tier": "roster-pending",
+        "prediction_source": prediction_source,
     }
     tournaments_out.append(t_out)
-    print(f"  Added from metadata: {mfamily} (event {event_date.strftime('%Y-%m-%d')}, {days_remaining} days out, entries={current_count}, status={status_label})")
+    print(f"  Added from metadata: {mfamily} (event {event_date.strftime('%Y-%m-%d')}, "
+          f"{days_remaining} days out, entries={current_count}, est={point_estimate} "
+          f"[{prediction_source}], status={status_label})")
 
 # ── Build reverse alias map for 2026 families ──
 # If "DC International" is a 2026 family with alias "Philadelphia International",

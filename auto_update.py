@@ -133,6 +133,16 @@ def step_update_puzzles():
         print("  Skipping puzzles (scrape_puzzles.py not found)")
 
 
+# A present-but-old all_registrations.csv silently freezes the tournament
+# roster: 01_data_prep reconciles *existing* events' counts against the live
+# scrape, but the set of tournaments only comes from the export. Anything that
+# opened registration after the export date is invisible to the model and falls
+# back to a flat historical-average estimate with no live daily chart (the
+# June 2026 World Open U13 / Eastern incident: a 75-day-old export). Warn loudly
+# past this age instead of degrading silently.
+EXPORT_STALE_WARN_DAYS = 14
+
+
 def step_data_prep():
     """Refresh tournament_summary.csv from the registrations snapshot + live scrape.
 
@@ -140,17 +150,31 @@ def step_data_prep():
     ~/Downloads/all_registrations.csv goes stale, and the model grades itself
     against a low-water snapshot (see ACO 2026: snapshot 184 vs real 424).
     01_data_prep.py reconciles snapshot final_count with daily_scrape.csv peak,
-    so this step is safe to run even when the manual export is days old.
+    so this step is safe to run even when the manual export is days old — but a
+    badly stale export still hides newly-opened tournaments, so it warns.
     """
     src = os.path.expanduser("~/Downloads/all_registrations.csv")
     if not os.path.exists(src):
+        msg = (f"all_registrations.csv export missing at {src} — tournament roster "
+               f"is frozen; tournaments that opened registration since the last "
+               f"export are invisible to the model and show a flat historical "
+               f"average. Re-export from the CCA admin.")
         print(f"\n{'─'*60}")
         print(f"  STEP: Refresh tournament summary (SKIPPED)")
         print(f"{'─'*60}")
-        print(f"  {src} not found — keeping existing tournament_summary.csv.")
-        print(f"  04e_performance_data.py freshness assertion will abort if grading "
-              f"would be against stale truth.")
+        print(f"  WARNING: {msg}")
+        _PIPELINE_WARNINGS.append({'step': 'Refresh tournament summary', 'text': msg})
         return
+    export_date = datetime.fromtimestamp(os.path.getmtime(src))
+    age_days = (datetime.now() - export_date).days
+    if age_days >= EXPORT_STALE_WARN_DAYS:
+        msg = (f"all_registrations.csv export is {age_days} days old "
+               f"(dated {export_date.strftime('%Y-%m-%d')}). Tournaments that opened "
+               f"registration after that date are absent from the roster and will "
+               f"show a flat historical-average estimate with no live entry chart. "
+               f"Re-export from the CCA admin to restore live forecasts.")
+        print(f"\n  WARNING: {msg}")
+        _PIPELINE_WARNINGS.append({'step': 'Refresh tournament summary', 'text': msg})
     run_step("Refresh tournament summary (01_data_prep.py)",
              [sys.executable, "01_data_prep.py"])
 

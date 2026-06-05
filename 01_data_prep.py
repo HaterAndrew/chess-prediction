@@ -15,6 +15,10 @@ import seaborn as sns
 import re
 import os
 
+# Shared venue-suffix stripper so a relocated edition folds onto its history
+# both here (summary build) and in tournament_aliases.canonicalize_family.
+from tournament_aliases import strip_venue_suffix
+
 # ── Config ──────────────────────────────────────────────────────────────────
 DATA_PATH = os.path.expanduser("~/Downloads/all_registrations.csv")
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
@@ -50,6 +54,10 @@ def extract_family(name):
 
 def canonicalize_family(name):
     """Fix known typos and normalize spacing/punctuation in family names."""
+    # Drop a trailing "(in <location>)" venue qualifier so a relocated edition
+    # (e.g. "Eastern Class Championships (in Connecticut)") lands in the same
+    # family as its prior years instead of a brand-new zero-history family.
+    name = strip_venue_suffix(name)
     # Fix common typos
     name = name.replace('Championshps', 'Championships')
     name = name.replace('Championsips', 'Championships')

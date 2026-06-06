@@ -240,6 +240,16 @@ def step_performance():
     print(f"  Generated predictions for {n_tournaments} tournaments")
 
 
+def step_data_health():
+    """Scan the prediction output (website_data.json) for degraded tournament
+    cards — frozen estimates, collapsed charts, name/roster mismatches, alias
+    mislabels, missing fees, etc. Read-only and non-blocking; CRITICAL/HIGH
+    findings print WARNING: lines that _harvest_warnings folds into
+    audit_warnings.json (and the CI step summary)."""
+    run_step("Scan prediction data health (data_health.py)",
+             [sys.executable, "data_health.py"])
+
+
 def step_update_html():
     """Replace the TOURNAMENT_DATA block in docs/index.html."""
     if not os.path.exists(WEBSITE_JSON):
@@ -528,6 +538,14 @@ def main():
                 json.dump(wd, f, indent=2)
             n_alerts = sum(1 for a in alerts if a['status'] != 'on_pace')
             print(f"  {len(alerts)} tournaments checked, {n_alerts} pace alert(s)")
+
+        # Scan the final prediction output for degraded tournament cards.
+        # Read-only + non-blocking: findings surface via audit_warnings.json,
+        # a scanner failure must never abort the daily run.
+        try:
+            step_data_health()
+        except Exception as e:
+            print(f"\n  Warning: Data-health scan failed (non-fatal): {e}")
 
         # Always update HTML so the stale flag gets embedded in the page
         step_update_html()

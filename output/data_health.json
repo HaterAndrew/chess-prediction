@@ -1,0 +1,114 @@
+{
+  "generated": "2026-06-06",
+  "scanned_at": "2026-06-06T14:20:40",
+  "counts": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "MEDIUM": 1,
+    "INFO": 16
+  },
+  "findings": [
+    {
+      "severity": "MEDIUM",
+      "mode": "null-fee-near-event",
+      "family": "DC International",
+      "message": "regular_fee is null with 19 days remaining"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Atlantic Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Central California Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Continental Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Eastern Chess Congress (in New Jersey)",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Eastern Class Championships (in Connecticut)",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Indianapolis Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Kings Island Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Los Angeles Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Midwest Class Championships",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "National Chess Congress",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "New York State Championship",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "North American Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Southern Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "World Open Under 13 Championship",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "historical-no-curve",
+      "family": "207 cards",
+      "message": "historical editions lack day-by-day registration data (no timestamps captured)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "walkin-global-fallback",
+      "family": "117 cards",
+      "message": "walk-in multiplier used the global 'estimate' fallback (no family-specific stats)"
+    }
+  ]
+}

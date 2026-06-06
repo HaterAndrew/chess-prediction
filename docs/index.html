@@ -853,7 +853,7 @@
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
   "generated": "2026-06-06",
-  "generated_time": "2026-06-06T01:06:10.478585-04:00",
+  "generated_time": "2026-06-06T08:20:38.047177-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 16,
@@ -866,8 +866,8 @@ const TOURNAMENT_DATA = {
       "registration_close": "2026-06-06",
       "early_bird_deadline": null,
       "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
+      "regular_fee": 93.0,
+      "onsite_fee": 110.0,
       "current_count": 198,
       "gross_count": 206,
       "withdrawal_count": 8,
@@ -1260,16 +1260,7 @@ const TOURNAMENT_DATA = {
       "prior_year_pace": null,
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": null,
-      "pace_alert": {
-        "family": "Hartford Open",
-        "status": "on_pace",
-        "actual": 198,
-        "expected": 184,
-        "deviation_pct": 7.9,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+8%)"
-      }
+      "prediction_tier": null
     },
     {
       "family": "Cleveland Open",
@@ -1661,16 +1652,7 @@ const TOURNAMENT_DATA = {
       "prior_year_pace": null,
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": null,
-      "pace_alert": {
-        "family": "Cleveland Open",
-        "status": "on_pace",
-        "actual": 169,
-        "expected": 180,
-        "deviation_pct": -6.2,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-6%)"
-      }
+      "prediction_tier": null
     },
     {
       "family": "New York State Open",
@@ -1680,8 +1662,8 @@ const TOURNAMENT_DATA = {
       "registration_close": "2026-06-20",
       "early_bird_deadline": null,
       "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
+      "regular_fee": 88.0,
+      "onsite_fee": 100.0,
       "current_count": 41,
       "gross_count": 42,
       "withdrawal_count": 1,
@@ -2063,16 +2045,7 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": true,
       "n_historical_editions": 2,
-      "prediction_tier": "family-direct",
-      "pace_alert": {
-        "family": "New York State Open",
-        "status": "above_pace",
-        "actual": 41,
-        "expected": 30,
-        "deviation_pct": 36.7,
-        "n_years": 2,
-        "message": "Registrations are 36.7% above 2-year at-this-point pace"
-      }
+      "prediction_tier": "family-direct"
     },
     {
       "family": "DC International",
@@ -2474,18 +2447,9 @@ const TOURNAMENT_DATA = {
         "count_at_same_point": 58,
         "final": 126
       },
-      "low_confidence": true,
-      "n_historical_editions": 0,
-      "prediction_tier": "family-alias",
-      "pace_alert": {
-        "family": "DC International",
-        "status": "on_pace",
-        "actual": 62,
-        "expected": 60,
-        "deviation_pct": 4.2,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+4%)"
-      }
+      "low_confidence": false,
+      "n_historical_editions": 4,
+      "prediction_tier": "family-alias"
     },
     {
       "family": "World Open lower sections",
@@ -2495,8 +2459,8 @@ const TOURNAMENT_DATA = {
       "registration_close": "2026-06-27",
       "early_bird_deadline": null,
       "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
+      "regular_fee": 228.0,
+      "onsite_fee": 250.0,
       "current_count": 41,
       "gross_count": 41,
       "withdrawal_count": 0,
@@ -2743,16 +2707,7 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": true,
       "n_historical_editions": 3,
-      "prediction_tier": "family-direct",
-      "pace_alert": {
-        "family": "World Open lower sections",
-        "status": "below_pace",
-        "actual": 41,
-        "expected": 59,
-        "deviation_pct": -30.1,
-        "n_years": 3,
-        "message": "Registrations are 30.1% below 3-year at-this-point pace"
-      }
+      "prediction_tier": "family-direct"
     },
     {
       "family": "DC Open",
@@ -2762,8 +2717,8 @@ const TOURNAMENT_DATA = {
       "registration_close": "2026-06-27",
       "early_bird_deadline": null,
       "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
+      "regular_fee": 118.0,
+      "onsite_fee": 140.0,
       "current_count": 45,
       "gross_count": 46,
       "withdrawal_count": 1,
@@ -3102,18 +3057,9 @@ const TOURNAMENT_DATA = {
         "count_at_same_point": 80,
         "final": 325
       },
-      "low_confidence": true,
-      "n_historical_editions": 0,
-      "prediction_tier": "family-alias",
-      "pace_alert": {
-        "family": "DC Open",
-        "status": "below_pace",
-        "actual": 45,
-        "expected": 70,
-        "deviation_pct": -35.3,
-        "n_years": 4,
-        "message": "Registrations are 35.3% below 4-year at-this-point pace"
-      }
+      "low_confidence": false,
+      "n_historical_editions": 4,
+      "prediction_tier": "family-alias"
     },
     {
       "family": "World Open Under 13 Championship",
@@ -3122,8 +3068,8 @@ const TOURNAMENT_DATA = {
       "event_end": "2026-06-30",
       "early_bird_deadline": null,
       "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
+      "regular_fee": 58.0,
+      "onsite_fee": 70.0,
       "current_count": 34,
       "gross_count": 34,
       "withdrawal_count": 0,
@@ -3495,16 +3441,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_pace",
-      "pace_alert": {
-        "family": "World Open Under 13 Championship",
-        "status": "above_pace",
-        "actual": 34,
-        "expected": 27,
-        "deviation_pct": 25.9,
-        "n_years": 4,
-        "message": "Registrations are 25.9% above 4-year at-this-point pace"
-      }
+      "prediction_source": "metadata_pace"
     },
     {
       "family": "World Open top 6 sections",
@@ -3514,8 +3451,8 @@ const TOURNAMENT_DATA = {
       "registration_close": "2026-07-04",
       "early_bird_deadline": null,
       "early_bird_fee": null,
-      "regular_fee": null,
-      "onsite_fee": null,
+      "regular_fee": 328.0,
+      "onsite_fee": 350.0,
       "current_count": 449,
       "gross_count": 449,
       "withdrawal_count": 0,
@@ -3890,18 +3827,9 @@ const TOURNAMENT_DATA = {
         "count_at_same_point": 436,
         "final": 1165
       },
-      "low_confidence": true,
-      "n_historical_editions": 3,
-      "prediction_tier": "family-direct",
-      "pace_alert": {
-        "family": "World Open top 6 sections",
-        "status": "on_pace",
-        "actual": 449,
-        "expected": 476,
-        "deviation_pct": -5.7,
-        "n_years": 3,
-        "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-6%)"
-      }
+      "low_confidence": false,
+      "n_historical_editions": 4,
+      "prediction_tier": "family-direct"
     },
     {
       "family": "Chicago Class",
@@ -4309,16 +4237,7 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct",
-      "pace_alert": {
-        "family": "Chicago Class",
-        "status": "on_pace",
-        "actual": 13,
-        "expected": 16,
-        "deviation_pct": -17.5,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-18%)"
-      }
+      "prediction_tier": "family-direct"
     },
     {
       "family": "Pittsburgh Open",
@@ -4722,16 +4641,7 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct",
-      "pace_alert": {
-        "family": "Pittsburgh Open",
-        "status": "above_pace",
-        "actual": 19,
-        "expected": 13,
-        "deviation_pct": 46.2,
-        "n_years": 4,
-        "message": "Registrations are 46.2% above 4-year at-this-point pace"
-      }
+      "prediction_tier": "family-direct"
     },
     {
       "family": "Southern Open",
@@ -5133,16 +5043,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_pace",
-      "pace_alert": {
-        "family": "Southern Open",
-        "status": "on_pace",
-        "actual": 19,
-        "expected": 20,
-        "deviation_pct": -6.2,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-6%)"
-      }
+      "prediction_source": "metadata_pace"
     },
     {
       "family": "Bradley Open",
@@ -5550,16 +5451,7 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct",
-      "pace_alert": {
-        "family": "Bradley Open",
-        "status": "above_pace",
-        "actual": 13,
-        "expected": 9,
-        "deviation_pct": 40.5,
-        "n_years": 4,
-        "message": "Registrations are 40.5% above 4-year at-this-point pace"
-      }
+      "prediction_tier": "family-direct"
     },
     {
       "family": "Pacific Coast Open",
@@ -5967,16 +5859,7 @@ const TOURNAMENT_DATA = {
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct",
-      "pace_alert": {
-        "family": "Pacific Coast Open",
-        "status": "on_pace",
-        "actual": 22,
-        "expected": 20,
-        "deviation_pct": 11.4,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+11%)"
-      }
+      "prediction_tier": "family-direct"
     },
     {
       "family": "Continental Open",
@@ -6306,16 +6189,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "pace_alert": {
-        "family": "Continental Open",
-        "status": "above_pace",
-        "actual": 8,
-        "expected": 6,
-        "deviation_pct": 33.3,
-        "n_years": 4,
-        "message": "Registrations are 33.3% above 4-year at-this-point pace"
-      }
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "Central California Open",
@@ -6697,16 +6571,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "pace_alert": {
-        "family": "Central California Open",
-        "status": "below_pace",
-        "actual": 3,
-        "expected": 4,
-        "deviation_pct": -33.3,
-        "n_years": 4,
-        "message": "Registrations are 33.3% below 4-year at-this-point pace"
-      }
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "Atlantic Open",
@@ -7088,16 +6953,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "pace_alert": {
-        "family": "Atlantic Open",
-        "status": "below_pace",
-        "actual": 2,
-        "expected": 4,
-        "deviation_pct": -55.6,
-        "n_years": 4,
-        "message": "Registrations are 55.6% below 4-year at-this-point pace"
-      }
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "Indianapolis Open",
@@ -7399,16 +7255,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "pace_alert": {
-        "family": "Indianapolis Open",
-        "status": "on_pace",
-        "actual": 3,
-        "expected": 2,
-        "deviation_pct": 20.0,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+20%)"
-      }
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "New York State Championship",
@@ -7790,16 +7637,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "pace_alert": {
-        "family": "New York State Championship",
-        "status": "above_pace",
-        "actual": 8,
-        "expected": 4,
-        "deviation_pct": 128.6,
-        "n_years": 4,
-        "message": "Registrations are 128.6% above 4-year at-this-point pace"
-      }
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "Midwest Class Championships",
@@ -8077,16 +7915,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "pace_alert": {
-        "family": "Midwest Class Championships",
-        "status": "above_pace",
-        "actual": 3,
-        "expected": 2,
-        "deviation_pct": 71.4,
-        "n_years": 4,
-        "message": "Registrations are 71.4% above 4-year at-this-point pace"
-      }
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "Eastern Class Championships (in Connecticut)",
@@ -8892,16 +8721,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "pace_alert": {
-        "family": "Los Angeles Open",
-        "status": "on_pace",
-        "actual": 1,
-        "expected": 1,
-        "deviation_pct": 0.0,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
-      }
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "Kings Island Open",
@@ -9151,16 +8971,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "pace_alert": {
-        "family": "Kings Island Open",
-        "status": "on_pace",
-        "actual": 1,
-        "expected": 1,
-        "deviation_pct": 0.0,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
-      }
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "National Chess Congress",
@@ -9410,16 +9221,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "pace_alert": {
-        "family": "National Chess Congress",
-        "status": "on_pace",
-        "actual": 1,
-        "expected": 1,
-        "deviation_pct": 0.0,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
-      }
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "North American Open",
@@ -9609,16 +9411,7 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "pace_alert": {
-        "family": "North American Open",
-        "status": "above_pace",
-        "actual": 2,
-        "expected": 2,
-        "deviation_pct": 33.3,
-        "n_years": 4,
-        "message": "Registrations are 33.3% above 4-year at-this-point pace"
-      }
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "Boston Chess Congress",
@@ -11736,8 +11529,8 @@ const TOURNAMENT_DATA = {
       "status": "complete",
       "prediction_source": "final",
       "prior_year_pace": null,
-      "low_confidence": true,
-      "n_historical_editions": 1,
+      "low_confidence": false,
+      "n_historical_editions": 5,
       "prediction_tier": null,
       "walkin_multiplier": 1.1,
       "walkin_source": "estimate",
@@ -12061,8 +11854,8 @@ const TOURNAMENT_DATA = {
       "status": "complete",
       "prediction_source": "final",
       "prior_year_pace": null,
-      "low_confidence": true,
-      "n_historical_editions": 3,
+      "low_confidence": false,
+      "n_historical_editions": 5,
       "prediction_tier": null,
       "walkin_multiplier": 1.038,
       "walkin_source": "family",
@@ -13505,8 +13298,8 @@ const TOURNAMENT_DATA = {
       "status": "complete",
       "prediction_source": "final",
       "prior_year_pace": null,
-      "low_confidence": true,
-      "n_historical_editions": 2,
+      "low_confidence": false,
+      "n_historical_editions": 5,
       "prediction_tier": null,
       "walkin_multiplier": 0.972,
       "walkin_source": "family",
@@ -84359,217 +84152,6 @@ const TOURNAMENT_DATA = {
       "total_estimate": 1282,
       "total_ci_lower": 1282,
       "total_ci_upper": 1282
-    }
-  ],
-  "last_updated": "2026-06-06 05:05:27",
-  "is_stale": false,
-  "alerts": [
-    {
-      "family": "Hartford Open",
-      "status": "on_pace",
-      "actual": 198,
-      "expected": 184,
-      "deviation_pct": 7.9,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+8%)"
-    },
-    {
-      "family": "Cleveland Open",
-      "status": "on_pace",
-      "actual": 169,
-      "expected": 180,
-      "deviation_pct": -6.2,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-6%)"
-    },
-    {
-      "family": "New York State Open",
-      "status": "above_pace",
-      "actual": 41,
-      "expected": 30,
-      "deviation_pct": 36.7,
-      "n_years": 2,
-      "message": "Registrations are 36.7% above 2-year at-this-point pace"
-    },
-    {
-      "family": "DC International",
-      "status": "on_pace",
-      "actual": 62,
-      "expected": 60,
-      "deviation_pct": 4.2,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+4%)"
-    },
-    {
-      "family": "World Open lower sections",
-      "status": "below_pace",
-      "actual": 41,
-      "expected": 59,
-      "deviation_pct": -30.1,
-      "n_years": 3,
-      "message": "Registrations are 30.1% below 3-year at-this-point pace"
-    },
-    {
-      "family": "DC Open",
-      "status": "below_pace",
-      "actual": 45,
-      "expected": 70,
-      "deviation_pct": -35.3,
-      "n_years": 4,
-      "message": "Registrations are 35.3% below 4-year at-this-point pace"
-    },
-    {
-      "family": "World Open Under 13 Championship",
-      "status": "above_pace",
-      "actual": 34,
-      "expected": 27,
-      "deviation_pct": 25.9,
-      "n_years": 4,
-      "message": "Registrations are 25.9% above 4-year at-this-point pace"
-    },
-    {
-      "family": "World Open top 6 sections",
-      "status": "on_pace",
-      "actual": 449,
-      "expected": 476,
-      "deviation_pct": -5.7,
-      "n_years": 3,
-      "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-6%)"
-    },
-    {
-      "family": "Chicago Class",
-      "status": "on_pace",
-      "actual": 13,
-      "expected": 16,
-      "deviation_pct": -17.5,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-18%)"
-    },
-    {
-      "family": "Pittsburgh Open",
-      "status": "above_pace",
-      "actual": 19,
-      "expected": 13,
-      "deviation_pct": 46.2,
-      "n_years": 4,
-      "message": "Registrations are 46.2% above 4-year at-this-point pace"
-    },
-    {
-      "family": "Southern Open",
-      "status": "on_pace",
-      "actual": 19,
-      "expected": 20,
-      "deviation_pct": -6.2,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-6%)"
-    },
-    {
-      "family": "Bradley Open",
-      "status": "above_pace",
-      "actual": 13,
-      "expected": 9,
-      "deviation_pct": 40.5,
-      "n_years": 4,
-      "message": "Registrations are 40.5% above 4-year at-this-point pace"
-    },
-    {
-      "family": "Pacific Coast Open",
-      "status": "on_pace",
-      "actual": 22,
-      "expected": 20,
-      "deviation_pct": 11.4,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+11%)"
-    },
-    {
-      "family": "Continental Open",
-      "status": "above_pace",
-      "actual": 8,
-      "expected": 6,
-      "deviation_pct": 33.3,
-      "n_years": 4,
-      "message": "Registrations are 33.3% above 4-year at-this-point pace"
-    },
-    {
-      "family": "Central California Open",
-      "status": "below_pace",
-      "actual": 3,
-      "expected": 4,
-      "deviation_pct": -33.3,
-      "n_years": 4,
-      "message": "Registrations are 33.3% below 4-year at-this-point pace"
-    },
-    {
-      "family": "Atlantic Open",
-      "status": "below_pace",
-      "actual": 2,
-      "expected": 4,
-      "deviation_pct": -55.6,
-      "n_years": 4,
-      "message": "Registrations are 55.6% below 4-year at-this-point pace"
-    },
-    {
-      "family": "Indianapolis Open",
-      "status": "on_pace",
-      "actual": 3,
-      "expected": 2,
-      "deviation_pct": 20.0,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+20%)"
-    },
-    {
-      "family": "New York State Championship",
-      "status": "above_pace",
-      "actual": 8,
-      "expected": 4,
-      "deviation_pct": 128.6,
-      "n_years": 4,
-      "message": "Registrations are 128.6% above 4-year at-this-point pace"
-    },
-    {
-      "family": "Midwest Class Championships",
-      "status": "above_pace",
-      "actual": 3,
-      "expected": 2,
-      "deviation_pct": 71.4,
-      "n_years": 4,
-      "message": "Registrations are 71.4% above 4-year at-this-point pace"
-    },
-    {
-      "family": "Los Angeles Open",
-      "status": "on_pace",
-      "actual": 1,
-      "expected": 1,
-      "deviation_pct": 0.0,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
-    },
-    {
-      "family": "Kings Island Open",
-      "status": "on_pace",
-      "actual": 1,
-      "expected": 1,
-      "deviation_pct": 0.0,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
-    },
-    {
-      "family": "National Chess Congress",
-      "status": "on_pace",
-      "actual": 1,
-      "expected": 1,
-      "deviation_pct": 0.0,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
-    },
-    {
-      "family": "North American Open",
-      "status": "above_pace",
-      "actual": 2,
-      "expected": 2,
-      "deviation_pct": 33.3,
-      "n_years": 4,
-      "message": "Registrations are 33.3% above 4-year at-this-point pace"
     }
   ]
 };

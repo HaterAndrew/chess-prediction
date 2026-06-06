@@ -741,11 +741,18 @@ for _, row in t2026.iterrows():
     withdrawal_count = wd_info.get('withdrawal_count', 0)
     gross_count = wd_info.get('gross_count', int(current_count))
 
-    # AUDIT.md C8 / B1 — surface model confidence + tier on each prediction
-    n_editions_for_family = (
-        prod_model.family_n_editions.get(family, 0)
-        if hasattr(prod_model, 'family_n_editions') else 0
-    )
+    # AUDIT.md C8 / B1 — surface model confidence + tier on each prediction.
+    # Count direct editions PLUS alias-family editions so a renamed/relocated
+    # family (e.g. "DC International", whose history lives under "Philadelphia
+    # International") reports its true edition count instead of 0 and isn't
+    # wrongly flagged low-confidence. Mirrors the alias sum 04c uses for CI
+    # widening; without it the JSON field under-reports for every alias family.
+    if hasattr(prod_model, 'family_n_editions'):
+        n_editions_for_family = prod_model.family_n_editions.get(family, 0)
+        for _alias in m04c.FAMILY_ALIASES.get(family, []):
+            n_editions_for_family += prod_model.family_n_editions.get(_alias, 0)
+    else:
+        n_editions_for_family = 0
     low_confidence = n_editions_for_family < 4
     # prod_model._last_tier only describes a predict_nowcast() call. The
     # online-window path uses predict_with_lognormal_ci instead, so leave the
@@ -1075,9 +1082,10 @@ for _, row in historical_valid.iterrows():
 seen_keys = {}
 deduped = []
 for t_out in tournaments_out:
-    # Normalize: strip commas, lowercase for comparison
-    norm = t_out["family"].replace(",", "").lower().strip()
-    key = (norm, t_out["year"])
+    # Canonicalize so comma variants AND venue-suffix variants ("... (in
+    # Connecticut)") collapse to one key — not just comma/case normalization,
+    # which let a relocated edition coexist with its folded form.
+    key = (canonicalize_family(t_out["family"]), t_out["year"])
     if key in seen_keys:
         # Keep the one with more data (higher current_count)
         existing = seen_keys[key]

@@ -1,7 +1,11 @@
 {
-  "generated": "2026-06-05 05:48:54",
-  "count": 1,
+  "generated": "2026-06-06 05:05:27",
+  "count": 2,
   "warnings": [
+    {
+      "step": "Refresh tournament summary",
+      "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 tournament roster is frozen; tournaments that opened registration since the last export are invisible to the model and show a flat historical average. Re-export from the CCA admin."
+    },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
       "text": "source-parse failure \u2014 Chicago Open 2026: pattern \"Chicago Open\" not found in chesstour.com schedule"

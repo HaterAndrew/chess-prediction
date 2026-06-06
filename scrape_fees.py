@@ -547,6 +547,17 @@ def main():
     else:
         log.warning("Parsed 0 records — CSV not written.")
 
+    # Bridge the scraped flyer fees into the family-keyed tournament_metadata.csv
+    # the prediction path reads. Without this, fees sit unused in
+    # tournament_fees.csv (the gap the data-health scan surfaced — seven
+    # near-events showed null fees that were already scraped here). Lazy import
+    # avoids a scrape_fees <-> validate_fees import cycle; non-fatal.
+    try:
+        from merge_fees import merge_fees
+        merge_fees()
+    except Exception as e:
+        log.warning("fee->metadata merge failed: %s", e)
+
 
 if __name__ == "__main__":
     main()

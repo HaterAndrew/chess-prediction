@@ -68,6 +68,12 @@ FAMILY_TO_CODE = {
     "Boston Chess Congress": "bcc",
     "Eastern Chess Congress": "ecc",
     "Continental Class": "ccc",
+    "Hartford Open": "ho",
+    "New York State Open": "nyso",
+    "DC International": "dci",
+    "DC Open": "dco",
+    "World Open lower sections": "wolower",
+    "World Open Under 13 Championship": "wu",
 }
 
 _session = polite_session()

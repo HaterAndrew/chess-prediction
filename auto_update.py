@@ -155,15 +155,23 @@ def step_data_prep():
     """
     src = os.path.expanduser("~/Downloads/all_registrations.csv")
     if not os.path.exists(src):
+        # The export only adds NEW tournaments to the roster — so without it the
+        # roster is frozen (warn below). But the final_count reconcile that keeps
+        # *existing* events' truth labels fresh needs only daily_scrape.csv, so
+        # run that here instead of skipping outright. Otherwise a completed event
+        # keeps its stale early-registration count and trips 04e's truth-label
+        # freshness guard the day its end_date passes (June 2026 Hartford/Cleveland).
         msg = (f"all_registrations.csv export missing at {src} — tournament roster "
                f"is frozen; tournaments that opened registration since the last "
                f"export are invisible to the model and show a flat historical "
                f"average. Re-export from the CCA admin.")
         print(f"\n{'─'*60}")
-        print(f"  STEP: Refresh tournament summary (SKIPPED)")
+        print(f"  STEP: Refresh tournament summary (export missing — reconcile-only)")
         print(f"{'─'*60}")
         print(f"  WARNING: {msg}")
         _PIPELINE_WARNINGS.append({'step': 'Refresh tournament summary', 'text': msg})
+        from reconcile_final_counts import reconcile_final_counts
+        reconcile_final_counts(OUTPUT_DIR)
         return
     export_date = datetime.fromtimestamp(os.path.getmtime(src))
     age_days = (datetime.now() - export_date).days

@@ -852,8 +852,8 @@
 // TOURNAMENT DATA (embedded from model pipeline)
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
-  "generated": "2026-06-08",
-  "generated_time": "2026-06-08T06:55:04.146511-04:00",
+  "generated": "2026-06-09",
+  "generated_time": "2026-06-09T01:18:08.371129-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
   "n_completed_in_training": 18,
@@ -868,13 +868,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 88.0,
       "onsite_fee": 100.0,
-      "current_count": 43,
-      "gross_count": 44,
+      "current_count": 46,
+      "gross_count": 47,
       "withdrawal_count": 1,
-      "days_remaining": 11,
-      "point_estimate": 87,
-      "ci_lower": 60,
-      "ci_upper": 128,
+      "days_remaining": 10,
+      "point_estimate": 88,
+      "ci_lower": 59,
+      "ci_upper": 131,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1196,6 +1196,10 @@ const TOURNAMENT_DATA = {
         [
           77,
           43
+        ],
+        [
+          78,
+          46
         ]
       ],
       "registration_curve": [
@@ -1252,7 +1256,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 30,
+        "count_at_same_point": 31,
         "final": 83
       },
       "low_confidence": true,
@@ -1261,11 +1265,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "New York State Open",
         "status": "above_pace",
-        "actual": 43,
-        "expected": 32,
-        "deviation_pct": 34.4,
+        "actual": 46,
+        "expected": 34,
+        "deviation_pct": 37.3,
         "n_years": 2,
-        "message": "Registrations are 34.4% above 2-year at-this-point pace"
+        "message": "Registrations are 37.3% above 2-year at-this-point pace"
       }
     },
     {
@@ -1278,13 +1282,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 65,
-      "gross_count": 66,
+      "current_count": 67,
+      "gross_count": 68,
       "withdrawal_count": 1,
-      "days_remaining": 17,
-      "point_estimate": 119,
-      "ci_lower": 114,
-      "ci_upper": 124,
+      "days_remaining": 16,
+      "point_estimate": 120,
+      "ci_lower": 116,
+      "ci_upper": 125,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1617,6 +1621,10 @@ const TOURNAMENT_DATA = {
         [
           153,
           65
+        ],
+        [
+          154,
+          67
         ]
       ],
       "registration_curve": [
@@ -1682,11 +1690,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "DC International",
         "status": "on_pace",
-        "actual": 65,
-        "expected": 62,
-        "deviation_pct": 4.4,
+        "actual": 67,
+        "expected": 63,
+        "deviation_pct": 6.3,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+4%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+6%)"
       }
     },
     {
@@ -1702,10 +1710,10 @@ const TOURNAMENT_DATA = {
       "current_count": 45,
       "gross_count": 45,
       "withdrawal_count": 0,
-      "days_remaining": 18,
-      "point_estimate": 131,
+      "days_remaining": 17,
+      "point_estimate": 130,
       "ci_lower": 101,
-      "ci_upper": 169,
+      "ci_upper": 167,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1892,6 +1900,10 @@ const TOURNAMENT_DATA = {
         [
           42,
           45
+        ],
+        [
+          43,
+          45
         ]
       ],
       "registration_curve": [
@@ -1948,7 +1960,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 71,
+        "count_at_same_point": 72,
         "final": 135
       },
       "low_confidence": true,
@@ -1958,10 +1970,10 @@ const TOURNAMENT_DATA = {
         "family": "World Open lower sections",
         "status": "below_pace",
         "actual": 45,
-        "expected": 62,
-        "deviation_pct": -27.8,
+        "expected": 65,
+        "deviation_pct": -30.4,
         "n_years": 3,
-        "message": "Registrations are 27.8% below 3-year at-this-point pace"
+        "message": "Registrations are 30.4% below 3-year at-this-point pace"
       }
     },
     {
@@ -1974,13 +1986,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 118.0,
       "onsite_fee": 140.0,
-      "current_count": 47,
-      "gross_count": 48,
+      "current_count": 49,
+      "gross_count": 50,
       "withdrawal_count": 1,
-      "days_remaining": 18,
+      "days_remaining": 17,
       "point_estimate": 260,
-      "ci_lower": 232,
-      "ci_upper": 291,
+      "ci_lower": 234,
+      "ci_upper": 289,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2261,6 +2273,10 @@ const TOURNAMENT_DATA = {
         [
           77,
           47
+        ],
+        [
+          78,
+          49
         ]
       ],
       "registration_curve": [
@@ -2317,7 +2333,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 84,
+        "count_at_same_point": 87,
         "final": 325
       },
       "low_confidence": false,
@@ -2326,11 +2342,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "DC Open",
         "status": "below_pace",
-        "actual": 47,
-        "expected": 74,
-        "deviation_pct": -36.9,
+        "actual": 49,
+        "expected": 77,
+        "deviation_pct": -36.6,
         "n_years": 4,
-        "message": "Registrations are 36.9% below 4-year at-this-point pace"
+        "message": "Registrations are 36.6% below 4-year at-this-point pace"
       }
     },
     {
@@ -2342,13 +2358,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 58.0,
       "onsite_fee": 70.0,
-      "current_count": 35,
-      "gross_count": 35,
+      "current_count": 36,
+      "gross_count": 36,
       "withdrawal_count": 0,
-      "days_remaining": 21,
-      "point_estimate": 98,
-      "ci_lower": 81,
-      "ci_upper": 118,
+      "days_remaining": 20,
+      "point_estimate": 101,
+      "ci_lower": 84,
+      "ci_upper": 122,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2665,6 +2681,10 @@ const TOURNAMENT_DATA = {
         [
           72,
           35
+        ],
+        [
+          73,
+          36
         ]
       ],
       "registration_curve": [
@@ -2724,12 +2744,12 @@ const TOURNAMENT_DATA = {
       "prediction_source": "metadata_pace",
       "pace_alert": {
         "family": "World Open Under 13 Championship",
-        "status": "above_pace",
-        "actual": 35,
-        "expected": 28,
-        "deviation_pct": 27.3,
+        "status": "on_pace",
+        "actual": 36,
+        "expected": 30,
+        "deviation_pct": 20.0,
         "n_years": 4,
-        "message": "Registrations are 27.3% above 4-year at-this-point pace"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+20%)"
       }
     },
     {
@@ -2742,13 +2762,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 328.0,
       "onsite_fee": 350.0,
-      "current_count": 465,
-      "gross_count": 465,
+      "current_count": 478,
+      "gross_count": 478,
       "withdrawal_count": 0,
-      "days_remaining": 23,
-      "point_estimate": 1106,
-      "ci_lower": 896,
-      "ci_upper": 1365,
+      "days_remaining": 22,
+      "point_estimate": 1110,
+      "ci_lower": 899,
+      "ci_upper": 1369,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3065,6 +3085,10 @@ const TOURNAMENT_DATA = {
         [
           89,
           465
+        ],
+        [
+          90,
+          478
         ]
       ],
       "registration_curve": [
@@ -3121,7 +3145,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 455,
+        "count_at_same_point": 468,
         "final": 1165
       },
       "low_confidence": false,
@@ -3130,9 +3154,9 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "World Open top 6 sections",
         "status": "on_pace",
-        "actual": 465,
-        "expected": 495,
-        "deviation_pct": -6.0,
+        "actual": 478,
+        "expected": 507,
+        "deviation_pct": -5.8,
         "n_years": 3,
         "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-6%)"
       }
@@ -3147,13 +3171,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 148.0,
       "onsite_fee": 170.0,
-      "current_count": 14,
-      "gross_count": 14,
+      "current_count": 17,
+      "gross_count": 17,
       "withdrawal_count": 0,
-      "days_remaining": 39,
-      "point_estimate": 273,
-      "ci_lower": 245,
-      "ci_upper": 305,
+      "days_remaining": 38,
+      "point_estimate": 278,
+      "ci_lower": 251,
+      "ci_upper": 309,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3490,6 +3514,10 @@ const TOURNAMENT_DATA = {
         [
           77,
           14
+        ],
+        [
+          78,
+          17
         ]
       ],
       "registration_curve": [
@@ -3555,11 +3583,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Chicago Class",
         "status": "on_pace",
-        "actual": 14,
+        "actual": 17,
         "expected": 18,
-        "deviation_pct": -20.0,
+        "deviation_pct": -6.8,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-20%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-7%)"
       }
     },
     {
@@ -3575,10 +3603,10 @@ const TOURNAMENT_DATA = {
       "current_count": 23,
       "gross_count": 25,
       "withdrawal_count": 2,
-      "days_remaining": 39,
-      "point_estimate": 185,
-      "ci_lower": 170,
-      "ci_upper": 201,
+      "days_remaining": 38,
+      "point_estimate": 183,
+      "ci_lower": 169,
+      "ci_upper": 199,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3911,6 +3939,10 @@ const TOURNAMENT_DATA = {
         [
           77,
           23
+        ],
+        [
+          78,
+          23
         ]
       ],
       "registration_curve": [
@@ -3977,10 +4009,10 @@ const TOURNAMENT_DATA = {
         "family": "Pittsburgh Open",
         "status": "above_pace",
         "actual": 23,
-        "expected": 13,
-        "deviation_pct": 73.6,
+        "expected": 14,
+        "deviation_pct": 67.3,
         "n_years": 4,
-        "message": "Registrations are 73.6% above 4-year at-this-point pace"
+        "message": "Registrations are 67.3% above 4-year at-this-point pace"
       }
     },
     {
@@ -3992,12 +4024,12 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 20,
-      "gross_count": 20,
+      "current_count": 22,
+      "gross_count": 22,
       "withdrawal_count": 0,
-      "days_remaining": 39,
-      "point_estimate": 287,
-      "ci_lower": 135,
+      "days_remaining": 38,
+      "point_estimate": 315,
+      "ci_lower": 148,
       "ci_upper": 441,
       "ci_level": 0.8,
       "historical": [
@@ -4335,6 +4367,10 @@ const TOURNAMENT_DATA = {
         [
           77,
           20
+        ],
+        [
+          78,
+          22
         ]
       ],
       "registration_curve": [
@@ -4395,11 +4431,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Southern Open",
         "status": "on_pace",
-        "actual": 20,
-        "expected": 22,
-        "deviation_pct": -7.0,
+        "actual": 22,
+        "expected": 24,
+        "deviation_pct": -8.3,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-7%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-8%)"
       }
     },
     {
@@ -4415,10 +4451,10 @@ const TOURNAMENT_DATA = {
       "current_count": 13,
       "gross_count": 13,
       "withdrawal_count": 0,
-      "days_remaining": 46,
-      "point_estimate": 266,
-      "ci_lower": 195,
-      "ci_upper": 363,
+      "days_remaining": 45,
+      "point_estimate": 264,
+      "ci_lower": 193,
+      "ci_upper": 360,
       "ci_level": 0.8,
       "historical": [
         {
@@ -4755,6 +4791,10 @@ const TOURNAMENT_DATA = {
         [
           77,
           13
+        ],
+        [
+          78,
+          13
         ]
       ],
       "registration_curve": [
@@ -4819,12 +4859,12 @@ const TOURNAMENT_DATA = {
       "prediction_tier": "family-direct",
       "pace_alert": {
         "family": "Bradley Open",
-        "status": "above_pace",
+        "status": "on_pace",
         "actual": 13,
-        "expected": 10,
-        "deviation_pct": 23.8,
+        "expected": 12,
+        "deviation_pct": 10.6,
         "n_years": 4,
-        "message": "Registrations are 23.8% above 4-year at-this-point pace"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+11%)"
       }
     },
     {
@@ -4840,10 +4880,10 @@ const TOURNAMENT_DATA = {
       "current_count": 24,
       "gross_count": 24,
       "withdrawal_count": 0,
-      "days_remaining": 53,
-      "point_estimate": 383,
-      "ci_lower": 368,
-      "ci_upper": 399,
+      "days_remaining": 52,
+      "point_estimate": 381,
+      "ci_lower": 366,
+      "ci_upper": 397,
       "ci_level": 0.8,
       "historical": [
         {
@@ -5180,6 +5220,10 @@ const TOURNAMENT_DATA = {
         [
           77,
           24
+        ],
+        [
+          78,
+          24
         ]
       ],
       "registration_curve": [
@@ -5236,7 +5280,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 27,
+        "count_at_same_point": 29,
         "final": 391
       },
       "low_confidence": false,
@@ -5246,10 +5290,10 @@ const TOURNAMENT_DATA = {
         "family": "Pacific Coast Open",
         "status": "on_pace",
         "actual": 24,
-        "expected": 21,
-        "deviation_pct": 15.7,
+        "expected": 22,
+        "deviation_pct": 11.6,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+16%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+12%)"
       }
     },
     {
@@ -5261,10 +5305,10 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 8,
-      "gross_count": 8,
+      "current_count": 9,
+      "gross_count": 9,
       "withdrawal_count": 0,
-      "days_remaining": 66,
+      "days_remaining": 65,
       "point_estimate": 283,
       "ci_lower": 252,
       "ci_upper": 317,
@@ -5532,6 +5576,10 @@ const TOURNAMENT_DATA = {
         [
           59,
           8
+        ],
+        [
+          60,
+          9
         ]
       ],
       "registration_curve": [
@@ -5592,11 +5640,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Continental Open",
         "status": "on_pace",
-        "actual": 8,
-        "expected": 7,
-        "deviation_pct": 10.3,
+        "actual": 9,
+        "expected": 8,
+        "deviation_pct": 20.0,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+10%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+20%)"
       }
     },
     {
@@ -5611,7 +5659,7 @@ const TOURNAMENT_DATA = {
       "current_count": 3,
       "gross_count": 4,
       "withdrawal_count": 1,
-      "days_remaining": 67,
+      "days_remaining": 66,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -5931,6 +5979,10 @@ const TOURNAMENT_DATA = {
         [
           72,
           3
+        ],
+        [
+          73,
+          3
         ]
       ],
       "registration_curve": [
@@ -5993,9 +6045,9 @@ const TOURNAMENT_DATA = {
         "status": "below_pace",
         "actual": 3,
         "expected": 5,
-        "deviation_pct": -40.0,
+        "deviation_pct": -42.9,
         "n_years": 4,
-        "message": "Registrations are 40.0% below 4-year at-this-point pace"
+        "message": "Registrations are 42.9% below 4-year at-this-point pace"
       }
     },
     {
@@ -6010,7 +6062,7 @@ const TOURNAMENT_DATA = {
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 74,
+      "days_remaining": 73,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -6330,6 +6382,10 @@ const TOURNAMENT_DATA = {
         [
           72,
           2
+        ],
+        [
+          73,
+          2
         ]
       ],
       "registration_curve": [
@@ -6409,7 +6465,7 @@ const TOURNAMENT_DATA = {
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 74,
+      "days_remaining": 73,
       "point_estimate": 186,
       "ci_lower": 175,
       "ci_upper": 198,
@@ -6649,6 +6705,10 @@ const TOURNAMENT_DATA = {
         [
           52,
           3
+        ],
+        [
+          53,
+          3
         ]
       ],
       "registration_curve": [
@@ -6728,7 +6788,7 @@ const TOURNAMENT_DATA = {
       "current_count": 8,
       "gross_count": 8,
       "withdrawal_count": 0,
-      "days_remaining": 88,
+      "days_remaining": 87,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -7048,6 +7108,10 @@ const TOURNAMENT_DATA = {
         [
           72,
           8
+        ],
+        [
+          73,
+          8
         ]
       ],
       "registration_curve": [
@@ -7127,7 +7191,7 @@ const TOURNAMENT_DATA = {
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 123,
+      "days_remaining": 122,
       "point_estimate": 313,
       "ci_lower": 296,
       "ci_upper": 338,
@@ -7343,6 +7407,10 @@ const TOURNAMENT_DATA = {
         [
           46,
           3
+        ],
+        [
+          47,
+          3
         ]
       ],
       "registration_curve": [
@@ -7422,7 +7490,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 130,
+      "days_remaining": 129,
       "point_estimate": 221,
       "ci_lower": 198,
       "ci_upper": 246,
@@ -7638,6 +7706,10 @@ const TOURNAMENT_DATA = {
         [
           46,
           1
+        ],
+        [
+          47,
+          1
         ]
       ],
       "registration_curve": [
@@ -7708,7 +7780,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 2,
       "withdrawal_count": 1,
-      "days_remaining": 137,
+      "days_remaining": 136,
       "point_estimate": 469,
       "ci_lower": 404,
       "ci_upper": 513,
@@ -7924,6 +7996,10 @@ const TOURNAMENT_DATA = {
         [
           46,
           2
+        ],
+        [
+          47,
+          2
         ]
       ],
       "registration_curve": [
@@ -7994,7 +8070,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 151,
+      "days_remaining": 150,
       "point_estimate": 365,
       "ci_lower": 289,
       "ci_upper": 413,
@@ -8182,6 +8258,10 @@ const TOURNAMENT_DATA = {
         [
           39,
           1
+        ],
+        [
+          40,
+          1
         ]
       ],
       "registration_curve": [
@@ -8261,7 +8341,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 158,
+      "days_remaining": 157,
       "point_estimate": 346,
       "ci_lower": 318,
       "ci_upper": 364,
@@ -8449,6 +8529,10 @@ const TOURNAMENT_DATA = {
         [
           39,
           1
+        ],
+        [
+          40,
+          1
         ]
       ],
       "registration_curve": [
@@ -8528,7 +8612,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 172,
+      "days_remaining": 171,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -8716,6 +8800,10 @@ const TOURNAMENT_DATA = {
         [
           39,
           1
+        ],
+        [
+          40,
+          1
         ]
       ],
       "registration_curve": [
@@ -8795,7 +8883,7 @@ const TOURNAMENT_DATA = {
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 201,
+      "days_remaining": 200,
       "point_estimate": 1081,
       "ci_lower": 946,
       "ci_upper": 1199,
@@ -8922,6 +9010,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           24,
+          2
+        ],
+        [
+          25,
           2
         ]
       ],
@@ -84537,125 +84629,125 @@ const TOURNAMENT_DATA = {
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-06-08 10:54:13",
+  "last_updated": "2026-06-09 05:17:16",
   "is_stale": false,
   "alerts": [
     {
       "family": "New York State Open",
       "status": "above_pace",
-      "actual": 43,
-      "expected": 32,
-      "deviation_pct": 34.4,
+      "actual": 46,
+      "expected": 34,
+      "deviation_pct": 37.3,
       "n_years": 2,
-      "message": "Registrations are 34.4% above 2-year at-this-point pace"
+      "message": "Registrations are 37.3% above 2-year at-this-point pace"
     },
     {
       "family": "DC International",
       "status": "on_pace",
-      "actual": 65,
-      "expected": 62,
-      "deviation_pct": 4.4,
+      "actual": 67,
+      "expected": 63,
+      "deviation_pct": 6.3,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+4%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+6%)"
     },
     {
       "family": "World Open lower sections",
       "status": "below_pace",
       "actual": 45,
-      "expected": 62,
-      "deviation_pct": -27.8,
+      "expected": 65,
+      "deviation_pct": -30.4,
       "n_years": 3,
-      "message": "Registrations are 27.8% below 3-year at-this-point pace"
+      "message": "Registrations are 30.4% below 3-year at-this-point pace"
     },
     {
       "family": "DC Open",
       "status": "below_pace",
-      "actual": 47,
-      "expected": 74,
-      "deviation_pct": -36.9,
+      "actual": 49,
+      "expected": 77,
+      "deviation_pct": -36.6,
       "n_years": 4,
-      "message": "Registrations are 36.9% below 4-year at-this-point pace"
+      "message": "Registrations are 36.6% below 4-year at-this-point pace"
     },
     {
       "family": "World Open Under 13 Championship",
-      "status": "above_pace",
-      "actual": 35,
-      "expected": 28,
-      "deviation_pct": 27.3,
+      "status": "on_pace",
+      "actual": 36,
+      "expected": 30,
+      "deviation_pct": 20.0,
       "n_years": 4,
-      "message": "Registrations are 27.3% above 4-year at-this-point pace"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+20%)"
     },
     {
       "family": "World Open top 6 sections",
       "status": "on_pace",
-      "actual": 465,
-      "expected": 495,
-      "deviation_pct": -6.0,
+      "actual": 478,
+      "expected": 507,
+      "deviation_pct": -5.8,
       "n_years": 3,
       "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-6%)"
     },
     {
       "family": "Chicago Class",
       "status": "on_pace",
-      "actual": 14,
+      "actual": 17,
       "expected": 18,
-      "deviation_pct": -20.0,
+      "deviation_pct": -6.8,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-20%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-7%)"
     },
     {
       "family": "Pittsburgh Open",
       "status": "above_pace",
       "actual": 23,
-      "expected": 13,
-      "deviation_pct": 73.6,
+      "expected": 14,
+      "deviation_pct": 67.3,
       "n_years": 4,
-      "message": "Registrations are 73.6% above 4-year at-this-point pace"
+      "message": "Registrations are 67.3% above 4-year at-this-point pace"
     },
     {
       "family": "Southern Open",
       "status": "on_pace",
-      "actual": 20,
-      "expected": 22,
-      "deviation_pct": -7.0,
+      "actual": 22,
+      "expected": 24,
+      "deviation_pct": -8.3,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-7%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-8%)"
     },
     {
       "family": "Bradley Open",
-      "status": "above_pace",
+      "status": "on_pace",
       "actual": 13,
-      "expected": 10,
-      "deviation_pct": 23.8,
+      "expected": 12,
+      "deviation_pct": 10.6,
       "n_years": 4,
-      "message": "Registrations are 23.8% above 4-year at-this-point pace"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+11%)"
     },
     {
       "family": "Pacific Coast Open",
       "status": "on_pace",
       "actual": 24,
-      "expected": 21,
-      "deviation_pct": 15.7,
+      "expected": 22,
+      "deviation_pct": 11.6,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+16%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+12%)"
     },
     {
       "family": "Continental Open",
       "status": "on_pace",
-      "actual": 8,
-      "expected": 7,
-      "deviation_pct": 10.3,
+      "actual": 9,
+      "expected": 8,
+      "deviation_pct": 20.0,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+10%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+20%)"
     },
     {
       "family": "Central California Open",
       "status": "below_pace",
       "actual": 3,
       "expected": 5,
-      "deviation_pct": -40.0,
+      "deviation_pct": -42.9,
       "n_years": 4,
-      "message": "Registrations are 40.0% below 4-year at-this-point pace"
+      "message": "Registrations are 42.9% below 4-year at-this-point pace"
     },
     {
       "family": "Atlantic Open",
@@ -84736,161 +84828,151 @@ const TOURNAMENT_DATA = {
 // PUZZLE DATA (embedded from puzzle pipeline)
 // ══════════════════════════════════════════════════════════
 const PUZZLE_DATA = {
-  "date": "2026-06-08",
+  "date": "2026-06-09",
   "puzzles": [
     {
-      "id": "096yg",
-      "fen": "6r1/6P1/3k1r2/p2p1P2/Pp5P/3B2R1/2P5/2K5 b - - 0 41",
-      "moves": "d6e5 h4h5 f6h6 g3g6",
-      "rating": 2299,
+      "id": "0oA2X",
+      "fen": "r3k1B1/1ppb4/p5p1/2b1p2p/6qP/6P1/PPP3P1/R2QR1K1 w q - 1 20",
+      "moves": "g1h1 g4g3 g8f7 e8e7 e1e5 g3e5",
+      "rating": 2334,
       "themes": [
         "crushing",
-        "endgame",
-        "quietMove",
-        "short"
+        "long",
+        "middlegame"
       ],
-      "url": "https://lichess.org/training/096yg",
-      "game_url": "https://lichess.org/Av9qTkEn/black#82"
+      "url": "https://lichess.org/training/0oA2X",
+      "game_url": "https://lichess.org/f8egZhGt#39"
     },
     {
-      "id": "04k5T",
-      "fen": "8/7K/6p1/5p2/4kP1P/R2p2P1/6r1/8 w - - 0 50",
-      "moves": "h7g6 g2g3 g6f6 d3d2",
-      "rating": 2016,
+      "id": "0T9c9",
+      "fen": "8/8/1pq1p1kp/p3p2p/1pP1P2K/1P3QP1/P4P2/8 b - - 5 37",
+      "moves": "c6d6 f3h5 g6g7 h5e8",
+      "rating": 2463,
       "themes": [
-        "advancedPawn",
         "crushing",
         "endgame",
         "master",
-        "rookEndgame",
+        "queenEndgame",
         "short"
       ],
-      "url": "https://lichess.org/training/04k5T",
-      "game_url": "https://lichess.org/1A2SEEZm#99"
+      "url": "https://lichess.org/training/0T9c9",
+      "game_url": "https://lichess.org/3L0ux9aJ/black#74"
     },
     {
-      "id": "0stBi",
-      "fen": "3r1r2/pp1RkpQ1/4P1p1/8/5q2/2N5/PP3PbP/5RK1 b - - 1 24",
-      "moves": "d8d7 e6d7 f8d8 f2f3",
-      "rating": 2733,
+      "id": "0fk9A",
+      "fen": "r2qr1k1/pp3pp1/2pb3p/3p1b2/3Pn3/2NQPP2/PPB1N1PP/R4RK1 b - - 0 14",
+      "moves": "d6h2 g1h2 e4c3 d3c3 f5c2 c3c2",
+      "rating": 2198,
       "themes": [
-        "advancedPawn",
         "advantage",
-        "defensiveMove",
-        "master",
-        "masterVsMaster",
+        "hangingPiece",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/0fk9A",
+      "game_url": "https://lichess.org/4U5MW4BS/black#28"
+    },
+    {
+      "id": "08flf",
+      "fen": "1r1r2k1/p5pp/Q2Rp3/4p3/1P6/P3P2P/2q1KPP1/6NR w - - 3 26",
+      "moves": "e2f3 d8f8 f3g3 c2g6 g3h2 f8f2",
+      "rating": 2236,
+      "themes": [
+        "crushing",
+        "deflection",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/08flf",
+      "game_url": "https://lichess.org/ITp2VivX#51"
+    },
+    {
+      "id": "0uZxr",
+      "fen": "r4r1k/pp2Npp1/n3b1Pn/7Q/2B2B2/3P3P/PqP5/4RK1R w - - 1 23",
+      "moves": "f4h6 f7g6 f1g1 g6h5",
+      "rating": 2100,
+      "themes": [
+        "crushing",
+        "discoveredAttack",
+        "discoveredCheck",
         "middlegame",
         "short"
       ],
-      "url": "https://lichess.org/training/0stBi",
-      "game_url": "https://lichess.org/3gkH8Cuk/black#48"
+      "url": "https://lichess.org/training/0uZxr",
+      "game_url": "https://lichess.org/TGfvEd6X#45"
     },
     {
-      "id": "0BrQd",
-      "fen": "8/8/3k2pp/1p6/1P2KP1P/8/8/8 b - - 3 30",
-      "moves": "h6h5 e4d4 d6e6 d4c5 e6f5 c5b5",
-      "rating": 2043,
+      "id": "07v0G",
+      "fen": "r7/2p1qp1k/1p1p2p1/pPbPr2p/P1P1P2N/6QP/6PK/R4R2 w - - 2 30",
+      "moves": "f1f3 e5e4 a1f1 e7h4 f3f7 h7h6",
+      "rating": 2152,
       "themes": [
         "crushing",
-        "endgame",
-        "long",
-        "pawnEndgame",
-        "zugzwang"
-      ],
-      "url": "https://lichess.org/training/0BrQd",
-      "game_url": "https://lichess.org/DGXYnMvU/black#60"
-    },
-    {
-      "id": "0yn1n",
-      "fen": "8/7p/6p1/8/5p2/5P1P/3k1KP1/8 w - - 8 56",
-      "moves": "g2g3 g6g5 h3h4 h7h6 g3f4 g5f4",
-      "rating": 2080,
-      "themes": [
-        "crushing",
-        "endgame",
-        "long",
-        "pawnEndgame",
-        "quietMove"
-      ],
-      "url": "https://lichess.org/training/0yn1n",
-      "game_url": "https://lichess.org/l9NTmjUL#111"
-    },
-    {
-      "id": "0DhqF",
-      "fen": "8/5pR1/p3pB2/4PkPp/2P5/1P2b3/r5PK/8 w - - 5 46",
-      "moves": "g7f7 f5g4 g5g6 a2a1",
-      "rating": 2712,
-      "themes": [
-        "crushing",
-        "defensiveMove",
-        "endgame",
-        "master",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0DhqF",
-      "game_url": "https://lichess.org/VauTAw0k#91"
-    },
-    {
-      "id": "0Pn46",
-      "fen": "8/pbp5/1p4kb/3P4/2P5/1K1n1N2/P3rPPP/RN3R2 w - - 4 22",
-      "moves": "b1c3 e2b2 b3a4 b2b4 a4a3 h6f8",
-      "rating": 2244,
-      "themes": [
-        "advantage",
         "defensiveMove",
         "long",
         "middlegame"
       ],
-      "url": "https://lichess.org/training/0Pn46",
-      "game_url": "https://lichess.org/ySqJ2c5E#43"
+      "url": "https://lichess.org/training/07v0G",
+      "game_url": "https://lichess.org/3s2WKTXa#59"
     },
     {
-      "id": "12uqp",
-      "fen": "4r1k1/1pp3pp/p3Pr2/3P1p2/5Qbq/2NB4/PPP5/4RRK1 w - - 3 20",
-      "moves": "e6e7 f6g6 e1e6 g4f3 e6g6 h4f4",
-      "rating": 2390,
-      "themes": [
-        "advantage",
-        "discoveredAttack",
-        "discoveredCheck",
-        "exposedKing",
-        "interference",
-        "long",
-        "middlegame",
-        "quietMove"
-      ],
-      "url": "https://lichess.org/training/12uqp",
-      "game_url": "https://lichess.org/NoIub1kV#39"
-    },
-    {
-      "id": "0vJ3K",
-      "fen": "8/3k4/1p1r4/p2R1p2/P1PK1P2/8/8/8 b - - 7 46",
-      "moves": "d7c6 d4e5 d6g6 e5f5 g6g2 f5e6",
-      "rating": 2000,
+      "id": "0sLT8",
+      "fen": "3rr1k1/pb3ppp/3n4/2b3q1/Q7/4NB2/PP3PPP/R1B2RK1 w - - 7 18",
+      "moves": "e3c4 g5h4 c1g5 h4g5 f3b7 d6b7",
+      "rating": 2546,
       "themes": [
         "crushing",
-        "defensiveMove",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/0sLT8",
+      "game_url": "https://lichess.org/BClgmQA7#35"
+    },
+    {
+      "id": "0Cy0O",
+      "fen": "8/8/2p1k1pp/1p3p2/2PP1P2/3K3P/6P1/8 b - - 1 33",
+      "moves": "h6h5 d4d5 e6d6 d5c6 b5c4 d3c4",
+      "rating": 2199,
+      "themes": [
+        "crushing",
         "endgame",
         "long",
-        "rookEndgame"
+        "pawnEndgame"
       ],
-      "url": "https://lichess.org/training/0vJ3K",
-      "game_url": "https://lichess.org/SLYe7hHE/black#92"
+      "url": "https://lichess.org/training/0Cy0O",
+      "game_url": "https://lichess.org/Z6nYMCwi/black#66"
     },
     {
-      "id": "0aT73",
-      "fen": "r3qrk1/pb1pb1pp/1p2p3/4P3/4Nn2/2BB4/PP2QPPP/R4RK1 w - - 1 17",
-      "moves": "e2e3 e8g6 e3f4 f8f4",
-      "rating": 2136,
+      "id": "01B5q",
+      "fen": "r4rk1/1pp1np1p/p4Qp1/3P3P/P2Nq3/8/1B4R1/5B1K b - - 0 36",
+      "moves": "e7d5 f6g7 g8g7 d4f5 g7g8 f5h6",
+      "rating": 2086,
+      "themes": [
+        "attraction",
+        "discoveredCheck",
+        "doubleCheck",
+        "long",
+        "mate",
+        "mateIn3",
+        "middlegame",
+        "pin",
+        "sacrifice"
+      ],
+      "url": "https://lichess.org/training/01B5q",
+      "game_url": "https://lichess.org/seEUcuvw/black#72"
+    },
+    {
+      "id": "0Plde",
+      "fen": "2r2rk1/p3b1p1/4pp1p/q2b4/4pP2/PP4QP/1BP2RP1/R2B3K w - - 2 23",
+      "moves": "c2c4 a5e1 h1h2 e7c5 f2f1 e1f1",
+      "rating": 2275,
       "themes": [
         "crushing",
-        "master",
-        "masterVsMaster",
-        "middlegame",
-        "short"
+        "long",
+        "middlegame"
       ],
-      "url": "https://lichess.org/training/0aT73",
-      "game_url": "https://lichess.org/UUyQhpoN#33"
+      "url": "https://lichess.org/training/0Plde",
+      "game_url": "https://lichess.org/g3lE1N4w#45"
     }
   ]
 };
@@ -86736,7 +86818,7 @@ const CHESS_HISTORY = {
 // PERFORMANCE DATA (model blind test results)
 // ══════════════════════════════════════════════════════════
 const PERFORMANCE_DATA = {
-  "generated": "2026-06-08",
+  "generated": "2026-06-09",
   "model": "N5v4_Final",
   "n_tournaments": 15,
   "grade": "A+",

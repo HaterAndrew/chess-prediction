@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-23 05:14:51",
-  "count": 11,
+  "generated": "2026-06-24 05:11:39",
+  "count": 5,
   "warnings": [
     {
       "step": "Refresh tournament summary",
@@ -16,35 +16,11 @@
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Eastern Chess Congress 2026: pattern \"Eastern Chess Congress\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Eastern Class Championships 2026: pattern \"Eastern Class Championships\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
       "text": "source-parse failure \u2014 Hartford Open 2026: pattern \"Hartford Open\" not found in chesstour.com schedule"
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Kings Island Open 2026: pattern \"Kings Island Open\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Los Angeles Open 2026: pattern \"Los Angeles Open\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Midwest Class Championships 2026: pattern \"Midwest Class Championships\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 National Chess Congress 2026: pattern \"National Chess Congress\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 North American Open 2026: pattern \"North American Open\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 New York State Open 2026: pattern \"New York State Open And Senior Amateur\" not found in chesstour.com schedule"
     }
   ]
 }

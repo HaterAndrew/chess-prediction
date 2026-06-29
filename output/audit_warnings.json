@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-28 05:44:58",
-  "count": 5,
+  "generated": "2026-06-29 06:05:43",
+  "count": 6,
   "warnings": [
     {
       "step": "Refresh tournament summary",
@@ -21,6 +21,10 @@
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
       "text": "source-parse failure \u2014 New York State Open 2026: pattern \"New York State Open And Senior Amateur\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [CRITICAL] dropped-event \u2014 World Open Under 13 Championship: scraped 81 entries on 2026-06-29 but no 2026 card in output"
     }
   ]
 }

@@ -852,355 +852,12 @@
 // TOURNAMENT DATA (embedded from model pipeline)
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
-  "generated": "2026-06-28",
-  "generated_time": "2026-06-28T01:45:55.221122-04:00",
+  "generated": "2026-06-29",
+  "generated_time": "2026-06-29T02:06:32.258905-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
-  "n_completed_in_training": 20,
+  "n_completed_in_training": 22,
   "tournaments": [
-    {
-      "family": "World Open lower sections",
-      "year": 2026,
-      "event_start": "2026-06-26",
-      "event_end": "2026-06-28",
-      "registration_close": "2026-06-27",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": 228.0,
-      "onsite_fee": 250.0,
-      "current_count": 93,
-      "gross_count": 93,
-      "withdrawal_count": 0,
-      "days_remaining": 0,
-      "point_estimate": 93,
-      "ci_lower": 93,
-      "ci_upper": 93,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2023,
-          "count": 149,
-          "family": "World Open lower sections"
-        },
-        {
-          "year": 2024,
-          "count": 151,
-          "family": "World Open lower sections"
-        },
-        {
-          "year": 2025,
-          "count": 135,
-          "family": "World Open lower sections"
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          6
-        ],
-        [
-          1,
-          6
-        ],
-        [
-          2,
-          6
-        ],
-        [
-          3,
-          6
-        ],
-        [
-          4,
-          7
-        ],
-        [
-          5,
-          7
-        ],
-        [
-          6,
-          10
-        ],
-        [
-          7,
-          11
-        ],
-        [
-          8,
-          11
-        ],
-        [
-          9,
-          11
-        ],
-        [
-          10,
-          12
-        ],
-        [
-          11,
-          12
-        ],
-        [
-          12,
-          12
-        ],
-        [
-          13,
-          13
-        ],
-        [
-          14,
-          13
-        ],
-        [
-          15,
-          13
-        ],
-        [
-          16,
-          13
-        ],
-        [
-          17,
-          15
-        ],
-        [
-          18,
-          19
-        ],
-        [
-          19,
-          22
-        ],
-        [
-          20,
-          22
-        ],
-        [
-          21,
-          22
-        ],
-        [
-          22,
-          22
-        ],
-        [
-          23,
-          22
-        ],
-        [
-          24,
-          22
-        ],
-        [
-          25,
-          23
-        ],
-        [
-          26,
-          23
-        ],
-        [
-          27,
-          23
-        ],
-        [
-          29,
-          23
-        ],
-        [
-          30,
-          24
-        ],
-        [
-          31,
-          24
-        ],
-        [
-          32,
-          24
-        ],
-        [
-          33,
-          25
-        ],
-        [
-          34,
-          26
-        ],
-        [
-          35,
-          31
-        ],
-        [
-          36,
-          33
-        ],
-        [
-          37,
-          37
-        ],
-        [
-          38,
-          40
-        ],
-        [
-          39,
-          41
-        ],
-        [
-          40,
-          41
-        ],
-        [
-          41,
-          44
-        ],
-        [
-          42,
-          45
-        ],
-        [
-          43,
-          45
-        ],
-        [
-          44,
-          46
-        ],
-        [
-          45,
-          47
-        ],
-        [
-          46,
-          48
-        ],
-        [
-          47,
-          48
-        ],
-        [
-          48,
-          48
-        ],
-        [
-          49,
-          50
-        ],
-        [
-          50,
-          51
-        ],
-        [
-          51,
-          51
-        ],
-        [
-          52,
-          52
-        ],
-        [
-          53,
-          52
-        ],
-        [
-          54,
-          53
-        ],
-        [
-          55,
-          56
-        ],
-        [
-          56,
-          65
-        ],
-        [
-          57,
-          70
-        ],
-        [
-          58,
-          85
-        ],
-        [
-          59,
-          88
-        ],
-        [
-          60,
-          93
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.01
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0167
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0401
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.1054
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.2098
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.3958
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.4987
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.6172
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.7209
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.8449
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9301
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live",
-      "prediction_source": "live_scrape",
-      "prior_year_pace": null,
-      "low_confidence": true,
-      "n_historical_editions": 3,
-      "prediction_tier": null,
-      "pace_alert": {
-        "family": "World Open lower sections",
-        "status": "below_pace",
-        "actual": 93,
-        "expected": 126,
-        "deviation_pct": -26.4,
-        "n_years": 3,
-        "message": "Registrations are 26.4% below 3-year at-this-point pace"
-      }
-    },
     {
       "family": "DC International",
       "year": 2026,
@@ -1683,922 +1340,6 @@ const TOURNAMENT_DATA = {
       }
     },
     {
-      "family": "DC Open",
-      "year": 2026,
-      "event_start": "2026-06-26",
-      "event_end": "2026-06-28",
-      "registration_close": "2026-06-27",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": 118.0,
-      "onsite_fee": 140.0,
-      "current_count": 180,
-      "gross_count": 188,
-      "withdrawal_count": 8,
-      "days_remaining": 0,
-      "point_estimate": 180,
-      "ci_lower": 180,
-      "ci_upper": 180,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 231,
-          "family": "Philadelphia Open"
-        },
-        {
-          "year": 2022,
-          "count": 281,
-          "family": "Philadelphia Open"
-        },
-        {
-          "year": 2023,
-          "count": 281,
-          "family": "Philadelphia Open"
-        },
-        {
-          "year": 2024,
-          "count": 312,
-          "family": "Philadelphia Open"
-        },
-        {
-          "year": 2025,
-          "count": 325,
-          "family": "Philadelphia Open"
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          2
-        ],
-        [
-          1,
-          2
-        ],
-        [
-          2,
-          2
-        ],
-        [
-          3,
-          2
-        ],
-        [
-          4,
-          2
-        ],
-        [
-          5,
-          2
-        ],
-        [
-          6,
-          2
-        ],
-        [
-          7,
-          2
-        ],
-        [
-          8,
-          2
-        ],
-        [
-          9,
-          2
-        ],
-        [
-          10,
-          2
-        ],
-        [
-          11,
-          2
-        ],
-        [
-          12,
-          2
-        ],
-        [
-          13,
-          2
-        ],
-        [
-          14,
-          2
-        ],
-        [
-          15,
-          3
-        ],
-        [
-          16,
-          3
-        ],
-        [
-          17,
-          3
-        ],
-        [
-          32,
-          3
-        ],
-        [
-          33,
-          4
-        ],
-        [
-          34,
-          4
-        ],
-        [
-          35,
-          5
-        ],
-        [
-          36,
-          5
-        ],
-        [
-          37,
-          6
-        ],
-        [
-          38,
-          6
-        ],
-        [
-          39,
-          6
-        ],
-        [
-          40,
-          6
-        ],
-        [
-          41,
-          8
-        ],
-        [
-          42,
-          8
-        ],
-        [
-          43,
-          8
-        ],
-        [
-          44,
-          8
-        ],
-        [
-          45,
-          9
-        ],
-        [
-          46,
-          9
-        ],
-        [
-          47,
-          9
-        ],
-        [
-          48,
-          10
-        ],
-        [
-          49,
-          11
-        ],
-        [
-          50,
-          11
-        ],
-        [
-          51,
-          11
-        ],
-        [
-          52,
-          13
-        ],
-        [
-          53,
-          13
-        ],
-        [
-          54,
-          14
-        ],
-        [
-          55,
-          15
-        ],
-        [
-          56,
-          16
-        ],
-        [
-          57,
-          18
-        ],
-        [
-          58,
-          22
-        ],
-        [
-          59,
-          23
-        ],
-        [
-          60,
-          24
-        ],
-        [
-          61,
-          26
-        ],
-        [
-          62,
-          30
-        ],
-        [
-          64,
-          31
-        ],
-        [
-          65,
-          31
-        ],
-        [
-          66,
-          31
-        ],
-        [
-          67,
-          31
-        ],
-        [
-          68,
-          33
-        ],
-        [
-          69,
-          38
-        ],
-        [
-          70,
-          38
-        ],
-        [
-          71,
-          38
-        ],
-        [
-          72,
-          39
-        ],
-        [
-          73,
-          41
-        ],
-        [
-          74,
-          44
-        ],
-        [
-          75,
-          45
-        ],
-        [
-          76,
-          46
-        ],
-        [
-          77,
-          47
-        ],
-        [
-          78,
-          49
-        ],
-        [
-          79,
-          51
-        ],
-        [
-          80,
-          55
-        ],
-        [
-          81,
-          56
-        ],
-        [
-          82,
-          57
-        ],
-        [
-          83,
-          60
-        ],
-        [
-          84,
-          63
-        ],
-        [
-          85,
-          66
-        ],
-        [
-          86,
-          71
-        ],
-        [
-          87,
-          71
-        ],
-        [
-          88,
-          79
-        ],
-        [
-          89,
-          84
-        ],
-        [
-          90,
-          92
-        ],
-        [
-          91,
-          100
-        ],
-        [
-          92,
-          109
-        ],
-        [
-          93,
-          132
-        ],
-        [
-          94,
-          154
-        ],
-        [
-          95,
-          180
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0116
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0255
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0461
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.098
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1774
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.237
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3336
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4988
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7108
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9415
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live",
-      "prediction_source": "live_scrape",
-      "prior_year_pace": null,
-      "low_confidence": false,
-      "n_historical_editions": 4,
-      "prediction_tier": null,
-      "pace_alert": {
-        "family": "DC Open",
-        "status": "below_pace",
-        "actual": 180,
-        "expected": 263,
-        "deviation_pct": -31.6,
-        "n_years": 4,
-        "message": "Registrations are 31.6% below 4-year at-this-point pace"
-      }
-    },
-    {
-      "family": "World Open Under 13 Championship",
-      "year": 2026,
-      "event_start": "2026-06-29",
-      "event_end": "2026-06-30",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": 58.0,
-      "onsite_fee": 70.0,
-      "current_count": 77,
-      "gross_count": 77,
-      "withdrawal_count": 0,
-      "days_remaining": 1,
-      "point_estimate": 108,
-      "ci_lower": 101,
-      "ci_upper": 115,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 157,
-          "family": "World Open Under 13"
-        },
-        {
-          "year": 2022,
-          "count": 129,
-          "family": "World Open Under 13"
-        },
-        {
-          "year": 2023,
-          "count": 110,
-          "family": "World Open Under 13"
-        },
-        {
-          "year": 2024,
-          "count": 80,
-          "family": "World Open Under 13"
-        },
-        {
-          "year": 2025,
-          "count": 76,
-          "family": "World Open Under 13"
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          6,
-          0
-        ],
-        [
-          7,
-          0
-        ],
-        [
-          8,
-          0
-        ],
-        [
-          9,
-          0
-        ],
-        [
-          10,
-          2
-        ],
-        [
-          11,
-          2
-        ],
-        [
-          12,
-          2
-        ],
-        [
-          13,
-          2
-        ],
-        [
-          14,
-          2
-        ],
-        [
-          15,
-          2
-        ],
-        [
-          16,
-          2
-        ],
-        [
-          17,
-          2
-        ],
-        [
-          18,
-          3
-        ],
-        [
-          19,
-          3
-        ],
-        [
-          20,
-          3
-        ],
-        [
-          21,
-          4
-        ],
-        [
-          22,
-          4
-        ],
-        [
-          23,
-          4
-        ],
-        [
-          24,
-          4
-        ],
-        [
-          25,
-          4
-        ],
-        [
-          26,
-          4
-        ],
-        [
-          27,
-          4
-        ],
-        [
-          28,
-          5
-        ],
-        [
-          29,
-          5
-        ],
-        [
-          30,
-          5
-        ],
-        [
-          31,
-          5
-        ],
-        [
-          32,
-          5
-        ],
-        [
-          33,
-          5
-        ],
-        [
-          34,
-          5
-        ],
-        [
-          35,
-          6
-        ],
-        [
-          36,
-          8
-        ],
-        [
-          37,
-          8
-        ],
-        [
-          38,
-          9
-        ],
-        [
-          39,
-          9
-        ],
-        [
-          40,
-          10
-        ],
-        [
-          41,
-          11
-        ],
-        [
-          42,
-          11
-        ],
-        [
-          43,
-          11
-        ],
-        [
-          44,
-          13
-        ],
-        [
-          45,
-          14
-        ],
-        [
-          46,
-          14
-        ],
-        [
-          47,
-          14
-        ],
-        [
-          48,
-          14
-        ],
-        [
-          49,
-          17
-        ],
-        [
-          50,
-          17
-        ],
-        [
-          51,
-          17
-        ],
-        [
-          52,
-          18
-        ],
-        [
-          53,
-          18
-        ],
-        [
-          54,
-          18
-        ],
-        [
-          55,
-          18
-        ],
-        [
-          56,
-          18
-        ],
-        [
-          57,
-          18
-        ],
-        [
-          59,
-          18
-        ],
-        [
-          60,
-          18
-        ],
-        [
-          61,
-          18
-        ],
-        [
-          62,
-          21
-        ],
-        [
-          63,
-          21
-        ],
-        [
-          64,
-          22
-        ],
-        [
-          65,
-          22
-        ],
-        [
-          66,
-          29
-        ],
-        [
-          67,
-          31
-        ],
-        [
-          68,
-          31
-        ],
-        [
-          69,
-          33
-        ],
-        [
-          70,
-          34
-        ],
-        [
-          71,
-          34
-        ],
-        [
-          72,
-          35
-        ],
-        [
-          73,
-          36
-        ],
-        [
-          74,
-          37
-        ],
-        [
-          75,
-          37
-        ],
-        [
-          76,
-          39
-        ],
-        [
-          77,
-          39
-        ],
-        [
-          78,
-          39
-        ],
-        [
-          79,
-          40
-        ],
-        [
-          80,
-          41
-        ],
-        [
-          81,
-          41
-        ],
-        [
-          82,
-          42
-        ],
-        [
-          83,
-          44
-        ],
-        [
-          84,
-          44
-        ],
-        [
-          85,
-          46
-        ],
-        [
-          86,
-          52
-        ],
-        [
-          87,
-          57
-        ],
-        [
-          88,
-          60
-        ],
-        [
-          89,
-          64
-        ],
-        [
-          90,
-          69
-        ],
-        [
-          91,
-          76
-        ],
-        [
-          92,
-          77
-        ]
-      ],
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0116
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0255
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0461
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.098
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1774
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.237
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.3336
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4988
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7108
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9415
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live",
-      "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_pace",
-      "pace_alert": {
-        "family": "World Open Under 13 Championship",
-        "status": "on_pace",
-        "actual": 77,
-        "expected": 71,
-        "deviation_pct": 8.8,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+9%)"
-      }
-    },
-    {
       "family": "World Open top 6 sections",
       "year": 2026,
       "event_start": "2026-07-01",
@@ -2608,13 +1349,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 328.0,
       "onsite_fee": 350.0,
-      "current_count": 803,
-      "gross_count": 803,
+      "current_count": 882,
+      "gross_count": 882,
       "withdrawal_count": 0,
-      "days_remaining": 3,
-      "point_estimate": 948,
-      "ci_lower": 803,
-      "ci_upper": 1270,
+      "days_remaining": 2,
+      "point_estimate": 1017,
+      "ci_lower": 882,
+      "ci_upper": 1213,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3011,6 +1752,10 @@ const TOURNAMENT_DATA = {
         [
           109,
           803
+        ],
+        [
+          110,
+          882
         ]
       ],
       "registration_curve": [
@@ -3067,7 +1812,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 984,
+        "count_at_same_point": 1008,
         "final": 1165
       },
       "low_confidence": false,
@@ -3075,12 +1820,12 @@ const TOURNAMENT_DATA = {
       "prediction_tier": "family-direct",
       "pace_alert": {
         "family": "World Open top 6 sections",
-        "status": "below_pace",
-        "actual": 803,
-        "expected": 1007,
-        "deviation_pct": -20.3,
+        "status": "on_pace",
+        "actual": 882,
+        "expected": 1043,
+        "deviation_pct": -15.4,
         "n_years": 3,
-        "message": "Registrations are 20.3% below 3-year at-this-point pace"
+        "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-15%)"
       }
     },
     {
@@ -3093,13 +1838,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 148.0,
       "onsite_fee": 170.0,
-      "current_count": 48,
-      "gross_count": 48,
+      "current_count": 51,
+      "gross_count": 51,
       "withdrawal_count": 0,
-      "days_remaining": 19,
-      "point_estimate": 272,
-      "ci_lower": 246,
-      "ci_upper": 301,
+      "days_remaining": 18,
+      "point_estimate": 274,
+      "ci_lower": 250,
+      "ci_upper": 299,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3516,6 +2261,10 @@ const TOURNAMENT_DATA = {
         [
           97,
           48
+        ],
+        [
+          98,
+          51
         ]
       ],
       "registration_curve": [
@@ -3572,7 +2321,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 45,
+        "count_at_same_point": 49,
         "final": 294
       },
       "low_confidence": false,
@@ -3581,11 +2330,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Chicago Class",
         "status": "on_pace",
-        "actual": 48,
-        "expected": 53,
-        "deviation_pct": -9.9,
+        "actual": 51,
+        "expected": 56,
+        "deviation_pct": -8.5,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-10%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-8%)"
       }
     },
     {
@@ -3598,13 +2347,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 118.0,
       "onsite_fee": 130.0,
-      "current_count": 37,
-      "gross_count": 41,
+      "current_count": 38,
+      "gross_count": 42,
       "withdrawal_count": 4,
-      "days_remaining": 19,
-      "point_estimate": 173,
-      "ci_lower": 159,
-      "ci_upper": 187,
+      "days_remaining": 18,
+      "point_estimate": 171,
+      "ci_lower": 158,
+      "ci_upper": 185,
       "ci_level": 0.8,
       "historical": [
         {
@@ -4013,6 +2762,10 @@ const TOURNAMENT_DATA = {
         [
           97,
           37
+        ],
+        [
+          98,
+          38
         ]
       ],
       "registration_curve": [
@@ -4069,7 +2822,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 25,
+        "count_at_same_point": 29,
         "final": 152
       },
       "low_confidence": false,
@@ -4078,11 +2831,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Pittsburgh Open",
         "status": "on_pace",
-        "actual": 37,
-        "expected": 33,
-        "deviation_pct": 11.3,
+        "actual": 38,
+        "expected": 36,
+        "deviation_pct": 4.8,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+11%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+5%)"
       }
     },
     {
@@ -4094,13 +2847,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 42,
-      "gross_count": 42,
+      "current_count": 43,
+      "gross_count": 43,
       "withdrawal_count": 0,
-      "days_remaining": 19,
-      "point_estimate": 149,
-      "ci_lower": 118,
-      "ci_upper": 188,
+      "days_remaining": 18,
+      "point_estimate": 153,
+      "ci_lower": 121,
+      "ci_upper": 193,
       "ci_level": 0.8,
       "historical": [
         {
@@ -4517,6 +3270,10 @@ const TOURNAMENT_DATA = {
         [
           97,
           42
+        ],
+        [
+          98,
+          43
         ]
       ],
       "registration_curve": [
@@ -4577,11 +3334,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Southern Open",
         "status": "below_pace",
-        "actual": 42,
-        "expected": 55,
-        "deviation_pct": -24.0,
+        "actual": 43,
+        "expected": 58,
+        "deviation_pct": -26.5,
         "n_years": 4,
-        "message": "Registrations are 24.0% below 4-year at-this-point pace"
+        "message": "Registrations are 26.5% below 4-year at-this-point pace"
       }
     },
     {
@@ -4594,13 +3351,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 30,
-      "gross_count": 30,
+      "current_count": 32,
+      "gross_count": 32,
       "withdrawal_count": 0,
-      "days_remaining": 26,
-      "point_estimate": 275,
-      "ci_lower": 240,
-      "ci_upper": 315,
+      "days_remaining": 25,
+      "point_estimate": 278,
+      "ci_lower": 245,
+      "ci_upper": 316,
       "ci_level": 0.8,
       "historical": [
         {
@@ -5017,6 +3774,10 @@ const TOURNAMENT_DATA = {
         [
           97,
           30
+        ],
+        [
+          98,
+          32
         ]
       ],
       "registration_curve": [
@@ -5082,11 +3843,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Bradley Open",
         "status": "above_pace",
-        "actual": 30,
-        "expected": 24,
-        "deviation_pct": 22.4,
+        "actual": 32,
+        "expected": 25,
+        "deviation_pct": 26.7,
         "n_years": 4,
-        "message": "Registrations are 22.4% above 4-year at-this-point pace"
+        "message": "Registrations are 26.7% above 4-year at-this-point pace"
       }
     },
     {
@@ -5099,12 +3860,12 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 158.0,
       "onsite_fee": 180.0,
-      "current_count": 46,
-      "gross_count": 47,
+      "current_count": 47,
+      "gross_count": 48,
       "withdrawal_count": 1,
-      "days_remaining": 33,
-      "point_estimate": 377,
-      "ci_lower": 355,
+      "days_remaining": 32,
+      "point_estimate": 378,
+      "ci_lower": 357,
       "ci_upper": 401,
       "ci_level": 0.8,
       "historical": [
@@ -5514,6 +4275,10 @@ const TOURNAMENT_DATA = {
         [
           97,
           46
+        ],
+        [
+          98,
+          47
         ]
       ],
       "registration_curve": [
@@ -5570,7 +4335,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 49,
+        "count_at_same_point": 50,
         "final": 391
       },
       "low_confidence": false,
@@ -5579,11 +4344,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Pacific Coast Open",
         "status": "on_pace",
-        "actual": 46,
-        "expected": 46,
-        "deviation_pct": 1.1,
+        "actual": 47,
+        "expected": 48,
+        "deviation_pct": -2.6,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+1%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-3%)"
       }
     },
     {
@@ -5595,13 +4360,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 13,
-      "gross_count": 13,
+      "current_count": 14,
+      "gross_count": 14,
       "withdrawal_count": 0,
-      "days_remaining": 46,
-      "point_estimate": 283,
-      "ci_lower": 252,
-      "ci_upper": 317,
+      "days_remaining": 45,
+      "point_estimate": 320,
+      "ci_lower": 146,
+      "ci_upper": 481,
       "ci_level": 0.8,
       "historical": [
         {
@@ -5946,6 +4711,10 @@ const TOURNAMENT_DATA = {
         [
           79,
           13
+        ],
+        [
+          80,
+          14
         ]
       ],
       "registration_curve": [
@@ -6002,15 +4771,15 @@ const TOURNAMENT_DATA = {
       "n_historical_editions": 5,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
+      "prediction_source": "metadata_pace",
       "pace_alert": {
         "family": "Continental Open",
         "status": "on_pace",
-        "actual": 13,
+        "actual": 14,
         "expected": 12,
-        "deviation_pct": 13.0,
+        "deviation_pct": 14.3,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+13%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
       }
     },
     {
@@ -6025,7 +4794,7 @@ const TOURNAMENT_DATA = {
       "current_count": 6,
       "gross_count": 8,
       "withdrawal_count": 2,
-      "days_remaining": 47,
+      "days_remaining": 46,
       "point_estimate": 175,
       "ci_lower": 144,
       "ci_upper": 203,
@@ -6425,6 +5194,10 @@ const TOURNAMENT_DATA = {
         [
           92,
           6
+        ],
+        [
+          93,
+          6
         ]
       ],
       "registration_curve": [
@@ -6487,9 +5260,9 @@ const TOURNAMENT_DATA = {
         "status": "below_pace",
         "actual": 6,
         "expected": 12,
-        "deviation_pct": -50.0,
+        "deviation_pct": -52.0,
         "n_years": 4,
-        "message": "Registrations are 50.0% below 4-year at-this-point pace"
+        "message": "Registrations are 52.0% below 4-year at-this-point pace"
       }
     },
     {
@@ -6504,7 +5277,7 @@ const TOURNAMENT_DATA = {
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 54,
+      "days_remaining": 53,
       "point_estimate": 316,
       "ci_lower": 251,
       "ci_upper": 395,
@@ -6904,6 +5677,10 @@ const TOURNAMENT_DATA = {
         [
           92,
           4
+        ],
+        [
+          93,
+          4
         ]
       ],
       "registration_curve": [
@@ -6983,7 +5760,7 @@ const TOURNAMENT_DATA = {
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 54,
+      "days_remaining": 53,
       "point_estimate": 186,
       "ci_lower": 175,
       "ci_upper": 198,
@@ -7303,6 +6080,10 @@ const TOURNAMENT_DATA = {
         [
           72,
           4
+        ],
+        [
+          73,
+          4
         ]
       ],
       "registration_curve": [
@@ -7362,12 +6143,12 @@ const TOURNAMENT_DATA = {
       "prediction_source": "metadata_historical_avg",
       "pace_alert": {
         "family": "Indianapolis Open",
-        "status": "on_pace",
+        "status": "below_pace",
         "actual": 4,
-        "expected": 5,
-        "deviation_pct": -15.8,
+        "expected": 6,
+        "deviation_pct": -27.3,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-16%)"
+        "message": "Registrations are 27.3% below 4-year at-this-point pace"
       }
     },
     {
@@ -7382,7 +6163,7 @@ const TOURNAMENT_DATA = {
       "current_count": 10,
       "gross_count": 10,
       "withdrawal_count": 0,
-      "days_remaining": 68,
+      "days_remaining": 67,
       "point_estimate": 304,
       "ci_lower": 237,
       "ci_upper": 347,
@@ -7782,6 +6563,10 @@ const TOURNAMENT_DATA = {
         [
           92,
           10
+        ],
+        [
+          93,
+          10
         ]
       ],
       "registration_curve": [
@@ -7843,10 +6628,10 @@ const TOURNAMENT_DATA = {
         "family": "New York State Championship",
         "status": "above_pace",
         "actual": 10,
-        "expected": 4,
-        "deviation_pct": 135.3,
+        "expected": 5,
+        "deviation_pct": 110.5,
         "n_years": 4,
-        "message": "Registrations are 135.3% above 4-year at-this-point pace"
+        "message": "Registrations are 110.5% above 4-year at-this-point pace"
       }
     },
     {
@@ -7861,7 +6646,7 @@ const TOURNAMENT_DATA = {
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 103,
+      "days_remaining": 102,
       "point_estimate": 313,
       "ci_lower": 296,
       "ci_upper": 338,
@@ -8157,6 +6942,10 @@ const TOURNAMENT_DATA = {
         [
           66,
           3
+        ],
+        [
+          67,
+          3
         ]
       ],
       "registration_curve": [
@@ -8236,7 +7025,7 @@ const TOURNAMENT_DATA = {
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 110,
+      "days_remaining": 109,
       "point_estimate": 221,
       "ci_lower": 198,
       "ci_upper": 246,
@@ -8532,6 +7321,10 @@ const TOURNAMENT_DATA = {
         [
           66,
           2
+        ],
+        [
+          67,
+          2
         ]
       ],
       "registration_curve": [
@@ -8602,7 +7395,7 @@ const TOURNAMENT_DATA = {
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 117,
+      "days_remaining": 116,
       "point_estimate": 469,
       "ci_lower": 404,
       "ci_upper": 513,
@@ -8898,6 +7691,10 @@ const TOURNAMENT_DATA = {
         [
           66,
           2
+        ],
+        [
+          67,
+          2
         ]
       ],
       "registration_curve": [
@@ -8968,7 +7765,7 @@ const TOURNAMENT_DATA = {
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 131,
+      "days_remaining": 130,
       "point_estimate": 365,
       "ci_lower": 289,
       "ci_upper": 413,
@@ -9236,6 +8033,10 @@ const TOURNAMENT_DATA = {
         [
           59,
           2
+        ],
+        [
+          60,
+          2
         ]
       ],
       "registration_curve": [
@@ -9315,7 +8116,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 138,
+      "days_remaining": 137,
       "point_estimate": 346,
       "ci_lower": 318,
       "ci_upper": 364,
@@ -9583,6 +8384,10 @@ const TOURNAMENT_DATA = {
         [
           59,
           1
+        ],
+        [
+          60,
+          1
         ]
       ],
       "registration_curve": [
@@ -9662,7 +8467,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 152,
+      "days_remaining": 151,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -9930,6 +8735,10 @@ const TOURNAMENT_DATA = {
         [
           59,
           1
+        ],
+        [
+          60,
+          1
         ]
       ],
       "registration_curve": [
@@ -10009,7 +8818,7 @@ const TOURNAMENT_DATA = {
       "current_count": 5,
       "gross_count": 5,
       "withdrawal_count": 0,
-      "days_remaining": 181,
+      "days_remaining": 180,
       "point_estimate": 1081,
       "ci_lower": 946,
       "ci_upper": 1199,
@@ -10217,6 +9026,10 @@ const TOURNAMENT_DATA = {
         [
           44,
           5
+        ],
+        [
+          45,
+          5
         ]
       ],
       "registration_curve": [
@@ -10296,7 +9109,7 @@ const TOURNAMENT_DATA = {
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 181,
+      "days_remaining": 180,
       "point_estimate": 387,
       "ci_lower": 367,
       "ci_upper": 404,
@@ -10390,6 +9203,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           16,
+          0
+        ],
+        [
+          17,
           0
         ]
       ],
@@ -14902,6 +13719,345 @@ const TOURNAMENT_DATA = {
       "total_ci_upper": 959
     },
     {
+      "family": "World Open lower sections",
+      "year": 2026,
+      "event_start": "2026-06-26",
+      "event_end": "2026-06-28",
+      "registration_close": "2026-06-27",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": 228.0,
+      "onsite_fee": 250.0,
+      "current_count": 93,
+      "gross_count": 93,
+      "withdrawal_count": 0,
+      "days_remaining": 0,
+      "point_estimate": 93,
+      "ci_lower": 93,
+      "ci_upper": 93,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2023,
+          "count": 149,
+          "family": "World Open lower sections"
+        },
+        {
+          "year": 2024,
+          "count": 151,
+          "family": "World Open lower sections"
+        },
+        {
+          "year": 2025,
+          "count": 135,
+          "family": "World Open lower sections"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          6
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          10
+        ],
+        [
+          7,
+          11
+        ],
+        [
+          8,
+          11
+        ],
+        [
+          9,
+          11
+        ],
+        [
+          10,
+          12
+        ],
+        [
+          11,
+          12
+        ],
+        [
+          12,
+          12
+        ],
+        [
+          13,
+          13
+        ],
+        [
+          14,
+          13
+        ],
+        [
+          15,
+          13
+        ],
+        [
+          16,
+          13
+        ],
+        [
+          17,
+          15
+        ],
+        [
+          18,
+          19
+        ],
+        [
+          19,
+          22
+        ],
+        [
+          20,
+          22
+        ],
+        [
+          21,
+          22
+        ],
+        [
+          22,
+          22
+        ],
+        [
+          23,
+          22
+        ],
+        [
+          24,
+          22
+        ],
+        [
+          25,
+          23
+        ],
+        [
+          26,
+          23
+        ],
+        [
+          27,
+          23
+        ],
+        [
+          29,
+          23
+        ],
+        [
+          30,
+          24
+        ],
+        [
+          31,
+          24
+        ],
+        [
+          32,
+          24
+        ],
+        [
+          33,
+          25
+        ],
+        [
+          34,
+          26
+        ],
+        [
+          35,
+          31
+        ],
+        [
+          36,
+          33
+        ],
+        [
+          37,
+          37
+        ],
+        [
+          38,
+          40
+        ],
+        [
+          39,
+          41
+        ],
+        [
+          40,
+          41
+        ],
+        [
+          41,
+          44
+        ],
+        [
+          42,
+          45
+        ],
+        [
+          43,
+          45
+        ],
+        [
+          44,
+          46
+        ],
+        [
+          45,
+          47
+        ],
+        [
+          46,
+          48
+        ],
+        [
+          47,
+          48
+        ],
+        [
+          48,
+          48
+        ],
+        [
+          49,
+          50
+        ],
+        [
+          50,
+          51
+        ],
+        [
+          51,
+          51
+        ],
+        [
+          52,
+          52
+        ],
+        [
+          53,
+          52
+        ],
+        [
+          54,
+          53
+        ],
+        [
+          55,
+          56
+        ],
+        [
+          56,
+          65
+        ],
+        [
+          57,
+          70
+        ],
+        [
+          58,
+          85
+        ],
+        [
+          59,
+          88
+        ],
+        [
+          60,
+          93
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.01
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0167
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0401
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.1054
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.2098
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.3958
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.4987
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.6172
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.7209
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.8449
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9301
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
+      "n_historical_editions": 4,
+      "prediction_tier": null,
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 102,
+      "total_ci_lower": 102,
+      "total_ci_upper": 102
+    },
+    {
       "family": "Southern Class Championships",
       "year": 2026,
       "event_start": "2026-03-12",
@@ -15627,6 +14783,439 @@ const TOURNAMENT_DATA = {
       "total_estimate": 119,
       "total_ci_lower": 119,
       "total_ci_upper": 119
+    },
+    {
+      "family": "DC Open",
+      "year": 2026,
+      "event_start": "2026-06-26",
+      "event_end": "2026-06-28",
+      "registration_close": "2026-06-27",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": 118.0,
+      "onsite_fee": 140.0,
+      "current_count": 180,
+      "gross_count": 188,
+      "withdrawal_count": 8,
+      "days_remaining": 0,
+      "point_estimate": 180,
+      "ci_lower": 180,
+      "ci_upper": 180,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 231,
+          "family": "Philadelphia Open"
+        },
+        {
+          "year": 2022,
+          "count": 281,
+          "family": "Philadelphia Open"
+        },
+        {
+          "year": 2023,
+          "count": 281,
+          "family": "Philadelphia Open"
+        },
+        {
+          "year": 2024,
+          "count": 312,
+          "family": "Philadelphia Open"
+        },
+        {
+          "year": 2025,
+          "count": 325,
+          "family": "Philadelphia Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          11,
+          2
+        ],
+        [
+          12,
+          2
+        ],
+        [
+          13,
+          2
+        ],
+        [
+          14,
+          2
+        ],
+        [
+          15,
+          3
+        ],
+        [
+          16,
+          3
+        ],
+        [
+          17,
+          3
+        ],
+        [
+          32,
+          3
+        ],
+        [
+          33,
+          4
+        ],
+        [
+          34,
+          4
+        ],
+        [
+          35,
+          5
+        ],
+        [
+          36,
+          5
+        ],
+        [
+          37,
+          6
+        ],
+        [
+          38,
+          6
+        ],
+        [
+          39,
+          6
+        ],
+        [
+          40,
+          6
+        ],
+        [
+          41,
+          8
+        ],
+        [
+          42,
+          8
+        ],
+        [
+          43,
+          8
+        ],
+        [
+          44,
+          8
+        ],
+        [
+          45,
+          9
+        ],
+        [
+          46,
+          9
+        ],
+        [
+          47,
+          9
+        ],
+        [
+          48,
+          10
+        ],
+        [
+          49,
+          11
+        ],
+        [
+          50,
+          11
+        ],
+        [
+          51,
+          11
+        ],
+        [
+          52,
+          13
+        ],
+        [
+          53,
+          13
+        ],
+        [
+          54,
+          14
+        ],
+        [
+          55,
+          15
+        ],
+        [
+          56,
+          16
+        ],
+        [
+          57,
+          18
+        ],
+        [
+          58,
+          22
+        ],
+        [
+          59,
+          23
+        ],
+        [
+          60,
+          24
+        ],
+        [
+          61,
+          26
+        ],
+        [
+          62,
+          30
+        ],
+        [
+          64,
+          31
+        ],
+        [
+          65,
+          31
+        ],
+        [
+          66,
+          31
+        ],
+        [
+          67,
+          31
+        ],
+        [
+          68,
+          33
+        ],
+        [
+          69,
+          38
+        ],
+        [
+          70,
+          38
+        ],
+        [
+          71,
+          38
+        ],
+        [
+          72,
+          39
+        ],
+        [
+          73,
+          41
+        ],
+        [
+          74,
+          44
+        ],
+        [
+          75,
+          45
+        ],
+        [
+          76,
+          46
+        ],
+        [
+          77,
+          47
+        ],
+        [
+          78,
+          49
+        ],
+        [
+          79,
+          51
+        ],
+        [
+          80,
+          55
+        ],
+        [
+          81,
+          56
+        ],
+        [
+          82,
+          57
+        ],
+        [
+          83,
+          60
+        ],
+        [
+          84,
+          63
+        ],
+        [
+          85,
+          66
+        ],
+        [
+          86,
+          71
+        ],
+        [
+          87,
+          71
+        ],
+        [
+          88,
+          79
+        ],
+        [
+          89,
+          84
+        ],
+        [
+          90,
+          92
+        ],
+        [
+          91,
+          100
+        ],
+        [
+          92,
+          109
+        ],
+        [
+          93,
+          132
+        ],
+        [
+          94,
+          154
+        ],
+        [
+          95,
+          180
+        ]
+      ],
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0116
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0255
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0461
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.098
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1774
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.237
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3336
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4988
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7108
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9415
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
+      "n_historical_editions": 5,
+      "prediction_tier": null,
+      "walkin_multiplier": 1.1,
+      "walkin_source": "estimate",
+      "total_estimate": 198,
+      "total_ci_lower": 198,
+      "total_ci_upper": 198
     },
     {
       "family": "Hartford Open",
@@ -86451,18 +86040,9 @@ const TOURNAMENT_DATA = {
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-06-28 05:44:58",
+  "last_updated": "2026-06-29 06:05:43",
   "is_stale": false,
   "alerts": [
-    {
-      "family": "World Open lower sections",
-      "status": "below_pace",
-      "actual": 93,
-      "expected": 126,
-      "deviation_pct": -26.4,
-      "n_years": 3,
-      "message": "Registrations are 26.4% below 3-year at-this-point pace"
-    },
     {
       "family": "DC International",
       "status": "on_pace",
@@ -86473,94 +86053,76 @@ const TOURNAMENT_DATA = {
       "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+6%)"
     },
     {
-      "family": "DC Open",
-      "status": "below_pace",
-      "actual": 180,
-      "expected": 263,
-      "deviation_pct": -31.6,
-      "n_years": 4,
-      "message": "Registrations are 31.6% below 4-year at-this-point pace"
-    },
-    {
-      "family": "World Open Under 13 Championship",
-      "status": "on_pace",
-      "actual": 77,
-      "expected": 71,
-      "deviation_pct": 8.8,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+9%)"
-    },
-    {
       "family": "World Open top 6 sections",
-      "status": "below_pace",
-      "actual": 803,
-      "expected": 1007,
-      "deviation_pct": -20.3,
+      "status": "on_pace",
+      "actual": 882,
+      "expected": 1043,
+      "deviation_pct": -15.4,
       "n_years": 3,
-      "message": "Registrations are 20.3% below 3-year at-this-point pace"
+      "message": "Registrations are tracking within normal range vs 3-year at-this-point pace (-15%)"
     },
     {
       "family": "Chicago Class",
       "status": "on_pace",
-      "actual": 48,
-      "expected": 53,
-      "deviation_pct": -9.9,
+      "actual": 51,
+      "expected": 56,
+      "deviation_pct": -8.5,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-10%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-8%)"
     },
     {
       "family": "Pittsburgh Open",
       "status": "on_pace",
-      "actual": 37,
-      "expected": 33,
-      "deviation_pct": 11.3,
+      "actual": 38,
+      "expected": 36,
+      "deviation_pct": 4.8,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+11%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+5%)"
     },
     {
       "family": "Southern Open",
       "status": "below_pace",
-      "actual": 42,
-      "expected": 55,
-      "deviation_pct": -24.0,
+      "actual": 43,
+      "expected": 58,
+      "deviation_pct": -26.5,
       "n_years": 4,
-      "message": "Registrations are 24.0% below 4-year at-this-point pace"
+      "message": "Registrations are 26.5% below 4-year at-this-point pace"
     },
     {
       "family": "Bradley Open",
       "status": "above_pace",
-      "actual": 30,
-      "expected": 24,
-      "deviation_pct": 22.4,
+      "actual": 32,
+      "expected": 25,
+      "deviation_pct": 26.7,
       "n_years": 4,
-      "message": "Registrations are 22.4% above 4-year at-this-point pace"
+      "message": "Registrations are 26.7% above 4-year at-this-point pace"
     },
     {
       "family": "Pacific Coast Open",
       "status": "on_pace",
-      "actual": 46,
-      "expected": 46,
-      "deviation_pct": 1.1,
+      "actual": 47,
+      "expected": 48,
+      "deviation_pct": -2.6,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+1%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-3%)"
     },
     {
       "family": "Continental Open",
       "status": "on_pace",
-      "actual": 13,
+      "actual": 14,
       "expected": 12,
-      "deviation_pct": 13.0,
+      "deviation_pct": 14.3,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+13%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
     },
     {
       "family": "Central California Open",
       "status": "below_pace",
       "actual": 6,
       "expected": 12,
-      "deviation_pct": -50.0,
+      "deviation_pct": -52.0,
       "n_years": 4,
-      "message": "Registrations are 50.0% below 4-year at-this-point pace"
+      "message": "Registrations are 52.0% below 4-year at-this-point pace"
     },
     {
       "family": "Atlantic Open",
@@ -86573,21 +86135,21 @@ const TOURNAMENT_DATA = {
     },
     {
       "family": "Indianapolis Open",
-      "status": "on_pace",
+      "status": "below_pace",
       "actual": 4,
-      "expected": 5,
-      "deviation_pct": -15.8,
+      "expected": 6,
+      "deviation_pct": -27.3,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-16%)"
+      "message": "Registrations are 27.3% below 4-year at-this-point pace"
     },
     {
       "family": "New York State Championship",
       "status": "above_pace",
       "actual": 10,
-      "expected": 4,
-      "deviation_pct": 135.3,
+      "expected": 5,
+      "deviation_pct": 110.5,
       "n_years": 4,
-      "message": "Registrations are 135.3% above 4-year at-this-point pace"
+      "message": "Registrations are 110.5% above 4-year at-this-point pace"
     },
     {
       "family": "Midwest Class Championships",
@@ -86650,154 +86212,158 @@ const TOURNAMENT_DATA = {
 // PUZZLE DATA (embedded from puzzle pipeline)
 // ══════════════════════════════════════════════════════════
 const PUZZLE_DATA = {
-  "date": "2026-06-28",
+  "date": "2026-06-29",
   "puzzles": [
     {
-      "id": "0hKsx",
-      "fen": "3r3r/p1k2pp1/2pb1n1p/n4q2/3P4/2P1B3/PP2BpPP/RN1Q1K1R w - - 3 19",
-      "moves": "b1d2 f6d5 e3f2 d5e3",
-      "rating": 2150,
-      "themes": [
-        "crushing",
-        "middlegame",
-        "pin",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0hKsx",
-      "game_url": "https://lichess.org/9NFX1DrN#37"
-    },
-    {
-      "id": "0jzvk",
-      "fen": "8/8/8/6RP/5rp1/4k3/6K1/8 b - - 0 87",
-      "moves": "e3e4 h5h6 f4f8 g2g3 f8f3 g3g4",
-      "rating": 2633,
-      "themes": [
-        "crushing",
-        "endgame",
-        "long",
-        "rookEndgame"
-      ],
-      "url": "https://lichess.org/training/0jzvk",
-      "game_url": "https://lichess.org/rUm8aFEB/black#174"
-    },
-    {
-      "id": "0WQwD",
-      "fen": "8/8/k1pp2pp/P3p3/K1P1P1PP/8/8/8 b - - 0 38",
-      "moves": "a6b7 c4c5 d6c5 a4b3 b7a6 b3c4",
-      "rating": 2436,
-      "themes": [
-        "crushing",
-        "endgame",
-        "long",
-        "pawnEndgame"
-      ],
-      "url": "https://lichess.org/training/0WQwD",
-      "game_url": "https://lichess.org/CpxIRa7P/black#76"
-    },
-    {
-      "id": "0cfSN",
-      "fen": "r2qk1nr/pp2ppbp/2n3p1/3pPb2/3P4/1P3N2/P4PPP/RNBQKB1R w KQkq - 1 8",
-      "moves": "f1b5 d8a5 b1c3 a5c3 c1d2 c3b2",
-      "rating": 2177,
-      "themes": [
-        "advantage",
-        "fork",
-        "long",
-        "middlegame"
-      ],
-      "url": "https://lichess.org/training/0cfSN",
-      "game_url": "https://lichess.org/42lWihLc#15"
-    },
-    {
-      "id": "0j3hz",
-      "fen": "r1r3k1/5p1p/3pb1pP/pp2p3/3nP3/PnNB1P2/1P3BP1/1K1R3R w - - 0 23",
-      "moves": "c3b5 c8c1 d1c1 b3d2",
-      "rating": 2182,
-      "themes": [
-        "crushing",
-        "master",
-        "middlegame",
-        "queensideAttack",
-        "sacrifice",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0j3hz",
-      "game_url": "https://lichess.org/MPDDbGN0#45"
-    },
-    {
-      "id": "0634Z",
-      "fen": "5bR1/2k2p2/2N2Qp1/3p1P2/1rpP4/r2qP3/P7/K6R w - - 3 41",
-      "moves": "f6e5 f8d6 c6b4 d3c3 a1b1 c3b4",
-      "rating": 2072,
+      "id": "0lF62",
+      "fen": "2rq1rk1/pb3p1p/1p4p1/2bp1p2/5PQ1/PP2P2R/1BPN2PP/R5K1 w - - 0 18",
+      "moves": "h3h7 c5e3 g1h1 d5d4",
+      "rating": 2118,
       "themes": [
         "crushing",
         "defensiveMove",
         "fork",
+        "master",
+        "middlegame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0lF62",
+      "game_url": "https://lichess.org/KLMJUYSg#35"
+    },
+    {
+      "id": "12TTx",
+      "fen": "8/2k2Kp1/1p3p2/pBp3r1/P2bP2p/1P3P1P/3R2P1/8 b - - 9 39",
+      "moves": "f6f5 f3f4 g5g3 e4e5",
+      "rating": 2074,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "endgame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/12TTx",
+      "game_url": "https://lichess.org/yAAt78Ms/black#78"
+    },
+    {
+      "id": "0cFwM",
+      "fen": "7k/8/2Q2p1p/6p1/5PP1/4q1KP/8/8 w - - 0 53",
+      "moves": "c6f3 e3g1 f3g2 g5f4 g3f4 g1g2",
+      "rating": 2229,
+      "themes": [
+        "crushing",
+        "deflection",
+        "endgame",
+        "long",
+        "queenEndgame"
+      ],
+      "url": "https://lichess.org/training/0cFwM",
+      "game_url": "https://lichess.org/CPTD8K1H#105"
+    },
+    {
+      "id": "0hO8q",
+      "fen": "5r2/p3r1kN/4P1n1/2pQ1p2/2Pp2b1/3B2q1/P5P1/4RRK1 b - - 3 28",
+      "moves": "g6h4 h7f8 g4f3 d5e5 g3e5 e1e5",
+      "rating": 2122,
+      "themes": [
+        "crushing",
+        "exposedKing",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/0hO8q",
+      "game_url": "https://lichess.org/f7upLLe4/black#56"
+    },
+    {
+      "id": "0BLTa",
+      "fen": "5rk1/1Qpq1ppp/1p1p2n1/6r1/PB2P3/1P6/2P2PPP/R4RK1 w - - 3 20",
+      "moves": "b4d2 g5g2 g1g2 d7g4 g2h1 g4f3",
+      "rating": 2157,
+      "themes": [
+        "attraction",
+        "crushing",
+        "kingsideAttack",
         "long",
         "middlegame",
         "sacrifice"
       ],
-      "url": "https://lichess.org/training/0634Z",
-      "game_url": "https://lichess.org/DhWIniMO#81"
+      "url": "https://lichess.org/training/0BLTa",
+      "game_url": "https://lichess.org/vzw7N11L#39"
     },
     {
-      "id": "0pjMO",
-      "fen": "3R4/3P2pk/3q3p/8/4r3/5Q1P/6PK/8 w - - 1 48",
-      "moves": "g2g3 d6d2 f3g2 e4e2 d8h8 h7g6 g2e2 d2e2",
-      "rating": 2054,
+      "id": "0T7UZ",
+      "fen": "1k2rr2/pp5p/3p2b1/2qN1p2/1P2PQ2/P2B4/2P3P1/1K3R2 b - - 0 26",
+      "moves": "c5c6 d3b5 e8e4 f4e4 c6b5 e4e7 b5d5 e7f8",
+      "rating": 2475,
       "themes": [
-        "crushing",
-        "endgame",
-        "pin",
+        "advantage",
+        "middlegame",
         "veryLong"
       ],
-      "url": "https://lichess.org/training/0pjMO",
-      "game_url": "https://lichess.org/Oz3dpx8F#95"
+      "url": "https://lichess.org/training/0T7UZ",
+      "game_url": "https://lichess.org/5qyjvO1X/black#52"
     },
     {
-      "id": "0z2j2",
-      "fen": "5r1k/6p1/7p/p7/2pP3P/2P1q1P1/P5Q1/2R4K w - - 0 32",
-      "moves": "g2g1 f8f2 g1f2 e3f2",
-      "rating": 2010,
+      "id": "0V9XZ",
+      "fen": "2kr3r/pp3ppp/2p1p2n/q7/3b2B1/2N5/PPPB1PPP/R2Q1RK1 w - - 0 14",
+      "moves": "c3e2 d4f2 f1f2 d8d2 g4e6 f7e6",
+      "rating": 2144,
       "themes": [
-        "endgame",
-        "master"
+        "advantage",
+        "discoveredAttack",
+        "long",
+        "middlegame"
       ],
-      "url": "https://lichess.org/training/0z2j2",
-      "game_url": "https://lichess.org/TL2b70u0#63"
+      "url": "https://lichess.org/training/0V9XZ",
+      "game_url": "https://lichess.org/1DibwTTA#27"
     },
     {
-      "id": "0D6RN",
-      "fen": "3k4/8/3P1K2/r3P3/5N2/8/8/8 b - - 8 64",
-      "moves": "a5a4 f4e6 d8e8 d6d7 e8d7 e6c5 d7c6 c5a4",
-      "rating": 2108,
+      "id": "01A5W",
+      "fen": "4r1k1/pp3p2/3p1Ppq/5P2/4r3/6RP/PP3Q2/6RK b - - 2 39",
+      "moves": "e4e2 g3g6 f7g6 f6f7 g8f7 f5g6 f7e7 f2e2",
+      "rating": 2418,
       "themes": [
         "advancedPawn",
         "attraction",
         "crushing",
+        "discoveredCheck",
+        "doubleCheck",
         "endgame",
-        "exposedKing",
-        "fork",
+        "interference",
+        "intermezzo",
+        "sacrifice",
         "veryLong"
       ],
-      "url": "https://lichess.org/training/0D6RN",
-      "game_url": "https://lichess.org/p5sQxazq/black#128"
+      "url": "https://lichess.org/training/01A5W",
+      "game_url": "https://lichess.org/oykaypz8/black#78"
     },
     {
-      "id": "0Btl1",
-      "fen": "5r1k/2P3bp/pN4p1/8/Q1P1p3/5rPq/2R2P2/1R4K1 w - - 0 34",
-      "moves": "c7c8q f3g3 f2g3 g7d4 c2f2 d4f2",
-      "rating": 2079,
+      "id": "0ygKg",
+      "fen": "r1bq2k1/ppp2ppp/1b1p4/8/2B1rP1n/1PP2NQP/PB4P1/R4R1K b - - 1 17",
+      "moves": "e4e3 g3h4 d8h4 f3h4",
+      "rating": 2037,
       "themes": [
-        "balestraMate",
-        "long",
-        "mate",
-        "mateIn3",
+        "advantage",
         "middlegame",
-        "sacrifice"
+        "short"
       ],
-      "url": "https://lichess.org/training/0Btl1",
-      "game_url": "https://lichess.org/ZjsKXCw9#67"
+      "url": "https://lichess.org/training/0ygKg",
+      "game_url": "https://lichess.org/s9D7uc2n/black#34"
+    },
+    {
+      "id": "075t1",
+      "fen": "8/8/1pk1p1p1/3pP1Pp/PK1P3P/8/8/8 b - - 0 38",
+      "moves": "c6b7 b4b5 b7c7 a4a5 b6a5 b5a5 c7c6 a5a6",
+      "rating": 2171,
+      "themes": [
+        "crushing",
+        "defensiveMove",
+        "endgame",
+        "pawnEndgame",
+        "veryLong",
+        "zugzwang"
+      ],
+      "url": "https://lichess.org/training/075t1",
+      "game_url": "https://lichess.org/1xKnv3zS/black#76"
     }
   ]
 };
@@ -88643,75 +88209,75 @@ const CHESS_HISTORY = {
 // PERFORMANCE DATA (model blind test results)
 // ══════════════════════════════════════════════════════════
 const PERFORMANCE_DATA = {
-  "generated": "2026-06-28",
+  "generated": "2026-06-29",
   "model": "N5v4_Final",
-  "n_tournaments": 16,
-  "grade": "A+",
-  "grade_detail": "T-14 MAE: 5.0%, CI coverage: 94.0%",
+  "n_tournaments": 17,
+  "grade": "A",
+  "grade_detail": "T-14 MAE: 6.1%, CI coverage: 88.0%",
   "aggregate": [
     {
       "T": 90,
-      "n": 5,
-      "mae_pct": 3.4,
+      "n": 6,
+      "mae_pct": 3.2,
       "median_ape_pct": 2.1,
       "ci_coverage": 100.0,
-      "bias_pct": 1.8
-    },
-    {
-      "T": 60,
-      "n": 14,
-      "mae_pct": 6.4,
-      "median_ape_pct": 4.4,
-      "ci_coverage": 100.0,
-      "bias_pct": 1.6
-    },
-    {
-      "T": 42,
-      "n": 16,
-      "mae_pct": 6.5,
-      "median_ape_pct": 4.3,
-      "ci_coverage": 81.0,
-      "bias_pct": 0.7
-    },
-    {
-      "T": 28,
-      "n": 16,
-      "mae_pct": 5.7,
-      "median_ape_pct": 2.9,
-      "ci_coverage": 88.0,
-      "bias_pct": -0.5
-    },
-    {
-      "T": 14,
-      "n": 16,
-      "mae_pct": 5.0,
-      "median_ape_pct": 2.2,
-      "ci_coverage": 94.0,
-      "bias_pct": 1.0
-    },
-    {
-      "T": 7,
-      "n": 16,
-      "mae_pct": 9.8,
-      "median_ape_pct": 5.4,
-      "ci_coverage": 69.0,
       "bias_pct": 1.2
     },
     {
+      "T": 60,
+      "n": 15,
+      "mae_pct": 6.0,
+      "median_ape_pct": 4.4,
+      "ci_coverage": 100.0,
+      "bias_pct": 1.5
+    },
+    {
+      "T": 42,
+      "n": 17,
+      "mae_pct": 6.8,
+      "median_ape_pct": 4.5,
+      "ci_coverage": 82.0,
+      "bias_pct": 0.2
+    },
+    {
+      "T": 28,
+      "n": 17,
+      "mae_pct": 6.8,
+      "median_ape_pct": 3.3,
+      "ci_coverage": 88.0,
+      "bias_pct": -1.6
+    },
+    {
+      "T": 14,
+      "n": 17,
+      "mae_pct": 6.1,
+      "median_ape_pct": 2.4,
+      "ci_coverage": 88.0,
+      "bias_pct": -0.4
+    },
+    {
+      "T": 7,
+      "n": 17,
+      "mae_pct": 11.9,
+      "median_ape_pct": 5.9,
+      "ci_coverage": 71.0,
+      "bias_pct": -1.6
+    },
+    {
       "T": 3,
-      "n": 16,
-      "mae_pct": 13.3,
-      "median_ape_pct": 4.8,
-      "ci_coverage": 69.0,
-      "bias_pct": -3.8
+      "n": 17,
+      "mae_pct": 16.3,
+      "median_ape_pct": 5.1,
+      "ci_coverage": 65.0,
+      "bias_pct": -7.3
     },
     {
       "T": 1,
-      "n": 16,
-      "mae_pct": 13.7,
-      "median_ape_pct": 3.9,
-      "ci_coverage": 56.0,
-      "bias_pct": -6.4
+      "n": 17,
+      "mae_pct": 16.7,
+      "median_ape_pct": 4.5,
+      "ci_coverage": 53.0,
+      "bias_pct": -9.9
     }
   ],
   "tournaments": [
@@ -88733,21 +88299,21 @@ const PERFORMANCE_DATA = {
         {
           "T": 42,
           "count_at_T": 20,
-          "predicted": 366,
-          "ci_lower": 337,
+          "predicted": 367,
+          "ci_lower": 338,
           "ci_upper": 397,
-          "error_pct": 1.9,
-          "abs_error_pct": 1.9,
+          "error_pct": 2.2,
+          "abs_error_pct": 2.2,
           "in_ci": 1
         },
         {
           "T": 28,
           "count_at_T": 42,
-          "predicted": 364,
-          "ci_lower": 330,
-          "ci_upper": 400,
-          "error_pct": 1.4,
-          "abs_error_pct": 1.4,
+          "predicted": 365,
+          "ci_lower": 331,
+          "ci_upper": 401,
+          "error_pct": 1.7,
+          "abs_error_pct": 1.7,
           "in_ci": 1
         },
         {
@@ -88775,7 +88341,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 193,
           "predicted": 375,
           "ci_lower": 348,
-          "ci_upper": 404,
+          "ci_upper": 403,
           "error_pct": 4.5,
           "abs_error_pct": 4.5,
           "in_ci": 1
@@ -88784,8 +88350,8 @@ const PERFORMANCE_DATA = {
           "T": 1,
           "count_at_T": 297,
           "predicted": 401,
-          "ci_lower": 381,
-          "ci_upper": 422,
+          "ci_lower": 380,
+          "ci_upper": 423,
           "error_pct": 11.7,
           "abs_error_pct": 11.7,
           "in_ci": 0
@@ -88811,7 +88377,7 @@ const PERFORMANCE_DATA = {
           "T": 42,
           "count_at_T": 27,
           "predicted": 524,
-          "ci_lower": 509,
+          "ci_lower": 510,
           "ci_upper": 539,
           "error_pct": -7.1,
           "abs_error_pct": 7.1,
@@ -88820,19 +88386,19 @@ const PERFORMANCE_DATA = {
         {
           "T": 28,
           "count_at_T": 53,
-          "predicted": 519,
-          "ci_lower": 472,
-          "ci_upper": 571,
-          "error_pct": -8.0,
-          "abs_error_pct": 8.0,
+          "predicted": 520,
+          "ci_lower": 473,
+          "ci_upper": 572,
+          "error_pct": -7.8,
+          "abs_error_pct": 7.8,
           "in_ci": 1
         },
         {
           "T": 14,
           "count_at_T": 177,
           "predicted": 609,
-          "ci_lower": 538,
-          "ci_upper": 689,
+          "ci_lower": 537,
+          "ci_upper": 690,
           "error_pct": 8.0,
           "abs_error_pct": 8.0,
           "in_ci": 1
@@ -88841,8 +88407,8 @@ const PERFORMANCE_DATA = {
           "T": 7,
           "count_at_T": 326,
           "predicted": 715,
-          "ci_lower": 617,
-          "ci_upper": 828,
+          "ci_lower": 618,
+          "ci_upper": 827,
           "error_pct": 26.8,
           "abs_error_pct": 26.8,
           "in_ci": 0
@@ -88851,8 +88417,8 @@ const PERFORMANCE_DATA = {
           "T": 3,
           "count_at_T": 429,
           "predicted": 674,
-          "ci_lower": 565,
-          "ci_upper": 803,
+          "ci_lower": 566,
+          "ci_upper": 801,
           "error_pct": 19.5,
           "abs_error_pct": 19.5,
           "in_ci": 0
@@ -88861,8 +88427,8 @@ const PERFORMANCE_DATA = {
           "T": 1,
           "count_at_T": 497,
           "predicted": 568,
-          "ci_lower": 540,
-          "ci_upper": 597,
+          "ci_lower": 538,
+          "ci_upper": 599,
           "error_pct": 0.7,
           "abs_error_pct": 0.7,
           "in_ci": 1
@@ -88877,29 +88443,29 @@ const PERFORMANCE_DATA = {
         {
           "T": 42,
           "count_at_T": 21,
-          "predicted": 353,
+          "predicted": 354,
           "ci_lower": 317,
-          "ci_upper": 394,
-          "error_pct": -8.8,
-          "abs_error_pct": 8.8,
+          "ci_upper": 395,
+          "error_pct": -8.5,
+          "abs_error_pct": 8.5,
           "in_ci": 1
         },
         {
           "T": 28,
           "count_at_T": 40,
-          "predicted": 353,
-          "ci_lower": 332,
-          "ci_upper": 375,
-          "error_pct": -8.8,
-          "abs_error_pct": 8.8,
+          "predicted": 354,
+          "ci_lower": 333,
+          "ci_upper": 376,
+          "error_pct": -8.5,
+          "abs_error_pct": 8.5,
           "in_ci": 0
         },
         {
           "T": 14,
           "count_at_T": 86,
           "predicted": 361,
-          "ci_lower": 324,
-          "ci_upper": 402,
+          "ci_lower": 323,
+          "ci_upper": 403,
           "error_pct": -6.7,
           "abs_error_pct": 6.7,
           "in_ci": 1
@@ -88909,7 +88475,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 166,
           "predicted": 399,
           "ci_lower": 364,
-          "ci_upper": 438,
+          "ci_upper": 437,
           "error_pct": 3.1,
           "abs_error_pct": 3.1,
           "in_ci": 1
@@ -88918,7 +88484,7 @@ const PERFORMANCE_DATA = {
           "T": 3,
           "count_at_T": 289,
           "predicted": 423,
-          "ci_lower": 380,
+          "ci_lower": 381,
           "ci_upper": 471,
           "error_pct": 9.3,
           "abs_error_pct": 9.3,
@@ -88928,8 +88494,8 @@ const PERFORMANCE_DATA = {
           "T": 1,
           "count_at_T": 343,
           "predicted": 388,
-          "ci_lower": 368,
-          "ci_upper": 408,
+          "ci_lower": 367,
+          "ci_upper": 409,
           "error_pct": 0.3,
           "abs_error_pct": 0.3,
           "in_ci": 1
@@ -88944,18 +88510,18 @@ const PERFORMANCE_DATA = {
         {
           "T": 42,
           "count_at_T": 22,
-          "predicted": 240,
-          "ci_lower": 218,
+          "predicted": 241,
+          "ci_lower": 219,
           "ci_upper": 265,
-          "error_pct": 14.8,
-          "abs_error_pct": 14.8,
+          "error_pct": 15.3,
+          "abs_error_pct": 15.3,
           "in_ci": 0
         },
         {
           "T": 28,
           "count_at_T": 33,
           "predicted": 227,
-          "ci_lower": 198,
+          "ci_lower": 199,
           "ci_upper": 260,
           "error_pct": 8.6,
           "abs_error_pct": 8.6,
@@ -88975,7 +88541,7 @@ const PERFORMANCE_DATA = {
           "T": 7,
           "count_at_T": 85,
           "predicted": 206,
-          "ci_lower": 192,
+          "ci_lower": 193,
           "ci_upper": 221,
           "error_pct": -1.4,
           "abs_error_pct": 1.4,
@@ -88985,18 +88551,18 @@ const PERFORMANCE_DATA = {
           "T": 3,
           "count_at_T": 128,
           "predicted": 237,
-          "ci_lower": 209,
+          "ci_lower": 210,
           "ci_upper": 267,
           "error_pct": 13.4,
           "abs_error_pct": 13.4,
-          "in_ci": 1
+          "in_ci": 0
         },
         {
           "T": 1,
           "count_at_T": 172,
           "predicted": 242,
           "ci_lower": 230,
-          "ci_upper": 255,
+          "ci_upper": 256,
           "error_pct": 15.8,
           "abs_error_pct": 15.8,
           "in_ci": 0
@@ -89011,11 +88577,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 90,
           "count_at_T": 17,
-          "predicted": 524,
-          "ci_lower": 381,
-          "ci_upper": 721,
-          "error_pct": 6.5,
-          "abs_error_pct": 6.5,
+          "predicted": 525,
+          "ci_lower": 382,
+          "ci_upper": 722,
+          "error_pct": 6.7,
+          "abs_error_pct": 6.7,
           "in_ci": 1
         },
         {
@@ -89032,7 +88598,7 @@ const PERFORMANCE_DATA = {
           "T": 42,
           "count_at_T": 66,
           "predicted": 492,
-          "ci_lower": 448,
+          "ci_lower": 449,
           "ci_upper": 539,
           "error_pct": 0.0,
           "abs_error_pct": 0.0,
@@ -89041,11 +88607,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 28,
           "count_at_T": 112,
-          "predicted": 498,
-          "ci_lower": 442,
-          "ci_upper": 563,
-          "error_pct": 1.2,
-          "abs_error_pct": 1.2,
+          "predicted": 500,
+          "ci_lower": 443,
+          "ci_upper": 564,
+          "error_pct": 1.6,
+          "abs_error_pct": 1.6,
           "in_ci": 1
         },
         {
@@ -89053,7 +88619,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 236,
           "predicted": 504,
           "ci_lower": 457,
-          "ci_upper": 556,
+          "ci_upper": 557,
           "error_pct": 2.4,
           "abs_error_pct": 2.4,
           "in_ci": 1
@@ -89062,7 +88628,7 @@ const PERFORMANCE_DATA = {
           "T": 7,
           "count_at_T": 319,
           "predicted": 521,
-          "ci_lower": 483,
+          "ci_lower": 484,
           "ci_upper": 562,
           "error_pct": 5.9,
           "abs_error_pct": 5.9,
@@ -89072,8 +88638,8 @@ const PERFORMANCE_DATA = {
           "T": 3,
           "count_at_T": 395,
           "predicted": 514,
-          "ci_lower": 469,
-          "ci_upper": 563,
+          "ci_lower": 470,
+          "ci_upper": 562,
           "error_pct": 4.5,
           "abs_error_pct": 4.5,
           "in_ci": 1
@@ -89082,8 +88648,8 @@ const PERFORMANCE_DATA = {
           "T": 1,
           "count_at_T": 442,
           "predicted": 497,
-          "ci_lower": 473,
-          "ci_upper": 523,
+          "ci_lower": 472,
+          "ci_upper": 525,
           "error_pct": 1.0,
           "abs_error_pct": 1.0,
           "in_ci": 1
@@ -89100,7 +88666,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 7,
           "predicted": 415,
           "ci_lower": 269,
-          "ci_upper": 641,
+          "ci_upper": 642,
           "error_pct": -2.1,
           "abs_error_pct": 2.1,
           "in_ci": 1
@@ -89119,7 +88685,7 @@ const PERFORMANCE_DATA = {
           "T": 42,
           "count_at_T": 38,
           "predicted": 411,
-          "ci_lower": 333,
+          "ci_lower": 334,
           "ci_upper": 506,
           "error_pct": -3.1,
           "abs_error_pct": 3.1,
@@ -89128,19 +88694,19 @@ const PERFORMANCE_DATA = {
         {
           "T": 28,
           "count_at_T": 75,
-          "predicted": 419,
-          "ci_lower": 135,
-          "ci_upper": 1300,
-          "error_pct": -1.2,
-          "abs_error_pct": 1.2,
+          "predicted": 420,
+          "ci_lower": 137,
+          "ci_upper": 1289,
+          "error_pct": -0.9,
+          "abs_error_pct": 0.9,
           "in_ci": 1
         },
         {
           "T": 14,
           "count_at_T": 158,
           "predicted": 472,
-          "ci_lower": 364,
-          "ci_upper": 612,
+          "ci_lower": 360,
+          "ci_upper": 619,
           "error_pct": 11.3,
           "abs_error_pct": 11.3,
           "in_ci": 1
@@ -89150,7 +88716,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 226,
           "predicted": 443,
           "ci_lower": 226,
-          "ci_upper": 875,
+          "ci_upper": 874,
           "error_pct": 4.5,
           "abs_error_pct": 4.5,
           "in_ci": 1
@@ -89159,8 +88725,8 @@ const PERFORMANCE_DATA = {
           "T": 3,
           "count_at_T": 286,
           "predicted": 432,
-          "ci_lower": 371,
-          "ci_upper": 503,
+          "ci_lower": 372,
+          "ci_upper": 502,
           "error_pct": 1.9,
           "abs_error_pct": 1.9,
           "in_ci": 1
@@ -89169,8 +88735,8 @@ const PERFORMANCE_DATA = {
           "T": 1,
           "count_at_T": 390,
           "predicted": 431,
-          "ci_lower": 410,
-          "ci_upper": 453,
+          "ci_lower": 409,
+          "ci_upper": 455,
           "error_pct": 1.7,
           "abs_error_pct": 1.7,
           "in_ci": 1
@@ -89195,29 +88761,29 @@ const PERFORMANCE_DATA = {
         {
           "T": 42,
           "count_at_T": 26,
-          "predicted": 331,
+          "predicted": 332,
           "ci_lower": 294,
           "ci_upper": 374,
-          "error_pct": 4.1,
-          "abs_error_pct": 4.1,
+          "error_pct": 4.4,
+          "abs_error_pct": 4.4,
           "in_ci": 1
         },
         {
           "T": 28,
           "count_at_T": 60,
-          "predicted": 326,
+          "predicted": 327,
           "ci_lower": 270,
-          "ci_upper": 395,
-          "error_pct": 2.5,
-          "abs_error_pct": 2.5,
+          "ci_upper": 397,
+          "error_pct": 2.8,
+          "abs_error_pct": 2.8,
           "in_ci": 1
         },
         {
           "T": 14,
           "count_at_T": 94,
           "predicted": 312,
-          "ci_lower": 268,
-          "ci_upper": 363,
+          "ci_lower": 266,
+          "ci_upper": 366,
           "error_pct": -1.9,
           "abs_error_pct": 1.9,
           "in_ci": 1
@@ -89226,8 +88792,8 @@ const PERFORMANCE_DATA = {
           "T": 7,
           "count_at_T": 135,
           "predicted": 297,
-          "ci_lower": 258,
-          "ci_upper": 343,
+          "ci_lower": 256,
+          "ci_upper": 345,
           "error_pct": -6.6,
           "abs_error_pct": 6.6,
           "in_ci": 1
@@ -89236,8 +88802,8 @@ const PERFORMANCE_DATA = {
           "T": 3,
           "count_at_T": 193,
           "predicted": 312,
-          "ci_lower": 265,
-          "ci_upper": 368,
+          "ci_lower": 262,
+          "ci_upper": 373,
           "error_pct": -1.9,
           "abs_error_pct": 1.9,
           "in_ci": 1
@@ -89246,8 +88812,8 @@ const PERFORMANCE_DATA = {
           "T": 1,
           "count_at_T": 272,
           "predicted": 345,
-          "ci_lower": 323,
-          "ci_upper": 368,
+          "ci_lower": 321,
+          "ci_upper": 371,
           "error_pct": 8.5,
           "abs_error_pct": 8.5,
           "in_ci": 0
@@ -89272,21 +88838,21 @@ const PERFORMANCE_DATA = {
         {
           "T": 42,
           "count_at_T": 14,
-          "predicted": 261,
-          "ci_lower": 194,
-          "ci_upper": 352,
-          "error_pct": 30.5,
-          "abs_error_pct": 30.5,
+          "predicted": 262,
+          "ci_lower": 195,
+          "ci_upper": 351,
+          "error_pct": 31.0,
+          "abs_error_pct": 31.0,
           "in_ci": 1
         },
         {
           "T": 28,
           "count_at_T": 27,
-          "predicted": 248,
-          "ci_lower": 236,
-          "ci_upper": 260,
-          "error_pct": 24.0,
-          "abs_error_pct": 24.0,
+          "predicted": 249,
+          "ci_lower": 237,
+          "ci_upper": 261,
+          "error_pct": 24.5,
+          "abs_error_pct": 24.5,
           "in_ci": 0
         },
         {
@@ -89304,7 +88870,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 97,
           "predicted": 250,
           "ci_lower": 231,
-          "ci_upper": 270,
+          "ci_upper": 269,
           "error_pct": 25.0,
           "abs_error_pct": 25.0,
           "in_ci": 0
@@ -89323,8 +88889,8 @@ const PERFORMANCE_DATA = {
           "T": 1,
           "count_at_T": 164,
           "predicted": 209,
-          "ci_lower": 199,
-          "ci_upper": 220,
+          "ci_lower": 198,
+          "ci_upper": 221,
           "error_pct": 4.5,
           "abs_error_pct": 4.5,
           "in_ci": 1
@@ -89340,7 +88906,7 @@ const PERFORMANCE_DATA = {
           "T": 90,
           "count_at_T": 3,
           "predicted": 202,
-          "ci_lower": 149,
+          "ci_lower": 150,
           "ci_upper": 273,
           "error_pct": 2.0,
           "abs_error_pct": 2.0,
@@ -89369,11 +88935,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 28,
           "count_at_T": 76,
-          "predicted": 168,
-          "ci_lower": 127,
-          "ci_upper": 223,
-          "error_pct": -15.2,
-          "abs_error_pct": 15.2,
+          "predicted": 169,
+          "ci_lower": 128,
+          "ci_upper": 224,
+          "error_pct": -14.6,
+          "abs_error_pct": 14.6,
           "in_ci": 1
         },
         {
@@ -89381,7 +88947,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 147,
           "predicted": 196,
           "ci_lower": 147,
-          "ci_upper": 263,
+          "ci_upper": 267,
           "error_pct": -1.0,
           "abs_error_pct": 1.0,
           "in_ci": 1
@@ -89391,7 +88957,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 175,
           "predicted": 202,
           "ci_lower": 175,
-          "ci_upper": 254,
+          "ci_upper": 258,
           "error_pct": 2.0,
           "abs_error_pct": 2.0,
           "in_ci": 1
@@ -89401,7 +88967,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 185,
           "predicted": 195,
           "ci_lower": 185,
-          "ci_upper": 259,
+          "ci_upper": 265,
           "error_pct": -1.5,
           "abs_error_pct": 1.5,
           "in_ci": 1
@@ -89411,7 +88977,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 193,
           "predicted": 197,
           "ci_lower": 193,
-          "ci_upper": 220,
+          "ci_upper": 224,
           "error_pct": -0.5,
           "abs_error_pct": 0.5,
           "in_ci": 1
@@ -89448,7 +89014,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 14,
           "predicted": 63,
           "ci_lower": 43,
-          "ci_upper": 91,
+          "ci_upper": 92,
           "error_pct": 3.3,
           "abs_error_pct": 3.3,
           "in_ci": 1
@@ -89457,8 +89023,8 @@ const PERFORMANCE_DATA = {
           "T": 14,
           "count_at_T": 23,
           "predicted": 61,
-          "ci_lower": 45,
-          "ci_upper": 82,
+          "ci_lower": 44,
+          "ci_upper": 84,
           "error_pct": 0.0,
           "abs_error_pct": 0.0,
           "in_ci": 1
@@ -89468,7 +89034,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 30,
           "predicted": 64,
           "ci_lower": 47,
-          "ci_upper": 86,
+          "ci_upper": 87,
           "error_pct": 4.9,
           "abs_error_pct": 4.9,
           "in_ci": 1
@@ -89477,8 +89043,8 @@ const PERFORMANCE_DATA = {
           "T": 3,
           "count_at_T": 42,
           "predicted": 60,
-          "ci_lower": 44,
-          "ci_upper": 82,
+          "ci_lower": 43,
+          "ci_upper": 84,
           "error_pct": -1.6,
           "abs_error_pct": 1.6,
           "in_ci": 1
@@ -89487,8 +89053,8 @@ const PERFORMANCE_DATA = {
           "T": 1,
           "count_at_T": 52,
           "predicted": 63,
-          "ci_lower": 55,
-          "ci_upper": 72,
+          "ci_lower": 54,
+          "ci_upper": 73,
           "error_pct": 3.3,
           "abs_error_pct": 3.3,
           "in_ci": 1
@@ -89503,9 +89069,9 @@ const PERFORMANCE_DATA = {
         {
           "T": 90,
           "count_at_T": 144,
-          "predicted": 1723,
-          "ci_lower": 1557,
-          "ci_upper": 1907,
+          "predicted": 1724,
+          "ci_lower": 1558,
+          "ci_upper": 1908,
           "error_pct": -1.7,
           "abs_error_pct": 1.7,
           "in_ci": 1
@@ -89523,21 +89089,21 @@ const PERFORMANCE_DATA = {
         {
           "T": 42,
           "count_at_T": 755,
-          "predicted": 1666,
-          "ci_lower": 1493,
+          "predicted": 1668,
+          "ci_lower": 1497,
           "ci_upper": 1860,
-          "error_pct": -5.0,
-          "abs_error_pct": 5.0,
+          "error_pct": -4.8,
+          "abs_error_pct": 4.8,
           "in_ci": 1
         },
         {
           "T": 28,
           "count_at_T": 1288,
-          "predicted": 1742,
+          "predicted": 1746,
           "ci_lower": 1288,
-          "ci_upper": 2503,
-          "error_pct": -0.6,
-          "abs_error_pct": 0.6,
+          "ci_upper": 2522,
+          "error_pct": -0.4,
+          "abs_error_pct": 0.4,
           "in_ci": 1
         },
         {
@@ -89545,7 +89111,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 1630,
           "predicted": 1765,
           "ci_lower": 1630,
-          "ci_upper": 2273,
+          "ci_upper": 2304,
           "error_pct": 0.7,
           "abs_error_pct": 0.7,
           "in_ci": 1
@@ -89555,7 +89121,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 1695,
           "predicted": 1775,
           "ci_lower": 1695,
-          "ci_upper": 2206,
+          "ci_upper": 2236,
           "error_pct": 1.3,
           "abs_error_pct": 1.3,
           "in_ci": 1
@@ -89565,7 +89131,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 1719,
           "predicted": 1746,
           "ci_lower": 1719,
-          "ci_upper": 2293,
+          "ci_upper": 2344,
           "error_pct": -0.4,
           "abs_error_pct": 0.4,
           "in_ci": 1
@@ -89575,7 +89141,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 1733,
           "predicted": 1766,
           "ci_lower": 1733,
-          "ci_upper": 1971,
+          "ci_upper": 2000,
           "error_pct": 0.7,
           "abs_error_pct": 0.7,
           "in_ci": 1
@@ -89591,8 +89157,8 @@ const PERFORMANCE_DATA = {
           "T": 90,
           "count_at_T": 39,
           "predicted": 958,
-          "ci_lower": 906,
-          "ci_upper": 1012,
+          "ci_lower": 907,
+          "ci_upper": 1013,
           "error_pct": 4.5,
           "abs_error_pct": 4.5,
           "in_ci": 1
@@ -89610,21 +89176,21 @@ const PERFORMANCE_DATA = {
         {
           "T": 42,
           "count_at_T": 242,
-          "predicted": 914,
-          "ci_lower": 895,
-          "ci_upper": 933,
-          "error_pct": -0.3,
-          "abs_error_pct": 0.3,
+          "predicted": 915,
+          "ci_lower": 896,
+          "ci_upper": 934,
+          "error_pct": -0.2,
+          "abs_error_pct": 0.2,
           "in_ci": 1
         },
         {
           "T": 28,
           "count_at_T": 321,
-          "predicted": 925,
-          "ci_lower": 893,
-          "ci_upper": 958,
-          "error_pct": 0.9,
-          "abs_error_pct": 0.9,
+          "predicted": 928,
+          "ci_lower": 896,
+          "ci_upper": 961,
+          "error_pct": 1.2,
+          "abs_error_pct": 1.2,
           "in_ci": 1
         },
         {
@@ -89651,8 +89217,8 @@ const PERFORMANCE_DATA = {
           "T": 3,
           "count_at_T": 664,
           "predicted": 917,
-          "ci_lower": 855,
-          "ci_upper": 983,
+          "ci_lower": 852,
+          "ci_upper": 986,
           "error_pct": 0.0,
           "abs_error_pct": 0.0,
           "in_ci": 1
@@ -89661,8 +89227,8 @@ const PERFORMANCE_DATA = {
           "T": 1,
           "count_at_T": 820,
           "predicted": 941,
-          "ci_lower": 895,
-          "ci_upper": 990,
+          "ci_lower": 892,
+          "ci_upper": 993,
           "error_pct": 2.6,
           "abs_error_pct": 2.6,
           "in_ci": 1
@@ -89687,18 +89253,18 @@ const PERFORMANCE_DATA = {
         {
           "T": 42,
           "count_at_T": 9,
-          "predicted": 194,
-          "ci_lower": 144,
-          "ci_upper": 262,
-          "error_pct": -0.5,
-          "abs_error_pct": 0.5,
+          "predicted": 195,
+          "ci_lower": 145,
+          "ci_upper": 261,
+          "error_pct": 0.0,
+          "abs_error_pct": 0.0,
           "in_ci": 1
         },
         {
           "T": 28,
           "count_at_T": 27,
           "predicted": 194,
-          "ci_lower": 178,
+          "ci_lower": 179,
           "ci_upper": 211,
           "error_pct": -0.5,
           "abs_error_pct": 0.5,
@@ -89709,7 +89275,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 51,
           "predicted": 192,
           "ci_lower": 182,
-          "ci_upper": 203,
+          "ci_upper": 204,
           "error_pct": -1.5,
           "abs_error_pct": 1.5,
           "in_ci": 1
@@ -89764,11 +89330,11 @@ const PERFORMANCE_DATA = {
         {
           "T": 42,
           "count_at_T": 6,
-          "predicted": 100,
+          "predicted": 101,
           "ci_lower": 75,
           "ci_upper": 135,
-          "error_pct": -8.3,
-          "abs_error_pct": 8.3,
+          "error_pct": -7.3,
+          "abs_error_pct": 7.3,
           "in_ci": 1
         },
         {
@@ -89785,8 +89351,8 @@ const PERFORMANCE_DATA = {
           "T": 14,
           "count_at_T": 27,
           "predicted": 97,
-          "ci_lower": 79,
-          "ci_upper": 119,
+          "ci_lower": 78,
+          "ci_upper": 120,
           "error_pct": -11.0,
           "abs_error_pct": 11.0,
           "in_ci": 1
@@ -89805,20 +89371,107 @@ const PERFORMANCE_DATA = {
           "T": 3,
           "count_at_T": 32,
           "predicted": 63,
-          "ci_lower": 37,
-          "ci_upper": 107,
+          "ci_lower": 36,
+          "ci_upper": 109,
           "error_pct": -42.2,
           "abs_error_pct": 42.2,
-          "in_ci": 0
+          "in_ci": 1
         },
         {
           "T": 1,
           "count_at_T": 32,
           "predicted": 55,
-          "ci_lower": 40,
-          "ci_upper": 76,
+          "ci_lower": 39,
+          "ci_upper": 77,
           "error_pct": -49.5,
           "abs_error_pct": 49.5,
+          "in_ci": 0
+        }
+      ]
+    },
+    {
+      "family": "DC Open",
+      "final_count": 188,
+      "event_start": "2026-06-26",
+      "predictions": [
+        {
+          "T": 90,
+          "count_at_T": 1,
+          "predicted": 184,
+          "ci_lower": 119,
+          "ci_upper": 285,
+          "error_pct": -2.1,
+          "abs_error_pct": 2.1,
+          "in_ci": 1
+        },
+        {
+          "T": 60,
+          "count_at_T": 2,
+          "predicted": 188,
+          "ci_lower": 123,
+          "ci_upper": 287,
+          "error_pct": 0.0,
+          "abs_error_pct": 0.0,
+          "in_ci": 1
+        },
+        {
+          "T": 42,
+          "count_at_T": 3,
+          "predicted": 167,
+          "ci_lower": 136,
+          "ci_upper": 204,
+          "error_pct": -11.2,
+          "abs_error_pct": 11.2,
+          "in_ci": 1
+        },
+        {
+          "T": 28,
+          "count_at_T": 5,
+          "predicted": 143,
+          "ci_lower": 59,
+          "ci_upper": 346,
+          "error_pct": -23.9,
+          "abs_error_pct": 23.9,
+          "in_ci": 1
+        },
+        {
+          "T": 14,
+          "count_at_T": 11,
+          "predicted": 143,
+          "ci_lower": 115,
+          "ci_upper": 178,
+          "error_pct": -23.9,
+          "abs_error_pct": 23.9,
+          "in_ci": 0
+        },
+        {
+          "T": 7,
+          "count_at_T": 16,
+          "predicted": 103,
+          "ci_lower": 38,
+          "ci_upper": 282,
+          "error_pct": -45.2,
+          "abs_error_pct": 45.2,
+          "in_ci": 1
+        },
+        {
+          "T": 3,
+          "count_at_T": 24,
+          "predicted": 69,
+          "ci_lower": 42,
+          "ci_upper": 112,
+          "error_pct": -63.3,
+          "abs_error_pct": 63.3,
+          "in_ci": 0
+        },
+        {
+          "T": 1,
+          "count_at_T": 27,
+          "predicted": 65,
+          "ci_lower": 61,
+          "ci_upper": 70,
+          "error_pct": -65.4,
+          "abs_error_pct": 65.4,
           "in_ci": 0
         }
       ]
@@ -89842,8 +89495,8 @@ const PERFORMANCE_DATA = {
           "T": 42,
           "count_at_T": 12,
           "predicted": 206,
-          "ci_lower": 153,
-          "ci_upper": 278,
+          "ci_lower": 154,
+          "ci_upper": 277,
           "error_pct": 0.0,
           "abs_error_pct": 0.0,
           "in_ci": 1
@@ -89852,8 +89505,8 @@ const PERFORMANCE_DATA = {
           "T": 28,
           "count_at_T": 16,
           "predicted": 199,
-          "ci_lower": 188,
-          "ci_upper": 209,
+          "ci_lower": 189,
+          "ci_upper": 210,
           "error_pct": -3.4,
           "abs_error_pct": 3.4,
           "in_ci": 1
@@ -89930,7 +89583,7 @@ const PERFORMANCE_DATA = {
           "count_at_T": 16,
           "predicted": 178,
           "ci_lower": 160,
-          "ci_upper": 197,
+          "ci_upper": 198,
           "error_pct": -0.6,
           "abs_error_pct": 0.6,
           "in_ci": 1
@@ -99350,73 +99003,73 @@ const PERFORMANCE_DATA = {
     },
     "2026": {
       "year": 2026,
-      "n_tournaments": 16,
-      "grade": "A+",
-      "grade_detail": "T-14 MAE: 5.0%, CI coverage: 94.0%",
+      "n_tournaments": 17,
+      "grade": "A",
+      "grade_detail": "T-14 MAE: 6.1%, CI coverage: 88.0%",
       "aggregate": [
         {
           "T": 90,
-          "n": 5,
-          "mae_pct": 3.4,
+          "n": 6,
+          "mae_pct": 3.2,
           "median_ape_pct": 2.1,
           "ci_coverage": 100.0,
-          "bias_pct": 1.8
-        },
-        {
-          "T": 60,
-          "n": 14,
-          "mae_pct": 6.4,
-          "median_ape_pct": 4.4,
-          "ci_coverage": 100.0,
-          "bias_pct": 1.6
-        },
-        {
-          "T": 42,
-          "n": 16,
-          "mae_pct": 6.5,
-          "median_ape_pct": 4.3,
-          "ci_coverage": 81.0,
-          "bias_pct": 0.7
-        },
-        {
-          "T": 28,
-          "n": 16,
-          "mae_pct": 5.7,
-          "median_ape_pct": 2.9,
-          "ci_coverage": 88.0,
-          "bias_pct": -0.5
-        },
-        {
-          "T": 14,
-          "n": 16,
-          "mae_pct": 5.0,
-          "median_ape_pct": 2.2,
-          "ci_coverage": 94.0,
-          "bias_pct": 1.0
-        },
-        {
-          "T": 7,
-          "n": 16,
-          "mae_pct": 9.8,
-          "median_ape_pct": 5.4,
-          "ci_coverage": 69.0,
           "bias_pct": 1.2
         },
         {
+          "T": 60,
+          "n": 15,
+          "mae_pct": 6.0,
+          "median_ape_pct": 4.4,
+          "ci_coverage": 100.0,
+          "bias_pct": 1.5
+        },
+        {
+          "T": 42,
+          "n": 17,
+          "mae_pct": 6.8,
+          "median_ape_pct": 4.5,
+          "ci_coverage": 82.0,
+          "bias_pct": 0.2
+        },
+        {
+          "T": 28,
+          "n": 17,
+          "mae_pct": 6.8,
+          "median_ape_pct": 3.3,
+          "ci_coverage": 88.0,
+          "bias_pct": -1.6
+        },
+        {
+          "T": 14,
+          "n": 17,
+          "mae_pct": 6.1,
+          "median_ape_pct": 2.4,
+          "ci_coverage": 88.0,
+          "bias_pct": -0.4
+        },
+        {
+          "T": 7,
+          "n": 17,
+          "mae_pct": 11.9,
+          "median_ape_pct": 5.9,
+          "ci_coverage": 71.0,
+          "bias_pct": -1.6
+        },
+        {
           "T": 3,
-          "n": 16,
-          "mae_pct": 13.3,
-          "median_ape_pct": 4.8,
-          "ci_coverage": 69.0,
-          "bias_pct": -3.8
+          "n": 17,
+          "mae_pct": 16.3,
+          "median_ape_pct": 5.1,
+          "ci_coverage": 65.0,
+          "bias_pct": -7.3
         },
         {
           "T": 1,
-          "n": 16,
-          "mae_pct": 13.7,
-          "median_ape_pct": 3.9,
-          "ci_coverage": 56.0,
-          "bias_pct": -6.4
+          "n": 17,
+          "mae_pct": 16.7,
+          "median_ape_pct": 4.5,
+          "ci_coverage": 53.0,
+          "bias_pct": -9.9
         }
       ],
       "tournaments": [
@@ -99438,21 +99091,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 20,
-              "predicted": 366,
-              "ci_lower": 337,
+              "predicted": 367,
+              "ci_lower": 338,
               "ci_upper": 397,
-              "error_pct": 1.9,
-              "abs_error_pct": 1.9,
+              "error_pct": 2.2,
+              "abs_error_pct": 2.2,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 42,
-              "predicted": 364,
-              "ci_lower": 330,
-              "ci_upper": 400,
-              "error_pct": 1.4,
-              "abs_error_pct": 1.4,
+              "predicted": 365,
+              "ci_lower": 331,
+              "ci_upper": 401,
+              "error_pct": 1.7,
+              "abs_error_pct": 1.7,
               "in_ci": 1
             },
             {
@@ -99480,7 +99133,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 193,
               "predicted": 375,
               "ci_lower": 348,
-              "ci_upper": 404,
+              "ci_upper": 403,
               "error_pct": 4.5,
               "abs_error_pct": 4.5,
               "in_ci": 1
@@ -99489,8 +99142,8 @@ const PERFORMANCE_DATA = {
               "T": 1,
               "count_at_T": 297,
               "predicted": 401,
-              "ci_lower": 381,
-              "ci_upper": 422,
+              "ci_lower": 380,
+              "ci_upper": 423,
               "error_pct": 11.7,
               "abs_error_pct": 11.7,
               "in_ci": 0
@@ -99516,7 +99169,7 @@ const PERFORMANCE_DATA = {
               "T": 42,
               "count_at_T": 27,
               "predicted": 524,
-              "ci_lower": 509,
+              "ci_lower": 510,
               "ci_upper": 539,
               "error_pct": -7.1,
               "abs_error_pct": 7.1,
@@ -99525,19 +99178,19 @@ const PERFORMANCE_DATA = {
             {
               "T": 28,
               "count_at_T": 53,
-              "predicted": 519,
-              "ci_lower": 472,
-              "ci_upper": 571,
-              "error_pct": -8.0,
-              "abs_error_pct": 8.0,
+              "predicted": 520,
+              "ci_lower": 473,
+              "ci_upper": 572,
+              "error_pct": -7.8,
+              "abs_error_pct": 7.8,
               "in_ci": 1
             },
             {
               "T": 14,
               "count_at_T": 177,
               "predicted": 609,
-              "ci_lower": 538,
-              "ci_upper": 689,
+              "ci_lower": 537,
+              "ci_upper": 690,
               "error_pct": 8.0,
               "abs_error_pct": 8.0,
               "in_ci": 1
@@ -99546,8 +99199,8 @@ const PERFORMANCE_DATA = {
               "T": 7,
               "count_at_T": 326,
               "predicted": 715,
-              "ci_lower": 617,
-              "ci_upper": 828,
+              "ci_lower": 618,
+              "ci_upper": 827,
               "error_pct": 26.8,
               "abs_error_pct": 26.8,
               "in_ci": 0
@@ -99556,8 +99209,8 @@ const PERFORMANCE_DATA = {
               "T": 3,
               "count_at_T": 429,
               "predicted": 674,
-              "ci_lower": 565,
-              "ci_upper": 803,
+              "ci_lower": 566,
+              "ci_upper": 801,
               "error_pct": 19.5,
               "abs_error_pct": 19.5,
               "in_ci": 0
@@ -99566,8 +99219,8 @@ const PERFORMANCE_DATA = {
               "T": 1,
               "count_at_T": 497,
               "predicted": 568,
-              "ci_lower": 540,
-              "ci_upper": 597,
+              "ci_lower": 538,
+              "ci_upper": 599,
               "error_pct": 0.7,
               "abs_error_pct": 0.7,
               "in_ci": 1
@@ -99582,29 +99235,29 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 21,
-              "predicted": 353,
+              "predicted": 354,
               "ci_lower": 317,
-              "ci_upper": 394,
-              "error_pct": -8.8,
-              "abs_error_pct": 8.8,
+              "ci_upper": 395,
+              "error_pct": -8.5,
+              "abs_error_pct": 8.5,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 40,
-              "predicted": 353,
-              "ci_lower": 332,
-              "ci_upper": 375,
-              "error_pct": -8.8,
-              "abs_error_pct": 8.8,
+              "predicted": 354,
+              "ci_lower": 333,
+              "ci_upper": 376,
+              "error_pct": -8.5,
+              "abs_error_pct": 8.5,
               "in_ci": 0
             },
             {
               "T": 14,
               "count_at_T": 86,
               "predicted": 361,
-              "ci_lower": 324,
-              "ci_upper": 402,
+              "ci_lower": 323,
+              "ci_upper": 403,
               "error_pct": -6.7,
               "abs_error_pct": 6.7,
               "in_ci": 1
@@ -99614,7 +99267,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 166,
               "predicted": 399,
               "ci_lower": 364,
-              "ci_upper": 438,
+              "ci_upper": 437,
               "error_pct": 3.1,
               "abs_error_pct": 3.1,
               "in_ci": 1
@@ -99623,7 +99276,7 @@ const PERFORMANCE_DATA = {
               "T": 3,
               "count_at_T": 289,
               "predicted": 423,
-              "ci_lower": 380,
+              "ci_lower": 381,
               "ci_upper": 471,
               "error_pct": 9.3,
               "abs_error_pct": 9.3,
@@ -99633,8 +99286,8 @@ const PERFORMANCE_DATA = {
               "T": 1,
               "count_at_T": 343,
               "predicted": 388,
-              "ci_lower": 368,
-              "ci_upper": 408,
+              "ci_lower": 367,
+              "ci_upper": 409,
               "error_pct": 0.3,
               "abs_error_pct": 0.3,
               "in_ci": 1
@@ -99649,18 +99302,18 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 22,
-              "predicted": 240,
-              "ci_lower": 218,
+              "predicted": 241,
+              "ci_lower": 219,
               "ci_upper": 265,
-              "error_pct": 14.8,
-              "abs_error_pct": 14.8,
+              "error_pct": 15.3,
+              "abs_error_pct": 15.3,
               "in_ci": 0
             },
             {
               "T": 28,
               "count_at_T": 33,
               "predicted": 227,
-              "ci_lower": 198,
+              "ci_lower": 199,
               "ci_upper": 260,
               "error_pct": 8.6,
               "abs_error_pct": 8.6,
@@ -99680,7 +99333,7 @@ const PERFORMANCE_DATA = {
               "T": 7,
               "count_at_T": 85,
               "predicted": 206,
-              "ci_lower": 192,
+              "ci_lower": 193,
               "ci_upper": 221,
               "error_pct": -1.4,
               "abs_error_pct": 1.4,
@@ -99690,18 +99343,18 @@ const PERFORMANCE_DATA = {
               "T": 3,
               "count_at_T": 128,
               "predicted": 237,
-              "ci_lower": 209,
+              "ci_lower": 210,
               "ci_upper": 267,
               "error_pct": 13.4,
               "abs_error_pct": 13.4,
-              "in_ci": 1
+              "in_ci": 0
             },
             {
               "T": 1,
               "count_at_T": 172,
               "predicted": 242,
               "ci_lower": 230,
-              "ci_upper": 255,
+              "ci_upper": 256,
               "error_pct": 15.8,
               "abs_error_pct": 15.8,
               "in_ci": 0
@@ -99716,11 +99369,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 90,
               "count_at_T": 17,
-              "predicted": 524,
-              "ci_lower": 381,
-              "ci_upper": 721,
-              "error_pct": 6.5,
-              "abs_error_pct": 6.5,
+              "predicted": 525,
+              "ci_lower": 382,
+              "ci_upper": 722,
+              "error_pct": 6.7,
+              "abs_error_pct": 6.7,
               "in_ci": 1
             },
             {
@@ -99737,7 +99390,7 @@ const PERFORMANCE_DATA = {
               "T": 42,
               "count_at_T": 66,
               "predicted": 492,
-              "ci_lower": 448,
+              "ci_lower": 449,
               "ci_upper": 539,
               "error_pct": 0.0,
               "abs_error_pct": 0.0,
@@ -99746,11 +99399,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 28,
               "count_at_T": 112,
-              "predicted": 498,
-              "ci_lower": 442,
-              "ci_upper": 563,
-              "error_pct": 1.2,
-              "abs_error_pct": 1.2,
+              "predicted": 500,
+              "ci_lower": 443,
+              "ci_upper": 564,
+              "error_pct": 1.6,
+              "abs_error_pct": 1.6,
               "in_ci": 1
             },
             {
@@ -99758,7 +99411,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 236,
               "predicted": 504,
               "ci_lower": 457,
-              "ci_upper": 556,
+              "ci_upper": 557,
               "error_pct": 2.4,
               "abs_error_pct": 2.4,
               "in_ci": 1
@@ -99767,7 +99420,7 @@ const PERFORMANCE_DATA = {
               "T": 7,
               "count_at_T": 319,
               "predicted": 521,
-              "ci_lower": 483,
+              "ci_lower": 484,
               "ci_upper": 562,
               "error_pct": 5.9,
               "abs_error_pct": 5.9,
@@ -99777,8 +99430,8 @@ const PERFORMANCE_DATA = {
               "T": 3,
               "count_at_T": 395,
               "predicted": 514,
-              "ci_lower": 469,
-              "ci_upper": 563,
+              "ci_lower": 470,
+              "ci_upper": 562,
               "error_pct": 4.5,
               "abs_error_pct": 4.5,
               "in_ci": 1
@@ -99787,8 +99440,8 @@ const PERFORMANCE_DATA = {
               "T": 1,
               "count_at_T": 442,
               "predicted": 497,
-              "ci_lower": 473,
-              "ci_upper": 523,
+              "ci_lower": 472,
+              "ci_upper": 525,
               "error_pct": 1.0,
               "abs_error_pct": 1.0,
               "in_ci": 1
@@ -99805,7 +99458,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 7,
               "predicted": 415,
               "ci_lower": 269,
-              "ci_upper": 641,
+              "ci_upper": 642,
               "error_pct": -2.1,
               "abs_error_pct": 2.1,
               "in_ci": 1
@@ -99824,7 +99477,7 @@ const PERFORMANCE_DATA = {
               "T": 42,
               "count_at_T": 38,
               "predicted": 411,
-              "ci_lower": 333,
+              "ci_lower": 334,
               "ci_upper": 506,
               "error_pct": -3.1,
               "abs_error_pct": 3.1,
@@ -99833,19 +99486,19 @@ const PERFORMANCE_DATA = {
             {
               "T": 28,
               "count_at_T": 75,
-              "predicted": 419,
-              "ci_lower": 135,
-              "ci_upper": 1300,
-              "error_pct": -1.2,
-              "abs_error_pct": 1.2,
+              "predicted": 420,
+              "ci_lower": 137,
+              "ci_upper": 1289,
+              "error_pct": -0.9,
+              "abs_error_pct": 0.9,
               "in_ci": 1
             },
             {
               "T": 14,
               "count_at_T": 158,
               "predicted": 472,
-              "ci_lower": 364,
-              "ci_upper": 612,
+              "ci_lower": 360,
+              "ci_upper": 619,
               "error_pct": 11.3,
               "abs_error_pct": 11.3,
               "in_ci": 1
@@ -99855,7 +99508,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 226,
               "predicted": 443,
               "ci_lower": 226,
-              "ci_upper": 875,
+              "ci_upper": 874,
               "error_pct": 4.5,
               "abs_error_pct": 4.5,
               "in_ci": 1
@@ -99864,8 +99517,8 @@ const PERFORMANCE_DATA = {
               "T": 3,
               "count_at_T": 286,
               "predicted": 432,
-              "ci_lower": 371,
-              "ci_upper": 503,
+              "ci_lower": 372,
+              "ci_upper": 502,
               "error_pct": 1.9,
               "abs_error_pct": 1.9,
               "in_ci": 1
@@ -99874,8 +99527,8 @@ const PERFORMANCE_DATA = {
               "T": 1,
               "count_at_T": 390,
               "predicted": 431,
-              "ci_lower": 410,
-              "ci_upper": 453,
+              "ci_lower": 409,
+              "ci_upper": 455,
               "error_pct": 1.7,
               "abs_error_pct": 1.7,
               "in_ci": 1
@@ -99900,29 +99553,29 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 26,
-              "predicted": 331,
+              "predicted": 332,
               "ci_lower": 294,
               "ci_upper": 374,
-              "error_pct": 4.1,
-              "abs_error_pct": 4.1,
+              "error_pct": 4.4,
+              "abs_error_pct": 4.4,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 60,
-              "predicted": 326,
+              "predicted": 327,
               "ci_lower": 270,
-              "ci_upper": 395,
-              "error_pct": 2.5,
-              "abs_error_pct": 2.5,
+              "ci_upper": 397,
+              "error_pct": 2.8,
+              "abs_error_pct": 2.8,
               "in_ci": 1
             },
             {
               "T": 14,
               "count_at_T": 94,
               "predicted": 312,
-              "ci_lower": 268,
-              "ci_upper": 363,
+              "ci_lower": 266,
+              "ci_upper": 366,
               "error_pct": -1.9,
               "abs_error_pct": 1.9,
               "in_ci": 1
@@ -99931,8 +99584,8 @@ const PERFORMANCE_DATA = {
               "T": 7,
               "count_at_T": 135,
               "predicted": 297,
-              "ci_lower": 258,
-              "ci_upper": 343,
+              "ci_lower": 256,
+              "ci_upper": 345,
               "error_pct": -6.6,
               "abs_error_pct": 6.6,
               "in_ci": 1
@@ -99941,8 +99594,8 @@ const PERFORMANCE_DATA = {
               "T": 3,
               "count_at_T": 193,
               "predicted": 312,
-              "ci_lower": 265,
-              "ci_upper": 368,
+              "ci_lower": 262,
+              "ci_upper": 373,
               "error_pct": -1.9,
               "abs_error_pct": 1.9,
               "in_ci": 1
@@ -99951,8 +99604,8 @@ const PERFORMANCE_DATA = {
               "T": 1,
               "count_at_T": 272,
               "predicted": 345,
-              "ci_lower": 323,
-              "ci_upper": 368,
+              "ci_lower": 321,
+              "ci_upper": 371,
               "error_pct": 8.5,
               "abs_error_pct": 8.5,
               "in_ci": 0
@@ -99977,21 +99630,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 14,
-              "predicted": 261,
-              "ci_lower": 194,
-              "ci_upper": 352,
-              "error_pct": 30.5,
-              "abs_error_pct": 30.5,
+              "predicted": 262,
+              "ci_lower": 195,
+              "ci_upper": 351,
+              "error_pct": 31.0,
+              "abs_error_pct": 31.0,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 27,
-              "predicted": 248,
-              "ci_lower": 236,
-              "ci_upper": 260,
-              "error_pct": 24.0,
-              "abs_error_pct": 24.0,
+              "predicted": 249,
+              "ci_lower": 237,
+              "ci_upper": 261,
+              "error_pct": 24.5,
+              "abs_error_pct": 24.5,
               "in_ci": 0
             },
             {
@@ -100009,7 +99662,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 97,
               "predicted": 250,
               "ci_lower": 231,
-              "ci_upper": 270,
+              "ci_upper": 269,
               "error_pct": 25.0,
               "abs_error_pct": 25.0,
               "in_ci": 0
@@ -100028,8 +99681,8 @@ const PERFORMANCE_DATA = {
               "T": 1,
               "count_at_T": 164,
               "predicted": 209,
-              "ci_lower": 199,
-              "ci_upper": 220,
+              "ci_lower": 198,
+              "ci_upper": 221,
               "error_pct": 4.5,
               "abs_error_pct": 4.5,
               "in_ci": 1
@@ -100045,7 +99698,7 @@ const PERFORMANCE_DATA = {
               "T": 90,
               "count_at_T": 3,
               "predicted": 202,
-              "ci_lower": 149,
+              "ci_lower": 150,
               "ci_upper": 273,
               "error_pct": 2.0,
               "abs_error_pct": 2.0,
@@ -100074,11 +99727,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 28,
               "count_at_T": 76,
-              "predicted": 168,
-              "ci_lower": 127,
-              "ci_upper": 223,
-              "error_pct": -15.2,
-              "abs_error_pct": 15.2,
+              "predicted": 169,
+              "ci_lower": 128,
+              "ci_upper": 224,
+              "error_pct": -14.6,
+              "abs_error_pct": 14.6,
               "in_ci": 1
             },
             {
@@ -100086,7 +99739,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 147,
               "predicted": 196,
               "ci_lower": 147,
-              "ci_upper": 263,
+              "ci_upper": 267,
               "error_pct": -1.0,
               "abs_error_pct": 1.0,
               "in_ci": 1
@@ -100096,7 +99749,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 175,
               "predicted": 202,
               "ci_lower": 175,
-              "ci_upper": 254,
+              "ci_upper": 258,
               "error_pct": 2.0,
               "abs_error_pct": 2.0,
               "in_ci": 1
@@ -100106,7 +99759,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 185,
               "predicted": 195,
               "ci_lower": 185,
-              "ci_upper": 259,
+              "ci_upper": 265,
               "error_pct": -1.5,
               "abs_error_pct": 1.5,
               "in_ci": 1
@@ -100116,7 +99769,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 193,
               "predicted": 197,
               "ci_lower": 193,
-              "ci_upper": 220,
+              "ci_upper": 224,
               "error_pct": -0.5,
               "abs_error_pct": 0.5,
               "in_ci": 1
@@ -100153,7 +99806,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 14,
               "predicted": 63,
               "ci_lower": 43,
-              "ci_upper": 91,
+              "ci_upper": 92,
               "error_pct": 3.3,
               "abs_error_pct": 3.3,
               "in_ci": 1
@@ -100162,8 +99815,8 @@ const PERFORMANCE_DATA = {
               "T": 14,
               "count_at_T": 23,
               "predicted": 61,
-              "ci_lower": 45,
-              "ci_upper": 82,
+              "ci_lower": 44,
+              "ci_upper": 84,
               "error_pct": 0.0,
               "abs_error_pct": 0.0,
               "in_ci": 1
@@ -100173,7 +99826,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 30,
               "predicted": 64,
               "ci_lower": 47,
-              "ci_upper": 86,
+              "ci_upper": 87,
               "error_pct": 4.9,
               "abs_error_pct": 4.9,
               "in_ci": 1
@@ -100182,8 +99835,8 @@ const PERFORMANCE_DATA = {
               "T": 3,
               "count_at_T": 42,
               "predicted": 60,
-              "ci_lower": 44,
-              "ci_upper": 82,
+              "ci_lower": 43,
+              "ci_upper": 84,
               "error_pct": -1.6,
               "abs_error_pct": 1.6,
               "in_ci": 1
@@ -100192,8 +99845,8 @@ const PERFORMANCE_DATA = {
               "T": 1,
               "count_at_T": 52,
               "predicted": 63,
-              "ci_lower": 55,
-              "ci_upper": 72,
+              "ci_lower": 54,
+              "ci_upper": 73,
               "error_pct": 3.3,
               "abs_error_pct": 3.3,
               "in_ci": 1
@@ -100208,9 +99861,9 @@ const PERFORMANCE_DATA = {
             {
               "T": 90,
               "count_at_T": 144,
-              "predicted": 1723,
-              "ci_lower": 1557,
-              "ci_upper": 1907,
+              "predicted": 1724,
+              "ci_lower": 1558,
+              "ci_upper": 1908,
               "error_pct": -1.7,
               "abs_error_pct": 1.7,
               "in_ci": 1
@@ -100228,21 +99881,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 755,
-              "predicted": 1666,
-              "ci_lower": 1493,
+              "predicted": 1668,
+              "ci_lower": 1497,
               "ci_upper": 1860,
-              "error_pct": -5.0,
-              "abs_error_pct": 5.0,
+              "error_pct": -4.8,
+              "abs_error_pct": 4.8,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 1288,
-              "predicted": 1742,
+              "predicted": 1746,
               "ci_lower": 1288,
-              "ci_upper": 2503,
-              "error_pct": -0.6,
-              "abs_error_pct": 0.6,
+              "ci_upper": 2522,
+              "error_pct": -0.4,
+              "abs_error_pct": 0.4,
               "in_ci": 1
             },
             {
@@ -100250,7 +99903,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 1630,
               "predicted": 1765,
               "ci_lower": 1630,
-              "ci_upper": 2273,
+              "ci_upper": 2304,
               "error_pct": 0.7,
               "abs_error_pct": 0.7,
               "in_ci": 1
@@ -100260,7 +99913,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 1695,
               "predicted": 1775,
               "ci_lower": 1695,
-              "ci_upper": 2206,
+              "ci_upper": 2236,
               "error_pct": 1.3,
               "abs_error_pct": 1.3,
               "in_ci": 1
@@ -100270,7 +99923,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 1719,
               "predicted": 1746,
               "ci_lower": 1719,
-              "ci_upper": 2293,
+              "ci_upper": 2344,
               "error_pct": -0.4,
               "abs_error_pct": 0.4,
               "in_ci": 1
@@ -100280,7 +99933,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 1733,
               "predicted": 1766,
               "ci_lower": 1733,
-              "ci_upper": 1971,
+              "ci_upper": 2000,
               "error_pct": 0.7,
               "abs_error_pct": 0.7,
               "in_ci": 1
@@ -100296,8 +99949,8 @@ const PERFORMANCE_DATA = {
               "T": 90,
               "count_at_T": 39,
               "predicted": 958,
-              "ci_lower": 906,
-              "ci_upper": 1012,
+              "ci_lower": 907,
+              "ci_upper": 1013,
               "error_pct": 4.5,
               "abs_error_pct": 4.5,
               "in_ci": 1
@@ -100315,21 +99968,21 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 242,
-              "predicted": 914,
-              "ci_lower": 895,
-              "ci_upper": 933,
-              "error_pct": -0.3,
-              "abs_error_pct": 0.3,
+              "predicted": 915,
+              "ci_lower": 896,
+              "ci_upper": 934,
+              "error_pct": -0.2,
+              "abs_error_pct": 0.2,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 321,
-              "predicted": 925,
-              "ci_lower": 893,
-              "ci_upper": 958,
-              "error_pct": 0.9,
-              "abs_error_pct": 0.9,
+              "predicted": 928,
+              "ci_lower": 896,
+              "ci_upper": 961,
+              "error_pct": 1.2,
+              "abs_error_pct": 1.2,
               "in_ci": 1
             },
             {
@@ -100356,8 +100009,8 @@ const PERFORMANCE_DATA = {
               "T": 3,
               "count_at_T": 664,
               "predicted": 917,
-              "ci_lower": 855,
-              "ci_upper": 983,
+              "ci_lower": 852,
+              "ci_upper": 986,
               "error_pct": 0.0,
               "abs_error_pct": 0.0,
               "in_ci": 1
@@ -100366,8 +100019,8 @@ const PERFORMANCE_DATA = {
               "T": 1,
               "count_at_T": 820,
               "predicted": 941,
-              "ci_lower": 895,
-              "ci_upper": 990,
+              "ci_lower": 892,
+              "ci_upper": 993,
               "error_pct": 2.6,
               "abs_error_pct": 2.6,
               "in_ci": 1
@@ -100392,18 +100045,18 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 9,
-              "predicted": 194,
-              "ci_lower": 144,
-              "ci_upper": 262,
-              "error_pct": -0.5,
-              "abs_error_pct": 0.5,
+              "predicted": 195,
+              "ci_lower": 145,
+              "ci_upper": 261,
+              "error_pct": 0.0,
+              "abs_error_pct": 0.0,
               "in_ci": 1
             },
             {
               "T": 28,
               "count_at_T": 27,
               "predicted": 194,
-              "ci_lower": 178,
+              "ci_lower": 179,
               "ci_upper": 211,
               "error_pct": -0.5,
               "abs_error_pct": 0.5,
@@ -100414,7 +100067,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 51,
               "predicted": 192,
               "ci_lower": 182,
-              "ci_upper": 203,
+              "ci_upper": 204,
               "error_pct": -1.5,
               "abs_error_pct": 1.5,
               "in_ci": 1
@@ -100469,11 +100122,11 @@ const PERFORMANCE_DATA = {
             {
               "T": 42,
               "count_at_T": 6,
-              "predicted": 100,
+              "predicted": 101,
               "ci_lower": 75,
               "ci_upper": 135,
-              "error_pct": -8.3,
-              "abs_error_pct": 8.3,
+              "error_pct": -7.3,
+              "abs_error_pct": 7.3,
               "in_ci": 1
             },
             {
@@ -100490,8 +100143,8 @@ const PERFORMANCE_DATA = {
               "T": 14,
               "count_at_T": 27,
               "predicted": 97,
-              "ci_lower": 79,
-              "ci_upper": 119,
+              "ci_lower": 78,
+              "ci_upper": 120,
               "error_pct": -11.0,
               "abs_error_pct": 11.0,
               "in_ci": 1
@@ -100510,20 +100163,107 @@ const PERFORMANCE_DATA = {
               "T": 3,
               "count_at_T": 32,
               "predicted": 63,
-              "ci_lower": 37,
-              "ci_upper": 107,
+              "ci_lower": 36,
+              "ci_upper": 109,
               "error_pct": -42.2,
               "abs_error_pct": 42.2,
-              "in_ci": 0
+              "in_ci": 1
             },
             {
               "T": 1,
               "count_at_T": 32,
               "predicted": 55,
-              "ci_lower": 40,
-              "ci_upper": 76,
+              "ci_lower": 39,
+              "ci_upper": 77,
               "error_pct": -49.5,
               "abs_error_pct": 49.5,
+              "in_ci": 0
+            }
+          ]
+        },
+        {
+          "family": "DC Open",
+          "final_count": 188,
+          "event_start": "2026-06-26",
+          "predictions": [
+            {
+              "T": 90,
+              "count_at_T": 1,
+              "predicted": 184,
+              "ci_lower": 119,
+              "ci_upper": 285,
+              "error_pct": -2.1,
+              "abs_error_pct": 2.1,
+              "in_ci": 1
+            },
+            {
+              "T": 60,
+              "count_at_T": 2,
+              "predicted": 188,
+              "ci_lower": 123,
+              "ci_upper": 287,
+              "error_pct": 0.0,
+              "abs_error_pct": 0.0,
+              "in_ci": 1
+            },
+            {
+              "T": 42,
+              "count_at_T": 3,
+              "predicted": 167,
+              "ci_lower": 136,
+              "ci_upper": 204,
+              "error_pct": -11.2,
+              "abs_error_pct": 11.2,
+              "in_ci": 1
+            },
+            {
+              "T": 28,
+              "count_at_T": 5,
+              "predicted": 143,
+              "ci_lower": 59,
+              "ci_upper": 346,
+              "error_pct": -23.9,
+              "abs_error_pct": 23.9,
+              "in_ci": 1
+            },
+            {
+              "T": 14,
+              "count_at_T": 11,
+              "predicted": 143,
+              "ci_lower": 115,
+              "ci_upper": 178,
+              "error_pct": -23.9,
+              "abs_error_pct": 23.9,
+              "in_ci": 0
+            },
+            {
+              "T": 7,
+              "count_at_T": 16,
+              "predicted": 103,
+              "ci_lower": 38,
+              "ci_upper": 282,
+              "error_pct": -45.2,
+              "abs_error_pct": 45.2,
+              "in_ci": 1
+            },
+            {
+              "T": 3,
+              "count_at_T": 24,
+              "predicted": 69,
+              "ci_lower": 42,
+              "ci_upper": 112,
+              "error_pct": -63.3,
+              "abs_error_pct": 63.3,
+              "in_ci": 0
+            },
+            {
+              "T": 1,
+              "count_at_T": 27,
+              "predicted": 65,
+              "ci_lower": 61,
+              "ci_upper": 70,
+              "error_pct": -65.4,
+              "abs_error_pct": 65.4,
               "in_ci": 0
             }
           ]
@@ -100547,8 +100287,8 @@ const PERFORMANCE_DATA = {
               "T": 42,
               "count_at_T": 12,
               "predicted": 206,
-              "ci_lower": 153,
-              "ci_upper": 278,
+              "ci_lower": 154,
+              "ci_upper": 277,
               "error_pct": 0.0,
               "abs_error_pct": 0.0,
               "in_ci": 1
@@ -100557,8 +100297,8 @@ const PERFORMANCE_DATA = {
               "T": 28,
               "count_at_T": 16,
               "predicted": 199,
-              "ci_lower": 188,
-              "ci_upper": 209,
+              "ci_lower": 189,
+              "ci_upper": 210,
               "error_pct": -3.4,
               "abs_error_pct": 3.4,
               "in_ci": 1
@@ -100635,7 +100375,7 @@ const PERFORMANCE_DATA = {
               "count_at_T": 16,
               "predicted": 178,
               "ci_lower": 160,
-              "ci_upper": 197,
+              "ci_upper": 198,
               "error_pct": -0.6,
               "abs_error_pct": 0.6,
               "in_ci": 1
@@ -100686,73 +100426,73 @@ const PERFORMANCE_DATA = {
     }
   },
   "cumulative": {
-    "n_tournaments": 133,
+    "n_tournaments": 134,
     "grade": "A-",
-    "grade_detail": "T-14 MAE: 9.6%, CI coverage: 77.0%",
+    "grade_detail": "T-14 MAE: 9.7%, CI coverage: 77.0%",
     "aggregate": [
       {
         "T": 90,
-        "n": 55,
-        "mae_pct": 13.6,
-        "median_ape_pct": 7.7,
+        "n": 56,
+        "mae_pct": 13.4,
+        "median_ape_pct": 7.2,
         "ci_coverage": 93.0,
-        "bias_pct": -6.1
+        "bias_pct": -6.0
       },
       {
         "T": 60,
-        "n": 108,
-        "mae_pct": 16.0,
+        "n": 109,
+        "mae_pct": 15.8,
         "median_ape_pct": 8.6,
         "ci_coverage": 87.0,
         "bias_pct": -1.6
       },
       {
         "T": 42,
-        "n": 127,
+        "n": 128,
         "mae_pct": 13.0,
-        "median_ape_pct": 9.1,
+        "median_ape_pct": 9.4,
         "ci_coverage": 77.0,
         "bias_pct": -1.1
       },
       {
         "T": 28,
-        "n": 130,
-        "mae_pct": 12.4,
-        "median_ape_pct": 9.0,
+        "n": 131,
+        "mae_pct": 12.5,
+        "median_ape_pct": 9.2,
         "ci_coverage": 82.0,
-        "bias_pct": 0.6
+        "bias_pct": 0.4
       },
       {
         "T": 14,
-        "n": 131,
-        "mae_pct": 9.6,
+        "n": 132,
+        "mae_pct": 9.7,
         "median_ape_pct": 7.0,
         "ci_coverage": 77.0,
-        "bias_pct": 0.9
-      },
-      {
-        "T": 7,
-        "n": 131,
-        "mae_pct": 9.2,
-        "median_ape_pct": 6.9,
-        "ci_coverage": 82.0,
-        "bias_pct": 0.2
-      },
-      {
-        "T": 3,
-        "n": 132,
-        "mae_pct": 11.1,
-        "median_ape_pct": 7.0,
-        "ci_coverage": 68.0,
         "bias_pct": 0.7
       },
       {
-        "T": 1,
+        "T": 7,
+        "n": 132,
+        "mae_pct": 9.4,
+        "median_ape_pct": 7.0,
+        "ci_coverage": 83.0,
+        "bias_pct": -0.2
+      },
+      {
+        "T": 3,
         "n": 133,
-        "mae_pct": 7.5,
-        "median_ape_pct": 4.1,
-        "ci_coverage": 70.0,
-        "bias_pct": -1.8
+        "mae_pct": 11.5,
+        "median_ape_pct": 7.0,
+        "ci_coverage": 68.0,
+        "bias_pct": 0.2
+      },
+      {
+        "T": 1,
+        "n": 134,
+        "mae_pct": 7.9,
+        "median_ape_pct": 4.2,
+        "ci_coverage": 69.0,
+        "bias_pct": -2.2
       }
     ],
     "tournaments": [
@@ -109913,21 +109653,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 20,
-            "predicted": 366,
-            "ci_lower": 337,
+            "predicted": 367,
+            "ci_lower": 338,
             "ci_upper": 397,
-            "error_pct": 1.9,
-            "abs_error_pct": 1.9,
+            "error_pct": 2.2,
+            "abs_error_pct": 2.2,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 42,
-            "predicted": 364,
-            "ci_lower": 330,
-            "ci_upper": 400,
-            "error_pct": 1.4,
-            "abs_error_pct": 1.4,
+            "predicted": 365,
+            "ci_lower": 331,
+            "ci_upper": 401,
+            "error_pct": 1.7,
+            "abs_error_pct": 1.7,
             "in_ci": 1
           },
           {
@@ -109955,7 +109695,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 193,
             "predicted": 375,
             "ci_lower": 348,
-            "ci_upper": 404,
+            "ci_upper": 403,
             "error_pct": 4.5,
             "abs_error_pct": 4.5,
             "in_ci": 1
@@ -109964,8 +109704,8 @@ const PERFORMANCE_DATA = {
             "T": 1,
             "count_at_T": 297,
             "predicted": 401,
-            "ci_lower": 381,
-            "ci_upper": 422,
+            "ci_lower": 380,
+            "ci_upper": 423,
             "error_pct": 11.7,
             "abs_error_pct": 11.7,
             "in_ci": 0
@@ -109991,7 +109731,7 @@ const PERFORMANCE_DATA = {
             "T": 42,
             "count_at_T": 27,
             "predicted": 524,
-            "ci_lower": 509,
+            "ci_lower": 510,
             "ci_upper": 539,
             "error_pct": -7.1,
             "abs_error_pct": 7.1,
@@ -110000,19 +109740,19 @@ const PERFORMANCE_DATA = {
           {
             "T": 28,
             "count_at_T": 53,
-            "predicted": 519,
-            "ci_lower": 472,
-            "ci_upper": 571,
-            "error_pct": -8.0,
-            "abs_error_pct": 8.0,
+            "predicted": 520,
+            "ci_lower": 473,
+            "ci_upper": 572,
+            "error_pct": -7.8,
+            "abs_error_pct": 7.8,
             "in_ci": 1
           },
           {
             "T": 14,
             "count_at_T": 177,
             "predicted": 609,
-            "ci_lower": 538,
-            "ci_upper": 689,
+            "ci_lower": 537,
+            "ci_upper": 690,
             "error_pct": 8.0,
             "abs_error_pct": 8.0,
             "in_ci": 1
@@ -110021,8 +109761,8 @@ const PERFORMANCE_DATA = {
             "T": 7,
             "count_at_T": 326,
             "predicted": 715,
-            "ci_lower": 617,
-            "ci_upper": 828,
+            "ci_lower": 618,
+            "ci_upper": 827,
             "error_pct": 26.8,
             "abs_error_pct": 26.8,
             "in_ci": 0
@@ -110031,8 +109771,8 @@ const PERFORMANCE_DATA = {
             "T": 3,
             "count_at_T": 429,
             "predicted": 674,
-            "ci_lower": 565,
-            "ci_upper": 803,
+            "ci_lower": 566,
+            "ci_upper": 801,
             "error_pct": 19.5,
             "abs_error_pct": 19.5,
             "in_ci": 0
@@ -110041,8 +109781,8 @@ const PERFORMANCE_DATA = {
             "T": 1,
             "count_at_T": 497,
             "predicted": 568,
-            "ci_lower": 540,
-            "ci_upper": 597,
+            "ci_lower": 538,
+            "ci_upper": 599,
             "error_pct": 0.7,
             "abs_error_pct": 0.7,
             "in_ci": 1
@@ -110057,29 +109797,29 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 21,
-            "predicted": 353,
+            "predicted": 354,
             "ci_lower": 317,
-            "ci_upper": 394,
-            "error_pct": -8.8,
-            "abs_error_pct": 8.8,
+            "ci_upper": 395,
+            "error_pct": -8.5,
+            "abs_error_pct": 8.5,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 40,
-            "predicted": 353,
-            "ci_lower": 332,
-            "ci_upper": 375,
-            "error_pct": -8.8,
-            "abs_error_pct": 8.8,
+            "predicted": 354,
+            "ci_lower": 333,
+            "ci_upper": 376,
+            "error_pct": -8.5,
+            "abs_error_pct": 8.5,
             "in_ci": 0
           },
           {
             "T": 14,
             "count_at_T": 86,
             "predicted": 361,
-            "ci_lower": 324,
-            "ci_upper": 402,
+            "ci_lower": 323,
+            "ci_upper": 403,
             "error_pct": -6.7,
             "abs_error_pct": 6.7,
             "in_ci": 1
@@ -110089,7 +109829,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 166,
             "predicted": 399,
             "ci_lower": 364,
-            "ci_upper": 438,
+            "ci_upper": 437,
             "error_pct": 3.1,
             "abs_error_pct": 3.1,
             "in_ci": 1
@@ -110098,7 +109838,7 @@ const PERFORMANCE_DATA = {
             "T": 3,
             "count_at_T": 289,
             "predicted": 423,
-            "ci_lower": 380,
+            "ci_lower": 381,
             "ci_upper": 471,
             "error_pct": 9.3,
             "abs_error_pct": 9.3,
@@ -110108,8 +109848,8 @@ const PERFORMANCE_DATA = {
             "T": 1,
             "count_at_T": 343,
             "predicted": 388,
-            "ci_lower": 368,
-            "ci_upper": 408,
+            "ci_lower": 367,
+            "ci_upper": 409,
             "error_pct": 0.3,
             "abs_error_pct": 0.3,
             "in_ci": 1
@@ -110124,18 +109864,18 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 22,
-            "predicted": 240,
-            "ci_lower": 218,
+            "predicted": 241,
+            "ci_lower": 219,
             "ci_upper": 265,
-            "error_pct": 14.8,
-            "abs_error_pct": 14.8,
+            "error_pct": 15.3,
+            "abs_error_pct": 15.3,
             "in_ci": 0
           },
           {
             "T": 28,
             "count_at_T": 33,
             "predicted": 227,
-            "ci_lower": 198,
+            "ci_lower": 199,
             "ci_upper": 260,
             "error_pct": 8.6,
             "abs_error_pct": 8.6,
@@ -110155,7 +109895,7 @@ const PERFORMANCE_DATA = {
             "T": 7,
             "count_at_T": 85,
             "predicted": 206,
-            "ci_lower": 192,
+            "ci_lower": 193,
             "ci_upper": 221,
             "error_pct": -1.4,
             "abs_error_pct": 1.4,
@@ -110165,18 +109905,18 @@ const PERFORMANCE_DATA = {
             "T": 3,
             "count_at_T": 128,
             "predicted": 237,
-            "ci_lower": 209,
+            "ci_lower": 210,
             "ci_upper": 267,
             "error_pct": 13.4,
             "abs_error_pct": 13.4,
-            "in_ci": 1
+            "in_ci": 0
           },
           {
             "T": 1,
             "count_at_T": 172,
             "predicted": 242,
             "ci_lower": 230,
-            "ci_upper": 255,
+            "ci_upper": 256,
             "error_pct": 15.8,
             "abs_error_pct": 15.8,
             "in_ci": 0
@@ -110191,11 +109931,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 90,
             "count_at_T": 17,
-            "predicted": 524,
-            "ci_lower": 381,
-            "ci_upper": 721,
-            "error_pct": 6.5,
-            "abs_error_pct": 6.5,
+            "predicted": 525,
+            "ci_lower": 382,
+            "ci_upper": 722,
+            "error_pct": 6.7,
+            "abs_error_pct": 6.7,
             "in_ci": 1
           },
           {
@@ -110212,7 +109952,7 @@ const PERFORMANCE_DATA = {
             "T": 42,
             "count_at_T": 66,
             "predicted": 492,
-            "ci_lower": 448,
+            "ci_lower": 449,
             "ci_upper": 539,
             "error_pct": 0.0,
             "abs_error_pct": 0.0,
@@ -110221,11 +109961,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 28,
             "count_at_T": 112,
-            "predicted": 498,
-            "ci_lower": 442,
-            "ci_upper": 563,
-            "error_pct": 1.2,
-            "abs_error_pct": 1.2,
+            "predicted": 500,
+            "ci_lower": 443,
+            "ci_upper": 564,
+            "error_pct": 1.6,
+            "abs_error_pct": 1.6,
             "in_ci": 1
           },
           {
@@ -110233,7 +109973,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 236,
             "predicted": 504,
             "ci_lower": 457,
-            "ci_upper": 556,
+            "ci_upper": 557,
             "error_pct": 2.4,
             "abs_error_pct": 2.4,
             "in_ci": 1
@@ -110242,7 +109982,7 @@ const PERFORMANCE_DATA = {
             "T": 7,
             "count_at_T": 319,
             "predicted": 521,
-            "ci_lower": 483,
+            "ci_lower": 484,
             "ci_upper": 562,
             "error_pct": 5.9,
             "abs_error_pct": 5.9,
@@ -110252,8 +109992,8 @@ const PERFORMANCE_DATA = {
             "T": 3,
             "count_at_T": 395,
             "predicted": 514,
-            "ci_lower": 469,
-            "ci_upper": 563,
+            "ci_lower": 470,
+            "ci_upper": 562,
             "error_pct": 4.5,
             "abs_error_pct": 4.5,
             "in_ci": 1
@@ -110262,8 +110002,8 @@ const PERFORMANCE_DATA = {
             "T": 1,
             "count_at_T": 442,
             "predicted": 497,
-            "ci_lower": 473,
-            "ci_upper": 523,
+            "ci_lower": 472,
+            "ci_upper": 525,
             "error_pct": 1.0,
             "abs_error_pct": 1.0,
             "in_ci": 1
@@ -110280,7 +110020,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 7,
             "predicted": 415,
             "ci_lower": 269,
-            "ci_upper": 641,
+            "ci_upper": 642,
             "error_pct": -2.1,
             "abs_error_pct": 2.1,
             "in_ci": 1
@@ -110299,7 +110039,7 @@ const PERFORMANCE_DATA = {
             "T": 42,
             "count_at_T": 38,
             "predicted": 411,
-            "ci_lower": 333,
+            "ci_lower": 334,
             "ci_upper": 506,
             "error_pct": -3.1,
             "abs_error_pct": 3.1,
@@ -110308,19 +110048,19 @@ const PERFORMANCE_DATA = {
           {
             "T": 28,
             "count_at_T": 75,
-            "predicted": 419,
-            "ci_lower": 135,
-            "ci_upper": 1300,
-            "error_pct": -1.2,
-            "abs_error_pct": 1.2,
+            "predicted": 420,
+            "ci_lower": 137,
+            "ci_upper": 1289,
+            "error_pct": -0.9,
+            "abs_error_pct": 0.9,
             "in_ci": 1
           },
           {
             "T": 14,
             "count_at_T": 158,
             "predicted": 472,
-            "ci_lower": 364,
-            "ci_upper": 612,
+            "ci_lower": 360,
+            "ci_upper": 619,
             "error_pct": 11.3,
             "abs_error_pct": 11.3,
             "in_ci": 1
@@ -110330,7 +110070,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 226,
             "predicted": 443,
             "ci_lower": 226,
-            "ci_upper": 875,
+            "ci_upper": 874,
             "error_pct": 4.5,
             "abs_error_pct": 4.5,
             "in_ci": 1
@@ -110339,8 +110079,8 @@ const PERFORMANCE_DATA = {
             "T": 3,
             "count_at_T": 286,
             "predicted": 432,
-            "ci_lower": 371,
-            "ci_upper": 503,
+            "ci_lower": 372,
+            "ci_upper": 502,
             "error_pct": 1.9,
             "abs_error_pct": 1.9,
             "in_ci": 1
@@ -110349,8 +110089,8 @@ const PERFORMANCE_DATA = {
             "T": 1,
             "count_at_T": 390,
             "predicted": 431,
-            "ci_lower": 410,
-            "ci_upper": 453,
+            "ci_lower": 409,
+            "ci_upper": 455,
             "error_pct": 1.7,
             "abs_error_pct": 1.7,
             "in_ci": 1
@@ -110375,29 +110115,29 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 26,
-            "predicted": 331,
+            "predicted": 332,
             "ci_lower": 294,
             "ci_upper": 374,
-            "error_pct": 4.1,
-            "abs_error_pct": 4.1,
+            "error_pct": 4.4,
+            "abs_error_pct": 4.4,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 60,
-            "predicted": 326,
+            "predicted": 327,
             "ci_lower": 270,
-            "ci_upper": 395,
-            "error_pct": 2.5,
-            "abs_error_pct": 2.5,
+            "ci_upper": 397,
+            "error_pct": 2.8,
+            "abs_error_pct": 2.8,
             "in_ci": 1
           },
           {
             "T": 14,
             "count_at_T": 94,
             "predicted": 312,
-            "ci_lower": 268,
-            "ci_upper": 363,
+            "ci_lower": 266,
+            "ci_upper": 366,
             "error_pct": -1.9,
             "abs_error_pct": 1.9,
             "in_ci": 1
@@ -110406,8 +110146,8 @@ const PERFORMANCE_DATA = {
             "T": 7,
             "count_at_T": 135,
             "predicted": 297,
-            "ci_lower": 258,
-            "ci_upper": 343,
+            "ci_lower": 256,
+            "ci_upper": 345,
             "error_pct": -6.6,
             "abs_error_pct": 6.6,
             "in_ci": 1
@@ -110416,8 +110156,8 @@ const PERFORMANCE_DATA = {
             "T": 3,
             "count_at_T": 193,
             "predicted": 312,
-            "ci_lower": 265,
-            "ci_upper": 368,
+            "ci_lower": 262,
+            "ci_upper": 373,
             "error_pct": -1.9,
             "abs_error_pct": 1.9,
             "in_ci": 1
@@ -110426,8 +110166,8 @@ const PERFORMANCE_DATA = {
             "T": 1,
             "count_at_T": 272,
             "predicted": 345,
-            "ci_lower": 323,
-            "ci_upper": 368,
+            "ci_lower": 321,
+            "ci_upper": 371,
             "error_pct": 8.5,
             "abs_error_pct": 8.5,
             "in_ci": 0
@@ -110452,21 +110192,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 14,
-            "predicted": 261,
-            "ci_lower": 194,
-            "ci_upper": 352,
-            "error_pct": 30.5,
-            "abs_error_pct": 30.5,
+            "predicted": 262,
+            "ci_lower": 195,
+            "ci_upper": 351,
+            "error_pct": 31.0,
+            "abs_error_pct": 31.0,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 27,
-            "predicted": 248,
-            "ci_lower": 236,
-            "ci_upper": 260,
-            "error_pct": 24.0,
-            "abs_error_pct": 24.0,
+            "predicted": 249,
+            "ci_lower": 237,
+            "ci_upper": 261,
+            "error_pct": 24.5,
+            "abs_error_pct": 24.5,
             "in_ci": 0
           },
           {
@@ -110484,7 +110224,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 97,
             "predicted": 250,
             "ci_lower": 231,
-            "ci_upper": 270,
+            "ci_upper": 269,
             "error_pct": 25.0,
             "abs_error_pct": 25.0,
             "in_ci": 0
@@ -110503,8 +110243,8 @@ const PERFORMANCE_DATA = {
             "T": 1,
             "count_at_T": 164,
             "predicted": 209,
-            "ci_lower": 199,
-            "ci_upper": 220,
+            "ci_lower": 198,
+            "ci_upper": 221,
             "error_pct": 4.5,
             "abs_error_pct": 4.5,
             "in_ci": 1
@@ -110520,7 +110260,7 @@ const PERFORMANCE_DATA = {
             "T": 90,
             "count_at_T": 3,
             "predicted": 202,
-            "ci_lower": 149,
+            "ci_lower": 150,
             "ci_upper": 273,
             "error_pct": 2.0,
             "abs_error_pct": 2.0,
@@ -110549,11 +110289,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 28,
             "count_at_T": 76,
-            "predicted": 168,
-            "ci_lower": 127,
-            "ci_upper": 223,
-            "error_pct": -15.2,
-            "abs_error_pct": 15.2,
+            "predicted": 169,
+            "ci_lower": 128,
+            "ci_upper": 224,
+            "error_pct": -14.6,
+            "abs_error_pct": 14.6,
             "in_ci": 1
           },
           {
@@ -110561,7 +110301,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 147,
             "predicted": 196,
             "ci_lower": 147,
-            "ci_upper": 263,
+            "ci_upper": 267,
             "error_pct": -1.0,
             "abs_error_pct": 1.0,
             "in_ci": 1
@@ -110571,7 +110311,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 175,
             "predicted": 202,
             "ci_lower": 175,
-            "ci_upper": 254,
+            "ci_upper": 258,
             "error_pct": 2.0,
             "abs_error_pct": 2.0,
             "in_ci": 1
@@ -110581,7 +110321,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 185,
             "predicted": 195,
             "ci_lower": 185,
-            "ci_upper": 259,
+            "ci_upper": 265,
             "error_pct": -1.5,
             "abs_error_pct": 1.5,
             "in_ci": 1
@@ -110591,7 +110331,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 193,
             "predicted": 197,
             "ci_lower": 193,
-            "ci_upper": 220,
+            "ci_upper": 224,
             "error_pct": -0.5,
             "abs_error_pct": 0.5,
             "in_ci": 1
@@ -110628,7 +110368,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 14,
             "predicted": 63,
             "ci_lower": 43,
-            "ci_upper": 91,
+            "ci_upper": 92,
             "error_pct": 3.3,
             "abs_error_pct": 3.3,
             "in_ci": 1
@@ -110637,8 +110377,8 @@ const PERFORMANCE_DATA = {
             "T": 14,
             "count_at_T": 23,
             "predicted": 61,
-            "ci_lower": 45,
-            "ci_upper": 82,
+            "ci_lower": 44,
+            "ci_upper": 84,
             "error_pct": 0.0,
             "abs_error_pct": 0.0,
             "in_ci": 1
@@ -110648,7 +110388,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 30,
             "predicted": 64,
             "ci_lower": 47,
-            "ci_upper": 86,
+            "ci_upper": 87,
             "error_pct": 4.9,
             "abs_error_pct": 4.9,
             "in_ci": 1
@@ -110657,8 +110397,8 @@ const PERFORMANCE_DATA = {
             "T": 3,
             "count_at_T": 42,
             "predicted": 60,
-            "ci_lower": 44,
-            "ci_upper": 82,
+            "ci_lower": 43,
+            "ci_upper": 84,
             "error_pct": -1.6,
             "abs_error_pct": 1.6,
             "in_ci": 1
@@ -110667,8 +110407,8 @@ const PERFORMANCE_DATA = {
             "T": 1,
             "count_at_T": 52,
             "predicted": 63,
-            "ci_lower": 55,
-            "ci_upper": 72,
+            "ci_lower": 54,
+            "ci_upper": 73,
             "error_pct": 3.3,
             "abs_error_pct": 3.3,
             "in_ci": 1
@@ -110683,9 +110423,9 @@ const PERFORMANCE_DATA = {
           {
             "T": 90,
             "count_at_T": 144,
-            "predicted": 1723,
-            "ci_lower": 1557,
-            "ci_upper": 1907,
+            "predicted": 1724,
+            "ci_lower": 1558,
+            "ci_upper": 1908,
             "error_pct": -1.7,
             "abs_error_pct": 1.7,
             "in_ci": 1
@@ -110703,21 +110443,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 755,
-            "predicted": 1666,
-            "ci_lower": 1493,
+            "predicted": 1668,
+            "ci_lower": 1497,
             "ci_upper": 1860,
-            "error_pct": -5.0,
-            "abs_error_pct": 5.0,
+            "error_pct": -4.8,
+            "abs_error_pct": 4.8,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 1288,
-            "predicted": 1742,
+            "predicted": 1746,
             "ci_lower": 1288,
-            "ci_upper": 2503,
-            "error_pct": -0.6,
-            "abs_error_pct": 0.6,
+            "ci_upper": 2522,
+            "error_pct": -0.4,
+            "abs_error_pct": 0.4,
             "in_ci": 1
           },
           {
@@ -110725,7 +110465,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 1630,
             "predicted": 1765,
             "ci_lower": 1630,
-            "ci_upper": 2273,
+            "ci_upper": 2304,
             "error_pct": 0.7,
             "abs_error_pct": 0.7,
             "in_ci": 1
@@ -110735,7 +110475,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 1695,
             "predicted": 1775,
             "ci_lower": 1695,
-            "ci_upper": 2206,
+            "ci_upper": 2236,
             "error_pct": 1.3,
             "abs_error_pct": 1.3,
             "in_ci": 1
@@ -110745,7 +110485,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 1719,
             "predicted": 1746,
             "ci_lower": 1719,
-            "ci_upper": 2293,
+            "ci_upper": 2344,
             "error_pct": -0.4,
             "abs_error_pct": 0.4,
             "in_ci": 1
@@ -110755,7 +110495,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 1733,
             "predicted": 1766,
             "ci_lower": 1733,
-            "ci_upper": 1971,
+            "ci_upper": 2000,
             "error_pct": 0.7,
             "abs_error_pct": 0.7,
             "in_ci": 1
@@ -110771,8 +110511,8 @@ const PERFORMANCE_DATA = {
             "T": 90,
             "count_at_T": 39,
             "predicted": 958,
-            "ci_lower": 906,
-            "ci_upper": 1012,
+            "ci_lower": 907,
+            "ci_upper": 1013,
             "error_pct": 4.5,
             "abs_error_pct": 4.5,
             "in_ci": 1
@@ -110790,21 +110530,21 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 242,
-            "predicted": 914,
-            "ci_lower": 895,
-            "ci_upper": 933,
-            "error_pct": -0.3,
-            "abs_error_pct": 0.3,
+            "predicted": 915,
+            "ci_lower": 896,
+            "ci_upper": 934,
+            "error_pct": -0.2,
+            "abs_error_pct": 0.2,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 321,
-            "predicted": 925,
-            "ci_lower": 893,
-            "ci_upper": 958,
-            "error_pct": 0.9,
-            "abs_error_pct": 0.9,
+            "predicted": 928,
+            "ci_lower": 896,
+            "ci_upper": 961,
+            "error_pct": 1.2,
+            "abs_error_pct": 1.2,
             "in_ci": 1
           },
           {
@@ -110831,8 +110571,8 @@ const PERFORMANCE_DATA = {
             "T": 3,
             "count_at_T": 664,
             "predicted": 917,
-            "ci_lower": 855,
-            "ci_upper": 983,
+            "ci_lower": 852,
+            "ci_upper": 986,
             "error_pct": 0.0,
             "abs_error_pct": 0.0,
             "in_ci": 1
@@ -110841,8 +110581,8 @@ const PERFORMANCE_DATA = {
             "T": 1,
             "count_at_T": 820,
             "predicted": 941,
-            "ci_lower": 895,
-            "ci_upper": 990,
+            "ci_lower": 892,
+            "ci_upper": 993,
             "error_pct": 2.6,
             "abs_error_pct": 2.6,
             "in_ci": 1
@@ -110867,18 +110607,18 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 9,
-            "predicted": 194,
-            "ci_lower": 144,
-            "ci_upper": 262,
-            "error_pct": -0.5,
-            "abs_error_pct": 0.5,
+            "predicted": 195,
+            "ci_lower": 145,
+            "ci_upper": 261,
+            "error_pct": 0.0,
+            "abs_error_pct": 0.0,
             "in_ci": 1
           },
           {
             "T": 28,
             "count_at_T": 27,
             "predicted": 194,
-            "ci_lower": 178,
+            "ci_lower": 179,
             "ci_upper": 211,
             "error_pct": -0.5,
             "abs_error_pct": 0.5,
@@ -110889,7 +110629,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 51,
             "predicted": 192,
             "ci_lower": 182,
-            "ci_upper": 203,
+            "ci_upper": 204,
             "error_pct": -1.5,
             "abs_error_pct": 1.5,
             "in_ci": 1
@@ -110944,11 +110684,11 @@ const PERFORMANCE_DATA = {
           {
             "T": 42,
             "count_at_T": 6,
-            "predicted": 100,
+            "predicted": 101,
             "ci_lower": 75,
             "ci_upper": 135,
-            "error_pct": -8.3,
-            "abs_error_pct": 8.3,
+            "error_pct": -7.3,
+            "abs_error_pct": 7.3,
             "in_ci": 1
           },
           {
@@ -110965,8 +110705,8 @@ const PERFORMANCE_DATA = {
             "T": 14,
             "count_at_T": 27,
             "predicted": 97,
-            "ci_lower": 79,
-            "ci_upper": 119,
+            "ci_lower": 78,
+            "ci_upper": 120,
             "error_pct": -11.0,
             "abs_error_pct": 11.0,
             "in_ci": 1
@@ -110985,20 +110725,107 @@ const PERFORMANCE_DATA = {
             "T": 3,
             "count_at_T": 32,
             "predicted": 63,
-            "ci_lower": 37,
-            "ci_upper": 107,
+            "ci_lower": 36,
+            "ci_upper": 109,
             "error_pct": -42.2,
             "abs_error_pct": 42.2,
-            "in_ci": 0
+            "in_ci": 1
           },
           {
             "T": 1,
             "count_at_T": 32,
             "predicted": 55,
-            "ci_lower": 40,
-            "ci_upper": 76,
+            "ci_lower": 39,
+            "ci_upper": 77,
             "error_pct": -49.5,
             "abs_error_pct": 49.5,
+            "in_ci": 0
+          }
+        ]
+      },
+      {
+        "family": "DC Open",
+        "final_count": 188,
+        "event_start": "2026-06-26",
+        "predictions": [
+          {
+            "T": 90,
+            "count_at_T": 1,
+            "predicted": 184,
+            "ci_lower": 119,
+            "ci_upper": 285,
+            "error_pct": -2.1,
+            "abs_error_pct": 2.1,
+            "in_ci": 1
+          },
+          {
+            "T": 60,
+            "count_at_T": 2,
+            "predicted": 188,
+            "ci_lower": 123,
+            "ci_upper": 287,
+            "error_pct": 0.0,
+            "abs_error_pct": 0.0,
+            "in_ci": 1
+          },
+          {
+            "T": 42,
+            "count_at_T": 3,
+            "predicted": 167,
+            "ci_lower": 136,
+            "ci_upper": 204,
+            "error_pct": -11.2,
+            "abs_error_pct": 11.2,
+            "in_ci": 1
+          },
+          {
+            "T": 28,
+            "count_at_T": 5,
+            "predicted": 143,
+            "ci_lower": 59,
+            "ci_upper": 346,
+            "error_pct": -23.9,
+            "abs_error_pct": 23.9,
+            "in_ci": 1
+          },
+          {
+            "T": 14,
+            "count_at_T": 11,
+            "predicted": 143,
+            "ci_lower": 115,
+            "ci_upper": 178,
+            "error_pct": -23.9,
+            "abs_error_pct": 23.9,
+            "in_ci": 0
+          },
+          {
+            "T": 7,
+            "count_at_T": 16,
+            "predicted": 103,
+            "ci_lower": 38,
+            "ci_upper": 282,
+            "error_pct": -45.2,
+            "abs_error_pct": 45.2,
+            "in_ci": 1
+          },
+          {
+            "T": 3,
+            "count_at_T": 24,
+            "predicted": 69,
+            "ci_lower": 42,
+            "ci_upper": 112,
+            "error_pct": -63.3,
+            "abs_error_pct": 63.3,
+            "in_ci": 0
+          },
+          {
+            "T": 1,
+            "count_at_T": 27,
+            "predicted": 65,
+            "ci_lower": 61,
+            "ci_upper": 70,
+            "error_pct": -65.4,
+            "abs_error_pct": 65.4,
             "in_ci": 0
           }
         ]
@@ -111022,8 +110849,8 @@ const PERFORMANCE_DATA = {
             "T": 42,
             "count_at_T": 12,
             "predicted": 206,
-            "ci_lower": 153,
-            "ci_upper": 278,
+            "ci_lower": 154,
+            "ci_upper": 277,
             "error_pct": 0.0,
             "abs_error_pct": 0.0,
             "in_ci": 1
@@ -111032,8 +110859,8 @@ const PERFORMANCE_DATA = {
             "T": 28,
             "count_at_T": 16,
             "predicted": 199,
-            "ci_lower": 188,
-            "ci_upper": 209,
+            "ci_lower": 189,
+            "ci_upper": 210,
             "error_pct": -3.4,
             "abs_error_pct": 3.4,
             "in_ci": 1
@@ -111110,7 +110937,7 @@ const PERFORMANCE_DATA = {
             "count_at_T": 16,
             "predicted": 178,
             "ci_lower": 160,
-            "ci_upper": 197,
+            "ci_upper": 198,
             "error_pct": -0.6,
             "abs_error_pct": 0.6,
             "in_ci": 1

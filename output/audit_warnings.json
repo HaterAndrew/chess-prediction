@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-29 06:05:43",
+  "generated": "2026-06-30 05:17:38",
   "count": 6,
   "warnings": [
     {
@@ -24,7 +24,7 @@
     },
     {
       "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health [CRITICAL] dropped-event \u2014 World Open Under 13 Championship: scraped 81 entries on 2026-06-29 but no 2026 card in output"
+      "text": "data-health [CRITICAL] dropped-event \u2014 World Open Under 13 Championship: scraped 82 entries on 2026-06-30 but no 2026 card in output"
     }
   ]
 }

@@ -5263,3 +5263,41 @@ run_timestamp,family,status,current_count,point_estimate,ci_lower,ci_upper,days_
 2026-06-30 05:17:38,DC Open,complete,180,180,180,180,0
 2026-06-30 05:17:38,Hartford Open,complete,198,198,198,198,0
 2026-06-30 05:17:38,Cleveland Open,complete,174,174,174,174,0
+2026-07-01 05:54:41,World Open top 6 sections,live,1003,1081,1003,1390,3
+2026-07-01 05:54:41,Chicago Class,live,64,286,264,309,16
+2026-07-01 05:54:41,Pittsburgh Open,live,42,170,158,183,16
+2026-07-01 05:54:41,Southern Open,live,50,178,141,224,16
+2026-07-01 05:54:41,Bradley Open,live,33,271,242,302,23
+2026-07-01 05:54:41,Pacific Coast Open,live,49,375,355,396,30
+2026-07-01 05:54:41,Continental Open,live,15,343,146,481,43
+2026-07-01 05:54:41,Central California Open,live,6,175,144,203,44
+2026-07-01 05:54:41,Atlantic Open,live,4,316,251,395,51
+2026-07-01 05:54:41,Indianapolis Open,live,4,186,175,198,51
+2026-07-01 05:54:41,New York State Championship,live,11,304,237,347,65
+2026-07-01 05:54:41,Midwest Class Championships,live,3,313,296,338,100
+2026-07-01 05:54:41,Eastern Class Championships (in Connecticut),live,2,221,198,246,107
+2026-07-01 05:54:41,Eastern Chess Congress (in New Jersey),live,2,469,404,513,114
+2026-07-01 05:54:41,Los Angeles Open,live,2,365,289,413,128
+2026-07-01 05:54:41,Kings Island Open,live,1,346,318,364,135
+2026-07-01 05:54:41,National Chess Congress,live,1,623,572,677,149
+2026-07-01 05:54:41,North American Open,live,5,1081,946,1199,178
+2026-07-01 05:54:41,Eastern Open,live,0,387,367,404,178
+2026-07-01 05:54:41,Boston Chess Congress,complete,359,359,359,359,0
+2026-07-01 05:54:41,Liberty Bell Open,complete,564,564,564,564,0
+2026-07-01 05:54:41,Golden State Open,complete,387,387,387,387,0
+2026-07-01 05:54:41,George Washington Open,complete,209,209,209,209,0
+2026-07-01 05:54:41,Southwest Class Championships,complete,492,492,492,492,0
+2026-07-01 05:54:41,Atlantic City Open,complete,401,401,401,401,0
+2026-07-01 05:54:41,Western Class Championships,complete,318,318,318,318,0
+2026-07-01 05:54:41,Mid-America Open,complete,200,200,200,200,0
+2026-07-01 05:54:41,New York State High School Championship,complete,198,198,198,198,0
+2026-07-01 05:54:41,New York State Senior Championship With Young Adult Mi,complete,61,61,61,61,0
+2026-07-01 05:54:41,New York State Scholastic Championships Grades K-8,complete,1753,1753,1753,1753,0
+2026-07-01 05:54:41,Chicago Open,complete,872,872,872,872,0
+2026-07-01 05:54:41,World Open lower sections,complete,93,93,93,93,0
+2026-07-01 05:54:41,DC International,complete,102,102,102,102,0
+2026-07-01 05:54:41,Southern Class Championships,complete,195,195,195,195,0
+2026-07-01 05:54:41,New York State Open,complete,108,108,108,108,0
+2026-07-01 05:54:41,DC Open,complete,180,180,180,180,0
+2026-07-01 05:54:41,Hartford Open,complete,198,198,198,198,0
+2026-07-01 05:54:41,Cleveland Open,complete,174,174,174,174,0

@@ -26,48 +26,39 @@ jobs:
     timeout-minutes: 90
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 pandas numpy
+        run: pip install -r requirements-dev.txt
 
-      - name: Run fee scraper
-        id: fees
-        if: >
-          github.event_name == 'schedule' ||
-          github.event.inputs.scraper == 'fees' ||
-          github.event.inputs.scraper == 'all'
-        run: PYTHONUNBUFFERED=1 python scrape_fees.py
+      - name: Run enrichment scrapers (warnings persisted)
+        id: enrichment
+        # H4: route the scrapers through run_enrichment.py so each one's WARNING:
+        # lines are harvested into output/audit_warnings.json (+ docs/) instead of
+        # expiring with this Actions log. Output still streams live here. The
+        # scraper arg preserves manual-dispatch granularity; scheduled runs do all.
+        run: PYTHONUNBUFFERED=1 python run_enrichment.py "${{ github.event.inputs.scraper || 'all' }}"
+        timeout-minutes: 90
 
-      - name: Run standings scraper
-        id: standings
-        if: >
-          github.event_name == 'schedule' ||
-          github.event.inputs.scraper == 'standings' ||
-          github.event.inputs.scraper == 'all'
-        run: PYTHONUNBUFFERED=1 python scrape_standings.py
-        timeout-minutes: 60
-
-      - name: Run historical scraper
-        id: historical
-        if: >
-          github.event_name == 'schedule' ||
-          github.event.inputs.scraper == 'historical' ||
-          github.event.inputs.scraper == 'all'
-        run: PYTHONUNBUFFERED=1 python scrape_historical.py
-        timeout-minutes: 30
+      # Quality gate (G1): shared code is tested before enrichment data is committed.
+      - name: Test + lint gate
+        id: gate
+        run: |
+          ruff check .
+          pytest tests/ -q
 
       - name: Commit and push enrichment data
         id: commit
+        if: success()
         run: |
           git config user.name "CCA Bot"
           git config user.email "bot@users.noreply.github.com"
-          git add output/tournament_fees.csv output/historical_standings.csv output/historical_tournaments.csv
+          git add output/tournament_fees.csv output/historical_standings.csv output/historical_tournaments.csv output/audit_warnings.json docs/audit_warnings.json
           git diff --cached --quiet || git commit -m "Enrichment data update: $(date +%Y-%m-%d)"
           git pull --rebase || git pull --no-rebase
           git push
@@ -77,12 +68,15 @@ jobs:
         run: |
           echo "## Weekly Enrichment Scrapers — $(date +%Y-%m-%d)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Scraper | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|---------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Fee scraper | ${{ steps.fees.outcome || 'skipped' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Standings scraper | ${{ steps.standings.outcome || 'skipped' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Historical scraper | ${{ steps.historical.outcome || 'skipped' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Enrichment scrapers | ${{ steps.enrichment.outcome || 'skipped' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Commit & push | ${{ steps.commit.outcome || '—' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f output/audit_warnings.json ]; then
+            WARN=$(python -c "import json;print(json.load(open('output/audit_warnings.json')).get('count',0))" 2>/dev/null || echo '?')
+            echo "**Pipeline warnings captured**: $WARN" >> $GITHUB_STEP_SUMMARY
+          fi
           echo "" >> $GITHUB_STEP_SUMMARY
           for f in output/tournament_fees.csv output/historical_standings.csv output/historical_tournaments.csv; do
             if [ -f "$f" ]; then
@@ -93,7 +87,7 @@ jobs:
 
       - name: Create failure issue
         if: failure()
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
         with:
           script: |
             await github.rest.issues.create({

@@ -297,7 +297,7 @@ def parse_chesstour_abbr_schedule(text: str, year: int,
     if not header:
         return {}
     region = text[header.end():]
-    region_offset = header.end()
+    header.end()
     # Walk year markers so a "2027 Jan 8-10: Boston" doesn't get tagged
     # with the current year. current_year tracks the most-recent marker
     # at each position.

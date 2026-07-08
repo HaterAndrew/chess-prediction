@@ -17,12 +17,11 @@ never hit the live CCA site.
 import os
 import sys
 
-import pytest
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PROJECT_DIR)
 
-from scrape_fees import parse_flyer, EARLY_BIRD_MIN_GAP_DAYS
+from scrape_fees import parse_flyer
 
 FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "fixtures", "flyers")
 

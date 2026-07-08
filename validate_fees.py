@@ -24,19 +24,16 @@ Usage:
 
 import argparse
 import csv
-import json
 import logging
 import os
 import sys
 from datetime import datetime, date
-from urllib.parse import urlparse
 
 import requests
 
 from scrape_fees import (
     parse_flyer,
     EARLY_BIRD_MIN_GAP_DAYS,
-    _days_gap,
 )
 from scraper_utils import polite_session, respectful_get, DEFAULT_TIMEOUT
 
@@ -203,7 +200,7 @@ def main():
     lines.append(f"# Fee data audit — year {args.year}")
     lines.append(f"_Generated {datetime.now().isoformat(timespec='seconds')}_")
     lines.append("")
-    lines.append(f"**Source:** live `chesstour.com` flyer pages parsed by `scrape_fees.parse_flyer`.")
+    lines.append("**Source:** live `chesstour.com` flyer pages parsed by `scrape_fees.parse_flyer`.")
     lines.append(f"**Rule:** early-bird requires (a) ≥2 tiers with eb_fee < next_fee AND (b) deadline ≥ T-{EARLY_BIRD_MIN_GAP_DAYS} days before event_start.")
     lines.append("")
     lines.append("| Verdict | Count |")

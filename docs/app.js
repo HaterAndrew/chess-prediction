@@ -15,6 +15,10 @@ let histChartObj = null;
 // HELPERS
 // ══════════════════════════════════════════════════════════
 function _mobileVP() { return window.matchMedia('(max-width: 639px)').matches; }
+function _reduceMotion() {
+  return typeof window !== 'undefined' && window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
 // Progressive-enhancement haptic. Android Chrome/Firefox supported; iOS Safari
 // no-ops. Respects prefers-reduced-motion. Round 31.
 function _haptic(ms) {
@@ -332,12 +336,17 @@ function paceBadgeHTML(alert) {
 // PAGE TABS
 // ══════════════════════════════════════════════════════════
 let _currentTab = 'predictions';
-const MORE_MENU_TABS = ['compare', 'email', 'performance', 'about', 'puzzles'];
+const MORE_MENU_TABS = ['compare', 'email', 'about', 'puzzles'];
 function switchPageTab(tab, skipHash) {
   if (_mobileVP() && _currentTab !== tab) _haptic(8);
   _currentTab = tab;
-  document.querySelectorAll('.page-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
-  document.querySelectorAll('.page-tab-drop .cat-item').forEach(t => t.classList.remove('active'));
+  // Reset active + aria-selected across both the visible strip and the overflow
+  // disclosure (its items are role="tab"); only touch aria-selected where present
+  // so the "Other" disclosure trigger keeps aria-expanded semantics instead.
+  document.querySelectorAll('.page-tab, .page-tab-drop .cat-item').forEach(t => {
+    t.classList.remove('active');
+    if (t.hasAttribute('aria-selected')) t.setAttribute('aria-selected', 'false');
+  });
   document.querySelectorAll('.page-tab-panel').forEach(p => p.classList.remove('active'));
   const tabBtn = document.getElementById('ptab-' + tab);
   if (tabBtn) {
@@ -358,10 +367,8 @@ function switchPageTab(tab, skipHash) {
   const panel = document.getElementById('panel-' + tab);
   panel.classList.add('active');
   if (tab === 'puzzles') initPuzzles();
-  if (tab === 'dataentry') renderDataEntry();
   if (tab === 'email') initEmailTab();
   if (tab === 'performance') initPerformanceTab();
-  if (tab === 'favorites') renderFavoritesTab();
   if (tab === 'compare') renderCompareTab();
   if (tab === 'ask') initAskTab();
   // Focus management: move focus to new panel for screen readers
@@ -397,24 +404,32 @@ const PAGE_TAB_ORDER = ['predictions', 'compare', 'email', 'performance', 'about
   }, { passive: true });
 })();
 
-// ── "Menu" dropdown holding overflow tabs ──
-function toggleMoreMenu(e) {
-  if (e) e.stopPropagation();
+// ── "Other" overflow: a disclosure (button + aria-expanded region) holding the
+//    less-used tabs. Not a role=menu — the items navigate to tabpanels. ──
+function _moreMenuItems() {
+  const drop = document.getElementById('moreMenuDrop');
+  return drop ? Array.from(drop.querySelectorAll('.cat-item')) : [];
+}
+function openMoreMenuDrop() {
   const drop = document.getElementById('moreMenuDrop');
   const btn = document.getElementById('ptab-more');
   if (!drop || !btn) return;
-  if (drop.classList.contains('open')) { closeMoreMenu(); return; }
   const r = btn.getBoundingClientRect();
-  // Anchor below the button; clamp to viewport
-  const desiredLeft = r.left;
+  const desiredLeft = r.left;                     // anchor below the button
   drop.style.top = (r.bottom + 6) + 'px';
   drop.style.left = '0px';
   drop.classList.add('open');
-  // Now that it's rendered, clamp horizontally
-  const dw = drop.offsetWidth;
+  const dw = drop.offsetWidth;                    // clamp horizontally once rendered
   const maxLeft = Math.max(8, window.innerWidth - dw - 8);
   drop.style.left = Math.min(desiredLeft, maxLeft) + 'px';
   btn.setAttribute('aria-expanded', 'true');
+}
+function toggleMoreMenu(e) {
+  if (e) e.stopPropagation();
+  const drop = document.getElementById('moreMenuDrop');
+  if (!drop) return;
+  if (drop.classList.contains('open')) closeMoreMenu();
+  else openMoreMenuDrop();
 }
 function closeMoreMenu() {
   const drop = document.getElementById('moreMenuDrop');
@@ -437,6 +452,34 @@ document.addEventListener('keydown', (e) => {
 });
 window.addEventListener('resize', closeMoreMenu);
 window.addEventListener('scroll', closeMoreMenu, { passive: true });
+
+// Disclosure keyboard support: ArrowUp/Down from the trigger opens and enters
+// the panel; inside, arrows rove (with wrap), Home/End jump, Escape closes and
+// restores focus to the trigger, Tab closes.
+(function moreMenuKeys() {
+  const btn = document.getElementById('ptab-more');
+  const drop = document.getElementById('moreMenuDrop');
+  if (!btn || !drop) return;
+  btn.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      openMoreMenuDrop();
+      const items = _moreMenuItems();
+      if (items.length) (e.key === 'ArrowUp' ? items[items.length - 1] : items[0]).focus();
+    }
+  });
+  drop.addEventListener('keydown', e => {
+    const items = _moreMenuItems();
+    if (!items.length) return;
+    const i = items.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+    else if (e.key === 'Home') { e.preventDefault(); items[0].focus(); }
+    else if (e.key === 'End') { e.preventDefault(); items[items.length - 1].focus(); }
+    else if (e.key === 'Escape') { e.preventDefault(); closeMoreMenu(); btn.focus(); }
+    else if (e.key === 'Tab') { closeMoreMenu(); }
+  });
+})();
 
 // ══════════════════════════════════════════════════════════
 // EMAIL GENERATOR
@@ -829,10 +872,11 @@ function emailHTMLTournament(t, len) {
   return parts.join('\n');
 }
 
-function emailBuildHTML(subject, intro, selected, len, highlights) {
+function emailBuildHTML(subject, intro, selected, len, highlights, signoff) {
   const theme = selected.length > 1 ? emailOverallTheme(selected) : '';
   const bullets = emailHighlightBullets(highlights);
   const greeting = intro && intro.trim() ? esc(intro.trim()) : 'Team,';
+  const signName = signoff && signoff.trim() ? esc(signoff.trim()) : '';
 
   const highlightBlock = bullets.length
     ? `<table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;background:${EM.surface};border-left:4px solid ${EM.accent};margin:14px 0;width:100%"><tr><td style="padding:12px 16px;font-family:Arial,Helvetica,sans-serif">
@@ -852,7 +896,7 @@ function emailBuildHTML(subject, intro, selected, len, highlights) {
   ${highlightBlock}
   ${themeBlock}
   ${body}
-  <p style="margin:20px 0 0;font-size:14px;color:${EM.text}">Dave</p>
+  ${signName ? `<p style="margin:20px 0 0;font-size:14px;color:${EM.text}">${signName}</p>` : ''}
 </div>`;
 }
 
@@ -862,6 +906,8 @@ function generateEmail() {
   const pv = document.getElementById('emailPreview');
   const subjField = document.getElementById('emailSubject');
   const introField = document.getElementById('emailIntro');
+  const signField = document.getElementById('emailSignoff');
+  const signoff = signField && signField.value.trim() ? signField.value.trim() : '';
 
   if (!selected.length) { out.textContent = 'No tournaments selected.'; if (pv) { pv.srcdoc = ''; } return; }
 
@@ -874,7 +920,7 @@ function generateEmail() {
   if (emailFormat === 'html') {
     const subject = (subjField && subjField.value) || emailAutoSubject(selected);
     const intro = introField ? introField.value : '';
-    const html = emailBuildHTML(subject, intro, selected, len, highlights);
+    const html = emailBuildHTML(subject, intro, selected, len, highlights, signoff);
     out.textContent = html;
     if (pv) pv.srcdoc = `<!doctype html><html><head><meta charset="utf-8"><title>${esc(subject)}</title></head><body style="margin:0;background:#f1f1f1">${html}</body></html>`;
   } else {
@@ -892,7 +938,7 @@ function generateEmail() {
       sections.push(emailOverallTheme(selected));
     }
     selected.forEach(t => { sections.push(emailFormatTournament(t, len)); });
-    sections.push('Dave');
+    if (signoff) sections.push(signoff);
     out.textContent = sections.join('\n\n');
   }
 
@@ -1082,7 +1128,7 @@ function perfDrawScatter(data) {
   ctx.scale(dpr, dpr);
 
   const isM = _mobileVP();
-  const pad = {t:8, r:12, b:28, l: isM ? 36 : 44};
+  const pad = {t:8, r:12, b:28, l: isM ? 48 : 44};
   const tickFont = isM ? '10px system-ui' : '9px system-ui';
   const noteFont = isM ? '9px system-ui' : '8px system-ui';
   const axisFont = isM ? '10px system-ui' : '9px system-ui';
@@ -1114,7 +1160,7 @@ function perfDrawScatter(data) {
   ctx.setLineDash([8, 5]);
   ctx.beginPath(); ctx.moveTo(pad.l, pad.t + ph); ctx.lineTo(pad.l + pw, pad.t); ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle = 'rgba(240,192,64,.35)'; ctx.font = noteFont; ctx.textAlign = 'right';
+  ctx.fillStyle = 'rgba(240,192,64,.9)'; ctx.font = noteFont; ctx.textAlign = 'right';
   ctx.fillText('Perfect prediction', pad.l + pw - 2, pad.t + 10);
 
   // CI whiskers + dots
@@ -1187,7 +1233,7 @@ function perfDrawTimeline(data) {
   // Line
   ctx.beginPath();
   agg.forEach((a, i) => { i === 0 ? ctx.moveTo(xp(i), yp(a.mae_pct)) : ctx.lineTo(xp(i), yp(a.mae_pct)); });
-  ctx.strokeStyle = 'var(--gold)'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.stroke();
+  ctx.strokeStyle = '#f0c040'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.stroke();  // canvas can't resolve var(--gold)
 
   // Dots + labels
   agg.forEach((a, i) => {
@@ -1601,8 +1647,11 @@ function dismissSplash() {
 }
 
 function showSplash() {
+  // Manual re-show (logo click) works even after the first-visit skip.
+  document.documentElement.classList.remove('splash-skip');
   document.getElementById('mainContent').classList.remove('visible');
   document.getElementById('splash').classList.remove('hidden');
+  initSplash();
 }
 
 function initSplash() {
@@ -1627,6 +1676,8 @@ function initChessboard() {
   const splash = document.getElementById('splash');
   const canvas = document.getElementById('splashCanvas');
   if (!canvas || !splash) return;
+  const existingKnight = document.getElementById('splash-knight-orbit');
+  if (existingKnight) existingKnight.remove();   // avoid a duplicate on re-show
 
   let _sq = 60, _ox = 0, _oy = 0, _cols = 16, _rows = 12;
 
@@ -1722,6 +1773,7 @@ function initChessboard() {
     if (!document.getElementById('splash')) return;
     knight.style.opacity = '1';
     knight.style.transform = 'translate(-50%,-50%) scale(1)';
+    if (_reduceMotion()) return;   // static knight, no hopping under prefers-reduced-motion
     kTimer = setInterval(() => {
       const s = document.getElementById('splash');
       if (!s || s.classList.contains('hidden')) { clearInterval(kTimer); return; }
@@ -1732,6 +1784,7 @@ function initChessboard() {
 
 function animateNum(id, from, to, duration) {
   const el = document.getElementById(id);
+  if (_reduceMotion()) { el.textContent = Math.round(to); return; }
   const start = performance.now();
   function tick(now) {
     const p = Math.min((now - start) / duration, 1);
@@ -1953,6 +2006,10 @@ function openTourneyPicker(initialTab) {
   if (!menu) return;
   menu.style.display = 'block';
   document.body.classList.add('drawer-open');
+  // Make the background inert so nothing behind the aria-modal sheet takes
+  // focus or taps (the drawer is a sibling of #mainContent, so it stays live).
+  const mc = document.getElementById('mainContent');
+  if (mc) mc.inert = true;
   _tourneyPickerOpen = true;
   // Move focus into drawer per WAI-ARIA dialog pattern.
   setTimeout(() => {
@@ -1971,6 +2028,8 @@ function closeTourneyPicker() {
   const menu = document.getElementById('dropMenu_tourney');
   if (menu) menu.style.display = 'none';
   document.body.classList.remove('drawer-open');
+  const mc = document.getElementById('mainContent');
+  if (mc) mc.inert = false;   // restore background interactivity before returning focus
   _tourneyPickerOpen = false;
   // Return focus to the element that opened the drawer (WAI-ARIA dialog pattern).
   try {
@@ -2076,9 +2135,11 @@ document.addEventListener('keydown', e => {
   if (e.key !== 'Tab') return;
   const menu = document.getElementById('dropMenu_tourney');
   if (!menu) return;
-  const focusables = menu.querySelectorAll(
+  // Only trap over visible candidates — hidden ones (inactive segment tab,
+  // filtered-out search rows) have no offsetParent and must not receive focus.
+  const focusables = Array.from(menu.querySelectorAll(
     'button:not([disabled]), input:not([disabled]), [tabindex="0"]'
-  );
+  )).filter(el => el.offsetParent !== null);
   if (!focusables.length) return;
   const first = focusables[0];
   const last = focusables[focusables.length - 1];
@@ -2472,17 +2533,20 @@ function renderHero(t) {
     heroLabel.style.cursor = 'default';
   }
   const heroNum = document.getElementById('heroNumber');
-  // Animate number count-up
+  // Animate number count-up (skip the tween under prefers-reduced-motion)
   const target = t.point_estimate;
-  const duration = 600;
-  const start = performance.now();
-  function animHero(now) {
-    const p = Math.min((now - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - p, 3);
-    heroNum.textContent = fmt(Math.round(target * ease));
-    if (p < 1) requestAnimationFrame(animHero);
+  if (_reduceMotion()) {
+    heroNum.textContent = fmt(Math.round(target));
+  } else {
+    const duration = 600;
+    const start = performance.now();
+    (function animHero(now) {
+      const p = Math.min(((now || performance.now()) - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      heroNum.textContent = fmt(Math.round(target * ease));
+      if (p < 1) requestAnimationFrame(animHero);
+    })(performance.now());
   }
-  requestAnimationFrame(animHero);
   // Solid color: gold for live predictions, blue for completed totals.
   // Prior gradient-text + background-clip path was killed in iter 1 of
   // this UX pass (banned anti-pattern, mushy at small sizes). Re-applying
@@ -4205,7 +4269,7 @@ function renderAccuracyStrip() {
         <span class="acc-lab">Avg miss at 2 weeks out</span>
       </span>` : ''}
       ${cov != null ? `<span class="acc-cell">
-        <span class="acc-num">${Math.round(cov * 100)}%</span>
+        <span class="acc-num">${Math.round(cov)}%</span>
         <span class="acc-lab">In range at 2 weeks out</span>
       </span>` : ''}
       <span class="acc-cta">View details &rarr;</span>
@@ -4551,6 +4615,36 @@ function renderModelHealth() {
     updated.textContent = ts ? 'Pipeline last ran ' + ts : '';
   }
 
+  // K1/L2: single-source the "How We Tested It" prose numbers from
+  // PERFORMANCE_DATA so they can never drift from the graded truth. Cumulative
+  // T-14 drives the headline; cumulative T-3 the close-in coverage caveat.
+  if (typeof PERFORMANCE_DATA !== 'undefined' && PERFORMANCE_DATA) {
+    const cum = PERFORMANCE_DATA.cumulative || {};
+    const cagg = cum.aggregate || [];
+    const at = (T) => cagg.find(a => a.T === T);
+    const t14 = at(14), t3 = at(3);
+    const setTxt = (id, v) => { const e = document.getElementById(id); if (e && v != null) e.textContent = v; };
+    setTxt('about-n', cum.n_tournaments);
+    setTxt('about-prior-n', cum.n_tournaments);
+    if (t14) {
+      const cov14 = Math.round(t14.ci_coverage);
+      setTxt('about-median', t14.median_ape_pct + '%');
+      setTxt('about-prior-median', t14.median_ape_pct + '%');
+      setTxt('about-cov', cov14 + '%');
+      setTxt('about-prior-cov', cov14 + '%');
+      // Methodology callout / sanity-check / footer coverage stats (same source).
+      setTxt('mc-ci-cover', cov14 + '%');
+      setTxt('mc-ci-cover-inline', cov14 + '%');
+      setTxt('mc-ci-cover-footer', cov14 + '%');
+    }
+    if (t3) setTxt('about-cov-close', Math.round(t3.ci_coverage) + '%');
+    const yrs = Object.keys(PERFORMANCE_DATA.years || {})
+      .filter(y => (PERFORMANCE_DATA.years[y].n_tournaments || 0) > 0).sort();
+    if (cum.n_tournaments && yrs.length) {
+      setTxt('about-span-note', `${cum.n_tournaments} tournaments across ${yrs[0]}–${yrs[yrs.length - 1]}.`);
+    }
+  }
+
   const tiles = [];
 
   // Tile 1: cumulative T-14 CI coverage vs nominal 80%
@@ -4639,7 +4733,7 @@ function renderModelHealth() {
       value: grade,
       sub: yr.grade_detail || ((yr.n_tournaments || 0) + ' tournaments'),
       color,
-      help: 'Letter grade from the 2026 evaluation cohort. Based on T-14 MAE and CI coverage.',
+      help: 'Letter grade from the 2026 evaluation cohort — worst of the T-14/T-7/T-3 lead times (MAE + CI coverage), leave-one-out so no tournament grades itself.',
     });
   }
 
@@ -4693,8 +4787,15 @@ function init() {
 
   renderModelHealth();
   document.getElementById('lastUpdated').textContent = fmtDateTimeLong(TOURNAMENT_DATA.generated_time || TOURNAMENT_DATA.generated);
-  // Always show splash on load
-  initSplash();
+  // Splash: first visit only. The head guard flags .splash-skip for repeat or
+  // deep-linked loads; honor it here and make sure the content is revealed
+  // (CSS also does this, but keep the JS state consistent).
+  if (document.documentElement.classList.contains('splash-skip')) {
+    document.getElementById('mainContent').classList.add('visible');
+  } else {
+    initSplash();
+    try { localStorage.setItem('cep:splash:seen', '1'); } catch (_) {}
+  }
 
   // Logo click re-shows splash
   const logo = document.querySelector('.logo');
@@ -4734,7 +4835,12 @@ window.addEventListener('scroll', () => {
 // Keyboard navigation
 document.addEventListener('keydown', (e) => {
   if (openDrop) return;
-  if (e.target.tagName === 'INPUT') return;
+  // L5: never hijack arrows while typing (INPUT/TEXTAREA/contenteditable) or on
+  // any tab other than Predictions — otherwise arrows in the Ask box or on the
+  // puzzle board silently switch tournaments and rewrite the hash.
+  const tag = e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
+  if (typeof _currentTab !== 'undefined' && _currentTab !== 'predictions') return;
   const n = TOURNAMENT_DATA.tournaments.length;
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
     e.preventDefault();
@@ -4744,50 +4850,6 @@ document.addEventListener('keydown', (e) => {
     selectTournament((selectedIndex - 1 + n) % n);
   }
 });
-
-// ══════════════════════════════════════════════════════════
-// DATA ENTRY PANEL
-// ══════════════════════════════════════════════════════════
-function toggleDataEntry() {
-  const toggle = document.getElementById('deToggle');
-  const panel = document.getElementById('dePanel');
-  toggle.classList.toggle('open');
-  panel.classList.toggle('open');
-  if (panel.classList.contains('open')) renderDataEntry();
-}
-
-function renderDataEntry() {
-  const body = document.getElementById('deBody');
-  const ts = TOURNAMENT_DATA.tournaments;
-  const live = ts.filter(t => t.status === 'live').sort((a,b) => a.days_remaining - b.days_remaining);
-  const overrides = JSON.parse(localStorage.getItem('cca_overrides') || '{}');
-
-  // Each input carries data-pristine (the pipeline value at render time) and
-  // data-saved (the value already persisted to localStorage, if any). On save
-  // we only write fields where the current input value differs from BOTH —
-  // this prevents the long-standing bug where opening the panel and clicking
-  // Save froze every visible field as an override even if the user only
-  // touched one row.
-  body.innerHTML = live.map(t => {
-    const o = overrides[t.family] || {};
-    const entries = o.current_count !== undefined ? o.current_count : t.current_count;
-    const start = o.event_start || t.event_start || '';
-    const ebDeadline = o.early_bird_deadline || t.early_bird_deadline || '';
-    const ebFee = o.early_bird_fee !== undefined ? o.early_bird_fee : (t.early_bird_fee || '');
-    const regFee = o.regular_fee !== undefined ? o.regular_fee : (t.regular_fee || '');
-    const onsiteFee = o.onsite_fee !== undefined ? o.onsite_fee : (t.onsite_fee || '');
-    const pristine = (k, v) => `data-pristine="${v == null ? '' : esc(String(v))}" data-saved="${o[k] != null ? esc(String(o[k])) : ''}"`;
-    return `<tr>
-      <td class="fam-name" data-label="Tournament">${esc(t.family)}</td>
-      <td data-label="Entries"><input type="number" data-family="${esc(t.family)}" data-field="current_count" ${pristine('current_count', t.current_count)} value="${entries}" min="0"></td>
-      <td data-label="Event Start"><input type="date" data-family="${esc(t.family)}" data-field="event_start" ${pristine('event_start', t.event_start || '')} value="${start}"></td>
-      <td data-label="Early Bird Deadline"><input type="date" data-family="${esc(t.family)}" data-field="early_bird_deadline" ${pristine('early_bird_deadline', t.early_bird_deadline || '')} value="${ebDeadline}"></td>
-      <td data-label="Early Bird Fee"><input type="number" data-family="${esc(t.family)}" data-field="early_bird_fee" ${pristine('early_bird_fee', t.early_bird_fee || '')} value="${ebFee}" min="0"></td>
-      <td data-label="Reg Fee"><input type="number" data-family="${esc(t.family)}" data-field="regular_fee" ${pristine('regular_fee', t.regular_fee || '')} value="${regFee}" min="0"></td>
-      <td data-label="Onsite Fee"><input type="number" data-family="${esc(t.family)}" data-field="onsite_fee" ${pristine('onsite_fee', t.onsite_fee || '')} value="${onsiteFee}" min="0"></td>
-    </tr>`;
-  }).join('');
-}
 
 function saveDataEntry() {
   const inputs = document.querySelectorAll('#deBody input');
@@ -4959,8 +5021,6 @@ function toggleFavorite(family) {
   else favs.push(family);
   saveFavorites(favs);
   updateFavButton(family);
-  // Refresh favorites tab if it's currently visible
-  if (_currentTab === 'favorites') renderFavoritesTab();
 }
 
 function toggleFavoriteSelected() {
@@ -4975,66 +5035,6 @@ function updateFavButton(family) {
   btn.innerHTML = fav ? '&#9733;' : '&#9734;';
   btn.classList.toggle('fav-active', fav);
   btn.title = fav ? 'Remove from My Tournaments' : 'Add to My Tournaments';
-}
-
-function renderFavoritesTab() {
-  const el = document.getElementById('favoritesContent');
-  if (!el) return;
-  const favs = getFavorites();
-
-  if (favs.length === 0) {
-    el.innerHTML = `<div class="fav-empty">
-      <div style="font-size:2.5rem;margin-bottom:12px">&#9734;</div>
-      <div style="font-size:1rem;font-weight:600;margin-bottom:6px">No favorites yet</div>
-      <div style="font-size:.82rem;color:var(--muted)">Click &#9733; on any tournament to add it here</div>
-    </div>`;
-    return;
-  }
-
-  const cards = favs.map(family => {
-    const t = TOURNAMENT_DATA.tournaments.find(x => x.family === family);
-    if (!t) return '';
-    const i = TOURNAMENT_DATA.tournaments.indexOf(t);
-    const isLive = t.status === 'live';
-    const isComplete = t.status === 'complete';
-    const statusLabel = isLive ? 'Live' : isComplete ? 'Complete' : 'Upcoming';
-    const statusClass = isLive ? 'badge-live' : isComplete ? 'badge-complete' : 'badge-upcoming';
-    const daysInfo = isLive ? `${t.days_remaining}d remaining` : isComplete ? 'Finished' : t.days_remaining != null ? `Starts in ${t.days_remaining}d` : '';
-    const ciRange = t.ci_lower && t.ci_upper ? `${fmt(t.ci_lower)} – ${fmt(t.ci_upper)}` : '—';
-
-    return `<div class="fav-card" onclick="switchPageTab('predictions');selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})" tabindex="0" onkeydown="if(event.key==='Enter'){switchPageTab('predictions');selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})}">
-      <div class="fav-card-header">
-        <span class="fav-card-name">${esc(t.family)} ${t.year}</span>
-        <button class="fav-btn fav-active fav-remove" onclick="event.stopPropagation();toggleFavorite('${esc(t.family).replace(/'/g, "\\'")}')" title="Remove from favorites">&#9733;</button>
-      </div>
-      <div class="fav-card-status">
-        <span class="mini-badge ${statusClass}">${isLive ? '<span class="live-dot" style="width:5px;height:5px"></span>' : ''}${statusLabel}</span>
-        <span style="color:var(--muted);font-size:.75rem">${daysInfo}</span>
-      </div>
-      <div class="fav-card-stats">
-        <div class="fav-stat">
-          <span class="fav-stat-label">Predicted</span>
-          <span class="fav-stat-value" style="color:var(--gold)">${fmt(t.point_estimate)}</span>
-        </div>
-        <div class="fav-stat">
-          <span class="fav-stat-label">CI Range</span>
-          <span class="fav-stat-value">${ciRange}</span>
-        </div>
-        <div class="fav-stat">
-          <span class="fav-stat-label">Current</span>
-          <span class="fav-stat-value" style="color:var(--blue)">${fmt(t.current_count)}</span>
-        </div>
-      </div>
-      ${(() => { const pa = getPaceAlert(t); if (!pa) return ''; const cls = pa.status === 'above_pace' ? 'above' : pa.status === 'below_pace' ? 'below' : 'on'; const label = pa.status === 'above_pace' ? 'Above pace' : pa.status === 'below_pace' ? 'Below pace' : 'On pace'; return `<div class="fav-pace-row"><span class="fav-pace-dot ${cls}"></span><span style="color:var(--${cls === 'above' ? 'green' : cls === 'below' ? 'red' : 'blue'})">${label}</span><span style="color:var(--muted)">${pa.deviation_pct > 0 ? '+' : ''}${pa.deviation_pct}% vs historical</span></div>`; })()}
-    </div>`;
-  }).filter(Boolean).join('');
-
-  el.innerHTML = `
-    <div style="margin:18px 0 16px">
-      <h2 style="font-size:1.3rem;font-weight:800;color:var(--gold);margin-bottom:4px">&#9733; My Tournaments</h2>
-      <p style="font-size:.78rem;color:var(--muted)">${favs.length} tournament${favs.length !== 1 ? 's' : ''} saved</p>
-    </div>
-    <div class="fav-grid">${cards}</div>`;
 }
 
 // ══════════════════════════════════════════════════════════
@@ -5431,8 +5431,16 @@ const ASK_SUGGESTIONS = [
   'Which live tournament has the most entries?',
 ];
 const ASK_HISTORY_KEY = 'cep:ask:history';
+const ASK_MAX_HISTORY_PAIRS = 4;        // last N Q/A pairs sent as history[] (worker caps at 8 msgs)
+const ASK_REQUEST_TIMEOUT_MS = 60000;   // client-side abort so a stuck request can't hang forever
+// Query words that carry no signal for name matching in the keyword fallback.
+const ASK_STOPWORDS = new Set(['the', 'a', 'an', 'of', 'in', 'on', 'at', 'for', 'to', 'is', 'are',
+  'was', 'were', 'how', 'what', 'when', 'which', 'who', 'did', 'does', 'do', 'will', 'get', 'got',
+  'and', 'or', 'vs', 'right', 'now', 'this', 'that', 'many', 'much', 'tournament', 'tournaments']);
 let askInited = false;
 let askInFlight = false;
+let askController = null;                // AbortController for the in-flight request
+const askTurns = [];                     // in-memory conversation ({q, a}) for multi-turn context
 
 init();
 
@@ -5486,28 +5494,43 @@ function askSubmit() {
   askRun(q);
 }
 
+// Flatten the in-memory conversation into the worker's history[] shape (last N pairs).
+function buildAskHistory() {
+  const msgs = [];
+  askTurns.slice(-ASK_MAX_HISTORY_PAIRS).forEach(p => {
+    msgs.push({ role: 'user', content: p.q });
+    msgs.push({ role: 'assistant', content: p.a });
+  });
+  return msgs;
+}
+
 async function askRun(question) {
   if (askInFlight) return;
   askInFlight = true;
   const input = document.getElementById('askInput');
   const btn = document.getElementById('askSubmit');
   const banner = document.getElementById('askBanner');
-  const answer = document.getElementById('askAnswer');
-  if (input) input.value = question;
+  if (input) input.value = '';
   if (btn) { btn.disabled = true; btn.textContent = 'Thinking…'; }
   if (banner) { banner.hidden = true; banner.textContent = ''; banner.className = 'ask-banner'; }
-  if (answer) {
-    answer.className = 'ask-answer is-loading';
-    answer.textContent = 'Thinking…';
-  }
+
+  appendUserTurn(question);
+  const pending = appendAssistantPending();
+  scrollAskThread();
+
+  askController = new AbortController();
+  let timedOut = false;
+  const timer = setTimeout(() => { timedOut = true; askController.abort(); }, ASK_REQUEST_TIMEOUT_MS);
 
   try {
     const resp = await fetch(ASK_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question }),
+      body: JSON.stringify({ question, history: buildAskHistory() }),
+      signal: askController.signal,
     });
     const data = await resp.json().catch(() => ({}));
+    pending.stop();
 
     if (!resp.ok) {
       const isRateLimit = resp.status === 429;
@@ -5515,38 +5538,126 @@ async function askRun(question) {
       const msg = data.message || `Error ${resp.status}.`;
       if (isRateLimit || isBudget) {
         showAskBanner('warn', msg);
-        renderAnswerText('');
+        fillAssistantText(pending.bubble, '(No answer — ' + msg + ')');
       } else {
-        showAskBanner('error', msg + ' Falling back to keyword search.');
-        renderFallback(question);
+        showAskBanner('error', msg + ' Showing keyword matches instead.');
+        fillAssistantFallback(pending.bubble, question);
       }
       return;
     }
 
-    renderAnswerText(data.answer || '(no answer returned)', {
+    const answer = data.answer || '(no answer returned)';
+    fillAssistantText(pending.bubble, answer, {
       model: data.model,
       latency_ms: data.latency_ms,
       data_generated: data.data_generated,
       tools_used: data.tools_used,
     });
+    rememberAskTurn(question, answer);
     pushAskHistory(question);
   } catch (e) {
-    showAskBanner('error', 'AI is unavailable right now — here are keyword matches instead:');
-    renderFallback(question);
+    pending.stop();
+    if (e && e.name === 'AbortError') {
+      if (timedOut) {
+        fillAssistantText(pending.bubble, 'That took over a minute and was stopped. Try a simpler question, or these keyword matches:');
+        fillAssistantFallback(pending.bubble, question, true);
+      } else {
+        fillAssistantText(pending.bubble, 'Stopped.');
+      }
+    } else {
+      showAskBanner('error', 'AI is unavailable right now — here are keyword matches instead:');
+      fillAssistantFallback(pending.bubble, question);
+    }
   } finally {
+    clearTimeout(timer);
+    askController = null;
     askInFlight = false;
     if (btn) { btn.disabled = false; btn.textContent = 'Ask'; }
+    scrollAskThread();
   }
 }
 
-function renderAnswerText(text, meta) {
+function rememberAskTurn(q, a) {
+  askTurns.push({ q, a });
+  if (askTurns.length > 12) askTurns.shift();
+}
+
+function scrollAskThread() {
   const el = document.getElementById('askAnswer');
   if (!el) return;
-  el.className = 'ask-answer';
-  el.innerHTML = '';
+  const last = el.lastElementChild;
+  if (last && typeof last.scrollIntoView === 'function') {
+    last.scrollIntoView({ block: 'nearest' });
+  }
+}
+
+function appendUserTurn(text) {
+  const host = document.getElementById('askAnswer');
+  if (!host) return;
+  const turn = document.createElement('div');
+  turn.className = 'ask-turn ask-turn-user';
+  const bubble = document.createElement('div');
+  bubble.className = 'ask-bubble';
+  bubble.textContent = text;
+  turn.appendChild(bubble);
+  host.appendChild(turn);
+}
+
+// Append an assistant bubble in the "thinking" state with an elapsed counter,
+// a one-time SR announcement, and a Cancel button. Returns { bubble, stop() }.
+function appendAssistantPending() {
+  const host = document.getElementById('askAnswer');
+  const turn = document.createElement('div');
+  turn.className = 'ask-turn ask-turn-assistant';
+  const bubble = document.createElement('div');
+  bubble.className = 'ask-bubble ask-bubble-pending';
+
+  const row = document.createElement('div');
+  row.className = 'ask-pending';
+
+  const spinner = document.createElement('span');
+  spinner.className = 'ask-spinner';
+  spinner.setAttribute('aria-hidden', 'true');
+
+  // Constant text — announced once by the live region, not re-announced.
+  const msg = document.createElement('span');
+  msg.className = 'ask-pending-msg';
+  msg.textContent = 'Working on your answer — this can take up to a minute.';
+
+  // Per-second counter — hidden from the accessibility tree so it doesn't spam SR.
+  const label = document.createElement('span');
+  label.className = 'ask-pending-label';
+  label.setAttribute('aria-hidden', 'true');
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.type = 'button';
+  cancelBtn.className = 'ask-cancel';
+  cancelBtn.textContent = 'Cancel';
+  cancelBtn.addEventListener('click', () => { if (askController) askController.abort(); });
+
+  const started = Date.now();
+  const tick = () => { label.textContent = Math.round((Date.now() - started) / 1000) + 's'; };
+  tick();
+
+  row.appendChild(spinner);
+  row.appendChild(msg);
+  row.appendChild(label);
+  row.appendChild(cancelBtn);
+  bubble.appendChild(row);
+  turn.appendChild(bubble);
+  host.appendChild(turn);
+
+  const iv = setInterval(tick, 1000);
+  return { bubble, stop() { clearInterval(iv); } };
+}
+
+function fillAssistantText(bubble, text, meta) {
+  if (!bubble) return;
+  bubble.classList.remove('ask-bubble-pending');
+  bubble.innerHTML = '';
   const body = document.createElement('div');
   body.textContent = text;
-  el.appendChild(body);
+  bubble.appendChild(body);
   if (meta) {
     const m = document.createElement('div');
     m.className = 'ask-answer-meta';
@@ -5558,7 +5669,7 @@ function renderAnswerText(text, meta) {
       parts.push('tools: ' + meta.tools_used.map(esc).join(', '));
     }
     m.innerHTML = parts.join(' &middot; ');
-    el.appendChild(m);
+    bubble.appendChild(m);
   }
 }
 
@@ -5570,36 +5681,51 @@ function showAskBanner(kind, message) {
   banner.textContent = message;
 }
 
-function renderFallback(query) {
-  const el = document.getElementById('askAnswer');
-  if (!el || !TOURNAMENT_DATA || !TOURNAMENT_DATA.tournaments) return;
-  const q = query.toLowerCase();
-  const tokens = q.split(/\s+/).filter(Boolean);
-  const matches = TOURNAMENT_DATA.tournaments
+// Rank tournaments by keyword overlap with the query. Any-token match (not
+// all-tokens) so a multi-word question still surfaces the relevant families;
+// stopwords are dropped, exact and substring hits rank highest.
+function fallbackMatches(query) {
+  if (!TOURNAMENT_DATA || !TOURNAMENT_DATA.tournaments) return [];
+  const q = query.toLowerCase().trim();
+  const rawTokens = q.split(/[^a-z0-9]+/).filter(Boolean);
+  const tokens = rawTokens.filter(t => t.length > 1 && !ASK_STOPWORDS.has(t));
+  const useTokens = tokens.length ? tokens : rawTokens;   // stopword-only query still matches on rawTokens
+  return TOURNAMENT_DATA.tournaments
     .map(t => {
       const name = (t.family + ' ' + t.year).toLowerCase();
       let s = 0;
-      if (name === q) s = 100;
-      else if (name.includes(q)) s = 30;
-      else if (tokens.length && tokens.every(tok => name.includes(tok))) s = 10;
+      if (name === q) s = 1000;
+      else if (q && name.includes(q)) s += 100;
+      let hits = 0;
+      useTokens.forEach(tok => { if (name.includes(tok)) { s += 12; hits++; } });
+      if (hits && hits === useTokens.length) s += 20;     // bonus when every query token lands
       return { t, s };
     })
     .filter(x => x.s > 0)
     .sort((a, b) => b.s - a.s)
-    .slice(0, 8);
+    .slice(0, 8)
+    .map(x => x.t);
+}
 
-  el.className = 'ask-answer';
-  el.innerHTML = '';
+// Render keyword matches into an assistant bubble. `append` keeps any text
+// already placed above (used when a timeout message precedes the matches).
+function fillAssistantFallback(bubble, query, append) {
+  if (!bubble) return;
+  bubble.classList.remove('ask-bubble-pending');
+  if (!append) bubble.innerHTML = '';
+  const matches = fallbackMatches(query);
   if (matches.length === 0) {
-    el.textContent = 'No keyword matches in the local data.';
+    const none = document.createElement('div');
+    none.textContent = 'No keyword matches in the local data.';
+    bubble.appendChild(none);
     return;
   }
   const head = document.createElement('div');
   head.textContent = 'Keyword matches:';
-  el.appendChild(head);
+  bubble.appendChild(head);
   const list = document.createElement('div');
   list.className = 'ask-fallback-results';
-  matches.forEach(({ t }) => {
+  matches.forEach(t => {
     const row = document.createElement('div');
     row.className = 'ask-fallback-item';
     const name = document.createElement('div');
@@ -5616,7 +5742,7 @@ function renderFallback(query) {
     row.appendChild(meta);
     list.appendChild(row);
   });
-  el.appendChild(list);
+  bubble.appendChild(list);
 }
 
 function loadAskHistory() {

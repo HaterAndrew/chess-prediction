@@ -42,7 +42,7 @@ def analyze_gaps(summary, family_stats, top_n=None):
     without_ts = total - with_ts
 
     print(f"\n{'='*60}")
-    print(f"DATA GAP REPORT")
+    print("DATA GAP REPORT")
     print(f"{'='*60}")
     print(f"  Total in-person tournaments (excl. COVID/online):  {total}")
     print(f"  With timestamps:    {int(with_ts)} ({with_ts/total*100:.1f}%)")
@@ -83,15 +83,15 @@ def analyze_gaps(summary, family_stats, top_n=None):
         (fam_gap['n_editions'] >= 3)
     ].sort_values('mean_count', ascending=False)
 
-    print(f"\n── Families needing CCA backfill (0 timestamps, 3+ editions) ──")
+    print("\n── Families needing CCA backfill (0 timestamps, 3+ editions) ──")
     print(f"  {len(no_ts)} families with zero timestamp coverage")
     if len(no_ts) > 0:
         display = no_ts.head(top_n) if top_n else no_ts
         for _, r in display.iterrows():
             print(f"    {r['family']:<40} {int(r['n_editions']):>3} editions  avg={int(r['mean_count']):>5}")
 
-    print(f"\n── Families that benefit most from more timestamps ──")
-    print(f"  (have some timestamps but <5, with 3+ total editions)")
+    print("\n── Families that benefit most from more timestamps ──")
+    print("  (have some timestamps but <5, with 3+ total editions)")
     if len(high_impact) > 0:
         display = high_impact.head(top_n) if top_n else high_impact
         for _, r in display.iterrows():
@@ -120,8 +120,7 @@ def analyze_gaps(summary, family_stats, top_n=None):
 
     missing = missing.sort_values('request_priority', ascending=False)
 
-    print(f"\n── Top tournament-level requests (prioritized by impact) ──")
-    cols = ['tournament_name', 'family', 'tournament_year', 'final_count']
+    print("\n── Top tournament-level requests (prioritized by impact) ──")
     display = missing.head(top_n if top_n else 30)
     for _, r in display.iterrows():
         yr = int(r['tournament_year']) if pd.notna(r['tournament_year']) else '????'
@@ -142,7 +141,7 @@ def analyze_gaps(summary, family_stats, top_n=None):
     print(f"\n  Exported {len(request_csv)} tournament requests to {out_path}")
 
     # ── Summary stats ─────────────────────────────────────────────────
-    print(f"\n── Summary ──")
+    print("\n── Summary ──")
     print(f"  Families with 0 timestamps:     {len(no_ts)}")
     print(f"  Families needing more data:      {len(high_impact)}")
     print(f"  Individual tournaments missing:  {len(missing)}")

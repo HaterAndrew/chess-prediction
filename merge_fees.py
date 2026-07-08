@@ -22,6 +22,11 @@ Safe by construction:
 Usage:
     python3 merge_fees.py            # merge, write metadata
     python3 merge_fees.py --dry-run  # report what would change, write nothing
+
+MANUAL-ONLY (H7): this is NOT wired into the daily/weekly GitHub Actions
+pipeline. Fees only reach the cards when a human runs scrape_fees.py and then
+this. If fee columns look stale on near-events, that is expected until someone
+re-runs both by hand.
 """
 
 import os
@@ -75,17 +80,24 @@ def merge_fees(dry_run=False):
         fr = match.iloc[0]
 
         # Cross-check the event date so a stray code can't paste fees onto the
-        # wrong tournament.
+        # wrong tournament. If either date is unparseable/missing we CANNOT verify
+        # the match, so skip rather than merge blind (H3: was `except: pass`, which
+        # silently merged on any parse failure — the exact case the guard exists for).
         try:
             md = pd.to_datetime(row["start_date"])
             fd = pd.to_datetime(fr["event_start"])
-            if pd.notna(md) and pd.notna(fd) and abs((md - fd).days) > 3:
-                print(f"WARNING: fee-merge skipped {family}: flyer {code}{YY} date "
-                      f"{fd.date()} != metadata {md.date()} (>3d)")
-                skipped += 1
-                continue
         except Exception:
-            pass
+            md = fd = pd.NaT
+        if pd.isna(md) or pd.isna(fd):
+            print(f"WARNING: fee-merge skipped {family}: cannot verify flyer {code}{YY} "
+                  f"date (metadata={row.get('start_date')!r}, flyer={fr.get('event_start')!r})")
+            skipped += 1
+            continue
+        if abs((md - fd).days) > 3:
+            print(f"WARNING: fee-merge skipped {family}: flyer {code}{YY} date "
+                  f"{fd.date()} != metadata {md.date()} (>3d)")
+            skipped += 1
+            continue
 
         reg, ons, eb = _num(fr.get("regular_fee")), _num(fr.get("onsite_fee")), _num(fr.get("early_bird_fee"))
         if reg is None and ons is None:

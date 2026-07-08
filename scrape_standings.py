@@ -16,7 +16,6 @@ import csv
 import json
 import os
 import re
-import sys
 import time
 from urllib.parse import urljoin, urlparse
 
@@ -180,7 +179,7 @@ def discover_events_from_index():
         print(f"[DISCOVER] Fetching {idx_url} ...")
         _, soup = fetch(idx_url)
         if soup is None:
-            print(f"  -> not available")
+            print("  -> not available")
             continue
 
         links = soup.find_all("a", href=True)
@@ -329,13 +328,12 @@ def count_players_in_standings(url):
                 continue
 
         # Count data rows (exclude header rows)
-        data_rows = 0
         body = table.find("tbody")
         if body:
-            data_rows = len(body.find_all("tr"))
+            len(body.find_all("tr"))
         else:
             # Skip the first row (header) and count the rest
-            data_rows = len(rows) - 1
+            len(rows) - 1
 
         # Filter out rows that are clearly not player rows
         # (e.g., rows with colspan, separator rows, etc.)
@@ -443,7 +441,7 @@ def scrape_archive_tournaments(results, scraped):
 
         _, index_soup = fetch(index_url)
         if index_soup is None:
-            print(f"  -> index page not available")
+            print("  -> index page not available")
             continue
 
         # Collect year-page links from the index page.
@@ -462,7 +460,7 @@ def scrape_archive_tournaments(results, scraped):
                 year_links[year] = full_url
 
         if not year_links:
-            print(f"  -> no year pages found")
+            print("  -> no year pages found")
             continue
 
         print(f"  -> found year pages: {sorted(year_links.keys())}")
@@ -477,7 +475,7 @@ def scrape_archive_tournaments(results, scraped):
 
             _, year_soup = fetch(year_url)
             if year_soup is None:
-                print(f"    -> year page not available")
+                print("    -> year page not available")
                 continue
 
             # Find all links containing "standings" — these point to section pages
@@ -507,7 +505,7 @@ def scrape_archive_tournaments(results, scraped):
                 section_links.append((sec_name, full))
 
             if not section_links:
-                print(f"    -> no standings links found on year page")
+                print("    -> no standings links found on year page")
                 continue
 
             print(f"    -> {len(section_links)} section standings page(s)")
@@ -529,7 +527,7 @@ def scrape_archive_tournaments(results, scraped):
                     print(f"       {sec_name}: no player data")
 
             if not section_counts:
-                print(f"    -> no player data for any section")
+                print("    -> no player data for any section")
                 continue
 
             total = sum(section_counts.values())
@@ -615,7 +613,7 @@ def scrape_all():
 
         sections = find_sections(base_url, slug, year)
         if not sections:
-            print(f"  -> no sections found, skipping")
+            print("  -> no sections found, skipping")
             continue
 
         print(f"  -> found {len(sections)} section(s)")
@@ -635,7 +633,7 @@ def scrape_all():
                 print(f"     {clean_name}: no player data")
 
         if not section_counts:
-            print(f"  -> no player data found in any section")
+            print("  -> no player data found in any section")
             continue
 
         total = sum(section_counts.values())

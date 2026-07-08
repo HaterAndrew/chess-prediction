@@ -13,7 +13,6 @@ import csv
 import os
 import re
 import sys
-import time
 import logging
 from datetime import datetime
 from urllib.parse import urljoin

@@ -6,6 +6,10 @@ Reads detected early_bird_spike data from 01_data_prep.py output and
 cross-references against existing metadata to find families with spikes
 but no metadata entry.
 
+MANUAL-ONLY (H7): this is NOT wired into the daily/weekly GitHub Actions
+pipeline. Early-bird deadline estimates only refresh when a human runs this;
+metadata can lag the detected spikes until someone does.
+
 Usage:
   python update_metadata.py                  # analyze and generate expanded CSV
   python update_metadata.py --write          # overwrite metadata with expanded version
@@ -39,7 +43,7 @@ def estimate_early_bird_from_spikes(summary, daily):
     """
     # Get tournaments with detected spikes
     spiked = summary[
-        (summary['early_bird_spike'] == True) &
+        (summary['early_bird_spike'].fillna(False)) &
         (~summary['is_online'].fillna(False)) &
         (~summary['is_covid'].fillna(False)) &
         (summary['spike_day'].notna())
@@ -83,7 +87,7 @@ def generate_expanded_metadata(summary, daily, meta, year_filter=None):
         missing = spike_estimates[~spike_estimates['family'].isin(meta_families)]
 
     print(f"\n{'='*60}")
-    print(f"EARLY-BIRD METADATA INTEGRATION")
+    print("EARLY-BIRD METADATA INTEGRATION")
     print(f"{'='*60}")
     print(f"  Families in metadata:           {len(meta_families)}")
     print(f"  Families with detected spikes:  {len(spike_estimates)}")
@@ -92,7 +96,7 @@ def generate_expanded_metadata(summary, daily, meta, year_filter=None):
 
     # Report families with spikes but no metadata
     if not missing.empty:
-        print(f"\n── Families with detected spikes but no metadata ──")
+        print("\n── Families with detected spikes but no metadata ──")
         for _, r in missing.iterrows():
             print(f"    {r['family']:<40} spike ~T-{r['estimated_eb_days_before']}  "
                   f"({int(r['n_spike_editions'])} editions, "
@@ -102,7 +106,7 @@ def generate_expanded_metadata(summary, daily, meta, year_filter=None):
     # Report families already in metadata — compare spike vs recorded deadline
     in_meta = spike_estimates[spike_estimates['family'].isin(meta_families)]
     if not in_meta.empty:
-        print(f"\n── Spike vs metadata comparison (families in metadata) ──")
+        print("\n── Spike vs metadata comparison (families in metadata) ──")
         for _, r in in_meta.iterrows():
             fam = r['family']
             # Get earliest metadata entry for this family with EB deadline
@@ -172,7 +176,7 @@ def generate_expanded_metadata(summary, daily, meta, year_filter=None):
     expanded = pd.concat([meta, pd.DataFrame(new_rows)], ignore_index=True)
     expanded = expanded.sort_values(['family', 'year']).reset_index(drop=True)
 
-    print(f"\n── Result ──")
+    print("\n── Result ──")
     print(f"  Original metadata rows:  {len(meta)}")
     print(f"  New estimated rows:      {len(new_rows)}")
     print(f"  Expanded total:          {len(expanded)}")
@@ -395,7 +399,7 @@ def main():
     if not args.skip_backfill:
         meta, repaired_rows = repair_bad_offset_rows(summary, meta)
         if repaired_rows:
-            print(f"\n── Bad-offset metadata repair ──")
+            print("\n── Bad-offset metadata repair ──")
             print(f"  Repaired {len(repaired_rows)} completed-event row(s) "
                   f"(offset out of [0, 30]):")
             for r in repaired_rows:
@@ -406,7 +410,7 @@ def main():
 
         meta, backfilled = backfill_inferred_dates(summary, meta)
         new_rows.extend(backfilled)
-        print(f"\n── Inferred-date backfill ──")
+        print("\n── Inferred-date backfill ──")
         print(f"  New rows from per-row last_reg inference: {len(backfilled)}")
 
     expanded, eb_rows = generate_expanded_metadata(summary, daily, meta, year_filter=args.year)

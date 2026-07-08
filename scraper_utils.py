@@ -9,7 +9,6 @@ All scrapers in this project should use these helpers to ensure:
   - Request timing logs
 """
 
-import functools
 import logging
 import random
 import time

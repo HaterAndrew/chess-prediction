@@ -14,16 +14,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
         run: |
-          pip install pandas numpy scipy scikit-learn zstandard requests beautifulsoup4
+          pip install -r requirements-dev.txt
 
       - name: Run scraper
         id: scrape
@@ -43,12 +43,30 @@ jobs:
           cd $GITHUB_WORKSPACE
           python auto_update.py --skip-scrape
 
+      # Quality gate (G1): a lint or test failure fails the job, and because the
+      # commit step below is `if: success()`, a bad run is never committed/pushed
+      # to the Pages branch. Runs after predict so output-reading tests see fresh data.
+      - name: Test + lint gate
+        id: gate
+        run: |
+          cd $GITHUB_WORKSPACE
+          ruff check .
+          pytest tests/ -q
+
       - name: Commit and push changes
         id: commit
+        # H8: explicit success() guard (was emergent from an absent clause). This
+        # is load-bearing — the gate above must be able to block the commit.
+        if: success()
         run: |
           git config user.name "CCA Bot"
           git config user.email "bot@users.noreply.github.com"
-          git add output/daily_scrape.csv output/website_data.json output/daily_puzzles.json output/performance_data.json docs/index.html docs/website_data.json docs/audit_warnings.json output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv output/tournament_metadata.csv output/walk_in_family_stats.csv output/walk_in_multipliers.csv output/tournament_summary.csv output/daily_registration_counts.csv output/update_log.csv output/checksums.json output/audit_warnings.json
+          # docs/data/site_data.js carries the embedded data since the L15
+          # externalization — the build writes it, so it MUST be committed or the
+          # deployed data goes stale. output/data_health.json + audit/data-health
+          # persist the freshness scan (H1) instead of expiring with the run log.
+          git add output/daily_scrape.csv output/website_data.json output/daily_puzzles.json output/performance_data.json docs/index.html docs/data/site_data.js docs/audit_warnings.json output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv output/tournament_metadata.csv output/walk_in_family_stats.csv output/walk_in_multipliers.csv output/tournament_summary.csv output/daily_registration_counts.csv output/update_log.csv output/checksums.json output/audit_warnings.json output/data_health.json
+          git add audit/data-health/ 2>/dev/null || true
           git diff --cached --quiet || git commit -m "Daily update: $(date +%Y-%m-%d)"
           git pull --rebase || git pull --no-rebase
           git push
@@ -91,7 +109,7 @@ jobs:
 
       - name: Create failure issue
         if: failure()
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
         with:
           script: |
             await github.rest.issues.create({

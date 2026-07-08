@@ -191,7 +191,7 @@ def scrape_withdrawals(tournaments, year=2026):
     """
     yy = str(year)[-2:]
     session = _create_session()
-    print(f"\n── Scraping withdrawal counts from entry list pages ──")
+    print("\n── Scraping withdrawal counts from entry list pages ──")
 
     # Track codes already fetched to avoid hitting the same page twice
     # (World Open sub-events all map to WO)

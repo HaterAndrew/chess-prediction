@@ -32,7 +32,6 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, PROJECT_DIR)
 from tournament_aliases import (  # noqa: E402
     canonicalize_family,
-    FAMILY_ALIASES,
     is_wo_excluded,
 )
 

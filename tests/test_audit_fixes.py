@@ -439,7 +439,6 @@ def test_recalibrate_targets_continuous_coverage(summary_df, daily_df):
     assert diag, "recalibrate should produce per-T diagnostics"
 
     # Ci_adj must be a float, not snap to one of the 5 legacy buckets
-    legacy_buckets = {1.15, 1.08, 1.0, 0.95, 0.90}
     for T, d in diag.items():
         adj = d.get('ci_adj')
         if adj is not None:

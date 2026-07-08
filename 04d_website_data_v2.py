@@ -9,7 +9,6 @@ from scipy.interpolate import interp1d
 from scipy.stats import lognorm  # used by legacy predict_with_lognormal_ci fallback
 import json
 import os
-import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -134,19 +133,30 @@ if os.path.exists(scrape_path):
         scrape['withdrawal_count'] = scrape['withdrawal_count'].fillna(0)
     # Get the most recent scrape per tournament
     latest_scrape = scrape.sort_values('date').groupby('tournament_name').last().reset_index()
-    # Update 2026 tournament counts in summary using active (net) counts
+    # H13: publish ONE count semantic — gross (row-count, entry_count), matching
+    # tournament_summary.csv, the performance tab, the freshness guard, and how
+    # 04e grades. The old code overrode final_count with active_count (net), so
+    # cards showed net while the perf tab showed gross (ACO 401 vs 424) and the
+    # deployed model trained on net but was graded on gross. Track the net/
+    # withdrawal delta in a separate column for display instead.
+    if 'active_count' not in summary.columns:
+        summary['active_count'] = pd.NA
+    if 'withdrawal_count' not in summary.columns:
+        summary['withdrawal_count'] = pd.NA
     updated = 0
     for _, s in latest_scrape.iterrows():
         # Match by family name (strip year prefix "2026 " from scrape name)
         scrape_name = s['tournament_name']
         family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
         mask = _fam_eq(summary['family'], family_name) & (summary['tournament_year'] == 2026)
-        # Use active_count (net) for predictions; fall back to entry_count if 0
-        net_count = int(s['active_count']) if s['active_count'] > 0 else int(s['entry_count'])
-        if mask.any() and net_count > 0:
+        gross_count = int(s['entry_count']) if s['entry_count'] > 0 else int(s['active_count'])
+        net_count = int(s['active_count']) if s['active_count'] > 0 else gross_count
+        if mask.any() and gross_count > 0:
             old_count = summary.loc[mask, 'final_count'].iloc[0]
-            summary.loc[mask, 'final_count'] = net_count
-            if old_count != net_count:
+            summary.loc[mask, 'final_count'] = gross_count
+            summary.loc[mask, 'active_count'] = net_count
+            summary.loc[mask, 'withdrawal_count'] = max(gross_count - net_count, 0)
+            if old_count != gross_count:
                 updated += 1
     # Reanchor ALL daily T values from last_reg to event_start so the model
     # trains and predicts in a consistent coordinate system (T=0 = event start).
@@ -312,7 +322,11 @@ def build_template_curves(train_summary, train_daily):
     valid = train_summary[
         (train_summary['has_timestamps']) &
         (~train_summary['is_online'].fillna(False)) &
-        (~train_summary['is_covid'].fillna(False))
+        (~train_summary['is_covid'].fillna(False)) &
+        # H15: exclude in-progress 2026 editions — their injected scrape rows carry
+        # cum_pct=1.0, which drags the "typical timeline" template toward 1.0 too
+        # early (worst for 2-3 edition families). Parity with build_ratio_model.
+        (train_summary['tournament_year'] < 2026)
     ]
 
     curves = {}
@@ -503,6 +517,15 @@ t2026 = summary[
     (~summary['family'].isin(EXCLUDE_FAMILIES))
 ].copy()
 
+# H2: roster-pending skeletons (reconcile_final_counts appended them so the grade
+# universe and freshness guard see the event) carry no registration timestamps and
+# no roster. They must NOT enter the main model card path — that would replace their
+# purpose-built metadata-path card (historical-band clamped, low_confidence) with a
+# raw model estimate and drop the roster-pending disclosure. Let them fall through
+# to the metadata loop below, which is designed for exactly this degraded mode.
+if 'roster_pending' in t2026.columns:
+    t2026 = t2026[~t2026['roster_pending'].fillna(False)].copy()
+
 print(f"Found {len(t2026)} 2026 tournaments (after filtering)")
 
 # Build withdrawal lookup from latest scrape data (family -> withdrawal_count)
@@ -576,7 +599,10 @@ for _, row in t2026.iterrows():
     eb_fee = float(m.iloc[0]['early_bird_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('early_bird_fee')) else None
     reg_fee = float(m.iloc[0]['regular_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('regular_fee')) else None
     onsite_fee = float(m.iloc[0]['onsite_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('onsite_fee')) else None
-    eb_deadline, eb_fee = sanitize_early_bird(family, 2026, eb_deadline, eb_fee, reg_fee, event_start)
+    # Anchor the EB gap check to THIS card's event date, not a stale event_start
+    # left over from an earlier loop (H14). Matches the sibling call below.
+    eb_deadline, eb_fee = sanitize_early_bird(family, 2026, eb_deadline, eb_fee, reg_fee,
+                                              event_date.strftime('%Y-%m-%d') if event_date else None)
 
     # Historical data (needed for guardrails and output)
     # Include alias families for tournaments with no direct history
@@ -680,6 +706,11 @@ for _, row in t2026.iterrows():
         for i in range(1, len(daily_data)):
             if daily_data[i][1] > daily_data[i-1][1] * 3 and daily_data[i][1] > 50:
                 scale = daily_data[i][1] / max(daily_data[i-1][1], 1)
+                # H16: this backstop should never fire on reconciled curves — if it
+                # does, upstream reconciliation was skipped or the curve is anomalous.
+                print(f"WARNING: A4 3x-jump backstop fired for tid={tid}: point {i} "
+                      f"({daily_data[i][1]}) > 3x prior ({daily_data[i-1][1]}); "
+                      f"rescaling earlier points x{scale:.2f}")
                 for j in range(i):
                     daily_data[j][1] = int(daily_data[j][1] * scale)
                 break
@@ -846,9 +877,9 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
     if canonicalize_family(mfamily) in existing_families or mfamily in EXCLUDE_FAMILIES:
         continue
     event_date = pd.to_datetime(mrow['start_date'])
-    if event_date <= TODAY:
-        continue
+    event_end = pd.to_datetime(mrow['end_date']) if pd.notna(mrow.get('end_date')) else event_date
     days_remaining = (event_date - TODAY).days
+    # Far-future metadata (registration not meaningfully open yet) — skip.
     if days_remaining > 300:
         continue
     # Pick up live entry count from scrape data if available
@@ -879,6 +910,60 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
          "family": h['family']}
         for _, h in hist.iterrows()
     ])
+    # H12: an event whose start date has already passed but that never entered
+    # the roster path (a CCA sub-class the export folds into its parent — e.g.
+    # World Open Under 13) used to be silently dropped by an
+    # `event_date <= TODAY: continue` above. If live scrape counts exist, emit a
+    # settled (event over) or in-progress (event running) card from the observed
+    # count instead of losing the event. The point estimate is the observed
+    # count, never a projection — we have no roster/model for it.
+    if event_date <= TODAY:
+        settled_count = current_count if current_count > 0 else gross_count
+        if settled_count <= 0:
+            # No roster and no live signal — nothing truthful to display.
+            continue
+        ended = event_end < TODAY
+        curve = curves.get(mfamily, curves.get('__global__', {}))
+        reg_curve = [{"days_before": db,
+                      "cumulative_pct": round(float(curve.get(db, 0)), 4)}
+                     for db in [120, 90, 75, 60, 42, 28, 21, 14, 7, 3, 1, 0]]
+        eb_deadline = mrow.get('early_bird_deadline')
+        eb_fee = float(mrow['early_bird_fee']) if pd.notna(mrow.get('early_bird_fee')) else None
+        reg_fee = float(mrow['regular_fee']) if pd.notna(mrow.get('regular_fee')) else None
+        onsite_fee = float(mrow['onsite_fee']) if pd.notna(mrow.get('onsite_fee')) else None
+        _eb_dl_norm = str(eb_deadline)[:10] if pd.notna(eb_deadline) and str(eb_deadline) != 'nan' else None
+        _eb_dl_norm, eb_fee = sanitize_early_bird(
+            mfamily, 2026, _eb_dl_norm, eb_fee, reg_fee, event_date.strftime('%Y-%m-%d'))
+        t_out = {
+            "family": mfamily,
+            "year": 2026,
+            "event_start": event_date.strftime('%Y-%m-%d'),
+            "event_end": str(mrow['end_date'])[:10] if pd.notna(mrow.get('end_date')) else None,
+            "early_bird_deadline": _eb_dl_norm,
+            "early_bird_fee": eb_fee,
+            "regular_fee": reg_fee,
+            "onsite_fee": onsite_fee,
+            "current_count": int(settled_count),
+            "gross_count": int(gross_count) if gross_count > 0 else int(settled_count),
+            "withdrawal_count": int(withdrawal_count),
+            "days_remaining": 0 if ended else max((event_end - TODAY).days, 0),
+            "point_estimate": int(settled_count),
+            "ci_lower": int(settled_count),
+            "ci_upper": int(settled_count),
+            "ci_level": 0.80,
+            "historical": historical,
+            "daily_data": _scrape_daily_series(mfamily, settled_count),
+            "registration_curve": reg_curve,
+            "status": "complete" if ended else "live",
+            "n_historical_editions": len(historical),
+            "low_confidence": True,
+            "prediction_tier": "roster-pending",
+            "prediction_source": "settled_actual" if ended else "in_progress_actual",
+        }
+        tournaments_out.append(t_out)
+        print(f"  Added {'settled' if ended else 'in-progress'} from metadata: "
+              f"{mfamily} (event {event_date.strftime('%Y-%m-%d')}, entries={settled_count})")
+        continue
     # This event isn't in the trained model roster yet (registration opened
     # after the last all_registrations.csv export). Until a fresh export pulls
     # it into the main path, give an INTERIM estimate that still tracks live
@@ -1143,11 +1228,22 @@ n_live = sum(1 for t in tournaments_out if t['status'] == 'live')
 n_complete = sum(1 for t in tournaments_out if t['status'] == 'complete')
 n_historical = sum(1 for t in tournaments_out if t['status'] == 'historical')
 
+# K2: walk-in provenance computed at build time. The old string hardcoded
+# "94 tournament-years, 24 families, MAPE 6.9%" — the actual stats file carries
+# different counts and no MAPE is ever computed for the walk-in leg, so the MAPE
+# was unverifiable. State the real family/year coverage and drop the MAPE.
+_wi_stats_path = os.path.join(OUTPUT_DIR, "walk_in_family_stats.csv")
+if os.path.exists(_wi_stats_path):
+    _wi = pd.read_csv(_wi_stats_path)
+    _walkin_prov = f"{int(_wi['n_years'].sum())} family-years across {len(_wi)} families"
+else:
+    _walkin_prov = "family-level historical standings-to-prereg ratios"
+
 output = {
     "generated": TODAY.strftime('%Y-%m-%d'),
     "generated_time": pd.Timestamp.now(tz='America/New_York').isoformat(),
     "model": "N5v4_Final",
-    "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (94 tournament-years, 24 families, MAPE 6.9%).",
+    "model_description": ("Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (" + _walkin_prov + ")."),
     "n_completed_in_training": len(completed_tids) if completed_tids else 0,
     "tournaments": tournaments_out
 }
@@ -1205,4 +1301,4 @@ if os.path.exists(scrape_path):
             print(w)
         print(f"{'!'*60}")
     else:
-        print(f"\n✓ Data linking check passed: all scraped tournaments reflected in output")
+        print("\n✓ Data linking check passed: all scraped tournaments reflected in output")

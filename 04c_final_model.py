@@ -28,7 +28,6 @@ from scipy.interpolate import interp1d
 import json
 import os
 import re
-import sys
 import warnings
 from datetime import datetime, timedelta
 from sklearn.linear_model import HuberRegressor
@@ -47,6 +46,10 @@ TODAY = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 # without metadata. Empirically, last_reg ≈ event_start + 2 (median across
 # all CCA tournaments with both metadata and timestamp data).
 DEFAULT_EVENT_START_OFFSET = 2
+# Typical tournament length in days, used by get_event_info() to estimate a
+# start date from an end-date proxy when metadata is absent. A weekend swiss
+# runs ~3 days; majors carry real metadata so they never hit this fallback.
+TYPICAL_DURATION = 3
 
 
 def reanchor_daily_to_event_start(summary, daily, meta):
@@ -682,8 +685,11 @@ class N5v4_Final:
                     hub = HuberRegressor(epsilon=1.35, max_iter=200)
                     hub.fit(X, y)
                     setattr(self, attr, np.array([hub.coef_[0], hub.coef_[1], hub.intercept_]))
-                except Exception:
-                    pass
+                except Exception as e:
+                    # H5: don't swallow — a failed backstop fit leaves this leg
+                    # unset, which quietly changes predictions. Make it visible.
+                    print(f"WARNING: backstop Huber fit failed for {attr} "
+                          f"(n={len(pts_list)}): {e}; leaving {attr} unset")
 
         # AUDIT.md C7 — surface IQR outlier trim activity at end of fit so
         # silent point dropping is visible. Threshold of 5% pct_trimmed flagged
@@ -693,7 +699,7 @@ class N5v4_Final:
             print(f"  IQR outlier trim: {ts['total_in'] - ts['total_out']}/{ts['total_in']} "
                   f"points trimmed ({ts['pct_trimmed']}%)")
             if ts['top_offenders']:
-                print(f"  Top families by trim rate:")
+                print("  Top families by trim rate:")
                 for label, dropped, n_in, pct in ts['top_offenders']:
                     print(f"    {label:<45} {dropped:>3}/{n_in:<3}  ({pct:>4.1f}%)")
             # Warn only when materially elevated. Healthy production runs sit
@@ -1113,8 +1119,12 @@ class N5v4_Final:
             low = point - ci_half_width
             high = point + ci_half_width
 
-        # Guard against NaN from any upstream calculation
+        # Guard against NaN from any upstream calculation. H16: collapsing to a
+        # zero-width CI at current_count is a real degradation — surface it rather
+        # than silently shipping a fake point-mass interval.
         if any(np.isnan(x) for x in (point, low, high)):
+            print(f"WARNING: NaN in prediction interval (point={point}, low={low}, "
+                  f"high={high}); collapsing to current_count={current_count}")
             return current_count, current_count, current_count
 
         # Growth trend adjustment: shift prediction for growing/declining families
@@ -1860,13 +1870,13 @@ def main():
     print(f"  Point estimate:         {pred}")
     print(f"  80% CI:                 [{lo}, {hi}]")
     print(f"  CI width:               {hi - lo}")
-    print(f"  Historical range:       860-960 (2022-2025)")
+    print("  Historical range:       860-960 (2022-2025)")
 
     print(f"\n  N5v4 (fixed):            pred={pred}  CI=[{lo}, {hi}]  width={hi-lo}")
 
     # Blind validation
     print("\n")
-    results = run_blind_test(summary, daily)
+    run_blind_test(summary, daily)
 
     # Build template curves
     print("\nBuilding template curves...")
@@ -1926,11 +1936,14 @@ def load_walkin_multipliers():
     return multipliers
 
 
-# Type-level fallback multipliers (used when no family-specific data exists)
-DEFAULT_WALKIN_MULTIPLIERS = {
-    "open": {"median_ratio": 1.64, "std_ratio": 0.15, "n_years": 0},
-    "class": {"median_ratio": 1.24, "std_ratio": 0.10, "n_years": 0},
-}
+# J3: shrink a family's measured walk-in ratio toward the conservative 1.1
+# baseline by sample size — ratio = 1.1 + (median-1.1)*n/(n+k). A family with
+# many years of standings<->prereg history approaches its measured ratio; a
+# 1-2 year family stays near 1.1. Replaces the old flat min(median,1.1) cap,
+# which threw away all real walk-in signal above 1.1x. The former
+# DEFAULT_WALKIN_MULTIPLIERS type table was dead code (unknown families fall
+# back to the flat 1.1 estimate in apply_walkin_multiplier).
+WALKIN_SHRINK_K = 4
 
 
 def apply_walkin_multiplier(prereg_point, prereg_low, prereg_high, family,
@@ -1950,7 +1963,9 @@ def apply_walkin_multiplier(prereg_point, prereg_low, prereg_high, family,
     # Apply walk-in multiplier: family-specific if available, otherwise global guesstimate
     if family in multipliers:
         m = multipliers[family]
-        ratio = min(m["median_ratio"], 1.1)  # hard cap at 1.1x
+        n_years = m.get("n_years", 0)
+        shrink = n_years / (n_years + WALKIN_SHRINK_K)   # J3: trust measurement with more history
+        ratio = 1.1 + (m["median_ratio"] - 1.1) * shrink
         std = m["std_ratio"]
         source = "family"
     else:

@@ -23,7 +23,6 @@ import os
 import re
 import csv
 import json
-import time
 import argparse
 import statistics
 from datetime import datetime
@@ -31,8 +30,6 @@ from collections import Counter
 
 import pandas as pd
 import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
 
 from scraper_utils import polite_session, rate_limit as _rate_limit, respectful_get, DEFAULT_TIMEOUT
 
@@ -527,7 +524,7 @@ def print_summary(results):
     with_withdrawals = sum(1 for r in results if r["withdrawal_count"])
 
     print(f"\n{'='*60}")
-    print(f"  HISTORICAL SCRAPE SUMMARY")
+    print("  HISTORICAL SCRAPE SUMMARY")
     print(f"{'='*60}")
     print(f"  Total tournaments processed:  {n}")
     if years:

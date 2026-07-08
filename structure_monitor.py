@@ -6,19 +6,27 @@ Usage:
     python structure_monitor.py update   # regenerate baseline from live site
 """
 
-import json, logging, os, re, sys, time
+import json
+import logging
+import os
+import re
+import sys
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from scraper_utils import rate_limit
+from scraper_utils import polite_session, rate_limit
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASELINE_PATH = os.path.join(PROJECT_DIR, "structure_baseline.json")
-CCA_INDEX_URL = ("https://chessaction.com/CCA/index.php"
-                 "?vendor=Continental%20Chess%20Association")
+# H6: check the endpoint the scraper actually reads. The old
+# /CCA/index.php?vendor=... page 302-redirects to a listless homepage now (it
+# broke the 2026-06-03 run); scrape_entries.py switched to POSTing this AJAX
+# tourlist endpoint directly, so that is the markup whose drift breaks the
+# scraper. It is server-rendered HTML — a requests POST returns the same bytes
+# scrape_entries parses, so the drift alarm no longer needs headless Chrome.
+CCA_INDEX_URL = "https://www.chessaction.com/ajaxFrontGetTourListNew.php"
+CCA_VENDOR_ID = 3
 
 # ── Expected page structure the scraper relies on ────────────────────────
 CCA_BASELINE = {
@@ -45,26 +53,22 @@ CCA_BASELINE = {
 
 
 def _fetch_page(url):
-    """Load page via headless Chrome (AJAX-rendered), return page source."""
-    opts = Options()
-    for arg in ("--headless", "--no-sandbox", "--disable-dev-shm-usage"):
-        opts.add_argument(arg)
-    opts.add_argument("--user-agent=CCA-Structure-Monitor/1.0 "
-                      "(chess prediction tool; contact: github.com/HaterAndrew)")
-    local_chrome = "/usr/bin/google-chrome"
-    if os.path.exists(local_chrome):
-        opts.binary_location = local_chrome
-    driver = webdriver.Chrome(options=opts)
-    driver.set_page_load_timeout(30)
-    try:
-        rate_limit(min_delay=1.0, max_delay=2.0)
-        log.info("Loading %s", url)
-        driver.get(url)
-        log.info("Waiting 10s for AJAX content...")
-        time.sleep(10)
-        return driver.page_source
-    finally:
-        driver.quit()
+    """Fetch the CCA tourlist HTML through the same polite requests POST the
+    real scraper uses.
+
+    H6: this used headless Chrome on the theory the listing is AJAX-rendered. It
+    is — but scrape_entries.py gets the same content by POSTing the AJAX endpoint
+    directly (vendor_search + length=-1) and parsing the server-rendered HTML with
+    requests. Mirroring that POST here checks exactly the bytes the scraper parses
+    and lets the drift alarm run in the daily CI job without a Chrome binary.
+    """
+    session = polite_session()
+    rate_limit(min_delay=1.0, max_delay=2.0)
+    log.info("Fetching %s", url)
+    resp = session.post(url, data={"vendor_search": CCA_VENDOR_ID, "length": "-1"},
+                        timeout=30)
+    resp.raise_for_status()
+    return resp.text
 
 
 def check_structure(url, baseline):

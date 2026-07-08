@@ -21,7 +21,6 @@ import os
 import sys
 from contextlib import redirect_stdout
 from datetime import date
-from unittest.mock import patch
 
 import pytest
 

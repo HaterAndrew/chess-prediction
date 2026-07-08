@@ -3,15 +3,25 @@
 // Cache name is bumped on each deploy that reshapes caching behavior so
 // old caches from prior SW versions get purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v68';
+const CACHE_NAME = 'cca-predictor-v70';
+
+// Version-pinned, SRI-locked CDN scripts. Immutable, so serve them cache-first
+// (see the fetch handler) instead of letting the cross-origin bypass drop them
+// — that bypass meant a repeat/offline load got "Chart is not defined".
+const CDN_ASSETS = [
+  'https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js',
+  'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js'
+];
 
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
   'styles.css?v=27',
   'app.js?v=38',
-  'https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js',
-  'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js'
+  'data/site_data.js',
+  'manifest.json',
+  'icons/icon-192.png',
+  ...CDN_ASSETS
 ];
 
 self.addEventListener('install', event => {
@@ -43,6 +53,25 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
+
+  // Cache-first for the pinned CDN chart scripts: immutable + SRI-verified, so
+  // serve instantly from cache and only touch the network on a miss. This is
+  // the one cross-origin exception; everything else cross-origin still bypasses.
+  if (CDN_ASSETS.includes(url.href)) {
+    event.respondWith(
+      caches.match(event.request).then(cached => {
+        if (cached) return cached;
+        return fetch(event.request).then(response => {
+          if (response && (response.ok || response.type === 'opaque')) {
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
+          }
+          return response;
+        });
+      })
+    );
+    return;
+  }
+
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(

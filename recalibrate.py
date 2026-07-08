@@ -13,7 +13,6 @@ Usage:
 """
 
 import pandas as pd
-import numpy as np
 import os
 import sys
 import argparse
@@ -218,7 +217,7 @@ def main():
     metrics = rolling_metrics(full_log)
 
     print(f"\n{'='*60}")
-    print(f"RECALIBRATION REPORT")
+    print("RECALIBRATION REPORT")
     print(f"{'='*60}")
 
     if metrics:
@@ -234,7 +233,7 @@ def main():
 
     # Per-family breakdown
     if len(full_log) > 0:
-        print(f"\n  Per-Family Results:")
+        print("\n  Per-Family Results:")
         print(f"  {'Family':<35} {'Predicted':>10} {'Actual':>10} {'APE':>8}")
         print(f"  {'-'*65}")
         for _, r in full_log.iterrows():

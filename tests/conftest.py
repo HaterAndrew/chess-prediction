@@ -8,7 +8,6 @@ real CCA site or reading from the live output/ directory.
 
 import os
 import shutil
-import tempfile
 
 import pandas as pd
 import pytest

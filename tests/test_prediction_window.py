@@ -10,7 +10,6 @@ import os
 import sys
 
 import pandas as pd
-import pytest
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_DIR not in sys.path:

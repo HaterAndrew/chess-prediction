@@ -207,6 +207,10 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 }
 .main-content { opacity: 0; transition: opacity .6s ease; }
 .main-content.visible { opacity: 1; }
+/* First-visit-only splash: repeat/deep-link loads flag the root so the splash
+   never paints and the content shows immediately (L6). */
+html.splash-skip #splash { display: none; }
+html.splash-skip .main-content { opacity: 1; }
 
 /* ══════════════════════════════════════════════════════
    HEADER
@@ -417,7 +421,9 @@ header {
 }
 .header-tourn-label #tournLabel {
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  max-width: 16ch;
+  /* Single source for the desktop width; the <640px block widens it to 22ch
+     for the chevron. (Was three scattered rules: 16ch base / 22ch / 20ch.) */
+  max-width: 20ch;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -553,12 +559,19 @@ header {
    index.html stays the same so desktop (>=640px) is completely untouched.
    ══════════════════════════════════════════════════════ */
 @media (max-width: 639px) {
+  /* L1 (CRITICAL): keep inactive tab panels hidden on phones. The
+     `#panel-predictions { display: flex }` rule below has ID specificity and
+     otherwise beats `.page-tab-panel { display: none }`, leaving Predictions
+     rendered under every other tab and burying the tapped panel far off-screen.
+     This mobile-scoped counter-rule (previously only in @media print) fixes it. */
+  .page-tab-panel:not(.active) { display: none !important; }
+
   /* --- Hide redundant chrome on phones --- */
   #summaryBar { display: none !important; }   /* duplicates dropdown counts + mini-grid */
   .header-meta { display: none; }              /* "Updated:" timestamp eats vertical space */
 
-  /* --- Predictions panel: flex column with explicit order --- */
-  #panel-predictions {
+  /* --- Predictions panel: flex column with explicit order (only when active) --- */
+  #panel-predictions.active {
     display: flex;
     flex-direction: column;
     gap: var(--s-3);
@@ -627,6 +640,9 @@ header {
    the page from scrolling behind the drawer). Round 16 added the scrim; this
    completes the modal lock. */
 body.drawer-open { overflow: hidden; touch-action: none; }
+/* Keep the back-to-top FAB (z-index 900) from painting over the picker sheet
+   and dismissing it on tap while the drawer is open. */
+body.drawer-open .back-to-top { display: none !important; }
 
 /* ══════════════════════════════════════════════════════
    MOBILE UNIFIED TOURNAMENT PICKER (< 640px only)
@@ -755,7 +771,7 @@ body.drawer-open { overflow: hidden; touch-action: none; }
    to fit "Chicago Open 2026 ▾" without ellipsis.
    ══════════════════════════════════════════════════════ */
 @media (max-width: 639px) {
-  /* Header tournament label: 16ch was tight once we added the chevron after. */
+  /* Header tournament label: widen past the 20ch desktop base to fit the chevron. */
   .header-tourn-label #tournLabel { max-width: 22ch; }
   /* Tighter chart-card padding gives the canvas ≈16px more horizontal room. */
   .chart-card { padding: var(--s-3); min-height: 280px; }
@@ -2125,16 +2141,28 @@ body.drawer-open { overflow: hidden; touch-action: none; }
 
 /* ── Email toolbar mobile polish (< 640px) ── */
 @media (max-width: 639px) {
+  /* Selection controls wrap as a chip row instead of four full-width stacked
+     links that used to eat the whole first viewport (L11). */
   .email-toolbar {
-    flex-direction: column;
-    align-items: stretch;
+    flex-wrap: wrap;
+    align-items: center;
     gap: var(--s-2);
   }
-  .email-toolbar-label { width: 100%; }
+  .email-toolbar-label { width: 100%; margin-bottom: 2px; }
   .email-toolbar .email-link-btn {
-    padding: 10px 12px;
-    flex: 1 1 auto;
-    text-align: center;
+    flex: 0 0 auto;
+    min-height: 0;
+    padding: 8px 14px;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--surface2);
+    color: var(--blue);
+    font-weight: 600;
+  }
+  .email-toolbar .email-link-btn:hover,
+  .email-toolbar .email-link-btn:active {
+    border-color: var(--blue); color: var(--blue-bright);
   }
   .email-generate-btn {
     margin-left: 0;
@@ -2602,7 +2630,6 @@ footer a { color: var(--muted); }
 @media (min-width: 640px) {
   :root { --gutter: 20px; }
   .logo { font-size: 1.15rem; }
-  .header-tourn-label #tournLabel { max-width: 20ch; }
   .hero { grid-template-columns: auto 1fr; }
   .hero-kpis { grid-template-columns: repeat(3, 1fr); }
   .kpi-row { grid-template-columns: repeat(3, 1fr); }
@@ -3000,14 +3027,45 @@ footer a { color: var(--muted); }
 .ask-banner.is-error { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,81,73,.4); }
 .ask-banner.is-warn { background: var(--orange-dim); color: var(--orange-bright); border: 1px solid rgba(210,153,34,.4); }
 .ask-answer {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px 20px; min-height: 80px;
-  color: var(--text); font-size: 1rem; line-height: 1.55;
-  white-space: pre-wrap; word-wrap: break-word;
+  display: flex; flex-direction: column; gap: 14px;
+  color: var(--text); font-size: 1rem;
 }
 .ask-answer:empty { display: none; }
-.ask-answer.is-loading { color: var(--muted); font-style: italic; }
+.ask-turn { display: flex; }
+.ask-turn-user { justify-content: flex-end; }
+.ask-turn-assistant { justify-content: flex-start; }
+.ask-bubble {
+  max-width: 88%;
+  padding: 12px 16px; border-radius: 14px;
+  line-height: 1.55; white-space: pre-wrap; word-wrap: break-word;
+}
+.ask-turn-user .ask-bubble {
+  background: var(--blue-dim); border: 1px solid rgba(56, 139, 253, .35);
+  color: var(--text); border-bottom-right-radius: 4px;
+}
+.ask-turn-assistant .ask-bubble {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); border-bottom-left-radius: 4px;
+}
+.ask-pending {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  color: var(--muted); font-style: italic;
+}
+.ask-spinner {
+  width: 14px; height: 14px; flex: none; border-radius: 50%;
+  border: 2px solid var(--border); border-top-color: var(--blue);
+  animation: ask-spin .8s linear infinite;
+}
+@keyframes ask-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ask-spinner { animation: none; } }
+.ask-pending-label { font-variant-numeric: tabular-nums; font-style: normal; color: var(--text2); }
+.ask-cancel {
+  margin-left: auto; background: transparent; border: 1px solid var(--border);
+  color: var(--text2); border-radius: var(--radius-sm);
+  padding: 4px 11px; font-size: .78rem; font-style: normal; cursor: pointer;
+  transition: border-color var(--transition), color var(--transition);
+}
+.ask-cancel:hover { border-color: var(--red); color: var(--red); }
 .ask-answer-meta {
   margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-light);
   font-size: .72rem; color: var(--muted);

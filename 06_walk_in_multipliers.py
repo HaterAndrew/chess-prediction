@@ -265,7 +265,7 @@ def main():
         print(f"  Mean ratio:   {statistics.mean(class_ratios):.3f}")
         print(f"  Std:          {statistics.stdev(class_ratios):.3f}")
 
-    print(f"\nPer-family breakdown:")
+    print("\nPer-family breakdown:")
     print(f"{'Family':35s} | Type  | N | Median | Std    | CV")
     print("-" * 75)
     for s in stats:

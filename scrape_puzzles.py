@@ -17,7 +17,6 @@ import hashlib
 import io
 import json
 import logging
-import os
 import random
 import sys
 from datetime import date
@@ -26,7 +25,7 @@ from pathlib import Path
 import requests
 import zstandard as zstd
 
-from scraper_utils import polite_session, DEFAULT_TIMEOUT
+from scraper_utils import polite_session
 
 # ---------------------------------------------------------------------------
 # Config

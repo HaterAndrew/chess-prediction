@@ -13,7 +13,6 @@ import numpy as np
 import json
 import os
 import sys
-from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from importlib import import_module
@@ -77,19 +76,33 @@ def compute_aggregate(tournament_results):
     return aggregate
 
 
+_GRADE_ORDER = [g[0] for g in GRADE_RUBRIC]   # best -> worst
+
+
 def grade_from_aggregate(aggregate):
-    """Compute grade and detail string from aggregate metrics."""
-    t14 = next((a for a in aggregate if a['T'] == 14), None)
-    if t14:
-        grade = compute_grade(t14['mae_pct'], t14['ci_coverage'])
-        detail = f"T-14 MAE: {t14['mae_pct']}%, CI coverage: {t14['ci_coverage']}%"
-    elif aggregate:
+    """J6: composite grade = the WORST letter across the planning horizons
+    T-14 / T-7 / T-3, so the headline can't cherry-pick the model's T-14 sweet
+    spot while hiding that near-event coverage collapses (T-3 ~56%, T-1 ~50%).
+    Falls back to the nearest available horizon (labelled) when those are absent.
+    """
+    by_T = {a['T']: a for a in aggregate}
+    graded = [(T, by_T[T]) for T in (14, 7, 3) if T in by_T]
+    if graded:
+        scored = [(compute_grade(a['mae_pct'], a['ci_coverage']), T, a) for T, a in graded]
+        # worst = the grade furthest down the rubric
+        grade, T, a = max(
+            scored,
+            key=lambda s: _GRADE_ORDER.index(s[0]) if s[0] in _GRADE_ORDER else len(_GRADE_ORDER),
+        )
+        detail = (f"worst of T-14/7/3 → T-{T}: MAE {a['mae_pct']}%, "
+                  f"CI coverage {a['ci_coverage']}%")
+        return grade, detail
+    if aggregate:
         best = min(aggregate, key=lambda a: a['T'])
         grade = compute_grade(best['mae_pct'], best['ci_coverage'])
-        detail = f"T-{best['T']} MAE: {best['mae_pct']}%, CI coverage: {best['ci_coverage']}%"
-    else:
-        grade, detail = "N/A", "No data"
-    return grade, detail
+        return grade, (f"T-{best['T']} MAE: {best['mae_pct']}%, "
+                       f"CI coverage: {best['ci_coverage']}% (fallback horizon)")
+    return "N/A", "No data"
 
 
 def evaluate_tournaments(model, test_tournaments, daily):
@@ -408,28 +421,13 @@ def main():
         print(f"{'─'*60}")
 
         if year == 2026:
-            # 2026: train on pre-2026 + completed 2026, predict completed 2026
-            model = m04c.N5v4_Final()
-            model.fit(summary, daily, enrichment_lookup,
-                      completed_tids=completed_2026_tids if completed_2026_tids else None,
-                      verbose_standings_join=False)
-
-            # Recalibrate from 2024-2025 + completed 2026
-            recal_data = summary[
-                (summary['has_timestamps']) &
-                (~summary['is_online'].fillna(False)) &
-                (~summary['is_covid'].fillna(False)) &
-                (summary['final_count'] >= 50) &
-                (
-                    (summary['tournament_year'].isin([2024, 2025])) |
-                    (summary['tid'].isin(completed_2026_tids))
-                )
-            ].copy()
-            if len(recal_data) >= 5:
-                model.recalibrate(recal_data, daily)
-                print(f"  Recalibration applied from {len(recal_data)} tournaments")
-
-            # Build test set from completed 2026 tournaments
+            # J1: leave-one-out. The prior code fit ONE model on all completed
+            # 2026 tids and then predicted those same tids in-sample, inflating
+            # the 2026 grade (the headline number). Build the test set, then refit
+            # per tournament with that tid held out of BOTH the ratio store and the
+            # regression leg, and predict only that tournament. N refits by design —
+            # the only fully leak-free option until reg_params carries per-edition
+            # provenance.
             test_tournaments = []
             completed_2026 = summary[
                 (summary['tournament_year'] == 2026) &
@@ -449,6 +447,28 @@ def main():
                     'final_count': int(row['final_count']),
                     'event_start': event_start_str,
                 })
+
+            results = []
+            for tinfo in test_tournaments:
+                loo_tids = completed_2026_tids - {tinfo['tid']}
+                model = m04c.N5v4_Final()
+                model.fit(summary, daily, enrichment_lookup,
+                          completed_tids=loo_tids if loo_tids else None,
+                          verbose_standings_join=False)
+                recal_data = summary[
+                    (summary['has_timestamps']) &
+                    (~summary['is_online'].fillna(False)) &
+                    (~summary['is_covid'].fillna(False)) &
+                    (summary['final_count'] >= 50) &
+                    (
+                        (summary['tournament_year'].isin([2024, 2025])) |
+                        (summary['tid'].isin(loo_tids))
+                    )
+                ].copy()
+                if len(recal_data) >= 5:
+                    model.recalibrate(recal_data, daily)
+                results.extend(evaluate_tournaments(model, [tinfo], daily))
+            print(f"  LOO-refit {len(test_tournaments)} completed 2026 tournaments (leak-free)")
         else:
             # Historical: expanding window — train on < year, predict year
             train_summary = summary[summary['tournament_year'] < year].copy()
@@ -492,8 +512,9 @@ def main():
                     'event_start': event_start_str,
                 })
 
-        # Run evaluation
-        results = evaluate_tournaments(model, test_tournaments, daily)
+        # Run evaluation (the 2026 fold already did its own LOO evaluation above)
+        if year != 2026:
+            results = evaluate_tournaments(model, test_tournaments, daily)
         print(f"  Evaluated {len(results)} tournaments")
 
         # Compute year-level aggregate + grade
@@ -550,7 +571,7 @@ def main():
 
     # Print overall summary
     print(f"\n{'='*60}")
-    print(f"  MULTI-YEAR PERFORMANCE SUMMARY")
+    print("  MULTI-YEAR PERFORMANCE SUMMARY")
     print(f"{'='*60}")
     for yr in EVAL_YEARS:
         yr_data = year_results.get(yr, {})

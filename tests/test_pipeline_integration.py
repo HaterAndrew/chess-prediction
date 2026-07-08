@@ -15,8 +15,6 @@ import json
 import os
 import sys
 
-import numpy as np
-import pandas as pd
 import pytest
 
 # Ensure project root is on sys.path so we can import pipeline modules

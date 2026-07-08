@@ -1,0 +1,4 @@
+# Dev/CI dependencies: the runtime set plus the test + lint gate (G1).
+-r requirements.txt
+pytest==9.0.2
+ruff==0.15.7

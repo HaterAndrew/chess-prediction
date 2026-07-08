@@ -8,12 +8,34 @@ from reportlab.platypus import (
     PageBreak,
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_LEFT, TA_CENTER
+from reportlab.lib.enums import TA_CENTER
 
 OUTPUT = "output/CCA_Prediction_Model.pdf"
 
 
 def build_pdf():
+    # K1: source the headline accuracy figures from the graded output instead of
+    # hardcoding them, so the whitepaper can never drift from output/
+    # performance_data.json (the leak fix dropped these from 91%/A+ to the honest
+    # values below). Falls back to the last-known honest values if the file is
+    # absent (this script is not wired into the daily pipeline).
+    import json
+    try:
+        with open("output/performance_data.json") as _f:
+            _perf = json.load(_f)
+    except (OSError, ValueError):
+        _perf = {}
+    _cum = _perf.get("cumulative", {})
+    _t14 = next((a for a in _cum.get("aggregate", []) if a.get("T") == 14), {})
+    n_tests = _cum.get("n_tournaments", 133)
+    med14 = _t14.get("median_ape_pct", 7.1)
+    cov14 = round(_t14.get("ci_coverage", 75.0))
+    grade_cum = _cum.get("grade", "B")
+    _t3 = next((a for a in _cum.get("aggregate", []) if a.get("T") == 3), {})
+    cov3 = round(_t3.get("ci_coverage", 67.0))
+    _yrs = sorted(y for y, o in _perf.get("years", {}).items() if (o.get("n_tournaments") or 0) > 0)
+    yr_range = f"{_yrs[0]}-{_yrs[-1]}" if _yrs else "2023-2026"
+
     doc = SimpleDocTemplate(
         OUTPUT,
         pagesize=letter,
@@ -119,15 +141,15 @@ def build_pdf():
         [Paragraph('<b>Error Rate</b>', cs_b),
          Paragraph('~20% median (est.)', cs),
          Paragraph('~12-15% median (est.)', cs),
-         Paragraph('<b>7.6% median APE</b> (blind tested)', cs)],
+         Paragraph(f'<b>{med14}% median APE</b> at 2 wks (blind tested)', cs)],
         [Paragraph('<b>Prediction Intervals</b>', cs_b),
          Paragraph('None', cs),
          Paragraph('MAE-based error bars; not calibrated intervals', cs),
-         Paragraph('Lognormal calibrated 80% CI; <b>91% coverage</b>', cs)],
+         Paragraph(f'Lognormal calibrated 80% CI; <b>{cov14}% coverage</b> at 2 wks', cs)],
         [Paragraph('<b>Blind Testing</b>', cs_b),
          Paragraph('No formal backtesting', cs),
          Paragraph('No formal backtesting', cs),
-         Paragraph('88 tournament-years, 2023-2025 expanding window', cs)],
+         Paragraph(f'{n_tests} tournaments, {yr_range} leave-one-out expanding window', cs)],
         [Paragraph('<b>Limitations</b>', cs_b),
          Paragraph('Multiplier updated by feel; no systematic validation', cs),
          Paragraph('Single-deadline events only; no multi-deadline handling', cs),
@@ -182,15 +204,19 @@ def build_pdf():
     story.append(Paragraph("<b>How We Tested It</b>", h1))
     story.append(Paragraph(
         "We never test on data the model has seen. We train through (say) 2023, then predict "
-        "every 2024 tournament as if living in early 2024 \u2014 no future information leaks in. "
-        "Across <b>88 tournament-years</b>, the median error was <b>7.6%</b> and the confidence "
-        "interval captured the true result <b>91% of the time</b>. The gap between median "
-        "error (7.6%) and mean error (13.0%) reflects a small number of tournaments with "
-        "unusual conditions; most predictions are tighter than the average suggests.", blg))
+        "every 2024 tournament as if living in early 2024 \u2014 no future information leaks in, and "
+        f"each tournament is held out of its own training set. Across <b>{n_tests} tournaments</b>, "
+        f"at two weeks out the median miss was <b>{med14}%</b> and the 80% interval captured the true "
+        f"result <b>{cov14}% of the time</b> (cumulative grade <b>{grade_cum}</b>). That coverage falls "
+        f"to about <b>{cov3}%</b> three days out: the intervals are overconfident close to the event, "
+        "which is exactly when the number is most wanted.", blg))
 
     story.append(Paragraph("<b>What We Tried and Rejected</b>", h1))
     story.append(Paragraph(
-        "We tested several alternatives on the same blind test. None improved accuracy:", blg))
+        "We tested several alternatives on the same blind test. None improved accuracy. The figures "
+        "below are the relative model-selection comparison and predate the leave-one-out leak fix, so "
+        "the absolute coverage numbers run higher than the honest figures above \u2014 read them as a "
+        "ranking of configurations, not current accuracy.", blg))
 
     reject_data = [
         ['Approach', 'Median Error', 'Why It Was Rejected'],
@@ -238,7 +264,7 @@ def build_pdf():
         "apply manual adjustments for known upcoming factors.</b>", blg))
 
     story.append(Spacer(1, 4))
-    story.append(Paragraph("USAREUR-AF Operational Data Team \u2014 March 2026", footer))
+    story.append(Paragraph("HaterAndrew \u2014 March 2026", footer))
 
     # ── PAGE 2: WORKED EXAMPLE ───────────────────────────────
     story.append(PageBreak())
@@ -335,7 +361,7 @@ def build_pdf():
         "year's pace. 2025 finished at 899.", note))
 
     story.append(Spacer(1, 8))
-    story.append(Paragraph("USAREUR-AF Operational Data Team \u2014 March 2026", footer))
+    story.append(Paragraph("HaterAndrew \u2014 March 2026", footer))
 
     # ── PAGE 3: TECHNICAL SPECIFICATION (was page 1) ─────────
     story.append(PageBreak())
@@ -424,9 +450,11 @@ def build_pdf():
     # 6. Blind testing
     story.append(Paragraph("6. Model Selection &amp; Blind Testing", h1))
     story.append(Paragraph(
-        "Validated via <b>expanding-window blind test</b>: train on years \u2264 Y, "
-        "predict year Y+1 at each observed lead time. No future data leakage. "
-        "88 tournament-years across 2023\u20132025.", body))
+        "Validated via <b>leave-one-out expanding-window blind test</b>: train on years \u2264 Y "
+        "(holding out the target tournament), predict at each observed lead time. No future or "
+        f"in-sample data leakage. {n_tests} tournaments across {yr_range}. The per-configuration "
+        "figures below are the relative model-selection comparison and predate the leak fix \u2014 "
+        "absolute coverage runs higher than the honest lead-time numbers above.", body))
 
     cand_data = [
         ['Configuration', 'MedAPE', 'MAPE', '80% Cov', 'Verdict'],
@@ -457,14 +485,14 @@ def build_pdf():
         "hurt because the ratio model already captures count-level info implicitly.", note))
     story.append(Spacer(1, 2))
     story.append(Paragraph(
-        "<b>Final (88 tournament-years):</b> "
-        "MedAPE <b>7.6%</b> \u00b7 MAPE <b>13.0%</b> \u00b7 "
-        "80% CI Coverage <b>91.2%</b> (conservative\u2014intervals wider "
-        "than nominal due to compounding adjustments) \u00b7 Mean CI Width <b>239</b>",
+        f"<b>Final (leave-one-out, {n_tests} tournaments, grade {grade_cum}):</b> "
+        f"at two weeks out MedAPE <b>{med14}%</b> \u00b7 80% CI Coverage <b>{cov14}%</b>; "
+        f"at three days out coverage falls to <b>{cov3}%</b> \u2014 the intervals are "
+        "overconfident close to the event, not conservative.",
         ParagraphStyle('Perf', parent=body, fontSize=7.5, textColor=HexColor('#1a1a2e'),
                        backColor=HexColor('#f0f0f0'), borderPadding=3)))
     story.append(Spacer(1, 2))
-    story.append(Paragraph("USAREUR-AF Operational Data Team \u2014 March 2026", footer))
+    story.append(Paragraph("HaterAndrew \u2014 March 2026", footer))
 
     doc.build(story)
     print(f"PDF saved to {OUTPUT}")

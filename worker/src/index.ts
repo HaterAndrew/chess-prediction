@@ -103,6 +103,15 @@ function corsPreflight(env: Env, request: Request): Response {
   });
 }
 
+// I2 (known limitation): the rate-limit and daily-budget counters use KV
+// read-then-write, which is not atomic — N concurrent requests can each read the
+// same count and all write count+1, letting a burst slip a little past the cap.
+// For a personal app with a soft $1/day budget the overshoot is negligible. The
+// atomic fix is a Durable Object (or the CF rate-limit binding): move the
+// get/increment/put into a single-threaded DO method and call it here. Left as a
+// documented follow-up rather than shipped unverified — a broken DO migration
+// takes the live worker down on deploy, and it can't be exercised without
+// `wrangler dev` + a deployed DO.
 async function checkRateLimit(env: Env, ip: string): Promise<{ ok: boolean; retryAfter?: number }> {
   if (!env.KV) return { ok: true };
   const limit = parseInt(env.RATE_LIMIT_PER_MIN, 10) || 20;
@@ -115,8 +124,14 @@ async function checkRateLimit(env: Env, ip: string): Promise<{ ok: boolean; retr
   return { ok: true };
 }
 
+// Aligned with wrangler.toml DAILY_BUDGET_USD. Used only when the var is unset
+// or non-numeric; a configured "0" now correctly disables spend (was impossible
+// with `|| 2`, which also silently doubled a blank cap). (I4)
+const DEFAULT_DAILY_BUDGET_USD = 1;
+
 async function checkDailyBudget(env: Env): Promise<{ ok: boolean; spent: number; cap: number }> {
-  const cap = parseFloat(env.DAILY_BUDGET_USD) || 2;
+  const parsed = parseFloat(env.DAILY_BUDGET_USD);
+  const cap = Number.isFinite(parsed) ? parsed : DEFAULT_DAILY_BUDGET_USD;
   if (!env.KV) return { ok: true, spent: 0, cap };
   const day = new Date().toISOString().slice(0, 10);
   const raw = await env.KV.get(`cost:${day}`);
@@ -133,17 +148,40 @@ async function recordCost(env: Env, usdDelta: number): Promise<void> {
   await env.KV.put(key, (spent + usdDelta).toFixed(4), { expirationTtl: 86400 * 2 });
 }
 
-const PRICE_INPUT = 3.0;
-const PRICE_OUTPUT = 15.0;
-const PRICE_CACHE_WRITE = 3.75;
-const PRICE_CACHE_READ = 0.3;
+// I1: per-model USD/MTok price table. Keyed by model-id prefix so dated
+// variants (…-20250101) match. Budget accounting must fail loud on an unknown
+// model rather than silently bill Sonnet rates for an Opus deployment.
+interface ModelPricing {
+  input: number;
+  output: number;
+  cacheWrite: number;
+  cacheRead: number;
+}
+const MODEL_PRICING: Record<string, ModelPricing> = {
+  "claude-sonnet-4": { input: 3.0, output: 15.0, cacheWrite: 3.75, cacheRead: 0.3 },
+  "claude-opus-4": { input: 15.0, output: 75.0, cacheWrite: 18.75, cacheRead: 1.5 },
+  "claude-haiku-4": { input: 1.0, output: 5.0, cacheWrite: 1.25, cacheRead: 0.1 },
+};
+// code_execution bills container uptime separately (~$0.05/hour). We can't see
+// wall-clock per request, so add a small per-invocation term when it ran.
+const CODE_EXEC_COST_PER_CALL = 0.0005;
 
-function estimateCost(usage: Anthropic.Beta.BetaUsage): number {
+function pricingFor(model: string): ModelPricing {
+  const key = Object.keys(MODEL_PRICING).find(k => model.startsWith(k));
+  if (!key) {
+    throw new Error(`No price table entry for model "${model}" — add it to MODEL_PRICING before deploying.`);
+  }
+  return MODEL_PRICING[key];
+}
+
+function estimateCost(usage: Anthropic.Beta.BetaUsage, model: string, codeExecCalls = 0): number {
+  const p = pricingFor(model);
   const i = usage.input_tokens ?? 0;
   const o = usage.output_tokens ?? 0;
   const cw = usage.cache_creation_input_tokens ?? 0;
   const cr = usage.cache_read_input_tokens ?? 0;
-  return ((i * PRICE_INPUT) + (o * PRICE_OUTPUT) + (cw * PRICE_CACHE_WRITE) + (cr * PRICE_CACHE_READ)) / 1_000_000;
+  const tokenCost = ((i * p.input) + (o * p.output) + (cw * p.cacheWrite) + (cr * p.cacheRead)) / 1_000_000;
+  return tokenCost + codeExecCalls * CODE_EXEC_COST_PER_CALL;
 }
 
 interface RunResult {
@@ -165,10 +203,13 @@ async function runAgentLoop(
 
   const messages: Anthropic.Beta.BetaMessageParam[] = [];
   if (body.history && Array.isArray(body.history)) {
+    // I3: cap per-turn history bytes so a client can't inflate token cost by
+    // sending huge prior "turns" (the live question is already capped at 2000).
+    const MAX_TURN_CHARS = 4000;
     for (const turn of body.history.slice(-8)) {
       if (turn.role !== "user" && turn.role !== "assistant") continue;
       if (typeof turn.content !== "string" || !turn.content.trim()) continue;
-      messages.push({ role: turn.role, content: turn.content });
+      messages.push({ role: turn.role, content: turn.content.slice(0, MAX_TURN_CHARS) });
     }
   }
 
@@ -202,11 +243,10 @@ async function runAgentLoop(
       betas: ["files-api-2025-04-14"],
     });
 
-    totalCost += estimateCost(resp.usage);
-
     // Track tool usage. Server-side tools (code_execution) emit server_tool_use blocks
     // with names like "bash_code_execution", "text_editor_code_execution". We collapse
-    // those into a single "code_execution" entry for the response payload.
+    // those into a single "code_execution" entry for the response payload. Detect it
+    // before costing so the container-time term is billed (I1).
     let sawCodeExec = false;
     for (const block of resp.content) {
       if (block.type === "server_tool_use") {
@@ -214,6 +254,7 @@ async function runAgentLoop(
         if (name.includes("code_execution")) sawCodeExec = true;
       }
     }
+    totalCost += estimateCost(resp.usage, model, sawCodeExec ? 1 : 0);
     if (sawCodeExec && !toolsUsed.includes("code_execution")) {
       toolsUsed.push("code_execution");
     }

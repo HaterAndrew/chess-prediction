@@ -11,7 +11,6 @@ Phase 1: Data Prep & EDA
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 import re
 import os
 
@@ -481,7 +480,7 @@ ax2.set_xlim(120, 0)
 
 plt.tight_layout()
 plt.savefig(os.path.join(OUTPUT_DIR, "chicago_open_curves.png"), dpi=150)
-print(f"\nSaved Chicago Open curves plot to output/chicago_open_curves.png")
+print("\nSaved Chicago Open curves plot to output/chicago_open_curves.png")
 
 # ── EDA: Family Size Distribution ───────────────────────────────────────────
 family_counts = summary.groupby('family').agg(
@@ -492,7 +491,7 @@ family_counts = summary.groupby('family').agg(
     max_year=('tournament_year', 'max'),
 ).sort_values('n_editions', ascending=False)
 
-print(f"\n── Top 20 Tournament Families by Edition Count ──")
+print("\n── Top 20 Tournament Families by Edition Count ──")
 print(family_counts.head(20).to_string())
 
 family_counts.to_csv(os.path.join(OUTPUT_DIR, "family_stats.csv"))
@@ -505,7 +504,7 @@ yearly = summary[~summary['is_online']].groupby('tournament_year').agg(
     median_per_tournament=('final_count', 'median'),
 ).reset_index()
 
-print(f"\n── Year-over-Year Summary (in-person only) ──")
+print("\n── Year-over-Year Summary (in-person only) ──")
 print(yearly.to_string(index=False))
 
 fig, ax = plt.subplots(figsize=(12, 5))
@@ -520,11 +519,11 @@ ax.legend(loc='upper left')
 ax2.legend(loc='upper right')
 plt.tight_layout()
 plt.savefig(os.path.join(OUTPUT_DIR, "yearly_trends.png"), dpi=150)
-print(f"Saved yearly trends plot to output/yearly_trends.png")
+print("Saved yearly trends plot to output/yearly_trends.png")
 
 # ── Summary Stats ───────────────────────────────────────────────────────────
 print(f"\n{'='*60}")
-print(f"PHASE 1 COMPLETE")
+print("PHASE 1 COMPLETE")
 print(f"{'='*60}")
 print(f"Tournaments: {len(summary)}")
 print(f"  With timestamps: {summary['has_timestamps'].sum()}")

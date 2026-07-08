@@ -6,7 +6,6 @@ each live tournament and injects them into website_data.json so the front-end
 can display colored badges and banners without a backend server.
 """
 
-from datetime import datetime
 
 
 def _at_T_historical_avg(tournament, all_tournaments):

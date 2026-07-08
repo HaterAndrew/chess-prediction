@@ -1,0 +1,12 @@
+# Runtime dependencies for the daily prediction pipeline (auto_update.py chain,
+# scrapers, model). Pinned to the versions the current test suite passes on so
+# a PyPI release cannot silently change model output on the next cron run (G2).
+# Bump deliberately via a PR that re-runs the test gate.
+pandas==2.3.3
+numpy==2.4.3
+scipy==1.17.1
+scikit-learn==1.8.0
+requests==2.31.0
+urllib3==2.6.3
+beautifulsoup4==4.12.3
+zstandard==0.25.0

@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-08 04:33:31",
-  "count": 6,
+  "generated": "2026-06-07 05:52:47",
+  "count": 2,
   "warnings": [
     {
       "step": "Refresh tournament summary",
@@ -9,22 +9,6 @@
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
       "text": "source-parse failure \u2014 Chicago Open 2026: pattern \"Chicago Open\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Cleveland Open 2026: pattern \"Cleveland Open\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Hartford Open 2026: pattern \"Hartford Open\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 New York State Open 2026: pattern \"New York State Open And Senior Amateur\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health [CRITICAL] dropped-event \u2014 World Open Under 13 Championship: scraped 82 entries on 2026-06-30 but no 2026 card in output"
     }
   ]
 }

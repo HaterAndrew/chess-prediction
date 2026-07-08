@@ -7,7 +7,7 @@ Steps:
   3. Run 04c_final_model.py + 04d_website_data_v2.py to regenerate predictions
      (includes walk-in multiplier from output/walk_in_family_stats.csv)
   4. Regenerate output/website_data.json
-  5. Update the TOURNAMENT_DATA block in docs/index.html
+  5. Update the TOURNAMENT_DATA block in docs/data/site_data.js
   6. Log the run to output/update_log.csv
 
 Note: Walk-in multiplier data (06_walk_in_multipliers.py) is regenerated every
@@ -21,7 +21,7 @@ import json
 import csv
 import subprocess
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from validate_scraped_data import validate_all
 from verify_checksums import generate_manifest
@@ -34,6 +34,9 @@ SITE_DIR = os.path.join(PROJECT_DIR, "docs")
 SCRAPE_CSV = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
 WEBSITE_JSON = os.path.join(OUTPUT_DIR, "website_data.json")
 INDEX_HTML = os.path.join(SITE_DIR, "index.html")
+# The large data consts were externalized out of index.html (L15); the daily
+# build now splices them into this file, so index.html itself stays static.
+SITE_DATA_JS = os.path.join(SITE_DIR, "data", "site_data.js")
 UPDATE_LOG = os.path.join(OUTPUT_DIR, "update_log.csv")
 
 RUN_TS = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -103,7 +106,34 @@ def write_audit_warnings():
             print(f"    [{w['step']}] {w['text'][:120]}")
     else:
         print(f"\n  No pipeline warnings captured → {out_path}")
-    print(f"  Copied audit_warnings.json to docs/")
+    print("  Copied audit_warnings.json to docs/")
+
+
+def step_structure_check():
+    """H6: non-blocking CCA markup drift alarm. Checks the tourlist endpoint the
+    scraper depends on (via requests, no Chrome). Deviations become persisted
+    warnings — a structure change should alert operators through
+    audit_warnings.json, never halt the daily run. Errors are swallowed to a
+    warning for the same reason."""
+    print(f"\n{'─'*60}")
+    print("  STEP: CCA structure drift check (non-blocking)")
+    print(f"{'─'*60}")
+    try:
+        import structure_monitor as sm
+        baseline = sm.CCA_BASELINE
+        if os.path.exists(sm.BASELINE_PATH):
+            with open(sm.BASELINE_PATH) as f:
+                baseline = json.load(f)
+        deviations = sm.check_structure(baseline.get("url", sm.CCA_INDEX_URL), baseline)
+        for d in deviations:
+            _PIPELINE_WARNINGS.append({'step': 'CCA structure drift', 'text': d})
+        if deviations:
+            print(f"  {len(deviations)} deviation(s) — CCA markup may have changed; scrapers at risk.")
+        else:
+            print("  CCA structure OK.")
+    except Exception as e:
+        _PIPELINE_WARNINGS.append({'step': 'CCA structure drift', 'text': f'structure check errored: {e}'})
+        print(f"  Structure check errored (non-blocking): {e}")
 
 
 def step_scrape():
@@ -166,7 +196,7 @@ def step_data_prep():
                f"export are invisible to the model and show a flat historical "
                f"average. Re-export from the CCA admin.")
         print(f"\n{'─'*60}")
-        print(f"  STEP: Refresh tournament summary (export missing — reconcile-only)")
+        print("  STEP: Refresh tournament summary (export missing — reconcile-only)")
         print(f"{'─'*60}")
         print(f"  WARNING: {msg}")
         _PIPELINE_WARNINGS.append({'step': 'Refresh tournament summary', 'text': msg})
@@ -202,9 +232,9 @@ def step_walkin_multipliers():
     summary = os.path.join(OUTPUT_DIR, "tournament_summary.csv")
     if not os.path.exists(standings) or not os.path.exists(summary):
         print(f"\n{'─'*60}")
-        print(f"  STEP: Refresh walk-in multipliers (SKIPPED)")
+        print("  STEP: Refresh walk-in multipliers (SKIPPED)")
         print(f"{'─'*60}")
-        print(f"  Missing input(s); using stale walk-in stats if any exist.")
+        print("  Missing input(s); using stale walk-in stats if any exist.")
         return
     run_step("Refresh walk-in multipliers (06_walk_in_multipliers.py)",
              [sys.executable, "06_walk_in_multipliers.py"])
@@ -259,16 +289,16 @@ def step_data_health():
 
 
 def step_update_html():
-    """Replace the TOURNAMENT_DATA block in docs/index.html."""
+    """Splice the data consts into docs/data/site_data.js (externalized L15)."""
     if not os.path.exists(WEBSITE_JSON):
         raise RuntimeError(f"Missing {WEBSITE_JSON}")
-    if not os.path.exists(INDEX_HTML):
-        raise RuntimeError(f"Missing {INDEX_HTML}")
+    if not os.path.exists(SITE_DATA_JS):
+        raise RuntimeError(f"Missing {SITE_DATA_JS}")
 
     with open(WEBSITE_JSON, 'r') as f:
         json_data = f.read().strip()
 
-    with open(INDEX_HTML, 'r') as f:
+    with open(SITE_DATA_JS, 'r') as f:
         html = f.read()
 
     # Find and replace the TOURNAMENT_DATA block
@@ -276,7 +306,7 @@ def step_update_html():
     start_marker = 'const TOURNAMENT_DATA = '
     start_idx = html.find(start_marker)
     if start_idx == -1:
-        raise RuntimeError("Could not find 'const TOURNAMENT_DATA = ' in index.html")
+        raise RuntimeError("Could not find 'const TOURNAMENT_DATA = ' in site_data.js")
 
     # Find the end: we need to find the matching closing brace
     # The block ends with "};" on its own line after the JSON object
@@ -298,7 +328,7 @@ def step_update_html():
                 break
 
     if end_idx is None:
-        raise RuntimeError("Could not find end of TOURNAMENT_DATA block in index.html")
+        raise RuntimeError("Could not find end of TOURNAMENT_DATA block in site_data.js")
 
     # Replace
     new_html = html[:start_idx] + f'const TOURNAMENT_DATA = {json_data};' + html[end_idx:]
@@ -324,7 +354,7 @@ def step_update_html():
                         break
             if p_end:
                 new_html = new_html[:p_start] + f'const PUZZLE_DATA = {puzzle_json};' + new_html[p_end:]
-                print(f"  Updated PUZZLE_DATA in index.html")
+                print("  Updated PUZZLE_DATA in site_data.js")
 
     # Also embed CHESS_HISTORY if available
     history_json_path = os.path.join(OUTPUT_DIR, "chess_history.json")
@@ -347,7 +377,7 @@ def step_update_html():
                         break
             if h_end:
                 new_html = new_html[:h_start] + f'const CHESS_HISTORY = {history_json};' + new_html[h_end:]
-                print(f"  Updated CHESS_HISTORY in index.html")
+                print("  Updated CHESS_HISTORY in site_data.js")
 
     # Embed PERFORMANCE_DATA if available
     perf_json_path = os.path.join(OUTPUT_DIR, "performance_data.json")
@@ -370,19 +400,19 @@ def step_update_html():
                         break
             if pf_end:
                 new_html = new_html[:pf_start] + f'const PERFORMANCE_DATA = {perf_json};' + new_html[pf_end:]
-                print(f"  Updated PERFORMANCE_DATA in index.html")
+                print("  Updated PERFORMANCE_DATA in site_data.js")
 
-    with open(INDEX_HTML, 'w') as f:
+    with open(SITE_DATA_JS, 'w') as f:
         f.write(new_html)
 
-    print(f"  Updated TOURNAMENT_DATA in {INDEX_HTML}")
+    print(f"  Updated TOURNAMENT_DATA in {SITE_DATA_JS}")
 
-    # Post-write verification: re-read HTML and confirm embedded data matches source
-    with open(INDEX_HTML, 'r') as f:
+    # Post-write verification: re-read and confirm embedded data matches source
+    with open(SITE_DATA_JS, 'r') as f:
         verify_html = f.read()
     verify_idx = verify_html.find(start_marker)
     if verify_idx == -1:
-        raise RuntimeError("Post-write verification failed: TOURNAMENT_DATA marker missing from written HTML")
+        raise RuntimeError("Post-write verification failed: TOURNAMENT_DATA marker missing from written site_data.js")
     source_data = json.loads(json_data)
     source_gen = source_data.get('generated', '')
     source_count = len(source_data.get('tournaments', []))
@@ -397,12 +427,39 @@ def step_update_html():
                 f"The HTML was not updated correctly."
             )
     print(f"  Verified: embedded data matches source (generated={source_gen}, {source_count} tournaments)")
+    # G9: the app reads docs/data/site_data.js (L15 externalization); the old
+    # docs/website_data.json double-ship (a 1.4MB daily-churn copy nothing
+    # fetches) is gone. output/website_data.json remains the source of truth.
 
-    # Also copy JSON to site directory
-    site_json = os.path.join(SITE_DIR, "website_data.json")
-    with open(site_json, 'w') as f:
-        f.write(json_data)
-    print(f"  Copied website_data.json to docs/")
+
+def prune_update_log(path=None, days=90):
+    """Bound update_log.csv growth (G10): keep only rows from the last `days`
+    of runs so the committed file and its git churn stay bounded. Rows with an
+    unparseable timestamp are kept (fail-safe). Returns (kept, dropped)."""
+    path = path or UPDATE_LOG
+    if not os.path.exists(path):
+        return (0, 0)
+    with open(path, newline='') as f:
+        rows = list(csv.reader(f))
+    if len(rows) < 2:
+        return (len(rows), 0)
+    header, data = rows[0], rows[1:]
+    cutoff = datetime.now() - timedelta(days=days)
+    kept = []
+    for r in data:
+        try:
+            ts = datetime.strptime(r[0][:19], '%Y-%m-%d %H:%M:%S')
+        except (ValueError, IndexError):
+            kept.append(r)
+            continue
+        if ts >= cutoff:
+            kept.append(r)
+    if len(kept) != len(data):
+        with open(path, 'w', newline='') as f:
+            w = csv.writer(f)
+            w.writerow(header)
+            w.writerows(kept)
+    return (len(kept), len(data) - len(kept))
 
 
 def step_log_run():
@@ -435,6 +492,9 @@ def step_log_run():
             ])
             lines_logged += 1
 
+    kept, dropped = prune_update_log()
+    if dropped:
+        print(f"  Pruned {dropped} update_log rows older than 90 days ({kept} kept)")
     print(f"  Logged {lines_logged} predictions to {UPDATE_LOG}")
 
 
@@ -486,7 +546,7 @@ def main():
 
             # Validate scraped data before proceeding
             print(f"\n{'─'*60}")
-            print(f"  STEP: Validate scraped data")
+            print("  STEP: Validate scraped data")
             print(f"{'─'*60}")
             report = validate_all()
             validation_errors = len(report.errors)
@@ -505,7 +565,7 @@ def main():
             scrape_ok = False
             print(f"\n{'!'*60}")
             print(f"  SCRAPE FAILED (graceful degradation): {e}")
-            print(f"  Serving stale predictions with warning banner.")
+            print("  Serving stale predictions with warning banner.")
             print(f"{'!'*60}")
 
     try:
@@ -522,13 +582,13 @@ def main():
                 step_update_puzzles()
             except Exception as e:
                 print(f"\n  Warning: Puzzle step failed (non-fatal): {e}")
-                print(f"  Continuing with existing puzzle data...")
+                print("  Continuing with existing puzzle data...")
 
             _stamp_stale_flag(is_stale=False)
         else:
             # Stale path — skip model regen, keep existing JSON, stamp stale
             print(f"\n{'─'*60}")
-            print(f"  STEP: Skip model regeneration (stale mode)")
+            print("  STEP: Skip model regeneration (stale mode)")
             print(f"{'─'*60}")
             print(f"  Keeping existing {WEBSITE_JSON} intact")
             _stamp_stale_flag(is_stale=True)
@@ -536,7 +596,7 @@ def main():
         # Compute and inject pace alerts
         if os.path.exists(WEBSITE_JSON):
             print(f"\n{'─'*60}")
-            print(f"  STEP: Compute pace alerts")
+            print("  STEP: Compute pace alerts")
             print(f"{'─'*60}")
             with open(WEBSITE_JSON, 'r') as f:
                 wd = json.load(f)
@@ -561,7 +621,7 @@ def main():
 
         # Generate SHA-256 checksums for all output CSVs
         print(f"\n{'─'*60}")
-        print(f"  STEP: Generate output checksums")
+        print("  STEP: Generate output checksums")
         print(f"{'─'*60}")
         generate_manifest(OUTPUT_DIR)
 
@@ -575,6 +635,9 @@ def main():
             duration_seconds=duration,
         )
         generate_health_html()
+
+        # Non-blocking CCA markup drift alarm (H6) — feeds the warning list below.
+        step_structure_check()
 
         # Persist any WARNING lines emitted by sub-steps so CI can surface them.
         write_audit_warnings()

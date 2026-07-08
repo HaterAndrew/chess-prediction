@@ -22,6 +22,7 @@ rows from the export and stays in 01_data_prep.
 """
 
 import os
+import re
 
 import pandas as pd
 
@@ -29,10 +30,12 @@ OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 
 
 def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
-    """Bump tournament_summary.final_count to the daily_scrape peak where higher.
+    """Bump tournament_summary.final_count to the daily_scrape peak where higher,
+    and append roster-pending skeletons for scraped events missing from summary.
 
-    Returns the number of tournaments whose final_count was raised. No-ops (and
-    returns 0) if either input CSV is missing, so it is safe to call blindly.
+    Returns the number of tournaments changed (final_count raised OR newly
+    appended). No-ops (and returns 0) if either input CSV is missing, so it is
+    safe to call blindly.
     """
     summary_path = os.path.join(output_dir, "tournament_summary.csv")
     scrape_path = os.path.join(output_dir, "daily_scrape.csv")
@@ -62,6 +65,42 @@ def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
     bumped = summary[summary["final_count"] > pre_count].copy()
     summary = summary.drop(columns=["scrape_peak"])
 
+    # H2: append roster-pending skeletons for scraped tournaments with no summary
+    # row yet. Without this, a 2026 event whose registration opened after the last
+    # all_registrations.csv export is invisible to the whole pipeline — 04e never
+    # grades it and the freshness guard has no row to check — until the operator
+    # runs a manual export. The skeleton carries has_timestamps=False, so every
+    # 04c/04e training and grading filter (all of which require has_timestamps)
+    # excludes it automatically; only a real export supplies the per-registration
+    # timestamps needed to model or grade it. final_count is the gross scrape peak.
+    known_names = set(summary["tournament_name"])
+    tid_max = summary["tid"].max()
+    next_tid = (int(tid_max) + 1) if len(summary) and pd.notna(tid_max) else 1
+    new_rows = []
+    for _, r in scrape_peak.iterrows():
+        name = r["tournament_name"]
+        peak = int(r["scrape_peak"])
+        if name in known_names or peak <= 0:
+            continue
+        # Derive year + family from the "YYYY " prefix the scraper writes.
+        m = re.match(r"^(\d{4})\s+(.*)$", str(name))
+        if not m:
+            continue
+        new_rows.append({
+            "tid": next_tid, "tournament_name": name, "family": m.group(2),
+            "tournament_year": int(m.group(1)), "final_count": peak,
+            "has_timestamps": False, "ts_count": 0, "first_reg": pd.NA,
+            "last_reg": pd.NA, "is_covid": False, "is_online": False,
+            "snapshot_last_reg": pd.NA, "early_bird_spike": False,
+            "spike_day": pd.NA, "spike_magnitude": pd.NA, "roster_pending": True,
+        })
+        next_tid += 1
+
+    if new_rows:
+        if "roster_pending" not in summary.columns:
+            summary["roster_pending"] = False
+        summary = pd.concat([summary, pd.DataFrame(new_rows)], ignore_index=True)
+
     if verbose:
         if len(bumped) > 0:
             bumped["delta"] = bumped["final_count"] - pre_count[bumped.index]
@@ -72,10 +111,15 @@ def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
                       f"(+{int(r['delta'])})")
         else:
             print("  No final_count reconciliation needed.")
+        if new_rows:
+            print(f"  Added {len(new_rows)} roster-pending tournament(s) not yet in summary:")
+            for nr in new_rows:
+                print(f"    {nr['tournament_name']:<55} scrape_peak={nr['final_count']:>5} "
+                      f"(has_timestamps=False)")
 
-    if len(bumped) > 0:
+    if len(bumped) > 0 or new_rows:
         summary.to_csv(summary_path, index=False)
-    return len(bumped)
+    return len(bumped) + len(new_rows)
 
 
 if __name__ == "__main__":

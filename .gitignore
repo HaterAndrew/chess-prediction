@@ -40,6 +40,9 @@ output/scrape_health.json
 # Data (local dev DB)
 *.db
 data/
+# ...but the externalized site data (L15) is a real tracked deploy asset.
+!docs/data/
+!docs/data/site_data.js
 *.sqlite3
 
 # Environment
@@ -59,5 +62,6 @@ node_modules/
 Thumbs.db
 
 # Pre-audit backups (debug artifacts from one-off data repairs)
-*.bak.preaudit
+# Broadened to catch suffixed variants like *.bak.eb-verify-<date> (G8).
 *.bak
+*.bak.*

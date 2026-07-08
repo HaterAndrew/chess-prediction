@@ -273,7 +273,8 @@ def validate_metadata_freshness(csv_path=None, year=None):
     when missing, the model uses neutral values — silent degradation.
     AUDIT.md A3.
     """
-    import os, pandas as pd
+    import os
+    import pandas as pd
     report = ValidationReport()
     if csv_path is None:
         OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")

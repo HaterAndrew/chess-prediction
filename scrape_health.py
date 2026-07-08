@@ -11,7 +11,6 @@ Usage:
 
 import json
 import os
-import sys
 from datetime import datetime, timedelta
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -209,7 +208,7 @@ def generate_health_html(output_path=None):
     chart_bars = ""
     for day in sorted_days:
         d = daily[day]
-        total = d["ok"] + d["fail"]
+        d["ok"] + d["fail"]
         ok_pct = (d["ok"] / max_runs) * 100
         fail_pct = (d["fail"] / max_runs) * 100
         short_date = day[5:]  # MM-DD
@@ -363,7 +362,7 @@ def main():
     stats = get_health_stats()
 
     print(f"\n{'='*50}")
-    print(f"  SCRAPE HEALTH STATUS")
+    print("  SCRAPE HEALTH STATUS")
     print(f"{'='*50}")
     print(f"  Last successful run:    {stats['last_successful_run'] or 'Never'}")
     print(f"  30-day success rate:    {stats['success_rate_30d']}%")
@@ -373,7 +372,7 @@ def main():
     if freshness is not None:
         print(f"  Data freshness:         {freshness:.1f} hours")
     else:
-        print(f"  Data freshness:         N/A (no successful run)")
+        print("  Data freshness:         N/A (no successful run)")
     print(f"{'='*50}\n")
 
 

@@ -1,6 +1,6 @@
 {
-  "generated": "2026-06-07 05:52:47",
-  "count": 2,
+  "generated": "2026-07-09 05:12:01",
+  "count": 29,
   "warnings": [
     {
       "step": "Refresh tournament summary",
@@ -9,6 +9,114 @@
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
       "text": "source-parse failure \u2014 Chicago Open 2026: pattern \"Chicago Open\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 Cleveland Open 2026: pattern \"Cleveland Open\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 DC International 2026: pattern \"DC International\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 DC Open 2026: pattern \"DC Open\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 Eastern Chess Congress 2026: pattern \"Eastern Chess Congress\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 Eastern Class Championships 2026: pattern \"Eastern Class Championships\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 Hartford Open 2026: pattern \"Hartford Open\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 Kings Island Open 2026: pattern \"Kings Island Open\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 Los Angeles Open 2026: pattern \"Los Angeles Open\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 Midwest Class Championships 2026: pattern \"Midwest Class Championships\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 National Chess Congress 2026: pattern \"National Chess Congress\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 New York State Open 2026: pattern \"New York State Open And Senior Amateur\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 World Open top 6 sections 2026: pattern \"World Open, Top 6 Sections\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 World Open Under 13 Championship 2026: pattern \"World Open Under Age 13 Championship\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 World Open lower sections 2026: pattern \"World Open, Under 1200 and Under 1000 Sections\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 North American Open 2026: pattern \"North American Open\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 World Open lower sections 2026: pattern \"World Open, Under 1200 and Under 1000 Sections\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 World Open top 6 sections 2026: pattern \"World Open, Top 6 Sections\" not found in chesstour.com schedule"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [HIGH] stale-count \u2014 Pittsburgh Open: current_count 74 != latest scrape net 69 (2026-07-09)"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [HIGH] stale-count \u2014 Bradley Open: current_count 53 != latest scrape net 52 (2026-07-09)"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [HIGH] stale-count \u2014 Pacific Coast Open: current_count 67 != latest scrape net 66 (2026-07-09)"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [HIGH] stale-count \u2014 Atlantic City Open: current_count 424 != latest scrape net 401 (2026-04-05)"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [HIGH] stale-count \u2014 Chicago Open: current_count 917 != latest scrape net 872 (2026-05-26)"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [HIGH] stale-count \u2014 DC International: current_count 107 != latest scrape net 102 (2026-06-29)"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [HIGH] stale-count \u2014 New York State Open: current_count 109 != latest scrape net 108 (2026-06-21)"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [HIGH] stale-count \u2014 DC Open: current_count 188 != latest scrape net 180 (2026-06-28)"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [HIGH] stale-count \u2014 Hartford Open: current_count 206 != latest scrape net 198 (2026-06-07)"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [HIGH] stale-count \u2014 Cleveland Open: current_count 179 != latest scrape net 174 (2026-06-07)"
     }
   ]
 }

@@ -1,18 +1,84 @@
 {
-  "generated": "2026-06-06",
-  "scanned_at": "2026-06-06T14:20:40",
+  "generated": "2026-07-09",
+  "scanned_at": "2026-07-09T05:17:44",
   "counts": {
     "CRITICAL": 0,
-    "HIGH": 0,
-    "MEDIUM": 1,
-    "INFO": 16
+    "HIGH": 10,
+    "MEDIUM": 2,
+    "INFO": 17
   },
   "findings": [
     {
+      "severity": "HIGH",
+      "mode": "stale-count",
+      "family": "Pittsburgh Open",
+      "message": "current_count 74 != latest scrape net 69 (2026-07-09)"
+    },
+    {
+      "severity": "HIGH",
+      "mode": "stale-count",
+      "family": "Bradley Open",
+      "message": "current_count 53 != latest scrape net 52 (2026-07-09)"
+    },
+    {
+      "severity": "HIGH",
+      "mode": "stale-count",
+      "family": "Pacific Coast Open",
+      "message": "current_count 67 != latest scrape net 66 (2026-07-09)"
+    },
+    {
+      "severity": "HIGH",
+      "mode": "stale-count",
+      "family": "Atlantic City Open",
+      "message": "current_count 424 != latest scrape net 401 (2026-04-05)"
+    },
+    {
+      "severity": "HIGH",
+      "mode": "stale-count",
+      "family": "Chicago Open",
+      "message": "current_count 917 != latest scrape net 872 (2026-05-26)"
+    },
+    {
+      "severity": "HIGH",
+      "mode": "stale-count",
+      "family": "DC International",
+      "message": "current_count 107 != latest scrape net 102 (2026-06-29)"
+    },
+    {
+      "severity": "HIGH",
+      "mode": "stale-count",
+      "family": "New York State Open",
+      "message": "current_count 109 != latest scrape net 108 (2026-06-21)"
+    },
+    {
+      "severity": "HIGH",
+      "mode": "stale-count",
+      "family": "DC Open",
+      "message": "current_count 188 != latest scrape net 180 (2026-06-28)"
+    },
+    {
+      "severity": "HIGH",
+      "mode": "stale-count",
+      "family": "Hartford Open",
+      "message": "current_count 206 != latest scrape net 198 (2026-06-07)"
+    },
+    {
+      "severity": "HIGH",
+      "mode": "stale-count",
+      "family": "Cleveland Open",
+      "message": "current_count 179 != latest scrape net 174 (2026-06-07)"
+    },
+    {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
-      "family": "DC International",
-      "message": "regular_fee is null with 19 days remaining"
+      "family": "Southern Open",
+      "message": "regular_fee is null with 8 days remaining"
+    },
+    {
+      "severity": "MEDIUM",
+      "mode": "null-fee-near-event",
+      "family": "Bradley Open",
+      "message": "regular_fee is null with 15 days remaining"
     },
     {
       "severity": "INFO",
@@ -42,6 +108,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Eastern Class Championships (in Connecticut)",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Eastern Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {
@@ -107,7 +179,7 @@
     {
       "severity": "INFO",
       "mode": "walkin-global-fallback",
-      "family": "117 cards",
+      "family": "122 cards",
       "message": "walk-in multiplier used the global 'estimate' fallback (no family-specific stats)"
     }
   ]

@@ -1,9 +1,9 @@
 {
-  "generated": "2026-07-09",
-  "scanned_at": "2026-07-09T05:17:44",
+  "generated": "2026-07-10",
+  "scanned_at": "2026-07-10T05:13:08",
   "counts": {
     "CRITICAL": 0,
-    "HIGH": 10,
+    "HIGH": 9,
     "MEDIUM": 2,
     "INFO": 17
   },
@@ -12,19 +12,13 @@
       "severity": "HIGH",
       "mode": "stale-count",
       "family": "Pittsburgh Open",
-      "message": "current_count 74 != latest scrape net 69 (2026-07-09)"
-    },
-    {
-      "severity": "HIGH",
-      "mode": "stale-count",
-      "family": "Bradley Open",
-      "message": "current_count 53 != latest scrape net 52 (2026-07-09)"
+      "message": "current_count 80 != latest scrape net 75 (2026-07-10)"
     },
     {
       "severity": "HIGH",
       "mode": "stale-count",
       "family": "Pacific Coast Open",
-      "message": "current_count 67 != latest scrape net 66 (2026-07-09)"
+      "message": "current_count 70 != latest scrape net 69 (2026-07-10)"
     },
     {
       "severity": "HIGH",
@@ -72,13 +66,13 @@
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Southern Open",
-      "message": "regular_fee is null with 8 days remaining"
+      "message": "regular_fee is null with 7 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Bradley Open",
-      "message": "regular_fee is null with 15 days remaining"
+      "message": "regular_fee is null with 14 days remaining"
     },
     {
       "severity": "INFO",

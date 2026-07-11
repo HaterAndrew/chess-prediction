@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-10 05:09:36",
+  "generated": "2026-07-11 04:29:23",
   "count": 28,
   "warnings": [
     {
@@ -80,11 +80,11 @@
     },
     {
       "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health [HIGH] stale-count \u2014 Pittsburgh Open: current_count 80 != latest scrape net 75 (2026-07-10)"
+      "text": "data-health [HIGH] stale-count \u2014 Pittsburgh Open: current_count 83 != latest scrape net 77 (2026-07-11)"
     },
     {
       "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health [HIGH] stale-count \u2014 Pacific Coast Open: current_count 70 != latest scrape net 69 (2026-07-10)"
+      "text": "data-health [HIGH] stale-count \u2014 Pacific Coast Open: current_count 76 != latest scrape net 75 (2026-07-11)"
     },
     {
       "step": "Scan prediction data health (data_health.py)",

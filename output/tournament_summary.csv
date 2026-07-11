@@ -754,29 +754,29 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 4351,2026 DC Open,DC Open,2026.0,188,True,2,2026-02-20 19:24:23,2026-06-28 00:00:00,False,False,2026-03-21 00:10:13,False,56.0,2.0,False
 4396,2026 World Open G 7 Championship,World Open G7 Championship,2026.0,1,True,1,2026-02-10 00:04:34,2026-02-10 00:04:34,False,False,2026-02-10 00:04:34,False,,0.0,False
 4397,2026 World Open G 10 Championship,World Open G 10 Championship,2026.0,1,True,1,2026-02-10 00:07:56,2026-02-10 00:07:56,False,False,2026-02-10 00:07:56,False,,0.0,False
-4404,2026 Chicago Class,Chicago Class,2026.0,125,True,1,2026-03-04 00:14:48,2026-07-08 00:00:00,False,False,2026-03-04 00:14:48,False,73.0,1.0,False
+4404,2026 Chicago Class,Chicago Class,2026.0,132,True,1,2026-03-04 00:14:48,2026-07-08 00:00:00,False,False,2026-03-04 00:14:48,False,73.0,1.0,False
 4405,2026 World Open Action,World Open Action,2026.0,1,True,1,2026-03-04 00:53:40,2026-03-04 00:53:40,False,False,2026-03-04 00:53:40,False,,0.0,False
 4408,2026 World Open Blitz Championship,World Open Blitz Championship,2026.0,1,True,1,2026-03-04 00:51:31,2026-03-04 00:51:31,False,False,2026-03-04 00:51:31,False,,0.0,False
 4409,2026 World Open G 50 Championship,World Open G 50 Championship,2026.0,1,True,1,2026-03-04 01:03:09,2026-03-04 01:03:09,False,False,2026-03-04 01:03:09,False,,0.0,False
-4412,2026 Bradley Open,Bradley Open,2026.0,56,True,2,2026-02-16 09:38:22,2026-07-08 00:00:00,False,False,2026-03-08 21:13:17,False,75.0,0.0,False
+4412,2026 Bradley Open,Bradley Open,2026.0,59,True,2,2026-02-16 09:38:22,2026-07-08 00:00:00,False,False,2026-03-08 21:13:17,False,75.0,0.0,False
 4413,2026 Hartford Open,Hartford Open,2026.0,206,True,3,2026-03-08 21:12:04,2026-06-07 00:00:00,False,False,2026-03-19 10:23:59,False,65.0,3.0,False
-4414,2026 Pittsburgh Open,Pittsburgh Open,2026.0,80,True,2,2026-02-20 19:28:19,2026-07-08 00:00:00,False,False,2026-03-11 22:24:42,False,72.0,2.0,False
-4415,2026 Pacific Coast Open,Pacific Coast Open,2026.0,70,True,3,2026-03-03 22:56:45,2026-07-08 00:00:00,False,False,2026-03-10 19:06:24,False,70.0,1.0,False
+4414,2026 Pittsburgh Open,Pittsburgh Open,2026.0,83,True,2,2026-02-20 19:28:19,2026-07-08 00:00:00,False,False,2026-03-11 22:24:42,False,72.0,2.0,False
+4415,2026 Pacific Coast Open,Pacific Coast Open,2026.0,76,True,3,2026-03-03 22:56:45,2026-07-08 00:00:00,False,False,2026-03-10 19:06:24,False,70.0,1.0,False
 4417,2026 Cleveland Open,Cleveland Open,2026.0,179,True,2,2026-03-01 19:24:30,2026-06-07 00:00:00,False,False,2026-03-16 21:23:52,False,71.0,1.0,False
 4418,2026 Atlantic Open,Atlantic Open,2026.0,11,False,0,,,False,False,,False,,,True
-4419,2026 Central California Open,Central California Open,2026.0,14,False,0,,,False,False,,False,,,True
+4419,2026 Central California Open,Central California Open,2026.0,15,False,0,,,False,False,,False,,,True
 4420,2026 Continental Open,Continental Open,2026.0,19,False,0,,,False,False,,False,,,True
 4421,2026 Eastern Chess Congress (in New Jersey),Eastern Chess Congress (in New Jersey),2026.0,2,False,0,,,False,False,,False,,,True
-4422,2026 Eastern Class Championships (in Connecticut),Eastern Class Championships (in Connecticut),2026.0,2,False,0,,,False,False,,False,,,True
+4422,2026 Eastern Class Championships (in Connecticut),Eastern Class Championships (in Connecticut),2026.0,3,False,0,,,False,False,,False,,,True
 4423,2026 Indianapolis Open,Indianapolis Open,2026.0,5,False,0,,,False,False,,False,,,True
 4424,2026 Kings Island Open,Kings Island Open,2026.0,1,False,0,,,False,False,,False,,,True
 4425,2026 Los Angeles Open,Los Angeles Open,2026.0,2,False,0,,,False,False,,False,,,True
 4426,2026 Midwest Class Championships,Midwest Class Championships,2026.0,3,False,0,,,False,False,,False,,,True
-4427,2026 National Chess Congress,National Chess Congress,2026.0,1,False,0,,,False,False,,False,,,True
+4427,2026 National Chess Congress,National Chess Congress,2026.0,2,False,0,,,False,False,,False,,,True
 4428,2026 New York State Championship,New York State Championship,2026.0,15,False,0,,,False,False,,False,,,True
 4429,2026 North American Blitz Championship,North American Blitz Championship,2026.0,1,False,0,,,False,False,,False,,,True
 4430,2026 North American Open,North American Open,2026.0,8,False,0,,,False,False,,False,,,True
-4431,2026 Southern Open,Southern Open,2026.0,103,False,0,,,False,False,,False,,,True
+4431,2026 Southern Open,Southern Open,2026.0,118,False,0,,,False,False,,False,,,True
 4432,2026 World Open Under 13 Championship,World Open Under 13 Championship,2026.0,82,False,0,,,False,False,,False,,,True
 4433,"2026 World Open, lower sections","World Open, lower sections",2026.0,93,False,0,,,False,False,,False,,,True
 4434,"2026 World Open, top 6 sections","World Open, top 6 sections",2026.0,1066,False,0,,,False,False,,False,,,True

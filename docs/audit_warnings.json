@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-12 04:41:38",
-  "count": 28,
+  "generated": "2026-07-13 04:48:02",
+  "count": 21,
   "warnings": [
     {
       "step": "Refresh tournament summary",
@@ -24,31 +24,7 @@
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Eastern Chess Congress 2026: pattern \"Eastern Chess Congress\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Eastern Class Championships 2026: pattern \"Eastern Class Championships\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
       "text": "source-parse failure \u2014 Hartford Open 2026: pattern \"Hartford Open\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Kings Island Open 2026: pattern \"Kings Island Open\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Los Angeles Open 2026: pattern \"Los Angeles Open\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Midwest Class Championships 2026: pattern \"Midwest Class Championships\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 National Chess Congress 2026: pattern \"National Chess Congress\" not found in chesstour.com schedule"
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
@@ -68,10 +44,6 @@
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 North American Open 2026: pattern \"North American Open\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
       "text": "source-parse failure \u2014 World Open lower sections 2026: pattern \"World Open, Under 1200 and Under 1000 Sections\" not found in chesstour.com schedule"
     },
     {
@@ -80,11 +52,11 @@
     },
     {
       "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health [HIGH] stale-count \u2014 Pittsburgh Open: current_count 87 != latest scrape net 81 (2026-07-12)"
+      "text": "data-health [HIGH] stale-count \u2014 Pittsburgh Open: current_count 97 != latest scrape net 91 (2026-07-13)"
     },
     {
       "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health [HIGH] stale-count \u2014 Pacific Coast Open: current_count 78 != latest scrape net 77 (2026-07-12)"
+      "text": "data-health [HIGH] stale-count \u2014 Pacific Coast Open: current_count 82 != latest scrape net 80 (2026-07-13)"
     },
     {
       "step": "Scan prediction data health (data_health.py)",

@@ -1,6 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { TOOLS, CODE_EXECUTION_TOOL, buildIndex, runTool, type WebsiteData } from "./tools";
 import { systemPrompt } from "./prompts";
+// @ts-expect-error plain ESM shared with node (pytest parity gate); no types.
+import { deriveEntryListCode, entryListUrl } from "./entrylist_codes.mjs";
 
 export interface Env {
   ANTHROPIC_API_KEY: string;
@@ -373,6 +375,67 @@ async function proxyCcaTourList(env: Env, request: Request): Promise<Response> {
   }
 }
 
+// Browser-facing proxy for CCA public entry-list pages. The PWA's Audit tab
+// cannot fetch chessaction.com directly (CSP connect-src + no CORS upstream),
+// so it asks this route for the page. Unlike /cca-tourlist this is meant for
+// the browser: CORS headers via pickAllowedOrigin, per-IP rate limiting, and
+// no shared secret — the URL space is a strict template over an allowlisted
+// event-name map (entrylist_codes.mjs), not an open proxy.
+async function proxyCcaEntryList(env: Env, request: Request): Promise<Response> {
+  const url = new URL(request.url);
+  const event = url.searchParams.get("event") ?? "";
+  const year = url.searchParams.get("year") ?? "";
+
+  if (!/^20(2\d|3[0-5])$/.test(year)) {
+    return jsonResponse({ error: "bad_year", message: "year must be 2020-2035" }, { status: 400 }, env, request);
+  }
+  const code = deriveEntryListCode(event);
+  if (!code || !/^[A-Z]{1,6}$/.test(code)) {
+    return jsonResponse({ error: "unknown_event", message: `cannot derive an entry-list code from "${event}"` }, { status: 400 }, env, request);
+  }
+
+  const ip = request.headers.get("cf-connecting-ip") ?? "unknown";
+  const rl = await checkRateLimit(env, ip);
+  if (!rl.ok) {
+    return jsonResponse(
+      { error: "rate_limited", message: "Too many requests — wait a minute." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter ?? 60) } },
+      env,
+      request
+    );
+  }
+
+  try {
+    const upstream = await fetch(entryListUrl(code, year), {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+        Accept: "text/html,*/*",
+        Referer: "https://www.chessaction.com/",
+      },
+    });
+    const text = await upstream.text();
+    return new Response(text, {
+      status: upstream.status,
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "no-store",
+        "Access-Control-Allow-Origin": pickAllowedOrigin(env, request),
+        Vary: "Origin",
+        "X-Entry-Code": `CCA_${code}${year.slice(-2)}`,
+        "X-Upstream-Status": String(upstream.status),
+      },
+    });
+  } catch (e) {
+    return jsonResponse(
+      { error: "upstream_failed", message: (e as Error).message },
+      { status: 502 },
+      env,
+      request
+    );
+  }
+}
+
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     if (request.method === "OPTIONS") return corsPreflight(env, request);
@@ -383,6 +446,9 @@ export default {
     }
     if (url.pathname === "/cca-tourlist") {
       return proxyCcaTourList(env, request);
+    }
+    if (url.pathname === "/cca-entrylist" && request.method === "GET") {
+      return proxyCcaEntryList(env, request);
     }
     if (url.pathname !== "/ask" || request.method !== "POST") {
       return jsonResponse({ error: "Not found" }, { status: 404 }, env, request);

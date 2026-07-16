@@ -421,6 +421,8 @@ async function proxyCcaEntryList(env: Env, request: Request): Promise<Response> 
         "Content-Type": "text/html; charset=utf-8",
         "Cache-Control": "no-store",
         "Access-Control-Allow-Origin": pickAllowedOrigin(env, request),
+        // Custom headers are invisible to cross-origin JS unless exposed.
+        "Access-Control-Expose-Headers": "X-Entry-Code, X-Upstream-Status",
         Vary: "Origin",
         "X-Entry-Code": `CCA_${code}${year.slice(-2)}`,
         "X-Upstream-Status": String(upstream.status),

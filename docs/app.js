@@ -371,6 +371,7 @@ function switchPageTab(tab, skipHash) {
   if (tab === 'performance') initPerformanceTab();
   if (tab === 'compare') renderCompareTab();
   if (tab === 'ask') initAskTab();
+  if (tab === 'audit') initAuditTab();
   // Focus management: move focus to new panel for screen readers
   panel.setAttribute('tabindex', '-1');
   panel.focus({ preventScroll: true });
@@ -378,7 +379,7 @@ function switchPageTab(tab, skipHash) {
 }
 
 // Mobile swipe-between-tabs navigation
-const PAGE_TAB_ORDER = ['predictions', 'compare', 'email', 'performance', 'about', 'puzzles', 'ask'];
+const PAGE_TAB_ORDER = ['predictions', 'compare', 'email', 'performance', 'audit', 'about', 'puzzles', 'ask'];
 (function setupSwipeNav() {
   if (typeof window === 'undefined' || !('ontouchstart' in window)) return;
   let startX = 0, startY = 0, startT = 0;
@@ -4503,7 +4504,7 @@ function renderMiniCards() {
 // ══════════════════════════════════════════════════════════
 // DEEP LINKING (hash routing)
 // ══════════════════════════════════════════════════════════
-const VALID_TABS = ['predictions', 'compare', 'email', 'performance', 'about', 'puzzles', 'ask'];
+const VALID_TABS = ['predictions', 'compare', 'email', 'performance', 'audit', 'about', 'puzzles', 'ask'];
 
 function updateHash() {
   const tab = _currentTab || 'predictions';

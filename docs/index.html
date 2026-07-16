@@ -28,7 +28,7 @@ try {
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://*.workers.dev">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=27">
+<link rel="stylesheet" href="styles.css?v=28">
 <script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 </head>
 <body>
@@ -100,6 +100,7 @@ try {
     <button class="page-tab active" onclick="switchPageTab('predictions')" role="tab" aria-selected="true" aria-controls="panel-predictions" id="ptab-predictions">Predictions</button>
     <button class="page-tab" onclick="switchPageTab('ask')" role="tab" aria-selected="false" aria-controls="panel-ask" id="ptab-ask">&#128172; Ask</button>
     <button class="page-tab" onclick="switchPageTab('performance')" role="tab" aria-selected="false" aria-controls="panel-performance" id="ptab-performance">&#9733; Performance</button>
+    <button class="page-tab" onclick="switchPageTab('audit')" role="tab" aria-selected="false" aria-controls="panel-audit" id="ptab-audit">&#10003; Audit</button>
     <div class="drop-wrap page-tab-more-wrap" id="moreMenuWrap">
       <button class="page-tab page-tab-more" id="ptab-more" onclick="toggleMoreMenu(event)" aria-expanded="false" aria-controls="moreMenuDrop">Other <span class="menu-caret" aria-hidden="true">&#9662;</span></button>
       <div class="drop-menu page-tab-drop" id="moreMenuDrop" aria-label="More views">
@@ -854,6 +855,29 @@ try {
     </div>
   </div>
 
+  <!-- ══════ AUDIT TAB ══════ -->
+  <div class="page-tab-panel" id="panel-audit" role="tabpanel" aria-labelledby="ptab-audit">
+    <div class="audit-wrap">
+      <div class="ask-header">
+        <h2 class="ask-title">Hotel room-block audit list</h2>
+        <div class="ask-sub">Pick the event, upload your registration export, or both. The list combines the public entry list with the people who paid each entry, deduped, ready to hand to the hotel. Your file is processed on this device and never uploaded.</div>
+      </div>
+      <div class="audit-controls">
+        <label class="audit-label" for="auditEvent">Event</label>
+        <select id="auditEvent" class="audit-select" aria-label="Event"></select>
+        <label class="audit-label" for="auditFile">Registration export (.csv or .xlsx)</label>
+        <div class="audit-file-row">
+          <input type="file" id="auditFile" accept=".csv,.xlsx,.xls" aria-label="Registration export file">
+        </div>
+        <div class="audit-hint">The export needs columns: LastName, FirstName, City, State, ZipCode, PayerName (payer as &quot;Last, First&quot;).</div>
+        <button id="auditGenerate" type="button" class="ask-submit">Generate audit list</button>
+      </div>
+      <div class="audit-banner" id="auditBanner" hidden></div>
+      <div class="audit-summary" id="auditSummary" hidden aria-live="polite"></div>
+      <button id="auditDownload" type="button" class="ask-submit audit-download" hidden>Download the spreadsheet</button>
+    </div>
+  </div>
+
 </main>
 
 <footer role="contentinfo">
@@ -869,7 +893,11 @@ try {
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top" aria-label="Back to top">&#9650;</button>
 </div>
 
+<script defer src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js" integrity="sha384-Pqp51FUN2/qzfxZxBCtF0stpc9ONI6MYZpVqmo8m20SoaQCzf+arZvACkLkirlPz" crossorigin="anonymous"></script>
 <script src="data/site_data.js"></script>
-<script src="app.js?v=38"></script>
+<!-- audit.js defines initAuditTab and must precede app.js: app.js runs its
+     init() (and any #audit deep link) synchronously at evaluation time. -->
+<script src="audit.js?v=1"></script>
+<script src="app.js?v=39"></script>
 </body>
 </html>

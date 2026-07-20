@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-19 04:37:06",
+  "generated": "2026-07-20 04:53:27",
   "count": 21,
   "warnings": [
     {
@@ -52,11 +52,7 @@
     },
     {
       "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health [HIGH] stale-count \u2014 Pittsburgh Open: current_count 170 != latest scrape net 157 (2026-07-19)"
-    },
-    {
-      "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health [HIGH] stale-count \u2014 Pacific Coast Open: current_count 133 != latest scrape net 131 (2026-07-19)"
+      "text": "data-health [HIGH] stale-count \u2014 Pacific Coast Open: current_count 146 != latest scrape net 144 (2026-07-20)"
     },
     {
       "step": "Scan prediction data health (data_health.py)",
@@ -81,6 +77,10 @@
     {
       "step": "Scan prediction data health (data_health.py)",
       "text": "data-health [HIGH] stale-count \u2014 Hartford Open: current_count 206 != latest scrape net 198 (2026-06-07)"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health [HIGH] stale-count \u2014 Pittsburgh Open: current_count 170 != latest scrape net 157 (2026-07-19)"
     },
     {
       "step": "Scan prediction data health (data_health.py)",

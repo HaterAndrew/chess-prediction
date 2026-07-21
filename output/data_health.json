@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-20",
-  "scanned_at": "2026-07-20T04:58:33",
+  "generated": "2026-07-21",
+  "scanned_at": "2026-07-21T04:39:28",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 9,
@@ -12,7 +12,7 @@
       "severity": "HIGH",
       "mode": "stale-count",
       "family": "Pacific Coast Open",
-      "message": "current_count 146 != latest scrape net 144 (2026-07-20)"
+      "message": "current_count 153 != latest scrape net 152 (2026-07-21)"
     },
     {
       "severity": "HIGH",
@@ -66,19 +66,19 @@
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Bradley Open",
-      "message": "regular_fee is null with 4 days remaining"
+      "message": "regular_fee is null with 3 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Continental Open",
-      "message": "regular_fee is null with 24 days remaining"
+      "message": "regular_fee is null with 23 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Central California Open",
-      "message": "regular_fee is null with 25 days remaining"
+      "message": "regular_fee is null with 24 days remaining"
     },
     {
       "severity": "INFO",

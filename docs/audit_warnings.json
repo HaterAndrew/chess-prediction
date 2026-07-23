@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-21 04:33:16",
-  "count": 24,
+  "generated": "2026-07-23 04:35:27",
+  "count": 26,
   "warnings": [
     {
       "step": "Refresh tournament summary",
@@ -63,8 +63,16 @@
       "text": "source-parse failure \u2014 World Open top 6 sections 2026: pattern \"World Open, Top 6 Sections\" not found in chesstour.com schedule"
     },
     {
+      "step": "Generate predictions (04d_website_data_v2.py)",
+      "text": "A4 3x-jump backstop fired for tid=4412: point 123 (190) > 3x prior (41); rescaling earlier points x4.63"
+    },
+    {
+      "step": "Generate predictions (04d_website_data_v2.py)",
+      "text": "A4 3x-jump backstop fired for tid=4415: point 122 (184) > 3x prior (47); rescaling earlier points x3.91"
+    },
+    {
       "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health [HIGH] stale-count \u2014 Pacific Coast Open: current_count 153 != latest scrape net 152 (2026-07-21)"
+      "text": "data-health [HIGH] stale-count \u2014 Pacific Coast Open: current_count 185 != latest scrape net 184 (2026-07-23)"
     },
     {
       "step": "Scan prediction data health (data_health.py)",

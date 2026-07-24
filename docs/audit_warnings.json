@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-23 04:35:27",
+  "generated": "2026-07-24 04:34:05",
   "count": 26,
   "warnings": [
     {
@@ -72,7 +72,7 @@
     },
     {
       "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health [HIGH] stale-count \u2014 Pacific Coast Open: current_count 185 != latest scrape net 184 (2026-07-23)"
+      "text": "data-health [HIGH] stale-count \u2014 Pacific Coast Open: current_count 199 != latest scrape net 197 (2026-07-24)"
     },
     {
       "step": "Scan prediction data health (data_health.py)",

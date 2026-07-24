@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-23",
-  "scanned_at": "2026-07-23T04:40:36",
+  "generated": "2026-07-24",
+  "scanned_at": "2026-07-24T04:39:05",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 9,
@@ -12,7 +12,7 @@
       "severity": "HIGH",
       "mode": "stale-count",
       "family": "Pacific Coast Open",
-      "message": "current_count 185 != latest scrape net 184 (2026-07-23)"
+      "message": "current_count 199 != latest scrape net 197 (2026-07-24)"
     },
     {
       "severity": "HIGH",
@@ -72,25 +72,25 @@
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Continental Open",
-      "message": "regular_fee is null with 21 days remaining"
+      "message": "regular_fee is null with 20 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Central California Open",
-      "message": "regular_fee is null with 22 days remaining"
+      "message": "regular_fee is null with 21 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Atlantic Open",
-      "message": "regular_fee is null with 29 days remaining"
+      "message": "regular_fee is null with 28 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Indianapolis Open",
-      "message": "regular_fee is null with 29 days remaining"
+      "message": "regular_fee is null with 28 days remaining"
     },
     {
       "severity": "INFO",

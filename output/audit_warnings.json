@@ -1,18 +1,10 @@
 {
-  "generated": "2026-07-25 15:16:25",
-  "count": 209,
+  "generated": "2026-07-25 13:59:24",
+  "count": 207,
   "warnings": [
     {
       "step": "Refresh tournament summary",
-      "text": "all_registrations.csv export is 124 days old (dated 2026-03-22). Tournaments that opened registration after that date are absent from the roster and will show a flat historical-average estimate with no live entry chart. Re-export from the CCA admin to restore live forecasts."
-    },
-    {
-      "step": "Refresh tournament summary (01_data_prep.py)",
-      "text": "raised final_count for 2 in-progress 2026 event(s) (end_date >= today): 2026 Bradley Open, 2026 Pacific Coast Open. Downstream perf/recalibration scripts must exclude these via is_event_complete."
-    },
-    {
-      "step": "Refresh tournament summary (01_data_prep.py)",
-      "text": "low scrape coverage \u2014 Continental Open 2021: scrape=159/final=393 (ratio=0.40)"
+      "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 tournament roster is frozen; tournaments that opened registration since the last export are invisible to the model and show a flat historical average. Re-export from the CCA admin."
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",

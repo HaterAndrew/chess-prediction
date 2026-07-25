@@ -462,6 +462,15 @@ def main():
         # the family's historical median. Catches truncated snapshots
         # (ACO-2026-style) while admitting events whose daily scraper missed
         # them but whose snapshot looks intact.
+        #
+        # v3 T4 (audit/AUDIT_2026-07-25.md): the 0.60-2.00 band is a weak test
+        # for a freeze — a curve frozen at a plausible-looking total sits inside
+        # it, and 18 of 20 graded finals do. The band alone cannot distinguish
+        # "this family really is that size" from "the export stopped early".
+        # It no longer has to: is_curve_gradeable (T1) is an independent
+        # freshness check on the curve itself, and it runs on every tournament
+        # admitted here before any grade is computed. A soft-accepted event whose
+        # curve is frozen is therefore caught downstream rather than graded.
         reg_captured_into_event = (
             pd.notna(start_date) and lr >= pd.to_datetime(start_date)
         )
@@ -555,9 +564,13 @@ def main():
             for tinfo in test_tournaments:
                 loo_tids = completed_2026_tids - {tinfo['tid']}
                 model = m04c.N5v4_Final()
+                # v3 T5: the LOO fold legitimately trains on the other completed
+                # 2026 events, so withhold only this target's own standings and
+                # enrichment rows rather than cutting the whole year.
                 model.fit(summary, daily, enrichment_lookup,
                           completed_tids=loo_tids if loo_tids else None,
-                          verbose_standings_join=False)
+                          verbose_standings_join=False,
+                          exclude_family_years={(tinfo['family'], 2026)})
                 recal_data = summary[
                     (summary['has_timestamps']) &
                     (~summary['is_online'].fillna(False)) &
@@ -594,8 +607,9 @@ def main():
             # Historical: expanding window — train on < year, predict year
             train_summary = summary[summary['tournament_year'] < year].copy()
             model = m04c.N5v4_Final()
+            # v3 T5: keep the auxiliary joins inside the expanding window too.
             model.fit(train_summary, daily, enrichment_lookup,
-                      verbose_standings_join=False)
+                      verbose_standings_join=False, fold_year=year)
 
             # Recalibrate from the 2 years before the test year
             recal_years = [year - 2, year - 1]

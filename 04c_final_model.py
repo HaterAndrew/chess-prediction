@@ -566,8 +566,22 @@ class N5v4_Final:
         self.family_n_editions = {}  # family -> count of training editions
 
     def fit(self, summary, daily, enrichment_lookup=None, completed_tids=None,
-            verbose_standings_join=True, all_summary_families=None):
+            verbose_standings_join=True, all_summary_families=None,
+            fold_year=None, exclude_family_years=None):
         """Build ratios from completed, non-online, non-covid tournaments.
+
+        fold_year: when set (backtests), every auxiliary source is restricted to
+            strictly earlier years. v3 T5 (audit/AUDIT_2026-07-25.md): the
+            standings and enrichment joins had no fold filter, so an
+            expanding-window fold predicting year Y could still read standings
+            and withdrawal rates from year Y and later — 35 standings rows sit at
+            year >= 2025, and one family's size anchor came entirely from its
+            2026 row. Leave it None in production, where using all completed
+            history is correct.
+        exclude_family_years: optional {(family, year)} withheld from the
+            standings and enrichment joins. The 2026 leave-one-out fold trains on
+            every OTHER completed 2026 event, so a blanket fold_year cut would be
+            wrong there; it withholds just the target's own row instead.
 
         completed_tids: optional set of 2026 tournament tids that have completed.
             If provided, these are included in training (rolling retraining).
@@ -681,6 +695,18 @@ class N5v4_Final:
             from tournament_aliases import STANDINGS_NAME_MAP, validate_standings_join
             standings = pd.read_csv(standings_path)
             standings = standings[standings['total_players'] > 10]
+            # v3 T5: a backtest fold must not see standings from its own target
+            # year or later. Production (fold_year=None) keeps everything.
+            if fold_year is not None and 'year' in standings.columns:
+                before = len(standings)
+                standings = standings[standings['year'] < fold_year]
+                if verbose_standings_join and before != len(standings):
+                    print(f"  Standings restricted to year < {fold_year}: "
+                          f"{before} -> {len(standings)} rows")
+            if exclude_family_years and 'year' in standings.columns:
+                standings = standings[~standings.apply(
+                    lambda r: (r['tournament_name'], int(r['year'])) in exclude_family_years,
+                    axis=1)]
             standings['tournament_name'] = standings['tournament_name'].replace(
                 STANDINGS_NAME_MAP)
             # Surface unmapped names so silent drops become visible.
@@ -714,6 +740,15 @@ class N5v4_Final:
             from collections import defaultdict
             wd_data = defaultdict(list)
             for (fam, yr), info in self.enrichment.items():
+                # v3 T5: same fold restriction as the standings join above.
+                if exclude_family_years and (fam, yr) in exclude_family_years:
+                    continue
+                if fold_year is not None:
+                    try:
+                        if int(yr) >= int(fold_year):
+                            continue
+                    except (TypeError, ValueError):
+                        continue
                 total = info.get('total_entries', 0)
                 wd = info.get('withdrawal_count', 0)
                 if total > 0 and wd > 0 and isinstance(wd, (int, float)):

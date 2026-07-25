@@ -58,6 +58,16 @@ DAILY_GAP_WARN_DAYS = 4
 # the scanner still reports if the two ever drift apart.
 PERF_FROZEN_CURVE_RATIO = 0.60
 
+# Fraction of scraped entries withdrawn that is worth flagging. The published
+# count is gross by design (H13), so this gap never shows on the page.
+#
+# Measured before being set, not guessed: on the 2026-07-25 corpus 12 of 30
+# scraped events carry withdrawals, spanning 0.5% (Bradley, 1 of 207) to 7.6%
+# (Pittsburgh, 13 of 170). 0.10 therefore sits just above the observed ceiling
+# and fires on none of them today, which is what an early warning should do —
+# silent on healthy data, loud on a real change. Re-measure before moving it.
+WITHDRAWAL_GAP_WARN_FRAC = 0.10
+
 # Side events that are intentionally not predicted as standalone tournaments.
 _BLITZ_RE = re.compile(r"Blitz|Rapid|Bullet|Bughouse|Armageddon", re.IGNORECASE)
 
@@ -416,12 +426,25 @@ def scan(data, ctx):
                        f"with {len(hc)} historical editions present")
 
         # Mode 6: card count drifted from the latest scrape.
+        #
+        # Compare gross to gross. `current_count` is the GROSS row count — that
+        # is the published semantic, settled in H13 so the cards, the perf tab
+        # and the grader all quote one number. Checking it against the scrape's
+        # NET count made every event with even one withdrawal fail: nine HIGH
+        # findings on a healthy run, all of them measuring the withdrawal rate
+        # rather than any staleness. A rule that fires on every healthy run
+        # teaches people to skip the whole report, which costs more than the
+        # rule was ever worth.
+        #
+        # The net/gross gap is worth surfacing, but it is a different fact and
+        # is reported below at its own severity.
         if t.get("status") in ("live", "complete"):
             sl = ctx.scrape_latest.get(_canon(fam))
             cc = t.get("current_count")
-            if sl is not None and isinstance(cc, int) and cc != sl["net"]:
+            if sl is not None and isinstance(cc, int) and cc != sl["gross"]:
                 report.add("HIGH", "stale-count", fam,
-                           f"current_count {cc} != latest scrape net {sl['net']} ({sl['date']})")
+                           f"current_count {cc} != latest scrape gross "
+                           f"{sl['gross']} ({sl['date']})")
 
     # ---- MEDIUM ------------------------------------------------------------
 
@@ -440,6 +463,22 @@ def scan(data, ctx):
         if pe == 100 and lo == 70 and hi == 130 and not hc:
             report.add("MEDIUM", "no-history-default", fam,
                        "point_estimate=100 / CI 70-130 with no historical editions")
+
+        # An unusually large withdrawal rate. The cards publish gross counts by
+        # design (H13), so a wide net/gross gap never shows on the page — but a
+        # tenth of the field withdrawing is worth a look, whether it is real
+        # attrition or a double-counted export.
+        #
+        # This is the signal the old stale-count rule was accidentally emitting,
+        # separated out and given a threshold. At >0 it fired on nearly every
+        # event and meant nothing.
+        sl = ctx.scrape_latest.get(_canon(fam))
+        if sl and sl["gross"] > 0:
+            gap = sl["gross"] - sl["net"]
+            if gap > 0 and gap / sl["gross"] > WITHDRAWAL_GAP_WARN_FRAC:
+                report.add("MEDIUM", "large-withdrawal-gap", fam,
+                           f"{gap} of {sl['gross']} scraped entries withdrawn "
+                           f"({gap / sl['gross'] * 100:.0f}%) as of {sl['date']}")
 
         if t.get("status") == "live":
             # Mode 8a: fee unknown for a near event.

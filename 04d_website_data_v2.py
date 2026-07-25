@@ -795,6 +795,43 @@ if os.path.exists(scrape_path):
         wd = int(s.get('withdrawal_count', 0)) if pd.notna(s.get('withdrawal_count')) else 0
         _scrape_lookup[fam] = {'net': net, 'gross': gross, 'wd': wd}
 
+# Consecutive scrape days at 0 entries before a near-event card is relabelled
+# not_tracked (v3 N8). One zero is a scrape hiccup; several in a row is a real
+# cancellation.
+NOT_TRACKED_MIN_ZERO_DAYS = 3
+
+
+def _consecutive_zero_scrape_days(family_name):
+    """How many of the most recent consecutive scrape days show 0 entries.
+
+    Returns a large number when the family has never been scraped at all, since
+    "no scrape rows ever" is genuinely untracked rather than a transient miss.
+    """
+    if not os.path.exists(scrape_path):
+        return NOT_TRACKED_MIN_ZERO_DAYS
+
+    def _strip_year(n):
+        return n[5:] if isinstance(n, str) and n.startswith('2026 ') else n
+
+    ev = scrape[scrape['tournament_name'].apply(_strip_year) == family_name]
+    if len(ev) == 0:
+        return NOT_TRACKED_MIN_ZERO_DAYS
+
+    by_day = {}
+    for _, r in ev.iterrows():
+        cnt = int(r['active_count']) if pd.notna(r.get('active_count')) and r['active_count'] > 0 else int(r['entry_count'])
+        day = pd.to_datetime(r['date']).normalize()
+        by_day[day] = max(by_day.get(day, 0), cnt)
+
+    streak = 0
+    for day in sorted(by_day, reverse=True):
+        if by_day[day] == 0:
+            streak += 1
+        else:
+            break
+    return streak
+
+
 def _scrape_daily_series(family_name, fallback_count):
     """Real [day_index, cumulative_count] entry-bar history for a 2026 event,
     read straight from daily_scrape.csv and matched by family name. Mirrors the
@@ -945,9 +982,27 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
     # low-confidence so the card discloses the degraded mode.
     hist_counts = [h['count'] for h in historical]
     hist_mean = np.mean(hist_counts) if hist_counts else 100
-    # Sanity check: 0 registrations close to event = likely cancelled/not tracked
+    # Sanity check: 0 registrations close to event = likely cancelled/not tracked.
+    #
+    # v3 N8 (audit/AUDIT_2026-07-25.md): this is the same missing-scrape-day
+    # failure class as the incident. A single scrape returning 0 for a live event
+    # is indistinguishable here from a genuinely untracked one, and the card
+    # silently disappeared from the live list. Require the zero to persist across
+    # several consecutive scrape days before relabelling, and say so out loud
+    # when it happens — a real cancellation stays at zero, a scrape hiccup does not.
     if days_remaining < 30 and current_count == 0:
-        status_label = "not_tracked"
+        zero_days = _consecutive_zero_scrape_days(mfamily)
+        if zero_days >= NOT_TRACKED_MIN_ZERO_DAYS:
+            status_label = "not_tracked"
+            print(f"WARNING: relabelling {mfamily} as not_tracked — 0 entries "
+                  f"across {zero_days} consecutive scrape day(s), {days_remaining} "
+                  f"day(s) out.")
+        else:
+            # Not enough evidence to call it untracked; keep it live.
+            status_label = "live"
+            print(f"WARNING: {mfamily} scraped 0 entries {days_remaining} day(s) "
+                  f"out but only {zero_days} consecutive zero-day(s) "
+                  f"(need {NOT_TRACKED_MIN_ZERO_DAYS}); keeping it live.")
     else:
         status_label = "live"
 

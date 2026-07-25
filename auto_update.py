@@ -37,6 +37,8 @@ INDEX_HTML = os.path.join(SITE_DIR, "index.html")
 # The large data consts were externalized out of index.html (L15); the daily
 # build now splices them into this file, so index.html itself stays static.
 SITE_DATA_JS = os.path.join(SITE_DIR, "data", "site_data.js")
+# Raw JSON served by Pages for the Ask Worker (v3 S1).
+SITE_DATA_JSON = os.path.join(SITE_DIR, "data", "website_data.json")
 UPDATE_LOG = os.path.join(OUTPUT_DIR, "update_log.csv")
 
 RUN_TS = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -432,6 +434,16 @@ def step_update_html():
         f.write(new_html)
 
     print(f"  Updated TOURNAMENT_DATA in {SITE_DATA_JS}")
+
+    # v3 S1: publish the raw JSON where GitHub Pages actually serves it. The
+    # Ask Worker's DATA_URL pointed at /chess-prediction/website_data.json, which
+    # 404s — Pages serves docs/, and the data lived only inside site_data.js as a
+    # JS const the Worker cannot parse. Every /ask request therefore failed at
+    # 502. Writing the JSON alongside site_data.js gives the Worker a real
+    # endpoint without teaching it to scrape a JavaScript file.
+    with open(SITE_DATA_JSON, 'w') as f:
+        f.write(json_data)
+    print(f"  Wrote {SITE_DATA_JSON} (Ask Worker data endpoint)")
 
     # Post-write verification: re-read and confirm embedded data matches source
     with open(SITE_DATA_JS, 'r') as f:

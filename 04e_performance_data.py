@@ -668,6 +668,11 @@ def main():
         "grade_detail": ytd.get('grade_detail', ''),
         "aggregate": ytd.get('aggregate', []),
         "tournaments": ytd.get('tournaments', []),
+        # v3 T10: the corpus size the About tab and footer quote. Sourced from
+        # the data instead of the hardcoded "778 tournaments" that had drifted
+        # from the real 781 tids.
+        "n_training_tournaments": int(summary['tid'].nunique()),
+        "n_entry_records": int(daily['daily_regs'].sum()) if 'daily_regs' in daily.columns else None,
         # Multi-year breakdown
         "years": year_results,
         # Cumulative across all years

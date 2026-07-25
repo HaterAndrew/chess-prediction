@@ -55,6 +55,17 @@ DEFAULT_EVENT_START_OFFSET = 2
 # is publishing an interval whose width was calibrated on training data.
 RECAL_MIN_OOS_RECORDS = 5
 RECAL_IN_SAMPLE_WIDENING = 1.15
+
+# Ceiling on the withdrawal-rate correction (v3 N4). Rates above this are capped,
+# not discarded — the previous `if wd_rate < 0.15` turned the correction OFF for
+# the high-withdrawal families that most needed it.
+MAX_WITHDRAWAL_CORRECTION = 0.15
+
+# Ratio-vs-regression divergence handling at long T (v3 N5). Beyond the
+# threshold the blend eases toward the regression and the interval widens,
+# rather than the ratio model being discarded outright at a hard step.
+ENSEMBLE_DIVERGENCE_THRESHOLD = 0.5
+ENSEMBLE_DIVERGENCE_WIDENING = 0.5
 # Typical tournament length in days, used by get_event_info() to estimate a
 # start date from an end-date proxy when metadata is absent. A weekend swiss
 # runs ~3 days; majors carry real metadata so they never hit this fallback.
@@ -536,9 +547,9 @@ class N5v4_Final:
     name = "N5v4_Final"
     # T-dependent ensemble weights (ratio model):
     # T <= 3: 0.80, T <= 7: 0.55, T <= 28: 0.30, T > 28: 0.15
-    # CI calibration was tuned for ratio-only predictions. The ensemble is better-
-    # centered, so ratio-calibrated CIs are too wide. Shrink to restore ~80% coverage.
-    CI_ENSEMBLE_SHRINK = 0.32
+    # (v3 T6: CI_ENSEMBLE_SHRINK = 0.32 used to sit here with zero readers — the
+    # actual shrinkage is the T-dependent table in fit(). Removed rather than
+    # left to imply a knob that does nothing.)
     # CI widening multipliers for families with few training editions.
     # 0-edition families use size-matched fallback which is inherently noisy;
     # 1-edition families have a single ratio data point per T.
@@ -729,6 +740,14 @@ class N5v4_Final:
         # T-dependent CI shrinkage: less shrinkage at long T (more uncertainty),
         # more shrinkage at short T (ratios converge toward 1.0)
         for T in self.ci_scale:
+            # v3 T6 (audit/AUDIT_2026-07-25.md): this table used to dip — 0.42 in
+            # the 10<=T<28 band but 0.40 in 7<=T<10 — so shrinkage briefly went
+            # DOWN as the event got closer, against the stated rationale (ratios
+            # converge toward 1.0 near the event, so shrinkage should rise
+            # monotonically). The About-page table at index.html already rendered
+            # it as a clean 0.33 -> 0.75 ramp, hiding the dip from readers.
+            # Straightened to 0.42 so the sequence is monotone and matches what
+            # the page claims.
             if T >= 60:
                 shrink = 0.33
             elif T >= 28:
@@ -736,7 +755,7 @@ class N5v4_Final:
             elif T >= 10:
                 shrink = 0.42
             elif T >= 7:
-                shrink = 0.40
+                shrink = 0.42
             elif T >= 5:
                 shrink = 0.50
             else:
@@ -1123,17 +1142,22 @@ class N5v4_Final:
         # Exempt blitz events — they have legitimately high short-T ratios
         if not use_family and not is_blitz:
             if days_remaining <= 7:
-                med = min(med, 2.0)
-                lo_r = min(lo_r, 1.5)
-                hi_r = min(hi_r, 3.0)
+                cap_med, cap_lo_r, cap_hi_r = 2.0, 1.5, 3.0
             elif days_remaining <= 28:
-                med = min(med, 5.0)
-                lo_r = min(lo_r, 3.0)
-                hi_r = min(hi_r, 8.0)
+                cap_med, cap_lo_r, cap_hi_r = 5.0, 3.0, 8.0
             else:
-                med = min(med, 15.0)
-                lo_r = min(lo_r, 10.0)
-                hi_r = min(hi_r, 25.0)
+                cap_med, cap_lo_r, cap_hi_r = 15.0, 10.0, 25.0
+            # v3 N6: the cap used to bind silently, so a genuinely high-growth
+            # family on the size-matched fallback was quietly held down with no
+            # trace in the output. Count it — a family that keeps hitting the cap
+            # is one whose own ratios should be fitted instead of borrowed.
+            if med > cap_med:
+                self._ratio_cap_hits = getattr(self, '_ratio_cap_hits', 0) + 1
+                self._ratio_cap_families = getattr(self, '_ratio_cap_families', set())
+                self._ratio_cap_families.add(family)
+            med = min(med, cap_med)
+            lo_r = min(lo_r, cap_lo_r)
+            hi_r = min(hi_r, cap_hi_r)
 
         # Late-surge damping: these events get most registrations in last 1-3 days
         # Standard ratios over-extrapolate because early registration is very sparse
@@ -1228,12 +1252,29 @@ class N5v4_Final:
                 w = 0.15  # more regression weight at long T
             ratio_point = point
             point = w * point + (1 - w) * reg_pred
-            # At long T, ratio model has high variance — if it diverges
-            # too much from regression, trust regression only
+            # At long T the ratio model has high variance, so a large divergence
+            # from the regression is a signal to lean on the regression.
+            #
+            # v3 N5 (audit/AUDIT_2026-07-25.md): this used to DISCARD the ratio
+            # model outright (`point = reg_pred`) the moment divergence crossed
+            # 50%. Two models disagreeing is evidence that neither is confident,
+            # not evidence that one is right — and the hard swap put a
+            # discontinuity in the output at exactly the 50% line. Shift the
+            # blend toward the regression instead, and widen the interval to
+            # reflect the disagreement rather than hiding it.
             if days_remaining >= 60:
                 ratio_diff = abs(ratio_point - reg_pred) / max(reg_pred, 1)
-                if ratio_diff > 0.5:
-                    point = reg_pred
+                if ratio_diff > ENSEMBLE_DIVERGENCE_THRESHOLD:
+                    # Fully weight regression at 2x the threshold, easing in from
+                    # the threshold itself so there is no step in the output.
+                    excess = ratio_diff - ENSEMBLE_DIVERGENCE_THRESHOLD
+                    shift = min(1.0, excess / ENSEMBLE_DIVERGENCE_THRESHOLD)
+                    point = point * (1 - shift) + reg_pred * shift
+                    # Disagreement is real uncertainty: widen proportionally to it.
+                    widen = 1.0 + min(ratio_diff, 1.0) * ENSEMBLE_DIVERGENCE_WIDENING
+                    half_lo = (point - low) * widen
+                    half_hi = (high - point) * widen
+                    low, high = point - half_lo, point + half_hi
 
         # (YoY pacing tested: hurt MAPE in all configs. Ratio model already
         # captures count-level info; pacing adds noise from timing variability.)
@@ -1255,6 +1296,11 @@ class N5v4_Final:
         if any(np.isnan(x) for x in (point, low, high)):
             print(f"WARNING: NaN in prediction interval (point={point}, low={low}, "
                   f"high={high}); collapsing to current_count={current_count}")
+            # v3 N12: give this its own tier bucket. The collapse used to be
+            # counted under whichever tier the prediction had reached, so a run
+            # producing degraded point-mass intervals looked, in the tier tally,
+            # exactly like a run of healthy predictions.
+            record_tier('guard-nan')
             return current_count, current_count, current_count
 
         # Growth trend adjustment: shift prediction for growing/declining families
@@ -1290,9 +1336,16 @@ class N5v4_Final:
             low = point - ci_half_width
             high = point + ci_half_width
 
-        # Withdrawal rate correction: reduce prediction by expected withdrawal %
+        # Withdrawal rate correction: reduce prediction by expected withdrawal %.
+        # v3 N4 (audit/AUDIT_2026-07-25.md): the comment said "cap at 15%" but
+        # the condition `wd_rate < 0.15` DISABLED the correction above the
+        # threshold instead of capping it. A family at 14.9% withdrawals got the
+        # full correction; one at 15.1% — withdrawing more — got none at all, a
+        # discontinuity that moved the estimate the wrong way exactly where the
+        # correction matters most. Cap the rate, as intended.
         wd_rate = self.family_withdrawal_rates.get(family, 0.0)
-        if wd_rate > 0 and wd_rate < 0.15:  # sanity cap at 15%
+        if wd_rate > 0:
+            wd_rate = min(wd_rate, MAX_WITHDRAWAL_CORRECTION)
             point *= (1 - wd_rate)
             low *= (1 - wd_rate)
             high *= (1 - wd_rate)
@@ -1310,8 +1363,15 @@ class N5v4_Final:
                     point *= feat_adj
                     low *= feat_adj
                     high *= feat_adj
-            except (ValueError, TypeError):
-                pass
+            except (ValueError, TypeError) as e:
+                # v3 N11: this used to be a bare `pass`. A broken feature
+                # pipeline then degraded every prediction silently — the
+                # day-of-week, holiday and early-bird adjustments would stop
+                # applying with nothing anywhere to say so. Surface it; the
+                # prediction still proceeds unadjusted.
+                print(f"WARNING: feature adjustment failed for {family} "
+                      f"(T-{days_remaining}): {type(e).__name__}: {e}; "
+                      f"prediction continues without feature corrections.")
 
         return _predict_nowcast_ci_tail(
             self, point, low, high,

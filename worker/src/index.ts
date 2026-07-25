@@ -115,7 +115,16 @@ function corsPreflight(env: Env, request: Request): Response {
 // takes the live worker down on deploy, and it can't be exercised without
 // `wrangler dev` + a deployed DO.
 async function checkRateLimit(env: Env, ip: string): Promise<{ ok: boolean; retryAfter?: number }> {
-  if (!env.KV) return { ok: true };
+  // v3 S3: fail CLOSED when the KV binding is missing. This used to return
+  // ok:true, so a KV outage, a renamed binding or a botched deploy silently
+  // removed the rate limit and the daily budget at the same time — the two
+  // controls that bound Anthropic spend — while the endpoint kept serving. An
+  // unavailable limiter means the request cannot be shown to be within limits,
+  // and for a paid upstream that has to read as "no".
+  if (!env.KV) {
+    console.error('KV binding unavailable — refusing request (rate limit cannot be enforced)');
+    return { ok: false, retryAfter: 30 };
+  }
   const limit = parseInt(env.RATE_LIMIT_PER_MIN, 10) || 20;
   const bucket = Math.floor(Date.now() / 60_000);
   const key = `rl:${ip}:${bucket}`;
@@ -134,7 +143,13 @@ const DEFAULT_DAILY_BUDGET_USD = 1;
 async function checkDailyBudget(env: Env): Promise<{ ok: boolean; spent: number; cap: number }> {
   const parsed = parseFloat(env.DAILY_BUDGET_USD);
   const cap = Number.isFinite(parsed) ? parsed : DEFAULT_DAILY_BUDGET_USD;
-  if (!env.KV) return { ok: true, spent: 0, cap };
+  // v3 S3: fail closed for the same reason as checkRateLimit. Without KV the
+  // spend counter cannot be read OR written, so every request would look like
+  // the first one of the day and the cap would never bind.
+  if (!env.KV) {
+    console.error('KV binding unavailable — refusing request (daily budget cannot be enforced)');
+    return { ok: false, spent: 0, cap };
+  }
   const day = new Date().toISOString().slice(0, 10);
   const raw = await env.KV.get(`cost:${day}`);
   const spent = raw ? parseFloat(raw) : 0;
@@ -338,11 +353,29 @@ async function runAgentLoop(
 const CCA_TOURLIST_URL = "https://www.chessaction.com/ajaxFrontGetTourListNew.php";
 const CCA_VENDOR_ID = "3";
 
+/**
+ * Constant-time string comparison (v3 S6).
+ *
+ * `!==` on a secret returns as soon as it hits a differing byte, so response
+ * time leaks how many leading characters were correct and the key can be
+ * recovered a character at a time. The XOR-accumulate form always walks the
+ * full length. Comparing lengths first would reintroduce a leak, so the length
+ * difference is folded into the accumulator instead.
+ */
+function timingSafeEqual(a: string, b: string): boolean {
+  const len = Math.max(a.length, b.length);
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < len; i++) {
+    diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
+  }
+  return diff === 0;
+}
+
 async function proxyCcaTourList(env: Env, request: Request): Promise<Response> {
   const expected = env.CCA_PROXY_KEY;
   const provided = request.headers.get("X-Proxy-Key");
   // Require the secret to be configured AND matched. Fail closed.
-  if (!expected || provided !== expected) {
+  if (!expected || !provided || !timingSafeEqual(provided, expected)) {
     return new Response("Forbidden", { status: 403 });
   }
 

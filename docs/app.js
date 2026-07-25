@@ -2973,14 +2973,14 @@ function renderChart(t) {
     }
     datasets.push({
       label: 'CI Upper', data: ciUp,
-      borderColor: 'transparent',
-      backgroundColor: 'rgba(240,192,64,0.08)',
+      borderColor: themeRgba(PALETTE.gold, 0.22), borderWidth: 1,
+      backgroundColor: themeRgba(PALETTE.gold, 0.12),
       fill: '+1', pointRadius: 0, tension: 0.3, order: 5
     });
     datasets.push({
       label: 'CI Lower', data: ciLo,
-      borderColor: 'transparent',
-      backgroundColor: 'rgba(240,192,64,0.08)',
+      borderColor: themeRgba(PALETTE.gold, 0.22), borderWidth: 1,
+      backgroundColor: themeRgba(PALETTE.gold, 0.12),
       pointRadius: 0, tension: 0.3, order: 5
     });
   }
@@ -3185,6 +3185,9 @@ function renderChart(t) {
   // independently, so datasets with different date ranges align correctly.
   // Only includes a dataset if the hovered x falls within its data range
   // (with a small pixel margin), preventing stale endpoint matches.
+  // Chart.js ignores prefers-reduced-motion on its own; disable animation for
+  // every chart in the page (reload-only, no matchMedia listener).
+  if (_reduceMotion()) Chart.defaults.animation = false;
   if (!Chart.Interaction.modes.xAligned) {
     Chart.Interaction.modes.xAligned = function(chart2, e, options, useFinalPosition) {
       const items = [];
@@ -3412,7 +3415,10 @@ function renderChart(t) {
           // Extend the axis 5 days past event day so the finals-marker dot for
           // each historical year has visible space and is clearly separate
           // from the chart's data region (the day-of / post-event surge).
-          max: t.event_start ? addDays(new Date(t.event_start + 'T00:00:00'), 5) : undefined,
+          // addDays takes a YYYY-MM-DD string; passing a Date produced NaN and
+          // silently dropped the right headroom (year-final dots sat clipped
+          // on the chart border).
+          max: t.event_start ? addDays(t.event_start, 5) : undefined,
           grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false },
           ticks: { color: PALETTE.muted, font: { size: 11 }, maxRotation: 0 }
         },

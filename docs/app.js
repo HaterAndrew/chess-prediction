@@ -4670,6 +4670,20 @@ function renderModelHealth() {
     updated.textContent = ts ? 'Pipeline last ran ' + ts : '';
   }
 
+  // v3 T10: the footer corpus size comes from the data too. It was hardcoded as
+  // "778 tournaments" and had drifted from the real 781.
+  if (typeof PERFORMANCE_DATA !== 'undefined' && PERFORMANCE_DATA) {
+    const tc = document.getElementById('footerTournamentCount');
+    if (tc && PERFORMANCE_DATA.n_training_tournaments) {
+      tc.textContent = PERFORMANCE_DATA.n_training_tournaments.toLocaleString();
+    }
+    const er = document.getElementById('footerEntryRecords');
+    if (er && PERFORMANCE_DATA.n_entry_records) {
+      const n = PERFORMANCE_DATA.n_entry_records;
+      er.textContent = n >= 1000 ? Math.round(n / 1000) + 'K' : String(n);
+    }
+  }
+
   // K1/L2: single-source the "How We Tested It" prose numbers from
   // PERFORMANCE_DATA so they can never drift from the graded truth. Cumulative
   // T-14 drives the headline; cumulative T-3 the close-in coverage caveat.

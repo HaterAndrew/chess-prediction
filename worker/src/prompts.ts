@@ -28,7 +28,7 @@ Key fields on each tournament record:
 - \`days_remaining\` = days until event_start
 - \`early_bird_fee\`, \`regular_fee\`, \`onsite_fee\`, \`early_bird_deadline\`
 - \`historical\` = array of \`{year, count, family}\` for prior editions of the same family
-- \`daily_data\` = array of \`[days_before_event, cumulative_count]\` pairs — the live registration curve
+- \`daily_data\` = array of \`[day_from_start, cumulative_count]\` pairs — the live registration curve. \`day_from_start\` counts UP from the first scrape (0 = earliest point), it is NOT days-before-event. \`daily_start_date\` gives the calendar date of day 0, so a point's date is \`daily_start_date + day_from_start\`. Days may be missing where a scrape failed, so never assume consecutive entries are one day apart.
 - \`prior_year_pace\` = comparison snapshot vs the same days-out point last year
 
 # What David typically cares about

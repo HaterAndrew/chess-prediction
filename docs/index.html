@@ -10,26 +10,18 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#f0c040">
-<script>
-// Splash is first-visit-only. Flag the root before paint so repeat visits and
-// deep-linked (#tab) loads skip it with no flash (CSS hides splash + reveals
-// main content for .splash-skip). See L6.
-try {
-  var _deep = location.hash && location.hash.length > 1;
-  var _seen = localStorage.getItem('cep:splash:seen') === '1';
-  if (_deep || _seen) document.documentElement.classList.add('splash-skip');
-} catch (e) {}
-</script>
+<!-- Render-blocking on purpose: the splash classification must land before the
+     first paint. Must not gain defer/async. See docs/boot.js. -->
+<script src="boot.js?v=1"></script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CCA Predictor">
 <meta name="format-detection" content="telephone=no">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://*.workers.dev">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://chess-ask.hater-andrewd.workers.dev">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="styles.css?v=28">
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}</script>
 </head>
 <body>
 
@@ -882,7 +874,7 @@ try {
 
 <footer role="contentinfo">
   <div class="container">
-    <div style="margin-bottom:6px">CCA Entry Predictor &middot; Built on 192K entry records across 778 tournaments &middot; 15 years of data</div>
+    <div style="margin-bottom:6px">CCA Entry Predictor &middot; Built on <span id="footerEntryRecords">&mdash;</span> entry records across <span id="footerTournamentCount">&mdash;</span> tournaments &middot; 15 years of data</div>
     <div>Ensemble Model (N5v4) &middot; <span id="mc-ci-cover-footer">75%</span> CI coverage at 2 wks &middot; Blind-tested on 2023–2026 data &middot; Data from <a href="https://www.chessaction.com" target="_blank" rel="noopener">chessaction.com</a></div>
     <div style="margin-top:8px;font-size:.65rem;opacity:.5">
       <span class="kbd-hint">&larr;</span> <span class="kbd-hint">&rarr;</span> navigate tournaments &middot;

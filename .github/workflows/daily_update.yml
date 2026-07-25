@@ -65,7 +65,7 @@ jobs:
           # externalization — the build writes it, so it MUST be committed or the
           # deployed data goes stale. output/data_health.json + audit/data-health
           # persist the freshness scan (H1) instead of expiring with the run log.
-          git add output/daily_scrape.csv output/website_data.json output/daily_puzzles.json output/performance_data.json docs/index.html docs/data/site_data.js docs/audit_warnings.json output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv output/tournament_metadata.csv output/walk_in_family_stats.csv output/walk_in_multipliers.csv output/tournament_summary.csv output/daily_registration_counts.csv output/update_log.csv output/checksums.json output/audit_warnings.json output/data_health.json output/scrape_health.json
+          git add output/daily_scrape.csv output/website_data.json output/daily_puzzles.json output/performance_data.json docs/index.html docs/data/site_data.js docs/data/website_data.json docs/audit_warnings.json output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv output/tournament_metadata.csv output/walk_in_family_stats.csv output/walk_in_multipliers.csv output/tournament_summary.csv output/daily_registration_counts.csv output/update_log.csv output/checksums.json output/audit_warnings.json output/data_health.json output/scrape_health.json
           git add audit/data-health/ 2>/dev/null || true
           git diff --cached --quiet || git commit -m "Daily update: $(date +%Y-%m-%d)"
           git pull --rebase || git pull --no-rebase
@@ -152,10 +152,52 @@ jobs:
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
         with:
           script: |
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `Pipeline failure: ${context.workflow} — ${new Date().toISOString().split('T')[0]}`,
-              body: `## Pipeline Failure\n\n- **Workflow**: ${context.workflow}\n- **Run**: ${context.runNumber}\n- **URL**: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n- **Triggered**: ${context.eventName}\n\nPlease investigate.`,
-              labels: ['bug', 'pipeline']
+            // v3 O4: reuse the open pipeline issue instead of filing a new one
+            // every night. Consecutive failures used to leave a trail of
+            // separate issues (#12, #13, #14 all open at once), which buried the
+            // signal that it was one ongoing outage rather than three faults.
+            const common = { owner: context.repo.owner, repo: context.repo.repo };
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const today = new Date().toISOString().split('T')[0];
+            const open = await github.rest.issues.listForRepo({
+              ...common, state: 'open', labels: 'pipeline', per_page: 10,
             });
+            const body = `Run ${context.runNumber} failed on ${today}.\n\n- **Workflow**: ${context.workflow}\n- **URL**: ${runUrl}\n- **Triggered**: ${context.eventName}`;
+            if (open.data.length > 0) {
+              const issue = open.data[0];
+              await github.rest.issues.createComment({
+                ...common, issue_number: issue.number,
+                body: `Still failing.\n\n${body}`,
+              });
+              core.info(`Commented on existing pipeline issue #${issue.number}`);
+            } else {
+              await github.rest.issues.create({
+                ...common,
+                title: `Pipeline failure: ${context.workflow} — ${today}`,
+                body: `## Pipeline Failure\n\n${body}\n\nThis issue stays open and collects a comment per consecutive failure. It closes automatically on the next successful run.`,
+                labels: ['bug', 'pipeline'],
+              });
+              core.info('Opened a new pipeline issue');
+            }
+
+      # v3 O4: close the loop. Without this the failure issues never resolved,
+      # so an open 'pipeline' issue said nothing about current health.
+      - name: Close pipeline issues on recovery
+        if: success()
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
+        with:
+          script: |
+            const common = { owner: context.repo.owner, repo: context.repo.repo };
+            const open = await github.rest.issues.listForRepo({
+              ...common, state: 'open', labels: 'pipeline', per_page: 20,
+            });
+            for (const issue of open.data) {
+              await github.rest.issues.createComment({
+                ...common, issue_number: issue.number,
+                body: `Recovered: run ${context.runNumber} completed successfully on ${new Date().toISOString().split('T')[0]}.`,
+              });
+              await github.rest.issues.update({
+                ...common, issue_number: issue.number, state: 'closed',
+              });
+              core.info(`Closed pipeline issue #${issue.number}`);
+            }

@@ -357,12 +357,23 @@ if _rebased_tids and _scrape_for_extension is not None:
             daily_counts[~daily_counts['tid'].isin(_rebased_tids)],
             combined,
         ], ignore_index=True)
-        # Recompute cum_pct using reconciled final_count as the tournament total
+        # Recompute cum_pct using reconciled final_count as the tournament total.
+        # v3 N7 (audit/AUDIT_2026-07-25.md): this recompute used to run over the
+        # WHOLE frame, so rebasing a single tournament re-normalised every other
+        # template curve in the dataset against whatever final_count happened to
+        # be in summary at the time. Scope it to the tids actually rebased; the
+        # rest keep the cum_pct they were built with.
         finals = summary.set_index('tid')['final_count']
-        daily_counts['cum_pct'] = daily_counts.apply(
-            lambda r: r['cum_regs'] / finals[r['tid']] if r['tid'] in finals.index and finals[r['tid']] > 0 else 0.0,
-            axis=1,
-        )
+        _rebased_mask = daily_counts['tid'].isin(_rebased_tids)
+
+        def _cum_pct(r):
+            tid = r['tid']
+            if tid in finals.index and finals[tid] > 0:
+                return r['cum_regs'] / finals[tid]
+            return 0.0
+
+        daily_counts.loc[_rebased_mask, 'cum_pct'] = daily_counts[_rebased_mask].apply(
+            _cum_pct, axis=1)
         added = sum(1 for _ in extension_rows)
         print(f"  Injected {added} scrape rows; combined curves now span "
               f"T=[{combined['T'].min()}..{combined['T'].max()}]")

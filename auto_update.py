@@ -39,7 +39,11 @@ INDEX_HTML = os.path.join(SITE_DIR, "index.html")
 # The large data consts were externalized out of index.html (L15); the daily
 # build now splices them into this file, so index.html itself stays static.
 SITE_DATA_JS = os.path.join(SITE_DIR, "data", "site_data.js")
-# Raw JSON served by Pages for the Ask Worker (v3 S1).
+# Raw JSON served by Pages for the Ask Worker (v3 S1). Kept for callers that
+# want the default location; step_update_html derives its own from SITE_DIR at
+# write time so redirecting SITE_DIR redirects the write too. A module constant
+# frozen at import cannot be redirected, and that is how a test ended up
+# overwriting the published endpoint.
 SITE_DATA_JSON = os.path.join(SITE_DIR, "data", "website_data.json")
 UPDATE_LOG = os.path.join(OUTPUT_DIR, "update_log.csv")
 
@@ -468,9 +472,20 @@ def step_update_html():
     # JS const the Worker cannot parse. Every /ask request therefore failed at
     # 502. Writing the JSON alongside site_data.js gives the Worker a real
     # endpoint without teaching it to scrape a JavaScript file.
-    with open(SITE_DATA_JSON, 'w') as f:
+    # Derived here rather than read from the module constant so that redirecting
+    # SITE_DIR actually redirects this write. SITE_DATA_JSON is computed at
+    # import from the real SITE_DIR, so a test that monkeypatches SITE_DIR still
+    # wrote here — to the published file. tests/test_site_data_build.py did
+    # exactly that, and left a two-tournament stub
+    # ({"generated": "2026-07-07", ... "family": "X"}) sitting in
+    # docs/data/website_data.json, which is the endpoint the Ask Worker fetches.
+    # The file is untracked, so it would have been committed in that state.
+    # Its own fixture comment warns about this class of bug; S1 reintroduced it
+    # through a constant the fixture did not know to patch.
+    site_data_json = os.path.join(SITE_DIR, "data", "website_data.json")
+    with open(site_data_json, 'w') as f:
         f.write(json_data)
-    print(f"  Wrote {SITE_DATA_JSON} (Ask Worker data endpoint)")
+    print(f"  Wrote {site_data_json} (Ask Worker data endpoint)")
 
     _stamp_site_data_version(json_data)
 

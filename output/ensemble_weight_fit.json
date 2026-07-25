@@ -1,0 +1,101 @@
+{
+  "grid": [
+    0.0,
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9,
+    1.0
+  ],
+  "nested": [
+    {
+      "held_out": 2024,
+      "T": 14,
+      "hand_mae": 10.67,
+      "fitted_mae": 11.29,
+      "delta": 0.62,
+      "n": 39,
+      "fitted_weights": [
+        0.5,
+        0.4,
+        0.2,
+        0.1
+      ]
+    },
+    {
+      "held_out": 2024,
+      "T": 7,
+      "hand_mae": 7.83,
+      "fitted_mae": 8.39,
+      "delta": 0.56,
+      "n": 39,
+      "fitted_weights": [
+        0.5,
+        0.4,
+        0.2,
+        0.1
+      ]
+    },
+    {
+      "held_out": 2024,
+      "T": 3,
+      "hand_mae": 7.04,
+      "fitted_mae": 7.3,
+      "delta": 0.26,
+      "n": 39,
+      "fitted_weights": [
+        0.5,
+        0.4,
+        0.2,
+        0.1
+      ]
+    },
+    {
+      "held_out": 2025,
+      "T": 14,
+      "hand_mae": 9.47,
+      "fitted_mae": 9.47,
+      "delta": 0.0,
+      "n": 41,
+      "fitted_weights": [
+        0.7,
+        0.5,
+        0.3,
+        0.1
+      ]
+    },
+    {
+      "held_out": 2025,
+      "T": 7,
+      "hand_mae": 7.98,
+      "fitted_mae": 7.93,
+      "delta": -0.05,
+      "n": 40,
+      "fitted_weights": [
+        0.7,
+        0.5,
+        0.3,
+        0.1
+      ]
+    },
+    {
+      "held_out": 2025,
+      "T": 3,
+      "hand_mae": 11.31,
+      "fitted_mae": 10.67,
+      "delta": -0.64,
+      "n": 40,
+      "fitted_weights": [
+        0.7,
+        0.5,
+        0.3,
+        0.1
+      ]
+    }
+  ]
+}

@@ -1,3 +1,11 @@
+// v3 P6 (audit/AUDIT_2026-07-25.md): the `daily_data` bullet below used to
+// describe the axis backwards, as [days_before_event, count]. The assistant
+// read every registration curve in reverse, and nothing surfaced the error — a
+// reversed curve still plots and still reads as a plausible answer. The axis
+// direction, the anchor date (`daily_start_date`) and the warning that days can
+// be missing all have to stay stated there; the model has no other source for
+// them. Keep any note about this OUT of the returned template literal, or it
+// ships to the model as prompt text.
 export function systemPrompt(opts: {
   index: string;
   generated: string;

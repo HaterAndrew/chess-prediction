@@ -46,6 +46,11 @@ AUDIT_DIR = os.path.join(PROJECT_DIR, "audit", "data-health")
 
 SEVERITIES = ["CRITICAL", "HIGH", "MEDIUM", "INFO"]
 
+# Gap (in days) between the last two chart points that counts as "large" for the
+# daily-large-recent-gap early warning (v3 Q3). A scrape runs nightly, so a gap
+# beyond a long weekend means scrape days were missed.
+DAILY_GAP_WARN_DAYS = 4
+
 # Side events that are intentionally not predicted as standalone tournaments.
 _BLITZ_RE = re.compile(r"Blitz|Rapid|Bullet|Bughouse|Armageddon", re.IGNORECASE)
 
@@ -282,6 +287,51 @@ def scan(data, ctx):
             report.add("CRITICAL", "frozen-estimate", t.get("family", "?"),
                        f"estimate stuck at {next(iter(ests))} across {len(seq)} runs "
                        f"while entries rose {min(counts)}->{max(counts)}")
+
+    # Modes daily-*: chart-series integrity (v3 Q1/Q3, audit/AUDIT_2026-07-25.md).
+    # The 2026-07-25 incident shipped a Bradley Open curve topping out at 625
+    # against a real count of 197 and passed this scanner clean, because the only
+    # daily_data check here was the single-point INFO stub below. These rules
+    # mirror build_chart_series's post-build invariant so a misassembled curve is
+    # caught at commit time instead of on the public site.
+    for t in live_complete:
+        fam = t.get("family", "?")
+        series = t.get("daily_data") or []
+        pts = [p for p in series if isinstance(p, (list, tuple)) and len(p) >= 2]
+        if not pts:
+            continue
+        counts = [p[1] for p in pts]
+        days = [p[0] for p in pts]
+
+        # A live card's cumulative curve can never exceed the entries scraped.
+        cc = t.get("current_count")
+        if t.get("status") == "live" and isinstance(cc, int) and max(counts) > cc:
+            report.add("CRITICAL", "daily-max-exceeds-count", fam,
+                       f"daily_data max {max(counts)} > current_count {cc} "
+                       f"— chart series is misanchored")
+
+        # Cumulative totals cannot fall.
+        drops = [(days[i - 1], counts[i - 1], days[i], counts[i])
+                 for i in range(1, len(counts)) if counts[i] < counts[i - 1]]
+        if drops:
+            d0, c0, d1, c1 = drops[0]
+            report.add("HIGH", "daily-non-monotone", fam,
+                       f"cumulative count falls {c0}->{c1} between day {d0} and "
+                       f"{d1} ({len(drops)} drop(s))")
+
+        # Day indices must be unique and non-negative.
+        if len(set(days)) != len(days) or any(d < 0 for d in days):
+            report.add("HIGH", "daily-dup-neg-index", fam,
+                       f"day indices not unique/non-negative: {days[:12]}")
+
+        # Q3: a large gap immediately before the tail is the precondition that let
+        # the A4 rescale fire. Surface it before it corrupts a curve.
+        if len(days) >= 2:
+            tail_gap = days[-1] - days[-2]
+            if tail_gap > DAILY_GAP_WARN_DAYS:
+                report.add("MEDIUM", "daily-large-recent-gap", fam,
+                           f"{tail_gap}-day gap before the final chart point "
+                           f"(day {days[-2]} -> {days[-1]})")
 
     # ---- HIGH --------------------------------------------------------------
 

@@ -299,12 +299,19 @@ def step_performance():
 
 def step_data_health():
     """Scan the prediction output (website_data.json) for degraded tournament
-    cards — frozen estimates, collapsed charts, name/roster mismatches, alias
-    mislabels, missing fees, etc. Read-only and non-blocking; CRITICAL/HIGH
+    cards — frozen estimates, collapsed charts, misassembled daily curves,
+    name/roster mismatches, alias mislabels, missing fees, etc. CRITICAL/HIGH
     findings print WARNING: lines that _harvest_warnings folds into
-    audit_warnings.json (and the CI step summary)."""
+    audit_warnings.json (and the CI step summary).
+
+    Runs with --strict (v3 Q1, audit/AUDIT_2026-07-25.md): the scanner exits 1
+    on any CRITICAL finding and run_step aborts the pipeline. Before this, the
+    scan was advisory-only, so the 2026-07-25 corrupted-curve incident was free
+    to reach the published site. A CRITICAL here means the output is not fit to
+    publish — better to serve yesterday's data behind a stale banner (the flag
+    O1 now guarantees) than today's fabricated numbers."""
     run_step("Scan prediction data health (data_health.py)",
-             [sys.executable, "data_health.py"])
+             [sys.executable, "data_health.py", "--strict"])
 
 
 def step_update_html():
@@ -517,6 +524,18 @@ def step_log_run():
     print(f"  Logged {lines_logged} predictions to {UPDATE_LOG}")
 
 
+def _atomic_write_json(path, data):
+    """Write JSON via a temp file + os.replace so a crash mid-write can never
+    leave a truncated website_data.json on disk. The degraded-state stamp runs
+    from an exception handler, often while the machine is already unhappy, and a
+    half-written data file would take the site down entirely rather than just
+    showing a stale banner."""
+    tmp = f"{path}.tmp"
+    with open(tmp, 'w') as f:
+        json.dump(data, f, indent=2)
+    os.replace(tmp, path)
+
+
 def _stamp_stale_flag(is_stale):
     """Add/update last_updated and is_stale fields in website_data.json.
 
@@ -532,12 +551,72 @@ def _stamp_stale_flag(is_stale):
 
     data['last_updated'] = RUN_TS
     data['is_stale'] = is_stale
+    # A successful run clears any degraded marker left by a previous failure.
+    if not is_stale:
+        data.pop('pipeline_degraded', None)
+        data.pop('degraded_reason', None)
+        data.pop('degraded_at', None)
 
-    with open(WEBSITE_JSON, 'w') as f:
-        json.dump(data, f, indent=2)
+    _atomic_write_json(WEBSITE_JSON, data)
 
     flag = "STALE" if is_stale else "FRESH"
     print(f"  Stamped website_data.json — is_stale={is_stale} ({flag}), last_updated={RUN_TS}")
+
+
+def mark_pipeline_degraded(reason, website_json=None):
+    """Stamp the published data as stale after a mid-run pipeline failure.
+
+    v3 O1 (audit/AUDIT_2026-07-25.md). The daily run regenerates
+    website_data.json early (04d) and only stamps freshness late, so a crash in
+    between leaves a half-built file on disk carrying the PREVIOUS run's
+    `is_stale: false`. The site then presents whatever survived as current data.
+
+    This marks the failure honestly:
+      * is_stale = True and pipeline_degraded = True, so app.js's staleness gate
+        fires and the banner renders;
+      * degraded_reason records what failed, for the health dashboard;
+      * last_updated is NOT advanced — the data genuinely is not from this run,
+        and moving the timestamp would relabel stale numbers as fresh.
+
+    Then re-splices site_data.js so the flag actually reaches the browser (the
+    page reads site_data.js, not website_data.json).
+
+    Returns True if the flag was written. Never raises on a missing file: this
+    runs from an exception handler and must not mask the original failure.
+    """
+    path = website_json or WEBSITE_JSON
+    if not os.path.exists(path):
+        print(f"  WARNING: {path} not found — cannot mark degraded state")
+        return False
+
+    with open(path, 'r') as f:
+        data = json.load(f)
+
+    data['is_stale'] = True
+    data['pipeline_degraded'] = True
+    data['degraded_reason'] = str(reason)[:300]
+    data['degraded_at'] = RUN_TS
+
+    _atomic_write_json(path, data)
+    print(f"  Stamped DEGRADED — is_stale=True, reason={str(reason)[:120]}")
+
+    # Push the flag through to the file the browser actually loads.
+    try:
+        step_update_html()
+        print("  Re-spliced site_data.js with the degraded flag")
+    except Exception as e:
+        print(f"  WARNING: could not re-splice site_data.js: {e}")
+
+    # Persist the warning trail even though the run is aborting.
+    _PIPELINE_WARNINGS.append({
+        'step': 'PIPELINE FAILURE',
+        'text': f'Run aborted; serving last-known data behind a stale banner. Reason: {reason}',
+    })
+    try:
+        write_audit_warnings()
+    except Exception as e:
+        print(f"  WARNING: could not write audit warnings: {e}")
+    return True
 
 
 def main():
@@ -677,6 +756,19 @@ def main():
             duration_seconds=duration,
         )
         generate_health_html()
+
+        # v3 O1 (audit/AUDIT_2026-07-25.md): a mid-run crash used to be entirely
+        # invisible to visitors. _stamp_stale_flag, alerts, data-health and the
+        # HTML splice all sit inside the try above, so a failure at 04e skipped
+        # every one of them: is_stale stayed False and last_updated stayed frozen
+        # at the previous success, and the site kept presenting day-old numbers as
+        # current. Mark the degraded state here so the banner tells the truth even
+        # when the run dies. Best-effort — nothing in this handler may mask the
+        # original exception or change the non-zero exit.
+        try:
+            mark_pipeline_degraded(reason=str(e))
+        except Exception as stamp_err:  # pragma: no cover - defensive
+            print(f"  WARNING: could not stamp degraded state: {stamp_err}")
 
         print(f"\n{'!'*60}")
         print(f"  PIPELINE FAILED: {e}")

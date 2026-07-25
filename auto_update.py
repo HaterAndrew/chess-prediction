@@ -35,6 +35,9 @@ OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 SITE_DIR = os.path.join(PROJECT_DIR, "docs")
 SCRAPE_CSV = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
 WEBSITE_JSON = os.path.join(OUTPUT_DIR, "website_data.json")
+# Kept for callers that want the default location; the stampers derive their
+# own targets from SITE_DIR at write time (see _stamp_targets) so redirecting
+# SITE_DIR redirects the write too.
 INDEX_HTML = os.path.join(SITE_DIR, "index.html")
 # The large data consts were externalized out of index.html (L15); the daily
 # build now splices them into this file, so index.html itself stays static.
@@ -580,6 +583,20 @@ def step_log_run():
     print(f"  Logged {lines_logged} predictions to {UPDATE_LOG}")
 
 
+def _stamp_targets():
+    """The two files carrying `?v=` cache-busters, resolved at call time.
+
+    Both are derived from SITE_DIR on every call rather than read from a
+    constant frozen at import. index.html used to come from INDEX_HTML while
+    sw.js was built from SITE_DIR, so a caller that redirected SITE_DIR — every
+    test in tests/test_site_data_build.py — redirected one and not the other,
+    and the stamp for index.html landed on the repo's published copy. Deriving
+    both from the same place makes the pair impossible to split.
+    """
+    return (os.path.join(SITE_DIR, "index.html"),
+            os.path.join(SITE_DIR, "sw.js"))
+
+
 def _stamp_site_data_version(json_data):
     """Point index.html + sw.js at a data-derived site_data.js query string.
 
@@ -593,7 +610,7 @@ def _stamp_site_data_version(json_data):
     """
     digest = hashlib.sha256(json_data.encode('utf-8')).hexdigest()[:10]
     pattern = re.compile(r'(site_data\.js\?v=)([A-Za-z0-9]+)')
-    for path in (INDEX_HTML, os.path.join(SITE_DIR, "sw.js")):
+    for path in _stamp_targets():
         if not os.path.exists(path):
             continue
         with open(path) as f:
@@ -633,7 +650,7 @@ def _stamp_script_versions():
     if they disagree. Stamping only index.html is a real drift, not a cosmetic
     one: the service worker would keep precaching the old URL.
     """
-    targets = [INDEX_HTML, os.path.join(SITE_DIR, "sw.js")]
+    targets = _stamp_targets()
     digests = {}
     for name in STAMPED_SCRIPTS:
         asset_path = os.path.join(SITE_DIR, name)

@@ -6,6 +6,40 @@
 // (round Path A) doing CSS-order shuffling, restored scroll positions from
 // prior visits land users mid-page on reload. Always start fresh at top.
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+// Theme bridge: Chart.js configs and raw canvas code cannot resolve var(--x),
+// so resolve the styles.css :root tokens once at startup. Fallbacks mirror
+// the :root values; update both together (Phase 3 retint, 2026-07).
+const PALETTE = (() => {
+  const cs = getComputedStyle(document.documentElement);
+  const t = (name, fb) => (cs.getPropertyValue(name) || '').trim() || fb;
+  return {
+    bg: t('--bg', '#0a0907'),
+    surface: t('--surface', '#12100d'),
+    surface2: t('--surface2', '#1d1a17'),
+    surface3: t('--surface3', '#282521'),
+    border: t('--border', '#383530'),
+    text: t('--text', '#eeece8'),
+    text2: t('--text2', '#d2cfcb'),
+    muted: t('--muted', '#96928c'),
+    blue: t('--blue', '#58a6ff'),
+    blueBright: t('--blue-bright', '#79c0ff'),
+    gold: t('--gold', '#f0c040'),
+    goldBright: t('--gold-bright', '#f7d970'),
+    green: t('--green', '#3fb950'),
+    greenBright: t('--green-bright', '#56d364'),
+    red: t('--red', '#f85149'),
+    orange: t('--orange', '#d29922'),
+    orangeBright: t('--orange-bright', '#f59e0b')
+  };
+})();
+
+// rgba() string from a resolved token hex, for chart grids and tooltips.
+function themeRgba(hex, alpha) {
+  const n = hex.replace('#', '');
+  const h = n.length === 3 ? n.split('').map(c => c + c).join('') : n;
+  return `rgba(${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)},${alpha})`;
+}
 let selectedIndex = 0;
 let chart = null;
 let histChartObj = null;
@@ -1065,7 +1099,7 @@ function perfRenderFlat(data) {
 
 function perfPaint(view) {
   const agg = view.aggregate || [];
-  const gc = {'A+':'#22c55e','A':'#22c55e','A-':'#4ade80','B+':'#86efac','B':'var(--gold)','B-':'var(--gold)','C+':'#fb923c','C':'#f97316','C-':'#ea580c','D':'#ef4444','F':'#dc2626'};
+  const gc = {'A+':PALETTE.green,'A':PALETTE.green,'A-':PALETTE.greenBright,'B+':PALETTE.greenBright,'B':'var(--gold)','B-':'var(--gold)','C+':PALETTE.orangeBright,'C':PALETTE.orangeBright,'C-':PALETTE.orange,'D':PALETTE.red,'F':PALETTE.red};
   document.getElementById('perfGradeLetter').textContent = view.grade || '--';
   document.getElementById('perfGradeLetter').style.color = gc[view.grade] || 'var(--muted)';
   document.getElementById('perfGradeLabel').textContent = 'MODEL GRADE';
@@ -1101,10 +1135,10 @@ function perfPaint(view) {
   const avgBias = +(agg.reduce((s, a) => s + a.bias_pct, 0) / agg.length).toFixed(1);
 
   const kpis = [
-    {v: t14.mae_pct.toFixed(1) + '%', l: '2-Week Error', s: 'MAE at T-14', c: t14.mae_pct <= 8 ? '#22c55e' : t14.mae_pct <= 15 ? 'var(--gold)' : '#ef4444'},
-    {v: t1 ? t1.mae_pct.toFixed(1) + '%' : '--', l: 'Day-Before', s: 'MAE at T-1', c: t1 && t1.mae_pct <= 5 ? '#22c55e' : '#4ade80'},
-    {v: avgCov + '%', l: 'CI Coverage', s: 'Target 80%', c: avgCov >= 75 ? '#22c55e' : avgCov >= 60 ? 'var(--gold)' : '#ef4444'},
-    {v: (avgBias > 0 ? '+' : '') + avgBias + '%', l: 'Bias', s: avgBias > 2 ? 'Over-predicts' : avgBias < -2 ? 'Under-predicts' : 'Well-centered', c: Math.abs(avgBias) <= 5 ? '#22c55e' : 'var(--gold)'},
+    {v: t14.mae_pct.toFixed(1) + '%', l: '2-Week Error', s: 'MAE at T-14', c: t14.mae_pct <= 8 ? PALETTE.green : t14.mae_pct <= 15 ? 'var(--gold)' : PALETTE.red},
+    {v: t1 ? t1.mae_pct.toFixed(1) + '%' : '--', l: 'Day-Before', s: 'MAE at T-1', c: t1 && t1.mae_pct <= 5 ? PALETTE.green : PALETTE.greenBright},
+    {v: avgCov + '%', l: 'CI Coverage', s: 'Target 80%', c: avgCov >= 75 ? PALETTE.green : avgCov >= 60 ? 'var(--gold)' : PALETTE.red},
+    {v: (avgBias > 0 ? '+' : '') + avgBias + '%', l: 'Bias', s: avgBias > 2 ? 'Over-predicts' : avgBias < -2 ? 'Under-predicts' : 'Well-centered', c: Math.abs(avgBias) <= 5 ? PALETTE.green : 'var(--gold)'},
   ];
   document.getElementById('perfKPIs').innerHTML = kpis.map(k => `
     <div style="padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-align:center">
@@ -1122,7 +1156,7 @@ function perfPaint(view) {
   strip.innerHTML = agg.map(a => {
     const bg = a.mae_pct <= 8 ? 'rgba(34,197,94,.12)' : a.mae_pct <= 12 ? 'rgba(240,192,64,.10)' : 'rgba(239,68,68,.10)';
     const bc = a.mae_pct <= 8 ? 'rgba(34,197,94,.25)' : a.mae_pct <= 12 ? 'rgba(240,192,64,.2)' : 'rgba(239,68,68,.2)';
-    const tc = a.mae_pct <= 8 ? '#22c55e' : a.mae_pct <= 12 ? 'var(--gold)' : '#ef4444';
+    const tc = a.mae_pct <= 8 ? PALETTE.green : a.mae_pct <= 12 ? 'var(--gold)' : PALETTE.red;
     return `<div style="flex:1;min-width:80px;padding:10px 8px;background:${bg};border:1px solid ${bc};border-radius:10px;text-align:center" title="n=${a.n}, bias ${a.bias_pct > 0 ? '+' : ''}${a.bias_pct}%">
       <div style="font-size:.6rem;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase">T-${a.T}</div>
       <div style="font-size:1.1rem;font-weight:800;color:${tc};margin:3px 0 2px">${a.mae_pct.toFixed(1)}%</div>
@@ -1160,11 +1194,11 @@ function perfDrawScatter(data) {
   const y = v => pad.t + ph - (v / maxV) * ph;
 
   // Grid
-  ctx.strokeStyle = '#30363d'; ctx.lineWidth = 0.5; ctx.setLineDash([3, 3]);
+  ctx.strokeStyle = PALETTE.border; ctx.lineWidth = 0.5; ctx.setLineDash([3, 3]);
   for (let i = 1; i <= 4; i++) {
     const v = Math.round(maxV / 4 * i);
     ctx.beginPath(); ctx.moveTo(pad.l, y(v)); ctx.lineTo(pad.l + pw, y(v)); ctx.stroke();
-    ctx.fillStyle = '#8b949e'; ctx.font = tickFont; ctx.textAlign = 'right';
+    ctx.fillStyle = PALETTE.muted; ctx.font = tickFont; ctx.textAlign = 'right';
     ctx.fillText(v.toLocaleString(), pad.l - 5, y(v) + 3);
   }
   ctx.setLineDash([]);
@@ -1180,7 +1214,7 @@ function perfDrawScatter(data) {
   // CI whiskers + dots
   pts.forEach(p => {
     const px = x(p.a); const py = y(p.p);
-    const col = p.ok ? '#22c55e' : '#ef4444';
+    const col = p.ok ? PALETTE.green : PALETTE.red;
     // Whisker
     ctx.strokeStyle = col; ctx.globalAlpha = 0.25; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(px, y(p.lo)); ctx.lineTo(px, y(p.hi)); ctx.stroke();
@@ -1190,11 +1224,11 @@ function perfDrawScatter(data) {
     ctx.fillStyle = col; ctx.beginPath(); ctx.arc(px, py, 4.5, 0, Math.PI * 2); ctx.fill();
     ctx.shadowBlur = 0;
     // Outline
-    ctx.strokeStyle = '#0d1117'; ctx.lineWidth = 1.2; ctx.stroke();
+    ctx.strokeStyle = PALETTE.surface; ctx.lineWidth = 1.2; ctx.stroke();
   });
 
   // Axis labels
-  ctx.fillStyle = '#8b949e'; ctx.font = axisFont; ctx.textAlign = 'center';
+  ctx.fillStyle = PALETTE.muted; ctx.font = axisFont; ctx.textAlign = 'center';
   ctx.fillText('Actual Entries', pad.l + pw / 2, H - 6);
   ctx.save(); ctx.translate(10, pad.t + ph / 2); ctx.rotate(-Math.PI / 2);
   ctx.fillText('Predicted', 0, 0); ctx.restore();
@@ -1228,10 +1262,10 @@ function perfDrawTimeline(data) {
   ctx.fillRect(pad.l, gy, pw, pad.t + ph - gy);
 
   // Grid
-  ctx.strokeStyle = '#30363d'; ctx.lineWidth = 0.5; ctx.setLineDash([3, 3]);
+  ctx.strokeStyle = PALETTE.border; ctx.lineWidth = 0.5; ctx.setLineDash([3, 3]);
   [5, 10, 15].filter(v => v < maxMAE).forEach(v => {
     ctx.beginPath(); ctx.moveTo(pad.l, yp(v)); ctx.lineTo(pad.l + pw, yp(v)); ctx.stroke();
-    ctx.fillStyle = '#8b949e'; ctx.font = tickFont; ctx.textAlign = 'right';
+    ctx.fillStyle = PALETTE.muted; ctx.font = tickFont; ctx.textAlign = 'right';
     ctx.fillText(v + '%', pad.l - 4, yp(v) + 3);
   });
   ctx.setLineDash([]);
@@ -1247,26 +1281,26 @@ function perfDrawTimeline(data) {
   // Line
   ctx.beginPath();
   agg.forEach((a, i) => { i === 0 ? ctx.moveTo(xp(i), yp(a.mae_pct)) : ctx.lineTo(xp(i), yp(a.mae_pct)); });
-  ctx.strokeStyle = '#f0c040'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.stroke();  // canvas can't resolve var(--gold)
+  ctx.strokeStyle = PALETTE.gold; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.stroke();  // canvas can't resolve var(--gold)
 
   // Dots + labels
   agg.forEach((a, i) => {
     const cx = xp(i); const cy = yp(a.mae_pct);
-    const c = a.mae_pct <= 8 ? '#22c55e' : a.mae_pct <= 12 ? '#4ade80' : '#f0c040';
+    const c = a.mae_pct <= 8 ? PALETTE.green : a.mae_pct <= 12 ? PALETTE.greenBright : PALETTE.gold;
     ctx.shadowColor = c; ctx.shadowBlur = 6;
     ctx.fillStyle = c; ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2); ctx.fill();
     ctx.shadowBlur = 0;
-    ctx.strokeStyle = '#161b22'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.strokeStyle = PALETTE.surface2; ctx.lineWidth = 1.5; ctx.stroke();
     // Value
-    ctx.fillStyle = '#e6edf3'; ctx.font = valFont; ctx.textAlign = 'center';
+    ctx.fillStyle = PALETTE.text; ctx.font = valFont; ctx.textAlign = 'center';
     ctx.fillText(a.mae_pct.toFixed(1) + '%', cx, cy - 10);
     // T label
-    ctx.fillStyle = '#8b949e'; ctx.font = tFont;
+    ctx.fillStyle = PALETTE.muted; ctx.font = tFont;
     ctx.fillText('T-' + a.T, cx, pad.t + ph + 14);
   });
 
   // Axis
-  ctx.fillStyle = '#8b949e'; ctx.font = axisFont; ctx.textAlign = 'center';
+  ctx.fillStyle = PALETTE.muted; ctx.font = axisFont; ctx.textAlign = 'center';
   ctx.fillText('Days Before Event', pad.l + pw / 2, H - 5);
 }
 
@@ -1284,15 +1318,15 @@ function perfDrawTable(data) {
 
   data.tournaments.forEach((t, idx) => {
     const bg = idx % 2 ? 'background:var(--surface2)' : '';
-    html += `<tr style="border-bottom:1px solid rgba(48,54,61,.4);${bg}">
+    html += `<tr style="border-bottom:1px solid ${themeRgba(PALETTE.border,.4)};${bg}">
       <td data-label="Tournament" style="padding:5px 10px;white-space:nowrap;font-weight:500">${esc(t.family)}</td>
       <td data-label="Final" style="padding:5px 8px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums">${t.final_count.toLocaleString()}</td>`;
     tPoints.forEach(T => {
       const p = t.predictions.find(p => p.T === T);
       if (p) {
-        const ec = Math.abs(p.error_pct) <= 5 ? '#22c55e' : Math.abs(p.error_pct) <= 15 ? 'var(--gold)' : '#ef4444';
+        const ec = Math.abs(p.error_pct) <= 5 ? PALETTE.green : Math.abs(p.error_pct) <= 15 ? 'var(--gold)' : PALETTE.red;
         const ci = p.in_ci ? '\u2713' : '\u2717';
-        const cic = p.in_ci ? '#22c55e' : '#ef4444';
+        const cic = p.in_ci ? PALETTE.green : PALETTE.red;
         html += `<td data-label="T-${T}" style="padding:5px 4px;text-align:center;font-size:.7rem" title="Pred ${p.predicted} from ${p.count_at_T} reg, CI [${p.ci_lower}-${p.ci_upper}]">
           <span style="color:${ec};font-weight:600;font-variant-numeric:tabular-nums">${p.error_pct > 0 ? '+' : ''}${p.error_pct}%</span><span style="color:${cic};font-size:.58rem;margin-left:2px">${ci}</span></td>`;
       } else {
@@ -2853,7 +2887,7 @@ function renderChart(t) {
   datasets.push({
     label: 'Actual Entries',
     data: actualData,
-    borderColor: '#58a6ff',
+    borderColor: PALETTE.blue,
     backgroundColor: (context) => {
       const chart2 = context.chart;
       const { ctx: ctx2 } = chart2;
@@ -2863,11 +2897,11 @@ function renderChart(t) {
     borderWidth: 2.5,
     pointRadius: pointRadii,
     pointHoverRadius: 6,
-    pointHoverBackgroundColor: '#58a6ff',
-    pointHoverBorderColor: '#fff',
+    pointHoverBackgroundColor: PALETTE.blue,
+    pointHoverBorderColor: PALETTE.text,
     pointHoverBorderWidth: 2,
-    pointBackgroundColor: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? '#fff' : '#58a6ff'),
-    pointBorderColor: '#58a6ff',
+    pointBackgroundColor: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? PALETTE.text : PALETTE.blue),
+    pointBorderColor: PALETTE.blue,
     pointBorderWidth: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? 3 : 0),
     tension: 0.3,
     order: 2
@@ -2912,13 +2946,13 @@ function renderChart(t) {
     datasets.push({
       label: 'Projected',
       data: projData,
-      borderColor: '#f0c040',
+      borderColor: PALETTE.gold,
       borderWidth: 2,
       borderDash: [6, 4],
       pointRadius: 0,
       pointHoverRadius: 6,
-      pointHoverBackgroundColor: '#f0c040',
-      pointHoverBorderColor: '#fff',
+      pointHoverBackgroundColor: PALETTE.gold,
+      pointHoverBorderColor: PALETTE.text,
       pointHoverBorderWidth: 2,
       tension: 0.3,
       order: 3
@@ -2952,11 +2986,11 @@ function renderChart(t) {
   // Historical traces — dashed lines, no points, for past year curves of this family
   if (t.historical && t.registration_curve) {
     const histColors = [
-      'rgba(139,148,158,0.55)',  // most recent — brightest
-      'rgba(139,148,158,0.40)',
-      'rgba(139,148,158,0.28)',
-      'rgba(139,148,158,0.18)',
-      'rgba(139,148,158,0.12)',
+      themeRgba(PALETTE.muted, 0.55),  // most recent — brightest
+      themeRgba(PALETTE.muted, 0.40),
+      themeRgba(PALETTE.muted, 0.28),
+      themeRgba(PALETTE.muted, 0.18),
+      themeRgba(PALETTE.muted, 0.12),
     ];
     // histLookup is built once at the top of renderChart (above the
     // projection block) so the scrape-ratio computation and the historical
@@ -3005,7 +3039,7 @@ function renderChart(t) {
         pointRadius: 0,
         pointHoverRadius: 5,
         pointHoverBackgroundColor: histColors[colorIdx] || histColors[histColors.length - 1],
-        pointHoverBorderColor: '#e6edf3',
+        pointHoverBorderColor: PALETTE.text,
         pointHoverBorderWidth: 1.5,
         tension: 0.3,
         order: 6
@@ -3023,7 +3057,7 @@ function renderChart(t) {
         pointStyle: 'circle',
         pointRadius: 4,
         pointHoverRadius: 6,
-        pointBorderColor: '#e6edf3',
+        pointBorderColor: PALETTE.text,
         pointBorderWidth: 1.5,
         order: 4
       });
@@ -3041,9 +3075,9 @@ function renderChart(t) {
       const _isM = _mobileVP();
       // On mobile, only the Today line — Early Bird and Event labels overlap on
       // narrow screens (the days-to-event KPI card tells the user already).
-      if (!_isM && hasValidEarlyBird(t)) lines.push({ date: new Date(t.early_bird_deadline + 'T00:00:00'), label: 'Early Bird', color: '#3fb950' });
-      if (!isDone(t)) lines.push({ date: new Date(TOURNAMENT_DATA.generated + 'T00:00:00'), label: 'Today', color: '#58a6ff' });
-      if (!_isM && t.event_start) lines.push({ date: new Date(t.event_start + 'T00:00:00'), label: 'Event', color: '#f85149' });
+      if (!_isM && hasValidEarlyBird(t)) lines.push({ date: new Date(t.early_bird_deadline + 'T00:00:00'), label: 'Early Bird', color: PALETTE.green });
+      if (!isDone(t)) lines.push({ date: new Date(TOURNAMENT_DATA.generated + 'T00:00:00'), label: 'Today', color: PALETTE.blue });
+      if (!_isM && t.event_start) lines.push({ date: new Date(t.event_start + 'T00:00:00'), label: 'Event', color: PALETTE.red });
 
       const isMobile = _mobileVP();
       const annoFont = isMobile ? 'bold 9px' : 'bold 11px';
@@ -3089,7 +3123,7 @@ function renderChart(t) {
         }
         const pillY = yScale.top - pillYOff - row * (pillH + rowGap);
         drawn.push({ x: pillX, x2: pillX + pillW, row });
-        ctx2.fillStyle = 'rgba(13,17,23,0.85)';
+        ctx2.fillStyle = themeRgba(PALETTE.surface, 0.85);
         ctx2.beginPath();
         ctx2.roundRect(pillX, pillY, pillW, pillH, 4);
         ctx2.fill();
@@ -3136,7 +3170,7 @@ function renderChart(t) {
       ctx2.save();
       ctx2.beginPath();
       ctx2.setLineDash([3, 3]);
-      ctx2.strokeStyle = 'rgba(139,148,158,0.35)';
+      ctx2.strokeStyle = themeRgba(PALETTE.muted, 0.35);
       ctx2.lineWidth = 1;
       ctx2.moveTo(x, yScale.top);
       ctx2.lineTo(x, yScale.bottom);
@@ -3213,8 +3247,8 @@ function renderChart(t) {
           position: 'cornerAway',
           xAlign: undefined, yAlign: 'top',
           caretSize: 0,
-          backgroundColor: 'rgba(13,17,23,0.95)', borderColor: 'rgba(48,54,61,0.8)', borderWidth: 1,
-          titleColor: '#e6edf3', bodyColor: '#c9d1d9', footerColor: '#8b949e',
+          backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
+          titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
           padding: _mobileVP() ? 9 : 12, cornerRadius: 8,
           // Mobile tooltip: tighter padding, smaller text, smaller point swatches,
           // capped width so a long historical comparison list can't overflow the
@@ -3376,13 +3410,13 @@ function renderChart(t) {
           // each historical year has visible space and is clearly separate
           // from the chart's data region (the day-of / post-event surge).
           max: t.event_start ? addDays(new Date(t.event_start + 'T00:00:00'), 5) : undefined,
-          grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false },
-          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxRotation: 0 }
+          grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false },
+          ticks: { color: PALETTE.muted, font: { size: _mobileVP() ? 10 : 11 }, maxRotation: 0 }
         },
         y: {
           beginAtZero: true,
-          grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false },
-          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 10 : 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
+          grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false },
+          ticks: { color: PALETTE.muted, font: { size: _mobileVP() ? 10 : 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
         }
       },
       // Desktop top padding fits two rows of annotation pills so when
@@ -3404,12 +3438,12 @@ function renderChart(t) {
     legendHtml += '<div class="legend-item"><div class="legend-swatch band" style="background:#f0c040"></div>Likely range</div>';
   }
   if (t.historical) {
-    legendHtml += '<div class="legend-item"><div class="legend-swatch dashed" style="background:repeating-linear-gradient(90deg,rgba(139,148,158,0.5) 0 4px,transparent 4px 8px)"></div>Historical</div>';
+    legendHtml += `<div class="legend-item"><div class="legend-swatch dashed" style="background:repeating-linear-gradient(90deg,${themeRgba(PALETTE.muted,0.5)} 0 4px,transparent 4px 8px)"></div>Historical</div>`;
   }
   document.getElementById('chartLegend').innerHTML = legendHtml;
 
   // Subtitle
-  let sub = `${t.family} ${t.year} &middot; Registration Trajectory`;
+  let sub = `${t.family} ${t.year} · Registration Trajectory`;
   if (!isDone(t) && hasValidEarlyBird(t)) {
     const ebD = new Date(t.early_bird_deadline + 'T00:00:00');
     const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
@@ -3594,7 +3628,7 @@ function renderHistorical(t) {
   const labels = [...hist.map(h => h.adjusted ? `${h.year}*` : String(h.year)), String(t.year)];
   const counts = [...hist.map(h => h.count), isDone(t) ? t.current_count : t.point_estimate];
   const colors = counts.map((_, i) => i === counts.length-1 ? 'rgba(240,192,64,0.75)' : 'rgba(88,166,255,0.45)');
-  const borders = counts.map((_, i) => i === counts.length-1 ? '#f0c040' : '#58a6ff');
+  const borders = counts.map((_, i) => i === counts.length-1 ? PALETTE.gold : PALETTE.blue);
 
   // Average line plugin
   const histAvg = Math.round(hist.reduce((s, h) => s + h.count, 0) / hist.length);
@@ -3634,8 +3668,8 @@ function renderHistorical(t) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: 'rgba(13,17,23,0.95)', borderColor: 'rgba(48,54,61,0.8)', borderWidth: 1,
-          titleColor: '#e6edf3', bodyColor: '#c9d1d9', footerColor: '#8b949e',
+          backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
+          titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
           padding: 12, cornerRadius: 8,
           titleFont: { size: 14, weight: 'bold' }, bodyFont: { size: 12 }, footerFont: { size: 11, style: 'italic' },
           displayColors: true,
@@ -3696,8 +3730,8 @@ function renderHistorical(t) {
         });
       },
       scales: {
-        x: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: _mobileVP() ? 9 : 10 }, maxRotation: 0 } },
-        y: { beginAtZero: true, grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false }, ticks: { color: '#8b949e', font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 4 : 6, callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k' : v } }
+        x: { grid: { display: false }, ticks: { color: PALETTE.muted, font: { size: _mobileVP() ? 9 : 10 }, maxRotation: 0 } },
+        y: { beginAtZero: true, grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false }, ticks: { color: PALETTE.muted, font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 4 : 6, callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k' : v } }
       }
     }
   });
@@ -3811,8 +3845,8 @@ function renderRegCurve(t) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: 'rgba(13,17,23,0.95)', borderColor: 'rgba(48,54,61,0.8)', borderWidth: 1,
-          titleColor: '#e6edf3', bodyColor: '#c9d1d9', footerColor: '#8b949e',
+          backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
+          titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
           padding: 12, cornerRadius: 8,
           titleFont: { size: 14, weight: 'bold' }, bodyFont: { size: 12 }, footerFont: { size: 11, style: 'italic' },
           displayColors: true,
@@ -3855,13 +3889,13 @@ function renderRegCurve(t) {
       scales: {
         x: {
           grid: { display: false },
-          ticks: { color: '#8b949e', font: { size: _mobileVP() ? 8 : 9 }, maxRotation: 0, maxTicksLimit: _mobileVP() ? 6 : 12 }
+          ticks: { color: PALETTE.muted, font: { size: _mobileVP() ? 8 : 9 }, maxRotation: 0, maxTicksLimit: _mobileVP() ? 6 : 12 }
         },
         y: {
           min: 0, max: 105,
-          grid: { color: 'rgba(48,54,61,0.4)', drawBorder: false },
+          grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false },
           ticks: {
-            color: '#8b949e', font: { size: _mobileVP() ? 8 : 9 },
+            color: PALETTE.muted, font: { size: _mobileVP() ? 8 : 9 },
             maxTicksLimit: _mobileVP() ? 4 : 6,
             callback: v => v + '%'
           }
@@ -5109,7 +5143,7 @@ function updateFavButton(family) {
 // COMPARE (side-by-side tournament comparison)
 // ══════════════════════════════════════════════════════════
 const COMPARE_KEY = 'cca_compare';
-const COMPARE_COLORS = ['#58a6ff', '#f0c040', '#3fb950'];
+const COMPARE_COLORS = [PALETTE.blue, PALETTE.gold, PALETTE.green];
 const COMPARE_COLORS_DIM = ['rgba(88,166,255,0.15)', 'rgba(240,192,64,0.15)', 'rgba(63,185,80,0.15)'];
 let _compareSlots = [];
 let _compareChart = null;
@@ -5407,18 +5441,18 @@ function renderCompareChart(selected) {
         x: {
           type: 'linear',
           reverse: true,
-          title: { display: !_mobileVP(), text: 'Days Before Event', color: 'rgba(139,148,158,0.8)', font: { size: 11 } },
-          ticks: { color: 'rgba(139,148,158,0.6)', font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 5 : 8, maxRotation: 0,
+          title: { display: !_mobileVP(), text: 'Days Before Event', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
+          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 5 : 8, maxRotation: 0,
             callback(v) { return v === 0 ? 'Event' : v + 'd'; }
           },
-          grid: { color: 'rgba(48,54,61,0.4)' }
+          grid: { color: themeRgba(PALETTE.border, 0.4) }
         },
         y: {
-          title: { display: !_mobileVP(), text: '% of Final Entries', color: 'rgba(139,148,158,0.8)', font: { size: 11 } },
-          ticks: { color: 'rgba(139,148,158,0.6)', font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 5 : 8,
+          title: { display: !_mobileVP(), text: '% of Final Entries', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
+          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 5 : 8,
             callback(v) { return v + '%'; }
           },
-          grid: { color: 'rgba(48,54,61,0.4)' },
+          grid: { color: themeRgba(PALETTE.border, 0.4) },
           min: 0
         }
       },
@@ -5426,7 +5460,7 @@ function renderCompareChart(selected) {
         legend: {
           display: true,
           labels: {
-            color: '#c9d1d9',
+            color: PALETTE.text2,
             font: { size: _mobileVP() ? 10 : 11 },
             boxWidth: _mobileVP() ? 8 : 12,
             padding: _mobileVP() ? 6 : 10,
@@ -5435,11 +5469,11 @@ function renderCompareChart(selected) {
           }
         },
         tooltip: {
-          backgroundColor: 'rgba(13,17,23,0.95)',
-          borderColor: 'rgba(48,54,61,0.8)',
+          backgroundColor: themeRgba(PALETTE.surface, 0.95),
+          borderColor: themeRgba(PALETTE.border, 0.8),
           borderWidth: 1,
-          titleColor: '#e6edf3',
-          bodyColor: '#c9d1d9',
+          titleColor: PALETTE.text,
+          bodyColor: PALETTE.text2,
           padding: 12,
           cornerRadius: 8,
           callbacks: {

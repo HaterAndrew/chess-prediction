@@ -1663,165 +1663,6 @@ function initPuzzles() {
   loadHistoryEvents();
 }
 
-// ══════════════════════════════════════════════════════════
-// SPLASH
-// ══════════════════════════════════════════════════════════
-function dismissSplash() {
-  document.getElementById('splash').classList.add('hidden');
-  setTimeout(() => document.getElementById('mainContent').classList.add('visible'), 100);
-  // Always land at the top of the dashboard, regardless of browser scroll-restoration.
-  window.scrollTo(0, 0);
-}
-
-function showSplash() {
-  // Manual re-show (logo click) works even after the first-visit skip.
-  document.documentElement.classList.remove('splash-skip');
-  document.getElementById('mainContent').classList.remove('visible');
-  document.getElementById('splash').classList.remove('hidden');
-  initSplash();
-}
-
-function initSplash() {
-  const ts = TOURNAMENT_DATA.tournaments;
-  const live = ts.filter(t => t.status === 'live').length;
-  const years = new Set(ts.map(t => t.year));
-  const yearSpan = Math.max(...years) - Math.min(...years) + 1;
-  document.getElementById('ss-live').textContent = live;
-  document.getElementById('ss-total').textContent = ts.length;
-  document.getElementById('ss-years').textContent = yearSpan;
-  document.getElementById('splashScrapeDate').textContent = 'Last scrape: ' + fmtDateTimeLong(TOURNAMENT_DATA.generated_time || TOURNAMENT_DATA.generated);
-
-  // Auto-animate numbers
-  animateNum('ss-live', 0, live, 800);
-  animateNum('ss-total', 0, ts.length, 1000);
-  animateNum('ss-years', 0, yearSpan, 700);
-  initChessboard();
-}
-
-// Chessboard canvas + knight animation
-function initChessboard() {
-  const splash = document.getElementById('splash');
-  const canvas = document.getElementById('splashCanvas');
-  if (!canvas || !splash) return;
-  const existingKnight = document.getElementById('splash-knight-orbit');
-  if (existingKnight) existingKnight.remove();   // avoid a duplicate on re-show
-
-  let _sq = 60, _ox = 0, _oy = 0, _cols = 16, _rows = 12;
-
-  function drawBoard() {
-    const W = canvas.width  = canvas.offsetWidth  || window.innerWidth;
-    const H = canvas.height = canvas.offsetHeight || window.innerHeight;
-    const ctx = canvas.getContext('2d');
-    _sq   = Math.max(40, Math.round(Math.min(W, H) / 16));
-    _cols = Math.ceil(W / _sq) + 1;
-    _rows = Math.ceil(H / _sq) + 1;
-    _ox   = ((W % _sq) / 2) | 0;
-    _oy   = ((H % _sq) / 2) | 0;
-    ctx.clearRect(0, 0, W, H);
-    for (let r = 0; r < _rows; r++) {
-      for (let c = 0; c < _cols; c++) {
-        const light = (r + c) % 2 === 0;
-        ctx.fillStyle = light ? 'rgba(240,192,64,.55)' : 'rgba(56,100,180,.18)';
-        ctx.fillRect(_ox + c * _sq, _oy + r * _sq, _sq, _sq);
-      }
-    }
-    const grad = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W, H) * .75);
-    grad.addColorStop(0,   'rgba(5,8,16,0)');
-    grad.addColorStop(.55, 'rgba(5,8,16,.6)');
-    grad.addColorStop(1,   'rgba(5,8,16,1)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, W, H);
-  }
-  drawBoard();
-  let resizeRaf;
-  window.addEventListener('resize', () => { cancelAnimationFrame(resizeRaf); resizeRaf = requestAnimationFrame(drawBoard); });
-
-  // Knight that hops across the board
-  const knight = document.createElement('div');
-  knight.id = 'splash-knight-orbit';
-  knight.textContent = '\u265E';
-  splash.appendChild(knight);
-
-  let kCol = Math.round(_cols / 2);
-  let kRow = Math.round(_rows / 2);
-  let kTimer = null;
-
-  const KNIGHT_OFFSETS = [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
-
-  function knightNextSquare() {
-    const cx = _cols / 2, cy = _rows / 2;
-    const moves = KNIGHT_OFFSETS
-      .map(([dc, dr]) => ({ col: kCol + dc, row: kRow + dr }))
-      .filter(({ col, row }) => col >= 1 && col < _cols - 1 && row >= 1 && row < _rows - 1);
-    if (!moves.length) { kCol = Math.round(_cols/2); kRow = Math.round(_rows/2); return; }
-    const weights = moves.map(({ col, row }) => {
-      const d = Math.hypot(col - cx, row - cy);
-      return Math.max(0.1, 1 / (1 + d * 0.35));
-    });
-    const total = weights.reduce((a, b) => a + b, 0);
-    let rand = Math.random() * total;
-    for (let i = 0; i < moves.length; i++) {
-      rand -= weights[i];
-      if (rand <= 0) { kCol = moves[i].col; kRow = moves[i].row; return; }
-    }
-    const m = moves[moves.length - 1]; kCol = m.col; kRow = m.row;
-  }
-
-  function squarePx(col, row) {
-    return { x: _ox + col * _sq + _sq / 2, y: _oy + row * _sq + _sq / 2 };
-  }
-
-  function hopKnight() {
-    knightNextSquare();
-    const pos = squarePx(kCol, kRow);
-    knight.style.transition = 'opacity .18s, transform .18s';
-    knight.style.opacity = '0.05';
-    knight.style.transform = 'translate(-50%,-50%) scale(0.45)';
-    setTimeout(() => {
-      knight.style.transition = 'none';
-      knight.style.left = pos.x + 'px';
-      knight.style.top  = pos.y + 'px';
-      knight.style.fontSize = Math.round(_sq * 0.72) + 'px';
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        knight.style.transition = 'opacity .26s, transform .26s cubic-bezier(.34,1.56,.64,1)';
-        knight.style.opacity = '1';
-        knight.style.transform = 'translate(-50%,-50%) scale(1)';
-      }));
-    }, 200);
-  }
-
-  // Place at initial square
-  const p0 = squarePx(kCol, kRow);
-  knight.style.left = p0.x + 'px';
-  knight.style.top  = p0.y + 'px';
-  knight.style.fontSize = Math.round(_sq * 0.72) + 'px';
-
-  setTimeout(() => {
-    if (!document.getElementById('splash')) return;
-    knight.style.opacity = '1';
-    knight.style.transform = 'translate(-50%,-50%) scale(1)';
-    if (_reduceMotion()) return;   // static knight, no hopping under prefers-reduced-motion
-    kTimer = setInterval(() => {
-      const s = document.getElementById('splash');
-      if (!s || s.classList.contains('hidden')) { clearInterval(kTimer); return; }
-      hopKnight();
-    }, 850);
-  }, 400);
-}
-
-function animateNum(id, from, to, duration) {
-  const el = document.getElementById(id);
-  if (_reduceMotion()) { el.textContent = Math.round(to); return; }
-  const start = performance.now();
-  function tick(now) {
-    const p = Math.min((now - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - p, 3);
-    el.textContent = Math.round(from + (to - from) * ease);
-    if (p < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-}
-
 // (Header dropdown removed — using tab bar dropdowns instead)
 
 // ══════════════════════════════════════════════════════════
@@ -5025,22 +4866,14 @@ function init() {
 
   renderModelHealth();
   document.getElementById('lastUpdated').textContent = fmtDateTimeLong(TOURNAMENT_DATA.generated_time || TOURNAMENT_DATA.generated);
-  // Splash: first visit only. The head guard flags .splash-skip for repeat or
-  // deep-linked loads; honor it here and make sure the content is revealed
-  // (CSS also does this, but keep the JS state consistent).
-  if (document.documentElement.classList.contains('splash-skip')) {
-    document.getElementById('mainContent').classList.add('visible');
-  } else {
-    initSplash();
-    try { localStorage.setItem('cep:splash:seen', '1'); } catch (_) {}
-  }
-
-  // Logo click re-shows splash
-  const logo = document.querySelector('.logo');
-  if (logo) {
-    logo.style.cursor = 'pointer';
-    logo.addEventListener('click', showSplash);
-  }
+  // First-run hint: shown once to genuinely new visitors. Anyone who already
+  // saw the old splash gate (cep:splash:seen) counts as a returning user.
+  try {
+    if (!localStorage.getItem('cep:splash:seen') && !localStorage.getItem('cep:hint:seen')) {
+      const hint = document.getElementById('firstRunHint');
+      if (hint) hint.hidden = false;
+    }
+  } catch (_) {}
 
   renderAllTournaments();
   renderSummaryBar();

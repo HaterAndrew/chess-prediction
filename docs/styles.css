@@ -99,104 +99,6 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
 /* ══════════════════════════════════════════════════════
-   SPLASH SCREEN
-   ══════════════════════════════════════════════════════ */
-#splash {
-  position: fixed; inset: 0; z-index: 9999;
-  background: #050810;
-  display: flex; align-items: center; justify-content: center;
-  transition: opacity .8s ease, visibility .8s ease;
-  padding: var(--s-4);
-}
-#splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-#splashCanvas {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  opacity: .18; pointer-events: none;
-}
-.splash-content {
-  position: relative; z-index: 1;
-  text-align: center; padding: var(--s-5) var(--s-3);
-  display: flex; flex-direction: column; align-items: center; gap: var(--s-5);
-  animation: splashFadeIn 1s ease forwards;
-  max-width: 100%;
-}
-@keyframes splashFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.splash-piece {
-  font-size: clamp(2.5rem, 11vw, 5rem); line-height: 1;
-  filter: drop-shadow(0 0 30px rgba(240,192,64,.6)) drop-shadow(0 0 60px rgba(240,192,64,.3));
-  animation: splashPulse 2.5s ease-in-out infinite;
-}
-@keyframes splashPulse {
-  0%, 100% { filter: drop-shadow(0 0 24px rgba(240,192,64,.5)) drop-shadow(0 0 48px rgba(240,192,64,.25)); transform: scale(1); }
-  50% { filter: drop-shadow(0 0 40px rgba(240,192,64,.8)) drop-shadow(0 0 80px rgba(240,192,64,.4)); transform: scale(1.05); }
-}
-.splash-eyebrow {
-  font-size: .68rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-  color: var(--gold); opacity: .8;
-}
-.splash-title {
-  margin: 0;
-  font-size: clamp(1.6rem, 7vw, 3.5rem); font-weight: 900;
-  line-height: 1.1; letter-spacing: -1.5px; color: var(--text);
-}
-.splash-title em { font-style: normal; color: var(--gold); text-shadow: 0 0 40px rgba(240,192,64,.4); }
-.splash-scrape-date { font-size: .7rem; color: var(--muted); margin-top: -4px; letter-spacing: 1px; }
-.splash-divider { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-.splash-tagline {
-  font-size: clamp(.82rem, 2.6vw, .95rem);
-  color: var(--muted);
-  max-width: min(420px, 90vw);
-  line-height: 1.6;
-}
-.splash-stats {
-  display: flex; gap: var(--s-5); flex-wrap: wrap; justify-content: center;
-}
-.splash-stat { text-align: center; min-width: 80px; }
-.splash-stat-num {
-  font-size: clamp(1.6rem, 6vw, 2.2rem);
-  font-weight: 900; font-variant-numeric: tabular-nums;
-}
-.splash-stat-num.gold { color: var(--gold); text-shadow: 0 0 16px rgba(240,192,64,.5); }
-.splash-stat-num.blue { color: var(--blue); text-shadow: 0 0 16px rgba(56,139,253,.5); }
-.splash-stat-num.green { color: var(--green); text-shadow: 0 0 16px rgba(63,185,80,.5); }
-.splash-stat-label { font-size: .6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-top: 4px; }
-.splash-enter {
-  margin-top: var(--s-2); padding: 14px 36px;
-  min-height: var(--touch);
-  background: linear-gradient(135deg, rgba(240,192,64,.1), rgba(56,139,253,.06));
-  border: 1px solid rgba(240,192,64,.3);
-  border-radius: 40px;
-  font-size: .85rem; font-weight: 700; letter-spacing: 2px;
-  color: var(--gold); text-transform: uppercase;
-  cursor: pointer;
-  animation: enterPulse 2s ease-in-out infinite;
-  transition: all .2s;
-}
-.splash-enter:hover { background: rgba(240,192,64,.18); border-color: var(--gold); }
-@keyframes enterPulse { 0%,100%{box-shadow:0 0 0 0 rgba(240,192,64,0)} 50%{box-shadow:0 0 0 8px rgba(240,192,64,.08)} }
-.splash-version { font-size: .6rem; color: rgba(139,148,158,.35); letter-spacing: 1px; }
-#splash-knight-orbit {
-  position: absolute; pointer-events: none; z-index: 2;
-  font-size: 2.4rem; line-height: 1;
-  transform: translate(-50%, -50%);
-  color: #f0c040;
-  filter: drop-shadow(0 0 14px rgba(240,192,64,.95));
-  opacity: 0;
-  transition: opacity .25s, transform .25s;
-}
-.splash-bg {
-  position: absolute; inset: 0; overflow: hidden; opacity: .06;
-}
-.splash-bg::before {
-  content: '';
-  position: absolute; inset: -50%;
-  background: repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(240,192,64,.2) 60px, rgba(240,192,64,.2) 61px),
-              repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(240,192,64,.2) 60px, rgba(240,192,64,.2) 61px);
-  animation: gridDrift 20s linear infinite;
-}
-@keyframes gridDrift { to { transform: translate(60px, 60px); } }
-
-/* ══════════════════════════════════════════════════════
    LAYOUT
    ══════════════════════════════════════════════════════ */
 .container {
@@ -205,12 +107,25 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   margin: 0 auto;
   padding: 0 var(--gutter);
 }
-.main-content { opacity: 0; transition: opacity .6s ease; }
-.main-content.visible { opacity: 1; }
-/* First-visit-only splash: repeat/deep-link loads flag the root so the splash
-   never paints and the content shows immediately (L6). */
-html.splash-skip #splash { display: none; }
-html.splash-skip .main-content { opacity: 1; }
+
+/* First-run hint: one-time pointer for new visitors (splash replacement) */
+.first-run-hint {
+  display: flex; align-items: center; gap: 12px;
+  margin: 14px 0 2px; padding: 10px 14px;
+  background: rgba(240,192,64,.06);
+  border: 1px solid rgba(240,192,64,.25);
+  border-radius: 8px;
+  font-size: .8rem; color: var(--text2); line-height: 1.5;
+}
+.first-run-hint[hidden] { display: none; }
+.first-run-hint-dismiss {
+  margin-left: auto; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; margin-top: -6px; margin-bottom: -6px;
+  background: none; border: none; color: var(--muted);
+  font-size: 1.15rem; line-height: 1; cursor: pointer;
+}
+.first-run-hint-dismiss:hover { color: var(--text); }
 
 /* ══════════════════════════════════════════════════════
    HEADER
@@ -2770,15 +2685,10 @@ footer a { color: var(--muted); }
     -webkit-backdrop-filter: none;
     background: rgba(13,17,23,.95);
   }
-  /* Splash piece glow: cut second drop-shadow to halve filter cost on weak GPUs */
-  .splash-piece { filter: drop-shadow(0 0 20px rgba(240,192,64,.5)); }
   /* Hero number gradient text already costs; trim the 20px shadow blur */
   .hero-number { filter: drop-shadow(0 0 10px rgba(240,192,64,.18)); }
   /* Live-glow on chart-card uses two large box-shadows; tone down */
   .chart-card.live-glow { box-shadow: 0 0 20px rgba(56,139,253,.05); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .splash-piece { animation: none; filter: drop-shadow(0 0 20px rgba(240,192,64,.5)); }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -2919,7 +2829,6 @@ footer a { color: var(--muted); }
   .tab-bar,
   .cmdk,
   .search-btn,
-  .splash-bg,
   .stale-banner,
   #overrideBanner,
   .compare-add-btn,

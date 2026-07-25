@@ -41,6 +41,7 @@
     },
     'scroll-top': function () { window.scrollTo({ top: 0, behavior: 'smooth' }); },
     'open-cmdk': function () { openCmdK(); },
+    'chart-range': function (el) { setChartRange(el.dataset.range); },
     'page-tab': function (el) { switchPageTab(el.dataset.tab); },
     'more-tab': function (el) { pickMoreTab(el.dataset.tab); },
     'toggle-more-menu': function (el, ev) { toggleMoreMenu(ev); },

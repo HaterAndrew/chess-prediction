@@ -21,7 +21,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://chess-ask.hater-andrewd.workers.dev">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=a3d7f8f13f">
+<link rel="stylesheet" href="styles.css?v=0c2abbfbfe">
 </head>
 <body>
 
@@ -166,7 +166,14 @@
         <h2 class="chart-title" id="chartTitle">Cumulative Entries</h2>
         <div class="chart-subtitle" id="chartSubtitle"></div>
       </div>
-      <div class="chart-legend" id="chartLegend"></div>
+      <div class="chart-top-right">
+        <div class="chart-legend" id="chartLegend"></div>
+        <div class="chart-seg" id="chartRangeSeg" role="group" aria-label="Chart time range">
+          <button data-act="chart-range" data-range="all" class="active">All</button>
+          <button data-act="chart-range" data-range="90">90d</button>
+          <button data-act="chart-range" data-range="30">30d</button>
+        </div>
+      </div>
     </div>
     <div class="chart-wrap">
       <canvas id="mainChart" aria-label="Cumulative entries chart showing predicted and actual registration counts over time" role="img"></canvas>
@@ -886,11 +893,11 @@
      init() (and any #audit deep link) synchronously at evaluation time. -->
 <script src="audit.js?v=30eaa762a6"></script>
 <script src="daily_series.js?v=e326e2b1fc"></script>
-<script src="app.js?v=6baca7d068"></script>
+<script src="app.js?v=bc73a3e49a"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,
      so it is load-bearing: without it nothing on the page responds. It comes
      last because it dispatches into the globals the files above define. -->
-<script src="actions.js?v=d1238bb694"></script>
+<script src="actions.js?v=886915259e"></script>
 </body>
 </html>

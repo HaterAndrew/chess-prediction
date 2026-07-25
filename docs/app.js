@@ -96,6 +96,17 @@ function _pushRecentTournament(idx) {
   arr = arr.slice(0, RECENT_MAX);
   try { localStorage.setItem(RECENT_KEY, JSON.stringify(arr)); } catch (e) {}
 }
+// Chart range preference: one global choice, per-tournament validity decides
+// whether it can apply (see _chartWindow).
+const CHART_RANGE_KEY = 'cca_chartRange';
+function _getStoredChartRange() {
+  try { return localStorage.getItem(CHART_RANGE_KEY) || ''; } catch (e) { return ''; }
+}
+function _storeChartRange(key) {
+  try { localStorage.setItem(CHART_RANGE_KEY, key); } catch (e) {}
+}
+let _chartWindowState = null;   // { t, series, dayToDate } of the rendered chart
+
 function openCmdK() {
   const root = document.getElementById('cmdkRoot');
   if (!root) return;
@@ -2820,6 +2831,80 @@ function renderProgress(t) {
 // ══════════════════════════════════════════════════════════
 // CHART
 // ══════════════════════════════════════════════════════════
+// Resolve the visible x-window for the main chart. A window (90d/30d before
+// event) is valid only when it trims real flat head AND still contains the
+// tail of the actual data; otherwise it would render an empty line (far-future
+// tournaments have no points inside 90d). forceKey: user request via the
+// segmented control; 'all' is always valid.
+function _chartWindow(t, series, dayToDate, forceKey) {
+  const out = { key: 'all', min: undefined, max: undefined, valid90: false, valid30: false };
+  if (!t.event_start || !series.length) return out;
+  const msDay = 86400000;
+  const dataStart = dayToDate(series[0][0]);
+  const lastActual = dayToDate(series[series.length - 1][0]);
+  const eventDate = new Date(t.event_start + 'T00:00:00');
+  const winStart = w => new Date(eventDate.getTime() - w * msDay);
+  out.valid90 = winStart(90) > dataStart && lastActual >= winStart(90);
+  out.valid30 = winStart(30) > dataStart && lastActual >= winStart(30);
+
+  let key = forceKey || _getStoredChartRange();
+  if (key === '90' && !out.valid90) key = forceKey ? '' : '';
+  if (key === '30' && !out.valid30) key = out.valid90 ? '90' : '';
+  if (key !== 'all' && key !== '90' && key !== '30') key = '';
+  if (!key) {
+    // Smart default: if the sub-10%-of-final flat head eats more than half the
+    // span, open on the 90d window instead of the full flatline.
+    const FLAT_PCT = 0.1, FLAT_SPAN = 0.5;
+    const finalCum = series[series.length - 1][1];
+    let flatEnd = dataStart;
+    for (const pt of series) {
+      if (pt[1] >= finalCum * FLAT_PCT) { flatEnd = dayToDate(pt[0]); break; }
+    }
+    const flatFrac = (flatEnd - dataStart) / Math.max(1, eventDate - dataStart);
+    key = (flatFrac > FLAT_SPAN && out.valid90) ? '90' : 'all';
+  }
+  out.key = key;
+
+  const visStart = key === 'all' ? dataStart : winStart(Number(key));
+  const visSpan = Math.max(1, Math.round((eventDate - visStart) / msDay));
+  out.max = addDays(t.event_start, Math.max(5, Math.round(0.08 * visSpan)));
+  if (key !== 'all') out.min = winStart(Number(key));
+  return out;
+}
+
+// Time-scale unit for the chosen window: a 30d window with month labels shows
+// one or two ticks, so anything at or under 45d gets weekly ticks everywhere.
+function _chartTimeUnit(cw, t) {
+  const winDays = cw.min ? Math.round((new Date(t.event_start + 'T00:00:00') - cw.min) / 86400000) : null;
+  if (winDays && winDays <= 45) return { unit: 'week', displayFormats: { week: 'MMM d' } };
+  return _mobileVP()
+    ? { unit: 'month', displayFormats: { month: 'MMM' } }
+    : { unit: 'week', displayFormats: { week: 'MMM d' } };
+}
+
+function _syncChartRangeSeg(cw) {
+  const seg = document.getElementById('chartRangeSeg');
+  if (!seg) return;
+  seg.querySelectorAll('button').forEach(b => {
+    const r = b.dataset.range;
+    b.classList.toggle('active', r === cw.key);
+    b.disabled = !(r === 'all' || (r === '90' ? cw.valid90 : cw.valid30));
+  });
+}
+
+function setChartRange(key) {
+  const st = _chartWindowState;
+  if (!chart || !st) return;
+  const cw = _chartWindow(st.t, st.series, st.dayToDate, key);
+  if (cw.key !== key) return;   // requested window not valid here
+  _storeChartRange(key);
+  chart.options.scales.x.min = cw.min;
+  chart.options.scales.x.max = cw.max;
+  chart.options.scales.x.time = _chartTimeUnit(cw, st.t);
+  chart.update();
+  _syncChartRangeSeg(cw);
+}
+
 function renderChart(t) {
   const ctx = document.getElementById('mainChart');
   if (chart) { chart.destroy(); chart = null; }
@@ -2869,6 +2954,11 @@ function renderChart(t) {
 
   // Actual data
   const actualData = series.map(d => ({ x: dayToDate(d[0]), y: d[1] }));
+
+  // Visible x-window (range control) + right headroom; remember the inputs so
+  // setChartRange can recompute without a full re-render.
+  const cw = _chartWindow(t, series, dayToDate);
+  _chartWindowState = { t, series, dayToDate };
 
   // Only show point for first, last, and every 7th day to avoid clutter
   const pointRadii = actualData.map((_, i) => {
@@ -3409,16 +3499,12 @@ function renderChart(t) {
           // Mobile: month-level labels (Mar/Apr/May) so the time axis isn't crowded.
           // Chart.js's time scale ignores maxTicksLimit on weekly units; switching
           // to monthly is the documented way to sparsen X labels.
-          time: _mobileVP()
-            ? { unit: 'month', displayFormats: { month: 'MMM' } }
-            : { unit: 'week', displayFormats: { week: 'MMM d' } },
+          time: _chartTimeUnit(cw, t),
+          min: cw.min,
           // Extend the axis 5 days past event day so the finals-marker dot for
           // each historical year has visible space and is clearly separate
           // from the chart's data region (the day-of / post-event surge).
-          // addDays takes a YYYY-MM-DD string; passing a Date produced NaN and
-          // silently dropped the right headroom (year-final dots sat clipped
-          // on the chart border).
-          max: t.event_start ? addDays(t.event_start, 5) : undefined,
+          max: cw.max,
           grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false },
           ticks: { color: PALETTE.muted, font: { size: 11 }, maxRotation: 0 }
         },
@@ -3472,6 +3558,8 @@ function renderChart(t) {
   // Mobile date strip: shows the EB + Event dates inline below the chart since
   // the pill annotations for those are hidden on phones. Desktop CSS hides
   // this element so it does not duplicate the pills.
+  _syncChartRangeSeg(cw);
+
   const datesEl = document.getElementById('chartMobileDates');
   if (datesEl) {
     const parts = [];

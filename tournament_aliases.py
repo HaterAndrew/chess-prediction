@@ -175,6 +175,16 @@ WO_TOP6_ADJUSTED = {
     2022: 1331,
 }
 
+# v3 N10: the top-6 fraction behind each adjusted figure above, so the
+# adjustment can be applied to whatever count is actually passed in rather than
+# returning a frozen literal. Each is (1 - lower_fraction) from the derivations
+# documented in WO_TOP6_ADJUSTED. The literals stay as the fallback for a caller
+# that passes no count.
+WO_TOP6_RATIO = {
+    2019: 1 - 0.1491,
+    2022: 1 - 0.1075,
+}
+
 
 def adjust_wo_top6_count(year, count):
     """Return top-6-comparable count for a pre-split World Open year.
@@ -184,8 +194,20 @@ def adjust_wo_top6_count(year, count):
     explicit 2023+ 'World Open top 6 sections' tids, scale the count down
     using known final-standings ratios. Returns the original count if the
     year has no override (e.g. recent years already split at registration).
+
+    v3 N10 (audit/AUDIT_2026-07-25.md): this used to return a hardcoded literal
+    (2019 -> 1080, 2022 -> 1331) and ignore `count` entirely, so if the source
+    count were ever corrected the adjusted figure would silently keep the old
+    value. Store the RATIO and apply it to the count actually passed in, so the
+    adjustment tracks its input.
     """
-    return WO_TOP6_ADJUSTED.get(int(year), count)
+    year = int(year)
+    if year not in WO_TOP6_ADJUSTED:
+        return count
+    ratio = WO_TOP6_RATIO.get(year)
+    if ratio is None or not count:
+        return WO_TOP6_ADJUSTED[year]
+    return int(round(count * ratio))
 
 
 # ── historical_standings.csv name → canonical family ────────────────────

@@ -7,7 +7,10 @@ compatibility_flags = ["nodejs_compat"]
 # The Worker uses this to set Access-Control-Allow-Origin.
 [vars]
 ALLOWED_ORIGIN = "https://haterandrew.github.io,http://localhost:8080,http://127.0.0.1:8080"
-DATA_URL = "https://haterandrew.github.io/chess-prediction/website_data.json"
+# v3 S1: must point at a path GitHub Pages actually serves. Pages publishes
+# docs/, so the repo-root output/website_data.json was never reachable and every
+# /ask request 502'd. auto_update.step_update_html writes this file.
+DATA_URL = "https://haterandrew.github.io/chess-prediction/data/website_data.json"
 MODEL = "claude-sonnet-4-6"
 DAILY_BUDGET_USD = "1.00"
 RATE_LIMIT_PER_MIN = "20"

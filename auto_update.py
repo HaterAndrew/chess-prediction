@@ -16,7 +16,9 @@ pipeline run from historical_standings.csv + tournament_summary.csv.
 
 import argparse
 import os
+import re
 import sys
+import hashlib
 import json
 import csv
 import subprocess
@@ -445,6 +447,8 @@ def step_update_html():
         f.write(json_data)
     print(f"  Wrote {SITE_DATA_JSON} (Ask Worker data endpoint)")
 
+    _stamp_site_data_version(json_data)
+
     # Post-write verification: re-read and confirm embedded data matches source
     with open(SITE_DATA_JS, 'r') as f:
         verify_html = f.read()
@@ -534,6 +538,32 @@ def step_log_run():
     if dropped:
         print(f"  Pruned {dropped} update_log rows older than 90 days ({kept} kept)")
     print(f"  Logged {lines_logged} predictions to {UPDATE_LOG}")
+
+
+def _stamp_site_data_version(json_data):
+    """Point index.html + sw.js at a data-derived site_data.js query string.
+
+    v3 P5. A hand-maintained `?v=40` only changes when someone edits the code,
+    but this file's CONTENT changes every night. A returning visitor — and any
+    installed PWA — could therefore keep serving yesterday's numbers from cache
+    long after a corrected build shipped, which is exactly the population that
+    saw the bad Bradley Open figures first. Deriving the query string from a
+    hash of the data means every rebuild is a new URL and the cache cannot
+    outlive its contents.
+    """
+    digest = hashlib.sha256(json_data.encode('utf-8')).hexdigest()[:10]
+    pattern = re.compile(r'(site_data\.js\?v=)([A-Za-z0-9]+)')
+    for path in (INDEX_HTML, os.path.join(SITE_DIR, "sw.js")):
+        if not os.path.exists(path):
+            continue
+        with open(path) as f:
+            text = f.read()
+        new_text, n = pattern.subn(rf'\g<1>{digest}', text)
+        if n and new_text != text:
+            with open(path, 'w') as f:
+                f.write(new_text)
+            print(f"  Stamped site_data.js?v={digest} in {os.path.basename(path)}")
+    return digest
 
 
 def _atomic_write_json(path, data):

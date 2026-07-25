@@ -120,6 +120,23 @@ def grade_from_aggregate(aggregate):
     return "N/A", "No data"
 
 
+def _corpus_stats():
+    """Size of the full tournament corpus, for the public footer claim (v3 T10).
+
+    Deliberately reads tournament_summary.csv rather than any filtered frame:
+    the footer describes everything the project is built on, not the subset that
+    survives the evaluation filters.
+    """
+    path = os.path.join(OUTPUT_DIR, "tournament_summary.csv")
+    if not os.path.exists(path):
+        return {"n_corpus_tournaments": None, "n_entry_records": None}
+    s = pd.read_csv(path)
+    return {
+        "n_corpus_tournaments": int(s["tid"].nunique()),
+        "n_entry_records": int(s["final_count"].fillna(0).sum()),
+    }
+
+
 def _hist_lookup(train_summary):
     """{family: [final_count, ...]} over the training rows, for the display
     clamp the evaluator now mirrors (v3 T2). Excludes online and COVID editions
@@ -669,10 +686,16 @@ def main():
         "aggregate": ytd.get('aggregate', []),
         "tournaments": ytd.get('tournaments', []),
         # v3 T10: the corpus size the About tab and footer quote. Sourced from
-        # the data instead of the hardcoded "778 tournaments" that had drifted
-        # from the real 781 tids.
-        "n_training_tournaments": int(summary['tid'].nunique()),
-        "n_entry_records": int(daily['daily_regs'].sum()) if 'daily_regs' in daily.columns else None,
+        # the data instead of the hardcoded "192K entry records across 778
+        # tournaments", which had drifted from the real 781 / 194.5K.
+        #
+        # Read from the FULL summary on disk, not the `summary` frame in scope
+        # here: that one is filtered for evaluation, which describes the graded
+        # set rather than the corpus the footer is talking about. Counting
+        # entries from `daily` would be wrong for the same reason — only 322 of
+        # 781 editions carry a timestamped curve, so it would undercount by more
+        # than half.
+        **_corpus_stats(),
         # Multi-year breakdown
         "years": year_results,
         # Cumulative across all years

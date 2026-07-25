@@ -152,8 +152,13 @@ def _predict_nowcast_ci_tail(model, point, low, high, days_remaining,
     point, low, high = apply_ci_floors(
         point, low, high, days_remaining, current_count, n_editions, is_blitz)
 
-    # Apply recalibration corrections if available
-    if getattr(model, '_recal_bias', None):
+    # Apply recalibration corrections if available. The stage check goes through
+    # the model's own accessor when it has one; this function is also called
+    # directly from tests with a stub model that has no stage machinery, and
+    # those must keep recal enabled.
+    recal_on = getattr(model, '_stage_on', None)
+    recal_on = recal_on('recal') if callable(recal_on) else True
+    if recal_on and getattr(model, '_recal_bias', None):
         recal_Ts = sorted(model._recal_bias.keys())
         nearest_T = min(recal_Ts, key=lambda t: abs(t - days_remaining))
         bias_factor = model._recal_bias.get(nearest_T, 1.0)
@@ -564,6 +569,31 @@ class N5v4_Final:
         self.ci_scale = {}
         self.reg_params = {}  # family -> [slope_count, slope_T, intercept]
         self.family_n_editions = {}  # family -> count of training editions
+
+    # Stages of predict_nowcast that can be switched off individually, for the
+    # ablation harness (v3 T8, audit/AUDIT_2026-07-25.md). predict_nowcast is a
+    # ~400-line, 13-stage pipeline whose stages had never been measured
+    # separately: each one's marginal contribution was assumed, not shown. Every
+    # stage defaults to ON, so production behaviour is unchanged unless a caller
+    # explicitly ablates something.
+    ABLATABLE_STAGES = ('late_surge', 'ratio_caps', 'trend', 'withdrawal',
+                        'features', 'recal')
+
+    def set_stage_flags(self, **flags):
+        """Enable/disable individual prediction stages. Unknown names raise, so
+        a typo in an ablation run fails loudly instead of silently measuring
+        nothing."""
+        unknown = set(flags) - set(self.ABLATABLE_STAGES)
+        if unknown:
+            raise ValueError(f"unknown stage(s): {sorted(unknown)}; "
+                             f"valid: {list(self.ABLATABLE_STAGES)}")
+        self._stage_flags = dict(getattr(self, '_stage_flags', {}) or {})
+        self._stage_flags.update(flags)
+        return self
+
+    def _stage_on(self, name):
+        flags = getattr(self, '_stage_flags', None)
+        return True if not flags else flags.get(name, True)
 
     def fit(self, summary, daily, enrichment_lookup=None, completed_tids=None,
             verbose_standings_join=True, all_summary_families=None,
@@ -1175,7 +1205,7 @@ class N5v4_Final:
         # For non-family fallback, cap ratios based on lead time
         # (size-matched ratios are better than global but still noisy)
         # Exempt blitz events — they have legitimately high short-T ratios
-        if not use_family and not is_blitz:
+        if self._stage_on('ratio_caps') and not use_family and not is_blitz:
             if days_remaining <= 7:
                 cap_med, cap_lo_r, cap_hi_r = 2.0, 1.5, 3.0
             elif days_remaining <= 28:
@@ -1197,7 +1227,7 @@ class N5v4_Final:
         # Late-surge damping: these events get most registrations in last 1-3 days
         # Standard ratios over-extrapolate because early registration is very sparse
         # Use aggressive damping — these tournaments have ~1.1-1.4x ratio even at T=28
-        if is_late_surge and days_remaining > 3:
+        if self._stage_on('late_surge') and is_late_surge and days_remaining > 3:
             # Target ratio: 1.1-1.5 depending on lead time (much lower than standard opens)
             max_ratio = 1.1 + 0.4 * min(days_remaining / 90, 1.0)  # 1.1 at T=3, 1.5 at T=90
             if med > max_ratio:
@@ -1341,7 +1371,7 @@ class N5v4_Final:
         # Growth trend adjustment: shift prediction for growing/declining families
         # e.g., if a tournament grows ~5%/year, nudge prediction up for current year
         trend = self.family_trend.get(family, 0.0)
-        if trend != 0.0 and days_remaining >= 7:
+        if self._stage_on('trend') and trend != 0.0 and days_remaining >= 7:
             # Apply trend relative to most recent training year
             # Moderate: at most half the raw trend rate to avoid overfit
             adj = 1.0 + trend * 0.5
@@ -1379,7 +1409,7 @@ class N5v4_Final:
         # discontinuity that moved the estimate the wrong way exactly where the
         # correction matters most. Cap the rate, as intended.
         wd_rate = self.family_withdrawal_rates.get(family, 0.0)
-        if wd_rate > 0:
+        if self._stage_on('withdrawal') and wd_rate > 0:
             wd_rate = min(wd_rate, MAX_WITHDRAWAL_CORRECTION)
             point *= (1 - wd_rate)
             low *= (1 - wd_rate)
@@ -1390,7 +1420,7 @@ class N5v4_Final:
         # corrections to the point estimate and CI bounds.
         eb_deadline = kwargs.get('early_bird_deadline')
         event_start = kwargs.get('event_start_date')
-        if event_start and days_remaining > 0:
+        if self._stage_on('features') and event_start and days_remaining > 0:
             try:
                 features = compute_all_features(TODAY, event_start, eb_deadline)
                 feat_adj = compute_adjustment_factor(features, days_remaining)

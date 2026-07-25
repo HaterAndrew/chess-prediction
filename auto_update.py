@@ -211,6 +211,19 @@ def step_update_puzzles():
         print("  Skipping puzzles (scrape_puzzles.py not found)")
 
 
+def step_chess_history():
+    """Emit output/chess_history.json so the CHESS_HISTORY splice has a source.
+
+    v3 O5: the splice below was guarded on a file nothing wrote, so it had
+    never fired and the 146KB const lived only inside the generated
+    site_data.js. content/chess_history.json is now the tracked source and this
+    step renders it, which makes the const reviewable and the splice real.
+    A malformed source fails the run rather than shipping a blank panel.
+    """
+    run_step("Render chess history (scripts/gen_chess_history.py)",
+             [sys.executable, os.path.join("scripts", "gen_chess_history.py")])
+
+
 # A present-but-old all_registrations.csv silently freezes the tournament
 # roster: 01_data_prep reconciles *existing* events' counts against the live
 # scrape, but the set of tournaments only comes from the export. Anything that
@@ -411,14 +424,15 @@ def step_update_html():
                 new_html = new_html[:p_start] + f'const PUZZLE_DATA = {puzzle_json};' + new_html[p_end:]
                 print("  Updated PUZZLE_DATA in site_data.js")
 
-    # Also embed CHESS_HISTORY if available.
+    # Also embed CHESS_HISTORY.
     #
-    # v3 O5 (audit/AUDIT_2026-07-25.md): no script in this repo writes
-    # output/chess_history.json, so this splice has never fired in production —
-    # the const in site_data.js is whatever was hand-authored there. Documented
-    # as a deliberately manual artifact rather than left looking automated; if
-    # the content ever needs to change, edit site_data.js directly or add a
-    # generator that writes the JSON here.
+    # v3 O5 (audit/AUDIT_2026-07-25.md): this splice was guarded on a file no
+    # script in the repo wrote, so it had never fired and the const was whatever
+    # someone hand-typed into the generated site_data.js. step_chess_history now
+    # renders it from the tracked content/chess_history.json, so the guard below
+    # describes a real input. It stays a guard rather than an assert because
+    # step_update_html is also called on the degraded-pipeline path, where the
+    # generator has not run and last-known-good content must survive untouched.
     history_json_path = os.path.join(OUTPUT_DIR, "chess_history.json")
     if os.path.exists(history_json_path):
         with open(history_json_path, 'r') as f:
@@ -830,6 +844,13 @@ def main():
             step_verify_dates()
             step_update_model()
             step_performance()
+
+            # Renders from a tracked source with no network call, so unlike the
+            # puzzle step a failure here means the committed JSON is malformed,
+            # not that a third party is down. Fatal: the degraded path then
+            # publishes last-known-good behind an honest banner, which beats
+            # shipping a blank panel on a page that claims to be current.
+            step_chess_history()
 
             # Puzzles are non-critical — don't let a Lichess outage block the pipeline
             try:

@@ -69,6 +69,37 @@ def test_missing_target_raises(build_env):
         auto_update.step_update_html()
 
 
+def test_ask_endpoint_is_written_inside_the_isolated_docs_dir(build_env):
+    """The Ask Worker's JSON endpoint must land in the tmp docs/, not the repo's.
+
+    step_update_html writes docs/data/website_data.json for the Worker (v3 S1).
+    That write used the SITE_DATA_JSON module constant, which is computed at
+    import from the real SITE_DIR — so monkeypatching SITE_DIR did not redirect
+    it, and running this very suite overwrote the published endpoint with the
+    two-line stub below. The file is untracked, so it would have shipped that
+    way. Assert the write lands in the fixture's docs/ and that the real one is
+    never touched.
+    """
+    payload = {"generated": "2026-07-07", "tournaments": [{"family": "X", "year": 2026}]}
+    build_env["website_json"].write_text(json.dumps(payload))
+
+    real_endpoint = os.path.join(PROJECT_ROOT, "docs", "data", "website_data.json")
+    before = (os.path.getmtime(real_endpoint)
+              if os.path.exists(real_endpoint) else None)
+
+    auto_update.step_update_html()
+
+    isolated = build_env["docs_dir"] / "data" / "website_data.json"
+    assert isolated.exists(), "endpoint was not written inside the isolated docs/"
+    assert json.loads(isolated.read_text())["generated"] == "2026-07-07"
+
+    after = (os.path.getmtime(real_endpoint)
+             if os.path.exists(real_endpoint) else None)
+    assert before == after, (
+        "step_update_html wrote the repo's published docs/data/website_data.json "
+        "during a test")
+
+
 def test_no_docs_website_data_double_ship(build_env):
     """G9: step_update_html must NOT write a docs/website_data.json copy. The app
     reads docs/data/site_data.js since the L15 externalization; the old copy was

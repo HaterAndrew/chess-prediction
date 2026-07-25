@@ -20,9 +20,13 @@ DOCS = os.path.join(os.path.dirname(__file__), "..", "docs")
 INDEX = os.path.join(DOCS, "index.html")
 SW = os.path.join(DOCS, "sw.js")
 
+# Versions are content hashes now, not integers (auto_update._stamp_script_
+# versions). The pattern must therefore accept any alphanumeric token: the old
+# `(\d+)` matched the LEADING DIGITS of a hash and silently compared a fragment,
+# so `app.js?v=8dda437d9b` read as version 8 and drifted against sw.js's 40.
 ASSETS = {
-    "css": r"styles\.css\?v=(\d+)",
-    "js": r"app\.js\?v=(\d+)",
+    "css": r"styles\.css\?v=([A-Za-z0-9]+)",
+    "js": r"app\.js\?v=([A-Za-z0-9]+)",
 }
 CACHE_RE = r"cca-predictor-v(\d+)"
 
@@ -33,11 +37,17 @@ def _read(path):
 
 
 def _versions(text, pattern):
-    return [int(m) for m in re.findall(pattern, text)]
+    """Version tokens as strings — they may be hashes, so do not coerce to int."""
+    return re.findall(pattern, text)
 
 
 def check():
-    """Return 0 if every asset version agrees across index.html and sw.js."""
+    """Return 0 if every asset version agrees across index.html and sw.js.
+
+    This is the guard worth keeping: whatever sets the versions, the service
+    worker and the page must reference the same URL, or the SW precaches an
+    asset the page never requests.
+    """
     idx, sw = _read(INDEX), _read(SW)
     ok = True
     for name, pat in ASSETS.items():
@@ -53,15 +63,35 @@ def check():
 def bump(which):
     idx, sw = _read(INDEX), _read(SW)
     literals = {"css": "styles.css?v=", "js": "app.js?v="}
+
+    # These versions are content hashes now, written by
+    # auto_update._stamp_script_versions on every pipeline run. Incrementing a
+    # hash is meaningless, and doing it by hand would be undone by the next run,
+    # so say so instead of writing something that looks like it worked.
+    hashed = sorted({
+        name for name in which
+        if any(not v.isdigit()
+               for v in _versions(idx, ASSETS[name]) + _versions(sw, ASSETS[name]))
+    })
+    if hashed:
+        print(f"REFUSING to bump {', '.join(hashed)}: the version is derived "
+              f"from the file's content hash, not a counter.")
+        print("Edit the asset and the next pipeline run restamps it, or run:")
+        print("    python3 -c \"import auto_update as a; "
+              "a._stamp_script_versions()\"")
+        return 1
+
     for name in which:
         pat = ASSETS[name]
-        cur = max(_versions(idx, pat) + _versions(sw, pat), default=0)
+        cur = max((int(v) for v in _versions(idx, pat) + _versions(sw, pat)),
+                  default=0)
         nxt = cur + 1
         idx = re.sub(pat, literals[name] + str(nxt), idx)
         sw = re.sub(pat, literals[name] + str(nxt), sw)
         print(f"{name}: v{cur} -> v{nxt}")
     # any asset bump invalidates the SW cache
-    cache_cur = max(_versions(sw, CACHE_RE), default=0)
+    # CACHE_NAME is still a plain counter, so this one really is an int.
+    cache_cur = max((int(v) for v in _versions(sw, CACHE_RE)), default=0)
     sw = re.sub(CACHE_RE, f"cca-predictor-v{cache_cur + 1}", sw)
     print(f"CACHE_NAME: v{cache_cur} -> v{cache_cur + 1}")
     with open(INDEX, "w") as f:

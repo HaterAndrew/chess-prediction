@@ -1,6 +1,6 @@
 {
   "generated": "2026-07-25",
-  "generated_time": "2026-07-25T10:00:27.244390-04:00",
+  "generated_time": "2026-07-25T11:45:17.075454-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (40 family-years across 38 families).",
   "n_completed_in_training": 30,
@@ -625,13 +625,13 @@
       "early_bird_fee": null,
       "regular_fee": 158.0,
       "onsite_fee": 180.0,
-      "current_count": 218,
-      "gross_count": 218,
+      "current_count": 219,
+      "gross_count": 219,
       "withdrawal_count": 2,
       "days_remaining": 6,
-      "point_estimate": 409,
-      "ci_lower": 381,
-      "ci_upper": 438,
+      "point_estimate": 410,
+      "ci_lower": 382,
+      "ci_upper": 439,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1230,11 +1230,11 @@
       "pace_alert": {
         "family": "Pacific Coast Open",
         "status": "on_pace",
-        "actual": 218,
+        "actual": 219,
         "expected": 192,
-        "deviation_pct": 13.2,
+        "deviation_pct": 13.8,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+13%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
       }
     },
     {
@@ -87930,7 +87930,7 @@
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-07-25 13:59:24",
+  "last_updated": "2026-07-25 15:44:04",
   "is_stale": false,
   "alerts": [
     {
@@ -87945,11 +87945,11 @@
     {
       "family": "Pacific Coast Open",
       "status": "on_pace",
-      "actual": 218,
+      "actual": 219,
       "expected": 192,
-      "deviation_pct": 13.2,
+      "deviation_pct": 13.8,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+13%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
     },
     {
       "family": "Continental Open",

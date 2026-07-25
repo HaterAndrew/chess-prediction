@@ -120,7 +120,7 @@ function _renderCmdK(query) {
     if (recents.length > 0) {
       const chips = recents.map(i => {
         const t = ts[i];
-        return `<button class="cmdk-recent-chip" onclick="_cmdkSelect(${i})">${esc(t.family)} ${t.year}</button>`;
+        return `<button class="cmdk-recent-chip" data-act="cmdk-select" data-idx="${i}">${esc(t.family)} ${t.year}</button>`;
       }).join('');
       recentHTML = `<div class="cmdk-recent"><span class="cmdk-recent-label">Recent:</span>${chips}</div>`;
     }
@@ -133,7 +133,7 @@ function _renderCmdK(query) {
                       : 'past';
     const numText = t.status === 'live' ? `${fmt(t.current_count)} → ${fmt(t.point_estimate)}`
                   : `${fmt(t.current_count)}`;
-    return `<button class="cmdk-row ${i === _cmdkActive ? 'cmdk-row-active' : ''}" data-idx="${m.idx}" data-pos="${i}" onclick="_cmdkSelect(${m.idx})" role="option" aria-selected="${i === _cmdkActive}">
+    return `<button class="cmdk-row ${i === _cmdkActive ? 'cmdk-row-active' : ''}" data-idx="${m.idx}" data-pos="${i}" data-act="cmdk-select" role="option" aria-selected="${i === _cmdkActive}">
       <span class="cmdk-row-status cmdk-status-${statusCls}">${statusLabel}</span>
       <span class="cmdk-row-name">${esc(t.family)} <span class="cmdk-row-year">${t.year}</span></span>
       <span class="cmdk-row-num">${numText}</span>
@@ -1012,7 +1012,7 @@ function initPerformanceTab() {
     if (hasCumulative) buttons.push({key: 'cumulative', label: 'Cumulative'});
 
     selector.innerHTML = '<span style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px">View:</span>' +
-      buttons.map(b => `<button onclick="perfSelectYear('${b.key}')" id="perfYearBtn_${b.key}" style="padding:6px 14px;border-radius:8px;font-size:.76rem;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;transition:all .15s">${b.label}</button>`).join('');
+      buttons.map(b => `<button data-act="perf-year" data-year="${b.key}" id="perfYearBtn_${b.key}" style="padding:6px 14px;border-radius:8px;font-size:.76rem;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;transition:all .15s">${b.label}</button>`).join('');
 
     const defaultKey = years.includes(nowYear) ? String(nowYear) : (years.length ? String(years[years.length - 1]) : 'cumulative');
     perfSelectYear(defaultKey);
@@ -1424,7 +1424,7 @@ function renderBoard() {
       const pieceName = piece ? PIECE_NAMES[piece] : 'empty';
       const ariaLabel = sqName + ', ' + pieceName;
       const pieceHtml = piece ? `<span class="piece">${PIECE_UNICODE[piece]}</span>` : '';
-      html += `<div class="${cls}" data-r="${r}" data-c="${c}" data-ri="${ri}" data-ci="${ci}" tabindex="0" role="gridcell" aria-label="${ariaLabel}" onclick="puzzleSquareClick(${r},${c})" onkeydown="puzzleBoardKeydown(event,${r},${c},${ri},${ci})">${pieceHtml}</div>`;
+      html += `<div class="${cls}" data-r="${r}" data-c="${c}" data-ri="${ri}" data-ci="${ci}" tabindex="0" role="gridcell" aria-label="${ariaLabel}" data-act="puzzle-square" data-keyact="puzzle-board">${pieceHtml}</div>`;
     }
   }
   el.setAttribute('role', 'grid');
@@ -1596,7 +1596,17 @@ function loadPuzzle(idx) {
   document.getElementById('puzzleDifficulty').textContent = diff;
   document.getElementById('puzzleThemes').innerHTML = (puzzle.themes || []).map(t => `<span class="puzzle-theme-tag">${esc(t.replace(/([A-Z])/g, ' $1').trim())}</span>`).join('');
   document.getElementById('puzzleLink').href = puzzle.url || '#';
-  document.getElementById('puzzleTurn').textContent = ps.turn === 'w' ? 'White' : 'Black';
+  // #puzzleTurn is a span INSIDE #puzzleStatus, and puzzleStatus() on the next
+  // line replaces that container's innerHTML — so the span exists only until
+  // the first status write and is gone for every later loadPuzzle call. The
+  // unguarded lookup threw there, and because the throw landed mid-function the
+  // lines below never ran: the move list kept the previous puzzle's moves and
+  // the prev/next buttons kept the previous puzzle's disabled state. Retry and
+  // both nav arrows were dead after the first puzzle. The write is kept for the
+  // first render and guarded for the rest; the status line below says the same
+  // thing either way.
+  const turnEl = document.getElementById('puzzleTurn');
+  if (turnEl) turnEl.textContent = ps.turn === 'w' ? 'White' : 'Black';
   puzzleStatus('Find the best move for ' + (ps.turn === 'w' ? 'White' : 'Black'), 'var(--muted)');
   document.getElementById('puzzleMoveList').textContent = '';
   document.getElementById('puzzlePrev').disabled = idx === 0;
@@ -1616,7 +1626,7 @@ function renderPuzzleProgress() {
     if (ps.solved[i] === 'solved') cls += ' solved';
     else if (ps.solved[i] === 'failed') cls += ' failed';
     if (i === ps.currentIdx) cls += ' current';
-    return `<div class="${cls}" onclick="loadPuzzle(${i})" style="cursor:pointer" title="Puzzle ${i+1}"></div>`;
+    return `<div class="${cls}" data-act="load-puzzle" data-idx="${i}" style="cursor:pointer" title="Puzzle ${i+1}"></div>`;
   }).join('');
   const solved = ps.solved.filter(s => s === 'solved').length;
   document.getElementById('puzzleScore').textContent = `${solved}/${ps.puzzles.length} solved`;
@@ -1862,7 +1872,7 @@ function _vsBuildFlat(ql) {
     editions.forEach(({t, i}) => {
       flat.push({
         type: 'item', h: _vs.ITEM_H, idx: i,
-        html: `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" style="height:${_vs.ITEM_H}px;box-sizing:border-box" onclick="selectFromDrop(${i})" onkeydown="if(event.key==='Enter')selectFromDrop(${i})" tabindex="0" role="option"><span class="cat-item-name" style="padding-left:6px">${t.year}</span><span class="cat-item-meta">${fmt(t.current_count)} entries</span></div>`
+        html: `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" style="height:${_vs.ITEM_H}px;box-sizing:border-box" data-act="select-from-drop" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="option"><span class="cat-item-name" style="padding-left:6px">${t.year}</span><span class="cat-item-meta">${fmt(t.current_count)} entries</span></div>`
       });
     });
   });
@@ -2078,7 +2088,7 @@ function renderTourneyPicker() {
   const hist = ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'historical');
 
   const seg = (k, label, count) =>
-    `<button class="seg-btn ${_tourneyTab === k ? 'active' : ''}" role="tab" aria-selected="${_tourneyTab === k}" data-seg="${k}" onclick="event.stopPropagation();setTourneyTab('${k}')">${label}<span class="seg-count">${count}</span></button>`;
+    `<button class="seg-btn ${_tourneyTab === k ? 'active' : ''}" role="tab" aria-selected="${_tourneyTab === k}" data-seg="${k}" data-act="tourney-tab" data-tab="${k}">${label}<span class="seg-count">${count}</span></button>`;
 
   let html = '';
   html += '<div class="tourney-picker-header">';
@@ -2089,7 +2099,7 @@ function renderTourneyPicker() {
   if (_tourneyTab === 'live') {
     html += '<div class="tourney-list">';
     live.forEach(({t, i}) => {
-      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromTourneyPicker(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectFromTourneyPicker(${i})}" tabindex="0" role="option">`;
+      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-act="select-tourney-picker" data-idx="${i}" data-keyable="1" tabindex="0" role="option">`;
       html += `<span class="cat-item-name"><span class="live-dot"></span>${esc(t.family)}</span>`;
       html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)} reg · ${t.days_remaining}d</span>`;
       html += '</div>';
@@ -2098,7 +2108,7 @@ function renderTourneyPicker() {
   } else if (_tourneyTab === 'complete') {
     html += '<div class="tourney-list">';
     complete.forEach(({t, i}) => {
-      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromTourneyPicker(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectFromTourneyPicker(${i})}" tabindex="0" role="option">`;
+      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-act="select-tourney-picker" data-idx="${i}" data-keyable="1" tabindex="0" role="option">`;
       html += `<span class="cat-item-name">${esc(t.family)}</span>`;
       html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)}</span>`;
       html += '</div>';
@@ -2107,12 +2117,12 @@ function renderTourneyPicker() {
   } else if (_tourneyTab === 'hist') {
     html += '<div class="tab-search-bar">';
     html += '<span style="opacity:.5">&#128269;</span>';
-    html += '<input class="tab-search-input" id="tourneyHistSearch" type="text" placeholder="Search tournaments..." oninput="filterTourneyHistResults(this.value)" autocomplete="off">';
+    html += '<input class="tab-search-input" id="tourneyHistSearch" type="text" placeholder="Search tournaments..." data-inputact="filter-tourney-hist" autocomplete="off">';
     html += '</div>';
     html += '<div class="tourney-list" id="tourneyHistList">';
     hist.forEach(({t, i}) => {
       const dataName = String(t.family || '').toLowerCase();
-      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-name="${esc(dataName)}" onclick="selectFromTourneyPicker(${i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectFromTourneyPicker(${i})}" tabindex="0" role="option">`;
+      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-name="${esc(dataName)}" data-act="select-tourney-picker" data-idx="${i}" data-keyable="1" tabindex="0" role="option">`;
       html += `<span class="cat-item-name">${esc(t.family)} ${t.year}</span>`;
       html += `<span class="cat-item-meta">${fmt(t.current_count)}</span>`;
       html += '</div>';
@@ -2323,11 +2333,11 @@ function renderTabs() {
 
   // ── Upcoming dropdown ──
   html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn cat-btn--live" id="dropBtn_live" onclick="toggleDrop('live',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('live',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
+  html += `<div class="cat-btn cat-btn--live" id="dropBtn_live" data-act="toggle-drop" data-drop="live" data-keyable="1" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
   html += `<span class="live-dot"></span>Upcoming <span class="cat-count" style="background:var(--green-dim);color:var(--green)">${live.length}</span> <span class="cat-arrow">&#9662;</span></div>`;
   html += `<div class="drop-menu" id="dropMenu_live" role="listbox" aria-label="Upcoming tournaments">`;
   live.sort((a, b) => a.t.days_remaining - b.t.days_remaining).forEach(({t, i}) => {
-    html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromDrop(${i})" onkeydown="if(event.key==='Enter')selectFromDrop(${i})" tabindex="0" role="option">`;
+    html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-act="select-from-drop" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="option">`;
     html += `<span class="cat-item-name"><span class="live-dot"></span>${esc(t.family)}${paceBadgeHTML(getPaceAlert(t))}</span>`;
     html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)} reg</span></div>`;
   });
@@ -2335,11 +2345,11 @@ function renderTabs() {
 
   // ── Complete dropdown ──
   html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn cat-btn--complete" id="dropBtn_complete" onclick="toggleDrop('complete',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('complete',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
+  html += `<div class="cat-btn cat-btn--complete" id="dropBtn_complete" data-act="toggle-drop" data-drop="complete" data-keyable="1" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
   html += `Complete <span class="cat-count">${complete.length}</span> <span class="cat-arrow">&#9662;</span></div>`;
   html += `<div class="drop-menu" id="dropMenu_complete" role="listbox" aria-label="Completed tournaments">`;
   complete.forEach(({t, i}) => {
-    html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" onclick="selectFromDrop(${i})" onkeydown="if(event.key==='Enter')selectFromDrop(${i})" tabindex="0" role="option">`;
+    html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-act="select-from-drop" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="option">`;
     html += `<span class="cat-item-name">${esc(t.family)}</span>`;
     html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)}</span></div>`;
   });
@@ -2347,12 +2357,12 @@ function renderTabs() {
 
   // ── Historical search dropdown ──
   html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn cat-btn--hist" id="dropBtn_hist" onclick="toggleDrop('hist',event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDrop('hist',event)}" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
+  html += `<div class="cat-btn cat-btn--hist" id="dropBtn_hist" data-act="toggle-drop" data-drop="hist" data-keyable="1" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
   html += `<span style="opacity:.6">&#128269;</span> Historical <span class="cat-count" style="background:var(--purple-dim);color:var(--purple)">${nHist}</span> <span class="cat-arrow">&#9662;</span></div>`;
   html += `<div class="drop-menu drop-menu-search" id="dropMenu_hist" role="listbox" aria-label="Historical tournaments">`;
   html += `<div class="tab-search-bar">`;
   html += `<span style="opacity:.5">&#128269;</span>`;
-  html += `<input class="tab-search-input" id="histSearchInput" type="text" placeholder="Search tournaments..." oninput="filterHistResults(this.value)" autocomplete="off">`;
+  html += `<input class="tab-search-input" id="histSearchInput" type="text" placeholder="Search tournaments..." data-inputact="filter-hist" autocomplete="off">`;
   html += `</div>`;
   html += `<div class="tab-search-results" id="histSearchResults"></div>`;
   html += `</div></div>`;
@@ -4191,7 +4201,7 @@ function renderAllTournaments() {
       }
     }
 
-    return `<tr onclick="selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})" onkeydown="if(event.key==='Enter'){selectTournament(${i});window.scrollTo({top:0,behavior:'smooth'})}" tabindex="0" style="cursor:pointer">
+    return `<tr data-act="select-tournament-top" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" style="cursor:pointer">
       <td data-label="Tournament"><div class="t-name" title="${esc(t.family)} ${t.year}">${esc(t.family)}</div><div class="t-sub">${t.year}${isLive ? ' · ' + t.days_remaining + 'd out' : ''}</div></td>
       <td data-label="Status">${pill}</td>
       <td data-label="Event Date">${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
@@ -4226,7 +4236,7 @@ function renderSummaryBar() {
     <span><strong style="color:var(--muted)">${complete2026.length}</strong> complete '26</span>
     <span><strong style="color:var(--purple)">${historical.length}</strong> historical</span>
     <span><strong style="color:var(--blue)">${fmt(totalRegs)}</strong> YTD entries</span>
-    ${nextEvent ? `<span style="cursor:pointer" onclick="selectTournament(${TOURNAMENT_DATA.tournaments.indexOf(nextEvent)})">Next: <strong style="color:var(--gold)">${nextEvent.family}</strong> in ${nextEvent.days_remaining}d</span>` : ''}
+    ${nextEvent ? `<span style="cursor:pointer" data-act="select-tournament" data-idx="${TOURNAMENT_DATA.tournaments.indexOf(nextEvent)}">Next: <strong style="color:var(--gold)">${nextEvent.family}</strong> in ${nextEvent.days_remaining}d</span>` : ''}
   `;
 }
 
@@ -4294,7 +4304,7 @@ function renderFestivalCluster(t) {
       ? new Date(tt.event_start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
       : '—';
     html += `<button class="fc-card ${isActive ? 'fc-card-active' : ''}"
-      onclick="selectTournament(${idx})"
+      data-act="select-tournament" data-idx="${idx}"
       aria-current="${isActive ? 'true' : 'false'}"
       aria-label="${esc(subLabel)} — predicted ${fmt(pred)}, ${fmt(current)} registered">
       <div class="fc-card-label">${esc(subLabel)}</div>
@@ -4345,7 +4355,7 @@ function renderAccuracyStrip() {
   }
 
   el.innerHTML = `
-    <button class="acc-row" onclick="switchPageTab('performance')" aria-label="Open full model performance tab">
+    <button class="acc-row" data-act="page-tab" data-tab="performance" aria-label="Open full model performance tab">
       <span class="acc-cell acc-grade">
         <span class="acc-grade-letter acc-${gradeCls(grade)}">${grade}</span>
         <span class="acc-grade-label">Model grade${nEvents ? ` · ${nEvents} tests` : ''}</span>
@@ -4426,7 +4436,7 @@ function renderCalendar() {
                     : 'On pace';
     const ariaLabel = `${e.t.family} on ${monthDay}, T-${e.daysOut}, predicted ${fmt(e.t.point_estimate || 0)}`;
     html += `<button class="cal-dot cal-pace-${pace}" style="left:${xPct.toFixed(2)}%;width:${sizePx}px;height:${sizePx}px"
-      onclick="selectTournament(${e.idx})"
+      data-act="select-tournament" data-idx="${e.idx}"
       data-tip-name="${esc(e.t.family)} ${e.t.year}"
       data-tip-date="${esc(longDate)}"
       data-tip-days="${e.daysOut}"
@@ -4573,7 +4583,7 @@ function renderMiniCards() {
         paceIndicator = `<span style="color:var(--muted);font-size:.68rem">&#8212; on pace</span>`;
       }
     }
-    return `<div class="mini-card ${isSelected ? 'mini-card-active' : ''}" onclick="selectTournament(${i})" onkeydown="if(event.key==='Enter')selectTournament(${i})" tabindex="0" role="button" aria-label="${esc(t.family)} - ${fmt(t.point_estimate)} predicted">
+    return `<div class="mini-card ${isSelected ? 'mini-card-active' : ''}" data-act="select-tournament" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="button" aria-label="${esc(t.family)} - ${fmt(t.point_estimate)} predicted">
       <div class="mini-card-header">
         <span class="mini-card-name" title="${esc(t.family)} ${t.year}">${esc(t.family)}</span>
         <div class="mini-card-chips">
@@ -5354,7 +5364,7 @@ function renderCompareTab() {
     const colorDot = `<span class="compare-color-dot" style="background:${COMPARE_COLORS[s]}"></span>`;
     selectorHTML += `<div class="compare-selector">
       ${colorDot}
-      <select class="compare-dropdown" onchange="compareSlotChanged(${s}, this.value)">
+      <select class="compare-dropdown" data-inputact="compare-slot-changed" data-slot="${s}">
         <option value="">— Select tournament —</option>
         ${tournaments.map((t, i) => {
           const sel = i === currentIdx ? 'selected' : '';
@@ -5362,7 +5372,7 @@ function renderCompareTab() {
           return `<option value="${i}" ${sel}>${label}</option>`;
         }).join('')}
       </select>
-      ${currentIdx != null ? `<button class="compare-remove-btn" onclick="compareSlotRemove(${s})" title="Remove">&#10005;</button>` : ''}
+      ${currentIdx != null ? `<button class="compare-remove-btn" data-act="compare-slot-remove" data-slot="${s}" title="Remove">&#10005;</button>` : ''}
     </div>`;
   }
   selectorHTML += '</div>';

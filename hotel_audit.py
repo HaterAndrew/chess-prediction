@@ -88,7 +88,7 @@ def name_key(last, first):
     """Identity key: (last name, FIRST TOKEN of first name), case-folded.
 
     First-token matching absorbs middle names: the entry list says
-    "Brightwater, Ana Marie" while the admin export says "Brightwater, Ali" —
+    "Brightwater, Ana Marie" while the admin export says "Brightwater, Ana" —
     same person. Validated against the 2026 World Open: all 1,108
     entry-list players matched their export row on this key.
     """

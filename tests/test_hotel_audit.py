@@ -51,21 +51,21 @@ def _load_html():
 # ---------------------------------------------------------------------------
 
 def test_name_key_absorbs_middle_names_and_annotations():
-    # entry list says "Brightwater, Ana Marie"; the export says "Brightwater, Ali"
-    assert name_key("Brightwater", "Ana Marie") == name_key("BRIGHTWATER", "Ali")
-    assert name_key("Adu (IM)(Withdrawn)", "Orlando") == ("adu", "orlando")
+    # entry list says "Brightwater, Ana Marie"; the export says "Brightwater, Ana"
+    assert name_key("Brightwater", "Ana Marie") == name_key("BRIGHTWATER", "Ana")
+    assert name_key("Ashdown (IM)(Withdrawn)", "Orlando") == ("ashdown", "orlando")
     assert name_key("", "") == ("", "")
 
 
 def test_split_last_first():
     assert split_last_first("Zellwood, Jonquil") == ("Zellwood", "Jonquil")
     assert split_last_first("Sunderholm, Zephyr (GM)") == ("Sunderholm", "Zephyr")
-    assert split_last_first("Merrick Jani") == ("Jani", "Merrick")
+    assert split_last_first("Merrick Janoway") == ("Janoway", "Merrick")
     assert split_last_first("Cher") == ("Cher", "")
 
 
 def test_smart_case_preserves_mixed_case():
-    assert smart_case("JANOWAY") == "Jani"
+    assert smart_case("JANOWAY") == "Janoway"
     assert smart_case("westmere") == "Westmere"
     assert smart_case("McDonald") == "McDonald"      # never mangled
     assert smart_case("Gianos-Steinberg") == "Gianos-Steinberg"
@@ -88,7 +88,7 @@ def test_parse_entry_list_real_markup():
     by_last = {p["last"]: p for p in players}
 
     # plain row: every field lands
-    aaron = by_last["Aaron"]
+    aaron = by_last["Ashfell"]
     assert aaron["first"] == "Dennison"
     assert aaron["uscf_id"] == "12877422"
     assert aaron["state"] == "NY"
@@ -99,7 +99,7 @@ def test_parse_entry_list_real_markup():
     assert by_last["Brightwater"]["first"] == "Ana Marie"
 
     # "(IM)(Withdrawn)" annotation: flagged withdrawn, name left clean
-    adu = by_last["Adu"]
+    adu = by_last["Ashdown"]
     assert adu["withdrawn"] is True
     assert "(" not in adu["first"] and "(" not in adu["last"]
 
@@ -141,12 +141,12 @@ def test_dedup_scraped_by_uscf_id():
 def test_load_export_fixture():
     rows = load_export(FIXTURE_CSV)
     assert len(rows) == 10
-    assert rows[0]["LastName"] == "Aaron"
+    assert rows[0]["LastName"] == "Ashfell"
 
 
 def test_load_export_missing_columns(tmp_path):
     bad = tmp_path / "bad.csv"
-    bad.write_text("Name,City\nZellwood,Boston\n")
+    bad.write_text("Name,City\nZellwood,Portsend\n")
     with pytest.raises(ValueError, match="missing required column"):
         load_export(str(bad))
 
@@ -164,7 +164,7 @@ def test_build_people_scrape_only():
     assert stats["final_people"] == 5
     assert all(p["source"] == "entry list" for p in people)
     assert all(p["type"] == "Player" for p in people)
-    adu = next(p for p in people if p["last"] == "Adu")
+    adu = next(p for p in people if p["last"] == "Ashdown")
     assert adu["withdrawn"] is True
 
 
@@ -178,10 +178,10 @@ def test_build_people_merge_and_payers():
     # USCF federation state (NJ)
     brightwater = by_name[("Brightwater", "Ana Marie")]
     assert brightwater["source"] == "entry list+export"
-    assert brightwater["city"] == "Newark"
+    assert brightwater["city"] == "Eastmarch"
     assert brightwater["state"] == "FL"
     assert brightwater["zip"] == "07102"        # leading zero restored
-    assert ("Brightwater", "Ali") not in by_name  # no duplicate from the export
+    assert ("Brightwater", "Ana") not in by_name  # no duplicate from the export
 
     # siblings kept, parent payer added exactly once with cross-reference
     parent = by_name[("Quillon", "Rosalind")]
@@ -189,18 +189,18 @@ def test_build_people_merge_and_payers():
     assert parent["paid_for"] == ["Delphine Quillon", "Torrance Quillon"]
     assert parent["city"] == "Westmere"   # borrowed from the kids' rows
 
-    # a payer who IS a player (Nina Lopez paid by player Zellwood) adds no row
+    # a payer who IS a player (Nissa Larkspur paid by player Zellwood) adds no row
     assert stats["payers_already_players"] == 1
     zellwood = by_name[("Zellwood", "Jonquil")]
     assert zellwood["type"] == "Player"
 
     # bulk payer (4 entries > threshold 3): flagged as staff,
     # cross-reference suppressed, address borrowed from first entry
-    staff = by_name[("Carrier", "Robert")]
+    staff = by_name[("Castellan", "Rowanne")]
     assert staff["type"] == "Payer"
     assert staff["paid_for"] == []
     assert any("bulk payer" in f for f in staff["flags"])
-    assert staff["city"] == "Reston"
+    assert staff["city"] == "Kingsmoor"
 
     # export-only side-event player still on the list
     side = by_name[("Marbleton", "Marigold")]
@@ -211,7 +211,7 @@ def test_build_people_merge_and_payers():
 
     # reconciliation: 5 scraped + 8 export-only players + 2 payers = 15
     assert stats["matched_both"] == 2
-    assert stats["scrape_only"] == 3          # Adu, Sunderholm, Zellwood
+    assert stats["scrape_only"] == 3          # Ashdown, Sunderholm, Zellwood
     assert stats["export_only"] == 8
     assert stats["payers_added"] == 2
     assert stats["bulk_payers"] == 1
@@ -245,15 +245,15 @@ def test_build_people_blank_name_flagged_not_dropped():
 def test_build_people_payer_spelling_variants_collapse():
     row = {"City": "Westmere", "State": "FL", "ZipCode": "32608"}
     export = [
-        {"LastName": "Jani", "FirstName": "Aakash",
+        {"LastName": "Janoway", "FirstName": "Aakash",
          "PayerName": "JANOWAY, MERRICK", **row},
-        {"LastName": "Jani", "FirstName": "Suraj",
-         "PayerName": "Jani, Merrick", **row},
+        {"LastName": "Janoway", "FirstName": "Suraj",
+         "PayerName": "Janoway, Merrick", **row},
     ]
     people, stats = build_people([], export)
     payers = [p for p in people if p["type"] == "Payer"]
     assert len(payers) == 1
-    assert payers[0]["last"] == "Jani" and payers[0]["first"] == "Merrick"
+    assert payers[0]["last"] == "Janoway" and payers[0]["first"] == "Merrick"
 
 
 # ---------------------------------------------------------------------------

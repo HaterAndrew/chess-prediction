@@ -10,9 +10,9 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#f0c040">
-<!-- Render-blocking on purpose: the splash classification must land before the
-     first paint. Must not gain defer/async. See docs/boot.js. -->
-<script src="boot.js?v=f4bc2ac041"></script>
+<!-- Render-blocking on purpose so the service worker registers before any
+     other request. See docs/boot.js. -->
+<script src="boot.js?v=ccde1eb234"></script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CCA Predictor">
@@ -21,7 +21,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://chess-ask.hater-andrewd.workers.dev">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=4057c94380">
+<link rel="stylesheet" href="styles.css?v=9b0f350bf7">
 </head>
 <body>
 
@@ -33,36 +33,6 @@
   <span id="staleBannerText"></span>
   <button data-act="dismiss-stale"
     class="stale-banner-dismiss" aria-label="Dismiss">&times;</button>
-</div>
-
-<!-- ══════════════════ SPLASH SCREEN ══════════════════ -->
-<div id="splash">
-  <canvas id="splashCanvas"></canvas>
-  <div class="splash-bg"></div>
-  <div class="splash-content">
-    <div class="splash-piece">&#9812;</div>
-    <div class="splash-eyebrow">CCA &middot; AI-Powered Forecasting</div>
-    <h1 class="splash-title">Chess Tournament<br><em>Entry Predictor</em></h1>
-    <div class="splash-scrape-date" id="splashScrapeDate"></div>
-    <div class="splash-divider"></div>
-    <div class="splash-tagline">Predict tournament entries using historical patterns from 192K Continental Chess Association (CCA) records. Point estimates and confidence intervals for tournament directors.</div>
-    <div class="splash-stats">
-      <div class="splash-stat">
-        <div class="splash-stat-num gold" id="ss-live">0</div>
-        <div class="splash-stat-label">Upcoming</div>
-      </div>
-      <div class="splash-stat">
-        <div class="splash-stat-num blue" id="ss-total">0</div>
-        <div class="splash-stat-label">Total Events</div>
-      </div>
-      <div class="splash-stat">
-        <div class="splash-stat-num green" id="ss-years">0</div>
-        <div class="splash-stat-label">Years of Data</div>
-      </div>
-    </div>
-    <button class="splash-enter" data-act="dismiss-splash" aria-label="Enter Dashboard">Enter Dashboard &#9654;</button>
-    <div class="splash-version">Historical Ratio Model</div>
-  </div>
 </div>
 
 <!-- ══════════════════ HEADER ══════════════════ -->
@@ -119,6 +89,12 @@
 
   <!-- ══════ PREDICTIONS TAB ══════ -->
   <div class="page-tab-panel active" id="panel-predictions" role="tabpanel" aria-labelledby="ptab-predictions">
+
+  <!-- ── First-run hint (new visitors only; replaces the old splash gate) ── -->
+  <div id="firstRunHint" class="first-run-hint" hidden>
+    <span>Forecasts built from 15 years of CCA registration data. Pick a tournament in the header; predictions and likely ranges update daily.</span>
+    <button class="first-run-hint-dismiss" data-act="dismiss-hint" aria-label="Dismiss">&times;</button>
+  </div>
 
   <!-- ── Summary Stats Bar ── -->
   <div id="summaryBar" style="display:flex;gap:20px;padding:14px 0 10px;flex-wrap:wrap;font-size:.76rem;color:var(--muted);border-bottom:1px solid var(--border-light);margin-bottom:0"></div>
@@ -893,11 +869,11 @@
      init() (and any #audit deep link) synchronously at evaluation time. -->
 <script src="audit.js?v=30eaa762a6"></script>
 <script src="daily_series.js?v=e326e2b1fc"></script>
-<script src="app.js?v=def4f39ef0"></script>
+<script src="app.js?v=1d1ae04a76"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,
      so it is load-bearing: without it nothing on the page responds. It comes
      last because it dispatches into the globals the files above define. -->
-<script src="actions.js?v=9ca4c521ef"></script>
+<script src="actions.js?v=767d05ac5a"></script>
 </body>
 </html>

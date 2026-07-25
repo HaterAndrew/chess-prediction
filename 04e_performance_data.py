@@ -17,7 +17,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from importlib import import_module
 m04c = import_module("04c_final_model")
-from pipeline_utils import is_event_complete
+from pipeline_utils import (apply_plausibility_clamp, clamp_stats,
+                            is_event_complete, reset_clamp_stats)
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 TODAY = pd.Timestamp.now().normalize()
@@ -30,6 +31,20 @@ MIN_FINAL_COUNT = 50
 
 # Years to evaluate (expanding window: train on < Y, predict Y)
 EVAL_YEARS = [2022, 2023, 2024, 2025, 2026]
+
+# A tournament is graded only if its daily curve reaches at least this fraction
+# of its final count. Below it the curve is frozen or truncated relative to a
+# reconcile-bumped final, so any "error" measures the export gap rather than the
+# model (v3 T1 — see is_curve_gradeable).
+#
+# Calibrated against the 2026 fold rather than assumed. Timestamped curves
+# normally stop a little short of the final because walk-ins and on-site entries
+# never appear in the registration export: the healthy 2026 events land at
+# 84-89% of final. The two genuinely frozen exports sit at 38% (Chicago Class)
+# and 35% (Pittsburgh Open). 0.60 separates those populations with room on both
+# sides; 0.90 would have thrown out five sound events along with the two bad
+# ones, which is why the threshold is not set at the walk-in boundary.
+FROZEN_CURVE_MIN_RATIO = 0.60
 
 # Grading rubric based on T-14 MAE% and CI coverage
 GRADE_RUBRIC = [
@@ -105,10 +120,57 @@ def grade_from_aggregate(aggregate):
     return "N/A", "No data"
 
 
-def evaluate_tournaments(model, test_tournaments, daily):
+def _hist_lookup(train_summary):
+    """{family: [final_count, ...]} over the training rows, for the display
+    clamp the evaluator now mirrors (v3 T2). Excludes online and COVID editions
+    for the same reason 04d does: they are not representative turnout."""
+    pool = train_summary[
+        (~train_summary['is_online'].fillna(False))
+        & (~train_summary['is_covid'].fillna(False))
+        & (train_summary['final_count'] > 0)
+    ]
+    return pool.groupby('family')['final_count'].apply(
+        lambda s: [int(v) for v in s]).to_dict()
+
+
+def is_curve_gradeable(tid_daily, final, min_ratio=FROZEN_CURVE_MIN_RATIO):
+    """Can this tournament's daily curve be graded against its final count?
+
+    v3 T1 (audit/AUDIT_2026-07-25.md). Grading compares a prediction made from
+    `count_at_T` — read off the daily curve — against `final_count`. That is only
+    a fair test when both numbers describe the same event. For events whose
+    registration export went stale, the curve freezes at a fraction of the final
+    while reconcile_final_counts bumps `final_count` up to the true scraped
+    total. The model is then scored on the gap between two unrelated numbers.
+
+    Two 2026 events sat in exactly this state — Chicago Class (curve ~0.32x its
+    288 final) and Pittsburgh Open (~0.30x of 170) — each recording ~40% T-3
+    errors that the model did not cause. They alone dragged the published
+    headline grade from C to D.
+
+    A curve peaking below `min_ratio` of the final is frozen or truncated, not a
+    model miss, so it is excluded from grading. Returns (ok, peak_ratio).
+    """
+    if final is None or final <= 0 or len(tid_daily) == 0:
+        return False, 0.0
+    peak = float(tid_daily['cum_regs'].max())
+    ratio = peak / float(final)
+    return ratio >= min_ratio, ratio
+
+
+def evaluate_tournaments(model, test_tournaments, daily, frozen_skipped=None,
+                         hist_lookup=None):
     """Run blind test predictions for a set of tournaments.
 
     test_tournaments: list of dicts with family, tid, final_count, event_start
+    frozen_skipped: optional list; receives (name, final, peak_ratio) for every
+    tournament excluded by the frozen-curve gate so callers can report them.
+    hist_lookup: optional {family: [prior final_counts]} from the training years
+    only. When supplied, predictions run through the same plausibility clamp the
+    website applies before display (v3 T2), so the published grade is the grade
+    of the published forecast rather than of a raw model output no visitor sees.
+    Leave it None to grade the unclamped model.
+
     Returns list of result dicts with predictions at each T-point.
     """
     results = []
@@ -120,6 +182,14 @@ def evaluate_tournaments(model, test_tournaments, daily):
 
         tid_daily = daily[daily['tid'] == tid].sort_values('T', ascending=False)
         if len(tid_daily) == 0:
+            continue
+
+        # v3 T1: refuse to grade a frozen/truncated curve against a bumped final.
+        gradeable, peak_ratio = is_curve_gradeable(tid_daily, final)
+        if not gradeable:
+            if frozen_skipped is not None:
+                frozen_skipped.append(
+                    (tinfo.get('tournament_name', family), int(final), round(peak_ratio, 3)))
             continue
 
         t_predictions = {}
@@ -143,6 +213,16 @@ def evaluate_tournaments(model, test_tournaments, daily):
             point = int(round(point))
             ci_lo = int(round(ci_lo))
             ci_hi = int(round(ci_hi))
+
+            # v3 T2: grade what the site actually shows. 04d applies this clamp
+            # (and the current_count floor) between the model and the page, so
+            # grading the raw output measured a forecast no visitor ever saw.
+            if hist_lookup is not None:
+                point, ci_lo, ci_hi = apply_plausibility_clamp(
+                    point, ci_lo, ci_hi,
+                    current_count=count_at_T,
+                    hist_counts=hist_lookup.get(family, []),
+                    days_remaining=T)
 
             error_pct = round((point - final) / final * 100, 1)
             t_predictions[T] = {
@@ -444,11 +524,17 @@ def main():
                     event_start_str = pd.to_datetime(row['last_reg']).strftime('%Y-%m-%d')
                 test_tournaments.append({
                     'family': family, 'tid': row['tid'],
+                    'tournament_name': row.get('tournament_name', family),
                     'final_count': int(row['final_count']),
                     'event_start': event_start_str,
                 })
 
             results = []
+            frozen_skipped = []
+            # Prior-year finals only — the clamp must not see 2026 outcomes, or
+            # the leak-free property of the LOO refit above would be undone.
+            eval_hist = _hist_lookup(summary[summary['tournament_year'] < 2026])
+            reset_clamp_stats()
             for tinfo in test_tournaments:
                 loo_tids = completed_2026_tids - {tinfo['tid']}
                 model = m04c.N5v4_Final()
@@ -467,8 +553,26 @@ def main():
                 ].copy()
                 if len(recal_data) >= 5:
                     model.recalibrate(recal_data, daily)
-                results.extend(evaluate_tournaments(model, [tinfo], daily))
+                results.extend(evaluate_tournaments(model, [tinfo], daily,
+                                                    frozen_skipped=frozen_skipped,
+                                                    hist_lookup=eval_hist))
             print(f"  LOO-refit {len(test_tournaments)} completed 2026 tournaments (leak-free)")
+            # v3 T2: the eval now runs the display clamp, so report how often it
+            # actually altered a graded prediction. If this reads all zeros the
+            # published grade and the raw model grade are the same number.
+            _cs = clamp_stats()
+            _fired = {k: v for k, v in _cs.items() if k != 'calls' and v}
+            print(f"  Display clamp: {_cs['calls']} prediction(s) routed through it, "
+                  f"{sum(_fired.values())} altered {_fired if _fired else ''}")
+            if frozen_skipped:
+                # v3 T1: name these loudly. Excluding events from the published
+                # grade is a judgement call, and a silent exclusion would be
+                # indistinguishable from cherry-picking the grade upward.
+                print(f"  Excluded {len(frozen_skipped)} tournament(s) from grading — daily curve "
+                      f"frozen below {int(FROZEN_CURVE_MIN_RATIO*100)}% of final "
+                      f"(stale export, not a model miss):")
+                for name, fc, ratio in frozen_skipped:
+                    print(f"    {name:<55} final={fc:>4}  curve peak={round(ratio*100)}% of final")
         else:
             # Historical: expanding window — train on < year, predict year
             train_summary = summary[summary['tournament_year'] < year].copy()
@@ -508,13 +612,24 @@ def main():
                     event_start_str = lr.strftime('%Y-%m-%d') if pd.notna(lr) else f"{year}-06-01"
                 test_tournaments.append({
                     'family': family, 'tid': row['tid'],
+                    'tournament_name': row.get('tournament_name', family),
                     'final_count': int(row['final_count']),
                     'event_start': event_start_str,
                 })
 
         # Run evaluation (the 2026 fold already did its own LOO evaluation above)
         if year != 2026:
-            results = evaluate_tournaments(model, test_tournaments, daily)
+            frozen_skipped = []
+            results = evaluate_tournaments(
+                model, test_tournaments, daily,
+                frozen_skipped=frozen_skipped,
+                # Training years only — same expanding window the model saw.
+                hist_lookup=_hist_lookup(train_summary))
+            if frozen_skipped:
+                print(f"  Excluded {len(frozen_skipped)} tournament(s) from grading — daily curve "
+                      f"frozen below {int(FROZEN_CURVE_MIN_RATIO*100)}% of final:")
+                for name, fc, ratio in frozen_skipped:
+                    print(f"    {name:<55} final={fc:>4}  curve peak={round(ratio*100)}% of final")
         print(f"  Evaluated {len(results)} tournaments")
 
         # Compute year-level aggregate + grade

@@ -203,3 +203,59 @@ def test_healthy_card_triggers_no_daily_findings():
     modes, _ = run([card()])
     daily_modes = {m for sev, m in modes if m.startswith("daily-")}
     assert daily_modes == set(), f"healthy card raised {daily_modes}"
+
+
+# ---------------------------------------------------------------------------
+# v3 Q2: performance_data.json cross-check. data_health never loaded the file,
+# so the frozen-curve corruption that made the published grade wrong-low (T1/R2)
+# had no coverage anywhere. 04e now excludes those events from grading; this
+# rule makes sure a new one cannot appear unnoticed.
+# ---------------------------------------------------------------------------
+
+
+def perf_ctx(perf_finals):
+    c = ctx()
+    c.perf_finals = perf_finals
+    return c
+
+
+def run_perf(perf_finals, cards=None):
+    from data_health import scan
+    report = scan({"generated": "2026-07-25", "tournaments": cards or []},
+                  perf_ctx(perf_finals))
+    return {(f["severity"], f["mode"]) for f in report.findings}
+
+
+def test_frozen_graded_curve_is_flagged():
+    """Chicago Class: curve peaked at 110 against the 288 final it was graded on."""
+    modes = run_perf({"chicago class": {"final_count": 288,
+                                        "peak_count_at_T": 110}})
+    assert ("HIGH", "performance-frozen-curve") in modes
+
+
+def test_pittsburgh_shape_is_flagged():
+    modes = run_perf({"pittsburgh open": {"final_count": 170,
+                                          "peak_count_at_T": 59}})
+    assert ("HIGH", "performance-frozen-curve") in modes
+
+
+def test_healthy_graded_curve_is_clean():
+    """Walk-in shortfall (~86% of final) is normal and must not be flagged."""
+    modes = run_perf({"boston chess congress": {"final_count": 359,
+                                                "peak_count_at_T": 310}})
+    assert ("HIGH", "performance-frozen-curve") not in modes
+
+
+def test_missing_performance_file_is_not_an_error():
+    """The scanner must stay usable when 04e has not run yet."""
+    modes = run_perf({})
+    assert ("HIGH", "performance-frozen-curve") not in modes
+
+
+def test_malformed_performance_entries_are_skipped():
+    modes = run_perf({
+        "a": {"final_count": None, "peak_count_at_T": 10},
+        "b": {"final_count": 100, "peak_count_at_T": None},
+        "c": {"final_count": 0, "peak_count_at_T": 0},
+    })
+    assert ("HIGH", "performance-frozen-curve") not in modes

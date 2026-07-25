@@ -3,7 +3,7 @@
 // Cache name is bumped on each deploy that reshapes caching behavior so
 // old caches from prior SW versions get purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v72';
+const CACHE_NAME = 'cca-predictor-v73';
 
 // Version-pinned, SRI-locked CDN scripts. Immutable, so serve them cache-first
 // (see the fetch handler) instead of letting the cross-origin bypass drop them
@@ -83,9 +83,18 @@ self.addEventListener('fetch', event => {
   // kept serving old numbers even after a corrected build shipped — which would
   // have hidden the incident data-fix from exactly the returning users who saw
   // the bad numbers first.
+  //
+  // The document itself needs the same treatment. Pages serves index.html with
+  // `Cache-Control: max-age=600`, and index.html is what carries every asset's
+  // `?v=` cache-buster — so a returning visitor inside that window gets a
+  // ten-minute-old document pointing at the PREVIOUS data URL, and the
+  // busting does nothing. Fetching the navigation with no-store makes the
+  // document the one thing guaranteed fresh, which is what every other
+  // version pointer depends on.
   const isData = url.pathname.endsWith('/site_data.js');
+  const isDocument = event.request.mode === 'navigate';
   event.respondWith(
-    fetch(event.request, isData ? { cache: 'no-store' } : undefined)
+    fetch(event.request, (isData || isDocument) ? { cache: 'no-store' } : undefined)
       .then(response => {
         if (response && response.ok && response.type !== 'opaque') {
           const clone = response.clone();

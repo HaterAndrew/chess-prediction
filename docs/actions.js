@@ -34,7 +34,11 @@
       const banner = document.getElementById('staleBanner');
       if (banner) banner.style.display = 'none';
     },
-    'dismiss-splash': function () { dismissSplash(); },
+    'dismiss-hint': function () {
+      const hint = document.getElementById('firstRunHint');
+      if (hint) hint.hidden = true;
+      try { localStorage.setItem('cep:hint:seen', '1'); } catch (_) {}
+    },
     'scroll-top': function () { window.scrollTo({ top: 0, behavior: 'smooth' }); },
     'page-tab': function (el) { switchPageTab(el.dataset.tab); },
     'more-tab': function (el) { pickMoreTab(el.dataset.tab); },

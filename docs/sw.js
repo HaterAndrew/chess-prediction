@@ -3,7 +3,7 @@
 // Cache name is bumped on each deploy that reshapes caching behavior so
 // old caches from prior SW versions get purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v73';
+const CACHE_NAME = 'cca-predictor-v74';
 
 // Version-pinned, SRI-locked CDN scripts. Immutable, so serve them cache-first
 // (see the fetch handler) instead of letting the cross-origin bypass drop them
@@ -17,10 +17,10 @@ const CDN_ASSETS = [
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
-  'styles.css?v=4057c94380',
-  'boot.js?v=f4bc2ac041',
-  'app.js?v=def4f39ef0',
-  'actions.js?v=9ca4c521ef',
+  'styles.css?v=9b0f350bf7',
+  'boot.js?v=ccde1eb234',
+  'app.js?v=1d1ae04a76',
+  'actions.js?v=767d05ac5a',
   'audit.js?v=30eaa762a6',
   'daily_series.js?v=e326e2b1fc',
   'data/site_data.js?v=af7bd0a542',

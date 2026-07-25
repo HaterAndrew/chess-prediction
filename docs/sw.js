@@ -17,9 +17,9 @@ const CDN_ASSETS = [
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
-  'styles.css?v=53600ad455',
+  'styles.css?v=c141ac9c8d',
   'boot.js?v=ccde1eb234',
-  'app.js?v=4b6502525d',
+  'app.js?v=9dbcc9ded3',
   'actions.js?v=d1238bb694',
   'audit.js?v=30eaa762a6',
   'daily_series.js?v=e326e2b1fc',
@@ -109,7 +109,7 @@ self.addEventListener('fetch', event => {
           if (event.request.mode === 'navigate') {
             return new Response(
               '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Offline</title>' +
-              '<style>body{background:#06090f;color:#f0c040;font-family:system-ui;display:flex;' +
+              '<style>body{background:#0a0907;color:#f0c040;font-family:system-ui;display:flex;' +
               'justify-content:center;align-items:center;height:100vh;margin:0;text-align:center}' +
               '</style></head><body><div><h1>Offline</h1><p>CCA Entry Predictor is unavailable. ' +
               'Check your connection and try again.</p></div></body></html>',

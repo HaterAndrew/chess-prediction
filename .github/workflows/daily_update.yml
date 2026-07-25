@@ -65,7 +65,7 @@ jobs:
           # externalization — the build writes it, so it MUST be committed or the
           # deployed data goes stale. output/data_health.json + audit/data-health
           # persist the freshness scan (H1) instead of expiring with the run log.
-          git add output/daily_scrape.csv output/website_data.json output/daily_puzzles.json output/performance_data.json docs/index.html docs/data/site_data.js docs/audit_warnings.json output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv output/tournament_metadata.csv output/walk_in_family_stats.csv output/walk_in_multipliers.csv output/tournament_summary.csv output/daily_registration_counts.csv output/update_log.csv output/checksums.json output/audit_warnings.json output/data_health.json
+          git add output/daily_scrape.csv output/website_data.json output/daily_puzzles.json output/performance_data.json docs/index.html docs/data/site_data.js docs/audit_warnings.json output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv output/tournament_metadata.csv output/walk_in_family_stats.csv output/walk_in_multipliers.csv output/tournament_summary.csv output/daily_registration_counts.csv output/update_log.csv output/checksums.json output/audit_warnings.json output/data_health.json output/scrape_health.json
           git add audit/data-health/ 2>/dev/null || true
           git diff --cached --quiet || git commit -m "Daily update: $(date +%Y-%m-%d)"
           git pull --rebase || git pull --no-rebase

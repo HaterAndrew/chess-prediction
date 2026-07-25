@@ -21,7 +21,11 @@ output/*.js
 output/*.pdf
 output/chess_history.json
 output/scrape_health.html
-output/scrape_health.json
+# output/scrape_health.json is deliberately NOT ignored (v3 O3): it is the
+# append-only reliability log, and CI runs from a blank checkout. While it was
+# ignored, every run started with an empty history, so consecutive-failure and
+# success-rate counts could only ever read as a single entry — the subsystem
+# reported perfect health through the runs that failed on 07-22 and 07-25.
 
 # But keep these tracked (needed for CI and model training)
 !output/daily_scrape.csv

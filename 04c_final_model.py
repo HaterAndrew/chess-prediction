@@ -46,10 +46,129 @@ TODAY = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 # without metadata. Empirically, last_reg ≈ event_start + 2 (median across
 # all CCA tournaments with both metadata and timestamp data).
 DEFAULT_EVENT_START_OFFSET = 2
+
+# Recalibration cohort rules (v3 T3, audit/AUDIT_2026-07-25.md). recalibrate()
+# prefers residuals from tournaments the ratio model was NOT fitted on; below
+# this many held-out records it falls back to the in-sample cohort and widens the
+# derived CI scale by RECAL_IN_SAMPLE_WIDENING to offset training-set optimism.
+# The widening is a declared penalty, not a measured quantity — the alternative
+# is publishing an interval whose width was calibrated on training data.
+RECAL_MIN_OOS_RECORDS = 5
+RECAL_IN_SAMPLE_WIDENING = 1.15
 # Typical tournament length in days, used by get_event_info() to estimate a
 # start date from an end-date proxy when metadata is absent. A weekend swiss
 # runs ~3 days; majors carry real metadata so they never hit this fallback.
 TYPICAL_DURATION = 3
+
+
+def apply_ci_floors(point, low, high, days_remaining, current_count,
+                    n_editions, is_blitz=False):
+    """Apply every floor/cap the published confidence interval must satisfy.
+
+    Idempotent by construction — each rule is a max/min against a bound derived
+    from the current point, never a multiplicative widening — so it can be run
+    both before and after recalibration.
+
+    v3 N3 (audit/AUDIT_2026-07-25.md): these rules used to be inline in
+    predict_nowcast, applied once, ABOVE the recalibration block. Recal then
+    rebuilt the interval symmetrically in log space around its own bias-corrected
+    centre, which discarded all of them: a 0-edition family's min_upper of 375
+    came back out at ~113. The families these floors protect are precisely the
+    ones whose point estimate is least trustworthy, so collapsing their upper
+    bound is backwards.
+    """
+    if n_editions == 0:
+        # Growth headroom for families with no history at all.
+        if days_remaining >= 28 and current_count < 20:
+            min_upper = current_count * 25
+        elif days_remaining >= 28 and current_count < 80:
+            min_upper = current_count * 8
+        elif days_remaining >= 7 and current_count < 30:
+            min_upper = current_count * 10
+        elif days_remaining >= 7 and current_count < 100:
+            min_upper = current_count * 4
+        else:
+            min_upper = high
+        high = max(high, min_upper)
+        high = min(high, max(point * 8.0, current_count * 30))
+        low = max(low, point * 0.15)
+    elif n_editions == 1:
+        high = min(high, point * 3.0)
+        low = max(low, point * 0.3)
+
+    # Blitz events surge 2-4x on the day; the parametric model assumes gradual
+    # registration and under-covers them.
+    if is_blitz:
+        if days_remaining <= 1:
+            min_blitz_upper = current_count * 4.0
+        elif days_remaining <= 3:
+            min_blitz_upper = current_count * 5.0
+        elif days_remaining <= 5:
+            min_blitz_upper = current_count * 6.0
+        elif days_remaining <= 7:
+            min_blitz_upper = current_count * 5.0
+        else:
+            min_blitz_upper = 0
+        if min_blitz_upper > 0:
+            high = max(high, min_blitz_upper)
+
+    # Minimum CI width: at very short T, LOO calibration on well-predicted
+    # training data yields unrealistically tight intervals.
+    if days_remaining <= 1:
+        min_half = point * 0.06
+    elif days_remaining <= 3:
+        min_half = point * 0.05
+    elif days_remaining <= 7:
+        min_half = point * 0.04
+    else:
+        min_half = 0
+    if min_half > 0:
+        if high - point < min_half:
+            high = point + min_half
+        if point - low < min_half:
+            low = point - min_half
+    return point, low, high
+
+
+def _predict_nowcast_ci_tail(model, point, low, high, days_remaining,
+                             current_count, n_editions, is_blitz=False):
+    """Floors, recalibration and the final rounding for predict_nowcast.
+
+    Split out of the method so the v3 N3 behaviour — floors surviving recal, and
+    recal preserving the interval's asymmetry — is directly testable without
+    standing up a fitted ratio model. See tests/test_ci_floors_survive_recal.py.
+    """
+    point, low, high = apply_ci_floors(
+        point, low, high, days_remaining, current_count, n_editions, is_blitz)
+
+    # Apply recalibration corrections if available
+    if getattr(model, '_recal_bias', None):
+        recal_Ts = sorted(model._recal_bias.keys())
+        nearest_T = min(recal_Ts, key=lambda t: abs(t - days_remaining))
+        bias_factor = model._recal_bias.get(nearest_T, 1.0)
+        ci_adj = model._recal_ci.get(nearest_T, 1.0)
+        center = point * bias_factor
+        # v3 N3: scale each arm independently instead of rebuilding a symmetric
+        # log interval about the centre. The distribution is lognormal, so its
+        # upper arm is legitimately longer; the old form averaged the two arms
+        # and handed back the mean half-width, collapsing the fitted skew.
+        lo_arm_log = max(np.log(max(point, 1)) - np.log(max(low, 1)), 0) * ci_adj
+        hi_arm_log = max(np.log(max(high, 1)) - np.log(max(point, 1)), 0) * ci_adj
+        log_center = np.log(max(center, 1))
+        low = np.exp(log_center - lo_arm_log)
+        high = np.exp(log_center + hi_arm_log)
+        point = center
+        # Recal moved the centre, so bounds expressed as a ratio of the point
+        # have to be recomputed against the new one.
+        point, low, high = apply_ci_floors(
+            point, low, high, days_remaining, current_count, n_editions, is_blitz)
+
+    # Floor: point estimate must be >= current_count (can't un-register), but
+    # the CI lower bound may sit below the point for honest uncertainty.
+    point = round(max(point, current_count))
+    low = round(max(low, current_count))
+    high = round(max(high, point))
+    return (point, low, high)
 
 
 def reanchor_daily_to_event_start(summary, daily, meta):
@@ -478,6 +597,12 @@ class N5v4_Final:
             ]
         else:
             valid = valid[valid['tournament_year'] < 2026]
+
+        # v3 T3: remember exactly which tournaments the ratio model was fitted
+        # on. recalibrate() needs it to tell an out-of-sample residual from an
+        # in-sample one; without it, recal measured its own training error and
+        # concluded the intervals were tighter than they really are.
+        self._fit_tids = set(valid['tid'].tolist())
 
         self.ratios = {}
         self.global_ratios = {}
@@ -1152,33 +1277,18 @@ class N5v4_Final:
         if n_editions == 0 and family in FAMILY_ALIASES:
             n_editions = sum(self.family_n_editions.get(f, 0)
                             for f in FAMILY_ALIASES[family])
+        # Sparse-history widening. This is multiplicative, so unlike the floors
+        # below it must run exactly once (v3 N3 — the ratio floors and caps that
+        # used to live here now sit in _apply_ci_floors, which is idempotent and
+        # runs again after recalibration).
         if n_editions == 0:
             ci_half_width = (high - low) / 2 * self.CI_WIDEN_0_EDITIONS
             low = point - ci_half_width
             high = point + ci_half_width
-            # For 0-edition families, point estimate may be fundamentally wrong.
-            # Ensure upper bound accounts for growth potential. Multiplier is
-            # highest for small counts at long T (most uncertain).
-            if days_remaining >= 28 and current_count < 20:
-                min_upper = current_count * 25
-            elif days_remaining >= 28 and current_count < 80:
-                min_upper = current_count * 8
-            elif days_remaining >= 7 and current_count < 30:
-                min_upper = current_count * 10
-            elif days_remaining >= 7 and current_count < 100:
-                min_upper = current_count * 4
-            else:
-                min_upper = high
-            high = max(high, min_upper)
-            high = min(high, max(point * 8.0, current_count * 30))
-            low = max(low, point * 0.15)
         elif n_editions == 1:
             ci_half_width = (high - low) / 2 * self.CI_WIDEN_1_EDITION
             low = point - ci_half_width
             high = point + ci_half_width
-            # Post-widening cap for 1-edition families
-            high = min(high, point * 3.0)
-            low = max(low, point * 0.3)
 
         # Withdrawal rate correction: reduce prediction by expected withdrawal %
         wd_rate = self.family_withdrawal_rates.get(family, 0.0)
@@ -1203,63 +1313,10 @@ class N5v4_Final:
             except (ValueError, TypeError):
                 pass
 
-        # Blitz events have extreme day-of surges (2-4x). Widen upper CI
-        # at short T to capture this, since the parametric model assumes
-        # gradual registration and under-covers blitz.
-        if is_blitz:
-            if days_remaining <= 1:
-                min_blitz_upper = current_count * 4.0
-            elif days_remaining <= 3:
-                min_blitz_upper = current_count * 5.0
-            elif days_remaining <= 5:
-                min_blitz_upper = current_count * 6.0
-            elif days_remaining <= 7:
-                min_blitz_upper = current_count * 5.0
-            else:
-                min_blitz_upper = 0
-            if min_blitz_upper > 0:
-                high = max(high, min_blitz_upper)
-
-        # Minimum CI width: at very short T, CIs can be unrealistically tight
-        # (±3% of point) due to LOO calibration on well-predicted training data.
-        # Ensure at least ±5% of point at T<=3, ±4% at T<=7.
-        if days_remaining <= 1:
-            min_half = point * 0.06
-        elif days_remaining <= 3:
-            min_half = point * 0.05
-        elif days_remaining <= 7:
-            min_half = point * 0.04
-        else:
-            min_half = 0
-        if min_half > 0:
-            if high - point < min_half:
-                high = point + min_half
-            if point - low < min_half:
-                low = point - min_half
-
-        # Apply recalibration corrections if available
-        if hasattr(self, '_recal_bias') and self._recal_bias:
-            # Find nearest T-band for bias correction
-            recal_Ts = sorted(self._recal_bias.keys())
-            nearest_T = min(recal_Ts, key=lambda t: abs(t - days_remaining))
-            bias_factor = self._recal_bias.get(nearest_T, 1.0)
-            ci_adj = self._recal_ci.get(nearest_T, 1.0)
-            # Apply bias correction (shrink toward actual)
-            center = point * bias_factor
-            # Apply CI width adjustment
-            half_w_log = (np.log(max(high, 1)) - np.log(max(low, 1))) / 2
-            half_w_log *= ci_adj
-            low = np.exp(np.log(max(center, 1)) - half_w_log)
-            high = np.exp(np.log(max(center, 1)) + half_w_log)
-            point = center
-
-        # Floor: point estimate must be >= current_count (can't un-register)
-        # but allow CI lower bound to go below point for honest uncertainty
-        point = round(max(point, current_count))
-        low = round(max(low, current_count))
-        high = round(max(high, point))
-
-        return (point, low, high)
+        return _predict_nowcast_ci_tail(
+            self, point, low, high,
+            days_remaining=days_remaining, current_count=current_count,
+            n_editions=n_editions, is_blitz=is_blitz)
 
     def recalibrate(self, completed_tournaments, daily, T_points=None,
                     target_coverage=0.80, ci_min_scale=0.5, ci_max_scale=1.8):
@@ -1355,10 +1412,29 @@ class N5v4_Final:
                 log_actual = np.log(max(actual, 1))
                 log_point = np.log(max(point, 1))
                 ci_hit = 1 if lo <= actual <= hi else 0
-                records.append((err_pct, log_actual, log_point, log_halfw, ci_hit, lr))
+                in_sample = tid in getattr(self, '_fit_tids', set())
+                records.append((err_pct, log_actual, log_point, log_halfw, ci_hit,
+                                lr, in_sample))
 
             if len(records) < 3:
                 continue
+
+            # v3 T3 (audit/AUDIT_2026-07-25.md): prefer residuals from
+            # tournaments the ratio model was NOT fitted on. The recal cohort
+            # overlapped the fitting cohort, so predict_nowcast was partly
+            # reproducing values it had trained on; the residuals came out too
+            # small and ci_adj shrank the intervals below honest width. (The base
+            # CI scale is properly leave-one-out — the optimism is confined to
+            # this recalibration layer.)
+            oos = [r for r in records if not r[6]]
+            cohort_is_in_sample = False
+            if len(oos) >= RECAL_MIN_OOS_RECORDS:
+                records = oos
+            elif len(oos) < len(records):
+                # Not enough held-out events to calibrate on. Keep the in-sample
+                # cohort but say so, and widen below rather than publish an
+                # interval whose width was measured on training data.
+                cohort_is_in_sample = True
 
             # ── Bias correction (with C2 stationarity check) ────────────
             err_arr = np.array([r[0] for r in records])
@@ -1420,6 +1496,12 @@ class N5v4_Final:
             # The empirical_q is already in units of half-width, so it is the
             # scale to apply around the bias-corrected center.
             ci_adj = empirical_q
+            # v3 T3: residuals measured on tournaments the model was fitted on
+            # understate real error, so the scale derived from them would publish
+            # intervals narrower than the model has earned. Widen by a fixed,
+            # declared penalty rather than pretending the number is honest.
+            if cohort_is_in_sample:
+                ci_adj *= RECAL_IN_SAMPLE_WIDENING
             ci_adj = max(ci_min_scale, min(ci_max_scale, ci_adj))
 
             current_coverage = float(np.mean([r[4] for r in records]))
@@ -1434,7 +1516,15 @@ class N5v4_Final:
                 'bias_factor': round(bias_factor, 3),
                 'ci_adj': round(ci_adj, 3),
                 'target_coverage': int(target_coverage * 100),
+                # v3 T3: make the provenance of this scale inspectable.
+                'cohort': 'in-sample' if cohort_is_in_sample else 'held-out',
+                'n_out_of_sample': len(oos),
             }
+            if cohort_is_in_sample:
+                print(f"  WARNING: T={T} recalibration ran on an in-sample cohort "
+                      f"({len(oos)} held-out record(s), need {RECAL_MIN_OOS_RECORDS}); "
+                      f"CI scale widened x{RECAL_IN_SAMPLE_WIDENING} to offset "
+                      f"training-set optimism.")
             if stationarity:
                 diag['stationarity'] = stationarity
                 # Loud notice when bias materially differs across halves;

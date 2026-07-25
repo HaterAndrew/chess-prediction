@@ -721,6 +721,7 @@ body.drawer-open .back-to-top { display: none !important; }
     align-items: flex-start;
     gap: var(--s-2);
   }
+  .chart-top-right { align-items: flex-start; }
   /* Compare/hist chart inline-height divs also need the bump. */
   #histChart, #regCurveChart { /* canvas inherits parent height attr */ }
 }
@@ -1055,7 +1056,26 @@ body.drawer-open .back-to-top { display: none !important; }
 }
 .chart-title { margin: 0; font-weight: 700; font-size: var(--fs-4); }
 .chart-subtitle { font-size: var(--fs-2); color: var(--muted); margin-top: 2px; }
+.chart-top-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 .chart-legend { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; }
+.chart-seg {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.chart-seg button {
+  padding: 4px 10px;
+  background: var(--surface2); color: var(--text2);
+  font-size: var(--fs-1); font-weight: 600;
+  border: none; cursor: pointer;
+  border-right: 1px solid var(--border);
+  transition: background .15s, color .15s;
+}
+.chart-seg button:last-child { border-right: none; }
+.chart-seg button.active { background: var(--gold); color: var(--ink); font-weight: 700; }
+.chart-seg button:disabled { opacity: .45; cursor: default; }
+@media (pointer: coarse) { .chart-seg button { min-height: 44px; } }
 .legend-item { display: flex; align-items: center; gap: 6px; font-size: var(--fs-2); color: var(--muted); }
 @media (max-width: 639px) {
   .chart-legend { gap: var(--s-2); }

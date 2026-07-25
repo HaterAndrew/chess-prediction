@@ -17,9 +17,9 @@ const CDN_ASSETS = [
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
-  'styles.css?v=43fa2530b5',
+  'styles.css?v=7ddab882ef',
   'boot.js?v=ccde1eb234',
-  'app.js?v=8a76841f4e',
+  'app.js?v=a8b9c4229b',
   'actions.js?v=d1238bb694',
   'audit.js?v=30eaa762a6',
   'daily_series.js?v=e326e2b1fc',

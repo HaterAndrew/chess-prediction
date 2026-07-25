@@ -1,96 +1,42 @@
 {
-  "generated": "2026-07-24",
-  "scanned_at": "2026-07-24T04:39:05",
+  "generated": "2026-07-25",
+  "scanned_at": "2026-07-25T15:20:50",
   "counts": {
     "CRITICAL": 0,
-    "HIGH": 9,
+    "HIGH": 0,
     "MEDIUM": 5,
     "INFO": 17
   },
   "findings": [
     {
-      "severity": "HIGH",
-      "mode": "stale-count",
-      "family": "Pacific Coast Open",
-      "message": "current_count 199 != latest scrape net 197 (2026-07-24)"
-    },
-    {
-      "severity": "HIGH",
-      "mode": "stale-count",
-      "family": "Atlantic City Open",
-      "message": "current_count 424 != latest scrape net 401 (2026-04-05)"
-    },
-    {
-      "severity": "HIGH",
-      "mode": "stale-count",
-      "family": "Chicago Open",
-      "message": "current_count 917 != latest scrape net 872 (2026-05-26)"
-    },
-    {
-      "severity": "HIGH",
-      "mode": "stale-count",
-      "family": "DC International",
-      "message": "current_count 107 != latest scrape net 102 (2026-06-29)"
-    },
-    {
-      "severity": "HIGH",
-      "mode": "stale-count",
-      "family": "New York State Open",
-      "message": "current_count 109 != latest scrape net 108 (2026-06-21)"
-    },
-    {
-      "severity": "HIGH",
-      "mode": "stale-count",
-      "family": "DC Open",
-      "message": "current_count 188 != latest scrape net 180 (2026-06-28)"
-    },
-    {
-      "severity": "HIGH",
-      "mode": "stale-count",
-      "family": "Hartford Open",
-      "message": "current_count 206 != latest scrape net 198 (2026-06-07)"
-    },
-    {
-      "severity": "HIGH",
-      "mode": "stale-count",
-      "family": "Pittsburgh Open",
-      "message": "current_count 170 != latest scrape net 157 (2026-07-19)"
-    },
-    {
-      "severity": "HIGH",
-      "mode": "stale-count",
-      "family": "Cleveland Open",
-      "message": "current_count 179 != latest scrape net 174 (2026-06-07)"
-    },
-    {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Bradley Open",
-      "message": "regular_fee is null with 1 days remaining"
+      "message": "regular_fee is null with 0 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Continental Open",
-      "message": "regular_fee is null with 20 days remaining"
+      "message": "regular_fee is null with 19 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Central California Open",
-      "message": "regular_fee is null with 21 days remaining"
+      "message": "regular_fee is null with 20 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Atlantic Open",
-      "message": "regular_fee is null with 28 days remaining"
+      "message": "regular_fee is null with 27 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Indianapolis Open",
-      "message": "regular_fee is null with 28 days remaining"
+      "message": "regular_fee is null with 27 days remaining"
     },
     {
       "severity": "INFO",

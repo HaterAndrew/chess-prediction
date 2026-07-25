@@ -155,3 +155,70 @@ def test_incident_fixture_regression():
         assert counts == sorted(counts), f"tid {tid} not monotone: {counts}"
         assert max(counts) <= gross, f"tid {tid} point exceeds gross {gross}: {max(counts)}"
         assert series[-1][1] == net, f"tid {tid} tail {series[-1][1]} != net {net}"
+
+
+# ---------------------------------------------------------------------------
+# v3 N2: the plausibility clamp must never display a final estimate below the
+# entry count already observed. A prediction of "fewer entries than we have
+# already counted" is impossible for a cumulative registration total, and it is
+# what the >3x clamp produced whenever a real surge outran the historical range
+# (verifier: fires whenever current_count > hist_max * 1.5).
+# ---------------------------------------------------------------------------
+
+
+def test_plausibility_clamp_never_returns_below_current_count():
+    """A genuine surge: history tops out at 100 but 400 entries are already in.
+    The old clamp rewrote point to hist_max*1.5 == 150, i.e. BELOW the 400
+    already counted. The floor must hold the real observed value."""
+    from pipeline_utils import apply_plausibility_clamp
+
+    current_count = 400
+    point, ci_lo, ci_hi = apply_plausibility_clamp(
+        point=500, ci_lo=450, ci_hi=560,
+        current_count=current_count, hist_counts=[80, 95, 100],
+        days_remaining=10)
+
+    assert point >= current_count, (
+        f"clamp produced point={point} below current_count={current_count}")
+    assert ci_hi >= point, f"ci_hi={ci_hi} below point={point}"
+    assert ci_lo <= point, f"ci_lo={ci_lo} above point={point}"
+
+
+def test_plausibility_clamp_still_damps_implausible_high_estimate():
+    """The clamp must keep doing its job when current_count is NOT the reason
+    the estimate is high: history ~100, only 20 entries in, model says 900."""
+    from pipeline_utils import apply_plausibility_clamp
+
+    point, _lo, _hi = apply_plausibility_clamp(
+        point=900, ci_lo=800, ci_hi=1000,
+        current_count=20, hist_counts=[80, 95, 100],
+        days_remaining=10)
+
+    assert point < 900, "implausibly high estimate was not damped"
+    assert point >= 20
+
+
+def test_plausibility_clamp_low_end_respects_current_count():
+    """The 'extremely low' re-centre on the historical median must also not
+    land below what has already been counted."""
+    from pipeline_utils import apply_plausibility_clamp
+
+    point, _lo, _hi = apply_plausibility_clamp(
+        point=5, ci_lo=1, ci_hi=20,
+        current_count=140, hist_counts=[100, 120, 130],
+        days_remaining=90)
+
+    assert point >= 140, f"low-end clamp produced point={point} below 140 counted"
+
+
+def test_plausibility_clamp_noop_without_enough_history():
+    """Fewer than 3 historical editions: no clamp fires, and a point already
+    above current_count is returned untouched."""
+    from pipeline_utils import apply_plausibility_clamp
+
+    result = apply_plausibility_clamp(
+        point=250, ci_lo=200, ci_hi=300,
+        current_count=40, hist_counts=[100],
+        days_remaining=30)
+
+    assert result == (250, 200, 300)

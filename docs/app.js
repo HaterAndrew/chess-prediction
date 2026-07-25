@@ -2744,52 +2744,53 @@ function renderHero(t) {
   const weekEl = document.getElementById('weekBreakdown');
   const barsEl = document.getElementById('weekBars');
   if (!isDone(t) && t.daily_data && t.daily_data.length >= 2) {
-    // Get last 7 data points and compute daily new entries
-    const dd = t.daily_data;
-    const recent = dd.slice(-8); // need 8 to get 7 diffs
-    const days = [];
-    for (let i = 1; i < recent.length; i++) {
-      const dayGap = recent[i][0] - recent[i-1][0];
-      const newEntries = recent[i][1] - recent[i-1][1];
-      // If gap > 1, spread evenly (data may skip days)
-      if (dayGap > 0) {
-        const perDay = newEntries / dayGap;
-        for (let g = 0; g < dayGap && days.length < 7; g++) {
-          days.push(Math.round(perDay));
-        }
+    // Build one bar per real calendar day (v3 P1). Each bar carries its own
+    // date, derived from the point's day_from_start against the exported
+    // daily_start_date anchor — never from its position in the array. Days
+    // covered by a scrape gap are spread across the gap and marked, so a
+    // multi-day jump can no longer be drawn as a single day's registrations.
+    const ivs = (typeof DailySeries !== 'undefined')
+      ? DailySeries.intervals(t, { isLive: !isDone(t) })
+      : [];
+    const days = [];      // {n, date, estimated}
+    for (const iv of ivs) {
+      const perDay = iv.added / iv.span;
+      for (let g = 0; g < iv.span; g++) {
+        // Date of each covered day, counting forward from the interval start.
+        const d = (typeof DailySeries !== 'undefined')
+          ? DailySeries.pointDate(t, iv.fromDay + g + 1) : null;
+        days.push({ n: Math.round(perDay), date: d, estimated: iv.isGap });
       }
     }
-    if (days.length === 0 || days.every(n => n === 0)) {
+    while (days.length > 7) days.shift();
+    if (days.length === 0 || days.every(o => o.n === 0)) {
       // No recent activity — render a quiet placeholder instead of nothing
       // so the hero-week column doesn't suddenly collapse to zero height.
       barsEl.innerHTML = `<div class="hero-week-empty">No registrations in the last 7 days</div>`;
       weekEl.style.display = '';
     } else if (days.length >= 2) {
-      const maxNew = Math.max(...days, 1);
-      const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      // Anchor bar labels to the server-side scrape date. The cron runs at
-      // ~00:20 EDT, so the delta captured by scrape N vs scrape N-1 reflects
-      // registrations during the calendar day BEFORE scrape N — shift back 1
-      // day so each bar's date matches when players actually registered.
-      const genStr = (typeof TOURNAMENT_DATA !== 'undefined' && TOURNAMENT_DATA.generated) ? TOURNAMENT_DATA.generated : null;
-      const anchor = genStr ? new Date(genStr + 'T00:00:00') : new Date();
-      const lastBarDay = new Date(anchor);
-      lastBarDay.setDate(lastBarDay.getDate() - 1);
-      barsEl.innerHTML = days.slice(-7).map((n, i, arr) => {
-        const d = new Date(lastBarDay);
-        d.setDate(d.getDate() - (arr.length - 1 - i));
-        const label = `${dayNames[d.getDay()]} ${months[d.getMonth()]} ${d.getDate()}`;
-        const pct = Math.max((n / maxNew) * 100, 2);
-        const color = n === maxNew ? 'var(--gold)' : 'var(--blue)';
-        return `<div style="display:flex;align-items:center;gap:6px">
+      const maxNew = Math.max(...days.map(o => o.n), 1);
+      const anyEstimated = days.some(o => o.estimated);
+      barsEl.innerHTML = days.map(o => {
+        const label = (o.date && typeof DailySeries !== 'undefined')
+          ? DailySeries.fmtPointDate(o.date) : '';
+        const pct = Math.max((o.n / maxNew) * 100, 2);
+        const color = o.n === maxNew ? 'var(--gold)' : 'var(--blue)';
+        // A bar covering a scrape gap is an average, not an observation. Mark it
+        // rather than presenting a spread-out figure as a measured daily count.
+        const est = o.estimated ? ' style="opacity:.55"' : '';
+        const tip = o.estimated ? ' title="Estimated — this day was covered by a gap in scraping"' : '';
+        return `<div${est}${tip} style="display:flex;align-items:center;gap:6px">
           <span style="font-size:.6rem;color:var(--muted);width:62px;text-align:right;white-space:nowrap">${label}</span>
           <div style="flex:1;height:11px;background:var(--surface2);border-radius:2px;overflow:hidden">
             <div style="width:${pct}%;height:100%;background:${color};border-radius:2px;transition:width .35s cubic-bezier(.22,1,.36,1)"></div>
           </div>
-          <span style="font-size:.64rem;color:var(--text2);width:24px;font-weight:${n === maxNew ? '700' : '400'}">+${n}</span>
+          <span style="font-size:.64rem;color:var(--text2);width:24px;font-weight:${o.n === maxNew ? '700' : '400'}">${o.estimated ? '~' : '+'}${o.n}</span>
         </div>`;
       }).join('');
+      if (anyEstimated) {
+        barsEl.innerHTML += `<div style="font-size:.58rem;color:var(--muted);margin-top:4px">~ estimated across a gap in scraping</div>`;
+      }
       weekEl.style.display = '';
     } else {
       weekEl.style.display = 'none';
@@ -2879,8 +2880,19 @@ function renderProgress(t) {
   const el = document.getElementById('progressRow');
   if (isDone(t) || !t.daily_data || t.daily_data.length === 0) { el.innerHTML = ''; return; }
 
-  const totalDays = t.daily_data[t.daily_data.length-1][0] + t.days_remaining || 120;
-  const elapsed = totalDays - t.days_remaining;
+  // v3 P3: span the registration window from its real start date to the event,
+  // not from the tail of the data array. The old form (last point's day index
+  // plus days_remaining) silently assumed the last scrape happened today, so a
+  // stale or gappy tail shortened the window and this bar contradicted the pace
+  // banner rendered from the same card.
+  let totalDays;
+  if (t.daily_start_date && t.event_start) {
+    totalDays = daysBetween(t.daily_start_date, t.event_start);
+  }
+  if (!totalDays || totalDays <= 0) {
+    totalDays = t.daily_data[t.daily_data.length - 1][0] + t.days_remaining || 120;
+  }
+  const elapsed = Math.max(0, totalDays - t.days_remaining);
   const timePct = Math.min(100, (elapsed / totalDays * 100)).toFixed(0);
   const regPct = Math.min(100, (t.current_count / t.point_estimate * 100)).toFixed(0);
 
@@ -2913,15 +2925,41 @@ function renderChart(t) {
 
   const eventStart = t.event_start;
   const datasets = [];
-  const lastDay = t.daily_data[t.daily_data.length - 1];
+
+  // v3 P1: draw the sanitised series, not the raw array. Points that exceed the
+  // scraped entry total are impossible and used to be plotted as-is — that is
+  // how a 625-entry curve was drawn for a 197-entry event.
+  const series = (typeof DailySeries !== 'undefined')
+    ? DailySeries.sanitizeSeries(t.daily_data, {
+        currentCount: t.current_count, isLive: !isDone(t) }).points
+    : t.daily_data;
+  if (!series.length) {
+    document.getElementById('chartLegend').innerHTML = '';
+    document.getElementById('chartSubtitle').textContent = `${t.family} ${t.year} — No registration timeline available`;
+    document.getElementById('chartCard').classList.remove('live-glow');
+    return;
+  }
+
+  const lastDay = series[series.length - 1];
   const totalSpan = lastDay[0] + t.days_remaining;
-  const regOpenDate = addDays(eventStart, -totalSpan);
+
+  // Date each point from its own day index against the exported anchor. The old
+  // math (event_start minus (totalSpan - day)) assumed the final point was
+  // exactly days_remaining from the event, i.e. that no scrape day was ever
+  // missed. When one was, every x-date on the chart shifted.
+  // Built with addDays (local midnight) rather than DailySeries.pointDate (UTC
+  // midnight): every other series on this axis — projected, CI arms, historical
+  // overlays — is local-anchored, and mixing the two conventions would offset
+  // the actual line against them by the viewer's UTC offset.
+  const dayToDate = (dayFromStart) => (
+    t.daily_start_date
+      ? addDays(t.daily_start_date, dayFromStart)
+      : addDays(eventStart, -(totalSpan - dayFromStart))
+  );
+  const regOpenDate = dayToDate(0);
 
   // Actual data
-  const actualData = t.daily_data.map(d => ({
-    x: addDays(eventStart, -(totalSpan - d[0])),
-    y: d[1]
-  }));
+  const actualData = series.map(d => ({ x: dayToDate(d[0]), y: d[1] }));
 
   // Only show point for first, last, and every 7th day to avoid clutter
   const pointRadii = actualData.map((_, i) => {
@@ -3338,11 +3376,18 @@ function renderChart(t) {
                 // not when hovering over future projected points
                 if (!isHistorical && !isPastOrToday) return null;
                 if (item.dataIndex > 0) {
-                  const prev = item.dataset.data[item.dataIndex - 1].y;
-                  const delta = item.raw.y - prev;
-                  if (delta > 0) return ` Actual: ${val}  (+${fmt(delta)}/day)`;
+                  const prevPt = item.dataset.data[item.dataIndex - 1];
+                  const delta = item.raw.y - prevPt.y;
+                  // v3 P7: label the real span. Adjacent chart points are not
+                  // always one day apart — the current data holds 29 gaps wider
+                  // than a day — and calling a multi-day total "/day" overstates
+                  // the rate by exactly the size of the gap.
+                  const spanDays = Math.max(1, Math.round(
+                    (item.raw.x - prevPt.x) / 86400000));
+                  const unit = spanDays === 1 ? '/day' : ` over ${spanDays} days`;
+                  if (delta > 0) return ` Actual: ${val}  (+${fmt(delta)}${unit})`;
                   if (delta === 0) return ` Actual: ${val}  (no change)`;
-                  return ` Actual: ${val}  (${fmt(delta)}/day)`;
+                  return ` Actual: ${val}  (${fmt(delta)}${unit})`;
                 }
                 return ` Actual: ${val}`;
               }
@@ -4445,16 +4490,25 @@ function renderMiniCards() {
   el.innerHTML = live.map(({t, i}) => {
     const isSelected = i === selectedIndex;
     const pct = t.point_estimate > 0 ? (t.current_count / t.point_estimate * 100).toFixed(0) : 0;
-    // Today's delta (latest scrape - prior scrape) surfaces velocity on the
-    // selector card itself instead of forcing a click through to see it.
-    let todayDelta = null;
-    if (t.daily_data && t.daily_data.length >= 2) {
-      todayDelta = t.daily_data[t.daily_data.length - 1][1]
-                 - t.daily_data[t.daily_data.length - 2][1];
+    // Today's delta surfaces velocity on the selector card itself instead of
+    // forcing a click through. v3 P1: this used to be a raw last-minus-prior
+    // with no gap check, so when a scrape day went missing it reported several
+    // days of registrations — or a corrupted jump — as "today's change". That
+    // is the "+125 entries" the incident put on screen. latestDailyChange
+    // returns null unless the final interval really is one day; anything wider
+    // gets labelled with its true span instead.
+    let deltaChip = '';
+    if (typeof DailySeries !== 'undefined') {
+      const todayDelta = DailySeries.latestDailyChange(t, { isLive: !isDone(t) });
+      if (todayDelta != null && todayDelta !== 0) {
+        deltaChip = `<span class="mini-card-delta ${todayDelta > 0 ? 'pos' : 'neg'}" title="Change since the previous day's scrape">${todayDelta > 0 ? '+' : ''}${todayDelta}</span>`;
+      } else {
+        const iv = DailySeries.latestInterval(t, { isLive: !isDone(t) });
+        if (iv && iv.isGap && iv.added > 0) {
+          deltaChip = `<span class="mini-card-delta pos" title="No scrape for ${iv.span} days — this covers the whole period, not one day">+${iv.added} / ${iv.span}d</span>`;
+        }
+      }
     }
-    const deltaChip = todayDelta != null && todayDelta !== 0
-      ? `<span class="mini-card-delta ${todayDelta > 0 ? 'pos' : 'neg'}" title="Today's change">${todayDelta > 0 ? '+' : ''}${todayDelta}</span>`
-      : '';
     // Pace comparison — same metric as the detail-view YoY banner:
     // compare current_count to prior_year_pace.count_at_same_point. Falls
     // back to last-year × curve-pct only when 2025 daily data is missing.
@@ -4772,14 +4826,74 @@ function renderModelHealth() {
 }
 
 
+// Hours after which baked data is treated as stale regardless of the flag the
+// pipeline stamped. The scrape runs nightly, so anything past ~a day and a half
+// means at least one run did not land. Audit v3 P2.
+const STALE_AFTER_HOURS = 36;
+
+/**
+ * Decide whether the data on this page is stale, WITHOUT trusting the
+ * server-baked is_stale flag on its own.
+ *
+ * Audit v3 P2/O1: `is_stale` is stamped by the last step of the pipeline, so a
+ * run that dies before that step leaves the previous run's `false` in place.
+ * That is exactly what happened on 2026-07-25 \u2014 the site served 07-24 data with
+ * is_stale reading false and no banner. The browser's own clock is the one
+ * signal a broken pipeline cannot forge, so age is computed here and either
+ * source can raise the banner.
+ *
+ * Returns {stale, degraded, ageHours, reason}.
+ */
+function assessDataFreshness(data, now) {
+  data = data || {};
+  now = now || new Date();
+  const flagged = Boolean(data.is_stale);
+  const degraded = Boolean(data.pipeline_degraded);
+
+  let ageHours = null;
+  const raw = data.generated_time || data.generated;
+  if (raw) {
+    const gen = new Date(raw);
+    if (!isNaN(gen.getTime())) {
+      ageHours = (now.getTime() - gen.getTime()) / 36e5;
+    }
+  }
+  // Negative age means the data claims to be from the future: a clock skew on
+  // either side. Don't call that stale, but don't treat it as verified fresh.
+  const tooOld = ageHours !== null && ageHours > STALE_AFTER_HOURS;
+
+  return {
+    stale: flagged || degraded || tooOld,
+    degraded: degraded,
+    ageHours: ageHours,
+    reason: degraded ? 'degraded' : (flagged ? 'flagged' : (tooOld ? 'age' : null)),
+  };
+}
+
 function init() {
   // --- Stale data warning banner ---
-  if (TOURNAMENT_DATA.is_stale) {
+  const freshness = assessDataFreshness(TOURNAMENT_DATA, new Date());
+  if (freshness.stale) {
     const banner = document.getElementById('staleBanner');
     const bannerText = document.getElementById('staleBannerText');
     if (banner && bannerText) {
       const ts = TOURNAMENT_DATA.last_updated || TOURNAMENT_DATA.generated;
-      bannerText.textContent = '\u26A0 Predictions last updated ' + ts + '. Live data temporarily unavailable.';
+      let msg;
+      if (freshness.degraded) {
+        // The pipeline told us it failed partway. Say so plainly rather than
+        // implying a transient upstream outage.
+        msg = '\u26A0 The update pipeline failed on its last run. Showing the last '
+            + 'complete data, from ' + ts + '. Counts and predictions below may be out of date.';
+      } else if (freshness.reason === 'age' && !TOURNAMENT_DATA.is_stale) {
+        // Nothing flagged this, but the browser clock says the data is old \u2014
+        // the case a mid-run crash used to hide entirely.
+        const days = Math.floor(freshness.ageHours / 24);
+        msg = '\u26A0 This data is ' + (days >= 1 ? days + ' day' + (days === 1 ? '' : 's') : Math.round(freshness.ageHours) + ' hours')
+            + ' old (generated ' + ts + '). The nightly update has not completed since then.';
+      } else {
+        msg = '\u26A0 Predictions last updated ' + ts + '. Live data temporarily unavailable.';
+      }
+      bannerText.textContent = msg;
       banner.style.display = 'block';
       // Push page content down so banner doesn't overlap
       document.body.style.paddingTop = banner.offsetHeight + 'px';

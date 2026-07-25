@@ -3,7 +3,7 @@
 // Cache name is bumped on each deploy that reshapes caching behavior so
 // old caches from prior SW versions get purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v71';
+const CACHE_NAME = 'cca-predictor-v72';
 
 // Version-pinned, SRI-locked CDN scripts. Immutable, so serve them cache-first
 // (see the fetch handler) instead of letting the cross-origin bypass drop them
@@ -18,9 +18,10 @@ const OFFLINE_FALLBACKS = [
   './',
   'index.html',
   'styles.css?v=28',
-  'app.js?v=39',
+  'app.js?v=40',
   'audit.js?v=1',
-  'data/site_data.js',
+  'daily_series.js?v=1',
+  'data/site_data.js?v=40',
   'manifest.json',
   'icons/icon-192.png',
   ...CDN_ASSETS
@@ -76,8 +77,14 @@ self.addEventListener('fetch', event => {
 
   if (url.origin !== self.location.origin) return;
 
+  // v3 P5: force a real network read for the data file. Without no-store the
+  // HTTP cache could satisfy this fetch from a stale entry, so an installed PWA
+  // kept serving old numbers even after a corrected build shipped — which would
+  // have hidden the incident data-fix from exactly the returning users who saw
+  // the bad numbers first.
+  const isData = url.pathname.endsWith('/site_data.js');
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, isData ? { cache: 'no-store' } : undefined)
       .then(response => {
         if (response && response.ok && response.type !== 'opaque') {
           const clone = response.clone();

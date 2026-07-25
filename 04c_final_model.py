@@ -67,11 +67,14 @@ def reanchor_daily_to_event_start(summary, daily, meta):
     meta_dt['start_date'] = pd.to_datetime(meta_dt['start_date'], errors='coerce')
     meta_dt['end_date'] = pd.to_datetime(meta_dt['end_date'], errors='coerce')
 
-    # Build (family, year) -> event_start lookup from metadata
+    # Build (family, year) -> event_start / event_end lookups from metadata
     meta_starts = {}
+    meta_ends = {}
     for _, m in meta_dt.iterrows():
         if pd.notna(m['start_date']):
             meta_starts[(m['family'], int(m['year']))] = m['start_date']
+        if pd.notna(m['end_date']):
+            meta_ends[(m['family'], int(m['year']))] = m['end_date']
 
     # Compute per-family median offset (last_reg - event_start) from completed
     # tournaments that have both metadata and timestamp data
@@ -96,8 +99,8 @@ def reanchor_daily_to_event_start(summary, daily, meta):
     daily = daily.copy()
     # AUDIT.md B3 — track which offset path each tournament took so silent
     # fallback to DEFAULT_EVENT_START_OFFSET=2 surfaces in logs.
-    _offset_source_counts = {'metadata': 0, 'family-median': 0, 'global-default': 0,
-                             'bad-metadata': 0, 'in-progress': 0}
+    _offset_source_counts = {'metadata': 0, 'negative-accepted': 0, 'family-median': 0,
+                             'global-default': 0, 'bad-metadata': 0, 'in-progress': 0}
     _global_default_examples = []  # (family, year) of rows hitting global-default
     for _, row in summary.iterrows():
         tid = row['tid']
@@ -109,28 +112,30 @@ def reanchor_daily_to_event_start(summary, daily, meta):
         start = meta_starts.get((fam, yr))
         if start is not None and pd.notna(lr):
             offset = (lr - start).days
-            # In-progress event (start_date in the future): negative offsets
-            # are expected (last_reg ≤ today < event_start). The metadata is
-            # not "bad" — the event simply hasn't ended. Use family_median
-            # for offset selection (we have no post-event registration
-            # signal yet) but classify separately so the bad-metadata
-            # counter stays accurate to genuinely-wrong rows.
             is_in_progress = start > TODAY
-            if is_in_progress and (offset < 0 or offset > 30):
-                _offset_source_counts['in-progress'] += 1
-                if fam in family_median_offset:
-                    offset = family_median_offset[fam]
-                else:
-                    offset = global_median_offset
-            elif offset < 0 or offset > 30:
-                # Bad data — fall back
-                _offset_source_counts['bad-metadata'] += 1
-                if fam in family_median_offset:
-                    offset = family_median_offset[fam]
-                else:
-                    offset = global_median_offset
-            else:
+            end = meta_ends.get((fam, yr))
+            is_complete = end is not None and pd.notna(end) and end < TODAY
+            # v3 N1 (audit/AUDIT_2026-07-25.md): for an event that has NOT yet
+            # concluded, a negative offset means last_reg predates event_start —
+            # normal when the registration export is stale relative to a live or
+            # upcoming event. Shifting by the TRUE (negative) offset is
+            # arithmetically correct; substituting a positive family-median offset
+            # slides the archive curve toward T=0 and, when a missing scrape day
+            # later exposes it, triggers the A4 rescale that corrupted
+            # Bradley/Pacific Coast. Accept the negative offset only for
+            # not-yet-complete events (bounded -365..0). Completed events keep the
+            # prior substitution behavior unchanged; any latent misplacement there
+            # is an audit finding, not a Phase-0 behavior change.
+            if 0 <= offset <= 30:
                 _offset_source_counts['metadata'] += 1
+            elif offset < 0 and offset >= -365 and not is_complete:
+                _offset_source_counts['negative-accepted'] += 1
+            else:
+                _offset_source_counts['in-progress' if is_in_progress else 'bad-metadata'] += 1
+                if fam in family_median_offset:
+                    offset = family_median_offset[fam]
+                else:
+                    offset = global_median_offset
         elif pd.notna(lr):
             if fam in family_median_offset:
                 offset = family_median_offset[fam]

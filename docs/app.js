@@ -2905,6 +2905,83 @@ function setChartRange(key) {
   _syncChartRangeSeg(cw);
 }
 
+// Shared vertical-marker plugin factory: dashed line + clamped, row-stacked
+// pill label at the top of the plot area. getMarkers(chartInstance) returns
+// [{ value, label, color }] where value is whatever the chart's x scale
+// resolves — a Date on time scales (main chart), an index on category scales
+// (registration curve).
+function makeVertMarkersPlugin(id, getMarkers) {
+  return {
+    id,
+    afterDraw(chartInstance) {
+      const ctx2 = chartInstance.ctx;
+      const xScale = chartInstance.scales.x;
+      const yScale = chartInstance.scales.y;
+      const lines = getMarkers(chartInstance) || [];
+
+      const isMobile = _mobileVP();
+      const annoFont = isMobile ? 'bold 9px' : 'bold 11px';
+      const pillH = isMobile ? 14 : 16;
+      const pillYOff = isMobile ? 16 : 18;
+      const textYOff = isMobile ? 5 : 6;
+      const rowGap = 3;
+      // Track drawn pill bounding boxes so a new pill that horizontally
+      // overlaps any drawn pill stacks onto a higher row instead of
+      // colliding (e.g. Early Bird + Event when their dates are 3 days
+      // apart — pills are ~60-70px wide so they always overlap).
+      const drawn = [];
+      lines.forEach(line => {
+        const x = xScale.getPixelForValue(line.value);
+        if (x < xScale.left || x > xScale.right) return;
+        ctx2.save();
+        ctx2.beginPath();
+        ctx2.setLineDash([4, 4]);
+        ctx2.strokeStyle = line.color;
+        ctx2.globalAlpha = 0.7;
+        ctx2.lineWidth = 1;
+        ctx2.moveTo(x, yScale.top);
+        ctx2.lineTo(x, yScale.bottom);
+        ctx2.stroke();
+        ctx2.setLineDash([]);
+        ctx2.globalAlpha = 1;
+        ctx2.font = `${annoFont} -apple-system, system-ui, sans-serif`;
+        ctx2.textAlign = 'center';
+        const textW = ctx2.measureText(line.label).width;
+        const pillW = textW + 10;
+        // Clamp pill horizontally so it never spills past the chart area.
+        // Right-edge clipping was visible on tournaments where the Event
+        // line sits at the far right of the extended axis.
+        let pillX = x - textW / 2 - 5;
+        if (pillX + pillW > xScale.right) pillX = xScale.right - pillW;
+        if (pillX < xScale.left) pillX = xScale.left;
+        // Pick a vertical row that doesn't horizontally overlap a drawn
+        // pill. Row 0 = original Y; row N stacks upward by pillH + gap.
+        let row = 0;
+        while (drawn.some(d => d.row === row &&
+                                !(pillX + pillW < d.x || pillX > d.x2))) {
+          row++;
+        }
+        const pillY = yScale.top - pillYOff - row * (pillH + rowGap);
+        drawn.push({ x: pillX, x2: pillX + pillW, row });
+        ctx2.fillStyle = themeRgba(PALETTE.surface, 0.85);
+        ctx2.beginPath();
+        ctx2.roundRect(pillX, pillY, pillW, pillH, 4);
+        ctx2.fill();
+        ctx2.strokeStyle = line.color;
+        ctx2.lineWidth = 1;
+        ctx2.globalAlpha = 0.6;
+        ctx2.stroke();
+        ctx2.globalAlpha = 1;
+        // Draw label text centered on the pill (not on the line) so the
+        // clamp + stack stay legible.
+        ctx2.fillStyle = line.color;
+        ctx2.fillText(line.label, pillX + pillW / 2, pillY + pillH - textYOff);
+        ctx2.restore();
+      });
+    }
+  };
+}
+
 function renderChart(t) {
   const ctx = document.getElementById('mainChart');
   if (chart) { chart.destroy(); chart = null; }
@@ -3157,81 +3234,16 @@ function renderChart(t) {
   }
 
   // Vertical lines plugin
-  const vertLinePlugin = {
-    id: 'vertLines',
-    afterDraw(chartInstance) {
-      const ctx2 = chartInstance.ctx;
-      const xScale = chartInstance.scales.x;
-      const yScale = chartInstance.scales.y;
-      const lines = [];
-      const _isM = _mobileVP();
-      // On mobile, only the Today line — Early Bird and Event labels overlap on
-      // narrow screens (the days-to-event KPI card tells the user already).
-      if (!_isM && hasValidEarlyBird(t)) lines.push({ date: new Date(t.early_bird_deadline + 'T00:00:00'), label: 'Early Bird', color: PALETTE.green });
-      if (!isDone(t)) lines.push({ date: new Date(TOURNAMENT_DATA.generated + 'T00:00:00'), label: 'Today', color: PALETTE.blue });
-      if (!_isM && t.event_start) lines.push({ date: new Date(t.event_start + 'T00:00:00'), label: 'Event', color: PALETTE.red });
-
-      const isMobile = _mobileVP();
-      const annoFont = isMobile ? 'bold 9px' : 'bold 11px';
-      const pillH = isMobile ? 14 : 16;
-      const pillYOff = isMobile ? 16 : 18;
-      const textYOff = isMobile ? 5 : 6;
-      const rowGap = 3;
-      // Track drawn pill bounding boxes so a new pill that horizontally
-      // overlaps any drawn pill stacks onto a higher row instead of
-      // colliding (e.g. Early Bird + Event when their dates are 3 days
-      // apart — pills are ~60-70px wide so they always overlap).
-      const drawn = [];
-      lines.forEach(line => {
-        const x = xScale.getPixelForValue(line.date);
-        if (x < xScale.left || x > xScale.right) return;
-        ctx2.save();
-        ctx2.beginPath();
-        ctx2.setLineDash([4, 4]);
-        ctx2.strokeStyle = line.color;
-        ctx2.globalAlpha = 0.7;
-        ctx2.lineWidth = 1;
-        ctx2.moveTo(x, yScale.top);
-        ctx2.lineTo(x, yScale.bottom);
-        ctx2.stroke();
-        ctx2.setLineDash([]);
-        ctx2.globalAlpha = 1;
-        ctx2.font = `${annoFont} -apple-system, system-ui, sans-serif`;
-        ctx2.textAlign = 'center';
-        const textW = ctx2.measureText(line.label).width;
-        const pillW = textW + 10;
-        // Clamp pill horizontally so it never spills past the chart area.
-        // Right-edge clipping was visible on tournaments where the Event
-        // line sits at the far right of the extended axis.
-        let pillX = x - textW / 2 - 5;
-        if (pillX + pillW > xScale.right) pillX = xScale.right - pillW;
-        if (pillX < xScale.left) pillX = xScale.left;
-        // Pick a vertical row that doesn't horizontally overlap a drawn
-        // pill. Row 0 = original Y; row N stacks upward by pillH + gap.
-        let row = 0;
-        while (drawn.some(d => d.row === row &&
-                                !(pillX + pillW < d.x || pillX > d.x2))) {
-          row++;
-        }
-        const pillY = yScale.top - pillYOff - row * (pillH + rowGap);
-        drawn.push({ x: pillX, x2: pillX + pillW, row });
-        ctx2.fillStyle = themeRgba(PALETTE.surface, 0.85);
-        ctx2.beginPath();
-        ctx2.roundRect(pillX, pillY, pillW, pillH, 4);
-        ctx2.fill();
-        ctx2.strokeStyle = line.color;
-        ctx2.lineWidth = 1;
-        ctx2.globalAlpha = 0.6;
-        ctx2.stroke();
-        ctx2.globalAlpha = 1;
-        // Draw label text centered on the pill (not on the line) so the
-        // clamp + stack stay legible.
-        ctx2.fillStyle = line.color;
-        ctx2.fillText(line.label, pillX + pillW / 2, pillY + pillH - textYOff);
-        ctx2.restore();
-      });
-    }
-  };
+  const vertLinePlugin = makeVertMarkersPlugin('vertLines', () => {
+    const lines = [];
+    const _isM = _mobileVP();
+    // On mobile, only the Today line — Early Bird and Event labels overlap on
+    // narrow screens (the days-to-event KPI card tells the user already).
+    if (!_isM && hasValidEarlyBird(t)) lines.push({ value: new Date(t.early_bird_deadline + 'T00:00:00'), label: 'Early Bird', color: PALETTE.green });
+    if (!isDone(t)) lines.push({ value: new Date(TOURNAMENT_DATA.generated + 'T00:00:00'), label: 'Today', color: PALETTE.blue });
+    if (!_isM && t.event_start) lines.push({ value: new Date(t.event_start + 'T00:00:00'), label: 'Event', color: PALETTE.red });
+    return lines;
+  });
 
   // Crosshair plugin — vertical line that follows mouse x position
   const crosshairPlugin = {
@@ -3939,37 +3951,18 @@ function renderRegCurve(t) {
   });
 
   // "You are here" annotation plugin for reg curve
-  const regCurveAnnotation = {
-    id: 'regCurveAnnotation',
-    afterDraw(chartInstance) {
-      if (isDone(t)) return;
-      const xScale = chartInstance.scales.x;
-      const yScale = chartInstance.scales.y;
-      // Find the label index closest to today
-      let idx = -1;
-      let minDiff = Infinity;
-      labels.forEach((db, i) => {
-        const d = Math.abs(db - t.days_remaining);
-        if (d < minDiff) { minDiff = d; idx = i; }
-      });
-      if (idx < 0) return;
-      const x = xScale.getPixelForValue(idx);
-      const ctx2 = chartInstance.ctx;
-      ctx2.save();
-      ctx2.beginPath();
-      ctx2.setLineDash([3, 3]);
-      ctx2.strokeStyle = 'rgba(88,166,255,0.6)';
-      ctx2.lineWidth = 1;
-      ctx2.moveTo(x, yScale.top);
-      ctx2.lineTo(x, yScale.bottom);
-      ctx2.stroke();
-      ctx2.fillStyle = 'rgba(88,166,255,0.8)';
-      ctx2.font = '9px -apple-system, system-ui, sans-serif';
-      ctx2.textAlign = 'center';
-      ctx2.fillText('Today', x, yScale.top - 3);
-      ctx2.restore();
-    }
-  };
+  const regCurveAnnotation = makeVertMarkersPlugin('regCurveAnnotation', () => {
+    if (isDone(t)) return [];
+    // Find the label index closest to today
+    let idx = -1;
+    let minDiff = Infinity;
+    labels.forEach((db, i) => {
+      const d = Math.abs(db - t.days_remaining);
+      if (d < minDiff) { minDiff = d; idx = i; }
+    });
+    if (idx < 0) return [];
+    return [{ value: idx, label: 'Today', color: PALETTE.blue }];
+  });
 
   regCurveObj = new Chart(ctx, {
     type: 'line',
@@ -3990,6 +3983,8 @@ function renderRegCurve(t) {
     plugins: [regCurveAnnotation],
     options: {
       responsive: true, maintainAspectRatio: false,
+      // Headroom for the shared marker pill (drawn 18px above the plot top).
+      layout: { padding: { top: 22 } },
       plugins: {
         legend: { display: false },
         tooltip: {

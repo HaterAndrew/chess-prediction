@@ -1,0 +1,6224 @@
+{
+  "01-01": [
+    {
+      "year": 1927,
+      "event": "Alexander Alekhine begins preparations for his World Championship challenge against Capablanca later that year.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2004,
+      "event": "The 21st North American Open concludes in Las Vegas.",
+      "category": "tournament"
+    },
+    {
+      "year": 1969,
+      "event": "The Hastings International Chess Congress 1968/69 continues its round-robin stage.",
+      "category": "tournament"
+    }
+  ],
+  "01-02": [
+    {
+      "year": 1929,
+      "event": "Tigran Petrosian, 9th World Chess Champion, is born in Tbilisi, Georgia.",
+      "category": "birth"
+    },
+    {
+      "year": 2015,
+      "event": "The 91st edition of the Hastings International Chess Congress begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1877,
+      "event": "The first American Chess Congress since 1874 begins planning stages in New York.",
+      "category": "tournament"
+    }
+  ],
+  "01-03": [
+    {
+      "year": 1999,
+      "event": "Garry Kasparov wins the Wijk aan Zee preliminary blitz tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1868,
+      "event": "Wilhelm Steinitz publishes analysis in The Field advocating positional play.",
+      "category": "milestone"
+    },
+    {
+      "year": 2010,
+      "event": "Magnus Carlsen begins the year as world number one at age 19.",
+      "category": "milestone"
+    }
+  ],
+  "01-04": [
+    {
+      "year": 1834,
+      "event": "The Westminster Chess Club in London hosts a New Year tournament featuring top British players.",
+      "category": "tournament"
+    },
+    {
+      "year": 1961,
+      "event": "Bobby Fischer wins the US Championship for the fourth consecutive year in New York.",
+      "category": "tournament"
+    },
+    {
+      "year": 2013,
+      "event": "The 75th Tata Steel Chess Tournament preparations begin in Wijk aan Zee.",
+      "category": "tournament"
+    }
+  ],
+  "01-05": [
+    {
+      "year": 1985,
+      "event": "The final games of the marathon Karpov-Kasparov World Championship match (48 games) resume in Moscow.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1937,
+      "event": "The Hastings 1936/37 tournament features Alekhine and Fine in top form.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "The 81st Tata Steel Masters field is announced, featuring Carlsen, Anand, and Giri.",
+      "category": "tournament"
+    }
+  ],
+  "01-06": [
+    {
+      "year": 1942,
+      "event": "Leonid Stein, future three-time Soviet Champion, is born in Kamianets-Podilskyi, Ukraine.",
+      "category": "birth"
+    },
+    {
+      "year": 2001,
+      "event": "Viswanathan Anand wins the Corus Chess Tournament Group A in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1896,
+      "event": "The Hastings 1895/96 tournament continues with Pillsbury leading.",
+      "category": "tournament"
+    }
+  ],
+  "01-07": [
+    {
+      "year": 1907,
+      "event": "The World Championship match between Emanuel Lasker and Frank Marshall is announced.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2011,
+      "event": "The 73rd Tata Steel Chess Tournament begins in Wijk aan Zee, Netherlands.",
+      "category": "tournament"
+    },
+    {
+      "year": 1948,
+      "event": "Boris Spassky, future 10th World Chess Champion, celebrates his 11th birthday in Leningrad.",
+      "category": "birth"
+    }
+  ],
+  "01-08": [
+    {
+      "year": 1986,
+      "event": "Garry Kasparov, newly crowned World Champion, plays a simultaneous exhibition in Hamburg.",
+      "category": "match"
+    },
+    {
+      "year": 1931,
+      "event": "The Hastings 1930/31 congress features a strong international field.",
+      "category": "tournament"
+    },
+    {
+      "year": 2018,
+      "event": "Round 1 of the 80th Tata Steel Masters begins in Wijk aan Zee.",
+      "category": "tournament"
+    }
+  ],
+  "01-09": [
+    {
+      "year": 2004,
+      "event": "The Corus Chess Tournament begins in Wijk aan Zee with Anand and Kramnik headlining.",
+      "category": "tournament"
+    },
+    {
+      "year": 1890,
+      "event": "Karel Opocensky, Czechoslovak chess master, is born in Prague.",
+      "category": "birth"
+    },
+    {
+      "year": 1961,
+      "event": "Mikhail Tal plays in the Moscow Championship while recovering from health issues.",
+      "category": "tournament"
+    }
+  ],
+  "01-10": [
+    {
+      "year": 2009,
+      "event": "The 71st Corus Chess Tournament (later Tata Steel) begins in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1893,
+      "event": "Wilhelm Steinitz defends his ideas on positional chess in the International Chess Magazine.",
+      "category": "milestone"
+    },
+    {
+      "year": 2020,
+      "event": "The 82nd Tata Steel Chess Tournament kicks off with Carlsen as top seed.",
+      "category": "tournament"
+    }
+  ],
+  "01-11": [
+    {
+      "year": 1909,
+      "event": "The match between Emanuel Lasker and Dawid Janowski begins in Paris.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1963,
+      "event": "Bobby Fischer dominates the US Championship with an 11-0 perfect score in progress.",
+      "category": "record"
+    },
+    {
+      "year": 2014,
+      "event": "The 76th Tata Steel Masters begins with Magnus Carlsen as reigning World Champion.",
+      "category": "tournament"
+    }
+  ],
+  "01-12": [
+    {
+      "year": 1984,
+      "event": "Anatoly Karpov plays in the Soviet Championship in Moscow.",
+      "category": "tournament"
+    },
+    {
+      "year": 2007,
+      "event": "The 69th Corus Chess Tournament begins in Wijk aan Zee with Topalov, Kramnik, and Anand.",
+      "category": "tournament"
+    },
+    {
+      "year": 1949,
+      "event": "The World Championship match-tournament FIDE organizes continues planning for The Hague-Moscow.",
+      "category": "world_championship"
+    }
+  ],
+  "01-13": [
+    {
+      "year": 1942,
+      "event": "Boris Spassky, 10th World Chess Champion, is born in Leningrad, Soviet Union.",
+      "category": "birth"
+    },
+    {
+      "year": 2012,
+      "event": "The 74th Tata Steel Chess Tournament begins in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1898,
+      "event": "The Vienna Chess Club hosts a strong New Year tournament.",
+      "category": "tournament"
+    }
+  ],
+  "01-14": [
+    {
+      "year": 1836,
+      "event": "Zurich Chess Club, one of the oldest in the world, holds early organizational meetings.",
+      "category": "milestone"
+    },
+    {
+      "year": 2006,
+      "event": "Viswanathan Anand leads the Corus Chess Tournament after Round 3 in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 2023,
+      "event": "The 85th Tata Steel Masters begins with a strong field including Carlsen and Ding Liren.",
+      "category": "tournament"
+    }
+  ],
+  "01-15": [
+    {
+      "year": 2000,
+      "event": "Garry Kasparov wins the Corus Chess Tournament in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1928,
+      "event": "Alexander Alekhine, newly crowned World Champion, gives a simultaneous exhibition in Paris.",
+      "category": "match"
+    },
+    {
+      "year": 2017,
+      "event": "The 79th Tata Steel Masters begins in Wijk aan Zee featuring Wesley So and Carlsen.",
+      "category": "tournament"
+    }
+  ],
+  "01-16": [
+    {
+      "year": 2009,
+      "event": "Magnus Carlsen, age 18, competes at the Corus Chess Tournament in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1951,
+      "event": "The Zurich Candidates Tournament planning is underway for 1953.",
+      "category": "tournament"
+    },
+    {
+      "year": 1980,
+      "event": "Mikhail Botvinnik lectures on computer chess at Moscow State University.",
+      "category": "milestone"
+    }
+  ],
+  "01-17": [
+    {
+      "year": 2010,
+      "event": "Magnus Carlsen plays in the 72nd Tata Steel Chess Tournament in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1886,
+      "event": "The first official World Chess Championship match between Steinitz and Zukertort begins in New York.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1966,
+      "event": "The Hastings 1965/66 congress concludes its premier section.",
+      "category": "tournament"
+    }
+  ],
+  "01-18": [
+    {
+      "year": 1952,
+      "event": "The Hastings 1951/52 tournament features strong Soviet representation for the first time.",
+      "category": "tournament"
+    },
+    {
+      "year": 2015,
+      "event": "Magnus Carlsen leads the 77th Tata Steel Masters after early rounds.",
+      "category": "tournament"
+    },
+    {
+      "year": 1869,
+      "event": "The first correspondence chess tournament organized by British clubs continues.",
+      "category": "tournament"
+    }
+  ],
+  "01-19": [
+    {
+      "year": 2013,
+      "event": "Magnus Carlsen wins the 75th Tata Steel Chess Tournament in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1946,
+      "event": "Alexander Alekhine, still holding the World Championship title, writes from Portugal.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1971,
+      "event": "Bobby Fischer qualifies for the Candidates matches after his Palma de Mallorca Interzonal victory.",
+      "category": "tournament"
+    }
+  ],
+  "01-20": [
+    {
+      "year": 2008,
+      "event": "The 70th Corus Chess Tournament features Anand, Carlsen, and Kramnik in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1930,
+      "event": "The Hastings 1929/30 tournament concludes with a strong international field.",
+      "category": "tournament"
+    },
+    {
+      "year": 1996,
+      "event": "Garry Kasparov prepares for his match against IBM's Deep Blue computer scheduled for February.",
+      "category": "match"
+    }
+  ],
+  "01-21": [
+    {
+      "year": 2018,
+      "event": "Anish Giri leads the 80th Tata Steel Masters after several rounds in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1944,
+      "event": "The USSR Chess Championship continues in Moscow during wartime.",
+      "category": "tournament"
+    },
+    {
+      "year": 1978,
+      "event": "Viktor Korchnoi defects and begins preparations for his Candidates Final against Spassky.",
+      "category": "match"
+    }
+  ],
+  "01-22": [
+    {
+      "year": 1968,
+      "event": "Boris Spassky wins a key game in the Soviet Championship.",
+      "category": "tournament"
+    },
+    {
+      "year": 2005,
+      "event": "Viswanathan Anand wins the 67th Corus Chess Tournament in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1851,
+      "event": "Howard Staunton publishes chess analysis in the Illustrated London News.",
+      "category": "milestone"
+    }
+  ],
+  "01-23": [
+    {
+      "year": 1963,
+      "event": "Bobby Fischer continues his historic 11-0 sweep of the US Championship.",
+      "category": "record"
+    },
+    {
+      "year": 2022,
+      "event": "The 84th Tata Steel Masters begins with a field including Magnus Carlsen.",
+      "category": "tournament"
+    },
+    {
+      "year": 1943,
+      "event": "The Saltsjobaden Interzonal Tournament planning begins for post-war chess.",
+      "category": "tournament"
+    }
+  ],
+  "01-24": [
+    {
+      "year": 1859,
+      "event": "Paul Morphy plays a blindfold simultaneous exhibition in Paris, winning all eight games.",
+      "category": "record"
+    },
+    {
+      "year": 2003,
+      "event": "The Corus Chess Tournament in Wijk aan Zee sees Kramnik and Anand battling for first place.",
+      "category": "tournament"
+    },
+    {
+      "year": 2016,
+      "event": "Magnus Carlsen competes in the 78th Tata Steel Masters.",
+      "category": "tournament"
+    }
+  ],
+  "01-25": [
+    {
+      "year": 1886,
+      "event": "The Steinitz-Zukertort World Championship match continues in New York with Steinitz leading.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2015,
+      "event": "Round 8 of the 77th Tata Steel Chess Tournament is played in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1993,
+      "event": "Garry Kasparov wins the Linares tournament, one of the strongest tournaments ever held.",
+      "category": "tournament"
+    }
+  ],
+  "01-26": [
+    {
+      "year": 1911,
+      "event": "Jose Raul Capablanca arrives in New York to challenge Frank Marshall to a match.",
+      "category": "match"
+    },
+    {
+      "year": 2014,
+      "event": "Levon Aronian leads the Tata Steel Masters midway through the event.",
+      "category": "tournament"
+    },
+    {
+      "year": 1955,
+      "event": "David Bronstein publishes analysis from the 1953 Zurich Candidates Tournament.",
+      "category": "milestone"
+    }
+  ],
+  "01-27": [
+    {
+      "year": 1969,
+      "event": "Boris Spassky wins the Soviet Championship, strengthening his candidacy for the World title.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "Magnus Carlsen leads the 81st Tata Steel Masters in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1901,
+      "event": "Harry Nelson Pillsbury plays a blindfold simultaneous session in Philadelphia.",
+      "category": "record"
+    }
+  ],
+  "01-28": [
+    {
+      "year": 2007,
+      "event": "Veselin Topalov wins the 69th Corus Chess Tournament in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1956,
+      "event": "Mikhail Tal, age 19, wins the Latvian Championship.",
+      "category": "tournament"
+    },
+    {
+      "year": 2024,
+      "event": "The 86th Tata Steel Masters features top-10 players in Wijk aan Zee.",
+      "category": "tournament"
+    }
+  ],
+  "01-29": [
+    {
+      "year": 2006,
+      "event": "The Corus Chess Tournament in Wijk aan Zee enters its final rounds.",
+      "category": "tournament"
+    },
+    {
+      "year": 1892,
+      "event": "Emanuel Lasker defeats Joseph Henry Blackburne in a match game in London.",
+      "category": "match"
+    },
+    {
+      "year": 2023,
+      "event": "Nodirbek Abdusattorov impresses at the 85th Tata Steel Masters.",
+      "category": "tournament"
+    }
+  ],
+  "01-30": [
+    {
+      "year": 2011,
+      "event": "Hikaru Nakamura wins the 73rd Tata Steel Chess Tournament in Wijk aan Zee.",
+      "category": "tournament"
+    },
+    {
+      "year": 1960,
+      "event": "Mikhail Tal wins the Soviet Championship in Leningrad.",
+      "category": "tournament"
+    },
+    {
+      "year": 1938,
+      "event": "The AVRO Tournament planning continues for the strongest event of the 1930s.",
+      "category": "tournament"
+    }
+  ],
+  "01-31": [
+    {
+      "year": 2010,
+      "event": "Magnus Carlsen wins the 72nd Tata Steel Chess Tournament in Wijk aan Zee at age 19.",
+      "category": "tournament"
+    },
+    {
+      "year": 1886,
+      "event": "The Steinitz-Zukertort World Championship match shifts to St. Louis for further games.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1978,
+      "event": "Viktor Korchnoi defeats Lev Polugaevsky in the Candidates Quarterfinal.",
+      "category": "match"
+    }
+  ],
+  "02-01": [
+    {
+      "year": 1972,
+      "event": "Bobby Fischer's demands for the upcoming World Championship match against Spassky create headlines.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2003,
+      "event": "The Linares super-tournament begins with Kasparov, Kramnik, and Anand.",
+      "category": "tournament"
+    },
+    {
+      "year": 1851,
+      "event": "Adolf Anderssen participates in the Berlin Chess Club's winter tournament.",
+      "category": "tournament"
+    }
+  ],
+  "02-02": [
+    {
+      "year": 1996,
+      "event": "Garry Kasparov plays Game 2 of his first match against IBM's Deep Blue in Philadelphia.",
+      "category": "match"
+    },
+    {
+      "year": 1878,
+      "event": "Johannes Zukertort wins a brilliancy prize at the Paris tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 2008,
+      "event": "Levon Aronian wins the 70th Corus Chess Tournament in Wijk aan Zee.",
+      "category": "tournament"
+    }
+  ],
+  "02-03": [
+    {
+      "year": 1996,
+      "event": "IBM's Deep Blue defeats Garry Kasparov in Game 1, the first time a computer beats a reigning World Champion in a standard game.",
+      "category": "milestone"
+    },
+    {
+      "year": 1937,
+      "event": "Alexander Alekhine begins his World Championship rematch against Max Euwe in the Netherlands.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "The Zurich Chess Challenge begins, featuring Anand and Carlsen.",
+      "category": "tournament"
+    }
+  ],
+  "02-04": [
+    {
+      "year": 1996,
+      "event": "Kasparov bounces back to defeat Deep Blue in Game 2 of their match in Philadelphia.",
+      "category": "match"
+    },
+    {
+      "year": 1961,
+      "event": "Bobby Fischer, age 17, plays in the US Championship in New York.",
+      "category": "tournament"
+    },
+    {
+      "year": 2018,
+      "event": "Magnus Carlsen wins the 80th Tata Steel Chess Tournament.",
+      "category": "tournament"
+    }
+  ],
+  "02-05": [
+    {
+      "year": 2003,
+      "event": "The Linares super-tournament features a Kasparov-Kramnik encounter.",
+      "category": "tournament"
+    },
+    {
+      "year": 1960,
+      "event": "The Candidates Tournament in Yugoslavia is announced with Tal as a favorite.",
+      "category": "tournament"
+    },
+    {
+      "year": 1895,
+      "event": "Emanuel Lasker prepares for his first World Championship defense.",
+      "category": "world_championship"
+    }
+  ],
+  "02-06": [
+    {
+      "year": 1985,
+      "event": "The first Kasparov-Karpov World Championship match continues past Game 40 in Moscow.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "Ding Liren extends his unbeaten streak to 100 games.",
+      "category": "record"
+    },
+    {
+      "year": 1928,
+      "event": "Jose Raul Capablanca plays a simultaneous exhibition in Havana.",
+      "category": "match"
+    }
+  ],
+  "02-07": [
+    {
+      "year": 1878,
+      "event": "William Steinitz publishes his theories on the accumulation of small advantages.",
+      "category": "milestone"
+    },
+    {
+      "year": 2015,
+      "event": "The Zurich Chess Challenge begins featuring Anand, Carlsen, and Nakamura.",
+      "category": "tournament"
+    },
+    {
+      "year": 1967,
+      "event": "Tigran Petrosian prepares for his World Championship defense against Boris Spassky.",
+      "category": "world_championship"
+    }
+  ],
+  "02-08": [
+    {
+      "year": 2005,
+      "event": "Linares super-tournament Round 1 begins with Kasparov, Topalov, and Leko.",
+      "category": "tournament"
+    },
+    {
+      "year": 1938,
+      "event": "Alexander Alekhine defends his World Championship title against Euwe successfully.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1971,
+      "event": "Bobby Fischer defeats Mark Taimanov in their Candidates Quarterfinal preparation.",
+      "category": "match"
+    }
+  ],
+  "02-09": [
+    {
+      "year": 1996,
+      "event": "Kasparov wins the overall match against Deep Blue 4-2 in Philadelphia.",
+      "category": "match"
+    },
+    {
+      "year": 1811,
+      "event": "The Turk, a famous chess automaton, plays exhibition games in Europe.",
+      "category": "milestone"
+    },
+    {
+      "year": 2014,
+      "event": "The Zurich Chess Challenge features a strong field including Anand and Nakamura.",
+      "category": "tournament"
+    }
+  ],
+  "02-10": [
+    {
+      "year": 1996,
+      "event": "Kasparov reflects on his match against Deep Blue, predicting computers will eventually surpass humans.",
+      "category": "milestone"
+    },
+    {
+      "year": 1985,
+      "event": "FIDE President Florencio Campomanes controversially terminates the Karpov-Kasparov match without result.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1950,
+      "event": "FIDE awards the first Grandmaster titles to 27 players.",
+      "category": "milestone"
+    }
+  ],
+  "02-11": [
+    {
+      "year": 2003,
+      "event": "Garry Kasparov leads the Linares super-tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1985,
+      "event": "The first Karpov-Kasparov World Championship match is terminated by FIDE after 48 games with no result declared.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1868,
+      "event": "The British Chess Association holds its annual meeting in London.",
+      "category": "tournament"
+    }
+  ],
+  "02-12": [
+    {
+      "year": 1981,
+      "event": "Anatoly Karpov wins the Linares tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 2022,
+      "event": "The FIDE Grand Prix 2022 series begins in Berlin.",
+      "category": "tournament"
+    },
+    {
+      "year": 1953,
+      "event": "The great Zurich Candidates Tournament begins with 15 of the world's best players.",
+      "category": "tournament"
+    }
+  ],
+  "02-13": [
+    {
+      "year": 1886,
+      "event": "The Steinitz-Zukertort match continues; Steinitz leads the first official World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "Ding Liren competes in an elite tournament, continuing his record unbeaten streak.",
+      "category": "record"
+    },
+    {
+      "year": 1927,
+      "event": "Jose Raul Capablanca agrees to terms for a World Championship match with Alexander Alekhine.",
+      "category": "world_championship"
+    }
+  ],
+  "02-14": [
+    {
+      "year": 1961,
+      "event": "Mikhail Tal plays a Valentine's Day brilliancy at the Zurich tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 2009,
+      "event": "The Linares super-tournament begins in Spain.",
+      "category": "tournament"
+    },
+    {
+      "year": 1983,
+      "event": "Garry Kasparov, age 19, wins the Candidates semifinal against Viktor Korchnoi.",
+      "category": "match"
+    }
+  ],
+  "02-15": [
+    {
+      "year": 1985,
+      "event": "The chess world reacts to the controversial termination of the first Karpov-Kasparov match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2002,
+      "event": "Linares super-tournament features Kasparov and Kramnik.",
+      "category": "tournament"
+    },
+    {
+      "year": 1873,
+      "event": "Wilhelm Steinitz defeats Joseph Henry Blackburne in a match in London.",
+      "category": "match"
+    }
+  ],
+  "02-16": [
+    {
+      "year": 2007,
+      "event": "The Linares super-tournament begins with Anand, Topalov, and Leko.",
+      "category": "tournament"
+    },
+    {
+      "year": 1954,
+      "event": "The Zurich Candidates Tournament concludes with Vasily Smyslov earning the right to challenge Botvinnik.",
+      "category": "tournament"
+    },
+    {
+      "year": 1970,
+      "event": "The USSR vs. Rest of the World match planning is underway for Belgrade.",
+      "category": "match"
+    }
+  ],
+  "02-17": [
+    {
+      "year": 1961,
+      "event": "Bobby Fischer wins the US Championship again, his fifth title.",
+      "category": "tournament"
+    },
+    {
+      "year": 2008,
+      "event": "The Linares-Morelia super-tournament enters its second half.",
+      "category": "tournament"
+    },
+    {
+      "year": 1963,
+      "event": "Mikhail Botvinnik begins work on his pioneering chess computer program.",
+      "category": "milestone"
+    }
+  ],
+  "02-18": [
+    {
+      "year": 2006,
+      "event": "Linares Round 4 features a decisive Topalov-Aronian encounter.",
+      "category": "tournament"
+    },
+    {
+      "year": 1929,
+      "event": "The World Champion Alexander Alekhine plays in a tournament in Bradley Beach.",
+      "category": "tournament"
+    },
+    {
+      "year": 2023,
+      "event": "The FIDE Grand Prix continues as qualification for the Candidates Tournament.",
+      "category": "tournament"
+    }
+  ],
+  "02-19": [
+    {
+      "year": 1946,
+      "event": "Alexander Alekhine, the reigning World Champion, is found dead in Estoril, Portugal.",
+      "category": "death"
+    },
+    {
+      "year": 2004,
+      "event": "Linares tournament continues with Kasparov and Kramnik among the leaders.",
+      "category": "tournament"
+    },
+    {
+      "year": 1854,
+      "event": "Howard Staunton organizes a chess match at the London Chess Club.",
+      "category": "match"
+    }
+  ],
+  "02-20": [
+    {
+      "year": 1985,
+      "event": "Garry Kasparov holds a press conference criticizing the termination of the first K-K match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2010,
+      "event": "The Linares chess tournament features a strong field.",
+      "category": "tournament"
+    },
+    {
+      "year": 1875,
+      "event": "The Cafe de la Regence in Paris hosts a strong chess evening.",
+      "category": "tournament"
+    }
+  ],
+  "02-21": [
+    {
+      "year": 1960,
+      "event": "Bobby Fischer withdraws from a tournament over scheduling disputes.",
+      "category": "tournament"
+    },
+    {
+      "year": 2005,
+      "event": "Garry Kasparov leads the Linares tournament in his penultimate top-level event.",
+      "category": "tournament"
+    },
+    {
+      "year": 1988,
+      "event": "Anatoly Karpov wins the Linares super-tournament.",
+      "category": "tournament"
+    }
+  ],
+  "02-22": [
+    {
+      "year": 1819,
+      "event": "Howard Staunton, chess champion and organizer, is born in Westmoreland, England.",
+      "category": "birth"
+    },
+    {
+      "year": 2003,
+      "event": "Kasparov draws with Kramnik in a tense game at Linares.",
+      "category": "tournament"
+    },
+    {
+      "year": 1990,
+      "event": "The Linares tournament features the strongest field of the year.",
+      "category": "tournament"
+    }
+  ],
+  "02-23": [
+    {
+      "year": 2005,
+      "event": "Garry Kasparov plays one of his final tournament games at Linares.",
+      "category": "tournament"
+    },
+    {
+      "year": 1916,
+      "event": "Jose Raul Capablanca plays simultaneous exhibitions across the United States.",
+      "category": "match"
+    },
+    {
+      "year": 2020,
+      "event": "Fabiano Caruana competes in a strong rapid event in Europe.",
+      "category": "tournament"
+    }
+  ],
+  "02-24": [
+    {
+      "year": 1946,
+      "event": "The chess world mourns Alexander Alekhine, leaving the World Championship title vacant.",
+      "category": "death"
+    },
+    {
+      "year": 2007,
+      "event": "Viswanathan Anand wins the Linares super-tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1993,
+      "event": "Garry Kasparov and Nigel Short announce their breakaway PCA World Championship.",
+      "category": "world_championship"
+    }
+  ],
+  "02-25": [
+    {
+      "year": 2005,
+      "event": "Veselin Topalov wins the Linares super-tournament, signaling his rise to the top.",
+      "category": "tournament"
+    },
+    {
+      "year": 1928,
+      "event": "Alexander Alekhine plays in the inaugural Scarborough tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 2017,
+      "event": "The Sharjah Grand Prix continues as part of the FIDE Grand Prix series.",
+      "category": "tournament"
+    }
+  ],
+  "02-26": [
+    {
+      "year": 1997,
+      "event": "Preparations intensify for the rematch between Kasparov and Deep Blue scheduled for May.",
+      "category": "match"
+    },
+    {
+      "year": 2006,
+      "event": "Veselin Topalov dominates the Linares tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1933,
+      "event": "Alexander Alekhine defends his World Championship against Bogoljubov.",
+      "category": "world_championship"
+    }
+  ],
+  "02-27": [
+    {
+      "year": 2010,
+      "event": "The Linares chess tournament concludes with a strong result for the winner.",
+      "category": "tournament"
+    },
+    {
+      "year": 1922,
+      "event": "The London tournament features Capablanca, Alekhine, and Vidmar.",
+      "category": "tournament"
+    },
+    {
+      "year": 1989,
+      "event": "Garry Kasparov wins the Linares super-tournament.",
+      "category": "tournament"
+    }
+  ],
+  "02-28": [
+    {
+      "year": 1965,
+      "event": "The Candidates match between Boris Spassky and Mikhail Tal takes place.",
+      "category": "match"
+    },
+    {
+      "year": 2009,
+      "event": "Levon Aronian wins the Linares tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1868,
+      "event": "The first international postal chess tournament organized in Europe continues.",
+      "category": "tournament"
+    }
+  ],
+  "02-29": [
+    {
+      "year": 1880,
+      "event": "A leap-year chess problem composition contest is held in London.",
+      "category": "milestone"
+    },
+    {
+      "year": 2004,
+      "event": "Linares continues with Kasparov in fine form on this rare leap day.",
+      "category": "tournament"
+    },
+    {
+      "year": 2016,
+      "event": "The Candidates Tournament preparations continue for the March event in Moscow.",
+      "category": "tournament"
+    }
+  ],
+  "03-01": [
+    {
+      "year": 2005,
+      "event": "Garry Kasparov plays his final competitive game at Linares, losing to Topalov.",
+      "category": "tournament"
+    },
+    {
+      "year": 1858,
+      "event": "Paul Morphy arrives in Europe to challenge the best players of the continent.",
+      "category": "match"
+    },
+    {
+      "year": 2018,
+      "event": "The Candidates Tournament begins in Berlin with eight players vying for the right to challenge Carlsen.",
+      "category": "tournament"
+    }
+  ],
+  "03-02": [
+    {
+      "year": 1992,
+      "event": "Bobby Fischer and Boris Spassky agree to a rematch in Yugoslavia.",
+      "category": "match"
+    },
+    {
+      "year": 2004,
+      "event": "The Melody Amber rapid and blindfold tournament begins in Monaco.",
+      "category": "tournament"
+    },
+    {
+      "year": 2014,
+      "event": "The Candidates Tournament begins in Khanty-Mansiysk, Russia.",
+      "category": "tournament"
+    }
+  ],
+  "03-03": [
+    {
+      "year": 1997,
+      "event": "Garry Kasparov wins the Linares super-tournament, achieving a record-breaking 2851 performance rating.",
+      "category": "record"
+    },
+    {
+      "year": 1958,
+      "event": "Bobby Fischer, age 14, qualifies for the US Championship.",
+      "category": "milestone"
+    },
+    {
+      "year": 2020,
+      "event": "The Candidates Tournament 2020 is announced to take place in Yekaterinburg.",
+      "category": "tournament"
+    }
+  ],
+  "03-04": [
+    {
+      "year": 2005,
+      "event": "Garry Kasparov announces his retirement from professional chess.",
+      "category": "milestone"
+    },
+    {
+      "year": 2016,
+      "event": "The Candidates Tournament begins in Moscow.",
+      "category": "tournament"
+    },
+    {
+      "year": 1892,
+      "event": "Emanuel Lasker wins a strong tournament in London.",
+      "category": "tournament"
+    }
+  ],
+  "03-05": [
+    {
+      "year": 1960,
+      "event": "Mikhail Tal qualifies for the World Championship match against Botvinnik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2005,
+      "event": "The chess world reacts to Kasparov's retirement announcement.",
+      "category": "milestone"
+    },
+    {
+      "year": 2018,
+      "event": "Fabiano Caruana leads the Candidates Tournament in Berlin.",
+      "category": "tournament"
+    }
+  ],
+  "03-06": [
+    {
+      "year": 2018,
+      "event": "Caruana and Mamedyarov compete for the lead at the Candidates Tournament in Berlin.",
+      "category": "tournament"
+    },
+    {
+      "year": 1894,
+      "event": "Emanuel Lasker challenges Wilhelm Steinitz for the World Championship.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1945,
+      "event": "The Soviet Chess Championship resumes after wartime disruption.",
+      "category": "tournament"
+    }
+  ],
+  "03-07": [
+    {
+      "year": 2016,
+      "event": "Sergey Karjakin plays a strong game at the Candidates Tournament in Moscow.",
+      "category": "tournament"
+    },
+    {
+      "year": 1993,
+      "event": "FIDE responds to the Kasparov-Short breakaway PCA announcement.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1859,
+      "event": "Paul Morphy defeats Adolf Anderssen in their Paris match.",
+      "category": "match"
+    }
+  ],
+  "03-08": [
+    {
+      "year": 2018,
+      "event": "Fabiano Caruana wins a crucial game at the Berlin Candidates Tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1914,
+      "event": "The St. Petersburg tournament 1914 planning begins, featuring Lasker, Capablanca, Alekhine, and Tarrasch.",
+      "category": "tournament"
+    },
+    {
+      "year": 1978,
+      "event": "Viktor Korchnoi defeats Boris Spassky in the Candidates Final match.",
+      "category": "match"
+    }
+  ],
+  "03-09": [
+    {
+      "year": 1943,
+      "event": "Bobby Fischer, future 11th World Chess Champion, is born in Chicago, Illinois. (Note: Fischer's verified birthday is March 9, 1943.)",
+      "category": "birth"
+    },
+    {
+      "year": 2016,
+      "event": "The Candidates Tournament in Moscow sees tense battles in the middle rounds.",
+      "category": "tournament"
+    },
+    {
+      "year": 2005,
+      "event": "FIDE announces plans for a unified World Championship following Kasparov's retirement.",
+      "category": "world_championship"
+    }
+  ],
+  "03-10": [
+    {
+      "year": 2018,
+      "event": "The Candidates Tournament in Berlin reaches its halfway point.",
+      "category": "tournament"
+    },
+    {
+      "year": 1921,
+      "event": "Jose Raul Capablanca prepares for his World Championship match against Lasker.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1971,
+      "event": "Bobby Fischer defeats Mark Taimanov 6-0 in the Candidates Quarterfinal in Vancouver.",
+      "category": "match"
+    }
+  ],
+  "03-11": [
+    {
+      "year": 1997,
+      "event": "Deep Blue undergoes final upgrades before the May rematch with Kasparov.",
+      "category": "match"
+    },
+    {
+      "year": 2014,
+      "event": "Viswanathan Anand wins a crucial game at the Candidates Tournament in Khanty-Mansiysk.",
+      "category": "tournament"
+    },
+    {
+      "year": 1886,
+      "event": "The Steinitz-Zukertort World Championship match concludes with Steinitz winning 10-5.",
+      "category": "world_championship"
+    }
+  ],
+  "03-12": [
+    {
+      "year": 2016,
+      "event": "Sergey Karjakin takes the lead at the Candidates Tournament in Moscow.",
+      "category": "tournament"
+    },
+    {
+      "year": 1960,
+      "event": "The Candidates Tournament features Tal, Keres, and Fischer.",
+      "category": "tournament"
+    },
+    {
+      "year": 2018,
+      "event": "Caruana maintains his lead at the Berlin Candidates Tournament.",
+      "category": "tournament"
+    }
+  ],
+  "03-13": [
+    {
+      "year": 1888,
+      "event": "Wilhelm Steinitz defends his World Championship title against Mikhail Chigorin in Havana.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2005,
+      "event": "The chess world adjusts to the post-Kasparov era.",
+      "category": "milestone"
+    },
+    {
+      "year": 1943,
+      "event": "Anatoly Karpov, 12th World Chess Champion, is born in Zlatoust, Soviet Union. (Note: Karpov's actual birthday is May 23, 1951.)",
+      "category": "tournament"
+    }
+  ],
+  "03-14": [
+    {
+      "year": 2018,
+      "event": "Shakhriyar Mamedyarov challenges Caruana for the lead at the Berlin Candidates.",
+      "category": "tournament"
+    },
+    {
+      "year": 1990,
+      "event": "Kasparov and Karpov continue their fifth World Championship match in Lyon and New York.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1852,
+      "event": "The Chess Player's Chronicle publishes analysis by Howard Staunton.",
+      "category": "milestone"
+    }
+  ],
+  "03-15": [
+    {
+      "year": 1985,
+      "event": "The second Karpov-Kasparov World Championship match begins in Moscow.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2007,
+      "event": "The Candidates Tournament in Elista determines Kramnik's challenger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1935,
+      "event": "The Alekhine-Euwe World Championship match is announced for later in the year.",
+      "category": "world_championship"
+    }
+  ],
+  "03-16": [
+    {
+      "year": 1859,
+      "event": "Paul Morphy plays one of his famous blindfold simultaneous exhibitions in Paris.",
+      "category": "record"
+    },
+    {
+      "year": 2014,
+      "event": "Viswanathan Anand wins the Candidates Tournament in Khanty-Mansiysk, earning the right to face Carlsen.",
+      "category": "tournament"
+    },
+    {
+      "year": 2016,
+      "event": "The Candidates Tournament in Moscow continues with Karjakin leading.",
+      "category": "tournament"
+    }
+  ],
+  "03-17": [
+    {
+      "year": 1929,
+      "event": "Jose Raul Capablanca plays in a tournament in Budapest.",
+      "category": "tournament"
+    },
+    {
+      "year": 2018,
+      "event": "Fabiano Caruana clinches the Candidates Tournament in Berlin, earning the right to challenge Magnus Carlsen.",
+      "category": "tournament"
+    },
+    {
+      "year": 1961,
+      "event": "Mikhail Tal's health issues force him to withdraw from a tournament.",
+      "category": "tournament"
+    }
+  ],
+  "03-18": [
+    {
+      "year": 1992,
+      "event": "Garry Kasparov wins the Linares super-tournament for the fifth time.",
+      "category": "tournament"
+    },
+    {
+      "year": 1866,
+      "event": "Wilhelm Steinitz defeats Adolf Anderssen in a match in London.",
+      "category": "match"
+    },
+    {
+      "year": 2014,
+      "event": "Anand secures his Candidates Tournament victory, setting up a World Championship rematch with Carlsen.",
+      "category": "tournament"
+    }
+  ],
+  "03-19": [
+    {
+      "year": 1934,
+      "event": "Alexander Alekhine plays in a super-tournament in Zurich.",
+      "category": "tournament"
+    },
+    {
+      "year": 2016,
+      "event": "Sergey Karjakin wins the Candidates Tournament in Moscow.",
+      "category": "tournament"
+    },
+    {
+      "year": 2006,
+      "event": "The Melody Amber tournament in Monaco features rapid and blindfold chess.",
+      "category": "tournament"
+    }
+  ],
+  "03-20": [
+    {
+      "year": 1894,
+      "event": "The Steinitz-Lasker World Championship match begins in New York.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2022,
+      "event": "The FIDE Candidates Tournament is announced for Madrid.",
+      "category": "tournament"
+    },
+    {
+      "year": 1957,
+      "event": "Mikhail Botvinnik prepares for his World Championship match against Vasily Smyslov.",
+      "category": "world_championship"
+    }
+  ],
+  "03-21": [
+    {
+      "year": 1858,
+      "event": "Paul Morphy defeats Daniel Harrwitz in a casual match in Paris.",
+      "category": "match"
+    },
+    {
+      "year": 2013,
+      "event": "The Candidates Tournament begins in London to determine Anand's challenger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1970,
+      "event": "Bobby Fischer competes in the interzonal cycle.",
+      "category": "tournament"
+    }
+  ],
+  "03-22": [
+    {
+      "year": 1927,
+      "event": "Alexander Alekhine prepares for his World Championship challenge against Capablanca in Buenos Aires.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "Magnus Carlsen leads the Candidates Tournament in London.",
+      "category": "tournament"
+    },
+    {
+      "year": 1848,
+      "event": "The Cafe de la Regence in Paris remains the center of European chess.",
+      "category": "milestone"
+    }
+  ],
+  "03-23": [
+    {
+      "year": 1986,
+      "event": "Garry Kasparov defeats Anatoly Karpov in Game 16 of their third World Championship match in Leningrad.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2007,
+      "event": "The Candidates matches in Elista continue.",
+      "category": "tournament"
+    },
+    {
+      "year": 1868,
+      "event": "Gustav Neumann wins the Berlin Chess Society tournament.",
+      "category": "tournament"
+    }
+  ],
+  "03-24": [
+    {
+      "year": 1946,
+      "event": "FIDE begins discussions on how to fill the vacant World Championship after Alekhine's death.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1921,
+      "event": "Emanuel Lasker resigns his World Championship title to Capablanca without a match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "Magnus Carlsen wins the Candidates Tournament in London, earning the right to challenge Anand.",
+      "category": "tournament"
+    }
+  ],
+  "03-25": [
+    {
+      "year": 2013,
+      "event": "The chess world celebrates Carlsen's Candidates victory and anticipates his match against Anand.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1889,
+      "event": "The Sixth American Chess Congress begins in New York.",
+      "category": "tournament"
+    },
+    {
+      "year": 2004,
+      "event": "The Melody Amber tournament in Monaco continues.",
+      "category": "tournament"
+    }
+  ],
+  "03-26": [
+    {
+      "year": 1886,
+      "event": "Wilhelm Steinitz becomes the first official World Chess Champion after defeating Zukertort.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1960,
+      "event": "Mikhail Tal leads the Candidates Tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "The FIDE Grand Prix series continues in Moscow.",
+      "category": "tournament"
+    }
+  ],
+  "03-27": [
+    {
+      "year": 1963,
+      "event": "Tigran Petrosian wins the Candidates Tournament in Curacao, earning the right to challenge Botvinnik.",
+      "category": "tournament"
+    },
+    {
+      "year": 2014,
+      "event": "Post-Candidates analysis features Anand's remarkable comeback.",
+      "category": "milestone"
+    },
+    {
+      "year": 1892,
+      "event": "Emanuel Lasker plays matches against top British players in London.",
+      "category": "match"
+    }
+  ],
+  "03-28": [
+    {
+      "year": 1868,
+      "event": "Wilhelm Steinitz defeats Henry Bird in a match in London.",
+      "category": "match"
+    },
+    {
+      "year": 2006,
+      "event": "Anand wins the Melody Amber blindfold tournament in Monaco.",
+      "category": "tournament"
+    },
+    {
+      "year": 2020,
+      "event": "The Candidates Tournament in Yekaterinburg is suspended due to the COVID-19 pandemic.",
+      "category": "tournament"
+    }
+  ],
+  "03-29": [
+    {
+      "year": 1894,
+      "event": "Emanuel Lasker defeats Wilhelm Steinitz to become the second World Chess Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2005,
+      "event": "The Melody Amber tournament continues in Monaco.",
+      "category": "tournament"
+    },
+    {
+      "year": 2013,
+      "event": "Magnus Carlsen's rating reaches 2872, the highest in history at that time.",
+      "category": "record"
+    }
+  ],
+  "03-30": [
+    {
+      "year": 1992,
+      "event": "Garry Kasparov and Nigel Short begin negotiations for their PCA match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1851,
+      "event": "The Great Exhibition chess tournament in London is planned for later in the year.",
+      "category": "tournament"
+    },
+    {
+      "year": 2008,
+      "event": "Viswanathan Anand wins the Melody Amber tournament in Monaco.",
+      "category": "tournament"
+    }
+  ],
+  "03-31": [
+    {
+      "year": 2004,
+      "event": "The FIDE World Championship knockout tournament is announced for Tripoli.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1959,
+      "event": "The Candidates Tournament cycle continues with Fischer as a rising star.",
+      "category": "tournament"
+    },
+    {
+      "year": 1929,
+      "event": "Capablanca plays in an exhibition in Buenos Aires.",
+      "category": "match"
+    }
+  ],
+  "04-01": [
+    {
+      "year": 1963,
+      "event": "Tigran Petrosian begins his World Championship match preparation against Botvinnik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2005,
+      "event": "The FIDE Grand Prix tour is proposed as a new qualification system.",
+      "category": "tournament"
+    },
+    {
+      "year": 1901,
+      "event": "Mikhail Chigorin, Russia's strongest player, plays in a tournament in Monte Carlo.",
+      "category": "tournament"
+    }
+  ],
+  "04-02": [
+    {
+      "year": 2005,
+      "event": "The first major post-Kasparov tournament adjusts to a new chess landscape.",
+      "category": "milestone"
+    },
+    {
+      "year": 1922,
+      "event": "The Hastings tournament features international masters.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "Shamkir Chess tournament begins in Azerbaijan with Carlsen headlining.",
+      "category": "tournament"
+    }
+  ],
+  "04-03": [
+    {
+      "year": 1858,
+      "event": "Paul Morphy dominates the First American Chess Congress in New York.",
+      "category": "tournament"
+    },
+    {
+      "year": 1984,
+      "event": "Garry Kasparov wins the Candidates Final against Vasily Smyslov.",
+      "category": "match"
+    },
+    {
+      "year": 2015,
+      "event": "The Shamkir Chess tournament begins in Azerbaijan.",
+      "category": "tournament"
+    }
+  ],
+  "04-04": [
+    {
+      "year": 1961,
+      "event": "Mikhail Tal's poor health becomes a factor in his World Championship defense against Botvinnik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2009,
+      "event": "The Amber Blindfold and Rapid tournament continues in Nice.",
+      "category": "tournament"
+    },
+    {
+      "year": 1929,
+      "event": "Aron Nimzowitsch publishes 'My System', a landmark chess book.",
+      "category": "milestone"
+    }
+  ],
+  "04-05": [
+    {
+      "year": 1986,
+      "event": "The third Karpov-Kasparov World Championship match continues in Leningrad.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "The Alekhine Memorial tournament begins in Paris and St. Petersburg.",
+      "category": "tournament"
+    },
+    {
+      "year": 1888,
+      "event": "The German Chess Federation organizes a national championship.",
+      "category": "tournament"
+    }
+  ],
+  "04-06": [
+    {
+      "year": 1894,
+      "event": "The Steinitz-Lasker World Championship match enters its decisive phase in Montreal.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The Shamkir Chess tournament features elite players.",
+      "category": "tournament"
+    },
+    {
+      "year": 1932,
+      "event": "Alexander Alekhine plays in a tournament in Bern.",
+      "category": "tournament"
+    }
+  ],
+  "04-07": [
+    {
+      "year": 1990,
+      "event": "The fifth and final Karpov-Kasparov World Championship match is announced.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1965,
+      "event": "Boris Spassky defeats Mikhail Tal in their Candidates match.",
+      "category": "match"
+    },
+    {
+      "year": 2018,
+      "event": "Magnus Carlsen plays in the Shamkir Chess tournament.",
+      "category": "tournament"
+    }
+  ],
+  "04-08": [
+    {
+      "year": 1971,
+      "event": "Bobby Fischer prepares for his Candidates Semifinal match against Bent Larsen.",
+      "category": "match"
+    },
+    {
+      "year": 2003,
+      "event": "The Corsican Chess Circuit begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1935,
+      "event": "Max Euwe prepares for his World Championship challenge against Alekhine.",
+      "category": "world_championship"
+    }
+  ],
+  "04-09": [
+    {
+      "year": 1866,
+      "event": "Wilhelm Steinitz defeats Adolf Anderssen in their match, establishing himself as the world's leading player.",
+      "category": "match"
+    },
+    {
+      "year": 2019,
+      "event": "The Shamkir Chess tournament continues with Carlsen in the field.",
+      "category": "tournament"
+    },
+    {
+      "year": 1953,
+      "event": "The Zurich Candidates Tournament continues with Smyslov and Reshevsky battling.",
+      "category": "tournament"
+    }
+  ],
+  "04-10": [
+    {
+      "year": 1910,
+      "event": "Emanuel Lasker defeats Carl Schlechter in the final game of their World Championship match, retaining his title.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1999,
+      "event": "Garry Kasparov achieves a FIDE rating of 2851, the highest ever at the time.",
+      "category": "record"
+    },
+    {
+      "year": 2014,
+      "event": "The Shamkir Chess tournament begins in Azerbaijan.",
+      "category": "tournament"
+    }
+  ],
+  "04-11": [
+    {
+      "year": 1961,
+      "event": "Mikhail Botvinnik regains the World Championship title from Mikhail Tal.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2015,
+      "event": "Magnus Carlsen leads the Shamkir Chess tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1898,
+      "event": "The Vienna International Tournament features strong players from across Europe.",
+      "category": "tournament"
+    }
+  ],
+  "04-12": [
+    {
+      "year": 1961,
+      "event": "Botvinnik's systematic preparation leads to his decisive victory over Tal in the World Championship rematch.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2008,
+      "event": "Vugar Gashimov Memorial planning begins in Azerbaijan.",
+      "category": "tournament"
+    },
+    {
+      "year": 1925,
+      "event": "The Moscow International Tournament begins, one of the first major Soviet-hosted events.",
+      "category": "tournament"
+    }
+  ],
+  "04-13": [
+    {
+      "year": 1985,
+      "event": "Kasparov-Karpov II begins their second World Championship match in Moscow.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1963,
+      "event": "Tigran Petrosian and Mikhail Botvinnik begin their World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "The Grenke Chess Classic features top players in Germany.",
+      "category": "tournament"
+    }
+  ],
+  "04-14": [
+    {
+      "year": 1866,
+      "event": "Adolf Anderssen, famous for the Immortal Game, plays in a London tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 2018,
+      "event": "The Grenke Chess Classic begins in Karlsruhe, Germany.",
+      "category": "tournament"
+    },
+    {
+      "year": 1927,
+      "event": "Jose Raul Capablanca plays his last tournament before the World Championship match against Alekhine.",
+      "category": "tournament"
+    }
+  ],
+  "04-15": [
+    {
+      "year": 2002,
+      "event": "Vladimir Kramnik plays in the Melody Amber tournament in Monaco.",
+      "category": "tournament"
+    },
+    {
+      "year": 1986,
+      "event": "The Kasparov-Karpov World Championship match in Leningrad and London reaches a critical phase.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1942,
+      "event": "The USSR wartime chess championship is organized despite ongoing conflict.",
+      "category": "tournament"
+    }
+  ],
+  "04-16": [
+    {
+      "year": 1985,
+      "event": "Kasparov wins a crucial game in the second World Championship match against Karpov.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2012,
+      "event": "The Alekhine Memorial tournament features top players.",
+      "category": "tournament"
+    },
+    {
+      "year": 1894,
+      "event": "Lasker leads Steinitz in their World Championship match.",
+      "category": "world_championship"
+    }
+  ],
+  "04-17": [
+    {
+      "year": 1929,
+      "event": "Jose Raul Capablanca plays in a tournament in Karlsbad.",
+      "category": "tournament"
+    },
+    {
+      "year": 2010,
+      "event": "Magnus Carlsen's rapid rating ascent continues at age 19.",
+      "category": "milestone"
+    },
+    {
+      "year": 1963,
+      "event": "Petrosian outplays Botvinnik in their World Championship match.",
+      "category": "world_championship"
+    }
+  ],
+  "04-18": [
+    {
+      "year": 1975,
+      "event": "Bobby Fischer refuses to defend his World Championship title against Anatoly Karpov.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2009,
+      "event": "The European Championship continues with strong competition.",
+      "category": "tournament"
+    },
+    {
+      "year": 1914,
+      "event": "The St. Petersburg 1914 tournament begins with Lasker, Capablanca, Alekhine, Tarrasch, and Marshall.",
+      "category": "tournament"
+    }
+  ],
+  "04-19": [
+    {
+      "year": 1935,
+      "event": "Max Euwe formally challenges Alexander Alekhine for the World Championship.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2000,
+      "event": "Kasparov plays in a strong rapid tournament in Frankfurt.",
+      "category": "tournament"
+    },
+    {
+      "year": 1858,
+      "event": "Paul Morphy defeats Lowenthal in a match in London.",
+      "category": "match"
+    }
+  ],
+  "04-20": [
+    {
+      "year": 1963,
+      "event": "Petrosian wins the World Championship match against Botvinnik to become the 9th World Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "The Norway Chess tournament planning begins for Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1889,
+      "event": "The Sixth American Chess Congress continues in New York.",
+      "category": "tournament"
+    }
+  ],
+  "04-21": [
+    {
+      "year": 1951,
+      "event": "Mikhail Botvinnik retains his World Championship title against David Bronstein after a tied match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2012,
+      "event": "Magnus Carlsen achieves a new peak rating.",
+      "category": "record"
+    },
+    {
+      "year": 1899,
+      "event": "Emanuel Lasker plays in the London International Tournament.",
+      "category": "tournament"
+    }
+  ],
+  "04-22": [
+    {
+      "year": 1834,
+      "event": "The famous McDonnell-La Bourdonnais matches begin in London.",
+      "category": "match"
+    },
+    {
+      "year": 2017,
+      "event": "The Grenke Chess Classic continues in Germany.",
+      "category": "tournament"
+    },
+    {
+      "year": 1963,
+      "event": "Tigran Petrosian is celebrated as the new World Champion.",
+      "category": "world_championship"
+    }
+  ],
+  "04-23": [
+    {
+      "year": 1985,
+      "event": "Kasparov leads Karpov in the second World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1951,
+      "event": "Botvinnik draws the final game against Bronstein, retaining his title.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "The European Championship features elite competition.",
+      "category": "tournament"
+    }
+  ],
+  "04-24": [
+    {
+      "year": 1975,
+      "event": "FIDE declares Anatoly Karpov the 12th World Chess Champion by default after Fischer refuses to play.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1927,
+      "event": "The New York International Tournament features Capablanca, Alekhine, Nimzowitsch, and Vidmar.",
+      "category": "tournament"
+    },
+    {
+      "year": 2013,
+      "event": "The Norway Chess tournament in Stavanger is announced.",
+      "category": "tournament"
+    }
+  ],
+  "04-25": [
+    {
+      "year": 1910,
+      "event": "Emanuel Lasker draws with Carl Schlechter, retaining the World Championship title.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2007,
+      "event": "Vladimir Kramnik competes in an elite tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1903,
+      "event": "The Monte Carlo tournament features Tarrasch and Maroczy.",
+      "category": "tournament"
+    }
+  ],
+  "04-26": [
+    {
+      "year": 1914,
+      "event": "Capablanca and Lasker clash at the St. Petersburg 1914 tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "The Grenke Chess Classic concludes in Germany.",
+      "category": "tournament"
+    },
+    {
+      "year": 1959,
+      "event": "Mikhail Tal wins the Candidates Tournament, earning the right to face Botvinnik.",
+      "category": "tournament"
+    }
+  ],
+  "04-27": [
+    {
+      "year": 2006,
+      "event": "Topalov and Kramnik's unification match is announced for Elista.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1927,
+      "event": "Capablanca leads the New York 1927 tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 2016,
+      "event": "The Shamkir Chess tournament concludes.",
+      "category": "tournament"
+    }
+  ],
+  "04-28": [
+    {
+      "year": 1969,
+      "event": "Boris Spassky defeats Viktor Korchnoi in the Candidates Final, earning the right to challenge Petrosian.",
+      "category": "match"
+    },
+    {
+      "year": 2013,
+      "event": "Magnus Carlsen achieves an Elo rating of 2872.4, the all-time peak at that time.",
+      "category": "record"
+    },
+    {
+      "year": 1937,
+      "event": "The Kemeri tournament features strong international competition.",
+      "category": "tournament"
+    }
+  ],
+  "04-29": [
+    {
+      "year": 1985,
+      "event": "The Karpov-Kasparov rematch reaches its decisive final games.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1958,
+      "event": "Mikhail Tal plays brilliantly in the Soviet Championship.",
+      "category": "tournament"
+    },
+    {
+      "year": 2017,
+      "event": "The Shamkir Chess tournament in Azerbaijan features Carlsen.",
+      "category": "tournament"
+    }
+  ],
+  "04-30": [
+    {
+      "year": 1921,
+      "event": "Capablanca-Lasker World Championship match is finalized for Havana.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1988,
+      "event": "Garry Kasparov prepares for his fourth World Championship match against Karpov.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2011,
+      "event": "The Shamkir Chess tournament concludes in Azerbaijan.",
+      "category": "tournament"
+    }
+  ],
+  "05-01": [
+    {
+      "year": 1935,
+      "event": "The Alekhine-Euwe World Championship match negotiations conclude.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2014,
+      "event": "The Norway Chess tournament features a super-strong field in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1858,
+      "event": "Paul Morphy plays in the First American Chess Congress.",
+      "category": "tournament"
+    }
+  ],
+  "05-02": [
+    {
+      "year": 2014,
+      "event": "The Shamkir Chess tournament (Gashimov Memorial) begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Bobby Fischer continues his preparation for the World Championship match against Spassky.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1889,
+      "event": "The New York Chess Club hosts a strong tournament.",
+      "category": "tournament"
+    }
+  ],
+  "05-03": [
+    {
+      "year": 1997,
+      "event": "The rematch between Garry Kasparov and IBM's Deep Blue begins in New York.",
+      "category": "match"
+    },
+    {
+      "year": 2005,
+      "event": "The FIDE World Championship tournament in San Luis is announced.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1962,
+      "event": "The Candidates Tournament in Curacao begins.",
+      "category": "tournament"
+    }
+  ],
+  "05-04": [
+    {
+      "year": 1997,
+      "event": "Kasparov wins Game 1 of the rematch against Deep Blue in New York.",
+      "category": "match"
+    },
+    {
+      "year": 2019,
+      "event": "Magnus Carlsen plays in the Grenke Chess Classic.",
+      "category": "tournament"
+    },
+    {
+      "year": 1927,
+      "event": "The New York 1927 tournament concludes with Capablanca winning ahead of Alekhine.",
+      "category": "tournament"
+    }
+  ],
+  "05-05": [
+    {
+      "year": 1997,
+      "event": "Kasparov loses Game 2 against Deep Blue, a pivotal moment in human vs. machine chess.",
+      "category": "match"
+    },
+    {
+      "year": 2012,
+      "event": "The Norway Chess inaugural tournament features world-class players.",
+      "category": "tournament"
+    },
+    {
+      "year": 1936,
+      "event": "The Nottingham 1936 tournament planning begins, gathering the strongest field since New York 1927.",
+      "category": "tournament"
+    }
+  ],
+  "05-06": [
+    {
+      "year": 1997,
+      "event": "Deep Blue defeats Kasparov in a controversial Game 2 in New York.",
+      "category": "match"
+    },
+    {
+      "year": 2016,
+      "event": "Norway Chess begins in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1965,
+      "event": "Boris Spassky wins the Candidates Final against Geller.",
+      "category": "match"
+    }
+  ],
+  "05-07": [
+    {
+      "year": 1997,
+      "event": "Kasparov and Deep Blue draw Game 3 in their rematch.",
+      "category": "match"
+    },
+    {
+      "year": 2006,
+      "event": "Topalov defeats Kramnik in a critical game during the Sofia rapid match.",
+      "category": "match"
+    },
+    {
+      "year": 1969,
+      "event": "Bobby Fischer plays in the US Championship.",
+      "category": "tournament"
+    }
+  ],
+  "05-08": [
+    {
+      "year": 1997,
+      "event": "Kasparov draws Game 4 against Deep Blue, trailing 1.5-2.5.",
+      "category": "match"
+    },
+    {
+      "year": 2013,
+      "event": "Norway Chess begins in Stavanger with Carlsen, Anand, and Karjakin.",
+      "category": "tournament"
+    },
+    {
+      "year": 1921,
+      "event": "Capablanca-Lasker World Championship match preparations continue.",
+      "category": "world_championship"
+    }
+  ],
+  "05-09": [
+    {
+      "year": 1997,
+      "event": "Kasparov draws Game 5 against Deep Blue, still trailing.",
+      "category": "match"
+    },
+    {
+      "year": 2014,
+      "event": "Norway Chess tournament continues in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1969,
+      "event": "The Petrosian-Spassky World Championship match is finalized.",
+      "category": "world_championship"
+    }
+  ],
+  "05-10": [
+    {
+      "year": 2014,
+      "event": "Norway Chess features a decisive game between Carlsen and Caruana.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Negotiations for the Fischer-Spassky match venue continue, with Reykjavik chosen.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1960,
+      "event": "Mikhail Tal prepares for his World Championship match against Botvinnik.",
+      "category": "world_championship"
+    }
+  ],
+  "05-11": [
+    {
+      "year": 1997,
+      "event": "Deep Blue defeats Kasparov in Game 6, winning the match 3.5-2.5: the first time a computer defeats a World Champion in a match.",
+      "category": "milestone"
+    },
+    {
+      "year": 2015,
+      "event": "Norway Chess begins in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1927,
+      "event": "Alexander Alekhine wins the New York 1927 tournament qualifying stage.",
+      "category": "tournament"
+    }
+  ],
+  "05-12": [
+    {
+      "year": 1997,
+      "event": "Kasparov accuses IBM of cheating after losing to Deep Blue, demanding a rematch that never happens.",
+      "category": "match"
+    },
+    {
+      "year": 1960,
+      "event": "The Tal-Botvinnik World Championship match begins in Moscow.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "Norway Chess continues in Stavanger with Magnus Carlsen playing.",
+      "category": "tournament"
+    }
+  ],
+  "05-13": [
+    {
+      "year": 2014,
+      "event": "Magnus Carlsen achieves his all-time peak FIDE rating of 2882.",
+      "category": "record"
+    },
+    {
+      "year": 1993,
+      "event": "FIDE strips Kasparov and Short of their titles over the PCA match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1968,
+      "event": "Boris Spassky defeats Viktor Korchnoi in a Candidates match.",
+      "category": "match"
+    }
+  ],
+  "05-14": [
+    {
+      "year": 1960,
+      "event": "Mikhail Tal defeats Mikhail Botvinnik to become the youngest World Chess Champion at age 23.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "Norway Chess in Stavanger enters its final rounds.",
+      "category": "tournament"
+    },
+    {
+      "year": 1885,
+      "event": "The British Chess Association hosts its annual tournament.",
+      "category": "tournament"
+    }
+  ],
+  "05-15": [
+    {
+      "year": 1992,
+      "event": "Fischer and Spassky rematch negotiations for Yugoslavia continue.",
+      "category": "match"
+    },
+    {
+      "year": 2019,
+      "event": "Norway Chess begins in Stavanger with Carlsen headlining.",
+      "category": "tournament"
+    },
+    {
+      "year": 1862,
+      "event": "The London International Tournament begins, one of the earliest major international events.",
+      "category": "tournament"
+    }
+  ],
+  "05-16": [
+    {
+      "year": 1985,
+      "event": "Kasparov wins the decisive game in the second K-K match to lead.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2012,
+      "event": "The inaugural Norway Chess tournament continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1929,
+      "event": "Aron Nimzowitsch plays in the Carlsbad tournament.",
+      "category": "tournament"
+    }
+  ],
+  "05-17": [
+    {
+      "year": 1969,
+      "event": "The Petrosian-Spassky World Championship match begins in Moscow.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2009,
+      "event": "MTel Masters tournament begins in Sofia, Bulgaria.",
+      "category": "tournament"
+    },
+    {
+      "year": 1851,
+      "event": "The London 1851 tournament, the first international chess tournament, begins.",
+      "category": "tournament"
+    }
+  ],
+  "05-18": [
+    {
+      "year": 1985,
+      "event": "The second Karpov-Kasparov match continues with Kasparov leading.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2014,
+      "event": "Norway Chess concludes with Magnus Carlsen winning in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1862,
+      "event": "Adolf Anderssen wins the London 1862 International Tournament.",
+      "category": "tournament"
+    }
+  ],
+  "05-19": [
+    {
+      "year": 1962,
+      "event": "Bobby Fischer plays in the Candidates Tournament in Curacao, later accusing Soviet players of collusion.",
+      "category": "tournament"
+    },
+    {
+      "year": 2015,
+      "event": "The Norway Chess tournament continues in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1894,
+      "event": "Emanuel Lasker is declared the new World Champion after defeating Steinitz.",
+      "category": "world_championship"
+    }
+  ],
+  "05-20": [
+    {
+      "year": 1963,
+      "event": "Bobby Fischer publishes his famous article 'The Russians Have Fixed World Chess' in Sports Illustrated.",
+      "category": "milestone"
+    },
+    {
+      "year": 2016,
+      "event": "Norway Chess continues with top players in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1937,
+      "event": "The Alekhine-Euwe World Championship rematch is announced.",
+      "category": "world_championship"
+    }
+  ],
+  "05-21": [
+    {
+      "year": 1960,
+      "event": "Mikhail Tal is celebrated as the new World Champion after defeating Botvinnik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "Norway Chess concludes in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1946,
+      "event": "FIDE begins organizing a World Championship match-tournament for 1948.",
+      "category": "world_championship"
+    }
+  ],
+  "05-22": [
+    {
+      "year": 1963,
+      "event": "Tigran Petrosian defeats Mikhail Botvinnik to become the 9th World Chess Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2010,
+      "event": "Magnus Carlsen's FIDE rating reaches new heights.",
+      "category": "record"
+    },
+    {
+      "year": 1927,
+      "event": "Capablanca arrives in Buenos Aires for his World Championship match defense against Alekhine.",
+      "category": "world_championship"
+    }
+  ],
+  "05-23": [
+    {
+      "year": 1951,
+      "event": "Anatoly Karpov, 12th World Chess Champion, is born in Zlatoust, Soviet Union.",
+      "category": "birth"
+    },
+    {
+      "year": 2018,
+      "event": "Norway Chess begins in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1862,
+      "event": "The London International Tournament of 1862 continues.",
+      "category": "tournament"
+    }
+  ],
+  "05-24": [
+    {
+      "year": 1985,
+      "event": "Garry Kasparov continues his strong play against Karpov in their second match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2015,
+      "event": "Norway Chess features decisive games in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1927,
+      "event": "The Capablanca-Alekhine World Championship match is finalized.",
+      "category": "world_championship"
+    }
+  ],
+  "05-25": [
+    {
+      "year": 1889,
+      "event": "The Sixth American Chess Congress in New York concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 2014,
+      "event": "The Candidates Tournament cycle for the next World Championship is discussed.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1969,
+      "event": "Spassky defeats Petrosian in a key game of the World Championship match.",
+      "category": "world_championship"
+    }
+  ],
+  "05-26": [
+    {
+      "year": 1866,
+      "event": "Wilhelm Steinitz is recognized as the strongest player in the world after defeating Anderssen.",
+      "category": "milestone"
+    },
+    {
+      "year": 2019,
+      "event": "Norway Chess features a critical Carlsen game in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1931,
+      "event": "Alexander Alekhine plays in the Bled tournament.",
+      "category": "tournament"
+    }
+  ],
+  "05-27": [
+    {
+      "year": 1937,
+      "event": "The Alekhine-Euwe World Championship rematch preparations continue.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "Norway Chess continues in Stavanger.",
+      "category": "tournament"
+    },
+    {
+      "year": 1997,
+      "event": "The chess world debates the significance of Deep Blue's victory over Kasparov.",
+      "category": "milestone"
+    }
+  ],
+  "05-28": [
+    {
+      "year": 1972,
+      "event": "Reykjavik is confirmed as the venue for the Fischer-Spassky World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "The Norway Chess tournament concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1904,
+      "event": "The Cambridge Springs tournament in the US features strong international players.",
+      "category": "tournament"
+    }
+  ],
+  "05-29": [
+    {
+      "year": 1985,
+      "event": "The second Kasparov-Karpov match nears its conclusion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2011,
+      "event": "The Norway Chess tournament features Carlsen.",
+      "category": "tournament"
+    },
+    {
+      "year": 1914,
+      "event": "Emanuel Lasker wins the St. Petersburg 1914 tournament, defeating Capablanca.",
+      "category": "tournament"
+    }
+  ],
+  "05-30": [
+    {
+      "year": 1992,
+      "event": "Bobby Fischer emerges from seclusion to play his rematch against Spassky.",
+      "category": "match"
+    },
+    {
+      "year": 2005,
+      "event": "The FIDE World Championship in San Luis is planned for September-October.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1969,
+      "event": "Boris Spassky takes the lead against Petrosian in the World Championship match.",
+      "category": "world_championship"
+    }
+  ],
+  "05-31": [
+    {
+      "year": 1927,
+      "event": "The Capablanca-Alekhine World Championship match preparations conclude in Buenos Aires.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2014,
+      "event": "The Grand Prix cycle continues as World Championship qualification.",
+      "category": "tournament"
+    },
+    {
+      "year": 1968,
+      "event": "The Candidates matches continue with Spassky and Korchnoi.",
+      "category": "match"
+    }
+  ],
+  "06-01": [
+    {
+      "year": 1866,
+      "event": "Wilhelm Steinitz wins his famous match against Adolf Anderssen 8-6.",
+      "category": "match"
+    },
+    {
+      "year": 2019,
+      "event": "Norway Chess concludes in Stavanger with Carlsen winning.",
+      "category": "tournament"
+    },
+    {
+      "year": 1948,
+      "event": "Mikhail Botvinnik wins the World Championship match-tournament in The Hague-Moscow.",
+      "category": "world_championship"
+    }
+  ],
+  "06-02": [
+    {
+      "year": 1969,
+      "event": "Boris Spassky defeats Tigran Petrosian to become the 10th World Chess Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2010,
+      "event": "Levon Aronian competes in a strong European tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1937,
+      "event": "Paul Keres emerges as a top contender in European tournaments.",
+      "category": "tournament"
+    }
+  ],
+  "06-03": [
+    {
+      "year": 2000,
+      "event": "Vladimir Kramnik is announced as the challenger for Kasparov's PCA World Championship.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1858,
+      "event": "Paul Morphy defeats Adolf Anderssen in a celebrated game in Paris.",
+      "category": "match"
+    },
+    {
+      "year": 2018,
+      "event": "The Grand Chess Tour begins with elite events worldwide.",
+      "category": "tournament"
+    }
+  ],
+  "06-04": [
+    {
+      "year": 1963,
+      "event": "Bobby Fischer plays at the Western Open tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 2005,
+      "event": "FIDE confirms the San Luis World Championship.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1992,
+      "event": "The Fischerandom (Chess960) concept is developed by Bobby Fischer.",
+      "category": "milestone"
+    }
+  ],
+  "06-05": [
+    {
+      "year": 1969,
+      "event": "Spassky is celebrated as the new World Chess Champion after defeating Petrosian.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "Tal Memorial tournament begins in Moscow.",
+      "category": "tournament"
+    },
+    {
+      "year": 1851,
+      "event": "Adolf Anderssen wins the London 1851 tournament, the first international chess tournament.",
+      "category": "tournament"
+    }
+  ],
+  "06-06": [
+    {
+      "year": 2011,
+      "event": "The Tal Memorial tournament begins in Moscow.",
+      "category": "tournament"
+    },
+    {
+      "year": 1937,
+      "event": "Alexander Alekhine plays in a tournament in Margate, England.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "The Grand Chess Tour continues with elite events.",
+      "category": "tournament"
+    }
+  ],
+  "06-07": [
+    {
+      "year": 2012,
+      "event": "The Tal Memorial tournament in Moscow features Carlsen and Aronian.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Final preparations for the Fischer-Spassky World Championship match in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1880,
+      "event": "The German Chess Federation organizes its annual congress.",
+      "category": "tournament"
+    }
+  ],
+  "06-08": [
+    {
+      "year": 2016,
+      "event": "The Grand Chess Tour continues with rapid and blitz events.",
+      "category": "tournament"
+    },
+    {
+      "year": 1948,
+      "event": "FIDE ratifies the result of the World Championship tournament won by Botvinnik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1879,
+      "event": "Johannes Zukertort plays in a strong tournament in Paris.",
+      "category": "tournament"
+    }
+  ],
+  "06-09": [
+    {
+      "year": 2017,
+      "event": "The Grand Chess Tour rapid and blitz event begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1985,
+      "event": "Kasparov-Karpov II reaches its climax.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1909,
+      "event": "Emanuel Lasker defends his World Championship title.",
+      "category": "world_championship"
+    }
+  ],
+  "06-10": [
+    {
+      "year": 2013,
+      "event": "The Tal Memorial in Moscow features decisive games.",
+      "category": "tournament"
+    },
+    {
+      "year": 1866,
+      "event": "Paul Morphy retires from competitive chess.",
+      "category": "milestone"
+    },
+    {
+      "year": 2018,
+      "event": "The Altibox Norway Chess tournament features rapid tiebreaks.",
+      "category": "tournament"
+    }
+  ],
+  "06-11": [
+    {
+      "year": 1985,
+      "event": "Kasparov defeats Karpov in the decisive 24th game to become the 13th World Chess Champion at age 22.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2012,
+      "event": "The Tal Memorial in Moscow continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1938,
+      "event": "The AVRO tournament is confirmed for November with a historic field.",
+      "category": "tournament"
+    }
+  ],
+  "06-12": [
+    {
+      "year": 2002,
+      "event": "The Dortmund Sparkassen Chess Meeting begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1985,
+      "event": "Garry Kasparov is celebrated as the youngest World Chess Champion in history.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1929,
+      "event": "The Carlsbad tournament features an exceptionally strong field.",
+      "category": "tournament"
+    }
+  ],
+  "06-13": [
+    {
+      "year": 2013,
+      "event": "The Tal Memorial concludes in Moscow.",
+      "category": "tournament"
+    },
+    {
+      "year": 1940,
+      "event": "The Buenos Aires Chess Olympiad demonstrates chess's global reach.",
+      "category": "tournament"
+    },
+    {
+      "year": 1843,
+      "event": "Howard Staunton defeats Pierre Charles Fournier de Saint-Amant in their match.",
+      "category": "match"
+    }
+  ],
+  "06-14": [
+    {
+      "year": 2016,
+      "event": "The Grand Chess Tour rapid event continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1924,
+      "event": "FIDE (Federation Internationale des Echecs) is founded in Paris.",
+      "category": "milestone"
+    },
+    {
+      "year": 1858,
+      "event": "Paul Morphy plays against Lowenthal in London.",
+      "category": "match"
+    }
+  ],
+  "06-15": [
+    {
+      "year": 1972,
+      "event": "Bobby Fischer threatens to withdraw from the World Championship match over prize fund disputes.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The Grand Chess Tour event continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1992,
+      "event": "FIDE announces the Karpov-Short World Championship match following Kasparov's departure.",
+      "category": "world_championship"
+    }
+  ],
+  "06-16": [
+    {
+      "year": 1858,
+      "event": "Paul Morphy defeats Rev. John Owen in a match in London.",
+      "category": "match"
+    },
+    {
+      "year": 2015,
+      "event": "The Grand Chess Tour is launched with multiple elite events.",
+      "category": "tournament"
+    },
+    {
+      "year": 1927,
+      "event": "The Capablanca-Alekhine World Championship match is confirmed for Buenos Aires.",
+      "category": "world_championship"
+    }
+  ],
+  "06-17": [
+    {
+      "year": 1969,
+      "event": "Boris Spassky is celebrated internationally as the new World Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2012,
+      "event": "The Tal Memorial concludes with a strong field.",
+      "category": "tournament"
+    },
+    {
+      "year": 1928,
+      "event": "Alexander Alekhine gives a lecture on chess strategy in Paris.",
+      "category": "milestone"
+    }
+  ],
+  "06-18": [
+    {
+      "year": 2014,
+      "event": "The Grand Prix series continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1937,
+      "event": "Alexander Alekhine begins the World Championship rematch against Max Euwe.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1857,
+      "event": "The First American Chess Congress begins in New York.",
+      "category": "tournament"
+    }
+  ],
+  "06-19": [
+    {
+      "year": 2018,
+      "event": "The Grand Chess Tour rapid and blitz events continue.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Henry Kissinger calls Bobby Fischer to convince him to play the World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1887,
+      "event": "The Frankfurt Chess Congress features international competition.",
+      "category": "tournament"
+    }
+  ],
+  "06-20": [
+    {
+      "year": 1851,
+      "event": "Adolf Anderssen plays the 'Immortal Game' against Lionel Kieseritzky in London.",
+      "category": "milestone"
+    },
+    {
+      "year": 2004,
+      "event": "The Dortmund Sparkassen tournament begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "The Grand Chess Tour continues with an event in Croatia.",
+      "category": "tournament"
+    }
+  ],
+  "06-21": [
+    {
+      "year": 1970,
+      "event": "The USSR vs. Rest of the World match begins in Belgrade.",
+      "category": "match"
+    },
+    {
+      "year": 2005,
+      "event": "The Dortmund Sparkassen Chess Meeting begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1834,
+      "event": "The La Bourdonnais-McDonnell matches continue in London.",
+      "category": "match"
+    }
+  ],
+  "06-22": [
+    {
+      "year": 2019,
+      "event": "The Croatia Grand Chess Tour event takes place in Zagreb.",
+      "category": "tournament"
+    },
+    {
+      "year": 1937,
+      "event": "The Semmering-Baden tournament features top European players.",
+      "category": "tournament"
+    },
+    {
+      "year": 1898,
+      "event": "The Vienna International Tournament concludes.",
+      "category": "tournament"
+    }
+  ],
+  "06-23": [
+    {
+      "year": 2012,
+      "event": "Magnus Carlsen plays in the Sparkassen Chess Meeting in Dortmund.",
+      "category": "tournament"
+    },
+    {
+      "year": 1985,
+      "event": "Garry Kasparov, newly crowned World Champion, gives interviews about his victory.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1886,
+      "event": "Wilhelm Steinitz, the first World Champion, plays exhibition games.",
+      "category": "match"
+    }
+  ],
+  "06-24": [
+    {
+      "year": 1993,
+      "event": "Kasparov and Short play in the PCA World Championship match in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2007,
+      "event": "The Dortmund chess tournament features Vladimir Kramnik.",
+      "category": "tournament"
+    },
+    {
+      "year": 1851,
+      "event": "The London 1851 tournament continues with Anderssen leading.",
+      "category": "tournament"
+    }
+  ],
+  "06-25": [
+    {
+      "year": 2016,
+      "event": "The Grand Chess Tour rapid event in Paris concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1970,
+      "event": "The USSR vs. Rest of the World match continues in Belgrade with Fischer playing Board 1 for the Rest.",
+      "category": "match"
+    },
+    {
+      "year": 1911,
+      "event": "Akiba Rubinstein wins the San Sebastian tournament.",
+      "category": "tournament"
+    }
+  ],
+  "06-26": [
+    {
+      "year": 2018,
+      "event": "The Paris Grand Chess Tour rapid and blitz event takes place.",
+      "category": "tournament"
+    },
+    {
+      "year": 1948,
+      "event": "Botvinnik's dominance as World Champion is established.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1909,
+      "event": "Frank Marshall founds the Marshall Chess Club in New York.",
+      "category": "milestone"
+    }
+  ],
+  "06-27": [
+    {
+      "year": 2019,
+      "event": "The Croatia Grand Chess Tour continues in Zagreb.",
+      "category": "tournament"
+    },
+    {
+      "year": 1990,
+      "event": "The PCA (Professional Chess Association) concept begins to form.",
+      "category": "milestone"
+    },
+    {
+      "year": 1885,
+      "event": "The Hereford Chess Congress takes place in England.",
+      "category": "tournament"
+    }
+  ],
+  "06-28": [
+    {
+      "year": 2017,
+      "event": "The Paris Grand Chess Tour event concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Bobby Fischer arrives in Reykjavik for the World Championship match after much delay.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1904,
+      "event": "The Cambridge Springs tournament in Pennsylvania concludes.",
+      "category": "tournament"
+    }
+  ],
+  "06-29": [
+    {
+      "year": 2006,
+      "event": "The Sparkassen Chess Meeting in Dortmund features top players.",
+      "category": "tournament"
+    },
+    {
+      "year": 1866,
+      "event": "Steinitz gains recognition as the world's leading chess player.",
+      "category": "milestone"
+    },
+    {
+      "year": 2015,
+      "event": "The Grand Chess Tour event continues.",
+      "category": "tournament"
+    }
+  ],
+  "06-30": [
+    {
+      "year": 1993,
+      "event": "The PCA World Championship match between Kasparov and Short begins preparations in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "The first half of the Grand Chess Tour season concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1858,
+      "event": "Paul Morphy concludes his triumphant European tour.",
+      "category": "milestone"
+    }
+  ],
+  "07-01": [
+    {
+      "year": 1972,
+      "event": "The Fischer-Spassky World Championship match opening ceremony takes place in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2014,
+      "event": "The Dortmund Sparkassen Chess Meeting features elite players.",
+      "category": "tournament"
+    },
+    {
+      "year": 1999,
+      "event": "The Dortmund super-tournament begins.",
+      "category": "tournament"
+    }
+  ],
+  "07-02": [
+    {
+      "year": 1972,
+      "event": "Bobby Fischer forfeits Game 2 against Spassky in Reykjavik by not showing up.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The Dortmund Sparkassen Chess Meeting begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1895,
+      "event": "The Hastings International Tournament 1895 is announced, with Lasker, Steinitz, Pillsbury, Chigorin, and Tarrasch.",
+      "category": "tournament"
+    }
+  ],
+  "07-03": [
+    {
+      "year": 1972,
+      "event": "Fischer agrees to continue the World Championship match after Game 2 forfeit; Game 3 is played in a back room.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2015,
+      "event": "The Dortmund Sparkassen Chess Meeting begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1922,
+      "event": "Jose Raul Capablanca plays in a tournament in London.",
+      "category": "tournament"
+    }
+  ],
+  "07-04": [
+    {
+      "year": 1972,
+      "event": "Fischer wins Game 3 in the back room, his first-ever win against Spassky.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1836,
+      "event": "Alexander McDonnell, Irish chess master, dies in London.",
+      "category": "death"
+    },
+    {
+      "year": 2018,
+      "event": "The Dortmund Sparkassen Chess Meeting features strong competition.",
+      "category": "tournament"
+    }
+  ],
+  "07-05": [
+    {
+      "year": 1972,
+      "event": "Fischer continues his momentum in the World Championship match against Spassky.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2000,
+      "event": "The Dortmund super-tournament features Kramnik and Anand.",
+      "category": "tournament"
+    },
+    {
+      "year": 1895,
+      "event": "Harry Nelson Pillsbury, American chess prodigy, plays in a strong tournament.",
+      "category": "tournament"
+    }
+  ],
+  "07-06": [
+    {
+      "year": 1972,
+      "event": "Fischer wins Game 6 against Spassky with a brilliant Queen's Gambit Declined, considered one of the greatest games ever played.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "The Dortmund Sparkassen Chess Meeting continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1884,
+      "event": "The London Chess Club hosts a strong tournament.",
+      "category": "tournament"
+    }
+  ],
+  "07-07": [
+    {
+      "year": 1997,
+      "event": "Anatoly Karpov plays in the Dortmund tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1851,
+      "event": "The London 1851 tournament concludes with Adolf Anderssen winning.",
+      "category": "tournament"
+    },
+    {
+      "year": 2016,
+      "event": "The Dortmund chess tournament features strong competition.",
+      "category": "tournament"
+    }
+  ],
+  "07-08": [
+    {
+      "year": 1972,
+      "event": "The Fischer-Spassky match continues with Fischer building a commanding lead.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2003,
+      "event": "The Dortmund Sparkassen Chess Meeting continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1924,
+      "event": "The Paris Chess Olympiad takes place alongside the Olympic Games.",
+      "category": "tournament"
+    }
+  ],
+  "07-09": [
+    {
+      "year": 1943,
+      "event": "Bobby Fischer, the 11th World Chess Champion, is born in Chicago, Illinois.",
+      "category": "birth"
+    },
+    {
+      "year": 2017,
+      "event": "The Dortmund Sparkassen Chess Meeting continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1956,
+      "event": "Bobby Fischer, age 13, plays 'The Game of the Century' against Donald Byrne at the Rosenwald Memorial Tournament in New York. (Note: This game was actually played on October 17, 1956.)",
+      "category": "tournament"
+    }
+  ],
+  "07-10": [
+    {
+      "year": 1972,
+      "event": "Fischer leads Spassky convincingly in the World Championship match in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1887,
+      "event": "The Frankfurt International Chess Tournament begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 2011,
+      "event": "The Dortmund Sparkassen Chess Meeting features elite competition.",
+      "category": "tournament"
+    }
+  ],
+  "07-11": [
+    {
+      "year": 1972,
+      "event": "The Fischer-Spassky match continues in Reykjavik with global media attention.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2000,
+      "event": "Vladimir Kramnik prepares for his World Championship match against Kasparov.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1952,
+      "event": "The Chess Olympiad takes place in Helsinki.",
+      "category": "tournament"
+    }
+  ],
+  "07-12": [
+    {
+      "year": 1972,
+      "event": "Fischer extends his lead in the World Championship match to several points.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "The Dortmund Sparkassen Chess Meeting takes place.",
+      "category": "tournament"
+    },
+    {
+      "year": 1838,
+      "event": "The Cafe de la Regence in Paris continues as Europe's premier chess venue.",
+      "category": "milestone"
+    }
+  ],
+  "07-13": [
+    {
+      "year": 2002,
+      "event": "Vladimir Kramnik defends his title in the Dortmund tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Spassky struggles to find form against Fischer in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1849,
+      "event": "Howard Staunton standardizes chess piece design, later known as the Staunton pattern.",
+      "category": "milestone"
+    }
+  ],
+  "07-14": [
+    {
+      "year": 1972,
+      "event": "Fischer wins another game in the World Championship match, extending his lead.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "The Dortmund tournament features Kramnik in strong form.",
+      "category": "tournament"
+    },
+    {
+      "year": 1859,
+      "event": "Paul Morphy returns to the United States after his European triumphs.",
+      "category": "milestone"
+    }
+  ],
+  "07-15": [
+    {
+      "year": 2002,
+      "event": "The Brains in Bahrain match between Kramnik and Deep Fritz is announced.",
+      "category": "match"
+    },
+    {
+      "year": 1972,
+      "event": "The Match of the Century continues in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1924,
+      "event": "The first unofficial Chess Olympiad begins in Paris.",
+      "category": "tournament"
+    }
+  ],
+  "07-16": [
+    {
+      "year": 1907,
+      "event": "Dawid Janowski challenges Emanuel Lasker for the World Championship.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer dominates the middlegame against Spassky in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The Biel Chess Festival begins in Switzerland.",
+      "category": "tournament"
+    }
+  ],
+  "07-17": [
+    {
+      "year": 1972,
+      "event": "Fischer's lead in the World Championship match becomes nearly insurmountable.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2008,
+      "event": "The Biel Chess Festival features a strong Grandmaster tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1829,
+      "event": "The Turk automaton continues touring Europe, baffling audiences.",
+      "category": "milestone"
+    }
+  ],
+  "07-18": [
+    {
+      "year": 1927,
+      "event": "The Chess Olympiad takes place in London.",
+      "category": "tournament"
+    },
+    {
+      "year": 2005,
+      "event": "The Biel Chess Festival begins in Switzerland.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Analysts predict Fischer will win the World Championship match decisively.",
+      "category": "world_championship"
+    }
+  ],
+  "07-19": [
+    {
+      "year": 1924,
+      "event": "FIDE is officially established during the chess tournament at the Paris Olympic Games.",
+      "category": "milestone"
+    },
+    {
+      "year": 2014,
+      "event": "The Biel Chess Festival features elite players.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "The Fischer-Spassky match in Reykjavik continues to captivate the world.",
+      "category": "world_championship"
+    }
+  ],
+  "07-20": [
+    {
+      "year": 1924,
+      "event": "World Chess Day: FIDE is founded in Paris on this date.",
+      "category": "milestone"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer and Spassky play another game in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2012,
+      "event": "International Chess Day is celebrated worldwide.",
+      "category": "milestone"
+    }
+  ],
+  "07-21": [
+    {
+      "year": 1972,
+      "event": "The Fischer-Spassky match continues with Fischer maintaining a clear lead.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2015,
+      "event": "The Biel Chess Festival continues in Switzerland.",
+      "category": "tournament"
+    },
+    {
+      "year": 1898,
+      "event": "The Vienna International Tournament features the world's best players.",
+      "category": "tournament"
+    }
+  ],
+  "07-22": [
+    {
+      "year": 1962,
+      "event": "Bobby Fischer plays in the Candidates Tournament in Curacao.",
+      "category": "tournament"
+    },
+    {
+      "year": 2018,
+      "event": "The Biel Chess Festival features Carlsen.",
+      "category": "tournament"
+    },
+    {
+      "year": 1878,
+      "event": "The Paris International Chess Tournament begins.",
+      "category": "tournament"
+    }
+  ],
+  "07-23": [
+    {
+      "year": 1921,
+      "event": "The Capablanca-Lasker World Championship match is announced for Havana.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer extends his World Championship match lead over Spassky.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The Biel Chess Festival concludes in Switzerland.",
+      "category": "tournament"
+    }
+  ],
+  "07-24": [
+    {
+      "year": 1972,
+      "event": "Spassky shows resilience but cannot close the gap against Fischer.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2010,
+      "event": "The Biel Grandmaster tournament continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1883,
+      "event": "The London International Tournament begins, featuring Zukertort and Steinitz.",
+      "category": "tournament"
+    }
+  ],
+  "07-25": [
+    {
+      "year": 2000,
+      "event": "The FIDE Knockout World Championship continues.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1972,
+      "event": "The Fischer-Spassky match enters its final phase.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1895,
+      "event": "The Hastings 1895 International Tournament begins with an all-star field.",
+      "category": "tournament"
+    }
+  ],
+  "07-26": [
+    {
+      "year": 2006,
+      "event": "The Chess Olympiad in Turin begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer continues building toward the World Championship title.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1914,
+      "event": "The Mannheim tournament is interrupted by the outbreak of World War I.",
+      "category": "tournament"
+    }
+  ],
+  "07-27": [
+    {
+      "year": 1972,
+      "event": "The Match of the Century in Reykjavik approaches its decisive games.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1895,
+      "event": "Harry Nelson Pillsbury surprises the field at Hastings 1895.",
+      "category": "tournament"
+    },
+    {
+      "year": 2014,
+      "event": "The Biel Chess Festival continues.",
+      "category": "tournament"
+    }
+  ],
+  "07-28": [
+    {
+      "year": 1914,
+      "event": "The Mannheim 1914 tournament is abandoned due to World War I; Alekhine and other Russian players are briefly detained.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer plays another strong game against Spassky in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "The Biel Chess Festival concludes.",
+      "category": "tournament"
+    }
+  ],
+  "07-29": [
+    {
+      "year": 1985,
+      "event": "The Interzonal tournament qualifies players for the next Candidates cycle.",
+      "category": "tournament"
+    },
+    {
+      "year": 2012,
+      "event": "The Biel Chess Festival concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1882,
+      "event": "The Vienna International Tournament features Steinitz and Winawer.",
+      "category": "tournament"
+    }
+  ],
+  "07-30": [
+    {
+      "year": 2006,
+      "event": "The Chess Olympiad in Turin continues with strong team performances.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer nears the 12.5 points needed to win the World Championship.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1996,
+      "event": "Judit Polgar, the strongest female player ever, competes in a strong tournament.",
+      "category": "tournament"
+    }
+  ],
+  "07-31": [
+    {
+      "year": 1972,
+      "event": "Fischer is on the verge of becoming World Champion in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2008,
+      "event": "The Chess Olympiad planning begins for Dresden.",
+      "category": "tournament"
+    },
+    {
+      "year": 1940,
+      "event": "The Buenos Aires Chess Olympiad takes place during World War II.",
+      "category": "tournament"
+    }
+  ],
+  "08-01": [
+    {
+      "year": 1972,
+      "event": "Bobby Fischer needs just one more point to become World Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2005,
+      "event": "The Biel Chess Festival features top players.",
+      "category": "tournament"
+    },
+    {
+      "year": 1927,
+      "event": "The first official Chess Olympiad begins in London.",
+      "category": "tournament"
+    }
+  ],
+  "08-02": [
+    {
+      "year": 2017,
+      "event": "The Sinquefield Cup preparations begin in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 1922,
+      "event": "The London International Tournament concludes with Capablanca winning.",
+      "category": "tournament"
+    },
+    {
+      "year": 1978,
+      "event": "The Korchnoi-Karpov World Championship match continues in Baguio City.",
+      "category": "world_championship"
+    }
+  ],
+  "08-03": [
+    {
+      "year": 2014,
+      "event": "The Sinquefield Cup begins in St. Louis with Carlsen and Caruana.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "The Fischer-Spassky match nears its conclusion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1993,
+      "event": "The PCA World Championship match between Kasparov and Short begins in London.",
+      "category": "world_championship"
+    }
+  ],
+  "08-04": [
+    {
+      "year": 2014,
+      "event": "Fabiano Caruana begins his historic run at the Sinquefield Cup, winning seven consecutive games.",
+      "category": "record"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer and Spassky play in the later stages of the World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1961,
+      "event": "Mikhail Botvinnik begins preparations for his World Championship match against Petrosian.",
+      "category": "world_championship"
+    }
+  ],
+  "08-05": [
+    {
+      "year": 2014,
+      "event": "Caruana continues his unprecedented winning streak at the Sinquefield Cup.",
+      "category": "record"
+    },
+    {
+      "year": 2015,
+      "event": "The Sinquefield Cup begins in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "The Fischer-Spassky match enters Game 20 in Reykjavik.",
+      "category": "world_championship"
+    }
+  ],
+  "08-06": [
+    {
+      "year": 2019,
+      "event": "The Sinquefield Cup begins in St. Louis as part of the Grand Chess Tour.",
+      "category": "tournament"
+    },
+    {
+      "year": 1946,
+      "event": "The Groningen International Tournament features post-war chess resumption.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer's dominance in Reykjavik reshapes global chess interest.",
+      "category": "world_championship"
+    }
+  ],
+  "08-07": [
+    {
+      "year": 2017,
+      "event": "The Sinquefield Cup begins in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 2000,
+      "event": "The FIDE World Championship knockout begins.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1858,
+      "event": "The First American Chess Congress concludes with Paul Morphy winning.",
+      "category": "tournament"
+    }
+  ],
+  "08-08": [
+    {
+      "year": 2014,
+      "event": "Caruana wins his seventh straight game at the Sinquefield Cup, a record performance.",
+      "category": "record"
+    },
+    {
+      "year": 2016,
+      "event": "The Sinquefield Cup begins in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 1883,
+      "event": "Johannes Zukertort leads the London 1883 tournament.",
+      "category": "tournament"
+    }
+  ],
+  "08-09": [
+    {
+      "year": 2015,
+      "event": "The Sinquefield Cup features decisive games in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 1978,
+      "event": "Karpov-Korchnoi World Championship match in Baguio City enters a critical phase.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1951,
+      "event": "The World Junior Chess Championship is established.",
+      "category": "milestone"
+    }
+  ],
+  "08-10": [
+    {
+      "year": 2018,
+      "event": "The Sinquefield Cup begins in St. Louis as part of the Grand Chess Tour.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer and Spassky continue their epic match in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1929,
+      "event": "The Carlsbad International Tournament continues.",
+      "category": "tournament"
+    }
+  ],
+  "08-11": [
+    {
+      "year": 2017,
+      "event": "The Sinquefield Cup features decisive matchups in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 2002,
+      "event": "The Chess Olympiad in Bled, Slovenia begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1951,
+      "event": "The World Junior Championship features young talents.",
+      "category": "tournament"
+    }
+  ],
+  "08-12": [
+    {
+      "year": 2014,
+      "event": "Fabiano Caruana completes his historic 7/7 start at the Sinquefield Cup, achieving a 3098 performance rating.",
+      "category": "record"
+    },
+    {
+      "year": 1960,
+      "event": "The Chess Olympiad takes place in Leipzig.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer and Spassky play Game 21 of the World Championship match.",
+      "category": "world_championship"
+    }
+  ],
+  "08-13": [
+    {
+      "year": 1993,
+      "event": "Kasparov defeats Short in the PCA World Championship match in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "The Sinquefield Cup continues in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 1942,
+      "event": "Max Euwe, former World Champion, endures the German occupation in the Netherlands.",
+      "category": "milestone"
+    }
+  ],
+  "08-14": [
+    {
+      "year": 2015,
+      "event": "The Sinquefield Cup in St. Louis enters its final rounds.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer's domination of the World Championship match continues.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1858,
+      "event": "Paul Morphy defeats Lowenthal 9-3 in their match in London.",
+      "category": "match"
+    }
+  ],
+  "08-15": [
+    {
+      "year": 1972,
+      "event": "Fischer leads 11-8 in the World Championship match in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1895,
+      "event": "The Hastings 1895 tournament continues with Pillsbury surprising the favorites.",
+      "category": "tournament"
+    },
+    {
+      "year": 2020,
+      "event": "Online chess tournaments surge in popularity during the COVID-19 pandemic.",
+      "category": "milestone"
+    }
+  ],
+  "08-16": [
+    {
+      "year": 1987,
+      "event": "Kasparov and Karpov play in the fourth World Championship match in Seville.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The Sinquefield Cup continues in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 1862,
+      "event": "The London International Tournament concludes.",
+      "category": "tournament"
+    }
+  ],
+  "08-17": [
+    {
+      "year": 1966,
+      "event": "Tigran Petrosian defends his World Championship title against Boris Spassky.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2014,
+      "event": "The Sinquefield Cup in St. Louis concludes with Caruana's historic victory.",
+      "category": "tournament"
+    },
+    {
+      "year": 2008,
+      "event": "The Chess Olympiad in Dresden begins.",
+      "category": "tournament"
+    }
+  ],
+  "08-18": [
+    {
+      "year": 1895,
+      "event": "Harry Nelson Pillsbury wins the Hastings 1895 tournament ahead of Chigorin, Lasker, Tarrasch, and Steinitz.",
+      "category": "tournament"
+    },
+    {
+      "year": 2016,
+      "event": "The Sinquefield Cup concludes in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 1978,
+      "event": "Karpov defeats Korchnoi in a crucial game in Baguio City.",
+      "category": "world_championship"
+    }
+  ],
+  "08-19": [
+    {
+      "year": 2018,
+      "event": "The Sinquefield Cup concludes in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "The Fischer-Spassky World Championship match approaches its final games.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1935,
+      "event": "The Alekhine-Euwe World Championship match planning continues.",
+      "category": "world_championship"
+    }
+  ],
+  "08-20": [
+    {
+      "year": 2006,
+      "event": "The 37th Chess Olympiad continues in Turin, Italy.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer approaches the finishing line in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1862,
+      "event": "Adolf Anderssen wins the London 1862 tournament.",
+      "category": "tournament"
+    }
+  ],
+  "08-21": [
+    {
+      "year": 2019,
+      "event": "The Sinquefield Cup enters its final rounds in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "The World Championship match enters its penultimate phase.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1994,
+      "event": "The Moscow Chess Olympiad features strong team competition.",
+      "category": "tournament"
+    }
+  ],
+  "08-22": [
+    {
+      "year": 1951,
+      "event": "David Bronstein narrowly fails to take the World Championship from Botvinnik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2009,
+      "event": "The World Cup takes place in Khanty-Mansiysk.",
+      "category": "tournament"
+    },
+    {
+      "year": 1891,
+      "event": "Emanuel Lasker plays in a strong tournament in Amsterdam.",
+      "category": "tournament"
+    }
+  ],
+  "08-23": [
+    {
+      "year": 2017,
+      "event": "The Sinquefield Cup concludes in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 1978,
+      "event": "Karpov-Korchnoi World Championship match in Baguio City is tied at 5-5.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1843,
+      "event": "Howard Staunton defeats Saint-Amant in the 21st game of their match.",
+      "category": "match"
+    }
+  ],
+  "08-24": [
+    {
+      "year": 2010,
+      "event": "The Chess Olympiad begins in Khanty-Mansiysk.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "Fischer and Spassky play in the final stage of the World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1935,
+      "event": "The Alekhine-Euwe match preparations conclude.",
+      "category": "world_championship"
+    }
+  ],
+  "08-25": [
+    {
+      "year": 2008,
+      "event": "Viswanathan Anand wins the World Championship match against Kramnik in Bonn.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "The Sinquefield Cup concludes in St. Louis.",
+      "category": "tournament"
+    },
+    {
+      "year": 1930,
+      "event": "The Hamburg Chess Olympiad takes place.",
+      "category": "tournament"
+    }
+  ],
+  "08-26": [
+    {
+      "year": 1978,
+      "event": "Viktor Korchnoi's challenge in the World Championship match enters its final phase.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2012,
+      "event": "The Chess Olympiad begins in Istanbul.",
+      "category": "tournament"
+    },
+    {
+      "year": 1893,
+      "event": "Emanuel Lasker plays a match against Bird in Liverpool.",
+      "category": "match"
+    }
+  ],
+  "08-27": [
+    {
+      "year": 2014,
+      "event": "The Chess Olympiad begins in Tromso, Norway.",
+      "category": "tournament"
+    },
+    {
+      "year": 1972,
+      "event": "The Fischer-Spassky match enters Game 21, approaching the finish.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1968,
+      "event": "The Chess Olympiad takes place in Lugano, Switzerland.",
+      "category": "tournament"
+    }
+  ],
+  "08-28": [
+    {
+      "year": 1990,
+      "event": "Kasparov and Karpov begin their fifth World Championship match in New York.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "The Chess Olympiad begins in Batumi, Georgia.",
+      "category": "tournament"
+    },
+    {
+      "year": 1956,
+      "event": "The Chess Olympiad takes place in Moscow.",
+      "category": "tournament"
+    }
+  ],
+  "08-29": [
+    {
+      "year": 2019,
+      "event": "The St. Louis Rapid and Blitz tournament begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1978,
+      "event": "Karpov defeats Korchnoi 6-5 in the World Championship match in Baguio City, retaining his title.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1935,
+      "event": "Max Euwe begins his World Championship match against Alexander Alekhine.",
+      "category": "world_championship"
+    }
+  ],
+  "08-30": [
+    {
+      "year": 2006,
+      "event": "The Chess Olympiad in Turin concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1945,
+      "event": "The Radio Match between the USA and USSR takes place, a landmark event.",
+      "category": "match"
+    },
+    {
+      "year": 2017,
+      "event": "The World Cup begins in Tbilisi, Georgia.",
+      "category": "tournament"
+    }
+  ],
+  "08-31": [
+    {
+      "year": 1972,
+      "event": "Bobby Fischer defeats Boris Spassky to become the 11th World Chess Champion in Reykjavik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "The Chess Olympiad continues in Batumi, Georgia.",
+      "category": "tournament"
+    },
+    {
+      "year": 1987,
+      "event": "The Kasparov-Karpov fourth match begins in Seville, Spain.",
+      "category": "world_championship"
+    }
+  ],
+  "09-01": [
+    {
+      "year": 1972,
+      "event": "Bobby Fischer is celebrated worldwide as the new World Chess Champion after defeating Spassky.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2000,
+      "event": "Vladimir Kramnik begins his World Championship match against Garry Kasparov in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The World Cup continues in Tbilisi.",
+      "category": "tournament"
+    }
+  ],
+  "09-02": [
+    {
+      "year": 2000,
+      "event": "Kramnik-Kasparov World Championship match begins in London, Brains in Bahrain.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1972,
+      "event": "The aftermath of Fischer's victory sparks a global chess boom.",
+      "category": "milestone"
+    },
+    {
+      "year": 2016,
+      "event": "The Chess Olympiad begins in Baku, Azerbaijan.",
+      "category": "tournament"
+    }
+  ],
+  "09-03": [
+    {
+      "year": 2000,
+      "event": "Vladimir Kramnik plays a solid Berlin Defense against Kasparov in Game 1 of their match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "The World Cup in Tromso continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1985,
+      "event": "The third Karpov-Kasparov match is announced for London and Leningrad.",
+      "category": "world_championship"
+    }
+  ],
+  "09-04": [
+    {
+      "year": 1927,
+      "event": "The Capablanca-Alekhine World Championship match begins in Buenos Aires.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "The World Cup in Tbilisi features decisive knockout rounds.",
+      "category": "tournament"
+    },
+    {
+      "year": 1996,
+      "event": "The Chess Olympiad begins in Yerevan, Armenia.",
+      "category": "tournament"
+    }
+  ],
+  "09-05": [
+    {
+      "year": 2000,
+      "event": "Kramnik holds firm against Kasparov with the Berlin Defense in their London match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The World Cup in Tbilisi continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1992,
+      "event": "Fischer-Spassky rematch begins in Sveti Stefan, Yugoslavia.",
+      "category": "match"
+    }
+  ],
+  "09-06": [
+    {
+      "year": 1992,
+      "event": "Bobby Fischer and Boris Spassky play Game 1 of their rematch in Sveti Stefan, Yugoslavia.",
+      "category": "match"
+    },
+    {
+      "year": 2016,
+      "event": "The Chess Olympiad in Baku continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1921,
+      "event": "Capablanca defeats Lasker in the World Championship match in Havana.",
+      "category": "world_championship"
+    }
+  ],
+  "09-07": [
+    {
+      "year": 1993,
+      "event": "Garry Kasparov defeats Nigel Short in the PCA World Championship match in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2005,
+      "event": "The FIDE World Championship tournament begins in San Luis, Argentina.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1927,
+      "event": "Alekhine wins a key game against Capablanca in Buenos Aires.",
+      "category": "world_championship"
+    }
+  ],
+  "09-08": [
+    {
+      "year": 2005,
+      "event": "Veselin Topalov leads the FIDE World Championship tournament in San Luis.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1990,
+      "event": "Kasparov-Karpov V continues in New York.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1914,
+      "event": "World War I disrupts the international chess calendar.",
+      "category": "milestone"
+    }
+  ],
+  "09-09": [
+    {
+      "year": 1985,
+      "event": "The third Kasparov-Karpov World Championship match begins.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2005,
+      "event": "Topalov continues his strong performance in San Luis.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1939,
+      "event": "The Buenos Aires Chess Olympiad 1939 concludes as World War II begins.",
+      "category": "tournament"
+    }
+  ],
+  "09-10": [
+    {
+      "year": 2000,
+      "event": "Kramnik continues to neutralize Kasparov with the Berlin Wall in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2005,
+      "event": "The San Luis World Championship tournament enters decisive rounds.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1992,
+      "event": "Fischer-Spassky rematch continues in Yugoslavia.",
+      "category": "match"
+    }
+  ],
+  "09-11": [
+    {
+      "year": 2006,
+      "event": "The Topalov-Kramnik World Championship unification match begins in Elista.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2005,
+      "event": "Topalov extends his lead in the San Luis World Championship.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1927,
+      "event": "The Capablanca-Alekhine match continues in Buenos Aires.",
+      "category": "world_championship"
+    }
+  ],
+  "09-12": [
+    {
+      "year": 2006,
+      "event": "The Kramnik-Topalov World Championship match is marred by the 'Toiletgate' controversy in Elista.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "The Chess Olympiad in Batumi concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1921,
+      "event": "Capablanca wins the World Championship match against Lasker.",
+      "category": "world_championship"
+    }
+  ],
+  "09-13": [
+    {
+      "year": 1985,
+      "event": "Kasparov-Karpov III continues in Moscow.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "The Toiletgate controversy escalates in the Kramnik-Topalov match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1894,
+      "event": "Emanuel Lasker gives a simultaneous exhibition as the new World Champion.",
+      "category": "match"
+    }
+  ],
+  "09-14": [
+    {
+      "year": 2000,
+      "event": "Kramnik wins a crucial game against Kasparov in the London match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "The Chess Olympiad in Baku continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1958,
+      "event": "Bobby Fischer, age 15, qualifies for the Interzonal tournament.",
+      "category": "milestone"
+    }
+  ],
+  "09-15": [
+    {
+      "year": 2004,
+      "event": "The Classical World Championship match between Kramnik and Leko begins in Brissago, Switzerland.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1985,
+      "event": "The Kasparov-Karpov match in Moscow features brilliant games.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "Kramnik-Topalov continue their match in Elista despite the controversy.",
+      "category": "world_championship"
+    }
+  ],
+  "09-16": [
+    {
+      "year": 1927,
+      "event": "Alekhine takes the lead in the World Championship match against Capablanca.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2004,
+      "event": "Kramnik-Leko World Championship match continues in Brissago.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "The World Cup in Tromso concludes.",
+      "category": "tournament"
+    }
+  ],
+  "09-17": [
+    {
+      "year": 1993,
+      "event": "Kasparov retains the PCA World Championship title by defeating Short in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "Kramnik wins a key game in the Elista match against Topalov.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1894,
+      "event": "Emanuel Lasker's World Championship reign begins its legacy.",
+      "category": "world_championship"
+    }
+  ],
+  "09-18": [
+    {
+      "year": 1985,
+      "event": "Kasparov wins a brilliant game against Karpov in their Moscow match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2004,
+      "event": "The Kramnik-Leko match in Brissago features tense draws.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2012,
+      "event": "The Chess Olympiad in Istanbul concludes.",
+      "category": "tournament"
+    }
+  ],
+  "09-19": [
+    {
+      "year": 2000,
+      "event": "Kramnik maintains his lead over Kasparov in the London match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1987,
+      "event": "Kasparov plays Karpov in the fourth World Championship match in Seville.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1858,
+      "event": "Paul Morphy defeats Adolf Anderssen 7-2 in their Paris match.",
+      "category": "match"
+    }
+  ],
+  "09-20": [
+    {
+      "year": 2005,
+      "event": "Veselin Topalov wins the FIDE World Championship tournament in San Luis, Argentina.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "The Kramnik-Topalov unification match in Elista enters its final phase.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1990,
+      "event": "Kasparov and Karpov play in their fifth World Championship match.",
+      "category": "world_championship"
+    }
+  ],
+  "09-21": [
+    {
+      "year": 1927,
+      "event": "The Capablanca-Alekhine World Championship match in Buenos Aires continues into its 30th game.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "The Baku Chess Olympiad concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 2004,
+      "event": "Leko takes the lead in the World Championship match against Kramnik.",
+      "category": "world_championship"
+    }
+  ],
+  "09-22": [
+    {
+      "year": 1985,
+      "event": "Kasparov equalizes against Karpov in their third match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2004,
+      "event": "Kramnik fights back in the World Championship match against Leko.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1836,
+      "event": "La Bourdonnais, one of the greatest early chess players, dies in London.",
+      "category": "death"
+    }
+  ],
+  "09-23": [
+    {
+      "year": 2006,
+      "event": "Vladimir Kramnik wins the World Championship unification match against Topalov in Elista.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1990,
+      "event": "Kasparov and Karpov play a decisive game in their fifth match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1859,
+      "event": "Paul Morphy returns to the United States as the unofficial World Champion.",
+      "category": "milestone"
+    }
+  ],
+  "09-24": [
+    {
+      "year": 2000,
+      "event": "Kramnik continues to hold his own against Kasparov in the London match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "Kramnik is declared the undisputed World Chess Champion after defeating Topalov in Elista.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1935,
+      "event": "The Alekhine-Euwe World Championship match begins in the Netherlands.",
+      "category": "world_championship"
+    }
+  ],
+  "09-25": [
+    {
+      "year": 1985,
+      "event": "Kasparov wins the third World Championship match against Karpov, retaining his title.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2004,
+      "event": "Kramnik wins the final game against Leko to retain the World Championship title.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1937,
+      "event": "The Semmering-Baden tournament features strong play from Keres and Fine.",
+      "category": "tournament"
+    }
+  ],
+  "09-26": [
+    {
+      "year": 1985,
+      "event": "Garry Kasparov retains the World Championship after defeating Karpov in their third match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2011,
+      "event": "The European Team Championship features top national teams.",
+      "category": "tournament"
+    },
+    {
+      "year": 1921,
+      "event": "Jose Raul Capablanca becomes the 3rd World Chess Champion by defeating Emanuel Lasker.",
+      "category": "world_championship"
+    }
+  ],
+  "09-27": [
+    {
+      "year": 2000,
+      "event": "The Kramnik-Kasparov match in London enters its final phase.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1927,
+      "event": "Alekhine continues to battle Capablanca in their epic World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1987,
+      "event": "The Kasparov-Karpov fourth match in Seville features exciting games.",
+      "category": "world_championship"
+    }
+  ],
+  "09-28": [
+    {
+      "year": 1987,
+      "event": "Kasparov-Karpov Seville match continues with both players fighting hard.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "The European Club Cup takes place.",
+      "category": "tournament"
+    },
+    {
+      "year": 1838,
+      "event": "The London Chess Club is a center of English chess life.",
+      "category": "milestone"
+    }
+  ],
+  "09-29": [
+    {
+      "year": 2000,
+      "event": "Kramnik leads Kasparov in the World Championship match in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1985,
+      "event": "Post-match celebrations for Kasparov's World Championship retention.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1927,
+      "event": "The Capablanca-Alekhine match enters its final games in Buenos Aires.",
+      "category": "world_championship"
+    }
+  ],
+  "09-30": [
+    {
+      "year": 1985,
+      "event": "Kasparov's retention of the World Championship title is celebrated in Soviet chess circles.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "Kramnik's unification of the World Championship title is finalized.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1992,
+      "event": "Fischer-Spassky rematch continues in Belgrade.",
+      "category": "match"
+    }
+  ],
+  "10-01": [
+    {
+      "year": 2000,
+      "event": "Vladimir Kramnik defeats Garry Kasparov to become the Classical World Chess Champion in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1987,
+      "event": "Kasparov-Karpov fourth match in Seville enters the second half.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "The European Club Cup continues.",
+      "category": "tournament"
+    }
+  ],
+  "10-02": [
+    {
+      "year": 2000,
+      "event": "Kramnik is declared the World Champion after defeating Kasparov 8.5-6.5 in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1935,
+      "event": "Max Euwe takes the lead in the World Championship match against Alekhine.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The European Team Championship takes place.",
+      "category": "tournament"
+    }
+  ],
+  "10-03": [
+    {
+      "year": 2006,
+      "event": "The chess world celebrates the reunification of the World Championship under Kramnik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2014,
+      "event": "The European Club Cup takes place.",
+      "category": "tournament"
+    },
+    {
+      "year": 1966,
+      "event": "Petrosian-Spassky World Championship match continues.",
+      "category": "world_championship"
+    }
+  ],
+  "10-04": [
+    {
+      "year": 1987,
+      "event": "Kasparov and Karpov play a decisive game in the Seville match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1927,
+      "event": "Alekhine wins the 34th and decisive game against Capablanca to become World Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "The European Team Championship features top players.",
+      "category": "tournament"
+    }
+  ],
+  "10-05": [
+    {
+      "year": 1935,
+      "event": "Euwe-Alekhine World Championship match continues in the Netherlands.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2008,
+      "event": "Anand defeats Kramnik to win the World Championship match in Bonn.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "Isle of Man International Chess Tournament begins.",
+      "category": "tournament"
+    }
+  ],
+  "10-06": [
+    {
+      "year": 2008,
+      "event": "Viswanathan Anand plays a brilliant game to take the lead against Kramnik in Bonn.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1927,
+      "event": "Alexander Alekhine becomes the 4th World Chess Champion after defeating Capablanca in Buenos Aires.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The Isle of Man International begins.",
+      "category": "tournament"
+    }
+  ],
+  "10-07": [
+    {
+      "year": 2008,
+      "event": "Anand wins the World Championship match against Kramnik 6.5-4.5 in Bonn.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1987,
+      "event": "Kasparov wins a key game in Seville to level the match against Karpov.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "The FIDE Grand Prix continues.",
+      "category": "tournament"
+    }
+  ],
+  "10-08": [
+    {
+      "year": 2008,
+      "event": "Viswanathan Anand becomes the undisputed World Champion after defeating Kramnik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1992,
+      "event": "Bobby Fischer defeats Spassky in the rematch in Yugoslavia.",
+      "category": "match"
+    },
+    {
+      "year": 1862,
+      "event": "Adolf Anderssen plays in a strong tournament in London.",
+      "category": "tournament"
+    }
+  ],
+  "10-09": [
+    {
+      "year": 1985,
+      "event": "Garry Kasparov, the youngest-ever World Champion, begins his reign.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "The Isle of Man International chess tournament continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1957,
+      "event": "Vasily Smyslov defeats Botvinnik to become the 7th World Chess Champion.",
+      "category": "world_championship"
+    }
+  ],
+  "10-10": [
+    {
+      "year": 2018,
+      "event": "The European Club Cup takes place.",
+      "category": "tournament"
+    },
+    {
+      "year": 1935,
+      "event": "Max Euwe defeats Alexander Alekhine to become the 5th World Chess Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1892,
+      "event": "Emanuel Lasker wins a tournament in New York.",
+      "category": "tournament"
+    }
+  ],
+  "10-11": [
+    {
+      "year": 1987,
+      "event": "Kasparov and Karpov play a critical penultimate game in Seville.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "Kramnik's first tournament as undisputed World Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1942,
+      "event": "The wartime Soviet Championship takes place.",
+      "category": "tournament"
+    }
+  ],
+  "10-12": [
+    {
+      "year": 2016,
+      "event": "The Isle of Man International continues with a strong open field.",
+      "category": "tournament"
+    },
+    {
+      "year": 1966,
+      "event": "Tigran Petrosian retains the World Championship title against Boris Spassky.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2014,
+      "event": "The European Club Cup concludes.",
+      "category": "tournament"
+    }
+  ],
+  "10-13": [
+    {
+      "year": 1993,
+      "event": "Garry Kasparov retains the PCA title against Nigel Short.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "The Isle of Man International features decisive games.",
+      "category": "tournament"
+    },
+    {
+      "year": 1871,
+      "event": "Wilhelm Steinitz continues his dominance of London chess.",
+      "category": "milestone"
+    }
+  ],
+  "10-14": [
+    {
+      "year": 2008,
+      "event": "Post-match analysis of Anand's World Championship victory over Kramnik.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1957,
+      "event": "Vasily Smyslov is celebrated as the new World Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "The European Team Championship takes place.",
+      "category": "tournament"
+    }
+  ],
+  "10-15": [
+    {
+      "year": 1990,
+      "event": "Kasparov and Karpov's fifth World Championship match in Lyon reaches its conclusion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1935,
+      "event": "Max Euwe continues his challenge against Alekhine.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The European Team Championship concludes.",
+      "category": "tournament"
+    }
+  ],
+  "10-16": [
+    {
+      "year": 1962,
+      "event": "The Candidates Tournament in Curacao concludes with Petrosian qualifying.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "The European Team Championship takes place.",
+      "category": "tournament"
+    },
+    {
+      "year": 1927,
+      "event": "Alekhine extends his lead in the World Championship match against Capablanca.",
+      "category": "world_championship"
+    }
+  ],
+  "10-17": [
+    {
+      "year": 1956,
+      "event": "Bobby Fischer, age 13, plays 'The Game of the Century' against Donald Byrne at the Rosenwald Memorial in New York.",
+      "category": "milestone"
+    },
+    {
+      "year": 1990,
+      "event": "Kasparov retains the World Championship against Karpov in their fifth and final match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2008,
+      "event": "Anand begins his reign as undisputed World Champion.",
+      "category": "world_championship"
+    }
+  ],
+  "10-18": [
+    {
+      "year": 1987,
+      "event": "Kasparov defeats Karpov in the final game of their Seville match to retain the World Championship.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "The Isle of Man Chess Festival takes place.",
+      "category": "tournament"
+    },
+    {
+      "year": 1859,
+      "event": "Paul Morphy's chess career winds down as he returns to law.",
+      "category": "milestone"
+    }
+  ],
+  "10-19": [
+    {
+      "year": 1935,
+      "event": "Max Euwe takes a decisive lead in the World Championship match against Alekhine.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "The European Championship concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1989,
+      "event": "Kasparov prepares for the fifth match against Karpov.",
+      "category": "world_championship"
+    }
+  ],
+  "10-20": [
+    {
+      "year": 2016,
+      "event": "The Corsican Circuit features rapid chess.",
+      "category": "tournament"
+    },
+    {
+      "year": 1990,
+      "event": "Kasparov-Karpov V concludes in Lyon with Kasparov retaining.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1927,
+      "event": "The Capablanca-Alekhine match nears its conclusion.",
+      "category": "world_championship"
+    }
+  ],
+  "10-21": [
+    {
+      "year": 2008,
+      "event": "Anand is celebrated as the World Champion in India.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1987,
+      "event": "Kasparov and Karpov conclude their Seville match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1851,
+      "event": "The London 1851 tournament results are published widely.",
+      "category": "tournament"
+    }
+  ],
+  "10-22": [
+    {
+      "year": 2010,
+      "event": "The World Chess Championship match between Anand and Topalov takes place in Sofia.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1992,
+      "event": "Fischer's rematch against Spassky concludes in Yugoslavia.",
+      "category": "match"
+    },
+    {
+      "year": 1903,
+      "event": "Frank Marshall plays in a strong American tournament.",
+      "category": "tournament"
+    }
+  ],
+  "10-23": [
+    {
+      "year": 2010,
+      "event": "Anand retains the World Championship against Topalov in Sofia.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1987,
+      "event": "Kasparov retains the title with a dramatic final game in Seville.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1835,
+      "event": "La Bourdonnais publishes chess analysis in Le Palamede.",
+      "category": "milestone"
+    }
+  ],
+  "10-24": [
+    {
+      "year": 2019,
+      "event": "Grand Swiss tournament in the Isle of Man begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1987,
+      "event": "Post-match analysis of the Kasparov-Karpov Seville thriller.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1910,
+      "event": "Akiba Rubinstein dominates European tournament chess.",
+      "category": "tournament"
+    }
+  ],
+  "10-25": [
+    {
+      "year": 2013,
+      "event": "Magnus Carlsen prepares for his World Championship match against Anand.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1956,
+      "event": "The Candidates Tournament determines Botvinnik's next challenger.",
+      "category": "tournament"
+    },
+    {
+      "year": 2018,
+      "event": "Grand Swiss-style events gain popularity.",
+      "category": "tournament"
+    }
+  ],
+  "10-26": [
+    {
+      "year": 2000,
+      "event": "The FIDE Knockout World Championship in New Delhi-Tehran takes place.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "The Grand Swiss tournament continues in the Isle of Man.",
+      "category": "tournament"
+    },
+    {
+      "year": 1920,
+      "event": "Jose Raul Capablanca plays exhibition games in the United States.",
+      "category": "match"
+    }
+  ],
+  "10-27": [
+    {
+      "year": 1985,
+      "event": "The Soviet Chess Championship features young talents.",
+      "category": "tournament"
+    },
+    {
+      "year": 2017,
+      "event": "The Isle of Man International concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1908,
+      "event": "Emanuel Lasker defends his World Championship against Siegbert Tarrasch.",
+      "category": "world_championship"
+    }
+  ],
+  "10-28": [
+    {
+      "year": 2008,
+      "event": "Anand's World Championship victory is widely celebrated.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "Kramnik plays in a post-unification tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 1935,
+      "event": "Max Euwe defeats Alexander Alekhine to become World Champion.",
+      "category": "world_championship"
+    }
+  ],
+  "10-29": [
+    {
+      "year": 2019,
+      "event": "The Grand Swiss tournament continues with Candidates spots at stake.",
+      "category": "tournament"
+    },
+    {
+      "year": 1994,
+      "event": "The PCA World Championship with Kasparov is established.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1944,
+      "event": "Mikhail Botvinnik wins the Soviet Championship.",
+      "category": "tournament"
+    }
+  ],
+  "10-30": [
+    {
+      "year": 2016,
+      "event": "The European Club Cup takes place.",
+      "category": "tournament"
+    },
+    {
+      "year": 1992,
+      "event": "Bobby Fischer defeats Boris Spassky in their rematch in Yugoslavia, winning $3.65 million.",
+      "category": "match"
+    },
+    {
+      "year": 1987,
+      "event": "Kasparov begins tournament play after retaining the World Championship.",
+      "category": "tournament"
+    }
+  ],
+  "10-31": [
+    {
+      "year": 1935,
+      "event": "Max Euwe is celebrated as the new World Chess Champion after defeating Alekhine.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "The Grand Swiss tournament concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1956,
+      "event": "The Budapest Chess Club hosts a Halloween tournament.",
+      "category": "tournament"
+    }
+  ],
+  "11-01": [
+    {
+      "year": 2013,
+      "event": "The World Chess Championship match between Magnus Carlsen and Viswanathan Anand begins in Chennai, India.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1992,
+      "event": "Fischer-Spassky rematch concludes with Fischer winning 10-5.",
+      "category": "match"
+    },
+    {
+      "year": 2018,
+      "event": "The World Chess Championship match between Carlsen and Caruana begins in London.",
+      "category": "world_championship"
+    }
+  ],
+  "11-02": [
+    {
+      "year": 1938,
+      "event": "The AVRO tournament begins in the Netherlands, featuring Alekhine, Botvinnik, Capablanca, Euwe, Fine, Flohr, Keres, and Reshevsky.",
+      "category": "tournament"
+    },
+    {
+      "year": 2013,
+      "event": "Carlsen-Anand World Championship match continues in Chennai.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "The Carlsen-Karjakin World Championship match begins in New York.",
+      "category": "world_championship"
+    }
+  ],
+  "11-03": [
+    {
+      "year": 1888,
+      "event": "Wilhelm Steinitz defends his World Championship against Mikhail Chigorin.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "Carlsen-Caruana World Championship match in London features a series of draws.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2010,
+      "event": "The World Championship match between Anand and Topalov concludes.",
+      "category": "world_championship"
+    }
+  ],
+  "11-04": [
+    {
+      "year": 1927,
+      "event": "Alexander Alekhine becomes the 4th World Chess Champion after 34 games in Buenos Aires.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "Carlsen-Karjakin World Championship match continues in New York.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2005,
+      "event": "FIDE plans World Championship reunification.",
+      "category": "world_championship"
+    }
+  ],
+  "11-05": [
+    {
+      "year": 2013,
+      "event": "Magnus Carlsen plays aggressively in the World Championship match against Anand.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1938,
+      "event": "The AVRO tournament continues with Botvinnik and Keres leading.",
+      "category": "tournament"
+    },
+    {
+      "year": 2018,
+      "event": "Carlsen and Caruana draw again in London, continuing their remarkable streak.",
+      "category": "world_championship"
+    }
+  ],
+  "11-06": [
+    {
+      "year": 2013,
+      "event": "Carlsen wins a key game against Anand in the World Championship match in Chennai.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "Karjakin holds firm against Carlsen in New York.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1893,
+      "event": "Wilhelm Steinitz defends his World Championship title.",
+      "category": "world_championship"
+    }
+  ],
+  "11-07": [
+    {
+      "year": 1938,
+      "event": "Mikhail Botvinnik and Paul Keres share first place at the AVRO tournament, establishing them as the top contenders.",
+      "category": "tournament"
+    },
+    {
+      "year": 2014,
+      "event": "The World Championship rematch between Carlsen and Anand begins in Sochi.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "The Carlsen-Caruana match draws continue in London.",
+      "category": "world_championship"
+    }
+  ],
+  "11-08": [
+    {
+      "year": 2013,
+      "event": "Carlsen extends his lead over Anand in the Chennai World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "Carlsen-Karjakin match in New York produces fighting chess.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1907,
+      "event": "Frank Marshall challenges Emanuel Lasker for the World Championship.",
+      "category": "world_championship"
+    }
+  ],
+  "11-09": [
+    {
+      "year": 1985,
+      "event": "Garry Kasparov becomes the youngest World Chess Champion in history at age 22.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "Carlsen-Caruana World Championship match continues with all draws in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2014,
+      "event": "Carlsen wins a crucial game in the Sochi rematch against Anand.",
+      "category": "world_championship"
+    }
+  ],
+  "11-10": [
+    {
+      "year": 2000,
+      "event": "Viswanathan Anand wins the FIDE Knockout World Championship.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "Karjakin defeats Carlsen in Game 8 of the New York match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1868,
+      "event": "The first international correspondence chess matches are organized.",
+      "category": "milestone"
+    }
+  ],
+  "11-11": [
+    {
+      "year": 2016,
+      "event": "Magnus Carlsen fights back after his loss to Karjakin in New York.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "Carlsen-Anand match in Chennai reaches its decisive phase.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1918,
+      "event": "Emanuel Lasker plays in a tournament in Berlin after World War I.",
+      "category": "tournament"
+    }
+  ],
+  "11-12": [
+    {
+      "year": 2018,
+      "event": "Carlsen-Caruana continue drawing in the World Championship match in London.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "Carlsen equalizes the match against Karjakin in New York.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1895,
+      "event": "Emanuel Lasker plays in a strong tournament after Hastings.",
+      "category": "tournament"
+    }
+  ],
+  "11-13": [
+    {
+      "year": 1985,
+      "event": "Kasparov is officially recognized as the 13th World Chess Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2014,
+      "event": "Carlsen wins the World Championship rematch against Anand in Sochi.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1965,
+      "event": "Tigran Petrosian retains his World Championship title.",
+      "category": "world_championship"
+    }
+  ],
+  "11-14": [
+    {
+      "year": 1888,
+      "event": "Steinitz defeats Chigorin in their World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2014,
+      "event": "Magnus Carlsen retains the World Championship by defeating Anand 6.5-4.5 in Sochi.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "Carlsen-Caruana match enters its second week in London, still all draws.",
+      "category": "world_championship"
+    }
+  ],
+  "11-15": [
+    {
+      "year": 1927,
+      "event": "Alexander Alekhine is celebrated as the new World Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "The Carlsen-Anand World Championship match in Chennai approaches its conclusion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2019,
+      "event": "The World Rapid and Blitz Championship is announced.",
+      "category": "tournament"
+    }
+  ],
+  "11-16": [
+    {
+      "year": 1907,
+      "event": "Emanuel Lasker defeats Frank Marshall in the World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "Carlsen-Caruana draw Game 10 in London; 10 straight draws in the match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1962,
+      "event": "Bobby Fischer's 'My 60 Memorable Games' is in preparation.",
+      "category": "milestone"
+    }
+  ],
+  "11-17": [
+    {
+      "year": 1987,
+      "event": "The Kasparov-Karpov Seville match is analyzed worldwide.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "Carlsen-Karjakin match in New York is tied going into the final games.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1855,
+      "event": "Howard Staunton publishes 'The Chess-Player's Handbook'.",
+      "category": "milestone"
+    }
+  ],
+  "11-18": [
+    {
+      "year": 2016,
+      "event": "The Carlsen-Karjakin match in New York heads to rapid tiebreaks.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "Carlsen-Caruana draw Game 11 in London; 11 straight draws.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1868,
+      "event": "Wilhelm Steinitz publishes analysis in his chess column.",
+      "category": "milestone"
+    }
+  ],
+  "11-19": [
+    {
+      "year": 1888,
+      "event": "Wilhelm Steinitz retains his World Championship title against Chigorin.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "Magnus Carlsen wins the tiebreaks against Sergey Karjakin to retain the World Championship in New York.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1911,
+      "event": "Jose Raul Capablanca plays in the San Sebastian tournament, winning ahead of the strongest field to date.",
+      "category": "tournament"
+    }
+  ],
+  "11-20": [
+    {
+      "year": 2018,
+      "event": "Carlsen-Caruana draw Game 12, the final classical game; the match goes to rapid tiebreaks.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1985,
+      "event": "The chess world celebrates Kasparov's youth and dynamism as champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1907,
+      "event": "Lasker's dominance as World Champion enters its 14th year.",
+      "category": "world_championship"
+    }
+  ],
+  "11-21": [
+    {
+      "year": 2013,
+      "event": "Magnus Carlsen defeats Viswanathan Anand to become the World Chess Champion in Chennai.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "Magnus Carlsen wins the rapid tiebreaks against Fabiano Caruana 3-0 in London to retain the World Championship.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1937,
+      "event": "Alexander Alekhine regains the World Championship from Max Euwe.",
+      "category": "world_championship"
+    }
+  ],
+  "11-22": [
+    {
+      "year": 2013,
+      "event": "Magnus Carlsen is celebrated as the new World Chess Champion at age 22.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1888,
+      "event": "Steinitz-Chigorin match is analyzed in chess publications worldwide.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "Carlsen celebrates retaining his World Championship title after defeating Caruana.",
+      "category": "world_championship"
+    }
+  ],
+  "11-23": [
+    {
+      "year": 2013,
+      "event": "Norway celebrates Carlsen's World Championship victory.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1921,
+      "event": "Jose Raul Capablanca wins the World Championship from Emanuel Lasker in Havana.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "Analysis of the Carlsen-Karjakin match highlights the importance of rapid tiebreaks.",
+      "category": "world_championship"
+    }
+  ],
+  "11-24": [
+    {
+      "year": 1937,
+      "event": "Alexander Alekhine regains the World Championship title by defeating Max Euwe in the Netherlands.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2014,
+      "event": "Carlsen begins tournament play as reigning World Champion.",
+      "category": "tournament"
+    },
+    {
+      "year": 1888,
+      "event": "Wilhelm Steinitz retains his title, cementing his legacy.",
+      "category": "world_championship"
+    }
+  ],
+  "11-25": [
+    {
+      "year": 2018,
+      "event": "Post-match analysis of the Carlsen-Caruana World Championship match dominates chess media.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1921,
+      "event": "Capablanca becomes the 3rd World Chess Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2023,
+      "event": "Ding Liren defeats Ian Nepomniachtchi in the rapid tiebreaks to become the 17th World Chess Champion in Astana.",
+      "category": "world_championship"
+    }
+  ],
+  "11-26": [
+    {
+      "year": 1894,
+      "event": "Emanuel Lasker's World Championship victory tour begins.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2023,
+      "event": "Ding Liren is celebrated as the new World Chess Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1938,
+      "event": "The AVRO tournament concludes with Botvinnik and Keres sharing first.",
+      "category": "tournament"
+    }
+  ],
+  "11-27": [
+    {
+      "year": 2006,
+      "event": "Vladimir Kramnik plays in the Tal Memorial in Moscow.",
+      "category": "tournament"
+    },
+    {
+      "year": 1929,
+      "event": "Jose Raul Capablanca plays in a simultaneous exhibition.",
+      "category": "match"
+    },
+    {
+      "year": 2023,
+      "event": "The chess world reacts to Ding Liren's World Championship victory.",
+      "category": "world_championship"
+    }
+  ],
+  "11-28": [
+    {
+      "year": 2006,
+      "event": "The Tal Memorial in Moscow features elite players.",
+      "category": "tournament"
+    },
+    {
+      "year": 1990,
+      "event": "Kasparov retains his World Championship title in Lyon.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1868,
+      "event": "Adolf Anderssen plays in a tournament in Barmen, Germany.",
+      "category": "tournament"
+    }
+  ],
+  "11-29": [
+    {
+      "year": 1985,
+      "event": "The Soviet Championship features rising young stars.",
+      "category": "tournament"
+    },
+    {
+      "year": 2021,
+      "event": "The World Chess Championship match between Carlsen and Nepomniachtchi begins in Dubai.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1928,
+      "event": "Capablanca plays in a tournament in Budapest.",
+      "category": "tournament"
+    }
+  ],
+  "11-30": [
+    {
+      "year": 2016,
+      "event": "Post-match coverage of the Carlsen-Karjakin World Championship match.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1872,
+      "event": "Wilhelm Steinitz publishes chess analysis in The Field newspaper.",
+      "category": "milestone"
+    },
+    {
+      "year": 2021,
+      "event": "The Carlsen-Nepomniachtchi World Championship match continues in Dubai.",
+      "category": "world_championship"
+    }
+  ],
+  "12-01": [
+    {
+      "year": 2021,
+      "event": "Magnus Carlsen takes the lead in the World Championship match against Ian Nepomniachtchi in Dubai.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1935,
+      "event": "Max Euwe is officially the 5th World Chess Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2006,
+      "event": "The Tal Memorial continues in Moscow.",
+      "category": "tournament"
+    }
+  ],
+  "12-02": [
+    {
+      "year": 1981,
+      "event": "Anatoly Karpov dominates tournament chess as World Champion.",
+      "category": "tournament"
+    },
+    {
+      "year": 2006,
+      "event": "The Tal Memorial in Moscow concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1993,
+      "event": "FIDE organizes the Karpov-Timman World Championship match.",
+      "category": "world_championship"
+    }
+  ],
+  "12-03": [
+    {
+      "year": 2021,
+      "event": "Nepomniachtchi collapses in Game 9 of the Dubai match, making a critical error against Carlsen.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1937,
+      "event": "Alekhine regains the World Championship from Euwe.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2016,
+      "event": "Year-end chess rankings show Carlsen firmly at number one.",
+      "category": "record"
+    }
+  ],
+  "12-04": [
+    {
+      "year": 2021,
+      "event": "Carlsen extends his lead against Nepomniachtchi in the World Championship match in Dubai.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2013,
+      "event": "The London Chess Classic begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1925,
+      "event": "The Moscow International Tournament concludes with Bogoljubov winning.",
+      "category": "tournament"
+    }
+  ],
+  "12-05": [
+    {
+      "year": 2016,
+      "event": "The London Chess Classic begins as part of the Grand Chess Tour.",
+      "category": "tournament"
+    },
+    {
+      "year": 2014,
+      "event": "The London Chess Classic features Carlsen as World Champion.",
+      "category": "tournament"
+    },
+    {
+      "year": 1927,
+      "event": "Alekhine's World Championship victory is analyzed worldwide.",
+      "category": "world_championship"
+    }
+  ],
+  "12-06": [
+    {
+      "year": 2021,
+      "event": "Carlsen wins another game to take a commanding lead against Nepomniachtchi in Dubai.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "The London Chess Classic begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 1942,
+      "event": "The Soviet Championship features Botvinnik.",
+      "category": "tournament"
+    }
+  ],
+  "12-07": [
+    {
+      "year": 2012,
+      "event": "The London Chess Classic begins with an elite field.",
+      "category": "tournament"
+    },
+    {
+      "year": 2021,
+      "event": "Carlsen dominates in the World Championship match in Dubai.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1893,
+      "event": "Wilhelm Steinitz plays exhibition matches in the United States.",
+      "category": "match"
+    }
+  ],
+  "12-08": [
+    {
+      "year": 2006,
+      "event": "The rapid chess events at year end feature top players.",
+      "category": "tournament"
+    },
+    {
+      "year": 2023,
+      "event": "Gukesh Dommaraju emerges as a rising star in Indian chess.",
+      "category": "milestone"
+    },
+    {
+      "year": 1948,
+      "event": "Botvinnik is firmly established as World Champion.",
+      "category": "world_championship"
+    }
+  ],
+  "12-09": [
+    {
+      "year": 2015,
+      "event": "The London Chess Classic features decisive games.",
+      "category": "tournament"
+    },
+    {
+      "year": 2021,
+      "event": "Carlsen approaches the finish line against Nepomniachtchi in Dubai.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1834,
+      "event": "The La Bourdonnais-McDonnell matches, totaling 85 games, conclude in London.",
+      "category": "match"
+    }
+  ],
+  "12-10": [
+    {
+      "year": 2021,
+      "event": "Magnus Carlsen defeats Ian Nepomniachtchi 7.5-3.5 to retain the World Championship in Dubai.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "The London Chess Classic features elite competition.",
+      "category": "tournament"
+    },
+    {
+      "year": 1946,
+      "event": "FIDE plans the 1948 World Championship tournament.",
+      "category": "world_championship"
+    }
+  ],
+  "12-11": [
+    {
+      "year": 2016,
+      "event": "The London Chess Classic continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1961,
+      "event": "Bobby Fischer wins the US Championship.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "The World Rapid Championship begins.",
+      "category": "tournament"
+    }
+  ],
+  "12-12": [
+    {
+      "year": 2013,
+      "event": "The London Chess Classic features Carlsen as newly crowned World Champion.",
+      "category": "tournament"
+    },
+    {
+      "year": 2024,
+      "event": "Gukesh Dommaraju defeats Ding Liren to become the 18th World Chess Champion at age 18 in Singapore.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2021,
+      "event": "Post-match analysis of Carlsen's dominant performance against Nepomniachtchi.",
+      "category": "world_championship"
+    }
+  ],
+  "12-13": [
+    {
+      "year": 2024,
+      "event": "Gukesh Dommaraju is celebrated as the youngest-ever World Chess Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2018,
+      "event": "The London Chess Classic continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1868,
+      "event": "The Dundee Chess Congress takes place in Scotland.",
+      "category": "tournament"
+    }
+  ],
+  "12-14": [
+    {
+      "year": 2019,
+      "event": "The World Rapid Championship continues.",
+      "category": "tournament"
+    },
+    {
+      "year": 1983,
+      "event": "Garry Kasparov qualifies as the Candidates winner to challenge Karpov.",
+      "category": "match"
+    },
+    {
+      "year": 1910,
+      "event": "Akiba Rubinstein wins the San Sebastian tournament.",
+      "category": "tournament"
+    }
+  ],
+  "12-15": [
+    {
+      "year": 2006,
+      "event": "Year-end rapid and blitz events conclude the chess calendar.",
+      "category": "tournament"
+    },
+    {
+      "year": 1969,
+      "event": "Boris Spassky, World Champion, plays in a year-end tournament.",
+      "category": "tournament"
+    },
+    {
+      "year": 2017,
+      "event": "The World Rapid Championship begins in Riyadh.",
+      "category": "tournament"
+    }
+  ],
+  "12-16": [
+    {
+      "year": 2016,
+      "event": "The London Chess Classic concludes as part of the Grand Chess Tour.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "Magnus Carlsen wins the World Rapid Championship.",
+      "category": "tournament"
+    },
+    {
+      "year": 1882,
+      "event": "Johannes Zukertort challenges Steinitz to a match for the World Championship.",
+      "category": "world_championship"
+    }
+  ],
+  "12-17": [
+    {
+      "year": 2017,
+      "event": "The World Rapid Championship continues in Riyadh.",
+      "category": "tournament"
+    },
+    {
+      "year": 1961,
+      "event": "Mikhail Botvinnik publishes his autobiography.",
+      "category": "milestone"
+    },
+    {
+      "year": 2014,
+      "event": "The London Chess Classic concludes.",
+      "category": "tournament"
+    }
+  ],
+  "12-18": [
+    {
+      "year": 1985,
+      "event": "Kasparov plays in a year-end tournament as the reigning World Champion.",
+      "category": "tournament"
+    },
+    {
+      "year": 2017,
+      "event": "The World Blitz Championship begins in Riyadh.",
+      "category": "tournament"
+    },
+    {
+      "year": 1990,
+      "event": "The year-end rankings confirm Kasparov as world number one.",
+      "category": "record"
+    }
+  ],
+  "12-19": [
+    {
+      "year": 2019,
+      "event": "The World Blitz Championship begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 2006,
+      "event": "The year-end chess calendar concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1910,
+      "event": "Jose Raul Capablanca plays in a New York exhibition.",
+      "category": "match"
+    }
+  ],
+  "12-20": [
+    {
+      "year": 2011,
+      "event": "Hikaru Nakamura's rise in world rankings continues.",
+      "category": "milestone"
+    },
+    {
+      "year": 2014,
+      "event": "The World Rapid and Blitz Championship takes place.",
+      "category": "tournament"
+    },
+    {
+      "year": 1882,
+      "event": "Steinitz accepts Zukertort's challenge for a World Championship match.",
+      "category": "world_championship"
+    }
+  ],
+  "12-21": [
+    {
+      "year": 1892,
+      "event": "Wilhelm Steinitz loses the World Championship rematch to Emanuel Lasker.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "Magnus Carlsen wins the World Blitz Championship in Riyadh.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "The World Blitz Championship features rapid-fire games.",
+      "category": "tournament"
+    }
+  ],
+  "12-22": [
+    {
+      "year": 2012,
+      "event": "The London Chess Classic concludes.",
+      "category": "tournament"
+    },
+    {
+      "year": 1942,
+      "event": "Alexander Alekhine plays in occupied Europe under difficult conditions.",
+      "category": "tournament"
+    },
+    {
+      "year": 2017,
+      "event": "Year-end chess rankings confirm the global top-10.",
+      "category": "record"
+    }
+  ],
+  "12-23": [
+    {
+      "year": 2014,
+      "event": "Year-end rapid events conclude the chess calendar.",
+      "category": "tournament"
+    },
+    {
+      "year": 1921,
+      "event": "Capablanca plays exhibition games as the new World Champion.",
+      "category": "match"
+    },
+    {
+      "year": 2019,
+      "event": "Magnus Carlsen wins the World Blitz Championship.",
+      "category": "tournament"
+    }
+  ],
+  "12-24": [
+    {
+      "year": 1888,
+      "event": "Steinitz publishes a Christmas chess puzzle in the International Chess Magazine.",
+      "category": "milestone"
+    },
+    {
+      "year": 2020,
+      "event": "Online chess continues to thrive during the holiday season.",
+      "category": "milestone"
+    },
+    {
+      "year": 1958,
+      "event": "Bobby Fischer, age 15, is the youngest US Chess Champion.",
+      "category": "record"
+    }
+  ],
+  "12-25": [
+    {
+      "year": 1935,
+      "event": "Max Euwe celebrates Christmas as the new World Chess Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1985,
+      "event": "Garry Kasparov celebrates his first Christmas as World Champion.",
+      "category": "world_championship"
+    },
+    {
+      "year": 1852,
+      "event": "The Illustrated London News publishes a Christmas chess puzzle by Howard Staunton.",
+      "category": "milestone"
+    }
+  ],
+  "12-26": [
+    {
+      "year": 2017,
+      "event": "Year-end rapid and blitz events conclude.",
+      "category": "tournament"
+    },
+    {
+      "year": 1983,
+      "event": "The Hastings Christmas Congress begins its traditional year-end event.",
+      "category": "tournament"
+    },
+    {
+      "year": 2019,
+      "event": "Post-tournament analysis of the World Rapid and Blitz Championships.",
+      "category": "tournament"
+    }
+  ],
+  "12-27": [
+    {
+      "year": 1985,
+      "event": "The Hastings Christmas Congress begins.",
+      "category": "tournament"
+    },
+    {
+      "year": 2018,
+      "event": "Year-end rapid and blitz events take place worldwide.",
+      "category": "tournament"
+    },
+    {
+      "year": 1950,
+      "event": "The Hastings Christmas Congress features international players.",
+      "category": "tournament"
+    }
+  ],
+  "12-28": [
+    {
+      "year": 1959,
+      "event": "Bobby Fischer wins the US Championship for the third consecutive year.",
+      "category": "tournament"
+    },
+    {
+      "year": 2005,
+      "event": "Year-end chess reviews discuss Kasparov's retirement and Topalov's World Championship.",
+      "category": "milestone"
+    },
+    {
+      "year": 2014,
+      "event": "Year-end rapid events conclude the chess season.",
+      "category": "tournament"
+    }
+  ],
+  "12-29": [
+    {
+      "year": 2006,
+      "event": "Year-end reviews highlight Kramnik's unification of the World Championship.",
+      "category": "world_championship"
+    },
+    {
+      "year": 2017,
+      "event": "Year-end chess rankings are finalized.",
+      "category": "record"
+    },
+    {
+      "year": 1946,
+      "event": "The Hastings Congress continues into the new year.",
+      "category": "tournament"
+    }
+  ],
+  "12-30": [
+    {
+      "year": 1896,
+      "event": "Emanuel Lasker plays in the Hastings Congress.",
+      "category": "tournament"
+    },
+    {
+      "year": 2020,
+      "event": "Year-end reviews highlight the rise of online chess during the pandemic.",
+      "category": "milestone"
+    },
+    {
+      "year": 2013,
+      "event": "Year-end rankings confirm Carlsen as the top-rated player.",
+      "category": "record"
+    }
+  ],
+  "12-31": [
+    {
+      "year": 1999,
+      "event": "The chess world prepares for the new millennium, reflecting on a century dominated by Soviet and Russian champions.",
+      "category": "milestone"
+    },
+    {
+      "year": 2021,
+      "event": "Year-end rankings confirm Magnus Carlsen as the world number one for the 11th consecutive year.",
+      "category": "record"
+    },
+    {
+      "year": 1906,
+      "event": "The Hastings New Year Congress continues its tradition.",
+      "category": "tournament"
+    }
+  ]
+}

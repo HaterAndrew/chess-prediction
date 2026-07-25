@@ -798,10 +798,21 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
     # Far-future metadata (registration not meaningfully open yet) — skip.
     if days_remaining > 300:
         continue
-    # Pick up live entry count from scrape data if available
+    # Pick up live entry count from scrape data if available.
+    #
+    # Gross, not net. H13 settled on one published count semantic — the gross
+    # row count — so the cards, the performance tab, the freshness guard and
+    # 04e's grading all quote the same number. This path was missed when that
+    # was applied and kept reading net, so two cards (Central California Open
+    # 25 vs 27, Southern Open 200 vs 206) published a different semantic from
+    # every other card on the page. Nothing surfaced it until data_health's
+    # stale-count rule was corrected to compare gross against gross.
+    #
+    # The withdrawal figures stay available below as their own fields; they are
+    # a separate fact, not a competing version of this one.
     scrape_info = _scrape_lookup.get(mfamily, {})
-    current_count = scrape_info.get('net', 0)
-    gross_count = scrape_info.get('gross', current_count)
+    gross_count = scrape_info.get('gross', 0) or scrape_info.get('net', 0)
+    current_count = gross_count
     withdrawal_count = scrape_info.get('wd', 0)
     # Historical data. Canonicalize first so a relocated edition ("... (in
     # Connecticut)") and CCA name variants ("World Open Under 13 Championship")

@@ -3271,6 +3271,57 @@ function renderChart(t) {
     }
   };
 
+  // Projection endpoint: gold dot + "approx N" label at (event day, predicted
+  // final). Desktop + live only; mobile keeps the hero number as the source.
+  const endpointLabelPlugin = {
+    id: 'endpointLabel',
+    afterDraw(c) {
+      if (isDone(t) || !t.point_estimate || !t.event_start || _mobileVP()) return;
+      const xS = c.scales.x, yS = c.scales.y;
+      const px = xS.getPixelForValue(new Date(t.event_start + 'T00:00:00').getTime());
+      const py = yS.getPixelForValue(t.point_estimate);
+      if (px < xS.left || px > xS.right || py < yS.top || py > yS.bottom) return;
+      const g = c.ctx;
+      g.save();
+      // dot, visual twin of the year-final markers
+      g.beginPath();
+      g.arc(px, py, 4, 0, Math.PI * 2);
+      g.fillStyle = PALETTE.gold;
+      g.fill();
+      g.lineWidth = 1.5;
+      g.strokeStyle = PALETTE.text;
+      g.stroke();
+      // label with a surface halo; right of the dot, flip left at the edge
+      const txt = '\u2248 ' + fmt(t.point_estimate);
+      g.font = 'bold 11px ' + getComputedStyle(document.body).fontFamily;
+      const tw = g.measureText(txt).width;
+      const padX = 5, boxH = 18, gap = 8;
+      let bx = px + gap;
+      if (bx + tw + padX * 2 > xS.right) bx = px - gap - tw - padX * 2;
+      let by = py - boxH / 2;
+      // dodge the year-final dot cluster (same x pixel) if one lands in the box
+      const finalYs = [];
+      c.data.datasets.forEach(ds => {
+        if (/ final$/.test(ds.label || '') && ds.data[0]) {
+          finalYs.push(yS.getPixelForValue(ds.data[0].y));
+        }
+      });
+      if (finalYs.some(fy => fy > by - 4 && fy < by + boxH + 4)) {
+        const below = finalYs.every(fy => fy < py);
+        by = below ? by + 12 : by - 12;
+      }
+      g.fillStyle = themeRgba(PALETTE.surface, 0.85);
+      g.beginPath();
+      g.roundRect(bx, by, tw + padX * 2, boxH, 4);
+      g.fill();
+      g.fillStyle = PALETTE.gold;
+      g.textAlign = 'left';
+      g.textBaseline = 'middle';
+      g.fillText(txt, bx + padX, by + boxH / 2 + 0.5);
+      g.restore();
+    }
+  };
+
   // Custom interaction mode: find nearest point by x-pixel in EACH dataset
   // independently, so datasets with different date ranges align correctly.
   // Only includes a dataset if the hovered x falls within its data range
@@ -3331,7 +3382,7 @@ function renderChart(t) {
   chart = new Chart(ctx, {
     type: 'line',
     data: { datasets },
-    plugins: [vertLinePlugin, crosshairPlugin],
+    plugins: [vertLinePlugin, crosshairPlugin, endpointLabelPlugin],
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'xAligned', intersect: false },

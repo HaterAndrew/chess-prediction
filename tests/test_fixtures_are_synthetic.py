@@ -14,19 +14,33 @@ general — that is not decidable. It pins the specific identities that were
 removed, so a revert or a fresh export dropped in from production fails loudly
 rather than silently republishing personal data.
 """
+import hashlib
 import pathlib
+import re
 
 import pytest
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 
-# Surnames, given names and places that were in the fixtures before the v3 S2
-# scrub. Any reappearance means real export data came back.
-REMOVED_IDENTIFIERS = [
-    "Brightwater", "Quillon", "Orlando", "Pemberly", "Sunderholm", "Jonquil",
-    "Marbleton", "Marigold", "Dennison", "Kingsley", "Rosalind", "Torrance", "Delphine",
-    "Zephyr", "Merrick",
-]
+# Names that were in the fixtures before the v3 S2 scrub, stored as truncated
+# SHA-256 of the lowercased identifier rather than as plain text.
+#
+# Writing them out would defeat the point: this file is published, so a literal
+# denylist would reintroduce the very names the scrub removed — and it did, until
+# a history-scan dry run flagged this file as still containing them. Hashing
+# keeps the guard working (any candidate token can be hashed and compared)
+# without the file itself carrying the identities.
+REMOVED_IDENTIFIER_HASHES = {
+    "8a645d41bfae3cb0", "c300128cd0860e53", "2067566da8e51eb6",
+    "7635b5ca83cb5b57", "87041b0689ff5f78", "25aec50e387eb2b3",
+    "01cb5c9a4afa48fb", "1310262bb01b48c1", "310fbf88a1c79559",
+    "0a6134bd3bff9e04", "e688f6ce6c075e41", "4e487e031e62796e",
+    "a079a18a4e4105b2", "5a15ff1a545c3933", "d9becfca41ed8d07",
+}
+
+
+def _token_hash(token):
+    return hashlib.sha256(token.lower().encode("utf-8")).hexdigest()[:16]
 
 # Files that are published and must stay synthetic.
 SCANNED = [
@@ -45,10 +59,12 @@ def test_no_removed_identifiers_reappear(rel):
     if not path.exists():
         pytest.skip(f"{rel} not present")
     text = path.read_text(encoding="utf-8")
-    lowered = text.lower()
-    found = [n for n in REMOVED_IDENTIFIERS if n.lower() in lowered]
+    # Hash every word-ish token and compare against the denylist, so the check
+    # works without this file naming anyone.
+    tokens = {t for t in re.findall(r"[A-Za-z][A-Za-z'\-]{2,}", text)}
+    found = sorted(t for t in tokens if _token_hash(t) in REMOVED_IDENTIFIER_HASHES)
     assert not found, (
-        f"{rel} contains identifiers removed by the v3 S2 scrub: {found}. "
+        f"{rel} contains {len(found)} identifier(s) removed by the v3 S2 scrub. "
         "If a real admin export was copied in, replace it with synthetic data.")
 
 

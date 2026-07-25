@@ -550,8 +550,22 @@ class N5v4_Final:
     - CI widening for low-history families (0 or 1 prior editions)
     """
     name = "N5v4_Final"
-    # T-dependent ensemble weights (ratio model):
-    # T <= 3: 0.80, T <= 7: 0.55, T <= 28: 0.30, T > 28: 0.15
+
+    # Weight given to the ratio model when blending it with the pooled
+    # regression, by lead-time bucket: (bucket upper bound in days, weight).
+    # None means "everything above the previous bound". The ratio model is more
+    # accurate at short T, where the ratio converges toward 1:1, so it carries
+    # most of the weight there and cedes to the regression at long T.
+    #
+    # v3 T9 (audit/AUDIT_2026-07-25.md): these four numbers were hand-picked and
+    # never fitted. scripts/fit_ensemble_weights.py searches them against
+    # held-out folds and they survived it — each one sits on the pooled optimum
+    # or one grid step away, on a curve that is flat nearby, and weights fitted
+    # by nested CV were 0.13 MAE points WORSE out of sample than these. Do not
+    # change them without re-running that script; the full result is in its
+    # docstring.
+    ENSEMBLE_WEIGHTS = ((3, 0.80), (7, 0.55), (28, 0.30), (None, 0.15))
+
     # (v3 T6: CI_ENSEMBLE_SHRINK = 0.32 used to sit here with zero readers — the
     # actual shrinkage is the T-dependent table in fit(). Removed rather than
     # left to imply a knob that does nothing.)
@@ -569,6 +583,18 @@ class N5v4_Final:
         self.ci_scale = {}
         self.reg_params = {}  # family -> [slope_count, slope_T, intercept]
         self.family_n_editions = {}  # family -> count of training editions
+
+    def _ensemble_weight(self, days_remaining):
+        """Ratio-model weight for this lead time.
+
+        Reads the instance attribute when one is set so the weight-fitting
+        script can try candidate tables without touching the class default.
+        """
+        table = getattr(self, 'ensemble_weights', None) or self.ENSEMBLE_WEIGHTS
+        for bound, weight in table:
+            if bound is None or days_remaining <= bound:
+                return weight
+        return table[-1][1]
 
     # Stages of predict_nowcast that can be switched off individually, for the
     # ablation harness (v3 T8, audit/AUDIT_2026-07-25.md). predict_nowcast is a
@@ -1305,16 +1331,7 @@ class N5v4_Final:
             coeffs = fam_reg  # [slope_count, slope_T, intercept]
             reg_pred = coeffs[0] * current_count + coeffs[1] * days_remaining + coeffs[2]
             reg_pred = max(reg_pred, current_count)
-            # T-dependent ensemble weights: ratio model is more accurate at
-            # short lead times (near 1:1 ratio), regression helps more at long T
-            if days_remaining <= 3:
-                w = 0.80  # ratio nearly 1:1 at very short T, trust it heavily
-            elif days_remaining <= 7:
-                w = 0.55  # more ratio weight at short T
-            elif days_remaining <= 28:
-                w = 0.30
-            else:
-                w = 0.15  # more regression weight at long T
+            w = self._ensemble_weight(days_remaining)
             ratio_point = point
             point = w * point + (1 - w) * reg_pred
             # At long T the ratio model has high variance, so a large divergence

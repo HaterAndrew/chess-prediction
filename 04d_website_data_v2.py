@@ -931,7 +931,7 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
     # multiplied into an absurd projection (a 1-registrant event 170 days out
     # has no usable pace). Otherwise lean on the historical average — still
     # flagged low-confidence below.
-    pace_usable = current_count >= 10 and days_to_start <= 45
+    pace_usable = current_count >= 10 and days_to_start <= 90
     if hist_counts and pace_usable and status_label == "live":
         # Resolve the name the ratio model trained under (summary uses
         # 01_data_prep's canonical form, which can differ from the FAMILY_GROUPS

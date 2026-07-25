@@ -264,7 +264,7 @@ function buildHeroNarrative(t) {
     if (pct >= 5) { verdict = `${Math.abs(pct)}% above`; cls = 'pos'; }
     else if (pct <= -5) { verdict = `${Math.abs(pct)}% below`; cls = 'neg'; }
     else { verdict = 'in line with'; cls = 'flat'; }
-    return `<p><strong>${fmt(t.current_count)}</strong> entries — <span class="hn-verdict hn-${cls}">${verdict}</span> the ${t.historical.length}-year average of ${fmt(avg)}.</p>`;
+    return `<p><strong>${fmt(t.current_count)}</strong> entries: <span class="hn-verdict hn-${cls}">${verdict}</span> the ${t.historical.length}-year average of ${fmt(avg)}.</p>`;
   }
 
   // Live state — combine pace verdict + countdown + next milestone.
@@ -280,7 +280,7 @@ function buildHeroNarrative(t) {
       : pa.status === 'above_pace'
         ? 'tracking ahead of pace'
         : 'tracking behind pace';
-    parts.push(`<strong>${fmt(t.current_count)}</strong> of a predicted <strong>${fmt(t.point_estimate)}</strong> — <span class="hn-verdict hn-${cls}">${phrase} (${devText} vs prior years at the same days-to-event mark)</span>.`);
+    parts.push(`<strong>${fmt(t.current_count)}</strong> of a predicted <strong>${fmt(t.point_estimate)}</strong>: <span class="hn-verdict hn-${cls}">${phrase} (${devText} vs prior years at the same days-to-event mark)</span>.`);
   } else {
     // No pace_alert (typically: not enough historical daily data).
     parts.push(`<strong>${fmt(t.current_count)}</strong> registered so far of a predicted <strong>${fmt(t.point_estimate)}</strong>.`);
@@ -766,10 +766,10 @@ function emailComputeHighlights(selected) {
 function emailHighlightBullets(h) {
   const lines = [];
   if (h.biggestUp && h.biggestUp.pct > 0.05) {
-    lines.push(`${h.biggestUp.t.family} is the biggest mover — projecting +${Math.round(h.biggestUp.pct * 100)}% vs last year.`);
+    lines.push(`${h.biggestUp.t.family} is the biggest mover, projecting +${Math.round(h.biggestUp.pct * 100)}% vs last year.`);
   }
   if (h.biggestDown && h.biggestDown.pct < -0.05 && (!h.biggestUp || h.biggestDown.t.family !== h.biggestUp.t.family)) {
-    lines.push(`${h.biggestDown.t.family} is tracking lowest — projecting ${Math.round(h.biggestDown.pct * 100)}% vs last year.`);
+    lines.push(`${h.biggestDown.t.family} is tracking lowest, projecting ${Math.round(h.biggestDown.pct * 100)}% vs last year.`);
   }
   if (h.fastestPace) {
     lines.push(`${h.fastestPace.t.family} is running ${h.fastestPace.pct > 0 ? '+' : ''}${h.fastestPace.pct}% vs historical pace.`);
@@ -785,9 +785,9 @@ function emailHighlightBullets(h) {
 function emailAutoSubject(selected) {
   const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   const n = selected.length;
-  if (n === 0) return `CCA Entries Update — ${today}`;
-  if (n === 1) return `CCA Entries Update — ${selected[0].family} (${today})`;
-  return `CCA Entries Update — ${n} events (${today})`;
+  if (n === 0) return `CCA Entries Update: ${today}`;
+  if (n === 1) return `CCA Entries Update: ${selected[0].family} (${today})`;
+  return `CCA Entries Update: ${n} events (${today})`;
 }
 
 // ── HTML email formatter (email-client-safe: tables + inline styles, no flex/grid) ──
@@ -1011,8 +1011,8 @@ function initPerformanceTab() {
     years.forEach(y => buttons.push({key: String(y), label: y === nowYear ? `${y} YTD` : String(y)}));
     if (hasCumulative) buttons.push({key: 'cumulative', label: 'Cumulative'});
 
-    selector.innerHTML = '<span style="font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px">View:</span>' +
-      buttons.map(b => `<button data-act="perf-year" data-year="${b.key}" id="perfYearBtn_${b.key}" style="padding:6px 14px;border-radius:8px;font-size:.76rem;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;transition:all .15s">${b.label}</button>`).join('');
+    selector.innerHTML = '<span class="perf-view-label">View:</span>' +
+      buttons.map(b => `<button data-act="perf-year" data-year="${b.key}" id="perfYearBtn_${b.key}" class="perf-year-btn">${b.label}</button>`).join('');
 
     const defaultKey = years.includes(nowYear) ? String(nowYear) : (years.length ? String(years[years.length - 1]) : 'cumulative');
     perfSelectYear(defaultKey);
@@ -1025,10 +1025,7 @@ function initPerformanceTab() {
 function perfSelectYear(key) {
   perfSelectedKey = key;
   document.querySelectorAll('[id^="perfYearBtn_"]').forEach(btn => {
-    const isActive = btn.id === 'perfYearBtn_' + key;
-    btn.style.background = isActive ? 'var(--gold)' : 'var(--surface2)';
-    btn.style.color = isActive ? '#0d1117' : 'var(--text)';
-    btn.style.borderColor = isActive ? 'var(--gold)' : 'var(--border)';
+    btn.classList.toggle('active', btn.id === 'perfYearBtn_' + key);
   });
   perfRender();
 }
@@ -1536,7 +1533,7 @@ function puzzleSolved() {
 function puzzleFailed() {
   const ps = puzzleState;
   ps.solved[ps.currentIdx] = 'failed';
-  puzzleStatus('&#10007; Incorrect — try again or click Retry', 'var(--red)');
+  puzzleStatus('&#10007; Incorrect. Try again or click Retry', 'var(--red)');
   renderPuzzleProgress();
   document.getElementById('puzzleRetry').style.display = '';
   // Round 32: tactile error — single longer buzz.
@@ -2252,21 +2249,21 @@ function renderDelta(t) {
       if (diff > 5) {
         banner.className = 'delta-banner green';
         icon.innerHTML = '&#9650;';
-        main.textContent = `${t.family} ${t.year} — Above Average`;
+        main.textContent = `${t.family} ${t.year}: Above Average`;
         sub.textContent = `${fmt(t.current_count)} entries · ${absDiff}% above historical average of ${fmt(Math.round(avg))}`;
         val.textContent = `+${absDiff}%`;
         val.className = 'delta-value green';
       } else if (diff < -5) {
         banner.className = 'delta-banner red';
         icon.innerHTML = '&#9660;';
-        main.textContent = `${t.family} ${t.year} — Below Average`;
+        main.textContent = `${t.family} ${t.year}: Below Average`;
         sub.textContent = `${fmt(t.current_count)} entries · ${absDiff}% below historical average of ${fmt(Math.round(avg))}`;
         val.textContent = `-${absDiff}%`;
         val.className = 'delta-value red';
       } else {
         banner.className = 'delta-banner gold';
         icon.innerHTML = '&#9654;';
-        main.textContent = `${t.family} ${t.year} — On Par`;
+        main.textContent = `${t.family} ${t.year}: On Par`;
         sub.textContent = `${fmt(t.current_count)} entries · In line with historical average of ${fmt(Math.round(avg))}`;
         val.textContent = `${diff >= 0 ? '+' : ''}${diff.toFixed(1)}%`;
         val.className = 'delta-value gold';
@@ -2274,7 +2271,7 @@ function renderDelta(t) {
     } else {
       banner.className = 'delta-banner muted';
       icon.innerHTML = '&#10003;';
-      main.textContent = `${t.family} ${t.year} — Complete`;
+      main.textContent = `${t.family} ${t.year}: Complete`;
       sub.textContent = `Final count: ${fmt(t.current_count)} entries`;
       val.textContent = '';
       val.className = 'delta-value';
@@ -2346,7 +2343,7 @@ function renderDelta(t) {
   // Fallback — no historical comparison available
   banner.className = 'delta-banner gold';
   icon.innerHTML = '&#9654;';
-  main.textContent = `${t.family} — Registration in progress`;
+  main.textContent = `${t.family}: Registration in progress`;
   const _evStarted = t.event_start &&
     new Date(t.event_start + 'T00:00:00') <= new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
   const _countdown = _evStarted
@@ -2386,7 +2383,7 @@ function _calibrationTooltip() {
   if (meanBias == null || nEvents == null) return fallback;
   const dir = meanBias > 0 ? 'over-predicting' : 'under-predicting';
   const absBias = Math.abs(meanBias).toFixed(1);
-  return `Ensemble of pace-ratio extrapolation + family regression. At T > 7 the regression dominates so early ahead-of-pace leads are discounted. ${yr} backtest (${nEvents} events, asof ${asof}) shows the model has been ${dir} by ${absBias}% on avg — kept conservative on purpose. See Performance tab for full breakdown.`;
+  return `Ensemble of pace-ratio extrapolation + family regression. At T > 7 the regression dominates so early ahead-of-pace leads are discounted. ${yr} backtest (${nEvents} events, asof ${asof}) shows the model has been ${dir} by ${absBias}% on avg; kept conservative on purpose. See Performance tab for full breakdown.`;
 }
 
 function renderHero(t) {
@@ -2474,23 +2471,23 @@ function renderHero(t) {
     const conf = (t.confidence_label || '').toLowerCase();
     const tier = (t.prediction_tier || 'family-direct').toLowerCase();
     let reason;
-    if (tier === 'family-direct' && conf.includes('high')) reason = 'Strong prior data — 5+ years of same-month history for this family.';
-    else if (tier === 'family-direct' && conf.includes('medium')) reason = 'Moderate prior data — 3–4 years of comparable history.';
-    else if (tier === 'family-direct' && conf.includes('low') && !conf.includes('very')) reason = 'Sparse prior data — under 3 comparable years.';
+    if (tier === 'family-direct' && conf.includes('high')) reason = 'Strong prior data: 5+ years of same-month history for this family.';
+    else if (tier === 'family-direct' && conf.includes('medium')) reason = 'Moderate prior data: 3–4 years of comparable history.';
+    else if (tier === 'family-direct' && conf.includes('low') && !conf.includes('very')) reason = 'Sparse prior data: under 3 comparable years.';
     else if (conf.includes('very')) reason = 'Limited or no comparable history; estimate falls back to family average.';
-    else if (tier === 'family-alias') reason = 'No direct history — pooled from related families for this prediction.';
-    else if (tier === 'size-matched') reason = 'No family history — drawn from families with comparable historical size.';
+    else if (tier === 'family-alias') reason = 'No direct history: pooled from related families for this prediction.';
+    else if (tier === 'size-matched') reason = 'No family history: drawn from families with comparable historical size.';
     else reason = `${t.confidence_label || 'Confidence'} based on ${tier.replace('-',' ')} history.`;
     ciHtml = `
       <div class="ci-bar" role="img" aria-label="${ciLevel}% confidence interval from ${fmt(lo)} to ${fmt(hi)}, point estimate ${fmt(pe)}. ${reason}" title="${reason}">
         <span class="ci-bound ci-bound-lo">${fmt(lo)}</span>
         <div class="ci-track">
           <div class="ci-track-fill"></div>
-          <div class="ci-marker" style="left:${pct.toFixed(2)}%" title="Point estimate: ${fmt(pe)} — ${reason}"></div>
+          <div class="ci-marker" style="left:${pct.toFixed(2)}%" title="Point estimate: ${fmt(pe)}. ${reason}"></div>
         </div>
         <span class="ci-bound ci-bound-hi">${fmt(hi)}</span>
       </div>
-      <div class="ci-caption" style="font-size:.7rem;color:var(--muted);margin-top:2px">Estimated final entries — ${ciLevel}% range</div>
+      <div class="ci-caption" style="font-size:.7rem;color:var(--muted);margin-top:2px">Estimated final entries &middot; ${ciLevel}% range</div>
       <div class="ci-meta">${ciLevel}% CI${confBadge}${tierBadge}</div>
     `;
   }
@@ -2655,7 +2652,7 @@ function renderHero(t) {
         // on the same element is discarded by the parser, which drops the flex
         // layout and stacks the row.
         const rowStyle = `display:flex;align-items:center;gap:6px${o.estimated ? ';opacity:.55' : ''}`;
-        const tip = o.estimated ? ' title="Estimated — this day was covered by a gap in scraping"' : '';
+        const tip = o.estimated ? ' title="Estimated: this day was covered by a gap in scraping"' : '';
         return `<div${tip} style="${rowStyle}">
           <span style="font-size:.6rem;color:var(--muted);width:62px;text-align:right;white-space:nowrap">${label}</span>
           <div style="flex:1;height:11px;background:var(--surface2);border-radius:2px;overflow:hidden">
@@ -2794,7 +2791,7 @@ function renderChart(t) {
   if (!t.daily_data || t.daily_data.length === 0 || !t.event_start) {
     // No registration timeline data or missing event date — show placeholder
     document.getElementById('chartLegend').innerHTML = '';
-    document.getElementById('chartSubtitle').textContent = `${t.family} ${t.year} — No registration timeline available`;
+    document.getElementById('chartSubtitle').textContent = `${t.family} ${t.year}: No registration timeline available`;
     document.getElementById('chartCard').classList.remove('live-glow');
     return;
   }
@@ -2811,7 +2808,7 @@ function renderChart(t) {
     : t.daily_data;
   if (!series.length) {
     document.getElementById('chartLegend').innerHTML = '';
-    document.getElementById('chartSubtitle').textContent = `${t.family} ${t.year} — No registration timeline available`;
+    document.getElementById('chartSubtitle').textContent = `${t.family} ${t.year}: No registration timeline available`;
     document.getElementById('chartCard').classList.remove('live-glow');
     return;
   }
@@ -3412,7 +3409,7 @@ function renderChart(t) {
   document.getElementById('chartLegend').innerHTML = legendHtml;
 
   // Subtitle
-  let sub = `${t.family} ${t.year} — Registration Trajectory`;
+  let sub = `${t.family} ${t.year} &middot; Registration Trajectory`;
   if (!isDone(t) && hasValidEarlyBird(t)) {
     const ebD = new Date(t.early_bird_deadline + 'T00:00:00');
     const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
@@ -3881,7 +3878,7 @@ function renderRegCurve(t) {
     const diff = (actualPct - expectedPct).toFixed(1);
     const ahead = parseFloat(diff) > 0;
     document.getElementById('regCurveCaption').textContent =
-      `At T-${t.days_remaining}: expected ${expectedPct}%, actual ${actualPct}% of predicted final — ${ahead ? 'ahead' : 'behind'} typical pace by ${Math.abs(diff)} percentage points`;
+      `At T-${t.days_remaining}: expected ${expectedPct}%, actual ${actualPct}% of predicted final; ${ahead ? 'ahead' : 'behind'} typical pace by ${Math.abs(diff)} percentage points`;
   } else {
     document.getElementById('regCurveCaption').textContent =
       `Historical registration pattern for ${t.family}. Shows % of final entries at each lead time.`;
@@ -4147,7 +4144,7 @@ function renderFestivalCluster(t) {
     html += `<button class="fc-card ${isActive ? 'fc-card-active' : ''}"
       data-act="select-tournament" data-idx="${idx}"
       aria-current="${isActive ? 'true' : 'false'}"
-      aria-label="${esc(subLabel)} — predicted ${fmt(pred)}, ${fmt(current)} registered">
+      aria-label="${esc(subLabel)}: predicted ${fmt(pred)}, ${fmt(current)} registered">
       <div class="fc-card-label">${esc(subLabel)}</div>
       <div class="fc-card-num">${fmt(pred)}</div>
       <div class="fc-card-sub">${fmt(current)} reg · ${eventDate}</div>
@@ -4396,7 +4393,7 @@ function renderMiniCards() {
       } else {
         const iv = DailySeries.latestInterval(t, { isLive: !isDone(t) });
         if (iv && iv.isGap && iv.added > 0) {
-          deltaChip = `<span class="mini-card-delta pos" title="No scrape for ${iv.span} days — this covers the whole period, not one day">+${iv.added} / ${iv.span}d</span>`;
+          deltaChip = `<span class="mini-card-delta pos" title="No scrape for ${iv.span} days: the value covers the whole period, not one day">+${iv.added} / ${iv.span}d</span>`;
         }
       }
     }
@@ -4505,7 +4502,7 @@ function selectTournament(index, skipHash) {
   const tournLabel = document.getElementById('tournLabel');
   tournLabel.textContent = `${t.family} ${t.year}`;
   tournLabel.title = `${t.family} ${t.year}`;
-  document.title = `${t.family} ${t.year} — CCA Entry Predictor`;
+  document.title = `${t.family} ${t.year} · CCA Entry Predictor`;
 
   updateFavButton(t.family);
   updateCompareBtn();
@@ -4602,7 +4599,7 @@ function renderModelHealth() {
       if (windowed.length && we && we.grade && we.grade !== 'N/A') {
         parts.push(
           `${windowed.length} come from the online-registration-window model, `
-          + `graded ${we.grade} separately over ${we.n} predictions — a shorter, `
+          + `graded ${we.grade} separately over ${we.n} predictions: a shorter, `
           + `easier horizon than the headline, so the two are not comparable.`);
       } else if (windowed.length) {
         parts.push(
@@ -4752,7 +4749,7 @@ function renderModelHealth() {
       value: grade,
       sub: yr.grade_detail || ((yr.n_tournaments || 0) + ' tournaments'),
       color,
-      help: 'Letter grade from the 2026 evaluation cohort — worst of the T-14/T-7/T-3 lead times (MAE + CI coverage), leave-one-out so no tournament grades itself.',
+      help: 'Letter grade from the 2026 evaluation cohort: worst of the T-14/T-7/T-3 lead times (MAE + CI coverage), leave-one-out so no tournament grades itself.',
     });
   }
 
@@ -4879,7 +4876,7 @@ function init() {
   renderSummaryBar();
 
   // Set default sort indicator on the date column
-  const defaultSortTh = document.querySelector(`.tourney-table th[onclick*="'date'"]`);
+  const defaultSortTh = document.querySelector('.tourney-table th[data-act="sort-table"][data-col="date"]');
   if (defaultSortTh) defaultSortTh.classList.add('asc');
 
   // Part B: Deep link from hash, or default to Chicago Open / first live
@@ -4938,7 +4935,7 @@ function saveDataEntry() {
     }
   });
   if (invalid.length > 0) {
-    showDataEntryBanner(`${invalid.length} field${invalid.length === 1 ? '' : 's'} need fixing — see highlighted rows.`, 'error');
+    showDataEntryBanner(`${invalid.length} field${invalid.length === 1 ? '' : 's'} need fixing; see highlighted rows.`, 'error');
     return;
   }
 
@@ -5198,7 +5195,7 @@ function renderCompareTab() {
     selectorHTML += `<div class="compare-selector">
       ${colorDot}
       <select class="compare-dropdown" data-inputact="compare-slot-changed" data-slot="${s}">
-        <option value="">— Select tournament —</option>
+        <option value="">Select tournament...</option>
         ${tournaments.map((t, i) => {
           const sel = i === currentIdx ? 'selected' : '';
           const label = esc(t.family) + ' ' + t.year;
@@ -5345,7 +5342,7 @@ function renderCompareChart(selected) {
       if (t.status === 'live') {
         const last = data[data.length - 1];
         datasets.push({
-          label: `${t.family} — Today`,
+          label: `${t.family} · Today`,
           data: [last],
           borderColor: color,
           backgroundColor: color,
@@ -5372,7 +5369,7 @@ function renderCompareChart(selected) {
           y: (p[1] / priorTarget) * 100,
         }));
         datasets.push({
-          label: `${t.family} — ${prior.year} (prior)`,
+          label: `${t.family} · ${prior.year} (prior)`,
           data: priorData,
           borderColor: color,
           borderDash: [4, 4],
@@ -5433,7 +5430,7 @@ function renderCompareChart(selected) {
             font: { size: _mobileVP() ? 10 : 11 },
             boxWidth: _mobileVP() ? 8 : 12,
             padding: _mobileVP() ? 6 : 10,
-            filter(item) { return !item.text.includes('— Today'); },
+            filter(item) { return !item.text.includes('· Today'); },
             usePointStyle: true, pointStyle: 'line'
           }
         },
@@ -5560,7 +5557,7 @@ function askSubmit() {
   if (!q) {
     q = ASK_SUGGESTIONS[0];
     input.value = q;
-    showAskBanner('warn', 'Empty input — running the first suggestion. Type your own question and press Ask.');
+    showAskBanner('warn', 'Empty input: running the first suggestion. Type your own question and press Ask.');
   }
   askRun(q);
 }
@@ -5609,7 +5606,7 @@ async function askRun(question) {
       const msg = data.message || `Error ${resp.status}.`;
       if (isRateLimit || isBudget) {
         showAskBanner('warn', msg);
-        fillAssistantText(pending.bubble, '(No answer — ' + msg + ')');
+        fillAssistantText(pending.bubble, '(No answer: ' + msg + ')');
       } else {
         showAskBanner('error', msg + ' Showing keyword matches instead.');
         fillAssistantFallback(pending.bubble, question);
@@ -5636,7 +5633,7 @@ async function askRun(question) {
         fillAssistantText(pending.bubble, 'Stopped.');
       }
     } else {
-      showAskBanner('error', 'AI is unavailable right now — here are keyword matches instead:');
+      showAskBanner('error', 'AI is unavailable right now; here are keyword matches instead:');
       fillAssistantFallback(pending.bubble, question);
     }
   } finally {
@@ -5693,7 +5690,7 @@ function appendAssistantPending() {
   // Constant text — announced once by the live region, not re-announced.
   const msg = document.createElement('span');
   msg.className = 'ask-pending-msg';
-  msg.textContent = 'Working on your answer — this can take up to a minute.';
+  msg.textContent = 'Working on your answer; this can take up to a minute.';
 
   // Per-second counter — hidden from the accessibility tree so it doesn't spam SR.
   const label = document.createElement('span');

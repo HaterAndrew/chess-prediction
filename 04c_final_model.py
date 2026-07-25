@@ -187,7 +187,7 @@ def _predict_nowcast_ci_tail(model, point, low, high, days_remaining,
     return (point, low, high)
 
 
-def reanchor_daily_to_event_start(summary, daily, meta):
+def reanchor_daily_to_event_start(summary, daily, meta, keep_post_start=False):
     """Shift daily T values from last_reg-anchored to event_start-anchored.
 
     Training data T is originally computed as days before last_reg (≈ event_end).
@@ -195,6 +195,9 @@ def reanchor_daily_to_event_start(summary, daily, meta):
     Registrations during the event (new T < 0) are dropped so the model
     only trains on pre-registration data. final_count in summary still includes
     on-site entries, so ratios at T=0 implicitly capture the on-site multiplier.
+
+    keep_post_start=True retains the during-event rows (negative T) instead.
+    Only the window-engine grader uses it; see the comment at the drop site.
 
     Returns modified daily DataFrame (summary and meta are unchanged).
     """
@@ -289,9 +292,18 @@ def reanchor_daily_to_event_start(summary, daily, meta):
             continue
         daily.loc[mask, 'T'] = daily.loc[mask, 'T'] - offset
 
-    # Drop rows where T < 0 (on-site registrations during the event)
+    # Drop rows where T < 0 (on-site registrations during the event).
+    #
+    # keep_post_start retains them instead, for the one caller that needs them:
+    # grading the post-start online-registration window engine (v3 T7,
+    # window_grading.py). That engine predicts from inside the window, so a
+    # backtest of it cannot use a table with the window removed. Nothing in the
+    # training or prediction path passes this — the model must keep training on
+    # pre-registration data only, or T=0 ratios would double-count the on-site
+    # multiplier they are supposed to imply.
     before = len(daily)
-    daily = daily[daily['T'] >= 0].copy()
+    if not keep_post_start:
+        daily = daily[daily['T'] >= 0].copy()
     dropped = before - len(daily)
 
     # Recompute cum_regs after dropping on-site rows: cum_regs should count from

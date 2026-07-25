@@ -1075,6 +1075,22 @@ function perfPaint(view) {
   document.getElementById('perfGradeDetail').textContent = view.detail;
   document.getElementById('perfGradeMeta').textContent = `N5v4_Final Ensemble \u00b7 Rolling retrain + auto-recalibration \u00b7 Updated ${view.generated || ''}`;
 
+  // v3 T7: the grade above describes predict_nowcast. The online-window engine
+  // handles live multi-schedule events and is graded separately by 04e. Shown
+  // as its own line, never folded into the letter above: it is scored 0-2 days
+  // from registration close against the headline's T-14/7/3, so a better letter
+  // here means an easier question, not a better model.
+  const secondEl = document.getElementById('perfSecondEngine');
+  if (secondEl) {
+    const we = PERFORMANCE_DATA.window_engine;
+    secondEl.textContent = (we && we.grade && we.grade !== 'N/A')
+      ? `Second engine (live registration window): ${we.grade} \u00b7 `
+        + `${we.n} predictions across ${we.n_events} events \u00b7 `
+        + `MAE ${we.mae_pct}%, CI coverage ${we.ci_coverage}% \u00b7 `
+        + `shorter horizon than the grade above, not comparable to it`
+      : '';
+  }
+
   if (!agg.length) {
     document.getElementById('perfKPIs').innerHTML = '';
     document.getElementById('perfHorizonStrip').innerHTML = '';
@@ -4694,22 +4710,51 @@ function renderModelHealth() {
     updated.textContent = ts ? 'Pipeline last ran ' + ts : '';
   }
 
-  // v3 T7: say what the grade actually covers. Only predict_nowcast is
-  // evaluated, but several other paths reach the page — the online-window
-  // estimator, the interim metadata/pace fallbacks, and straight live counts.
-  // On the current data one live card in fifteen comes from the graded engine,
-  // so presenting the grade without its scope overstates what has been tested.
+  // v3 T7: say what the grade actually covers, and give the second engine its
+  // own measured number rather than leaving it implied.
+  //
+  // Several paths reach the page. predict_nowcast produces the headline grade.
+  // The online-window estimator handles multi-schedule events that have already
+  // started, and it is now graded separately (04e writes performance_data
+  // .window_engine). The remaining cards use interim fallbacks — pace,
+  // historical average, or the raw live count — which no grade covers, and
+  // those are marked low-confidence.
+  //
+  // The two letters are deliberately not combined. The window engine is scored
+  // 0-2 days from registration close with most of the field already in; the
+  // headline is scored at T-14/7/3 before the event starts. Averaging them, or
+  // showing one as though it described the other, would read as a better model
+  // when it is only an easier question.
   const scopeEl = document.getElementById('mh-grade-scope');
   if (scopeEl && typeof TOURNAMENT_DATA !== 'undefined') {
     const live = TOURNAMENT_DATA.tournaments.filter(t => t.status === 'live');
     const graded = live.filter(t => t.prediction_source === 'model');
+    const windowed = live.filter(t => t.prediction_source === 'model_online_window');
     if (live.length) {
-      const other = live.length - graded.length;
-      scopeEl.textContent =
-        `Grade scope: measured on the evaluated model, which currently produces `
-        + `${graded.length} of ${live.length} live predictions. The other ${other} `
-        + `use interim fallbacks (pace, historical average, or the live count) that `
-        + `the grade does not cover; those cards are marked low-confidence.`;
+      const other = live.length - graded.length - windowed.length;
+      const parts = [
+        `Grade scope: the headline grade is measured on the main model, which `
+        + `currently produces ${graded.length} of ${live.length} live predictions.`,
+      ];
+      const we = (typeof PERFORMANCE_DATA !== 'undefined')
+        ? PERFORMANCE_DATA.window_engine : null;
+      if (windowed.length && we && we.grade && we.grade !== 'N/A') {
+        parts.push(
+          `${windowed.length} come from the online-registration-window model, `
+          + `graded ${we.grade} separately over ${we.n} predictions — a shorter, `
+          + `easier horizon than the headline, so the two are not comparable.`);
+      } else if (windowed.length) {
+        parts.push(
+          `${windowed.length} come from the online-registration-window model, `
+          + `graded separately.`);
+      }
+      if (other > 0) {
+        parts.push(
+          `The other ${other} use interim fallbacks (pace, historical average, `
+          + `or the live count) that no grade covers; those cards are marked `
+          + `low-confidence.`);
+      }
+      scopeEl.textContent = parts.join(' ');
     }
   }
 

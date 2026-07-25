@@ -21,7 +21,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://chess-ask.hater-andrewd.workers.dev">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=43fa2530b5">
+<link rel="stylesheet" href="styles.css?v=7ddab882ef">
 </head>
 <body>
 
@@ -194,8 +194,10 @@
   <div class="progress-row" id="progressRow"></div>
 
 
-  <!-- ── Timeline + Historical ── -->
-  <div class="grid-2 mt4" >
+  <!-- ── Timeline + Historical (collapsible on phones) ── -->
+  <details class="sect" id="sect-milestones">
+  <summary class="sect-summary">Milestones and History</summary>
+  <div class="grid-2 mt4">
     <div class="panel">
       <h3 class="panel-title">Key Milestones</h3>
       <div class="timeline" id="timeline"></div>
@@ -207,8 +209,11 @@
       <div id="compTableWrap"></div>
     </div>
   </div>
+  </details>
 
-  <!-- ── Registration Curve + Fees ── -->
+  <!-- ── Registration Curve + Fees (collapsible on phones) ── -->
+  <details class="sect" id="sect-curve">
+  <summary class="sect-summary">Registration Curve and Fees</summary>
   <div class="grid-2" id="curveAndFeeRow">
     <div class="panel" id="regCurvePanel">
       <h3 class="panel-title">Registration Curve Pattern</h3>
@@ -220,9 +225,12 @@
       <div id="feeContent"></div>
     </div>
   </div>
+  </details>
 
-  <!-- ── Model Info (compact) ── -->
-  <div class="panel model-info mb24" >
+  <!-- ── Model Info (compact, collapsible on phones) ── -->
+  <details class="sect" id="sect-model">
+  <summary class="sect-summary">About This Model</summary>
+  <div class="panel model-info mb24">
     <h3 class="panel-title">About This Model</h3>
     <div class="model-info-row">
       <p class="model-info-blurb">Ensemble model (N5v4): historical ratio + per-family Huber regression, predicting final count from current entries at each lead time. 80% confidence intervals (CIs) from lognormal fits with IQR outlier removal. Leave-one-out blind-tested on held-out 2023–2026 data.</p>
@@ -251,7 +259,11 @@
     </div>
   </div>
 
+  </details>
+
   <!-- ── All Tournaments Table ── -->
+  <details class="sect" id="sect-table">
+  <summary class="sect-summary">2026 Tournament Overview</summary>
   <div class="all-tournaments">
     <div class="panel roomy" >
       <div class="tt-head">
@@ -286,6 +298,7 @@
       </div>
     </div>
   </div>
+  </details>
 
 </div>
 
@@ -873,7 +886,7 @@
      init() (and any #audit deep link) synchronously at evaluation time. -->
 <script src="audit.js?v=30eaa762a6"></script>
 <script src="daily_series.js?v=e326e2b1fc"></script>
-<script src="app.js?v=8a76841f4e"></script>
+<script src="app.js?v=a8b9c4229b"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,
      so it is load-bearing: without it nothing on the page responds. It comes

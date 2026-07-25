@@ -515,9 +515,10 @@ header {
   #panel-predictions > .mini-grid      { order: 7; }
   #panel-predictions > .kpi-row        { order: 8; }
   #panel-predictions > .progress-row   { order: 9; }
-  #panel-predictions > .grid-2         { order: 10; }
-  #panel-predictions > .all-tournaments,
-  #panel-predictions > .panel.model-info { order: 11; }
+  #panel-predictions > #sect-milestones { order: 10; }
+  #panel-predictions > #sect-curve      { order: 11; }
+  #panel-predictions > #sect-model      { order: 12; }
+  #panel-predictions > #sect-table      { order: 13; }
 
   /* --- Delta banner: tighter, single-row feel --- */
   .delta-banner {
@@ -2563,6 +2564,8 @@ footer a { color: var(--muted); }
   .skeleton-chart { height: 320px; }
   .compare-chart-wrap { height: 340px; }
   .mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mini-grid-featured { grid-template-columns: 1fr; }
+  .mini-grid-rest { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .timeline { grid-template-columns: repeat(4, 1fr); }
   .fav-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .email-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -3001,6 +3004,60 @@ footer a { color: var(--muted); }
   .tt-search input, .de-table input[type="text"], .de-table input[type="number"], .de-table input[type="date"] { min-height: 44px; }
   .seg-btn { min-height: var(--touch); }
 }
+
+
+/* ── Progressive disclosure (phase 5): the four lower Predictions sections
+   collapse behind native <details> on phones; desktop and print always render
+   them open (JS syncSectionDisclosure + beforeprint force open). ── */
+details.sect > .sect-summary { display: none; }
+details.sect > .sect-summary::-webkit-details-marker { display: none; }
+@media (max-width: 639px) {
+  details.sect > .sect-summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    min-height: var(--touch);
+    padding: 10px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-3); font-weight: 700; color: var(--text);
+    cursor: pointer; user-select: none;
+    list-style: none;
+  }
+  details.sect > .sect-summary::after {
+    content: '\25BE';
+    color: var(--muted);
+    transition: transform .2s;
+  }
+  details.sect[open] > .sect-summary::after { transform: rotate(180deg); }
+  details.sect[open] > .sect-summary { margin-bottom: var(--s-3); }
+  /* the summary already names these sections; drop the duplicated inner titles */
+  #sect-model .model-info > .panel-title { display: none; }
+  #sect-table .tt-head > .panel-title { display: none; }
+}
+
+/* ── Mini-grid hierarchy (phase 5): "Next up" featured row above a compact
+   "Later" grid; renderMiniCards adds .mini-grid-tiered to the container. ── */
+.mini-grid.mini-grid-tiered { display: block; }
+.mini-section-label {
+  font-size: var(--fs-1); font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted);
+  margin: 2px 0 8px;
+}
+.mini-grid-featured {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--s-3);
+  margin-bottom: var(--s-4);
+}
+.mini-grid-featured .mini-card { padding: var(--s-5); }
+.mini-grid-featured .mini-card-number { font-size: 1.75rem; }
+.mini-grid-rest {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--s-2);
+}
+.mini-grid-rest .mini-card { padding: var(--s-3); }
 
 /* ══════════════════════════════════════════════════════
    PRINT — clean one-page tournament report

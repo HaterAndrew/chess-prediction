@@ -3389,9 +3389,10 @@ function renderChart(t) {
         if (idx < 0) return;
         for (const row of rows) {
           row.classList.remove('chart-highlight');
-          const oc = row.getAttribute('onclick') || '';
-          if (oc.includes('selectTournament(' + idx + ')')) {
+          if (row.dataset.idx === String(idx)) {
             row.classList.add('chart-highlight');
+            const wrap = row.closest('details.sect');
+            if (wrap && !wrap.open) wrap.open = true;
             row.scrollIntoView({ behavior: 'smooth', block: 'center' });
             setTimeout(() => row.classList.remove('chart-highlight'), 2500);
           }
@@ -4402,6 +4403,16 @@ function _bindCalendarTooltips(scopeEl) {
 // ══════════════════════════════════════════════════════════
 // UPCOMING MINI CARDS
 // ══════════════════════════════════════════════════════════
+// Progressive disclosure (phase 5): the wrapped Predictions sections are
+// summary-first on phones and always open on desktop and in print.
+let _sectWide = null;
+function syncSectionDisclosure(force) {
+  const wide = window.innerWidth >= 640;
+  if (!force && wide === _sectWide) return;
+  _sectWide = wide;
+  document.querySelectorAll('details.sect').forEach(d => { d.open = wide; });
+}
+
 function renderMiniCards() {
   const el = document.getElementById('miniGrid');
   const ts = TOURNAMENT_DATA.tournaments;
@@ -4409,7 +4420,7 @@ function renderMiniCards() {
     .filter(({t}) => t.status === 'live')
     .sort((a, b) => a.t.days_remaining - b.t.days_remaining);
 
-  el.innerHTML = live.map(({t, i}) => {
+  const card = ({t, i}) => {
     const isSelected = i === selectedIndex;
     const pct = t.point_estimate > 0 ? (t.current_count / t.point_estimate * 100).toFixed(0) : 0;
     // Today's delta surfaces velocity on the selector card itself instead of
@@ -4474,7 +4485,16 @@ function renderMiniCards() {
         </div>
       </div>
     </div>`;
-  }).join('');
+  };
+
+  // Tiered layout: the next three events get the featured row; the rest stay
+  // compact. Everything remains clickable and information-identical.
+  const featured = live.slice(0, 3);
+  const later = live.slice(3);
+  el.classList.add('mini-grid-tiered');
+  el.innerHTML =
+    (featured.length ? `<div class="mini-section-label">Next up</div><div class="mini-grid-featured">${featured.map(card).join('')}</div>` : '') +
+    (later.length ? `<div class="mini-section-label">Later</div><div class="mini-grid-rest">${later.map(card).join('')}</div>` : '');
 }
 
 // ══════════════════════════════════════════════════════════
@@ -4908,6 +4928,13 @@ function init() {
 
   renderAllTournaments();
   renderSummaryBar();
+
+  syncSectionDisclosure();
+  window.addEventListener('resize', () => syncSectionDisclosure());
+  window.addEventListener('beforeprint', () => {
+    document.querySelectorAll('details.sect').forEach(d => { d.open = true; });
+  });
+  window.addEventListener('afterprint', () => syncSectionDisclosure(true));
 
   // Set default sort indicator on the date column
   const defaultSortTh = document.querySelector('.tourney-table th[data-act="sort-table"][data-col="date"]');

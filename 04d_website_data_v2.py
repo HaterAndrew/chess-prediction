@@ -16,7 +16,7 @@ from importlib import import_module
 m04c = import_module("04c_final_model")
 from tournament_aliases import canonicalize_family, adjust_wo_top6_count
 from prediction_window import registration_close_date, window_decayed_estimate
-from pipeline_utils import is_event_complete
+from pipeline_utils import build_chart_series, is_event_complete
 
 
 def _fam_eq(series, name):
@@ -681,48 +681,12 @@ for _, row in t2026.iterrows():
     else:
         point, ci_lo, ci_hi = current_count, current_count, current_count
 
-    # Daily data for chart
-    tid_daily = daily[daily['tid'] == tid].sort_values('T', ascending=False)
-    if len(tid_daily) > 0:
-        max_T = tid_daily['T'].max()
-        # Build daily_data: keep highest count at each T
-        by_T = {}
-        for _, d in tid_daily.iterrows():
-            T = int(d['T'])
-            count = int(d['cum_regs'])
-            if T not in by_T or count > by_T[T]:
-                by_T[T] = count
-        daily_data = []
-        for T in sorted(by_T.keys(), reverse=True):
-            day_from_start = int(max_T - T)
-            daily_data.append([day_from_start, by_T[T]])
-        daily_data.sort(key=lambda x: x[0])
-        # Defense-in-depth: archive↔scrape reconciliation now happens upstream
-        # in 01_data_prep.py (running cummax + last_reg rebase). These patches
-        # are no-ops on reconciled curves but stay as a safety net for the
-        # path where ~/Downloads/all_registrations.csv is missing and
-        # step_data_prep is skipped. AUDIT.md A4 confirmed zero hits in
-        # production after reconciliation shipped.
-        for i in range(1, len(daily_data)):
-            if daily_data[i][1] > daily_data[i-1][1] * 3 and daily_data[i][1] > 50:
-                scale = daily_data[i][1] / max(daily_data[i-1][1], 1)
-                # H16: this backstop should never fire on reconciled curves — if it
-                # does, upstream reconciliation was skipped or the curve is anomalous.
-                print(f"WARNING: A4 3x-jump backstop fired for tid={tid}: point {i} "
-                      f"({daily_data[i][1]}) > 3x prior ({daily_data[i-1][1]}); "
-                      f"rescaling earlier points x{scale:.2f}")
-                for j in range(i):
-                    daily_data[j][1] = int(daily_data[j][1] * scale)
-                break
-        peak = 0
-        cleaned = []
-        for pt in daily_data:
-            if pt[1] >= peak:
-                peak = pt[1]
-                cleaned.append(pt)
-        daily_data = cleaned
-    else:
-        daily_data = [[0, current_count]]
+    # Daily data for chart. build_chart_series (pipeline_utils) dedupes per T,
+    # converts to day_from_start, warns (never rescales) on A4 anomalies, and
+    # drops non-increasing points. See v3 N1 / audit/AUDIT_2026-07-25.md.
+    daily_data = build_chart_series(
+        tid, daily, current_count,
+        is_live=status in ('live', 'in_progress'))
 
     # Registration curve (template)
     curve = curves.get(family, curves.get('__global__', {}))

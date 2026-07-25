@@ -17,12 +17,12 @@ const CDN_ASSETS = [
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
-  'styles.css?v=28',
-  'boot.js?v=1',
-  'app.js?v=40',
-  'audit.js?v=1',
-  'daily_series.js?v=1',
-  'data/site_data.js?v=a93130fb6c',
+  'styles.css?v=4057c94380',
+  'boot.js?v=f4bc2ac041',
+  'app.js?v=8dda437d9b',
+  'audit.js?v=30eaa762a6',
+  'daily_series.js?v=e326e2b1fc',
+  'data/site_data.js?v=d22102e273',
   'manifest.json',
   'icons/icon-192.png',
   ...CDN_ASSETS

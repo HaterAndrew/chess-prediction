@@ -603,7 +603,64 @@ def _stamp_site_data_version(json_data):
             with open(path, 'w') as f:
                 f.write(new_text)
             print(f"  Stamped site_data.js?v={digest} in {os.path.basename(path)}")
+    _stamp_script_versions()
     return digest
+
+
+# Local assets referenced with a `?v=` cache-buster. styles.css and app.js also
+# appear in sw.js, and the G5 invariant is that the two files never disagree —
+# see scripts/bump_assets.py.
+STAMPED_SCRIPTS = ("app.js", "daily_series.js", "boot.js", "audit.js",
+                   "styles.css")
+
+
+def _stamp_script_versions():
+    """Derive each local script's `?v=` from its own content hash.
+
+    P5 fixed this for the data file and left the scripts on hand-numbers, which
+    fails the same way in the other direction: the data file's content changes
+    nightly and its version did not, while a script's version only changes if
+    someone remembers to bump it. Two app.js fixes shipped in this session
+    behind `?v=40`, so every returning visitor and every installed PWA would
+    have kept running the old file and never seen either one.
+
+    Hashing the file means the URL changes exactly when the content does —
+    no bump to forget, and no cache-buster churn on nights when the code is
+    untouched.
+
+    Both index.html AND sw.js get rewritten. styles.css and app.js are
+    referenced in each, and G5 (scripts/bump_assets.py --check) fails the build
+    if they disagree. Stamping only index.html is a real drift, not a cosmetic
+    one: the service worker would keep precaching the old URL.
+    """
+    targets = [INDEX_HTML, os.path.join(SITE_DIR, "sw.js")]
+    digests = {}
+    for name in STAMPED_SCRIPTS:
+        asset_path = os.path.join(SITE_DIR, name)
+        if not os.path.exists(asset_path):
+            continue
+        with open(asset_path, 'rb') as f:
+            digests[name] = hashlib.sha256(f.read()).hexdigest()[:10]
+
+    announced = set()
+    for path in targets:
+        if not os.path.exists(path):
+            continue
+        with open(path) as f:
+            text = f.read()
+        original = text
+        for name, digest in digests.items():
+            pattern = re.compile(rf'({re.escape(name)}\?v=)([A-Za-z0-9]+)')
+            before = text
+            text, n = pattern.subn(rf'\g<1>{digest}', text)
+            # Only announce a real change; a nightly run that touched no code
+            # should be quiet here rather than printing a no-op line per asset.
+            if n and text != before and name not in announced:
+                print(f"  Stamped {name}?v={digest}")
+                announced.add(name)
+        if text != original:
+            with open(path, 'w') as f:
+                f.write(text)
 
 
 def _atomic_write_json(path, data):

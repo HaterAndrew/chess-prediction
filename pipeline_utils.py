@@ -85,6 +85,23 @@ def build_chart_series(tid, daily, current_count, is_live=False):
     return daily_data
 
 
+# How often each clamp branch fired since import. The whole v3 audit theme is
+# heuristics silently overriding real values, so the clamp keeps a tally the
+# callers can print rather than mutating predictions invisibly. Reset with
+# reset_clamp_stats() when measuring a single run.
+_CLAMP_STATS = {'calls': 0, 'blend-low': 0, 'recentre-low': 0,
+                'damp-high': 0, 'floor-current-count': 0}
+
+
+def reset_clamp_stats():
+    for k in _CLAMP_STATS:
+        _CLAMP_STATS[k] = 0
+
+
+def clamp_stats():
+    return dict(_CLAMP_STATS)
+
+
 def apply_plausibility_clamp(point, ci_lo, ci_hi, current_count, hist_counts,
                              days_remaining):
     """Damp an estimate that sits far outside the family's historical range.
@@ -94,7 +111,7 @@ def apply_plausibility_clamp(point, ci_lo, ci_hi, current_count, hist_counts,
 
     Returns the (point, ci_lo, ci_hi) triple to publish. The clamp blends
     toward the historical median when the model lands implausibly high or low,
-    preserving the model's CI width rather than its centre.
+    carrying the interval with the point by scaling both arms proportionally.
 
     v3 N2 (audit/AUDIT_2026-07-25.md): the clamp used to be able to publish a
     final estimate BELOW the entry count already scraped. With history topping
@@ -108,28 +125,52 @@ def apply_plausibility_clamp(point, ci_lo, ci_hi, current_count, hist_counts,
     """
     hist_counts = [c for c in hist_counts if c is not None]
 
+    def _reanchor(old_point, new_point, lo, hi):
+        """Move the interval with the point, preserving each arm's PROPORTION.
+
+        v3 T2/N3: this used to recentre symmetrically (point +/- width/2). The
+        underlying interval is lognormal — its upper arm is legitimately longer
+        than its lower — so symmetrising it threw away the skew the model had
+        fitted. Scaling both arms by the same factor the point moved keeps the
+        relative uncertainty intact.
+
+        No measured effect on the current published grade: the clamp fires zero
+        times across the 133 graded 2026 predictions (04e prints the tally). This
+        is a correctness fix for when it does fire, not a scoring change.
+        """
+        if old_point and old_point > 0 and new_point > 0:
+            scale = float(new_point) / float(old_point)
+            return int(round(lo * scale)), int(round(hi * scale))
+        width = hi - lo
+        return int(new_point - width / 2), int(new_point + width / 2)
+
+    _CLAMP_STATS['calls'] += 1
+
     if len(hist_counts) >= 3:
         hist_min = min(hist_counts)
         hist_max = max(hist_counts)
         hist_med = int(pd.Series(hist_counts).median())
-        ci_width = ci_hi - ci_lo
         if days_remaining > 60 and point < hist_med * 0.7:
             # Far out + low: blend model with historical median (50/50)
-            point = int(0.5 * point + 0.5 * hist_med)
-            ci_lo = int(point - ci_width / 2)
-            ci_hi = int(point + ci_width / 2)
+            new_point = int(0.5 * point + 0.5 * hist_med)
+            ci_lo, ci_hi = _reanchor(point, new_point, ci_lo, ci_hi)
+            point = new_point
+            _CLAMP_STATS['blend-low'] += 1
         elif point < hist_min * 0.3:
             # Extremely low -- re-centre on historical median
-            point = hist_med
-            ci_lo = int(point - ci_width / 2)
-            ci_hi = int(point + ci_width / 2)
+            new_point = hist_med
+            ci_lo, ci_hi = _reanchor(point, new_point, ci_lo, ci_hi)
+            point = new_point
+            _CLAMP_STATS['recentre-low'] += 1
         elif point > hist_max * 3.0:
-            point = int(hist_max * 1.5)
-            ci_lo = int(point - ci_width / 2)
-            ci_hi = int(point + ci_width / 2)
+            new_point = int(hist_max * 1.5)
+            ci_lo, ci_hi = _reanchor(point, new_point, ci_lo, ci_hi)
+            point = new_point
+            _CLAMP_STATS['damp-high'] += 1
 
     # v3 N2 floor: never publish a final below what has already been counted.
     if current_count is not None and point < current_count:
+        _CLAMP_STATS['floor-current-count'] += 1
         print(f"WARNING: plausibility clamp produced point={point} below "
               f"current_count={current_count}; flooring to the observed count. "
               f"History (n={len(hist_counts)}, max="

@@ -40,6 +40,7 @@ WEBSITE_JSON = os.path.join(OUTPUT_DIR, "website_data.json")
 DAILY_SCRAPE_CSV = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
 SUMMARY_CSV = os.path.join(OUTPUT_DIR, "tournament_summary.csv")
 METADATA_CSV = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
+PERFORMANCE_JSON = os.path.join(OUTPUT_DIR, "performance_data.json")
 UPDATE_LOG_CSV = os.path.join(OUTPUT_DIR, "update_log.csv")
 HEALTH_JSON = os.path.join(OUTPUT_DIR, "data_health.json")
 AUDIT_DIR = os.path.join(PROJECT_DIR, "audit", "data-health")
@@ -50,6 +51,12 @@ SEVERITIES = ["CRITICAL", "HIGH", "MEDIUM", "INFO"]
 # daily-large-recent-gap early warning (v3 Q3). A scrape runs nightly, so a gap
 # beyond a long weekend means scrape days were missed.
 DAILY_GAP_WARN_DAYS = 4
+
+# Graded curve peak below this fraction of the final count means the curve is
+# frozen relative to a reconcile-bumped final (v3 Q2). Matches
+# 04e_performance_data.FROZEN_CURVE_MIN_RATIO — kept as a separate constant so
+# the scanner still reports if the two ever drift apart.
+PERF_FROZEN_CURVE_RATIO = 0.60
 
 # Side events that are intentionally not predicted as standalone tournaments.
 _BLITZ_RE = re.compile(r"Blitz|Rapid|Bullet|Bughouse|Armageddon", re.IGNORECASE)
@@ -167,6 +174,33 @@ class Context:
         self.summary_2026 = self._load_2026_families(SUMMARY_CSV, "tournament_year")
         self.metadata_2026 = self._load_2026_families(METADATA_CSV, "year")
         self.log_hist = self._load_log_history()
+        self.perf_finals = self._load_performance_finals()
+
+    def _load_performance_finals(self):
+        """canon_family -> {'final_count', 'peak_count_at_T'} from the graded set.
+
+        v3 Q2: data_health never loaded performance_data.json, so the frozen-curve
+        corruption behind the wrong-low public grade (T1/R2) had no health or test
+        coverage anywhere. Loading it lets the scanner cross-check the numbers the
+        grade was computed from against the ones the site publishes.
+        """
+        out = {}
+        if not os.path.exists(PERFORMANCE_JSON):
+            return out
+        try:
+            with open(PERFORMANCE_JSON) as fh:
+                data = json.load(fh)
+        except (OSError, ValueError):
+            return out
+        for t in data.get("tournaments") or []:
+            preds = t.get("predictions") or []
+            counts = [p.get("count_at_T") for p in preds
+                      if isinstance(p.get("count_at_T"), int)]
+            out[_canon(t.get("family", ""))] = {
+                "final_count": t.get("final_count"),
+                "peak_count_at_T": max(counts) if counts else None,
+            }
+        return out
 
     def _load_scrape_latest(self):
         """canon_family -> {'net', 'gross', 'date'} from the most recent scrape."""
@@ -332,6 +366,23 @@ def scan(data, ctx):
                 report.add("MEDIUM", "daily-large-recent-gap", fam,
                            f"{tail_gap}-day gap before the final chart point "
                            f"(day {days[-2]} -> {days[-1]})")
+
+    # Mode performance-frozen-curve (v3 Q2): an event whose graded curve tops out
+    # far below the final it was graded against. The model is then scored on the
+    # gap between a stale export and a reconcile-bumped final rather than on its
+    # own error — this is what pushed the published headline grade to D when the
+    # model had earned a C. 04e now excludes these from grading; this rule makes
+    # sure a new one cannot appear unnoticed.
+    for fam, info in (getattr(ctx, "perf_finals", None) or {}).items():
+        final = info.get("final_count")
+        peak = info.get("peak_count_at_T")
+        if not isinstance(final, int) or final <= 0 or not isinstance(peak, int):
+            continue
+        ratio = peak / final
+        if ratio < PERF_FROZEN_CURVE_RATIO:
+            report.add("HIGH", "performance-frozen-curve", fam,
+                       f"graded curve peaks at {round(ratio*100)}% of its {final} final "
+                       f"(peak count_at_T={peak}) — stale export, not a model miss")
 
     # ---- HIGH --------------------------------------------------------------
 

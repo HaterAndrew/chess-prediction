@@ -2769,23 +2769,32 @@ function renderHero(t) {
       barsEl.innerHTML = `<div class="hero-week-empty">No registrations in the last 7 days</div>`;
       weekEl.style.display = '';
     } else if (days.length >= 2) {
+      // Bar scale uses every day, but the "busiest day" highlight only considers
+      // observed ones — an average spread across a scrape gap is not evidence
+      // that that day was the peak.
       const maxNew = Math.max(...days.map(o => o.n), 1);
+      const observed = days.filter(o => !o.estimated).map(o => o.n);
+      const maxObserved = observed.length ? Math.max(...observed) : null;
       const anyEstimated = days.some(o => o.estimated);
       barsEl.innerHTML = days.map(o => {
         const label = (o.date && typeof DailySeries !== 'undefined')
           ? DailySeries.fmtPointDate(o.date) : '';
         const pct = Math.max((o.n / maxNew) * 100, 2);
-        const color = o.n === maxNew ? 'var(--gold)' : 'var(--blue)';
+        const isPeak = !o.estimated && maxObserved !== null && o.n === maxObserved;
+        const color = isPeak ? 'var(--gold)' : 'var(--blue)';
         // A bar covering a scrape gap is an average, not an observation. Mark it
         // rather than presenting a spread-out figure as a measured daily count.
-        const est = o.estimated ? ' style="opacity:.55"' : '';
+        // The dimming has to live in this one style attribute — a second style=
+        // on the same element is discarded by the parser, which drops the flex
+        // layout and stacks the row.
+        const rowStyle = `display:flex;align-items:center;gap:6px${o.estimated ? ';opacity:.55' : ''}`;
         const tip = o.estimated ? ' title="Estimated — this day was covered by a gap in scraping"' : '';
-        return `<div${est}${tip} style="display:flex;align-items:center;gap:6px">
+        return `<div${tip} style="${rowStyle}">
           <span style="font-size:.6rem;color:var(--muted);width:62px;text-align:right;white-space:nowrap">${label}</span>
           <div style="flex:1;height:11px;background:var(--surface2);border-radius:2px;overflow:hidden">
             <div style="width:${pct}%;height:100%;background:${color};border-radius:2px;transition:width .35s cubic-bezier(.22,1,.36,1)"></div>
           </div>
-          <span style="font-size:.64rem;color:var(--text2);width:24px;font-weight:${o.n === maxNew ? '700' : '400'}">${o.estimated ? '~' : '+'}${o.n}</span>
+          <span style="font-size:.64rem;color:var(--text2);width:30px;font-weight:${isPeak ? '700' : '400'}">${o.estimated ? '~' : '+'}${o.n}</span>
         </div>`;
       }).join('');
       if (anyEstimated) {
@@ -4674,8 +4683,8 @@ function renderModelHealth() {
   // "778 tournaments" and had drifted from the real 781.
   if (typeof PERFORMANCE_DATA !== 'undefined' && PERFORMANCE_DATA) {
     const tc = document.getElementById('footerTournamentCount');
-    if (tc && PERFORMANCE_DATA.n_training_tournaments) {
-      tc.textContent = PERFORMANCE_DATA.n_training_tournaments.toLocaleString();
+    if (tc && PERFORMANCE_DATA.n_corpus_tournaments) {
+      tc.textContent = PERFORMANCE_DATA.n_corpus_tournaments.toLocaleString();
     }
     const er = document.getElementById('footerEntryRecords');
     if (er && PERFORMANCE_DATA.n_entry_records) {

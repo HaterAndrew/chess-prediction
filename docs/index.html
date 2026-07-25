@@ -18,7 +18,7 @@
 <meta name="apple-mobile-web-app-title" content="CCA Predictor">
 <meta name="format-detection" content="telephone=no">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://chess-ask.hater-andrewd.workers.dev">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://chess-ask.hater-andrewd.workers.dev">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="styles.css?v=4057c94380">
@@ -31,7 +31,7 @@
 <!-- ══════════════════ STALE DATA BANNER ══════════════════ -->
 <div id="staleBanner" class="stale-banner" style="display:none">
   <span id="staleBannerText"></span>
-  <button onclick="document.getElementById('staleBanner').style.display='none'"
+  <button data-act="dismiss-stale"
     class="stale-banner-dismiss" aria-label="Dismiss">&times;</button>
 </div>
 
@@ -60,13 +60,13 @@
         <div class="splash-stat-label">Years of Data</div>
       </div>
     </div>
-    <button class="splash-enter" onclick="dismissSplash()" aria-label="Enter Dashboard">Enter Dashboard &#9654;</button>
+    <button class="splash-enter" data-act="dismiss-splash" aria-label="Enter Dashboard">Enter Dashboard &#9654;</button>
     <div class="splash-version">Historical Ratio Model</div>
   </div>
 </div>
 
 <!-- ══════════════════ HEADER ══════════════════ -->
-<a href="#deltaBanner" class="skip-link" style="position:absolute;top:-100%;left:0;padding:8px 16px;background:var(--gold);color:var(--ink);z-index:10000;font-weight:700;text-decoration:none;border-radius:0 0 6px 0" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Skip to content</a>
+<a href="#deltaBanner" class="skip-link" style="position:absolute;top:-100%;left:0;padding:8px 16px;background:var(--gold);color:var(--ink);z-index:10000;font-weight:700;text-decoration:none;border-radius:0 0 6px 0" data-reveal-on-focus="-100%">Skip to content</a>
 <div class="main-content" id="mainContent">
 <header role="banner">
   <div class="container header-inner">
@@ -75,10 +75,10 @@
       CCA Entry <span>Predictor</span>
     </div>
     <div class="header-right">
-      <div class="header-tourn-label" id="headerTournLabel" onclick="maybeOpenTourneyPicker(event)">
+      <div class="header-tourn-label" id="headerTournLabel" data-act="open-tourney-picker">
         <span class="live-dot" id="tournDot" style="display:none"></span>
         <span id="tournLabel" style="font-weight:700;font-size:.88rem">Loading...</span>
-        <button class="compare-add-btn" id="compareAddBtn" onclick="addToCompareSelected();event.stopPropagation()" title="Add to Compare" aria-label="Add tournament to compare">&#9878;</button>
+        <button class="compare-add-btn" id="compareAddBtn" data-act="add-to-compare" title="Add to Compare" aria-label="Add tournament to compare">&#9878;</button>
       </div>
       <div class="header-meta">Updated: <span id="lastUpdated"></span></div>
     </div>
@@ -89,29 +89,29 @@
 
   <!-- ── Page-Level Tabs ── -->
   <div class="page-tabs" role="tablist">
-    <button class="page-tab active" onclick="switchPageTab('predictions')" role="tab" aria-selected="true" aria-controls="panel-predictions" id="ptab-predictions">Predictions</button>
-    <button class="page-tab" onclick="switchPageTab('ask')" role="tab" aria-selected="false" aria-controls="panel-ask" id="ptab-ask">&#128172; Ask</button>
-    <button class="page-tab" onclick="switchPageTab('performance')" role="tab" aria-selected="false" aria-controls="panel-performance" id="ptab-performance">&#9733; Performance</button>
-    <button class="page-tab" onclick="switchPageTab('audit')" role="tab" aria-selected="false" aria-controls="panel-audit" id="ptab-audit">&#10003; Audit</button>
+    <button class="page-tab active" data-act="page-tab" data-tab="predictions" role="tab" aria-selected="true" aria-controls="panel-predictions" id="ptab-predictions">Predictions</button>
+    <button class="page-tab" data-act="page-tab" data-tab="ask" role="tab" aria-selected="false" aria-controls="panel-ask" id="ptab-ask">&#128172; Ask</button>
+    <button class="page-tab" data-act="page-tab" data-tab="performance" role="tab" aria-selected="false" aria-controls="panel-performance" id="ptab-performance">&#9733; Performance</button>
+    <button class="page-tab" data-act="page-tab" data-tab="audit" role="tab" aria-selected="false" aria-controls="panel-audit" id="ptab-audit">&#10003; Audit</button>
     <div class="drop-wrap page-tab-more-wrap" id="moreMenuWrap">
-      <button class="page-tab page-tab-more" id="ptab-more" onclick="toggleMoreMenu(event)" aria-expanded="false" aria-controls="moreMenuDrop">Other <span class="menu-caret" aria-hidden="true">&#9662;</span></button>
+      <button class="page-tab page-tab-more" id="ptab-more" data-act="toggle-more-menu" aria-expanded="false" aria-controls="moreMenuDrop">Other <span class="menu-caret" aria-hidden="true">&#9662;</span></button>
       <div class="drop-menu page-tab-drop" id="moreMenuDrop" aria-label="More views">
-        <button class="cat-item" role="tab" aria-selected="false" id="ptab-compare" aria-controls="panel-compare" onclick="pickMoreTab('compare')">&#9878; Compare</button>
-        <button class="cat-item" role="tab" aria-selected="false" id="ptab-email" aria-controls="panel-email" onclick="pickMoreTab('email')">&#9993; Email</button>
-        <button class="cat-item" role="tab" aria-selected="false" id="ptab-about" aria-controls="panel-about" onclick="pickMoreTab('about')">&#9881; About the Model</button>
-        <button class="cat-item" role="tab" aria-selected="false" id="ptab-puzzles" aria-controls="panel-puzzles" onclick="pickMoreTab('puzzles')">&#9822; Puzzles</button>
+        <button class="cat-item" role="tab" aria-selected="false" id="ptab-compare" aria-controls="panel-compare" data-act="more-tab" data-tab="compare">&#9878; Compare</button>
+        <button class="cat-item" role="tab" aria-selected="false" id="ptab-email" aria-controls="panel-email" data-act="more-tab" data-tab="email">&#9993; Email</button>
+        <button class="cat-item" role="tab" aria-selected="false" id="ptab-about" aria-controls="panel-about" data-act="more-tab" data-tab="about">&#9881; About the Model</button>
+        <button class="cat-item" role="tab" aria-selected="false" id="ptab-puzzles" aria-controls="panel-puzzles" data-act="more-tab" data-tab="puzzles">&#9822; Puzzles</button>
       </div>
     </div>
   </div>
 
   <!-- ── Search dialog (opens from the header Search button) ── -->
   <div class="cmdk" id="cmdkRoot" role="dialog" aria-modal="true" aria-label="Search tournaments" hidden>
-    <div class="cmdk-backdrop" onclick="closeCmdK()"></div>
+    <div class="cmdk-backdrop" data-act="close-cmdk"></div>
     <div class="cmdk-panel">
       <div class="cmdk-input-wrap">
         <span class="cmdk-input-icon" aria-hidden="true">&#128269;</span>
         <input type="search" class="cmdk-input" id="cmdkInput" placeholder="Search tournaments..." autocomplete="off" aria-controls="cmdkResults">
-        <button class="cmdk-close" onclick="closeCmdK()" aria-label="Close search">&times;</button>
+        <button class="cmdk-close" data-act="close-cmdk" aria-label="Close search">&times;</button>
       </div>
       <div class="cmdk-results" id="cmdkResults" role="listbox"></div>
     </div>
@@ -145,7 +145,7 @@
         <div style="font-weight:700;margin-bottom:2px">Manual override active</div>
         <div id="overrideBannerDetail" style="color:var(--text2);font-size:.78rem"></div>
       </div>
-      <button onclick="clearDataEntry()" style="background:rgba(240,192,64,0.15);border:1px solid rgba(240,192,64,0.5);color:var(--gold);padding:5px 12px;border-radius:6px;font-size:.74rem;font-weight:600;cursor:pointer;flex-shrink:0">Clear all overrides</button>
+      <button data-act="clear-data-entry" style="background:rgba(240,192,64,0.15);border:1px solid rgba(240,192,64,0.5);color:var(--gold);padding:5px 12px;border-radius:6px;font-size:.74rem;font-weight:600;cursor:pointer;flex-shrink:0">Clear all overrides</button>
     </div>
   </div>
 
@@ -278,13 +278,13 @@
         <h3 class="panel-title" style="margin-bottom:0">2026 Tournament Overview</h3>
         <div class="tt-controls">
           <div class="tt-filters" role="tablist" aria-label="Filter by status">
-            <button class="tt-filter tt-filter-active" data-filter="all" onclick="filterTourneyTable('all')" type="button">All</button>
-            <button class="tt-filter" data-filter="live" onclick="filterTourneyTable('live')" type="button">Live</button>
-            <button class="tt-filter" data-filter="complete" onclick="filterTourneyTable('complete')" type="button">Complete</button>
+            <button class="tt-filter tt-filter-active" data-act="filter-tourney-table" data-filter="all" type="button">All</button>
+            <button class="tt-filter" data-act="filter-tourney-table" data-filter="live" type="button">Live</button>
+            <button class="tt-filter" data-act="filter-tourney-table" data-filter="complete" type="button">Complete</button>
           </div>
           <div class="tt-search">
             <span class="tt-search-icon" aria-hidden="true">&#128269;</span>
-            <input id="tourneyFilter" type="search" placeholder="Filter tournaments..." oninput="filterTourneyTable()" autocomplete="off" aria-label="Filter tournament rows">
+            <input id="tourneyFilter" type="search" placeholder="Filter tournaments..." data-inputact="filter-tourney-table-input" autocomplete="off" aria-label="Filter tournament rows">
           </div>
         </div>
       </div>
@@ -292,13 +292,13 @@
         <table class="tourney-table" id="tourneyTable">
           <thead>
             <tr>
-              <th class="sortable" onclick="sortTable('name',event)">Tournament</th>
-              <th class="sortable" onclick="sortTable('status',event)">Status</th>
-              <th class="sortable" onclick="sortTable('date',event)">Event Date</th>
-              <th class="sortable" onclick="sortTable('current',event)">Current</th>
-              <th class="sortable" onclick="sortTable('predicted',event)">Predicted</th>
+              <th class="sortable" data-act="sort-table" data-col="name">Tournament</th>
+              <th class="sortable" data-act="sort-table" data-col="status">Status</th>
+              <th class="sortable" data-act="sort-table" data-col="date">Event Date</th>
+              <th class="sortable" data-act="sort-table" data-col="current">Current</th>
+              <th class="sortable" data-act="sort-table" data-col="predicted">Predicted</th>
               <th title="The 80% likely range — actual entries land inside this range 8 times out of 10">Likely Range</th>
-              <th class="sortable" onclick="sortTable('progress',event)">Progress</th>
+              <th class="sortable" data-act="sort-table" data-col="progress">Progress</th>
             </tr>
           </thead>
           <tbody id="tourneyBody"></tbody>
@@ -324,10 +324,10 @@
           <div class="chess-board" id="chessBoard"></div>
         </div>
         <div class="puzzle-nav">
-          <button class="puzzle-btn" id="puzzlePrev" onclick="puzzleNav(-1)" disabled>&#9664; Prev</button>
-          <button class="puzzle-btn" id="puzzleHint" onclick="puzzleGiveHint()">Hint</button>
-          <button class="puzzle-btn" id="puzzleRetry" onclick="puzzleRetry()" style="display:none">Retry</button>
-          <button class="puzzle-btn primary" id="puzzleNext" onclick="puzzleNav(1)">Next &#9654;</button>
+          <button class="puzzle-btn" id="puzzlePrev" data-act="puzzle-nav" data-delta="-1" disabled>&#9664; Prev</button>
+          <button class="puzzle-btn" id="puzzleHint" data-act="puzzle-hint">Hint</button>
+          <button class="puzzle-btn" id="puzzleRetry" data-act="puzzle-retry" style="display:none">Retry</button>
+          <button class="puzzle-btn primary" id="puzzleNext" data-act="puzzle-nav" data-delta="1">Next &#9654;</button>
         </div>
       </div>
       <div>
@@ -379,10 +379,10 @@
     <!-- Tournament selector -->
     <div class="email-toolbar">
       <span class="email-toolbar-label">Tournaments</span>
-      <button onclick="emailSelectAll()" class="email-link-btn">All</button>
-      <button onclick="emailSelectNone()" class="email-link-btn">Clear</button>
-      <button onclick="emailSelectLiveOnly()" class="email-link-btn">Live only</button>
-      <button onclick="emailSelectClose()" class="email-link-btn">Next 60 days</button>
+      <button data-act="email-select-all" class="email-link-btn">All</button>
+      <button data-act="email-select-none" class="email-link-btn">Clear</button>
+      <button data-act="email-select-live" class="email-link-btn">Live only</button>
+      <button data-act="email-select-close" class="email-link-btn">Next 60 days</button>
     </div>
     <div id="emailGrid" class="email-grid"></div>
 
@@ -390,25 +390,25 @@
     <div class="email-toolbar">
       <span class="email-toolbar-label">Length</span>
       <div class="email-seg" id="emailLenToggle">
-        <button data-len="short" onclick="setEmailLength('short')">Short</button>
-        <button data-len="medium" onclick="setEmailLength('medium')" class="active">Medium</button>
-        <button data-len="long" onclick="setEmailLength('long')">Long</button>
+        <button data-act="email-length" data-len="short">Short</button>
+        <button data-act="email-length" data-len="medium" class="active">Medium</button>
+        <button data-act="email-length" data-len="long">Long</button>
       </div>
       <span class="email-toolbar-label">Format</span>
       <div class="email-seg" id="emailFormatToggle">
-        <button data-fmt="plain" onclick="setEmailFormat('plain')" class="active">Plain text</button>
-        <button data-fmt="html" onclick="setEmailFormat('html')">HTML</button>
+        <button data-act="email-format" data-fmt="plain" class="active">Plain text</button>
+        <button data-act="email-format" data-fmt="html">HTML</button>
       </div>
     </div>
 
     <!-- Unified action bar: Generate + Copy + Source/Preview toggle, sticky above output -->
     <div class="email-action-bar">
-      <button onclick="generateEmail()" class="email-generate-btn">Generate</button>
-      <button id="emailCopyBtn" onclick="copyEmail()" class="email-copy-btn">Copy</button>
-      <button id="emailCopyHtmlBtn" onclick="copyEmailHTML()" class="email-copy-btn" style="display:none">Copy HTML</button>
+      <button data-act="email-generate" class="email-generate-btn">Generate</button>
+      <button id="emailCopyBtn" data-act="email-copy" class="email-copy-btn">Copy</button>
+      <button id="emailCopyHtmlBtn" data-act="email-copy-html" class="email-copy-btn" style="display:none">Copy HTML</button>
       <div class="email-split-tabs" id="emailSplitTabs" role="tablist" aria-label="Email view" style="display:none;margin-left:auto">
-        <button class="email-split-tab active" data-tab="source" role="tab" aria-selected="true" onclick="setEmailSplitTab('source')">Source</button>
-        <button class="email-split-tab" data-tab="preview" role="tab" aria-selected="false" onclick="setEmailSplitTab('preview')">Preview</button>
+        <button class="email-split-tab active" role="tab" aria-selected="true" data-act="email-split-tab" data-tab="source">Source</button>
+        <button class="email-split-tab" role="tab" aria-selected="false" data-act="email-split-tab" data-tab="preview">Preview</button>
       </div>
     </div>
     <div class="email-split" id="emailSplit" data-tab="source">
@@ -884,7 +884,7 @@
     </div>
   </div>
 </footer>
-<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top" aria-label="Back to top">&#9650;</button>
+<button class="back-to-top" id="backToTop" data-act="scroll-top" title="Back to top" aria-label="Back to top">&#9650;</button>
 </div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js" integrity="sha384-Pqp51FUN2/qzfxZxBCtF0stpc9ONI6MYZpVqmo8m20SoaQCzf+arZvACkLkirlPz" crossorigin="anonymous"></script>
@@ -893,6 +893,11 @@
      init() (and any #audit deep link) synchronously at evaluation time. -->
 <script src="audit.js?v=30eaa762a6"></script>
 <script src="daily_series.js?v=e326e2b1fc"></script>
-<script src="app.js?v=8dda437d9b"></script>
+<script src="app.js?v=def4f39ef0"></script>
+<!-- actions.js wires every control via delegation (v3 S5). It replaced the
+     inline onclick/onkeydown attributes that the CSP below no longer permits,
+     so it is load-bearing: without it nothing on the page responds. It comes
+     last because it dispatches into the globals the files above define. -->
+<script src="actions.js?v=9ca4c521ef"></script>
 </body>
 </html>

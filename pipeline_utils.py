@@ -83,3 +83,93 @@ def build_chart_series(tid, daily, current_count, is_live=False):
             print(f"WARNING: daily_data max ({max_pt}) exceeds current_count "
                   f"({current_count}) for tid={tid}; chart series is misanchored.")
     return daily_data
+
+
+def apply_plausibility_clamp(point, ci_lo, ci_hi, current_count, hist_counts,
+                             days_remaining):
+    """Damp an estimate that sits far outside the family's historical range.
+
+    Extracted from 04d_website_data_v2 so the clamp is testable in isolation
+    and so eval and display can share one code path.
+
+    Returns the (point, ci_lo, ci_hi) triple to publish. The clamp blends
+    toward the historical median when the model lands implausibly high or low,
+    preserving the model's CI width rather than its centre.
+
+    v3 N2 (audit/AUDIT_2026-07-25.md): the clamp used to be able to publish a
+    final estimate BELOW the entry count already scraped. With history topping
+    out at 100 and 400 entries already in, `point > hist_max*3` rewrote the
+    estimate to `hist_max*1.5` == 150 -- i.e. the site predicted a final of 150
+    for an event that had already taken 400 entries. A cumulative registration
+    total cannot fall, so `current_count` is a hard floor on any published
+    estimate. The clamp now applies that floor and warns when it binds, because
+    a binding floor means the family's history no longer describes this event
+    (a genuine surge) and the ratio model needs re-fitting, not silent damping.
+    """
+    hist_counts = [c for c in hist_counts if c is not None]
+
+    if len(hist_counts) >= 3:
+        hist_min = min(hist_counts)
+        hist_max = max(hist_counts)
+        hist_med = int(pd.Series(hist_counts).median())
+        ci_width = ci_hi - ci_lo
+        if days_remaining > 60 and point < hist_med * 0.7:
+            # Far out + low: blend model with historical median (50/50)
+            point = int(0.5 * point + 0.5 * hist_med)
+            ci_lo = int(point - ci_width / 2)
+            ci_hi = int(point + ci_width / 2)
+        elif point < hist_min * 0.3:
+            # Extremely low -- re-centre on historical median
+            point = hist_med
+            ci_lo = int(point - ci_width / 2)
+            ci_hi = int(point + ci_width / 2)
+        elif point > hist_max * 3.0:
+            point = int(hist_max * 1.5)
+            ci_lo = int(point - ci_width / 2)
+            ci_hi = int(point + ci_width / 2)
+
+    # v3 N2 floor: never publish a final below what has already been counted.
+    if current_count is not None and point < current_count:
+        print(f"WARNING: plausibility clamp produced point={point} below "
+              f"current_count={current_count}; flooring to the observed count. "
+              f"History (n={len(hist_counts)}, max="
+              f"{max(hist_counts) if hist_counts else 'n/a'}) no longer "
+              f"describes this event -- treat as a genuine surge.")
+        point = int(current_count)
+
+    # Keep the interval consistent with the (possibly floored) point.
+    ci_lo = min(ci_lo, point)
+    ci_hi = max(ci_hi, point)
+    return int(point), int(ci_lo), int(ci_hi)
+
+
+def chart_series_start_date(tid, daily, event_start):
+    """Calendar date of the `day_from_start == 0` point in build_chart_series.
+
+    v3 P1 (audit/AUDIT_2026-07-25.md): the front end used to derive every chart
+    date by counting array positions back from the generation date, which is
+    only correct while the daily series has no gaps. A single missed scrape day
+    shifted every label by one and mislabelled the resulting jump as one day's
+    registrations (the visible "+125 entries yesterday" bar). Exporting the real
+    anchor lets the client compute each point's date from its own
+    `day_from_start` instead of its index, so gaps stop corrupting labels.
+
+    build_chart_series maps T (days before event start) to
+    day_from_start = max_T - T, so day 0 sits max_T days before event_start.
+
+    Returns a 'YYYY-MM-DD' string, or None when the anchor cannot be derived
+    (no rows for this tid, or no event_start) — the client falls back to its
+    previous index-based behaviour in that case.
+    """
+    if event_start is None or pd.isna(event_start):
+        return None
+    rows = daily[daily['tid'] == tid]
+    if len(rows) == 0:
+        return None
+    max_T = rows['T'].max()
+    if pd.isna(max_T):
+        return None
+    start = pd.to_datetime(event_start, errors='coerce')
+    if pd.isna(start):
+        return None
+    return (start - pd.Timedelta(days=int(max_T))).strftime('%Y-%m-%d')

@@ -71,6 +71,46 @@ jobs:
           git pull --rebase || git pull --no-rebase
           git push
 
+      # v3 O1 (audit/AUDIT_2026-07-25.md): the commit step above is `if: success()`,
+      # so on a mid-run failure the degraded flag auto_update.py just stamped never
+      # reached the Pages branch and the site kept serving day-old numbers as
+      # current. Publish the staleness marker — and ONLY the staleness marker — on
+      # failure. Every other output is discarded first, because a run that died
+      # partway may have left a half-regenerated model file on disk; last-known-good
+      # data behind an honest banner beats fresh-looking garbage.
+      - name: Publish degraded-state banner on failure
+        if: failure()
+        run: |
+          cd $GITHUB_WORKSPACE
+          git config user.name "CCA Bot"
+          git config user.email "bot@users.noreply.github.com"
+          # Discard any partial regeneration, keeping only the flag fields.
+          python3 - <<'PY'
+          import json, subprocess, sys
+          WD = "output/website_data.json"
+          try:
+              with open(WD) as fh:
+                  degraded = json.load(fh)
+          except Exception:
+              sys.exit(0)
+          if not degraded.get("pipeline_degraded"):
+              sys.exit(0)
+          flags = {k: degraded.get(k) for k in
+                   ("is_stale", "pipeline_degraded", "degraded_reason", "degraded_at")}
+          subprocess.run(["git", "checkout", "--", "output/", "docs/"], check=False)
+          with open(WD) as fh:
+              restored = json.load(fh)
+          restored.update(flags)
+          with open(WD, "w") as fh:
+              json.dump(restored, fh, indent=2)
+          print("Restored last-known-good data and re-applied degraded flags")
+          PY
+          python3 -c "import auto_update; auto_update.step_update_html()"
+          git add output/website_data.json docs/data/site_data.js docs/index.html
+          git diff --cached --quiet || git commit -m "Pipeline degraded: mark data stale ($(date +%Y-%m-%d))"
+          git pull --rebase || git pull --no-rebase
+          git push
+
       - name: Pipeline summary
         if: always()
         run: |

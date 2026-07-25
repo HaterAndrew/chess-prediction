@@ -16,7 +16,8 @@ from importlib import import_module
 m04c = import_module("04c_final_model")
 from tournament_aliases import canonicalize_family, adjust_wo_top6_count
 from prediction_window import registration_close_date, window_decayed_estimate
-from pipeline_utils import build_chart_series, is_event_complete
+from pipeline_utils import (apply_plausibility_clamp, build_chart_series,
+                            chart_series_start_date, is_event_complete)
 
 
 def _fam_eq(series, name):
@@ -657,27 +658,12 @@ for _, row in t2026.iterrows():
                 point, ci_lo, ci_hi = predict_with_lognormal_ci(
                     current_count, days_to_start, family, ratios)
 
-        # Plausibility check: if point estimate is far outside historical range,
-        # blend with historical median but preserve model's CI width
-        if len(hist_counts) >= 3:
-            hist_min = min(hist_counts)
-            hist_max = max(hist_counts)
-            hist_med = int(np.median(hist_counts))
-            ci_width = ci_hi - ci_lo
-            if days_remaining > 60 and point < hist_med * 0.7:
-                # Far out + low: blend model with historical median (50/50)
-                point = int(0.5 * point + 0.5 * hist_med)
-                ci_lo = int(point - ci_width / 2)
-                ci_hi = int(point + ci_width / 2)
-            elif point < hist_min * 0.3:
-                # Extremely low — re-center on historical median
-                point = hist_med
-                ci_lo = int(point - ci_width / 2)
-                ci_hi = int(point + ci_width / 2)
-            elif point > hist_max * 3.0:
-                point = int(hist_max * 1.5)
-                ci_lo = int(point - ci_width / 2)
-                ci_hi = int(point + ci_width / 2)
+        # Plausibility check: if the point estimate is far outside the family's
+        # historical range, blend toward the historical median while preserving
+        # the model's CI width. Floors the result at current_count so a published
+        # final can never sit below the entries already scraped (v3 N2).
+        point, ci_lo, ci_hi = apply_plausibility_clamp(
+            point, ci_lo, ci_hi, current_count, hist_counts, days_remaining)
     else:
         point, ci_lo, ci_hi = current_count, current_count, current_count
 
@@ -687,6 +673,10 @@ for _, row in t2026.iterrows():
     daily_data = build_chart_series(
         tid, daily, current_count,
         is_live=status in ('live', 'in_progress'))
+    # Calendar date of the day_from_start==0 point, so the front end can date
+    # every chart point from its own index value instead of counting array
+    # positions back from the generation date (v3 P1).
+    daily_start_date = chart_series_start_date(tid, daily, event_date)
 
     # Registration curve (template)
     curve = curves.get(family, curves.get('__global__', {}))
@@ -777,6 +767,7 @@ for _, row in t2026.iterrows():
         "ci_level": 0.80,
         "historical": historical,
         "daily_data": daily_data,
+        "daily_start_date": daily_start_date,
         "registration_curve": reg_curve,
         "status": 'live' if status == 'in_progress' else status,
         "prediction_source": prediction_source,
@@ -809,16 +800,23 @@ def _scrape_daily_series(family_name, fallback_count):
     read straight from daily_scrape.csv and matched by family name. Mirrors the
     main path's cummax cleaning. Falls back to a single point only when fewer
     than two scrapes exist — the chart needs >=3 points to draw bars, so the old
-    hardcoded [[0, count]] rendered nothing for these events."""
+    hardcoded [[0, count]] rendered nothing for these events.
+
+    Returns (series, start_date) where start_date is the 'YYYY-MM-DD' calendar
+    date of day 0, or None when unknown. v3 P1: the front end dates every chart
+    point from this anchor plus the point's own day index, so a gap in scraping
+    can no longer shift the labels. v3 N9: this path now runs the same
+    max-vs-count invariant as build_chart_series instead of going unchecked.
+    """
     if not os.path.exists(scrape_path):
-        return [[0, int(fallback_count)]]
+        return [[0, int(fallback_count)]], None
 
     def _strip_year(n):
         return n[5:] if isinstance(n, str) and n.startswith('2026 ') else n
 
     ev = scrape[scrape['tournament_name'].apply(_strip_year) == family_name].sort_values('date')
     if len(ev) < 2:
-        return [[0, int(fallback_count)]]
+        return [[0, int(fallback_count)]], None
     by_day = {}
     min_date = ev['date'].min()
     for _, r in ev.iterrows():
@@ -829,7 +827,17 @@ def _scrape_daily_series(family_name, fallback_count):
     for day in sorted(by_day):
         peak = max(peak, by_day[day])
         series.append([day, peak])
-    return series
+
+    # v3 N9: same post-build invariant the main path enforces. This series is
+    # built from the scrape itself so it should never exceed the scraped count;
+    # if it does, the family-name match pulled in another event's rows.
+    if series and fallback_count and max(p[1] for p in series) > int(fallback_count):
+        print(f"WARNING: roster-pending series max ({max(p[1] for p in series)}) "
+              f"exceeds count ({int(fallback_count)}) for {family_name}; "
+              f"check the family-name match.")
+
+    start_date = pd.to_datetime(min_date).strftime('%Y-%m-%d')
+    return series, start_date
 
 
 # Canonical-aware so a metadata event ("... (in Connecticut)") isn't re-added
@@ -898,6 +906,7 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
         _eb_dl_norm = str(eb_deadline)[:10] if pd.notna(eb_deadline) and str(eb_deadline) != 'nan' else None
         _eb_dl_norm, eb_fee = sanitize_early_bird(
             mfamily, 2026, _eb_dl_norm, eb_fee, reg_fee, event_date.strftime('%Y-%m-%d'))
+        _rp_series, _rp_start = _scrape_daily_series(mfamily, settled_count)
         t_out = {
             "family": mfamily,
             "year": 2026,
@@ -916,7 +925,8 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
             "ci_upper": int(settled_count),
             "ci_level": 0.80,
             "historical": historical,
-            "daily_data": _scrape_daily_series(mfamily, settled_count),
+            "daily_data": _rp_series,
+            "daily_start_date": _rp_start,
             "registration_curve": reg_curve,
             "status": "complete" if ended else "live",
             "n_historical_editions": len(historical),
@@ -992,6 +1002,7 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
     onsite_fee = float(mrow['onsite_fee']) if pd.notna(mrow.get('onsite_fee')) else None
     _eb_dl_norm = str(eb_deadline)[:10] if pd.notna(eb_deadline) and str(eb_deadline) != 'nan' else None
     _eb_dl_norm, eb_fee = sanitize_early_bird(mfamily, 2026, _eb_dl_norm, eb_fee, reg_fee, event_date.strftime('%Y-%m-%d'))
+    _rp_series, _rp_start = _scrape_daily_series(mfamily, current_count)
     t_out = {
         "family": mfamily,
         "year": 2026,
@@ -1010,7 +1021,8 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
         "ci_upper": ci_hi,
         "ci_level": 0.80,
         "historical": historical,
-        "daily_data": _scrape_daily_series(mfamily, current_count),
+        "daily_data": _rp_series,
+        "daily_start_date": _rp_start,
         "registration_curve": reg_curve,
         "status": status_label,
         # Interim roster-fallback disclosure (see estimate logic above).
@@ -1122,6 +1134,7 @@ for _, row in historical_valid.iterrows():
         "ci_level": 0.80,
         "historical": historical,
         "daily_data": daily_data,
+        "daily_start_date": chart_series_start_date(tid, daily, event_date),
         "registration_curve": reg_curve,
         "status": "historical",
     }

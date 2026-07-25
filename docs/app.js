@@ -4694,8 +4694,28 @@ function renderModelHealth() {
     updated.textContent = ts ? 'Pipeline last ran ' + ts : '';
   }
 
+  // v3 T7: say what the grade actually covers. Only predict_nowcast is
+  // evaluated, but several other paths reach the page — the online-window
+  // estimator, the interim metadata/pace fallbacks, and straight live counts.
+  // On the current data one live card in fifteen comes from the graded engine,
+  // so presenting the grade without its scope overstates what has been tested.
+  const scopeEl = document.getElementById('mh-grade-scope');
+  if (scopeEl && typeof TOURNAMENT_DATA !== 'undefined') {
+    const live = TOURNAMENT_DATA.tournaments.filter(t => t.status === 'live');
+    const graded = live.filter(t => t.prediction_source === 'model');
+    if (live.length) {
+      const other = live.length - graded.length;
+      scopeEl.textContent =
+        `Grade scope: measured on the evaluated model, which currently produces `
+        + `${graded.length} of ${live.length} live predictions. The other ${other} `
+        + `use interim fallbacks (pace, historical average, or the live count) that `
+        + `the grade does not cover; those cards are marked low-confidence.`;
+    }
+  }
+
   // v3 T10: the footer corpus size comes from the data too. It was hardcoded as
-  // "778 tournaments" and had drifted from the real 781.
+  // "192K entry records across 778 tournaments" and had drifted from the real
+  // 781 / 194.5K.
   if (typeof PERFORMANCE_DATA !== 'undefined' && PERFORMANCE_DATA) {
     const tc = document.getElementById('footerTournamentCount');
     if (tc && PERFORMANCE_DATA.n_corpus_tournaments) {

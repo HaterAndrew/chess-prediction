@@ -1125,7 +1125,7 @@ function perfPaint(view) {
   if (!agg.length) {
     document.getElementById('perfKPIs').innerHTML = '';
     document.getElementById('perfHorizonStrip').innerHTML = '';
-    document.getElementById('perfTable').innerHTML = '<div style="color:var(--muted);padding:12px 0;font-size:.78rem">No completed tournaments for this selection.</div>';
+    document.getElementById('perfTable').innerHTML = '<div style="color:var(--muted);padding:12px 0;font-size:var(--fs-2)">No completed tournaments for this selection.</div>';
     return;
   }
 
@@ -1143,8 +1143,8 @@ function perfPaint(view) {
   document.getElementById('perfKPIs').innerHTML = kpis.map(k => `
     <div style="padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-align:center">
       <div style="font-size:1.4rem;font-weight:800;color:${k.c};line-height:1;font-variant-numeric:tabular-nums">${k.v}</div>
-      <div style="font-size:.65rem;font-weight:600;color:var(--text);margin-top:5px;letter-spacing:.03em">${k.l}</div>
-      <div style="font-size:.58rem;color:var(--muted);margin-top:1px">${k.s}</div>
+      <div style="font-size:var(--fs-1);font-weight:600;color:var(--text);margin-top:5px;letter-spacing:.03em">${k.l}</div>
+      <div style="font-size:var(--fs-1);color:var(--muted);margin-top:1px">${k.s}</div>
     </div>`).join('');
 
   requestAnimationFrame(() => {
@@ -1158,9 +1158,9 @@ function perfPaint(view) {
     const bc = a.mae_pct <= 8 ? 'rgba(34,197,94,.25)' : a.mae_pct <= 12 ? 'rgba(240,192,64,.2)' : 'rgba(239,68,68,.2)';
     const tc = a.mae_pct <= 8 ? PALETTE.green : a.mae_pct <= 12 ? 'var(--gold)' : PALETTE.red;
     return `<div style="flex:1;min-width:80px;padding:10px 8px;background:${bg};border:1px solid ${bc};border-radius:10px;text-align:center" title="n=${a.n}, bias ${a.bias_pct > 0 ? '+' : ''}${a.bias_pct}%">
-      <div style="font-size:.6rem;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase">T-${a.T}</div>
-      <div style="font-size:1.1rem;font-weight:800;color:${tc};margin:3px 0 2px">${a.mae_pct.toFixed(1)}%</div>
-      <div style="font-size:.55rem;color:var(--muted)">CI ${a.ci_coverage}%</div>
+      <div style="font-size:var(--fs-1);font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase">T-${a.T}</div>
+      <div style="font-size:var(--fs-5);font-weight:800;color:${tc};margin:3px 0 2px">${a.mae_pct.toFixed(1)}%</div>
+      <div style="font-size:var(--fs-1);color:var(--muted)">CI ${a.ci_coverage}%</div>
     </div>`;
   }).join('');
 
@@ -1309,11 +1309,11 @@ function perfDrawTable(data) {
   const agg = data.aggregate;
   const tPoints = agg.map(a => a.T);
 
-  let html = `<table style="width:100%;border-collapse:collapse;font-size:.76rem">
+  let html = `<table style="width:100%;border-collapse:collapse;font-size:var(--fs-2)">
     <thead><tr style="border-bottom:2px solid var(--border)">
       <th style="padding:8px 10px;text-align:left;white-space:nowrap">Tournament</th>
       <th style="padding:8px 8px;text-align:right;white-space:nowrap">Final</th>`;
-  tPoints.forEach(T => { html += `<th style="padding:8px 4px;text-align:center;font-size:.68rem;white-space:nowrap">T-${T}</th>`; });
+  tPoints.forEach(T => { html += `<th style="padding:8px 4px;text-align:center;font-size:var(--fs-1);white-space:nowrap">T-${T}</th>`; });
   html += `</tr></thead><tbody>`;
 
   data.tournaments.forEach((t, idx) => {
@@ -1327,8 +1327,8 @@ function perfDrawTable(data) {
         const ec = Math.abs(p.error_pct) <= 5 ? PALETTE.green : Math.abs(p.error_pct) <= 15 ? 'var(--gold)' : PALETTE.red;
         const ci = p.in_ci ? '\u2713' : '\u2717';
         const cic = p.in_ci ? PALETTE.green : PALETTE.red;
-        html += `<td data-label="T-${T}" style="padding:5px 4px;text-align:center;font-size:.7rem" title="Pred ${p.predicted} from ${p.count_at_T} reg, CI [${p.ci_lower}-${p.ci_upper}]">
-          <span style="color:${ec};font-weight:600;font-variant-numeric:tabular-nums">${p.error_pct > 0 ? '+' : ''}${p.error_pct}%</span><span style="color:${cic};font-size:.58rem;margin-left:2px">${ci}</span></td>`;
+        html += `<td data-label="T-${T}" style="padding:5px 4px;text-align:center;font-size:var(--fs-1)" title="Pred ${p.predicted} from ${p.count_at_T} reg, CI [${p.ci_lower}-${p.ci_upper}]">
+          <span style="color:${ec};font-weight:600;font-variant-numeric:tabular-nums">${p.error_pct > 0 ? '+' : ''}${p.error_pct}%</span><span style="color:${cic};font-size:var(--fs-1);margin-left:2px">${ci}</span></td>`;
       } else {
         html += `<td data-label="T-${T}" style="padding:5px 4px;text-align:center;color:var(--muted)">\u2014</td>`;
       }
@@ -1342,7 +1342,7 @@ function perfDrawTable(data) {
   tPoints.forEach(T => {
     const a = agg.find(x => x.T === T);
     if (a) {
-      html += `<td data-label="T-${T}" style="padding:8px 4px;text-align:center;font-size:.68rem">
+      html += `<td data-label="T-${T}" style="padding:8px 4px;text-align:center;font-size:var(--fs-1)">
         <div style="color:var(--text)">${a.mae_pct}%</div>
         <div style="font-size:.56rem;color:var(--muted);font-weight:400">CI ${a.ci_coverage}%</div></td>`;
     } else html += `<td data-label="T-${T}">\u2014</td>`;
@@ -1739,7 +1739,7 @@ function _vsBuildFlat(ql) {
     const editions = byFamily[fam].sort((a, b) => b.t.year - a.t.year);
     flat.push({
       type: 'header', h: _vs.HDR_H,
-      html: `<div style="height:${_vs.HDR_H}px;padding:5px 14px 3px;font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;background:var(--surface2);border-bottom:1px solid var(--border-light);box-sizing:border-box;display:flex;align-items:center">${esc(fam)} <span style="font-weight:400;opacity:.7;margin-left:4px">(${editions.length})</span></div>`
+      html: `<div style="height:${_vs.HDR_H}px;padding:5px 14px 3px;font-size:var(--fs-1);color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;background:var(--surface2);border-bottom:1px solid var(--border-light);box-sizing:border-box;display:flex;align-items:center">${esc(fam)} <span style="font-weight:400;opacity:.7;margin-left:4px">(${editions.length})</span></div>`
     });
     editions.forEach(({t, i}) => {
       flat.push({
@@ -1755,7 +1755,7 @@ function _vsBuildFlat(ql) {
     : `${filtered.length} editions across ${families.length} families`;
   flat.push({
     type: 'footer', h: _vs.FOOTER_H,
-    html: `<div style="height:${_vs.FOOTER_H}px;padding:6px 14px;font-size:.68rem;color:var(--muted);border-top:1px solid var(--border-light);display:flex;align-items:center;box-sizing:border-box">${footerText}</div>`
+    html: `<div style="height:${_vs.FOOTER_H}px;padding:6px 14px;font-size:var(--fs-1);color:var(--muted);border-top:1px solid var(--border-light);display:flex;align-items:center;box-sizing:border-box">${footerText}</div>`
   });
 
   return flat;
@@ -2472,7 +2472,7 @@ function renderHero(t) {
     ? (nHist >= 2 ? 'var(--orange)' : 'var(--red)')
     : (nHist >= 8 ? 'var(--green)' : 'var(--gold)');
   const confBadge = !isDone(t) && t.ci_lower !== t.ci_upper
-    ? ` <span title="${nHist} qualifying historical edition${nHist===1?'':'s'} for this family. Below 4 editions, the model marks the prediction low-confidence." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:700;background:rgba(0,0,0,.3);border:1px solid ${confColor};color:${confColor};margin-left:6px;vertical-align:middle;cursor:help">${confLabel} · ${nHist} edition${nHist===1?'':'s'}</span>`
+    ? ` <span title="${nHist} qualifying historical edition${nHist===1?'':'s'} for this family. Below 4 editions, the model marks the prediction low-confidence." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:var(--fs-1);font-weight:700;background:rgba(0,0,0,.3);border:1px solid ${confColor};color:${confColor};margin-left:6px;vertical-align:middle;cursor:help">${confLabel} · ${nHist} edition${nHist===1?'':'s'}</span>`
     : '';
 
   // Audit telemetry: surface fallback tier when prediction didn't use direct family ratios.
@@ -2484,7 +2484,7 @@ function renderHero(t) {
     'roster-pending': 'interim · not in roster yet',
   };
   const tierBadge = (!isDone(t) && t.prediction_tier && t.prediction_tier !== 'family-direct')
-    ? ` <span title="Prediction used the '${t.prediction_tier}' fallback path. 'family-alias' pools history from related families; 'size-matched' uses families with comparable historical size when this family has no direct history." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:.62rem;font-weight:700;background:rgba(0,0,0,.3);border:1px solid var(--blue);color:var(--blue);margin-left:6px;vertical-align:middle;cursor:help">${tierLabelMap[t.prediction_tier] || t.prediction_tier.replace('-',' ')}</span>`
+    ? ` <span title="Prediction used the '${t.prediction_tier}' fallback path. 'family-alias' pools history from related families; 'size-matched' uses families with comparable historical size when this family has no direct history." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:var(--fs-1);font-weight:700;background:rgba(0,0,0,.3);border:1px solid var(--blue);color:var(--blue);margin-left:6px;vertical-align:middle;cursor:help">${tierLabelMap[t.prediction_tier] || t.prediction_tier.replace('-',' ')}</span>`
     : '';
 
   // Confidence interval visualization. For completed tournaments we still
@@ -2521,7 +2521,7 @@ function renderHero(t) {
         </div>
         <span class="ci-bound ci-bound-hi">${fmt(hi)}</span>
       </div>
-      <div class="ci-caption" style="font-size:.7rem;color:var(--muted);margin-top:2px">Estimated final entries &middot; ${ciLevel}% range</div>
+      <div class="ci-caption" style="font-size:var(--fs-1);color:var(--muted);margin-top:2px">Estimated final entries &middot; ${ciLevel}% range</div>
       <div class="ci-meta">${ciLevel}% CI${confBadge}${tierBadge}</div>
     `;
   }
@@ -2596,7 +2596,7 @@ function renderHero(t) {
   }
   document.getElementById('kpiPace').innerHTML = paceHtml || `
     <div class="kpi-label">Historical</div>
-    <div class="kpi-value" style="font-size:1.1rem;color:var(--muted)">–</div>
+    <div class="kpi-value" style="font-size:var(--fs-5);color:var(--muted)">–</div>
     <div class="kpi-sub">No pace data</div>
   `;
 
@@ -2617,7 +2617,7 @@ function renderHero(t) {
       } else {
         kpiProg.innerHTML = `
           <div class="kpi-label">Status</div>
-          <div class="kpi-value v-green" style="font-size:1.1rem">Final</div>
+          <div class="kpi-value v-green" style="font-size:var(--fs-5)">Final</div>
           <div class="kpi-sub">${fmtDate(t.event_start)}</div>
         `;
       }
@@ -2632,7 +2632,7 @@ function renderHero(t) {
     } else {
       kpiProg.innerHTML = `
         <div class="kpi-label">Progress</div>
-        <div class="kpi-value" style="font-size:1.1rem;color:var(--muted)">–</div>
+        <div class="kpi-value" style="font-size:var(--fs-5);color:var(--muted)">–</div>
         <div class="kpi-sub">No prediction</div>
       `;
     }
@@ -2688,15 +2688,15 @@ function renderHero(t) {
         const rowStyle = `display:flex;align-items:center;gap:6px${o.estimated ? ';opacity:.55' : ''}`;
         const tip = o.estimated ? ' title="Estimated: this day was covered by a gap in scraping"' : '';
         return `<div${tip} style="${rowStyle}">
-          <span style="font-size:.6rem;color:var(--muted);width:62px;text-align:right;white-space:nowrap">${label}</span>
+          <span style="font-size:var(--fs-1);color:var(--muted);width:62px;text-align:right;white-space:nowrap">${label}</span>
           <div style="flex:1;height:11px;background:var(--surface2);border-radius:2px;overflow:hidden">
             <div style="width:${pct}%;height:100%;background:${color};border-radius:2px;transition:width .35s cubic-bezier(.22,1,.36,1)"></div>
           </div>
-          <span style="font-size:.64rem;color:var(--text2);width:30px;font-weight:${isPeak ? '700' : '400'}">${o.estimated ? '~' : '+'}${o.n}</span>
+          <span style="font-size:var(--fs-1);color:var(--text2);width:30px;font-weight:${isPeak ? '700' : '400'}">${o.estimated ? '~' : '+'}${o.n}</span>
         </div>`;
       }).join('');
       if (anyEstimated) {
-        barsEl.innerHTML += `<div style="font-size:.58rem;color:var(--muted);margin-top:4px">~ estimated across a gap in scraping</div>`;
+        barsEl.innerHTML += `<div style="font-size:var(--fs-1);color:var(--muted);margin-top:4px">~ estimated across a gap in scraping</div>`;
       }
       weekEl.style.display = '';
     } else {
@@ -3257,8 +3257,8 @@ function renderChart(t) {
           boxWidth: _mobileVP() ? 6 : 10,
           displayColors: true,
           titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' },
-          bodyFont: { size: _mobileVP() ? 11 : 12 },
-          footerFont: { size: _mobileVP() ? 10 : 11, style: 'italic' },
+          bodyFont: { size: 12 },
+          footerFont: { size: 11, style: 'italic' },
           titleMarginBottom: 8, bodySpacing: _mobileVP() ? 4 : 5,
           usePointStyle: true, pointStyleWidth: _mobileVP() ? 6 : 8,
           callbacks: {
@@ -3411,12 +3411,12 @@ function renderChart(t) {
           // from the chart's data region (the day-of / post-event surge).
           max: t.event_start ? addDays(new Date(t.event_start + 'T00:00:00'), 5) : undefined,
           grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false },
-          ticks: { color: PALETTE.muted, font: { size: _mobileVP() ? 10 : 11 }, maxRotation: 0 }
+          ticks: { color: PALETTE.muted, font: { size: 11 }, maxRotation: 0 }
         },
         y: {
           beginAtZero: true,
           grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false },
-          ticks: { color: PALETTE.muted, font: { size: _mobileVP() ? 10 : 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
+          ticks: { color: PALETTE.muted, font: { size: 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
         }
       },
       // Desktop top padding fits two rows of annotation pills so when
@@ -3485,7 +3485,7 @@ function renderTimeline(t) {
       ? Math.round(t.historical.reduce((s,h) => s+h.count, 0) / t.historical.length) : null;
     el.innerHTML = `
       <div class="timeline-node"><div class="timeline-dot past"></div><div class="timeline-label">Event Date</div><div class="timeline-date">${fmtDate(t.event_start)}</div></div>
-      <div class="timeline-node"><div class="timeline-dot past"></div><div class="timeline-label">Final Count</div><div class="timeline-date" style="color:var(--gold);font-size:.9rem">${fmt(t.current_count)}</div></div>
+      <div class="timeline-node"><div class="timeline-dot past"></div><div class="timeline-label">Final Count</div><div class="timeline-date" style="color:var(--gold);font-size:var(--fs-4)">${fmt(t.current_count)}</div></div>
       ${avg ? `<div class="timeline-node"><div class="timeline-dot future"></div><div class="timeline-label">Past Average</div><div class="timeline-date">${fmt(avg)}</div></div>` : ''}
     `;
     return;
@@ -3618,7 +3618,7 @@ function renderHistorical(t) {
   if (histChartObj) { histChartObj.destroy(); histChartObj = null; }
   const wrap = document.getElementById('compTableWrap');
   if (!t.historical || t.historical.length === 0) {
-    wrap.innerHTML = `<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:.8rem;opacity:.6">No historical editions on record</div>`;
+    wrap.innerHTML = `<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:var(--fs-2);opacity:.6">No historical editions on record</div>`;
     return;
   }
 
@@ -3730,8 +3730,8 @@ function renderHistorical(t) {
         });
       },
       scales: {
-        x: { grid: { display: false }, ticks: { color: PALETTE.muted, font: { size: _mobileVP() ? 9 : 10 }, maxRotation: 0 } },
-        y: { beginAtZero: true, grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false }, ticks: { color: PALETTE.muted, font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 4 : 6, callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k' : v } }
+        x: { grid: { display: false }, ticks: { color: PALETTE.muted, font: { size: 11 }, maxRotation: 0 } },
+        y: { beginAtZero: true, grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false }, ticks: { color: PALETTE.muted, font: { size: 11 }, maxTicksLimit: _mobileVP() ? 4 : 6, callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k' : v } }
       }
     }
   });
@@ -3747,13 +3747,13 @@ function renderHistorical(t) {
     const yearLabel = h.isCurrent ? `${h.year} ${isDone(t) ? '(final)' : '(est)'}` : `${h.year}${star}`;
     const rowClass = h.isCurrent ? ' class="current-year"' : '';
     const countCell = h.adjusted
-      ? `${fmt(h.count)} <span style="color:var(--muted);font-size:.75rem">(was ${fmt(h.count_raw)})</span>`
+      ? `${fmt(h.count)} <span style="color:var(--muted);font-size:var(--fs-2)">(was ${fmt(h.count_raw)})</span>`
       : fmt(h.count);
     return `<tr${rowClass}><td data-label="Year">${yearLabel}</td><td data-label="Count">${countCell}</td><td data-label="YoY" class="${cls}">${diff != null ? (diff > 0 ? '+' : '') + fmt(diff) : '–'}</td><td data-label="Change" class="${cls}">${pct != null ? (diff > 0 ? '+' : '') + pct + '%' : '–'}</td></tr>`;
   }).join('');
 
   const footnote = hasAdjusted
-    ? `<div style="margin-top:8px;color:var(--muted);font-size:.72rem;line-height:1.45">* 2019 and 2022 World Open were a single combined registration page (9 sections). Counts adjusted to top-6 only for apples-to-apples vs the 2023+ split. Estimates use chessevents.com final-standings ratios.</div>`
+    ? `<div style="margin-top:8px;color:var(--muted);font-size:var(--fs-2);line-height:1.45">* 2019 and 2022 World Open were a single combined registration page (9 sections). Counts adjusted to top-6 only for apples-to-apples vs the 2023+ split. Estimates use chessevents.com final-standings ratios.</div>`
     : '';
 
   wrap.innerHTML = `
@@ -3889,13 +3889,13 @@ function renderRegCurve(t) {
       scales: {
         x: {
           grid: { display: false },
-          ticks: { color: PALETTE.muted, font: { size: _mobileVP() ? 8 : 9 }, maxRotation: 0, maxTicksLimit: _mobileVP() ? 6 : 12 }
+          ticks: { color: PALETTE.muted, font: { size: 11 }, maxRotation: 0, maxTicksLimit: _mobileVP() ? 6 : 12 }
         },
         y: {
           min: 0, max: 105,
           grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false },
           ticks: {
-            color: PALETTE.muted, font: { size: _mobileVP() ? 8 : 9 },
+            color: PALETTE.muted, font: { size: 11 },
             maxTicksLimit: _mobileVP() ? 4 : 6,
             callback: v => v + '%'
           }
@@ -3926,7 +3926,7 @@ function renderFees(t) {
   const el = document.getElementById('feeContent');
   if (!t.early_bird_fee && !t.regular_fee && !t.onsite_fee) {
     el.innerHTML = `<div style="text-align:center;padding:24px 0">
-      <p style="color:var(--muted);font-size:.78rem;opacity:.6">Fee data not available for this tournament.</p>
+      <p style="color:var(--muted);font-size:var(--fs-2);opacity:.6">Fee data not available for this tournament.</p>
     </div>`;
     return;
   }
@@ -3951,29 +3951,29 @@ function renderFees(t) {
   let html = '';
   if (currentFee && !isDone(t)) {
     html += `<div style="text-align:center;padding:16px 0 20px;border-bottom:1px solid var(--border);margin-bottom:16px">
-      <div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Current Rate</div>
+      <div style="font-size:var(--fs-2);color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Current Rate</div>
       <div style="font-size:2.2rem;font-weight:900;color:var(--gold)">$${currentFee}</div>
-      <div style="font-size:.78rem;color:var(--muted);margin-top:4px">${feeStatus}</div>
+      <div style="font-size:var(--fs-2);color:var(--muted);margin-top:4px">${feeStatus}</div>
     </div>`;
   }
 
   html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center">';
   if (t.early_bird_fee && t.regular_fee && t.early_bird_fee < t.regular_fee) {
     html += `<div style="padding:10px;background:var(--surface3);border-radius:8px">
-      <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Early Bird</div>
-      <div style="font-size:1.1rem;font-weight:700;color:var(--green)">$${t.early_bird_fee}</div>
+      <div style="font-size:var(--fs-1);color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Early Bird</div>
+      <div style="font-size:var(--fs-5);font-weight:700;color:var(--green)">$${t.early_bird_fee}</div>
     </div>`;
   }
   if (t.regular_fee) {
     html += `<div style="padding:10px;background:var(--surface3);border-radius:8px">
-      <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Regular</div>
-      <div style="font-size:1.1rem;font-weight:700;color:var(--text2)">$${t.regular_fee}</div>
+      <div style="font-size:var(--fs-1);color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Regular</div>
+      <div style="font-size:var(--fs-5);font-weight:700;color:var(--text2)">$${t.regular_fee}</div>
     </div>`;
   }
   if (t.onsite_fee) {
     html += `<div style="padding:10px;background:var(--surface3);border-radius:8px">
-      <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">On-site</div>
-      <div style="font-size:1.1rem;font-weight:700;color:var(--orange)">$${t.onsite_fee}</div>
+      <div style="font-size:var(--fs-1);color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">On-site</div>
+      <div style="font-size:var(--fs-5);font-weight:700;color:var(--orange)">$${t.onsite_fee}</div>
     </div>`;
   }
   html += '</div>';
@@ -4069,7 +4069,7 @@ function renderAllTournaments() {
         const daySpan = recent[recent.length-1][0] - recent[0][0];
         const regSpan = recent[recent.length-1][1] - recent[0][1];
         const rate = daySpan > 0 ? (regSpan / daySpan).toFixed(1) : '0';
-        paceStr = `<span style="font-size:.72rem;color:var(--green)">${rate}/day</span>`;
+        paceStr = `<span style="font-size:var(--fs-2);color:var(--green)">${rate}/day</span>`;
       }
     }
 
@@ -4079,15 +4079,15 @@ function renderAllTournaments() {
       <td data-label="Event Date">${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
       <td data-label="Current" style="font-weight:600;color:var(--blue)">${fmt(t.current_count)} ${paceStr}</td>
       <td data-label="Predicted" style="font-weight:700;color:var(--gold)">${fmt(t.point_estimate)}</td>
-      <td data-label="Likely Range" style="font-size:.82rem;color:var(--muted)">${ci}</td>
+      <td data-label="Likely Range" style="font-size:var(--fs-3);color:var(--muted)">${ci}</td>
       <td data-label="Progress">
         <span class="pace-bar-wrap"><span class="pace-bar-fill" style="width:${pct}%;background:${paceColor}"></span></span>
-        <span style="font-size:.72rem;color:var(--muted)">${pct}%</span>
+        <span style="font-size:var(--fs-2);color:var(--muted)">${pct}%</span>
       </td>
     </tr>`;
   }).join('');
   if (active.length === 0) {
-    body.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:32px 0;color:var(--muted);font-size:.85rem">No tournaments match the current filter.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:32px 0;color:var(--muted);font-size:var(--fs-3)">No tournaments match the current filter.</td></tr>`;
   }
 }
 
@@ -4448,11 +4448,11 @@ function renderMiniCards() {
     }
     if (expectedCount != null) {
       if (t.current_count > expectedCount * 1.05) {
-        paceIndicator = `<span style="color:var(--green);font-size:.68rem">&#9650; ahead</span>`;
+        paceIndicator = `<span style="color:var(--green);font-size:var(--fs-1)">&#9650; ahead</span>`;
       } else if (t.current_count < expectedCount * 0.95) {
-        paceIndicator = `<span style="color:var(--orange);font-size:.68rem">&#9660; behind</span>`;
+        paceIndicator = `<span style="color:var(--orange);font-size:var(--fs-1)">&#9660; behind</span>`;
       } else {
-        paceIndicator = `<span style="color:var(--muted);font-size:.68rem">&#8212; on pace</span>`;
+        paceIndicator = `<span style="color:var(--muted);font-size:var(--fs-1)">&#8212; on pace</span>`;
       }
     }
     return `<div class="mini-card ${isSelected ? 'mini-card-active' : ''}" data-act="select-tournament" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="button" aria-label="${esc(t.family)} - ${fmt(t.point_estimate)} predicted">
@@ -4789,9 +4789,9 @@ function renderModelHealth() {
 
   grid.innerHTML = tiles.map(t =>
     '<div title="' + t.help.replace(/"/g, '&quot;') + '" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;cursor:help">' +
-    '<div style="font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">' + t.label + '</div>' +
+    '<div style="font-size:var(--fs-1);color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">' + t.label + '</div>' +
     '<div style="font-size:1.6rem;font-weight:800;color:' + t.color + ';line-height:1">' + t.value + '</div>' +
-    '<div style="font-size:.7rem;color:var(--text2);margin-top:6px">' + t.sub + '</div>' +
+    '<div style="font-size:var(--fs-1);color:var(--text2);margin-top:6px">' + t.sub + '</div>' +
     '</div>'
   ).join('');
 
@@ -4804,17 +4804,17 @@ function renderModelHealth() {
       if (!data || !data.warnings) { warnEl.innerHTML = ''; return; }
       const c = data.count || 0;
       if (c === 0) {
-        warnEl.innerHTML = '<div style="font-size:.78rem;color:var(--green);padding:10px 12px;background:rgba(72,187,120,.08);border:1px solid rgba(72,187,120,.3);border-radius:8px">Latest pipeline run: 0 warnings (clean).</div>';
+        warnEl.innerHTML = '<div style="font-size:var(--fs-2);color:var(--green);padding:10px 12px;background:rgba(72,187,120,.08);border:1px solid rgba(72,187,120,.3);border-radius:8px">Latest pipeline run: 0 warnings (clean).</div>';
         return;
       }
       const rows = data.warnings.map(w =>
-        '<tr><td style="padding:4px 8px;color:var(--muted);font-size:.72rem;white-space:nowrap">' +
-        w.step.split('(')[0].trim() + '</td><td style="padding:4px 8px;color:var(--text2);font-size:.78rem">' +
+        '<tr><td style="padding:4px 8px;color:var(--muted);font-size:var(--fs-2);white-space:nowrap">' +
+        w.step.split('(')[0].trim() + '</td><td style="padding:4px 8px;color:var(--text2);font-size:var(--fs-2)">' +
         w.text + '</td></tr>'
       ).join('');
       warnEl.innerHTML =
         '<details style="background:rgba(214,158,46,.08);border:1px solid rgba(214,158,46,.3);border-radius:8px;padding:10px 12px">' +
-        '<summary style="cursor:pointer;font-size:.78rem;color:var(--gold);font-weight:600">Latest pipeline run: ' + c + ' warning' + (c === 1 ? '' : 's') + ' (click to expand)</summary>' +
+        '<summary style="cursor:pointer;font-size:var(--fs-2);color:var(--gold);font-weight:600">Latest pipeline run: ' + c + ' warning' + (c === 1 ? '' : 's') + ' (click to expand)</summary>' +
         '<table style="width:100%;margin-top:10px;border-collapse:collapse">' + rows + '</table></details>';
     })
     .catch(() => { warnEl.innerHTML = ''; });
@@ -5219,7 +5219,7 @@ function renderCompareTab() {
   }
 
   // One-line caption above the selectors
-  let captionHTML = '<div class="compare-caption" style="font-size:.78rem;color:var(--muted);margin:0 0 10px">Pick up to 3 tournaments to compare entry trajectories side-by-side.</div>';
+  let captionHTML = '<div class="compare-caption" style="font-size:var(--fs-2);color:var(--muted);margin:0 0 10px">Pick up to 3 tournaments to compare entry trajectories side-by-side.</div>';
 
   // Build selector UI
   let selectorHTML = captionHTML + '<div class="compare-selectors">';
@@ -5294,7 +5294,7 @@ function renderCompareTab() {
     statsHTML = `<div class="compare-empty">
       <div style="font-size:2.5rem;margin-bottom:12px">&#9878;</div>
       <div style="font-size:1rem;font-weight:600;margin-bottom:6px">Select at least 2 tournaments to compare</div>
-      <div style="font-size:.82rem;color:var(--muted)">Use the dropdowns above or click &#9878; on any tournament in the Predictions tab</div>
+      <div style="font-size:var(--fs-3);color:var(--muted)">Use the dropdowns above or click &#9878; on any tournament in the Predictions tab</div>
     </div>`;
   }
 
@@ -5442,14 +5442,14 @@ function renderCompareChart(selected) {
           type: 'linear',
           reverse: true,
           title: { display: !_mobileVP(), text: 'Days Before Event', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 5 : 8, maxRotation: 0,
+          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, maxRotation: 0,
             callback(v) { return v === 0 ? 'Event' : v + 'd'; }
           },
           grid: { color: themeRgba(PALETTE.border, 0.4) }
         },
         y: {
           title: { display: !_mobileVP(), text: '% of Final Entries', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 9 : 10 }, maxTicksLimit: _mobileVP() ? 5 : 8,
+          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: 11 }, maxTicksLimit: _mobileVP() ? 5 : 8,
             callback(v) { return v + '%'; }
           },
           grid: { color: themeRgba(PALETTE.border, 0.4) },
@@ -5461,7 +5461,7 @@ function renderCompareChart(selected) {
           display: true,
           labels: {
             color: PALETTE.text2,
-            font: { size: _mobileVP() ? 10 : 11 },
+            font: { size: 11 },
             boxWidth: _mobileVP() ? 8 : 12,
             padding: _mobileVP() ? 6 : 10,
             filter(item) { return !item.text.includes('· Today'); },

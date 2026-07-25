@@ -45,10 +45,10 @@ pytestmark = pytest.mark.skipif(
 SMART_CASE_CASES = ["JANOWAY", "westmere", "McDonald", "Gianos-Steinberg",
                     "o'brien", "émile", "", "  X Y  "]
 PAD_ZIP_CASES = ["2155", "32608", "01748-3233", "", "007", "12345"]
-NAME_KEY_CASES = [["Brightwater", "Ana Marie"], ["BRIGHTWATER", "Ali"],
-                  ["Adu (IM)(Withdrawn)", "Orlando"], ["", ""],
+NAME_KEY_CASES = [["Brightwater", "Ana Marie"], ["BRIGHTWATER", "Ana"],
+                  ["Ashdown (IM)(Withdrawn)", "Orlando"], ["", ""],
                   ["  Zellwood ", " Jonquil  "]]
-SPLIT_CASES = ["Zellwood, Jonquil", "Sunderholm, Zephyr (GM)", "Merrick Jani",
+SPLIT_CASES = ["Zellwood, Jonquil", "Sunderholm, Zephyr (GM)", "Merrick Janoway",
                "Cher", "JANOWAY, MERRICK", ""]
 DEDUP_CASES = [
     {"last": "Zellwood", "first": "Jonquil", "uscf_id": "15524414",

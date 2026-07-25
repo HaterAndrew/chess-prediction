@@ -71,6 +71,11 @@ def _harvest_warnings(step_name, stdout):
 # completed 2026 tournament, so its cost grows through the season; it gets a
 # higher cap so a normal-season run does not trip the timeout (v3 O-series /
 # audit/AUDIT_2026-07-25.md — the uniform 300s cap caused the 2026-07-22 miss).
+# Lines a step emits that must reach the run log even when they fall outside the
+# 20-line tail (v3 O6): grades, coverage, and the audit's own exclusion notices.
+KEEP_LOG_RE = re.compile(
+    r'^\s*(Grade:|Evaluated |Excluded |Display clamp:|LOO-refit |Accepted )')
+
 DEFAULT_STEP_TIMEOUT = 300
 STEP_TIMEOUT_OVERRIDES = {
     "04e_performance_data.py": 1200,
@@ -97,10 +102,23 @@ def run_step(description, cmd, timeout=None):
         text=True,
         timeout=timeout if timeout is not None else _step_timeout(cmd)
     )
-    # Print stdout (last 20 lines to keep output manageable)
+    # Print stdout (last 20 lines to keep output manageable), plus any line the
+    # step marked as worth keeping.
+    #
+    # v3 O6 (audit/AUDIT_2026-07-25.md): tailing 20 lines meant 04e's grade and
+    # coverage summary — printed well before its per-tournament listing ends —
+    # was absent from every recent run log, so the one number most worth
+    # watching never reached CI output. Lines matching KEEP_LOG_RE are surfaced
+    # regardless of where in the output they appeared.
     if result.stdout:
         lines = result.stdout.strip().split('\n')
-        for line in lines[-20:]:
+        tail = lines[-20:]
+        highlights = [ln for ln in lines[:-20] if KEEP_LOG_RE.search(ln)]
+        for line in highlights:
+            print(f"  {line}")
+        if highlights:
+            print("  ---")
+        for line in tail:
             print(f"  {line}")
     _harvest_warnings(description, result.stdout)
     if result.returncode != 0:
@@ -386,7 +404,14 @@ def step_update_html():
                 new_html = new_html[:p_start] + f'const PUZZLE_DATA = {puzzle_json};' + new_html[p_end:]
                 print("  Updated PUZZLE_DATA in site_data.js")
 
-    # Also embed CHESS_HISTORY if available
+    # Also embed CHESS_HISTORY if available.
+    #
+    # v3 O5 (audit/AUDIT_2026-07-25.md): no script in this repo writes
+    # output/chess_history.json, so this splice has never fired in production —
+    # the const in site_data.js is whatever was hand-authored there. Documented
+    # as a deliberately manual artifact rather than left looking automated; if
+    # the content ever needs to change, edit site_data.js directly or add a
+    # generator that writes the JSON here.
     history_json_path = os.path.join(OUTPUT_DIR, "chess_history.json")
     if os.path.exists(history_json_path):
         with open(history_json_path, 'r') as f:

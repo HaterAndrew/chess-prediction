@@ -3105,8 +3105,23 @@ function renderChart(t) {
       const hData = [];
       const dd = real.daily_data;
       const maxDay = dd[dd.length - 1][0];
+      // v3 P4: anchor each historical curve to ITS OWN event date, not to the
+      // tail of its data. The tail is wherever scraping happened to stop — the
+      // code's own comment notes it misses ~10% of entries — so aligning on it
+      // slid a year whose scraping ended early against the years around it, and
+      // against the live curve it is meant to be compared with. When that year
+      // exports a daily_start_date and an event_start, days-before-event is
+      // computable exactly; otherwise fall back to the old tail anchor.
+      const canAnchor = real.daily_start_date && real.event_start;
       dd.forEach(p => {
-        const T = maxDay - p[0];
+        let T;
+        if (canAnchor) {
+          // Calendar date of this point, then its distance from that year's event.
+          T = daysBetween(addDays(real.daily_start_date, p[0]).toISOString().slice(0, 10),
+                          real.event_start);
+        } else {
+          T = maxDay - p[0];
+        }
         if (T >= 0 && T <= 120) {
           hData.push({ x: addDays(eventStart, -T), y: p[1] });
         }

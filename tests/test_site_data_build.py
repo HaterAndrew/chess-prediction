@@ -35,6 +35,10 @@ def build_env(tmp_path, monkeypatch):
     data_dir.mkdir(parents=True)
     site_data = data_dir / "site_data.js"
     site_data.write_text(STUB_SITE_DATA)
+    # An index.html inside the isolated docs/, so the cache-buster stamp has
+    # somewhere to land here instead of reaching for the repo's real one.
+    index_html = docs_dir / "index.html"
+    index_html.write_text('<script src="data/site_data.js?v=0000000000"></script>\n')
     website_json = out / "website_data.json"
 
     monkeypatch.setattr(auto_update, "OUTPUT_DIR", str(out))
@@ -44,7 +48,8 @@ def build_env(tmp_path, monkeypatch):
     # docs/website_data.json copy is caught here instead of clobbering the real
     # tracked file (the isolation bug that motivated the G9 removal).
     monkeypatch.setattr(auto_update, "SITE_DIR", str(docs_dir))
-    return {"site_data": site_data, "website_json": website_json, "docs_dir": docs_dir}
+    return {"site_data": site_data, "website_json": website_json,
+            "docs_dir": docs_dir, "index_html": index_html}
 
 
 def test_splices_tournament_data_into_site_data(build_env):
@@ -98,6 +103,43 @@ def test_ask_endpoint_is_written_inside_the_isolated_docs_dir(build_env):
     assert before == after, (
         "step_update_html wrote the repo's published docs/data/website_data.json "
         "during a test")
+
+
+def test_cache_buster_stamp_stays_inside_the_isolated_docs_dir(build_env):
+    """Stamping must not rewrite the repo's published index.html.
+
+    Same defect as the endpoint above, one file over. The stampers wrote through
+    the INDEX_HTML module constant, computed at import from the real SITE_DIR,
+    so monkeypatching SITE_DIR redirected sw.js and left index.html pointing at
+    the repo. Every run of this suite therefore stamped the published
+    docs/index.html with the sha256 of the four-line stub at the top of this
+    file.
+
+    That is not a test-only mess. The nightly workflow runs the build, then
+    pytest, then commits: the build stamped the true data hash, this suite
+    overwrote it with the fixture's, and the commit shipped the fixture's. The
+    result was index.html and sw.js asking for two different URLs for the same
+    file, and a returning visitor holding the unchanged index.html URL kept
+    serving cached data after a rebuild — the exact staleness the stamp exists
+    to prevent.
+    """
+    payload = {"generated": "2026-07-07", "tournaments": [{"family": "X", "year": 2026}]}
+    build_env["website_json"].write_text(json.dumps(payload))
+
+    real_index = os.path.join(PROJECT_ROOT, "docs", "index.html")
+    with open(real_index, "rb") as fh:
+        before = fh.read()
+
+    auto_update.step_update_html()
+
+    stamped = build_env["index_html"].read_text()
+    assert "site_data.js?v=0000000000" not in stamped, \
+        "the isolated index.html was never stamped"
+
+    with open(real_index, "rb") as fh:
+        after = fh.read()
+    assert before == after, \
+        "step_update_html rewrote the repo's published docs/index.html during a test"
 
 
 def test_no_docs_website_data_double_ship(build_env):

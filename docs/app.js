@@ -4621,8 +4621,18 @@ function navigateToHash() {
   if (!route) return false;
   const maxIdx = TOURNAMENT_DATA.tournaments.length - 1;
   switchPageTab(route.tab, true);
-  if (route.tab === 'predictions' && route.idx !== null && route.idx >= 0 && route.idx <= maxIdx) {
-    selectTournament(route.idx, true);
+  if (route.tab === 'predictions') {
+    // Fall back to the first tournament when the index is missing or out of
+    // range, which is what a fresh load does anyway.
+    //
+    // Without this, `#predictions` with no index — a shared link someone
+    // truncated, or `#predictions/9999` after the list shortened — left every
+    // panel showing its skeleton placeholder forever. Nothing threw and nothing
+    // logged; the page just sat there looking like it was still loading, which
+    // is the worst way for it to fail. selectTournament() is what clears the
+    // skeletons, so if it never runs they never clear.
+    const inRange = route.idx !== null && route.idx >= 0 && route.idx <= maxIdx;
+    selectTournament(inRange ? route.idx : 0, inRange);
   }
   // Set hash without re-triggering (already at the right hash)
   return true;

@@ -23,7 +23,7 @@ const OFFLINE_FALLBACKS = [
   'actions.js?v=767d05ac5a',
   'audit.js?v=30eaa762a6',
   'daily_series.js?v=e326e2b1fc',
-  'data/site_data.js?v=af7bd0a542',
+  'data/site_data.js?v=47e6dd4d32',
   'manifest.json',
   'icons/icon-192.png',
   ...CDN_ASSETS

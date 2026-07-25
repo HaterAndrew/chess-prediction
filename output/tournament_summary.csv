@@ -761,7 +761,7 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 4412,2026 Bradley Open,Bradley Open,2026.0,209,True,2,2026-02-16 09:38:22,2026-07-25 00:00:00,False,False,2026-03-08 21:13:17,False,67.0,1.0,False
 4413,2026 Hartford Open,Hartford Open,2026.0,206,True,3,2026-03-08 21:12:04,2026-06-07 00:00:00,False,False,2026-03-19 10:23:59,False,65.0,3.0,False
 4414,2026 Pittsburgh Open,Pittsburgh Open,2026.0,170,True,2,2026-02-20 19:28:19,2026-07-19 00:00:00,False,False,2026-03-11 22:24:42,False,69.0,2.0,False
-4415,2026 Pacific Coast Open,Pacific Coast Open,2026.0,218,True,3,2026-03-03 22:56:45,2026-07-25 00:00:00,False,False,2026-03-10 19:06:24,False,60.0,2.0,False
+4415,2026 Pacific Coast Open,Pacific Coast Open,2026.0,219,True,3,2026-03-03 22:56:45,2026-07-25 00:00:00,False,False,2026-03-10 19:06:24,False,60.0,2.0,False
 4417,2026 Cleveland Open,Cleveland Open,2026.0,179,True,2,2026-03-01 19:24:30,2026-06-07 00:00:00,False,False,2026-03-16 21:23:52,False,71.0,1.0,False
 4418,2026 Atlantic Open,Atlantic Open,2026.0,27,False,0,,,False,False,,False,,,True
 4419,2026 Central California Open,Central California Open,2026.0,27,False,0,,,False,False,,False,,,True

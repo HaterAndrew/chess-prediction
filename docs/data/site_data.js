@@ -3,7 +3,7 @@
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
   "generated": "2026-07-25",
-  "generated_time": "2026-07-25T10:00:27.244390-04:00",
+  "generated_time": "2026-07-25T11:45:17.075454-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (40 family-years across 38 families).",
   "n_completed_in_training": 30,
@@ -628,13 +628,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 158.0,
       "onsite_fee": 180.0,
-      "current_count": 218,
-      "gross_count": 218,
+      "current_count": 219,
+      "gross_count": 219,
       "withdrawal_count": 2,
       "days_remaining": 6,
-      "point_estimate": 409,
-      "ci_lower": 381,
-      "ci_upper": 438,
+      "point_estimate": 410,
+      "ci_lower": 382,
+      "ci_upper": 439,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1233,11 +1233,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Pacific Coast Open",
         "status": "on_pace",
-        "actual": 218,
+        "actual": 219,
         "expected": 192,
-        "deviation_pct": 13.2,
+        "deviation_pct": 13.8,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+13%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
       }
     },
     {
@@ -87933,7 +87933,7 @@ const TOURNAMENT_DATA = {
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-07-25 13:59:24",
+  "last_updated": "2026-07-25 15:44:04",
   "is_stale": false,
   "alerts": [
     {
@@ -87948,11 +87948,11 @@ const TOURNAMENT_DATA = {
     {
       "family": "Pacific Coast Open",
       "status": "on_pace",
-      "actual": 218,
+      "actual": 219,
       "expected": 192,
-      "deviation_pct": 13.2,
+      "deviation_pct": 13.8,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+13%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
     },
     {
       "family": "Continental Open",
@@ -91761,17 +91761,17 @@ const PERFORMANCE_DATA = {
     }
   ],
   "n_corpus_tournaments": 781,
-  "n_entry_records": 194573,
+  "n_entry_records": 194574,
   "window_engine": {
     "n": 219,
     "n_events": 133,
-    "mae_pct": 8.13,
+    "mae_pct": 8.12,
     "median_error_pct": 5.8,
     "ci_coverage": 87.7,
     "by_day": {
       "0": {
         "n": 133,
-        "mae_pct": 8.52,
+        "mae_pct": 8.51,
         "ci_coverage": 92.5
       },
       "1": {
@@ -91803,7 +91803,7 @@ const PERFORMANCE_DATA = {
       },
       "2026": {
         "n": 38,
-        "mae_pct": 9.58,
+        "mae_pct": 9.56,
         "ci_coverage": 63.2
       }
     },
@@ -91816,7 +91816,7 @@ const PERFORMANCE_DATA = {
     "description": "T=0 lognormal ratio decayed toward the live count through the post-start online-registration window, then plausibility-clamped \u2014 the chain 04d uses once a multi-schedule event has begun.",
     "horizon_note": "Graded 0-2 days into the post-start registration window, a shorter and easier horizon than the T-14/7/3 the overall grade uses. Not comparable to it.",
     "grade": "A-",
-    "grade_detail": "worst of window days 0-1 \u2192 day 0: MAE 8.52%, CI coverage 92.5% (n=133)"
+    "grade_detail": "worst of window days 0-1 \u2192 day 0: MAE 8.51%, CI coverage 92.5% (n=133)"
   },
   "years": {
     "2022": {

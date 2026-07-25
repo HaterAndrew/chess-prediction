@@ -62,7 +62,26 @@ def _harvest_warnings(step_name, stdout):
             _PIPELINE_WARNINGS.append({'step': step_name, 'text': text})
 
 
-def run_step(description, cmd):
+# Per-stage subprocess timeout (seconds). The default suits the fast scrapers
+# and data-prep steps. 04e's leave-one-out evaluation refits the model once per
+# completed 2026 tournament, so its cost grows through the season; it gets a
+# higher cap so a normal-season run does not trip the timeout (v3 O-series /
+# audit/AUDIT_2026-07-25.md — the uniform 300s cap caused the 2026-07-22 miss).
+DEFAULT_STEP_TIMEOUT = 300
+STEP_TIMEOUT_OVERRIDES = {
+    "04e_performance_data.py": 1200,
+}
+
+
+def _step_timeout(cmd):
+    for token in cmd:
+        for script, secs in STEP_TIMEOUT_OVERRIDES.items():
+            if isinstance(token, str) and token.endswith(script):
+                return secs
+    return DEFAULT_STEP_TIMEOUT
+
+
+def run_step(description, cmd, timeout=None):
     """Run a subprocess step, printing status and handling errors."""
     print(f"\n{'─'*60}")
     print(f"  STEP: {description}")
@@ -72,7 +91,7 @@ def run_step(description, cmd):
         cwd=PROJECT_DIR,
         capture_output=True,
         text=True,
-        timeout=300
+        timeout=timeout if timeout is not None else _step_timeout(cmd)
     )
     # Print stdout (last 20 lines to keep output manageable)
     if result.stdout:

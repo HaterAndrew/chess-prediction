@@ -45,8 +45,8 @@
 
   function nameKey(last, first) {
     // Identity key: (last name, FIRST TOKEN of first name), case-folded.
-    // First-token matching absorbs middle names ("Abbassi, Ali Issa" on
-    // the entry list is "Abbassi, Ali" in the export).
+    // First-token matching absorbs middle names ("Brightwater, Ana Marie" on
+    // the entry list is "Brightwater, Ana" in the export).
     const l = cleanName(last).toLowerCase().split(/\s+/).filter(Boolean).join(' ');
     const tokens = cleanName(first).toLowerCase().split(/\s+/).filter(Boolean);
     return l + ' ' + (tokens.length ? tokens[0] : '');

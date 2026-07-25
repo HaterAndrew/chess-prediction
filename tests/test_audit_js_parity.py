@@ -42,20 +42,20 @@ pytestmark = pytest.mark.skipif(
     shutil.which("node") is None, reason="node not installed"
 )
 
-SMART_CASE_CASES = ["JANI", "gainesville", "McDonald", "Gianos-Steinberg",
+SMART_CASE_CASES = ["JANOWAY", "westmere", "McDonald", "Gianos-Steinberg",
                     "o'brien", "émile", "", "  X Y  "]
 PAD_ZIP_CASES = ["2155", "32608", "01748-3233", "", "007", "12345"]
-NAME_KEY_CASES = [["Abbassi", "Ali Issa"], ["ABBASSI", "Ali"],
-                  ["Adu (IM)(Withdrawn)", "Oladapo"], ["", ""],
-                  ["  Zhou ", " Jianchao  "]]
-SPLIT_CASES = ["Zhou, Jianchao", "Andriasian, Zaven (GM)", "Manish Jani",
-               "Cher", "JANI, MANISH", ""]
+NAME_KEY_CASES = [["Brightwater", "Ana Marie"], ["BRIGHTWATER", "Ana"],
+                  ["Ashdown (IM)(Withdrawn)", "Orlando"], ["", ""],
+                  ["  Zellwood ", " Jonquil  "]]
+SPLIT_CASES = ["Zellwood, Jonquil", "Sunderholm, Zephyr (GM)", "Merrick Janoway",
+               "Cher", "JANOWAY, MERRICK", ""]
 DEDUP_CASES = [
-    {"last": "Zhou", "first": "Jianchao", "uscf_id": "15524414",
+    {"last": "Zellwood", "first": "Jonquil", "uscf_id": "15524414",
      "state": "NY", "section": "Open", "withdrawn": True},
-    {"last": "Zhou", "first": "Jianchao", "uscf_id": "15524414",
+    {"last": "Zellwood", "first": "Jonquil", "uscf_id": "15524414",
      "state": "NY", "section": "Open", "withdrawn": False},
-    {"last": "Zhou", "first": "Jianchao", "uscf_id": "99999999",
+    {"last": "Zellwood", "first": "Jonquil", "uscf_id": "99999999",
      "state": "NY", "section": "Open", "withdrawn": False},
     {"last": "Lee", "first": "Justin", "uscf_id": None,
      "state": "NY", "section": "Open", "withdrawn": False},

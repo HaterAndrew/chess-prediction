@@ -212,11 +212,15 @@ async function runAgentLoop(
   client: Anthropic,
   model: string,
   body: AskRequest,
-  cd: CachedData
+  cd: CachedData,
+  // v3 S4: called with each turn's cost as soon as it is known. Returns false
+  // when the daily cap has been reached, which stops the loop early.
+  onTurnCost?: (usdDelta: number) => Promise<boolean>
 ): Promise<RunResult> {
   const start = Date.now();
   const toolsUsed: string[] = [];
   let totalCost = 0;
+  let budgetStopped = false;
 
   const messages: Anthropic.Beta.BetaMessageParam[] = [];
   if (body.history && Array.isArray(body.history)) {
@@ -271,9 +275,25 @@ async function runAgentLoop(
         if (name.includes("code_execution")) sawCodeExec = true;
       }
     }
-    totalCost += estimateCost(resp.usage, model, sawCodeExec ? 1 : 0);
+    const turnCost = estimateCost(resp.usage, model, sawCodeExec ? 1 : 0);
+    totalCost += turnCost;
     if (sawCodeExec && !toolsUsed.includes("code_execution")) {
       toolsUsed.push("code_execution");
+    }
+
+    // v3 S4: bill and re-check the cap on every turn, not once at the end.
+    // The budget used to be checked a single time before the loop and the spend
+    // recorded once after it, via waitUntil — so one request could run all eight
+    // turns unbilled, and concurrent requests each saw a pre-loop counter that
+    // no in-flight request had yet updated. Recording inline and re-reading the
+    // cap between turns bounds the overshoot to roughly one turn per concurrent
+    // request instead of eight.
+    if (onTurnCost) {
+      const within = await onTurnCost(turnCost);
+      if (!within) {
+        budgetStopped = true;
+        break;
+      }
     }
 
     if (resp.stop_reason === "tool_use") {
@@ -335,7 +355,9 @@ async function runAgentLoop(
   }
 
   return {
-    answer: "Sorry — I got stuck looking that up. Try rephrasing the question.",
+    answer: budgetStopped
+      ? "I ran out of the daily question budget partway through this one. Try again tomorrow."
+      : "Sorry — I got stuck looking that up. Try rephrasing the question.",
     tools_used: toolsUsed,
     latency_ms: Date.now() - start,
     cost_usd: +totalCost.toFixed(6),
@@ -472,7 +494,9 @@ async function proxyCcaEntryList(env: Env, request: Request): Promise<Response> 
 }
 
 export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  // `ctx` is intentionally unused: cost is now recorded inline per turn (v3 S4)
+  // rather than deferred through ctx.waitUntil after the loop finished.
+  async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
     if (request.method === "OPTIONS") return corsPreflight(env, request);
 
     const url = new URL(request.url);
@@ -560,8 +584,15 @@ export default {
     }
 
     try {
-      const result = await runAgentLoop(client, env.MODEL, body, cd);
-      ctx.waitUntil(recordCost(env, result.cost_usd));
+      // v3 S4: bill each turn as it completes and stop as soon as the cap is
+      // hit, rather than recording the whole request's cost afterwards via
+      // waitUntil (which let a request run its full eight turns unbilled, and
+      // left concurrent requests reading a counter nobody had updated yet).
+      const result = await runAgentLoop(client, env.MODEL, body, cd, async (delta) => {
+        await recordCost(env, delta);
+        const b = await checkDailyBudget(env);
+        return b.ok;
+      });
       return jsonResponse(
         {
           ...result,

@@ -1688,10 +1688,11 @@ body.drawer-open .back-to-top { display: none !important; }
 .cal-tip-pace-pos { color: var(--green); }
 .cal-tip-pace-flat { color: var(--text2); }
 .cal-tip-pace-neg { color: var(--red); }
-/* Pace-tinted left edge: subtle vertical accent ribbon matching dot color. */
-.cal-tooltip-pos  { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3), inset 3px 0 0 var(--green); }
-.cal-tooltip-flat { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3), inset 3px 0 0 var(--gold); }
-.cal-tooltip-neg  { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3), inset 3px 0 0 var(--red); }
+/* Pace tint: full border + faint wash matching the dot color (the border+tint
+   pattern from .cat-btn; side-stripe ribbons are banned). */
+.cal-tooltip-pos  { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3); border-color: rgba(63,185,80,.4); background-color: rgba(63,185,80,.05); }
+.cal-tooltip-flat { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3); border-color: rgba(240,192,64,.4); background-color: rgba(240,192,64,.05); }
+.cal-tooltip-neg  { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3); border-color: rgba(248,81,73,.4); background-color: rgba(248,81,73,.05); }
 .cal-axis {
   position: relative; height: 14px;
   margin-top: 6px;
@@ -1822,6 +1823,9 @@ body.drawer-open .back-to-top { display: none !important; }
   grid-template-columns: 1fr;
   gap: var(--s-4);
   margin-top: var(--s-4);
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .chess-board-wrap { position: relative; width: 100%; max-width: 480px; margin: 0 auto; }
 .chess-board {
@@ -2434,7 +2438,7 @@ footer a { color: var(--muted); }
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   padding: 28px 36px;
-  background: linear-gradient(135deg, rgba(240,192,64,.08), rgba(56,139,253,.04));
+  background: rgba(240,192,64,.06);
   border: 1px solid rgba(240,192,64,.2);
   border-radius: 16px;
   min-width: 140px;
@@ -2885,7 +2889,7 @@ footer a { color: var(--muted); }
 .tab-head p { font-size: var(--fs-3); color: var(--muted); margin: 0; }
 
 .result-card {
-  background: linear-gradient(135deg, rgba(240,192,64,.08), rgba(56,139,253,.04));
+  background: rgba(240,192,64,.06);
   border: 1px solid rgba(240,192,64,.25);
   border-radius: 12px;
   padding: 18px 24px;
@@ -3059,6 +3063,21 @@ details.sect > .sect-summary::-webkit-details-marker { display: none; }
 }
 .mini-grid-rest .mini-card { padding: var(--s-3); }
 
+
+/* Horizon strip (phase 6): neutral tiles, the MAE value is the one colored
+   encoding; backgrounds no longer compete with the results table below. */
+.horizon-tile {
+  flex: 1; min-width: 80px;
+  padding: 10px 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+}
+.horizon-t { font-size: var(--fs-1); font-weight: 700; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+.horizon-val { font-size: var(--fs-5); font-weight: 800; margin: 3px 0 2px; }
+.horizon-ci { font-size: var(--fs-1); color: var(--muted); }
+
 /* ══════════════════════════════════════════════════════
    PRINT — clean one-page tournament report
    ──────────────────────────────────────────────────────
@@ -3171,13 +3190,13 @@ details.sect > .sect-summary::-webkit-details-marker { display: none; }
 .ask-submit {
   flex-shrink: 0;
   padding: 0 26px; min-height: 56px;
-  background: var(--blue); color: #fff;
-  border: 1px solid var(--blue); border-radius: var(--radius-sm);
+  background: var(--gold); color: var(--ink);
+  border: 1px solid var(--gold); border-radius: var(--radius-sm);
   font-size: 1rem; font-weight: 600; letter-spacing: .3px;
   cursor: pointer;
   transition: background var(--transition), transform var(--transition);
 }
-.ask-submit:hover:not(:disabled) { background: var(--blue-bright); }
+.ask-submit:hover:not(:disabled) { background: var(--gold-bright); border-color: var(--gold-bright); }
 .ask-submit:active:not(:disabled) { transform: translateY(1px); }
 .ask-submit:disabled { opacity: .5; cursor: progress; }
 .ask-chips {

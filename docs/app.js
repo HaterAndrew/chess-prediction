@@ -1154,13 +1154,12 @@ function perfPaint(view) {
 
   const strip = document.getElementById('perfHorizonStrip');
   strip.innerHTML = agg.map(a => {
-    const bg = a.mae_pct <= 8 ? 'rgba(34,197,94,.12)' : a.mae_pct <= 12 ? 'rgba(240,192,64,.10)' : 'rgba(239,68,68,.10)';
-    const bc = a.mae_pct <= 8 ? 'rgba(34,197,94,.25)' : a.mae_pct <= 12 ? 'rgba(240,192,64,.2)' : 'rgba(239,68,68,.2)';
+    // One encoding: the MAE value alone carries the traffic color.
     const tc = a.mae_pct <= 8 ? PALETTE.green : a.mae_pct <= 12 ? 'var(--gold)' : PALETTE.red;
-    return `<div style="flex:1;min-width:80px;padding:10px 8px;background:${bg};border:1px solid ${bc};border-radius:10px;text-align:center" title="n=${a.n}, bias ${a.bias_pct > 0 ? '+' : ''}${a.bias_pct}%">
-      <div style="font-size:var(--fs-1);font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase">T-${a.T}</div>
-      <div style="font-size:var(--fs-5);font-weight:800;color:${tc};margin:3px 0 2px">${a.mae_pct.toFixed(1)}%</div>
-      <div style="font-size:var(--fs-1);color:var(--muted)">CI ${a.ci_coverage}%</div>
+    return `<div class="horizon-tile" title="n=${a.n}, bias ${a.bias_pct > 0 ? '+' : ''}${a.bias_pct}%">
+      <div class="horizon-t">T-${a.T}</div>
+      <div class="horizon-val" style="color:${tc}">${a.mae_pct.toFixed(1)}%</div>
+      <div class="horizon-ci">CI ${a.ci_coverage}%</div>
     </div>`;
   }).join('');
 
@@ -1324,9 +1323,12 @@ function perfDrawTable(data) {
     tPoints.forEach(T => {
       const p = t.predictions.find(p => p.T === T);
       if (p) {
-        const ec = Math.abs(p.error_pct) <= 5 ? PALETTE.green : Math.abs(p.error_pct) <= 15 ? 'var(--gold)' : PALETTE.red;
+        // Neutral by default; color marks exceptions only (phase 6). A cell
+        // goes red when the miss is large or the CI failed to cover.
+        const bigMiss = Math.abs(p.error_pct) > 15;
+        const ec = bigMiss ? PALETTE.red : PALETTE.text2;
         const ci = p.in_ci ? '\u2713' : '\u2717';
-        const cic = p.in_ci ? PALETTE.green : PALETTE.red;
+        const cic = p.in_ci ? PALETTE.muted : PALETTE.red;
         html += `<td data-label="T-${T}" style="padding:5px 4px;text-align:center;font-size:var(--fs-1)" title="Pred ${p.predicted} from ${p.count_at_T} reg, CI [${p.ci_lower}-${p.ci_upper}]">
           <span style="color:${ec};font-weight:600;font-variant-numeric:tabular-nums">${p.error_pct > 0 ? '+' : ''}${p.error_pct}%</span><span style="color:${cic};font-size:var(--fs-1);margin-left:2px">${ci}</span></td>`;
       } else {
@@ -1344,7 +1346,7 @@ function perfDrawTable(data) {
     if (a) {
       html += `<td data-label="T-${T}" style="padding:8px 4px;text-align:center;font-size:var(--fs-1)">
         <div style="color:var(--text)">${a.mae_pct}%</div>
-        <div style="font-size:.56rem;color:var(--muted);font-weight:400">CI ${a.ci_coverage}%</div></td>`;
+        <div style="font-size:var(--fs-1);color:var(--muted);font-weight:400">CI ${a.ci_coverage}%</div></td>`;
     } else html += `<td data-label="T-${T}">\u2014</td>`;
   });
   html += '</tr></tbody></table>';

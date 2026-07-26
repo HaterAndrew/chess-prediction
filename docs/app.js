@@ -3898,8 +3898,25 @@ function renderHistorical(t) {
   const hasAdjusted = histFlags.some(Boolean);
   const labels = [...hist.map(h => h.adjusted ? `${h.year}*` : String(h.year)), String(t.year)];
   const counts = [...hist.map(h => h.count), isDone(t) ? t.current_count : t.point_estimate];
-  const colors = counts.map((_, i) => i === counts.length-1 ? 'rgba(240,192,64,0.75)' : 'rgba(88,166,255,0.45)');
+  // Gradient bars: current year in gold, history in blue, both fading toward
+  // the baseline. One cache per bucket; scriptable by dataIndex.
+  const _goldBarGrad = {}, _blueBarGrad = {};
+  const colors = (context) => {
+    const isCurrent = context.dataIndex === counts.length - 1;
+    return isCurrent
+      ? areaGradient(context.chart, _goldBarGrad, [
+          [0, themeRgba(PALETTE.goldBright, 0.85)],
+          [1, themeRgba(PALETTE.gold, 0.45)]
+        ])
+      : areaGradient(context.chart, _blueBarGrad, [
+          [0, themeRgba(PALETTE.blue, 0.55)],
+          [1, themeRgba(PALETTE.blue, 0.18)]
+        ]);
+  };
+  const hoverColors = counts.map((_, i) => i === counts.length-1
+    ? themeRgba(PALETTE.goldBright, 0.95) : themeRgba(PALETTE.blue, 0.7));
   const borders = counts.map((_, i) => i === counts.length-1 ? PALETTE.gold : PALETTE.blue);
+  const hoverBorders = counts.map((_, i) => i === counts.length-1 ? PALETTE.goldBright : PALETTE.blueBright);
 
   // Average line plugin
   const histAvg = Math.round(hist.reduce((s, h) => s + h.count, 0) / hist.length);
@@ -3930,7 +3947,9 @@ function renderHistorical(t) {
     data: {
       labels, datasets: [{
         data: counts, backgroundColor: colors, borderColor: borders,
-        borderWidth: 1, borderRadius: 4
+        hoverBackgroundColor: hoverColors, hoverBorderColor: hoverBorders,
+        borderWidth: 1.5, borderRadius: 6, borderSkipped: 'bottom',
+        categoryPercentage: 0.72, barPercentage: 0.85
       }]
     },
     plugins: [avgLinePlugin],
@@ -4061,6 +4080,8 @@ function renderRegCurve(t) {
     return db >= t.days_remaining ? 'rgba(88,166,255,0.6)' : 'rgba(240,192,64,0.6)';
   });
 
+  const _regGrad = {};
+
   // "You are here" annotation plugin for reg curve
   const regCurveAnnotation = makeVertMarkersPlugin('regCurveAnnotation', () => {
     if (isDone(t)) return [];
@@ -4082,10 +4103,23 @@ function renderRegCurve(t) {
       datasets: [{
         data,
         borderColor: 'rgba(240,192,64,0.6)',
-        backgroundColor: 'rgba(240,192,64,0.05)',
+        backgroundColor: (context) => areaGradient(context.chart, _regGrad, [
+          [0, themeRgba(PALETTE.gold, 0.16)],
+          [1, themeRgba(PALETTE.gold, 0.02)]
+        ]),
         fill: true,
-        borderWidth: 2,
+        borderWidth: 2.25,
+        // Elapsed/ahead split at today, matching pointColors and the main
+        // chart: blue = behind us, gold = still to come. Done tournaments
+        // keep the flat base color (no split to show).
+        segment: {
+          borderColor: (c) => isDone(t) ? undefined :
+            (c.p1DataIndex <= todayIdx ? themeRgba(PALETTE.blue, 0.75)
+                                       : themeRgba(PALETTE.gold, 0.75))
+        },
         pointRadius: labels.map(db => db === 0 || db === t.days_remaining ? 5 : 0),
+        pointHoverRadius: 6,
+        pointHitRadius: 10,
         pointBackgroundColor: pointColors,
         pointBorderColor: pointColors,
         tension: 0.4
@@ -5648,6 +5682,7 @@ function renderCompareChart(selected) {
         backgroundColor: dimColor,
         fill: ci === 0,
         borderWidth: 2.5,
+        borderCapStyle: 'round',
         pointRadius: 0,
         pointHoverRadius: 5,
         tension: 0.25,
@@ -5663,7 +5698,9 @@ function renderCompareChart(selected) {
           pointRadius: 7,
           pointStyle: 'circle',
           pointBorderWidth: 2,
-          pointBorderColor: 'var(--bg)',
+          // Canvas cannot resolve CSS custom properties; 'var(--bg)' here
+          // silently painted the ring black on every theme.
+          pointBorderColor: PALETTE.bg,
           showLine: false,
         });
       }
@@ -5688,6 +5725,7 @@ function renderCompareChart(selected) {
           borderColor: color,
           borderDash: [4, 4],
           borderWidth: 1.5,
+          borderCapStyle: 'round',
           pointRadius: 0,
           pointHoverRadius: 3,
           tension: 0.25,
@@ -5711,9 +5749,62 @@ function renderCompareChart(selected) {
 
   if (datasets.length === 0) return;
 
+  // Direct end labels for the primary traces (desktop only; mobile keeps the
+  // legend). The x scale is reverse:true, so a trace's "now" endpoint (lowest
+  // days-before value) renders at the RIGHT edge — labels sit left of the
+  // endpoint and clamp inside the chart area. Vertical collisions stack the
+  // same way the marker pills do.
+  const compareEndLabels = {
+    id: 'compareEndLabels',
+    afterDraw(chartInstance) {
+      if (_mobileVP()) return;
+      const area = chartInstance.chartArea;
+      const ctx2 = chartInstance.ctx;
+      const drawn = [];
+      chartInstance.data.datasets.forEach((ds, i) => {
+        if (!ds.label || ds.label.includes('· Today') || ds.label.includes('(prior)')) return;
+        const meta = chartInstance.getDatasetMeta(i);
+        if (!meta.visible || !meta.data.length) return;
+        const end = meta.data[meta.data.length - 1];
+        ctx2.save();
+        ctx2.font = 'bold 11px -apple-system, system-ui, sans-serif';
+        ctx2.textAlign = 'left';
+        const textW = ctx2.measureText(ds.label).width;
+        const pillW = textW + 12;
+        const pillH = 16;
+        let px = end.x - 10 - pillW;
+        if (px < area.left) px = Math.min(end.x + 10, area.right - pillW);
+        let py = end.y - pillH / 2;
+        if (py < area.top) py = area.top;
+        if (py + pillH > area.bottom) py = area.bottom - pillH;
+        // Dodge vertically past any already-drawn label rect.
+        let guard = 0;
+        while (guard++ < 6 && drawn.some(d =>
+            !(px + pillW < d.x || px > d.x + d.w || py + pillH < d.y || py > d.y + d.h))) {
+          py += pillH + 3;
+          if (py + pillH > area.bottom) { py = area.top; break; }
+        }
+        drawn.push({ x: px, y: py, w: pillW, h: pillH });
+        ctx2.fillStyle = themeRgba(PALETTE.surface, 0.85);
+        ctx2.beginPath();
+        ctx2.roundRect(px, py, pillW, pillH, 4);
+        ctx2.fill();
+        ctx2.strokeStyle = ds.borderColor;
+        ctx2.globalAlpha = 0.6;
+        ctx2.lineWidth = 1;
+        ctx2.stroke();
+        ctx2.globalAlpha = 1;
+        ctx2.fillStyle = ds.borderColor;
+        ctx2.fillText(ds.label, px + 6, py + pillH - 5);
+        ctx2.restore();
+      });
+    }
+  };
+
   _compareChart = new Chart(ctx, {
     type: 'line',
     data: { datasets },
+    plugins: [compareEndLabels],
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -5754,8 +5845,12 @@ function renderCompareChart(selected) {
           borderWidth: 1,
           titleColor: PALETTE.text,
           bodyColor: PALETTE.text2,
+          footerColor: PALETTE.muted,
           padding: 12,
           cornerRadius: 8,
+          titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' },
+          bodyFont: { size: 12 },
+          usePointStyle: true, pointStyleWidth: _mobileVP() ? 6 : 8,
           callbacks: {
             title(items) {
               if (!items.length) return '';

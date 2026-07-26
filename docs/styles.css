@@ -559,7 +559,8 @@ header {
     min-height: 44px;
   }
   #tabBar.tab-bar .cat-btn .cat-count { font-size: var(--fs-1); padding: 1px 6px; }
-  #tabBar.tab-bar .cat-btn .cat-arrow { font-size: .5rem; }
+  /* v4 W2: .5rem (8px) sat under the type ramp's 12px functional floor. */
+  #tabBar.tab-bar .cat-btn .cat-arrow { font-size: var(--fs-1); }
 }
 
 /* Lock body scroll while a bottom-sheet drawer is open (feels native, prevents
@@ -1075,7 +1076,9 @@ body.drawer-open .back-to-top { display: none !important; }
 .chart-seg button:last-child { border-right: none; }
 .chart-seg button.active { background: var(--gold); color: var(--ink); font-weight: 700; }
 .chart-seg button:disabled { opacity: .45; cursor: default; }
-@media (pointer: coarse) { .chart-seg button { min-height: 44px; } }
+/* v4 W3: min-width too — the render pass measured All/90d/30d at 37-42px wide
+   on a 390px viewport; height alone met the 44px target. */
+@media (pointer: coarse) { .chart-seg button { min-height: 44px; min-width: 44px; } }
 .legend-item { display: flex; align-items: center; gap: 6px; font-size: var(--fs-2); color: var(--muted); }
 @media (max-width: 639px) {
   .chart-legend { gap: var(--s-2); }
@@ -1438,6 +1441,11 @@ body.drawer-open .back-to-top { display: none !important; }
 .tourney-table tbody tr:hover td { background: var(--surface2); }
 .tourney-table tbody tr:hover .t-name { color: var(--blue); }
 .tourney-table tbody tr:active td { background: var(--blue-dim); transition: background 0s; }
+/* v4 U5: row flash for chart click-to-highlight (app.js onClick adds the class
+   for 2.5s on the matching table row). Existed as a classList call with no
+   rule, so the highlight was invisible. */
+.tourney-table tbody tr.chart-highlight td,
+.comp-table tbody tr.chart-highlight td { background: var(--blue-dim); }
 .tourney-table tr:last-child td { border-bottom: none; }
 .t-name { font-weight: 600; }
 .t-sub { font-size: var(--fs-1); color: var(--muted); margin-top: 2px; }
@@ -3039,6 +3047,10 @@ footer a { color: var(--muted); }
    them open (JS syncSectionDisclosure + beforeprint force open). ── */
 details.sect > .sect-summary { display: none; }
 details.sect > .sect-summary::-webkit-details-marker { display: none; }
+/* v4 W5: the summary text is a real h3 so screen-reader heading navigation
+   lands on section boundaries on phones; inherit flattens the h3 defaults so
+   the summary renders exactly as before. */
+.sect-summary-h { font: inherit; margin: 0; display: inline; }
 @media (max-width: 639px) {
   details.sect > .sect-summary {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;

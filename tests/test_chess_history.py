@@ -107,6 +107,7 @@ def test_the_pipeline_wires_the_generator_in():
     import auto_update
     assert hasattr(auto_update, "step_chess_history"), \
         "no pipeline step renders chess_history.json; the splice is dead again"
-    src = open(os.path.join(PROJECT_ROOT, "auto_update.py")).read()
+    with open(os.path.join(PROJECT_ROOT, "auto_update.py")) as f:
+        src = f.read()
     assert "step_chess_history()" in src, \
         "step_chess_history is defined but never called"

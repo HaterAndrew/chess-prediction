@@ -62,6 +62,8 @@ function areaGradient(chart2, cache, stops) {
 let selectedIndex = 0;
 let chart = null;
 let histChartObj = null;
+let perfScatterChart = null;
+let perfTimelineChart = null;
 // (dropdownOpen removed — using openDrop from tab bar system)
 
 // ══════════════════════════════════════════════════════════
@@ -72,6 +74,11 @@ function _reduceMotion() {
   return typeof window !== 'undefined' && window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
+// Global animation kill under reduced motion, at top level so every chart is
+// covered regardless of which tab renders first (a #performance deep link
+// never runs renderChart). app.js is deferred after chart.umd.min.js, so
+// Chart exists here; the typeof guard keeps a CDN failure from cascading.
+if (typeof Chart !== 'undefined' && _reduceMotion()) Chart.defaults.animation = false;
 // Progressive-enhancement haptic. Android Chrome/Firefox supported; iOS Safari
 // no-ops. Respects prefers-reduced-motion. Round 31.
 function _haptic(ms) {
@@ -1198,18 +1205,10 @@ function perfPaint(view) {
 
 function perfDrawScatter(data) {
   const canvas = document.getElementById('perfScatterCanvas');
-  const dpr = window.devicePixelRatio || 1;
-  const W = canvas.clientWidth; const H = canvas.clientHeight;
-  canvas.width = W * dpr; canvas.height = H * dpr;
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
-
-  const isM = _mobileVP();
-  const pad = {t:8, r:12, b:28, l: isM ? 48 : 44};
-  const tickFont = isM ? '10px system-ui' : '9px system-ui';
-  const noteFont = isM ? '9px system-ui' : '8px system-ui';
-  const axisFont = isM ? '10px system-ui' : '9px system-ui';
-  const pw = W - pad.l - pad.r; const ph = H - pad.t - pad.b;
+  if (!canvas) return;
+  // perfSelectYear re-runs perfPaint on every view click; Chart.js throws
+  // "Canvas is already in use" without an explicit destroy.
+  if (perfScatterChart) { perfScatterChart.destroy(); perfScatterChart = null; }
 
   const pts = [];
   data.tournaments.forEach(t => {
@@ -1218,119 +1217,238 @@ function perfDrawScatter(data) {
   });
   if (!pts.length) return;
 
-  const maxV = Math.max(...pts.map(p => Math.max(p.a, p.p, p.hi))) * 1.12;
-  const x = v => pad.l + (v / maxV) * pw;
-  const y = v => pad.t + ph - (v / maxV) * ph;
+  const maxV = Math.round(Math.max(...pts.map(p => Math.max(p.a, p.p, p.hi))) * 1.12);
+  const toXY = arr => arr.map(p => ({ x: p.a, y: p.p, f: p.f, lo: p.lo, hi: p.hi, ok: p.ok }));
 
-  // Grid
-  ctx.strokeStyle = PALETTE.border; ctx.lineWidth = 0.5; ctx.setLineDash([3, 3]);
-  for (let i = 1; i <= 4; i++) {
-    const v = Math.round(maxV / 4 * i);
-    ctx.beginPath(); ctx.moveTo(pad.l, y(v)); ctx.lineTo(pad.l + pw, y(v)); ctx.stroke();
-    ctx.fillStyle = PALETTE.muted; ctx.font = tickFont; ctx.textAlign = 'right';
-    ctx.fillText(v.toLocaleString(), pad.l - 5, y(v) + 3);
-  }
-  ctx.setLineDash([]);
+  // CI whiskers (vertical lo..hi at each point's actual-x, with 3px caps) +
+  // the "Perfect prediction" caption. Both lived in the hand-rolled renderer.
+  const ciWhiskers = {
+    id: 'ciWhiskers',
+    afterDatasetsDraw(c) {
+      const xS = c.scales.x, yS = c.scales.y, ctx2 = c.ctx;
+      ctx2.save();
+      pts.forEach(p => {
+        const px = xS.getPixelForValue(p.a);
+        if (px < xS.left || px > xS.right) return;
+        const col = p.ok ? PALETTE.green : PALETTE.red;
+        const yLo = yS.getPixelForValue(p.lo), yHi = yS.getPixelForValue(p.hi);
+        ctx2.strokeStyle = col; ctx2.globalAlpha = 0.25; ctx2.lineWidth = 2;
+        ctx2.beginPath();
+        ctx2.moveTo(px, yLo); ctx2.lineTo(px, yHi);
+        ctx2.moveTo(px - 3, yLo); ctx2.lineTo(px + 3, yLo);
+        ctx2.moveTo(px - 3, yHi); ctx2.lineTo(px + 3, yHi);
+        ctx2.stroke();
+        ctx2.globalAlpha = 1;
+      });
+      ctx2.fillStyle = themeRgba(PALETTE.gold, 0.9);
+      ctx2.font = `${_mobileVP() ? 9 : 8}px system-ui`;
+      ctx2.textAlign = 'right';
+      ctx2.fillText('Perfect prediction', xS.right - 2, yS.top + 10);
+      ctx2.restore();
+    }
+  };
 
-  // Perfect line
-  ctx.strokeStyle = 'rgba(240,192,64,.2)'; ctx.lineWidth = 1.5;
-  ctx.setLineDash([8, 5]);
-  ctx.beginPath(); ctx.moveTo(pad.l, pad.t + ph); ctx.lineTo(pad.l + pw, pad.t); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle = 'rgba(240,192,64,.9)'; ctx.font = noteFont; ctx.textAlign = 'right';
-  ctx.fillText('Perfect prediction', pad.l + pw - 2, pad.t + 10);
+  // Per-dataset dot glow (the in-CI and out-CI buckets are separate datasets
+  // precisely so each gets its own shadow color).
+  const dotGlow = {
+    id: 'perfDotGlow',
+    beforeDatasetDraw(c, args) {
+      if (args.index > 1) return;
+      c.ctx.save();
+      c.ctx.shadowBlur = 8;
+      c.ctx.shadowColor = args.index === 0 ? PALETTE.green : PALETTE.red;
+    },
+    afterDatasetDraw(c, args) {
+      if (args.index > 1) return;
+      c.ctx.restore();
+    }
+  };
 
-  // CI whiskers + dots
-  pts.forEach(p => {
-    const px = x(p.a); const py = y(p.p);
-    const col = p.ok ? PALETTE.green : PALETTE.red;
-    // Whisker
-    ctx.strokeStyle = col; ctx.globalAlpha = 0.25; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(px, y(p.lo)); ctx.lineTo(px, y(p.hi)); ctx.stroke();
-    ctx.globalAlpha = 1;
-    // Dot with glow
-    ctx.shadowColor = col; ctx.shadowBlur = 8;
-    ctx.fillStyle = col; ctx.beginPath(); ctx.arc(px, py, 4.5, 0, Math.PI * 2); ctx.fill();
-    ctx.shadowBlur = 0;
-    // Outline
-    ctx.strokeStyle = PALETTE.surface; ctx.lineWidth = 1.2; ctx.stroke();
+  const dotCfg = (color) => ({
+    pointRadius: 4.5, pointHoverRadius: 7, pointHitRadius: 8,
+    pointBackgroundColor: color, pointBorderColor: PALETTE.surface,
+    pointBorderWidth: 1.2, pointHoverBorderColor: PALETTE.text, pointHoverBorderWidth: 1.5,
+    showLine: false
   });
 
-  // Axis labels
-  ctx.fillStyle = PALETTE.muted; ctx.font = axisFont; ctx.textAlign = 'center';
-  ctx.fillText('Actual Entries', pad.l + pw / 2, H - 6);
-  ctx.save(); ctx.translate(10, pad.t + ph / 2); ctx.rotate(-Math.PI / 2);
-  ctx.fillText('Predicted', 0, 0); ctx.restore();
+  perfScatterChart = new Chart(canvas, {
+    type: 'scatter',
+    data: {
+      datasets: [
+        { label: 'Within CI', data: toXY(pts.filter(p => p.ok)), ...dotCfg(PALETTE.green) },
+        { label: 'Outside CI', data: toXY(pts.filter(p => !p.ok)), ...dotCfg(PALETTE.red) },
+        { label: 'perfect', type: 'line', data: [{ x: 0, y: 0 }, { x: maxV, y: maxV }],
+          borderColor: themeRgba(PALETTE.gold, 0.2), borderDash: [8, 5], borderWidth: 1.5,
+          pointRadius: 0, pointHitRadius: 0, pointHoverRadius: 0 }
+      ]
+    },
+    plugins: [ciWhiskers, dotGlow],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'nearest', intersect: false },
+      scales: {
+        x: {
+          type: 'linear', min: 0, max: maxV,
+          title: { display: !_mobileVP(), text: 'Actual Entries', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
+          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 10 : 9 }, maxTicksLimit: 6, maxRotation: 0,
+            callback(v) { return v.toLocaleString(); } },
+          grid: { color: themeRgba(PALETTE.border, 0.4) }
+        },
+        y: {
+          type: 'linear', min: 0, max: maxV,
+          title: { display: !_mobileVP(), text: 'Predicted', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
+          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 10 : 9 }, maxTicksLimit: 5,
+            callback(v) { return v.toLocaleString(); } },
+          grid: { color: themeRgba(PALETTE.border, 0.4) }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
+          titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
+          padding: 12, cornerRadius: 8,
+          titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' }, bodyFont: { size: 12 },
+          footerFont: { size: 11, style: 'italic' },
+          usePointStyle: true, pointStyleWidth: _mobileVP() ? 6 : 8,
+          filter(item) { return item.dataset.label !== 'perfect'; },
+          callbacks: {
+            title(items) { return items.length ? items[0].raw.f : ''; },
+            label(item) { return ` Predicted: ${fmt(item.raw.y)}`; },
+            afterLabel(item) {
+              return [` Actual: ${fmt(item.raw.x)}`, ` CI: ${fmt(item.raw.lo)} – ${fmt(item.raw.hi)}`];
+            },
+            footer(items) {
+              if (!items.length) return '';
+              return items[0].raw.ok ? 'Within CI' : 'Outside CI';
+            }
+          }
+        }
+      }
+    }
+  });
 }
 
 function perfDrawTimeline(data) {
   const canvas = document.getElementById('perfTimelineCanvas');
-  const dpr = window.devicePixelRatio || 1;
-  const W = canvas.clientWidth; const H = canvas.clientHeight;
-  canvas.width = W * dpr; canvas.height = H * dpr;
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
+  if (!canvas) return;
+  if (perfTimelineChart) { perfTimelineChart.destroy(); perfTimelineChart = null; }
 
-  const isM = _mobileVP();
-  const pad = {t:20, r:14, b:28, l: isM ? 30 : 36};
-  const tickFont = isM ? '9px system-ui' : '8px system-ui';
-  const valFont = isM ? 'bold 10px system-ui' : 'bold 9px system-ui';
-  const tFont = isM ? '10px system-ui' : '9px system-ui';
-  const axisFont = isM ? '10px system-ui' : '9px system-ui';
-  const pw = W - pad.l - pad.r; const ph = H - pad.t - pad.b;
   const agg = [...data.aggregate].sort((a, b) => b.T - a.T);
   if (!agg.length) return;
 
   const maxMAE = Math.max(15, ...agg.map(a => a.mae_pct)) * 1.2;
-  const xp = i => pad.l + (i / Math.max(agg.length - 1, 1)) * pw;
-  const yp = v => pad.t + ph - (v / maxMAE) * ph;
+  const threshold = v => v <= 8 ? PALETTE.green : v <= 12 ? PALETTE.greenBright : PALETTE.gold;
+  const dotColors = agg.map(a => threshold(a.mae_pct));
+  const _tlGrad = {};
 
-  // Good zone
-  const gy = yp(10);
-  ctx.fillStyle = 'rgba(34,197,94,.05)';
-  ctx.fillRect(pad.l, gy, pw, pad.t + ph - gy);
+  // Green "good zone" under the 10% MAE line.
+  const goodZone = {
+    id: 'goodZone',
+    beforeDraw(c) {
+      const area = c.chartArea;
+      const y10 = c.scales.y.getPixelForValue(10);
+      if (y10 >= area.bottom) return;
+      c.ctx.save();
+      c.ctx.fillStyle = themeRgba(PALETTE.green, 0.05);
+      c.ctx.fillRect(area.left, y10, area.right - area.left, area.bottom - y10);
+      c.ctx.restore();
+    }
+  };
 
-  // Grid
-  ctx.strokeStyle = PALETTE.border; ctx.lineWidth = 0.5; ctx.setLineDash([3, 3]);
-  [5, 10, 15].filter(v => v < maxMAE).forEach(v => {
-    ctx.beginPath(); ctx.moveTo(pad.l, yp(v)); ctx.lineTo(pad.l + pw, yp(v)); ctx.stroke();
-    ctx.fillStyle = PALETTE.muted; ctx.font = tickFont; ctx.textAlign = 'right';
-    ctx.fillText(v + '%', pad.l - 4, yp(v) + 3);
+  // Threshold-colored glow dots + always-on value labels, as in the
+  // hand-rolled renderer (shadowed redraws over the dataset's own points so
+  // each dot keeps its own glow color).
+  const dotsAndLabels = {
+    id: 'tlDotsLabels',
+    afterDatasetsDraw(c) {
+      const meta = c.getDatasetMeta(0);
+      const ctx2 = c.ctx;
+      ctx2.save();
+      meta.data.forEach((el, i) => {
+        const col = dotColors[i];
+        ctx2.shadowColor = col; ctx2.shadowBlur = 6;
+        ctx2.fillStyle = col;
+        ctx2.beginPath(); ctx2.arc(el.x, el.y, 4, 0, Math.PI * 2); ctx2.fill();
+        ctx2.shadowBlur = 0;
+        ctx2.strokeStyle = PALETTE.surface2; ctx2.lineWidth = 1.5; ctx2.stroke();
+        ctx2.fillStyle = PALETTE.text;
+        ctx2.font = `bold ${_mobileVP() ? 10 : 9}px system-ui`;
+        ctx2.textAlign = 'center';
+        ctx2.fillText(agg[i].mae_pct.toFixed(1) + '%', el.x, el.y - 10);
+      });
+      ctx2.restore();
+    }
+  };
+
+  perfTimelineChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: agg.map(a => 'T-' + a.T),
+      datasets: [{
+        data: agg.map(a => a.mae_pct),
+        borderColor: PALETTE.gold,
+        borderWidth: 2.5,
+        borderCapStyle: 'round',
+        backgroundColor: (context) => areaGradient(context.chart, _tlGrad, [
+          [0, themeRgba(PALETTE.gold, 0.18)],
+          [1, themeRgba(PALETTE.gold, 0.02)]
+        ]),
+        fill: 'origin',
+        pointRadius: 4,
+        pointHoverRadius: 7,
+        pointHitRadius: 10,
+        pointBackgroundColor: dotColors,
+        pointBorderColor: PALETTE.surface2,
+        pointBorderWidth: 1.5,
+        tension: 0.3
+      }]
+    },
+    plugins: [goodZone, dotsAndLabels],
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      // Headroom so value labels above the highest dot never clip.
+      layout: { padding: { top: 16 } },
+      interaction: { mode: 'nearest', intersect: false },
+      scales: {
+        x: {
+          title: { display: !_mobileVP(), text: 'Days Before Event', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
+          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 10 : 9 }, maxRotation: 0 },
+          grid: { display: false }
+        },
+        y: {
+          min: 0, max: Math.round(maxMAE * 10) / 10,
+          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 9 : 8 }, maxTicksLimit: 4,
+            callback(v) { return v + '%'; } },
+          grid: { color: themeRgba(PALETTE.border, 0.4) }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
+          titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
+          padding: 12, cornerRadius: 8,
+          titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' }, bodyFont: { size: 12 },
+          displayColors: false,
+          callbacks: {
+            title(items) {
+              if (!items.length) return '';
+              const a = agg[items[0].dataIndex];
+              return `T-${a.T} (${a.T} days before event)`;
+            },
+            label(item) { return ` MAE: ${item.parsed.y.toFixed(1)}%`; },
+            afterBody(items) {
+              if (!items.length) return [];
+              const a = agg[items[0].dataIndex];
+              const bias = a.bias_pct > 0 ? `+${a.bias_pct}` : `${a.bias_pct}`;
+              return [`  n=${a.n}`, `  Bias: ${bias}%`, `  CI coverage: ${a.ci_coverage}%`];
+            }
+          }
+        }
+      }
+    }
   });
-  ctx.setLineDash([]);
-
-  // Area fill
-  ctx.beginPath(); ctx.moveTo(xp(0), pad.t + ph);
-  agg.forEach((a, i) => ctx.lineTo(xp(i), yp(a.mae_pct)));
-  ctx.lineTo(xp(agg.length - 1), pad.t + ph); ctx.closePath();
-  const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + ph);
-  grad.addColorStop(0, 'rgba(240,192,64,.18)'); grad.addColorStop(1, 'rgba(240,192,64,.02)');
-  ctx.fillStyle = grad; ctx.fill();
-
-  // Line
-  ctx.beginPath();
-  agg.forEach((a, i) => { i === 0 ? ctx.moveTo(xp(i), yp(a.mae_pct)) : ctx.lineTo(xp(i), yp(a.mae_pct)); });
-  ctx.strokeStyle = PALETTE.gold; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.stroke();  // canvas can't resolve var(--gold)
-
-  // Dots + labels
-  agg.forEach((a, i) => {
-    const cx = xp(i); const cy = yp(a.mae_pct);
-    const c = a.mae_pct <= 8 ? PALETTE.green : a.mae_pct <= 12 ? PALETTE.greenBright : PALETTE.gold;
-    ctx.shadowColor = c; ctx.shadowBlur = 6;
-    ctx.fillStyle = c; ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2); ctx.fill();
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = PALETTE.surface2; ctx.lineWidth = 1.5; ctx.stroke();
-    // Value
-    ctx.fillStyle = PALETTE.text; ctx.font = valFont; ctx.textAlign = 'center';
-    ctx.fillText(a.mae_pct.toFixed(1) + '%', cx, cy - 10);
-    // T label
-    ctx.fillStyle = PALETTE.muted; ctx.font = tFont;
-    ctx.fillText('T-' + a.T, cx, pad.t + ph + 14);
-  });
-
-  // Axis
-  ctx.fillStyle = PALETTE.muted; ctx.font = axisFont; ctx.textAlign = 'center';
-  ctx.fillText('Days Before Event', pad.l + pw / 2, H - 5);
 }
 
 function perfDrawTable(data) {
@@ -3381,7 +3499,6 @@ function renderChart(t) {
   // (with a small pixel margin), preventing stale endpoint matches.
   // Chart.js ignores prefers-reduced-motion on its own; disable animation for
   // every chart in the page (reload-only, no matchMedia listener).
-  if (_reduceMotion()) Chart.defaults.animation = false;
   if (!Chart.Interaction.modes.xAligned) {
     Chart.Interaction.modes.xAligned = function(chart2, e, options, useFinalPosition) {
       const items = [];

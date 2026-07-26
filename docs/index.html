@@ -21,7 +21,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://chess-ask.hater-andrewd.workers.dev">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=0c2abbfbfe">
+<link rel="stylesheet" href="styles.css?v=bb073a9fca">
 </head>
 <body>
 
@@ -447,7 +447,7 @@
           <span class="chart-tile-title">Predicted vs Actual</span>
           <span class="chart-tile-sub">at T-14</span>
         </div>
-        <canvas id="perfScatterCanvas" class="chart-tile-canvas" aria-label="Scatter plot of predicted versus actual tournament entries" role="img"></canvas>
+        <div class="chart-tile-body"><canvas id="perfScatterCanvas" class="chart-tile-canvas" aria-label="Scatter plot of predicted versus actual tournament entries" role="img"></canvas></div>
       </div>
       <!-- Error over lead time -->
       <div class="chart-tile">
@@ -455,7 +455,7 @@
           <span class="chart-tile-title">Error by Lead Time</span>
           <span class="chart-tile-sub">MAE % at each horizon</span>
         </div>
-        <canvas id="perfTimelineCanvas" class="chart-tile-canvas" aria-label="Line chart showing prediction error percentage by lead time horizon" role="img"></canvas>
+        <div class="chart-tile-body"><canvas id="perfTimelineCanvas" class="chart-tile-canvas" aria-label="Line chart showing prediction error percentage by lead time horizon" role="img"></canvas></div>
       </div>
     </div>
 
@@ -893,7 +893,7 @@
      init() (and any #audit deep link) synchronously at evaluation time. -->
 <script src="audit.js?v=30eaa762a6"></script>
 <script src="daily_series.js?v=e326e2b1fc"></script>
-<script src="app.js?v=b422406dff"></script>
+<script src="app.js?v=170283fecd"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,
      so it is load-bearing: without it nothing on the page responds. It comes

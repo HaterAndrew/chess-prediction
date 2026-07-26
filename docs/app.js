@@ -40,6 +40,25 @@ function themeRgba(hex, alpha) {
   const h = n.length === 3 ? n.split('').map(c => c + c).join('') : n;
   return `rgba(${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)},${alpha})`;
 }
+
+// Vertical gradient for scriptable backgroundColor, cached per chart area.
+// Chart.js resolves scriptable colors once before layout, when chartArea is
+// still undefined — return the bottom stop as a flat fallback for that pass.
+// The cache object is supplied by the call site (one per dataset) and keyed
+// on the chart-area extent so resize rebuilds the CanvasGradient exactly once
+// instead of allocating a new one on every scriptable resolution.
+function areaGradient(chart2, cache, stops) {
+  const { ctx, chartArea } = chart2;
+  if (!chartArea) return stops[stops.length - 1][1];
+  const key = chartArea.top + ':' + chartArea.bottom;
+  if (cache.key !== key) {
+    const g = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+    stops.forEach(([at, color]) => g.addColorStop(at, color));
+    cache.key = key;
+    cache.grad = g;
+  }
+  return cache.grad;
+}
 let selectedIndex = 0;
 let chart = null;
 let histChartObj = null;
@@ -3045,27 +3064,23 @@ function renderChart(t) {
     return 0;  // hide intermediate points
   });
 
-  // Gradient fill under actual data
-  const createGradient = (ctx2) => {
-    const g = ctx2.createLinearGradient(0, 0, 0, 380);
-    g.addColorStop(0, 'rgba(88,166,255,0.15)');
-    g.addColorStop(1, 'rgba(88,166,255,0.01)');
-    return g;
-  };
+  // Gradient fill under actual data. The old version hardcoded a 380px
+  // gradient height (wrong whenever CSS resizes the plot) and allocated a
+  // fresh CanvasGradient on every scriptable pass — areaGradient fixes both.
+  const _actualGrad = {};
 
   datasets.push({
     label: 'Actual Entries',
     data: actualData,
     borderColor: PALETTE.blue,
-    backgroundColor: (context) => {
-      const chart2 = context.chart;
-      const { ctx: ctx2 } = chart2;
-      return createGradient(ctx2);
-    },
+    backgroundColor: (context) => areaGradient(context.chart, _actualGrad, [
+      [0, themeRgba(PALETTE.blue, 0.22)],
+      [1, themeRgba(PALETTE.blue, 0)]
+    ]),
     fill: true,
     borderWidth: 2.5,
     pointRadius: pointRadii,
-    pointHoverRadius: 6,
+    pointHoverRadius: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? 8 : 6),
     pointHoverBackgroundColor: PALETTE.blue,
     pointHoverBorderColor: PALETTE.text,
     pointHoverBorderWidth: 2,
@@ -3138,10 +3153,16 @@ function renderChart(t) {
       ciUp.push({ x: date, y: Math.round(ciUpperScale * pctAtDb) });
       ciLo.push({ x: date, y: Math.max(0, Math.round(ciLowerScale * pctAtDb)) });
     }
+    // Band paint comes from CI Upper's fill('+1') alone; a vertical fade keeps
+    // the band readable near the projection line without muddying the bottom.
+    const _ciGrad = {};
     datasets.push({
       label: 'CI Upper', data: ciUp,
       borderColor: themeRgba(PALETTE.gold, 0.22), borderWidth: 1,
-      backgroundColor: themeRgba(PALETTE.gold, 0.12),
+      backgroundColor: (context) => areaGradient(context.chart, _ciGrad, [
+        [0, themeRgba(PALETTE.gold, 0.16)],
+        [1, themeRgba(PALETTE.gold, 0.03)]
+      ]),
       fill: '+1', pointRadius: 0, tension: 0.3, order: 5
     });
     datasets.push({
@@ -3283,6 +3304,24 @@ function renderChart(t) {
     }
   };
 
+  // Soft glow under the Actual line (dataset 0). Desktop only: shadowed
+  // strokes cost a full extra raster pass per frame, and small screens get
+  // no benefit at their line weight. The built-in filler runs before inline
+  // plugins, so the area fill underneath stays un-shadowed.
+  const lineGlowPlugin = {
+    id: 'lineGlow',
+    beforeDatasetDraw(chartInstance, args) {
+      if (args.index !== 0 || _mobileVP()) return;
+      chartInstance.ctx.save();
+      chartInstance.ctx.shadowColor = themeRgba(PALETTE.blue, 0.55);
+      chartInstance.ctx.shadowBlur = 6;
+    },
+    afterDatasetDraw(chartInstance, args) {
+      if (args.index !== 0 || _mobileVP()) return;
+      chartInstance.ctx.restore();
+    }
+  };
+
   // Projection endpoint: gold dot + "approx N" label at (event day, predicted
   // final). Desktop + live only; mobile keeps the hero number as the source.
   const endpointLabelPlugin = {
@@ -3357,14 +3396,18 @@ function renderChart(t) {
         if (firstHitIdx >= meta.data.length) return;
         const firstPx = meta.data[firstHitIdx].x;
         const lastPx = meta.data[meta.data.length - 1].x;
-        const margin = 15;
+        // Registered once globally, so viewport class is checked per call.
+        // Coarse pointers get a wider capture band: 15px is a comfortable
+        // mouse margin but under a fingertip it makes edge points untappable.
+        const _isM = _mobileVP();
+        const margin = _isM ? 28 : 15;
         if (mouseX < firstPx - margin || mouseX > lastPx + margin) return;
         let bestIdx = -1, bestDist = Infinity;
         for (let idx = firstHitIdx; idx < meta.data.length; idx++) {
           const dist = Math.abs(meta.data[idx].x - mouseX);
           if (dist < bestDist) { bestDist = dist; bestIdx = idx; }
         }
-        if (bestIdx >= 0 && bestDist < 50) {
+        if (bestIdx >= 0 && bestDist < (_isM ? 60 : 50)) {
           items.push({ datasetIndex: dsIdx, index: bestIdx, element: meta.data[bestIdx] });
         }
       });
@@ -3394,7 +3437,7 @@ function renderChart(t) {
   chart = new Chart(ctx, {
     type: 'line',
     data: { datasets },
-    plugins: [vertLinePlugin, crosshairPlugin, endpointLabelPlugin],
+    plugins: [vertLinePlugin, crosshairPlugin, endpointLabelPlugin, lineGlowPlugin],
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'xAligned', intersect: false },

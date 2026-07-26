@@ -270,8 +270,6 @@ def test_backtest_leave_one_out():
     assert coverage > 80, f"Coverage {coverage:.1f}% below 80% target"
     print("  PASS: backtest metrics within targets")
 
-    return results
-
 
 def test_backtest_vs_naive():
     """Compare per-family multiplier vs single global multiplier."""

@@ -99,7 +99,16 @@ def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
     if new_rows:
         if "roster_pending" not in summary.columns:
             summary["roster_pending"] = False
-        summary = pd.concat([summary, pd.DataFrame(new_rows)], ignore_index=True)
+        new_df = pd.DataFrame(new_rows)
+        if summary.empty:
+            summary = new_df
+        else:
+            # pandas deprecates concat when a frame carries empty/all-NA
+            # columns, and the pd.NA skeleton fields above are all-NA by
+            # construction. Drop them and let the column union restore them
+            # with summary's dtypes.
+            summary = pd.concat([summary, new_df.dropna(axis=1, how="all")],
+                                ignore_index=True)
 
     if verbose:
         if len(bumped) > 0:

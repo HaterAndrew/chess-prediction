@@ -214,3 +214,54 @@ def chart_series_start_date(tid, daily, event_start):
     if pd.isna(start):
         return None
     return (start - pd.Timedelta(days=int(max_T))).strftime('%Y-%m-%d')
+
+
+# v4 X1 (audit/AUDIT_2026-07-26.md): pace-gate for interim metadata cards.
+# 0e1c6a1 widened the pace window from 45 to 90 days, but at 46-90 days out a
+# typical family curve sits at 1-2% cumulative, so the ratio scale-up
+# (~1/pct) was pure noise that pinned the max(hist)*1.5 clamp ceiling while
+# shipping labeled as live pace. The gate keeps the pre-0e1c6a1 behaviour
+# untouched inside 45 days and grants the 46-90 day extension only when the
+# family's expected cumulative share at that lead time clears this floor,
+# i.e. only where the ratio actually carries signal.
+PACE_MIN_CURVE_PCT = 0.05
+
+
+def curve_pct_at(curve, days_before):
+    """Expected cumulative registration share at a lead time.
+
+    `curve` maps lead-time grid points (days before event start) to cumulative
+    fractions, e.g. {90: 0.012, 42: 0.10, ...}. Linear interpolation between
+    the bracketing grid points; outside the grid, the nearest endpoint.
+    Returns 0.0 for an empty/unknown curve so callers fail conservative.
+    """
+    if not curve:
+        return 0.0
+    pts = sorted((int(k), float(v)) for k, v in curve.items())
+    d = float(days_before)
+    if d <= pts[0][0]:
+        return pts[0][1]
+    if d >= pts[-1][0]:
+        return pts[-1][1]
+    for (k0, v0), (k1, v1) in zip(pts, pts[1:]):
+        if k0 <= d <= k1:
+            if k1 == k0:
+                return v1
+            return v0 + (v1 - v0) * (d - k0) / (k1 - k0)
+    return 0.0
+
+
+def pace_gate_ok(current_count, days_to_start, curve):
+    """Should an interim card extrapolate from live registration pace?
+
+    Inside 45 days: yes with 10+ registrations (the long-standing gate).
+    46-90 days: additionally requires curve_pct_at >= PACE_MIN_CURVE_PCT.
+    Beyond 90 days, or under 10 registrations: no.
+    """
+    if current_count < 10:
+        return False
+    if days_to_start <= 45:
+        return True
+    if days_to_start > 90:
+        return False
+    return curve_pct_at(curve, days_to_start) >= PACE_MIN_CURVE_PCT

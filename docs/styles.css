@@ -2988,7 +2988,11 @@ footer a { color: var(--muted); }
 .chart-tile-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
 .chart-tile-title { font-size: var(--fs-2); font-weight: 700; color: var(--text); }
 .chart-tile-sub { font-size: var(--fs-1); color: var(--muted); }
-.chart-tile-canvas { width: 100%; height: 220px; }
+/* Chart.js responsive mode sizes the canvas from its parent and injects
+   inline canvas styles, so the fixed height lives on the wrapper (same
+   pattern as .chart-box). */
+.chart-tile-body { position: relative; height: 220px; }
+.chart-tile-canvas { width: 100%; }
 .perf-horizon-strip { display: flex; gap: 6px; margin-bottom: 22px; flex-wrap: wrap; }
 .perf-summary {
   font-size: var(--fs-2); font-weight: 700; letter-spacing: .08em; text-transform: uppercase;

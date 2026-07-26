@@ -3,13 +3,13 @@
 // Cache name is bumped on each deploy that reshapes caching behavior so
 // old caches from prior SW versions get purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v75';
+const CACHE_NAME = 'cca-predictor-v76';
 
 // Version-pinned, SRI-locked CDN scripts. Immutable, so serve them cache-first
 // (see the fetch handler) instead of letting the cross-origin bypass drop them
 // — that bypass meant a repeat/offline load got "Chart is not defined".
 const CDN_ASSETS = [
-  'https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js',
+  'https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js',
   'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js',
   'https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js'
 ];

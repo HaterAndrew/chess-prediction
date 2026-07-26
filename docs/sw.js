@@ -3,7 +3,7 @@
 // Cache name is bumped on each deploy that reshapes caching behavior so
 // old caches from prior SW versions get purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v76';
+const CACHE_NAME = 'cca-predictor-v77';
 
 // Version-pinned, SRI-locked CDN scripts. Immutable, so serve them cache-first
 // (see the fetch handler) instead of letting the cross-origin bypass drop them
@@ -17,13 +17,16 @@ const CDN_ASSETS = [
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
-  'styles.css?v=bb073a9fca',
+  'styles.css?v=96f245ba47',
   'boot.js?v=ccde1eb234',
-  'app.js?v=170283fecd',
+  'app.js?v=32b52f62fc',
   'actions.js?v=886915259e',
   'audit.js?v=30eaa762a6',
   'daily_series.js?v=e326e2b1fc',
   'data/site_data.js?v=2f8a3d878f',
+  // v4 W4: Model Health fetches this at runtime; without a precached copy an
+  // offline load 504s and the panel renders empty.
+  'audit_warnings.json',
   'manifest.json',
   'icons/icon-192.png',
   ...CDN_ASSETS

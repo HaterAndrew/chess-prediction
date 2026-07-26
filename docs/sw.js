@@ -19,7 +19,7 @@ const OFFLINE_FALLBACKS = [
   'index.html',
   'styles.css?v=0c2abbfbfe',
   'boot.js?v=ccde1eb234',
-  'app.js?v=adcd52a2b3',
+  'app.js?v=f1ef208a8b',
   'actions.js?v=886915259e',
   'audit.js?v=30eaa762a6',
   'daily_series.js?v=e326e2b1fc',

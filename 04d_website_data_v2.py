@@ -16,7 +16,8 @@ m04c = import_module("04c_final_model")
 from tournament_aliases import canonicalize_family, adjust_wo_top6_count
 from prediction_window import registration_close_date, window_decayed_estimate
 from pipeline_utils import (apply_plausibility_clamp, build_chart_series,
-                            chart_series_start_date, is_event_complete)
+                            chart_series_start_date, is_event_complete,
+                            pace_gate_ok)
 # v3 T7: these two live in ratio_model now so the window-engine grader can
 # import them without executing this script's pipeline body. Imported here
 # under their original names, so every call site below is unchanged.
@@ -931,7 +932,12 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
     # multiplied into an absurd projection (a 1-registrant event 170 days out
     # has no usable pace). Otherwise lean on the historical average — still
     # flagged low-confidence below.
-    pace_usable = current_count >= 10 and days_to_start <= 90
+    # v4 X1: the bare 90-day gate routed 46-90 day cards into the clamp
+    # ceiling (the curve share out there is ~1-2%, so the ratio scale-up was
+    # noise labeled as pace). pace_gate_ok keeps the old 45-day behaviour and
+    # grants the extension only where the family curve carries signal.
+    curve = curves.get(mfamily, curves.get('__global__', {}))
+    pace_usable = pace_gate_ok(current_count, days_to_start, curve)
     if hist_counts and pace_usable and status_label == "live":
         # Resolve the name the ratio model trained under (summary uses
         # 01_data_prep's canonical form, which can differ from the FAMILY_GROUPS
@@ -964,7 +970,6 @@ for _, mrow in meta[meta['year'] == 2026].iterrows():
         else:
             ci_lo = int(hist_mean * 0.7)
             ci_hi = int(hist_mean * 1.3)
-    curve = curves.get(mfamily, curves.get('__global__', {}))
     reg_curve = []
     for db in [120, 90, 75, 60, 42, 28, 21, 14, 7, 3, 1, 0]:
         pct = curve.get(db, 0)

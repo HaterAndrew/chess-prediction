@@ -2920,7 +2920,9 @@ function setChartRange(key) {
   chart.options.scales.x.min = cw.min;
   chart.options.scales.x.max = cw.max;
   chart.options.scales.x.time = _chartTimeUnit(cw, st.t);
-  chart.update();
+  // 'none': a default-mode update() replays the progressive draw-in from a
+  // blank line on every range click (the resize handler already does this).
+  chart.update('none');
   _syncChartRangeSeg(cw);
 }
 
@@ -3176,11 +3178,11 @@ function renderChart(t) {
   // Historical traces — dashed lines, no points, for past year curves of this family
   if (t.historical && t.registration_curve) {
     const histColors = [
-      themeRgba(PALETTE.muted, 0.55),  // most recent — brightest
-      themeRgba(PALETTE.muted, 0.40),
-      themeRgba(PALETTE.muted, 0.28),
-      themeRgba(PALETTE.muted, 0.18),
-      themeRgba(PALETTE.muted, 0.12),
+      themeRgba(PALETTE.muted, 0.45),  // most recent — brightest
+      themeRgba(PALETTE.muted, 0.32),
+      themeRgba(PALETTE.muted, 0.22),
+      themeRgba(PALETTE.muted, 0.14),
+      themeRgba(PALETTE.muted, 0.10),
     ];
     // histLookup is built once at the top of renderChart (above the
     // projection block) so the scrape-ratio computation and the historical
@@ -3224,7 +3226,7 @@ function renderChart(t) {
         label: `${h.year}`,
         data: hData,
         borderColor: histColors[colorIdx] || histColors[histColors.length - 1],
-        borderWidth: 1.5,
+        borderWidth: 1.25,
         borderDash: [5, 4],
         pointRadius: 0,
         pointHoverRadius: 5,
@@ -3434,14 +3436,80 @@ function renderChart(t) {
     };
   }
 
+  // Progressive left-to-right draw-in on first render. Per-chart animation
+  // config OVERRIDES the global Chart.defaults.animation kill, so reduced
+  // motion must be handled explicitly here. The xStarted/yStarted flags live
+  // on each element's $context and stop the stagger from replaying on later
+  // updates; range clicks additionally use update('none').
+  const _drawN = actualData.length || 1;
+  const _drawPer = Math.min(700 / _drawN, 12);
+  const drawInAnimation = _reduceMotion() ? false : {
+    x: {
+      type: 'number', easing: 'linear', duration: _drawPer, from: NaN,
+      delay(c) {
+        if (c.type !== 'data' || c.xStarted) return 0;
+        c.xStarted = true;
+        return c.index * _drawPer;
+      }
+    },
+    y: {
+      type: 'number', easing: 'linear', duration: _drawPer,
+      from(c) {
+        if (c.index === 0) return c.chart.scales.y.getPixelForValue(0);
+        const prev = c.chart.getDatasetMeta(c.datasetIndex).data[c.index - 1];
+        return prev ? prev.getProps(['y'], true).y : undefined;
+      },
+      delay(c) {
+        if (c.type !== 'data' || c.yStarted) return 0;
+        c.yStarted = true;
+        return c.index * _drawPer;
+      }
+    }
+  };
+
+  // Hover emphasis for historical year traces. xAligned returns the nearest
+  // point of EVERY dataset regardless of pointer y, so proximity to the trace
+  // is checked here; without it the first year line would light up wherever
+  // the cursor sat. Restore-then-set with a change guard keeps this at one
+  // update('none') per trace change instead of one per mousemove.
+  let _emphIdx = -1;
+  function _emphasizeYearTrace(evt, elements, chart2) {
+    if (_mobileVP()) return;
+    let best = -1, bestDy = 14;
+    for (const el of elements) {
+      const lbl = chart2.data.datasets[el.datasetIndex]?.label || '';
+      if (!/^\d{4}$/.test(lbl)) continue;
+      const dy = Math.abs(el.element.y - evt.y);
+      if (dy < bestDy) { bestDy = dy; best = el.datasetIndex; }
+    }
+    if (best === _emphIdx) return;
+    if (_emphIdx >= 0) {
+      const prev = chart2.data.datasets[_emphIdx];
+      if (prev && prev._origBorder) {
+        prev.borderColor = prev._origBorder.color;
+        prev.borderWidth = prev._origBorder.width;
+      }
+    }
+    if (best >= 0) {
+      const ds = chart2.data.datasets[best];
+      if (!ds._origBorder) ds._origBorder = { color: ds.borderColor, width: ds.borderWidth };
+      ds.borderColor = themeRgba(PALETTE.muted, 0.8);
+      ds.borderWidth = 2;
+    }
+    _emphIdx = best;
+    chart2.update('none');
+  }
+
   chart = new Chart(ctx, {
     type: 'line',
     data: { datasets },
     plugins: [vertLinePlugin, crosshairPlugin, endpointLabelPlugin, lineGlowPlugin],
     options: {
       responsive: true, maintainAspectRatio: false,
+      animation: drawInAnimation,
       interaction: { mode: 'xAligned', intersect: false },
       hover: { mode: 'xAligned', intersect: false },
+      onHover: _emphasizeYearTrace,
       plugins: {
         legend: { display: false },
         tooltip: {

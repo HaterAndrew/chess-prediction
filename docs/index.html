@@ -21,7 +21,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://chess-ask.hater-andrewd.workers.dev">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=bb073a9fca">
+<link rel="stylesheet" href="styles.css?v=96f245ba47">
 </head>
 <body>
 
@@ -202,8 +202,12 @@
 
 
   <!-- ── Timeline + Historical (collapsible on phones) ── -->
-  <details class="sect" id="sect-milestones">
-  <summary class="sect-summary">Milestones and History</summary>
+  <!-- v4 W1: `open` in markup so a JS fault degrades to visible content on
+       desktop (the summary is display:none there); syncSectionDisclosure still
+       closes these on phones once it runs. v4 W5: summary text is an h3 for
+       screen-reader heading navigation. -->
+  <details class="sect" id="sect-milestones" open>
+  <summary class="sect-summary"><h3 class="sect-summary-h">Milestones and History</h3></summary>
   <div class="grid-2 mt4">
     <div class="panel">
       <h3 class="panel-title">Key Milestones</h3>
@@ -219,8 +223,8 @@
   </details>
 
   <!-- ── Registration Curve + Fees (collapsible on phones) ── -->
-  <details class="sect" id="sect-curve">
-  <summary class="sect-summary">Registration Curve and Fees</summary>
+  <details class="sect" id="sect-curve" open>
+  <summary class="sect-summary"><h3 class="sect-summary-h">Registration Curve and Fees</h3></summary>
   <div class="grid-2" id="curveAndFeeRow">
     <div class="panel" id="regCurvePanel">
       <h3 class="panel-title">Registration Curve Pattern</h3>
@@ -235,8 +239,8 @@
   </details>
 
   <!-- ── Model Info (compact, collapsible on phones) ── -->
-  <details class="sect" id="sect-model">
-  <summary class="sect-summary">About This Model</summary>
+  <details class="sect" id="sect-model" open>
+  <summary class="sect-summary"><h3 class="sect-summary-h">About This Model</h3></summary>
   <div class="panel model-info mb24">
     <h3 class="panel-title">About This Model</h3>
     <div class="model-info-row">
@@ -269,8 +273,8 @@
   </details>
 
   <!-- ── All Tournaments Table ── -->
-  <details class="sect" id="sect-table">
-  <summary class="sect-summary">2026 Tournament Overview</summary>
+  <details class="sect" id="sect-table" open>
+  <summary class="sect-summary"><h3 class="sect-summary-h">2026 Tournament Overview</h3></summary>
   <div class="all-tournaments">
     <div class="panel roomy" >
       <div class="tt-head">
@@ -893,7 +897,7 @@
      init() (and any #audit deep link) synchronously at evaluation time. -->
 <script src="audit.js?v=30eaa762a6"></script>
 <script src="daily_series.js?v=e326e2b1fc"></script>
-<script src="app.js?v=170283fecd"></script>
+<script src="app.js?v=32b52f62fc"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,
      so it is load-bearing: without it nothing on the page responds. It comes

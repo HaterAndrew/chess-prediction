@@ -78,7 +78,19 @@ function _reduceMotion() {
 // covered regardless of which tab renders first (a #performance deep link
 // never runs renderChart). app.js is deferred after chart.umd.min.js, so
 // Chart exists here; the typeof guard keeps a CDN failure from cascading.
-if (typeof Chart !== 'undefined' && _reduceMotion()) Chart.defaults.animation = false;
+// v4 U4: also track mid-session OS toggles. Existing chart instances keep
+// their config until their next render (every tab switch re-renders), but the
+// default flips immediately for anything created after the change.
+if (typeof Chart !== 'undefined' && typeof window !== 'undefined' && window.matchMedia) {
+  const _rmQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const _animDefault = Chart.defaults.animation;
+  if (_rmQuery.matches) Chart.defaults.animation = false;
+  if (typeof _rmQuery.addEventListener === 'function') {
+    _rmQuery.addEventListener('change', () => {
+      Chart.defaults.animation = _rmQuery.matches ? false : _animDefault;
+    });
+  }
+}
 // Progressive-enhancement haptic. Android Chrome/Firefox supported; iOS Safari
 // no-ops. Respects prefers-reduced-motion. Round 31.
 function _haptic(ms) {
@@ -2985,7 +2997,7 @@ function _chartWindow(t, series, dayToDate, forceKey) {
   out.valid30 = winStart(30) > dataStart && lastActual >= winStart(30);
 
   let key = forceKey || _getStoredChartRange();
-  if (key === '90' && !out.valid90) key = forceKey ? '' : '';
+  if (key === '90' && !out.valid90) key = '';
   if (key === '30' && !out.valid30) key = out.valid90 ? '90' : '';
   if (key !== 'all' && key !== '90' && key !== '30') key = '';
   if (!key) {
@@ -3311,7 +3323,15 @@ function renderChart(t) {
     recent.forEach((h, i) => {
       const real = histLookup[h.year];
       const hData = [];
-      const dd = real.daily_data;
+      // v4 U2 (audit/AUDIT_2026-07-26.md): same contract as the actual line and
+      // the compare traces — draw the sanitised series, never the raw array.
+      // Historical editions get no currentCount cap (isLive: false), but they
+      // still need the duplicate-day and monotonicity cleaning: the server-side
+      // historical path only sorts.
+      const dd = (typeof DailySeries !== 'undefined')
+        ? DailySeries.sanitizeSeries(real.daily_data, { isLive: false }).points
+        : real.daily_data;
+      if (!dd.length) return;
       const maxDay = dd[dd.length - 1][0];
       // v3 P4: anchor each historical curve to ITS OWN event date, not to the
       // tail of its data. The tail is wherever scraping happened to stop — the
@@ -3321,15 +3341,16 @@ function renderChart(t) {
       // exports a daily_start_date and an event_start, days-before-event is
       // computable exactly; otherwise fall back to the old tail anchor.
       const canAnchor = real.daily_start_date && real.event_start;
+      // v4 U1 (audit/AUDIT_2026-07-26.md): pure day arithmetic, no Date
+      // round-trip. The old form built a local-midnight Date and reprojected it
+      // through toISOString()'s UTC, which lands on the previous calendar day
+      // east of Greenwich and shifted every overlay one day left there.
+      const spanToEvent = canAnchor
+        ? daysBetween(real.daily_start_date, real.event_start)
+        : null;
       dd.forEach(p => {
-        let T;
-        if (canAnchor) {
-          // Calendar date of this point, then its distance from that year's event.
-          T = daysBetween(addDays(real.daily_start_date, p[0]).toISOString().slice(0, 10),
-                          real.event_start);
-        } else {
-          T = maxDay - p[0];
-        }
+        // Distance of this point from its own year's event, in whole days.
+        const T = canAnchor ? spanToEvent - p[0] : maxDay - p[0];
         if (T >= 0 && T <= 120) {
           hData.push({ x: addDays(eventStart, -T), y: p[1] });
         }
@@ -5729,6 +5750,10 @@ function renderCompareTab() {
     </div>`;
   }
 
+  // v4 U3 (audit/AUDIT_2026-07-26.md): the <2-selected path re-renders without
+  // a canvas, so destroy before the innerHTML write detaches it — otherwise the
+  // instance and its ResizeObserver stay live on the orphaned canvas.
+  if (_compareChart) { _compareChart.destroy(); _compareChart = null; }
   el.innerHTML = selectorHTML + insightHTML + statsHTML + chartHTML;
 
   // Render chart if 2+
@@ -5939,6 +5964,10 @@ function renderCompareChart(selected) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      // v4 U6: without this the chart falls back to nearest+intersect:true and a
+      // fingertip has to land on the 2.5px line itself. Same contract as the
+      // scatter and timeline charts.
+      interaction: { mode: 'nearest', intersect: false },
       scales: {
         x: {
           type: 'linear',

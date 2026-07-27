@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-26 04:42:52",
-  "count": 207,
+  "generated": "2026-07-27 04:53:10",
+  "count": 215,
   "warnings": [
     {
       "step": "Refresh tournament summary",
@@ -92,6 +92,38 @@
     },
     {
       "step": "Generate predictions (04d_website_data_v2.py)",
+      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
+      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
+    },
+    {
+      "step": "Generate performance data (04e_performance_data.py)",
       "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
     },
     {

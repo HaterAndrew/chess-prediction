@@ -1,10 +1,14 @@
 {
-  "generated": "2026-07-28 04:29:57",
-  "count": 215,
+  "generated": "2026-07-29 04:31:56",
+  "count": 216,
   "warnings": [
     {
       "step": "Refresh tournament summary",
       "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 tournament roster is frozen; tournaments that opened registration since the last export are invisible to the model and show a flat historical average. Re-export from the CCA admin."
+    },
+    {
+      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
+      "text": "source-parse failure \u2014 Bradley Open 2026: pattern \"Bradley Open\" not found in chesstour.com schedule"
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",

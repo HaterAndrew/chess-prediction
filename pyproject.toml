@@ -13,8 +13,12 @@ python_functions = ["test_*"]
 pythonpath = ["."]
 
 [tool.ruff.lint]
-# E402: pipeline scripts run sys.path.insert() and define module constants
-#       before importing their digit-prefixed siblings (04c/04d/04e/06).
-#       Dropped in decomposition P9 once the package layout removes the need.
 # E701: compact one-line `if cond: return` used throughout the pipeline.
-ignore = ["E402", "E701"]
+ignore = ["E701"]
+
+[tool.ruff.lint.per-file-ignores]
+# Standalone entry points executed as `python scripts/x.py` / `python tools/x.py`
+# from any cwd: sys.path[0] is the script's own directory, so they must insert
+# the repo root before importing repo modules (E402 by construction).
+"scripts/*" = ["E402"]
+"tools/*" = ["E402"]

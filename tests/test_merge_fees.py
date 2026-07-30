@@ -5,15 +5,10 @@ event. Before H3 the check sat inside a try/except that swallowed any parse
 failure with `pass`, meaning an unverifiable date merged the fees anyway — the
 exact case the guard is meant to block. These tests lock skip-on-unverifiable.
 """
-import os
-import sys
 
 import pandas as pd
 import pytest
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
 
 import merge_fees  # noqa: E402
 

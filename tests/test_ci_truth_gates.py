@@ -13,14 +13,11 @@ forces the stale path; data_health's exit codes map 0/3/4 as documented; the
 workflow YAML keeps the continue-on-error + --scrape-failed wiring.
 """
 import os
-import sys
 from types import SimpleNamespace
 
 import pytest
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
 
 import auto_update  # noqa: E402
 import data_health  # noqa: E402

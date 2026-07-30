@@ -14,10 +14,7 @@ leading zero, and a city field carrying a full address.
 """
 
 import os
-import sys
 
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PROJECT_DIR)
 
 import pytest
 from openpyxl import load_workbook
@@ -34,6 +31,8 @@ from hotel_audit import (
     split_last_first,
     write_workbook,
 )
+
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 FIXTURE_HTML = os.path.join(os.path.dirname(__file__), "fixtures",
                             "cca_entry_list_wo26.html")

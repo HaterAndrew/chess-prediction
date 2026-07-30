@@ -3,15 +3,10 @@ verbatim; the A/B sections become prepare_folds, the year loop
 run_year_folds).
 """
 import os
-import sys
+from importlib import import_module
 
 import pandas as pd
 
-# The digit-prefixed 04c shim needs import_module; insert the repo root
-# (this file lives one level down).
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from importlib import import_module
-m04c = import_module("04c_final_model")
 from pipeline_utils import (clamp_stats,
                             is_event_complete, reset_clamp_stats)
 from shared.clock import today_ts
@@ -22,6 +17,8 @@ from perf.evaluation import (_hist_lookup,
                              assert_truth_label_freshness,
                              evaluate_tournaments, format_results)
 from perf.grading import compute_aggregate, grade_from_aggregate
+
+m04c = import_module("04c_final_model")
 
 TODAY = today_ts()
 

@@ -35,14 +35,11 @@ keep_post_start=True. That flag exists for this module and nothing else.
 Sample: 255 of 329 events carry post-start rows, concentrated at one and two
 days into the window, which is where the real windows mostly sit.
 """
-import os
-import sys
 from importlib import import_module
 
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from pipeline_utils import apply_plausibility_clamp
 from prediction_window import window_decayed_estimate

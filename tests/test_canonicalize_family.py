@@ -7,11 +7,7 @@ with zero history. That zero-history path is what pinned the 2026 Eastern
 events to the flat 100 / CI 70-130 default and froze the World Open U13 card on
 a historical average (stale-roster bug, June 2026).
 """
-import os
-import sys
 
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PROJECT_DIR)
 
 from tournament_aliases import canonicalize_family, strip_venue_suffix
 

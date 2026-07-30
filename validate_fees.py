@@ -35,6 +35,10 @@ from scrape_fees import (
     parse_flyer,
     EARLY_BIRD_MIN_GAP_DAYS,
 )
+# Code tables live in fees/codes.py (single home since the 2026-07-30
+# decomposition); re-imported here so validate_fees.FAMILY_TO_CODE stays a
+# module attribute for merge_fees, validate_scraped_data, and the tests.
+from fees.codes import FAMILY_TO_CODE, UNMAPPED_CODES  # noqa: F401
 from scraper_utils import polite_session, respectful_get, DEFAULT_TIMEOUT
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%H:%M:%S")
@@ -44,11 +48,6 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 AUDIT_DIR = os.path.join(PROJECT_DIR, "audit", "eb-verification")
 META_PATH = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
-
-# Code tables live in fees/codes.py (single home since the 2026-07-30
-# decomposition); re-imported here so validate_fees.FAMILY_TO_CODE stays a
-# module attribute for merge_fees, validate_scraped_data, and the tests.
-from fees.codes import FAMILY_TO_CODE, UNMAPPED_CODES  # noqa: F401
 
 _session = None
 

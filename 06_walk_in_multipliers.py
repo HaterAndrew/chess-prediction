@@ -18,6 +18,10 @@ import sys
 from collections import defaultdict
 from datetime import datetime
 
+# Map standings tournament names to summary family names — single source of
+# truth in tournament_aliases.py (AUDIT.md A2).
+from tournament_aliases import STANDINGS_NAME_MAP
+
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 
@@ -33,10 +37,6 @@ COVID_YEARS = {2020, 2021}
 
 # Minimum standings count to consider valid (filters scraper failures)
 MIN_STANDINGS_COUNT = 15
-
-# Map standings tournament names to summary family names — single source of
-# truth in tournament_aliases.py (AUDIT.md A2).
-from tournament_aliases import STANDINGS_NAME_MAP
 
 # Tournament type classification for fallback multipliers
 # Class tournaments have much higher walk-in rates than open tournaments

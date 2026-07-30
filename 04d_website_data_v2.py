@@ -390,7 +390,10 @@ recal_data = summary[
     )
 ].copy()
 if len(recal_data) >= 5:
-    recal_diag = prod_model.recalibrate(recal_data, daily)
+    # regime_year: this model predicts the current year, and the cohort
+    # contains its completed events — the bias correction fits on them.
+    recal_diag = prod_model.recalibrate(recal_data, daily,
+                                        regime_year=int(TODAY.year))
     n_2026 = len(recal_data[recal_data['tournament_year'] == 2026])
     n_older = len(recal_data) - n_2026
     print(f"  Recalibration from {len(recal_data)} tournaments ({n_older} from 2024-25, {n_2026} from 2026):")

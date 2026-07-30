@@ -145,11 +145,13 @@ jobs:
             if [ "$COUNT" = "0" ]; then
               echo "**Pipeline warnings**: 0 (clean run)" >> $GITHUB_STEP_SUMMARY
             else
-              echo "### Pipeline warnings ($COUNT)" >> $GITHUB_STEP_SUMMARY
+              # v5 Cat V: warnings arrive deduped with per-entry counts —
+              # one row per distinct warning instead of 200+ duplicates.
+              echo "### Pipeline warnings ($COUNT distinct)" >> $GITHUB_STEP_SUMMARY
               echo "" >> $GITHUB_STEP_SUMMARY
-              echo "| Step | Warning |" >> $GITHUB_STEP_SUMMARY
-              echo "|------|---------|" >> $GITHUB_STEP_SUMMARY
-              python3 -c 'import json; d=json.load(open("output/audit_warnings.json")); [print("| " + w["step"].replace("|", "\\|") + " | " + w["text"][:200].replace("|", "\\|") + " |") for w in d["warnings"]]' >> $GITHUB_STEP_SUMMARY
+              echo "| Step | Warning | n |" >> $GITHUB_STEP_SUMMARY
+              echo "|------|---------|---|" >> $GITHUB_STEP_SUMMARY
+              python3 -c 'import json; d=json.load(open("output/audit_warnings.json")); [print("| " + w["step"].replace("|", "\\|") + " | " + w["text"][:200].replace("|", "\\|") + " | " + str(w.get("count", 1)) + " |") for w in d["warnings"]]' >> $GITHUB_STEP_SUMMARY
             fi
           fi
 

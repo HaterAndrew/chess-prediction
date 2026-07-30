@@ -399,9 +399,16 @@ def verify_year(year: int, verbose: bool = False, fetcher=_fetch) -> tuple[int, 
     drift = 0
     unavailable = 0
     verified = 0
+    seen_families: set[str] = set()
 
     for row in rows:
         family = _normalize_family(row['family'])
+        # v5 Cat V: metadata carries comma-variant duplicate rows ("World Open
+        # lower sections" AND "World Open, lower sections") that normalize to
+        # the same family — verify each family once, not once per spelling.
+        if family in seen_families:
+            continue
+        seen_families.add(family)
         meta_start = _parse_iso(row.get('start_date', ''))
         if not meta_start:
             if verbose:
@@ -413,6 +420,15 @@ def verify_year(year: int, verbose: bool = False, fetcher=_fetch) -> tuple[int, 
             if family in chesstour_map:
                 canon = chesstour_map[family]
             elif family in CHESSTOUR_PATTERNS:
+                # v5 Cat V: chesstour.com's schedule page drops events once
+                # they are over, so a past event missing from it is expected,
+                # not a parse failure — verification is moot. A FUTURE event
+                # missing from the schedule is still a real WARNING.
+                event_end = _parse_iso(row.get('end_date', '')) or meta_start
+                if event_end < datetime.now().date():
+                    print(f'INFO: {family} {year}: event over — dropped from '
+                          f'chesstour.com schedule; verification moot')
+                    continue
                 # We expected to find it but didn't — listing structure
                 # changed or pattern is stale.
                 print(f'WARNING: source-parse failure — {family} {year}: '

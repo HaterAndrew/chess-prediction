@@ -534,13 +534,35 @@ def load_website_data():
         return json.load(fh)
 
 
+def exit_code_for(report, strict, crashed=False):
+    """Map a scan outcome to the process exit code (v5 Cat T).
+
+    0: clean (or findings without --strict) · 3: --strict with a CRITICAL
+    finding (the pipeline must abort and publish the degraded banner) ·
+    4: the scanner itself crashed (telemetry loss, NOT a data verdict — the
+    pipeline treats it as non-fatal so a scanner bug can't block publishing).
+    Distinct codes because auto_update must tell "the data is bad" apart from
+    "the scanner broke": the old blanket try/except treated both as ignorable,
+    which silently defeated --strict.
+    """
+    if crashed:
+        return 4
+    if strict and report.has_critical():
+        return 3
+    return 0
+
+
 def main(argv=None):
     argv = argv if argv is not None else sys.argv[1:]
     strict = "--strict" in argv
 
     data = load_website_data()
     ctx = Context()
-    report = scan(data, ctx)
+    try:
+        report = scan(data, ctx)
+    except Exception as e:  # scanner bug — loud, but distinct from a finding
+        print(f"WARNING: data-health scanner crashed: {e}")
+        return exit_code_for(None, strict, crashed=True)
 
     # Markdown report
     os.makedirs(AUDIT_DIR, exist_ok=True)
@@ -559,9 +581,7 @@ def main(argv=None):
     print(f"  Report: {md_path}")
     print(f"  JSON:   {HEALTH_JSON}")
 
-    if strict and report.has_critical():
-        return 1
-    return 0
+    return exit_code_for(report, strict)
 
 
 if __name__ == "__main__":

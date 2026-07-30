@@ -30,6 +30,12 @@ jobs:
         # chessaction.com 403s GitHub's IP ranges, so route the tournament-list
         # fetch through the Cloudflare Worker proxy (a non-blocked egress).
         # CCA_PROXY_URL is a repo variable; CCA_PROXY_KEY is a repo secret.
+        # v5 Cat T: continue-on-error so a scrape outage degrades gracefully —
+        # the predict step gets --scrape-failed, stamps the data stale, and the
+        # site says so. Before this, a scrape failure killed the job here and
+        # the degraded-banner step no-oped (pipeline_degraded never set), so
+        # the site silently served day-old numbers as current.
+        continue-on-error: true
         env:
           CCA_PROXY_URL: ${{ vars.CCA_PROXY_URL }}
           CCA_PROXY_KEY: ${{ secrets.CCA_PROXY_KEY }}
@@ -41,7 +47,7 @@ jobs:
         id: predict
         run: |
           cd $GITHUB_WORKSPACE
-          python auto_update.py --skip-scrape
+          python auto_update.py --skip-scrape ${{ steps.scrape.outcome == 'failure' && '--scrape-failed' || '' }}
 
       # Quality gate (G1): a lint or test failure fails the job, and because the
       # commit step below is `if: success()`, a bad run is never committed/pushed
@@ -148,7 +154,10 @@ jobs:
           fi
 
       - name: Create failure issue
-        if: failure()
+        # v5 Cat T: also fire when the scrape step failed under
+        # continue-on-error — the job then "succeeds" in degraded mode, but a
+        # persistent scrape outage still needs a tracking issue.
+        if: failure() || steps.scrape.outcome == 'failure'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
         with:
           script: |
@@ -182,8 +191,10 @@ jobs:
 
       # v3 O4: close the loop. Without this the failure issues never resolved,
       # so an open 'pipeline' issue said nothing about current health.
+      # v5 Cat T: a degraded run (scrape failed under continue-on-error) is
+      # NOT a recovery — don't close the issue the previous step just fed.
       - name: Close pipeline issues on recovery
-        if: success()
+        if: success() && steps.scrape.outcome != 'failure'
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
         with:
           script: |

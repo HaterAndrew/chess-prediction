@@ -56,7 +56,7 @@ def test_site_renderer_escapes_warning_fields():
     """Source-level pin (test_csp_inline_handlers pattern): the warnings
     renderer must wrap w.step and w.text in esc() before innerHTML insertion —
     the pre-v5 renderer concatenated w.text raw."""
-    with open(os.path.join(PROJECT_ROOT, "docs", "app.js")) as fh:
+    with open(os.path.join(PROJECT_ROOT, "docs", "tab_about.js")) as fh:
         src = fh.read()
     assert "esc(w.text)" in src
     assert "esc(w.step.split('(')[0].trim())" in src

@@ -137,14 +137,35 @@ def test_info_roster_pending():
     assert ("INFO", "roster-pending") in keys
 
 
-def test_warning_lines_cover_critical_and_high_only():
+def test_warning_lines_cover_critical_and_high_individually():
     _, report = run(
         [card(prediction_tier="family-alias", n_historical_editions=0),  # HIGH
          card(family="X2", regular_fee=None, days_remaining=5)],          # MEDIUM
     )
     lines = report.warning_lines()
     assert any("alias-n-editions-mislabel" in ln for ln in lines)
-    assert all("null-fee-near-event" not in ln for ln in lines)  # MEDIUM not harvested
+    assert all("null-fee-near-event" not in ln for ln in lines)  # MEDIUM not itemized
+
+
+def test_warning_lines_aggregate_medium_pointer():
+    """v5 Cat V: MEDIUM findings surface as ONE aggregate pointer line — the
+    standing null-fee set sat invisible for months because this channel
+    dropped MEDIUM entirely. INFO stays report-only."""
+    _, report = run(
+        [card(family="X2", regular_fee=None, days_remaining=5),           # MEDIUM
+         card(family="Pending Open", prediction_tier="roster-pending",
+              prediction_source="metadata_historical_avg")],              # INFO
+    )
+    lines = report.warning_lines()
+    medium_lines = [ln for ln in lines if "MEDIUM finding(s)" in ln]
+    assert len(medium_lines) == 1
+    assert "output/data_health.json" in medium_lines[0]
+    assert all("roster-pending" not in ln for ln in lines)  # INFO not harvested
+
+
+def test_warning_lines_no_medium_no_pointer():
+    _, report = run([card()])
+    assert all("MEDIUM finding(s)" not in ln for ln in report.warning_lines())
 
 
 # ---------------------------------------------------------------------------

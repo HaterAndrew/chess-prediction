@@ -5252,14 +5252,17 @@ function renderModelHealth() {
         warnEl.innerHTML = '<div style="font-size:var(--fs-2);color:var(--green);padding:10px 12px;background:rgba(72,187,120,.08);border:1px solid rgba(72,187,120,.3);border-radius:8px">Latest pipeline run: 0 warnings (clean).</div>';
         return;
       }
+      // v5 Cat V: warnings are deduped upstream and carry a per-entry count;
+      // step/text pass through esc() — pipeline-controlled or not, nothing
+      // lands in innerHTML unescaped.
       const rows = data.warnings.map(w =>
         '<tr><td style="padding:4px 8px;color:var(--muted);font-size:var(--fs-2);white-space:nowrap">' +
-        w.step.split('(')[0].trim() + '</td><td style="padding:4px 8px;color:var(--text2);font-size:var(--fs-2)">' +
-        w.text + '</td></tr>'
+        esc(w.step.split('(')[0].trim()) + '</td><td style="padding:4px 8px;color:var(--text2);font-size:var(--fs-2)">' +
+        esc(w.text) + (w.count > 1 ? ' <span style="color:var(--muted)">×' + w.count + '</span>' : '') + '</td></tr>'
       ).join('');
       warnEl.innerHTML =
         '<details style="background:rgba(214,158,46,.08);border:1px solid rgba(214,158,46,.3);border-radius:8px;padding:10px 12px">' +
-        '<summary style="cursor:pointer;font-size:var(--fs-2);color:var(--gold);font-weight:600">Latest pipeline run: ' + c + ' warning' + (c === 1 ? '' : 's') + ' (click to expand)</summary>' +
+        '<summary style="cursor:pointer;font-size:var(--fs-2);color:var(--gold);font-weight:600">Latest pipeline run: ' + c + ' distinct warning' + (c === 1 ? '' : 's') + ' (click to expand)</summary>' +
         '<table style="width:100%;margin-top:10px;border-collapse:collapse">' + rows + '</table></details>';
     })
     .catch(() => { warnEl.innerHTML = ''; });

@@ -50,8 +50,18 @@ META_PATH = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
 # keep this file simple and rely on a per-family lookup table that grows
 # as new tournaments get verified once).
 FAMILY_TO_CODE = {
+    "Atlantic City Open": "aco",
+    "Atlantic Open": "ao",
+    "Bradley Open": "brad",
+    "Central California Open": "cco",
     "Chicago Open": "chio",
     "Cleveland Open": "clev",
+    "Continental Open": "cono",
+    "Indianapolis Open": "io",
+    "Kings Island Open": "kio",
+    "Los Angeles Open": "lao",
+    "Midwest Class Championships": "mwcc",
+    "New York State Championship": "nysc",
     "Pittsburgh Open": "pit",
     "Pacific Coast Open": "pco",
     "National Chess Congress": "ncc",
@@ -59,11 +69,17 @@ FAMILY_TO_CODE = {
     "Golden State Open": "gso",
     "Mid-America Open": "mao",
     "Chicago Class": "chcc",
+    "Southern Class": "scc",
     "World Open": "wo",
     "World Open top 6 sections": "wo",
     "North American Open": "nao",
     "Boston Chess Congress": "bcc",
-    "Eastern Chess Congress": "ecc",
+    # v5 Cat F: the 2026 flyers say ecc = Eastern CLASS (Oct 16), ecco =
+    # Eastern Chess CONGRESS (Oct 23). The old "Eastern Chess Congress: ecc"
+    # pairing failed merge_fees' +/-3-day date cross-check every week —
+    # silently, because the unmapped/mismatched skip carried no warning.
+    "Eastern Class Championships": "ecc",
+    "Eastern Chess Congress": "ecco",
     "Continental Class": "ccc",
     "Hartford Open": "ho",
     "New York State Open": "nyso",
@@ -71,6 +87,15 @@ FAMILY_TO_CODE = {
     "DC Open": "dco",
     "World Open lower sections": "wolower",
     "World Open Under 13 Championship": "wu",
+}
+
+# Flyer codes that exist on chesstour.com but deliberately map to no family:
+# blitz side events sharing the parent flyer's code with a "b" suffix carry
+# no advance fee schedule. The parity test in tests/test_scrape_fees.py
+# fails when a scraped code is neither mapped above nor listed here, so a
+# newly discovered flyer cannot fall through silently (v5 Cat F).
+UNMAPPED_CODES = {
+    "aob", "conob", "eccob", "kiob", "laob", "mwccb", "pcob",
 }
 
 _session = polite_session()

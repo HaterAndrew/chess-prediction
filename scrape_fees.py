@@ -556,6 +556,10 @@ def main():
         merge_fees()
     except Exception as e:
         log.warning("fee->metadata merge failed: %s", e)
+        # v5 Cat F: the log.warning format ("WARNING " padded, no colon) is
+        # invisible to auto_update._harvest_warnings, so a failed merge never
+        # reached audit_warnings.json. Print the harvestable form too.
+        print(f"WARNING: fee->metadata merge failed: {e}")
 
 
 if __name__ == "__main__":

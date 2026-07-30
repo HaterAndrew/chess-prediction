@@ -133,7 +133,10 @@ class HealthReport:
 
     def warning_lines(self):
         """`WARNING:`-prefixed lines for CRITICAL/HIGH so auto_update harvests
-        them into audit_warnings.json. MEDIUM/INFO stay in the report only."""
+        them into audit_warnings.json. MEDIUM findings surface as ONE
+        aggregate pointer line (v5 Cat V — the standing null-fee set sat
+        invisible in the JSON report for months because this channel dropped
+        MEDIUM entirely); INFO stays in the report only."""
         out = []
         for sev in ("CRITICAL", "HIGH"):
             for f in self.by_severity(sev):
@@ -141,6 +144,12 @@ class HealthReport:
                     f"WARNING: data-health [{sev}] {f['mode']} — "
                     f"{f['family']}: {f['message']}"
                 )
+        n_medium = len(self.by_severity("MEDIUM"))
+        if n_medium:
+            out.append(
+                f"WARNING: data-health: {n_medium} MEDIUM finding(s) — "
+                f"see output/data_health.json"
+            )
         return out
 
     def to_json(self):

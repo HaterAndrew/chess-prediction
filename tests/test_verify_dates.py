@@ -219,6 +219,70 @@ CHESSEVENTS_PLACEHOLDER_HTML = """
 """
 
 
+# ── v5 Cat V: past-event guard + comma-variant dedupe ────────────────────
+
+def test_past_event_missing_from_schedule_is_moot_not_warning(tmp_path, monkeypatch):
+    """chesstour.com drops events once they are over, so a PAST event absent
+    from the schedule page is verified moot (INFO), not a source-parse
+    failure. 15 of the nightly payload's 216 warnings were exactly this."""
+    fake_meta = tmp_path / "tournament_metadata.csv"
+    fake_meta.write_text(
+        "family,year,start_date,end_date\n"
+        "Southern Open,2026,2026-07-17,2026-07-19\n"  # over; not in fixture
+    )
+    monkeypatch.setattr('tools.verify_dates.META_PATH', str(fake_meta))
+
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        drift, unavailable, verified = verify_year(
+            2026, fetcher=lambda url: CHESSTOUR_FIXTURE_HTML)
+    output = buf.getvalue()
+
+    assert 'WARNING: source-parse failure' not in output
+    assert 'INFO: Southern Open 2026: event over' in output
+    assert unavailable == 0
+
+
+def test_future_event_missing_from_schedule_still_warns(tmp_path, monkeypatch):
+    """A FUTURE event whose pattern is absent from the schedule page is a
+    real parse/pattern failure and must keep warning."""
+    fake_meta = tmp_path / "tournament_metadata.csv"
+    fake_meta.write_text(
+        "family,year,start_date,end_date\n"
+        "Pacific Coast Open,2026,2027-07-30,2027-08-02\n"  # future; not in fixture
+    )
+    monkeypatch.setattr('tools.verify_dates.META_PATH', str(fake_meta))
+
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        drift, unavailable, verified = verify_year(
+            2026, fetcher=lambda url: CHESSTOUR_FIXTURE_HTML)
+    output = buf.getvalue()
+
+    assert 'WARNING: source-parse failure — Pacific Coast Open 2026' in output
+    assert unavailable == 1
+
+
+def test_comma_variant_metadata_rows_verified_once(tmp_path, monkeypatch):
+    """Both "World Open lower sections" and "World Open, lower sections"
+    exist as metadata rows; they normalize to one family and must produce at
+    most ONE line, not the duplicated pair the old loop emitted."""
+    fake_meta = tmp_path / "tournament_metadata.csv"
+    fake_meta.write_text(
+        "family,year,start_date,end_date\n"
+        "World Open lower sections,2026,2026-06-26,2026-06-28\n"
+        "\"World Open, lower sections\",2026,2026-06-26,2026-06-28\n"
+    )
+    monkeypatch.setattr('tools.verify_dates.META_PATH', str(fake_meta))
+
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        verify_year(2026, fetcher=lambda url: CHESSTOUR_FIXTURE_HTML)
+    output = buf.getvalue()
+
+    assert output.count('World Open lower sections') <= 1
+
+
 def test_parse_chessevents_dates():
     start, end = parse_chessevents_dates(CHESSEVENTS_FIXTURE_HTML)
     assert start == date(2025, 6, 13)

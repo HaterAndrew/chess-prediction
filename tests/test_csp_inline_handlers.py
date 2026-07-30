@@ -18,6 +18,7 @@ and the CSP dropped `'unsafe-inline'`. So the invariant runs both ways.
   - Every `data-act` in the markup must resolve to a real action, since a typo
     now fails the same silent way an inline handler used to.
 """
+import glob
 import os
 import re
 
@@ -31,7 +32,12 @@ ACTIONS_JS = os.path.join(DOCS, "actions.js")
 HANDLER_ATTR = re.compile(
     r'\son(click|keydown|keyup|input|change|submit|focus|blur|mouse\w+)\s*=', re.I)
 
-MARKUP_FILES = (INDEX, APP_JS)
+# Every page-scope script may generate markup once app.js splits (C0):
+# scan them all. actions.js is excluded because its comments carry literal
+# data-act examples that are documentation, not references.
+MARKUP_FILES = tuple([INDEX] + sorted(
+    p for p in glob.glob(os.path.join(DOCS, "*.js"))
+    if os.path.basename(p) != "actions.js"))
 
 
 def _read(path):

@@ -13,14 +13,11 @@ All tests use fixture data -- no network calls.
 
 import json
 import os
-import sys
 
 import pytest
 
 # Ensure project root is on sys.path so we can import pipeline modules
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
 
 # Lazy-import pipeline modules (they live at repo root, not in a package)
 from importlib import import_module

@@ -7,13 +7,11 @@ every backtest run since. These tests pin that: default predictions are
 bit-identical, and a typo'd stage name fails loudly rather than measuring
 nothing.
 """
-import os
-import sys
 from importlib import import_module
 
 import pytest
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 m04c = import_module("04c_final_model")
 
 

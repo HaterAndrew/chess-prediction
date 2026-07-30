@@ -21,13 +21,24 @@ from scipy.stats import lognorm
 CHOP_POINTS = [120, 90, 60, 42, 28, 14, 7, 3, 1, 0]
 
 
-def build_ratio_model(train_summary, train_daily):
-    """Build historical ratio model with lognormal CIs."""
+def build_ratio_model(train_summary, train_daily, completed_tids=None):
+    """Build historical ratio model with lognormal CIs.
+
+    completed_tids (v5 Cat L): tids of COMPLETED current-year tournaments to
+    admit alongside the pre-2026 corpus — the same rolling-retrain policy the
+    main engine's fit() follows. Without it, no 2026 event can ever inform a
+    2026 window prediction, which left this engine's 2026 coverage 27pp under
+    its 2023-25 folds. Backtest folds (window_grading) deliberately do NOT
+    pass it, so their train-on-<year cut stays leak-free.
+    """
+    year_ok = train_summary['tournament_year'] < 2026
+    if completed_tids:
+        year_ok = year_ok | train_summary['tid'].isin(completed_tids)
     valid = train_summary[
         (train_summary['has_timestamps']) &
         (~train_summary['is_online'].fillna(False)) &
         (~train_summary['is_covid'].fillna(False)) &
-        (train_summary['tournament_year'] < 2026)  # exclude in-progress 2026 data
+        year_ok
     ]
 
     ratios = {}  # family -> {T -> [ratio, ...]}

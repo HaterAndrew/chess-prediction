@@ -51,7 +51,7 @@ from ratio_model import (build_ratio_model, predict_with_lognormal_ci,
 
 m04c = import_module("04c_final_model")
 
-MIN_FINAL_COUNT = 50
+from shared.thresholds import MIN_FINAL_COUNT  # noqa: E402  (shared with 04e)
 
 
 def count_at_window_day(tid_daily, day_into_window):

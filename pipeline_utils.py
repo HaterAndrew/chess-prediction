@@ -5,6 +5,8 @@ fitting, recalibration, and walk-in multiplier scripts must all agree on.
 """
 import pandas as pd
 
+from shared import clock
+
 
 def is_event_complete(end_date, today=None):
     """A tournament is 'complete' iff its event end_date is strictly in the past.
@@ -22,7 +24,7 @@ def is_event_complete(end_date, today=None):
     if pd.isna(end):
         return False
     if today is None:
-        today = pd.Timestamp.now().normalize()
+        today = clock.today_ts()
     return end < today
 
 

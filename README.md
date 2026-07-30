@@ -72,6 +72,7 @@ sites keep working. Edit the packages, not the shims.
 | `tests/` | Pytest suite covering the pipeline, grading, site data build, and Python/JS parity |
 | `scripts/` | Standalone tools, including `golden_check.py` (see below) |
 | `audit/` | Ledgers from code-audit passes and the fixes they produced |
+| `likec4/` | Architecture model (`model.likec4`) + rendered views in `likec4/out/`; re-render with `npx likec4 export png -o likec4/out likec4` |
 
 `hotel_audit.py` is a side tool that cross-checks hotel room-block usage against
 entries; see `HOTEL_AUDIT_README.md`.

@@ -1,0 +1,125 @@
+// Architecture model of the chess-prediction project (post-decomposition,
+// 2026-07-30). Rendered with LikeC4: npx likec4 export png -o likec4/out likec4
+
+specification {
+  element system
+  element container
+  element component
+  element datastore
+  element external
+}
+
+model {
+  cca = external 'CCA websites' {
+    description 'chessaction.com entry lists + chesstour.com flyers + chessevents.com standings'
+  }
+  anthropic = external 'Anthropic API' {
+    description 'Ask-tab model calls (Sonnet 5), billed to the worker owner'
+  }
+  visitor = external 'Visitor' {
+    description 'Browser / installed PWA'
+  }
+
+  predictor = system 'CCA Entry Predictor' {
+
+    scrapers = container 'scrapers/ + fees/' {
+      description 'Polite HTTP scrapers: entries (daily), standings, historical, flyer fees'
+      component entries 'scrapers.entries' { description 'Daily entry counts from chessaction.com' }
+      component standings 'scrapers.standings' { description 'Historical final standings' }
+      component historical 'scrapers.historical' { description 'Completed-tournament backfill' }
+      component fees 'fees.discover/patterns/parse' { description 'Flyer probing + fee/early-bird parsing; fees.codes is the single code-table home' }
+      component http 'scrapers.http' { description 'Shared polite session, retries, host circuit breaker' }
+    }
+
+    dataprep = container 'dataprep/' {
+      description '01_data_prep: export parsing, family repair, summary + curves; reconcile_with_scrape'
+    }
+
+    model_pkg = container 'model/' {
+      description '04c N5v4 estimator: fitting, nowcast, recalibration, lognormal CIs, walk-ins'
+    }
+
+    sitebuild = container 'sitebuild/' {
+      description '04d site payload: model cards, metadata cards, history, dedupe + walk-in + write'
+    }
+
+    perf = container 'perf/' {
+      description '04e expanding-window grading: folds, evaluation, window engine, report'
+    }
+
+    healthcheck = container 'healthcheck/' {
+      description 'data_health scan of the published cards; CRITICAL aborts the pipeline (--strict)'
+    }
+
+    pipeline = container 'pipeline/' {
+      description 'auto_update orchestration: steps, runner, warning harvest, site_data.js splice, cache stamping, degraded-mode banner'
+    }
+
+    output = datastore 'output/ CSV + JSON corpus' {
+      description 'tournament_summary, daily counts, scrape, metadata, website_data.json, performance_data.json'
+    }
+
+    site = container 'docs/ static site (PWA)' {
+      description 'GitHub Pages; classic scripts in one shared global scope, service worker precache'
+      component sitedata 'data/site_data.js' { description 'Spliced data consts (TOURNAMENT_DATA, PERFORMANCE_DATA, ...)' }
+      component appjs 'app.js + split scripts' { description 'Tab router + 16 extracted scripts (charts, tabs, panels, pickers)' }
+      component actions 'actions.js' { description 'CSP-safe event delegation over data-act attributes' }
+      component sw 'sw.js' { description 'Service worker: precache, offline fallbacks, cache-busted URLs' }
+    }
+
+    worker = container 'worker/ (Cloudflare)' {
+      description 'Ask-tab agent loop + CCA fetch proxies'
+      component routing 'index.ts' { description 'Routing only (W1)' }
+      component agent 'agent.ts' { description 'Data cache + model agent loop' }
+      component limits 'limits.ts' { description 'Rate limit, daily budget, price table (fail closed without KV)' }
+      component ccaproxy 'cca-proxy.ts' { description 'Tourlist proxy (shared secret) + entry-list proxy (allowlisted codes)' }
+      component workerhttp 'http.ts' { description 'CORS + JSON responses' }
+    }
+  }
+
+  // Data flow
+  scrapers -> cca 'scrape (rate-limited)'
+  scrapers -> output 'daily_scrape, standings, fees CSVs'
+  dataprep -> output 'summary + daily counts (reads manual export)'
+  model_pkg -> output 'reads training corpus'
+  sitebuild -> model_pkg 'fits + predicts via 04c surface'
+  sitebuild -> output 'website_data.json'
+  perf -> model_pkg 'refits per fold'
+  perf -> output 'performance_data.json'
+  healthcheck -> output 'scans website_data.json vs input CSVs'
+  pipeline -> scrapers 'step: scrape'
+  pipeline -> dataprep 'step: refresh summary'
+  pipeline -> sitebuild 'step: generate predictions'
+  pipeline -> perf 'step: grade'
+  pipeline -> healthcheck 'step: data health (--strict)'
+  pipeline -> site 'splice consts + stamp cache-busters'
+  site.sw -> site.sitedata 'precache (hash-stamped URLs)'
+  visitor -> site 'browse / install PWA'
+  site.appjs -> worker 'Ask tab POST /ask'
+  worker.agent -> anthropic 'agent loop (budget-capped)'
+  worker.ccaproxy -> cca 'edge-relayed fetches'
+  pipeline -> worker.ccaproxy 'CI scrape fallback via /cca-tourlist'
+}
+
+views {
+  view index of predictor {
+    title 'CCA Entry Predictor — system overview'
+    include *
+    autoLayout TopBottom
+  }
+  view pipeline_flow of predictor {
+    title 'Nightly pipeline data flow'
+    include pipeline, scrapers, dataprep, model_pkg, sitebuild, perf, healthcheck, output, site
+    autoLayout LeftRight
+  }
+  view worker_view of worker {
+    title 'Ask worker'
+    include *, anthropic, cca, site.appjs
+    autoLayout TopBottom
+  }
+  view site_view of site {
+    title 'Published site'
+    include *, visitor, worker
+    autoLayout TopBottom
+  }
+}

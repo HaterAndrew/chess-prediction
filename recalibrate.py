@@ -60,7 +60,7 @@ def load_predictions():
     """Load the update log with historical predictions."""
     if not os.path.exists(UPDATE_LOG):
         print(f"No update log found at {UPDATE_LOG}")
-        print("Run update_predictions.sh at least once first.")
+        print("Run auto_update.py at least once first.")
         sys.exit(1)
     log = pd.read_csv(UPDATE_LOG)
     log['run_timestamp'] = pd.to_datetime(log['run_timestamp'])

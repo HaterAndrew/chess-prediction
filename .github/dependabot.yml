@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      # The numerical stack is pinned deliberately (model-output stability).
+      # Group its bumps so they arrive as one reviewable PR that must pass
+      # the full test gate, never as silent individual merges.
+      numerical:
+        patterns: ["pandas", "numpy", "scipy", "scikit-learn"]
+  - package-ecosystem: "npm"
+    directory: "/worker"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

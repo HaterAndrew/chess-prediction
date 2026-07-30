@@ -58,10 +58,11 @@ DEFAULT_EVENT_START_OFFSET = 2
 # so the cohort was always in-sample and both corrections were ~null.)
 RECAL_MIN_OOS_RECORDS = 5
 RECAL_IN_SAMPLE_WIDENING = 1.15
-# v5 Cat L: minimum records from the most recent tournament_year before the
-# bias correction is fitted on that regime subset instead of the pooled
-# multi-year mean (which dilutes a current-regime shift toward zero). Below
-# this, the pooled path with its stationarity auto-refit applies.
+# v5 Cat L: minimum records from the target year (recalibrate regime_year)
+# before the bias correction is fitted on that regime subset instead of the
+# pooled multi-year mean (which dilutes a current-regime shift toward zero).
+# Below this — or when the cohort predates the target year — the pooled path
+# with its stationarity auto-refit applies.
 RECAL_REGIME_MIN_N = 10
 
 # Ceiling on the withdrawal-rate correction (v3 N4). Rates above this are capped,
@@ -1516,7 +1517,7 @@ class N5v4_Final:
 
     def recalibrate(self, completed_tournaments, daily, T_points=None,
                     target_coverage=0.80, ci_min_scale=0.5, ci_max_scale=3.0,
-                    loo=True):
+                    loo=True, regime_year=None):
         """Automated recalibration from completed tournament results.
 
         Computes per-T bias correction and CI width adjustment factors
@@ -1551,6 +1552,15 @@ class N5v4_Final:
             already pinned 1.799 on optimistic in-sample residuals), and the
             end-to-end multiplier implied by _calibrate's raw scales runs to
             ~3.0. Pinning either clamp is surfaced in diagnostics.
+        regime_year: the year this model will PREDICT. When the cohort's most
+            recent tournament_year equals it (i.e. current-year completed
+            events are in the cohort) and that subset has
+            >= RECAL_REGIME_MIN_N records, the bias correction is fitted on
+            that regime subset — a pooled multi-year mean dilutes a
+            current-regime shift toward zero. When the cohort predates the
+            target year (04e's historical folds), the regime path stays OFF:
+            fitting bias on year-1 and assuming carryover measurably
+            overcorrected the 2024 fold. None disables the regime path.
 
         Sets self._recal_bias, self._recal_ci, self._recal_n dicts.
         Returns dict with calibration diagnostics.
@@ -1611,6 +1621,24 @@ class N5v4_Final:
                 point, lo, hi = self.predict_nowcast(
                     count_at_T, T, family, _track_tier=False,
                     _exclude_tid=tid if loo else None)
+                # v5 Cat L width geometry: the LOO interval is systematically
+                # WIDER than the interval production will publish — dropping a
+                # ratio from a 3-5 entry family list triggers the small-n EB
+                # sigma floor. Normalizing honest residuals by LOO widths
+                # understated the needed scale (measured: fold ci_adj fell to
+                # the 0.5 floor and fold coverage collapsed to ~41%). So: LOO
+                # point for the residual NUMERATOR (honest location error),
+                # full-list width for the DENOMINATOR (application geometry).
+                if loo:
+                    point_full, lo_full, hi_full = self.predict_nowcast(
+                        count_at_T, T, family, _track_tier=False)
+                    if (point_full is not None and point_full > 0
+                            and lo_full > 0 and hi_full > 0):
+                        lo_w, hi_w = lo_full, hi_full
+                    else:
+                        lo_w, hi_w = lo, hi
+                else:
+                    lo_w, hi_w = lo, hi
                 self._recal_bias = old_bias
                 self._recal_ci = old_ci
 
@@ -1619,12 +1647,14 @@ class N5v4_Final:
 
                 err_pct = (point - actual) / actual
                 # Half-width in log space (the lognormal CI's natural unit)
-                log_halfw = (np.log(max(hi, 1)) - np.log(max(lo, 1))) / 2.0
+                log_halfw = (np.log(max(hi_w, 1)) - np.log(max(lo_w, 1))) / 2.0
                 if log_halfw <= 0:
                     continue
                 log_actual = np.log(max(actual, 1))
                 log_point = np.log(max(point, 1))
-                ci_hit = 1 if lo <= actual <= hi else 0
+                # coverage_before describes the interval production would
+                # publish (pre-recal), so it uses the application-width bounds.
+                ci_hit = 1 if lo_w <= actual <= hi_w else 0
                 in_sample = tid in getattr(self, '_fit_tids', set())
                 year = row.get('tournament_year')
                 year = int(year) if pd.notna(year) else None
@@ -1672,17 +1702,16 @@ class N5v4_Final:
             # exists to correct predictions for the current year, and a pooled
             # multi-year mean dilutes a current-regime shift toward 0 (measured
             # 2026-07-30: 2026-only bias +14.2% at T=3 / +4..5% at mid-T while
-            # the pooled mean read ~0). When the most recent tournament_year in
-            # the cohort has enough records, fit the bias on that subset —
-            # implementing what the 04d call site has always claimed ("Recent
-            # data is weighted more heavily"). The CI width quantile below
-            # stays pooled: scale is stable across years, and n~24 is too thin
-            # for an 80th percentile.
+            # the pooled mean read ~0). Fires ONLY when the cohort actually
+            # CONTAINS the target year (regime_year) with enough records —
+            # fitting bias on year-1 and assuming carryover measurably
+            # overcorrected the 2024 backtest fold. Implements what the 04d
+            # call site has always claimed ("Recent data is weighted more
+            # heavily"). The CI width quantile below stays pooled: scale is
+            # stable across years, and n~24 is too thin for an 80th percentile.
             bias_cohort = 'pooled'
-            regime_year = None
             years = [r[7] for r in records if r[7] is not None]
-            if years:
-                regime_year = max(years)
+            if regime_year is not None and years and max(years) == regime_year:
                 regime_errs = [r[0] for r in records if r[7] == regime_year]
                 if len(regime_errs) >= RECAL_REGIME_MIN_N:
                     mean_bias = _trimmed_mean(regime_errs)
@@ -1712,7 +1741,17 @@ class N5v4_Final:
                 # half. Old-cohort behavior (pre-2024 conditions) shouldn't drag
                 # current predictions backward. The records list is also pruned
                 # so the CI scale below is computed from the same recent cohort.
-                if bias_cohort == 'pooled' and abs(stationarity['delta_pct']) > 5.0:
+                # v5 Cat L: the refit is the same carryover bet the regime gate
+                # polices, so it fires only when the cohort CONTAINS the target
+                # year (then the recent half includes current-regime records —
+                # the small-current-n complement to the regime path). With
+                # honest LOO residuals, refitting a pre-target-year cohort on
+                # its recent half applied 2023's real -12% to the 2024 fold
+                # and overshot it to +17.9% at T=28.
+                cohort_has_target = (regime_year is not None and years
+                                     and max(years) == regime_year)
+                if (bias_cohort == 'pooled' and cohort_has_target
+                        and abs(stationarity['delta_pct']) > 5.0):
                     new_records = records[mid:]
                     new_trimmed = new_half
                     nq1, nq3 = np.percentile(new_trimmed, [25, 75])
@@ -1782,9 +1821,11 @@ class N5v4_Final:
                 'bias_cohort': bias_cohort,
                 'n_out_of_sample': len(oos),
             }
-            # v5 Cat L: surface clamp pinning — a pinned scale means the model
-            # wants more correction than the clamp allows, and the published
-            # interval is narrower/wider than the residuals earned.
+            # v5 Cat L: surface clamp pinning. Ceiling pin = the published CI
+            # is NARROWER than the residuals earned — a real warning. Floor
+            # pin = the floor holds the CI wider than residuals asked for —
+            # conservative, so a NOTICE (kept out of the harvested warning
+            # channel; 04e's LOO folds pin the floor routinely at long T).
             if pre_clamp > ci_max_scale:
                 diag['ci_adj_clamped'] = 'high'
                 print(f"  WARNING: T={T} ci_adj pinned at ceiling "
@@ -1792,7 +1833,7 @@ class N5v4_Final:
                       f"published CI narrower than measured error.")
             elif pre_clamp < ci_min_scale:
                 diag['ci_adj_clamped'] = 'low'
-                print(f"  WARNING: T={T} ci_adj pinned at floor "
+                print(f"  NOTICE: T={T} ci_adj pinned at floor "
                       f"{ci_min_scale} (residuals wanted {pre_clamp:.3f}).")
             if cohort_is_in_sample:
                 print(f"  WARNING: T={T} recalibration ran on an in-sample cohort "
@@ -1801,22 +1842,26 @@ class N5v4_Final:
                       f"training-set optimism.")
             if stationarity:
                 diag['stationarity'] = stationarity
-                # Loud notice when bias materially differs across halves;
-                # auto-action above already refit on the recent cohort.
+                # Loud notice when bias materially differs across halves,
+                # naming which correction is in force (v5 Cat L: the old else
+                # branch always claimed "n<6", which was wrong whenever the
+                # refit was declined by the regime/carryover gate instead).
                 if abs(stationarity['delta_pct']) > 5.0:
+                    probe = (f"T={T} bias non-stationary "
+                             f"(old: {stationarity['old_bias_pct']}%, "
+                             f"new: {stationarity['new_bias_pct']}%, "
+                             f"Δ={stationarity['delta_pct']}pp)")
                     if recent_recalibrated:
-                        print(f"  NOTICE: T={T} bias non-stationary "
-                              f"(old: {stationarity['old_bias_pct']}%, "
-                              f"new: {stationarity['new_bias_pct']}%, "
-                              f"Δ={stationarity['delta_pct']}pp) — "
-                              f"auto-refit on recent half (n={len(records)}, "
+                        print(f"  NOTICE: {probe} — auto-refit on recent half "
+                              f"(n={len(records)}, "
                               f"bias_factor={diag['bias_factor']}).")
+                    elif bias_cohort.startswith('regime-'):
+                        print(f"  NOTICE: {probe} — {bias_cohort} bias "
+                              f"correction already in force.")
                     else:
-                        print(f"  WARNING: T={T} bias non-stationary "
-                              f"(old: {stationarity['old_bias_pct']}%, "
-                              f"new: {stationarity['new_bias_pct']}%, "
-                              f"Δ={stationarity['delta_pct']}pp) "
-                              f"but n<6 — kept full-cohort fit.")
+                        print(f"  NOTICE: {probe} — pooled bias kept; cohort "
+                              f"predates the target year, so no carryover "
+                              f"refit (v5 Cat L).")
             diagnostics[T] = diag
 
         return diagnostics

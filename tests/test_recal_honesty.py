@@ -66,14 +66,16 @@ def _planted_bias_frames(n_families=12, plant=1.15):
     return pd.DataFrame(rows), pd.DataFrame(daily_rows)
 
 
-def _fit_and_recal(loo):
+def _fit_and_recal(loo, regime_year=2025):
     summary, daily = _planted_bias_frames()
     model = m04c.N5v4_Final()
     model.fit(summary, daily)
     # Production-shaped recal cohort: the most recent completed year only,
-    # a strict subset of the fit frame (which holds year < 2026).
+    # a strict subset of the fit frame (which holds year < 2026). The model
+    # "predicts 2025", and the cohort contains 2025 events — regime path on.
     cohort = summary[summary["tournament_year"] == 2025]
-    diag = model.recalibrate(cohort, daily, T_points=[3], loo=loo)
+    diag = model.recalibrate(cohort, daily, T_points=[3], loo=loo,
+                             regime_year=regime_year)
     return model, diag
 
 
@@ -84,6 +86,17 @@ def test_planted_bias_detected_by_loo_recal():
     assert 0.83 <= factor <= 0.93, f"planted bias not corrected: {factor}"
     assert diag[3]["cohort"] == "loo"
     assert diag[3]["bias_cohort"] == "regime-2025"
+
+
+def test_regime_path_off_when_cohort_predates_target_year():
+    """04e's historical folds recalibrate on years before the fold's test
+    year. Fitting bias on year-1 and assuming carryover overcorrected the
+    2024 fold — the regime path must stay off unless the cohort contains the
+    target year."""
+    _, diag = _fit_and_recal(loo=True, regime_year=2026)  # cohort max is 2025
+    assert diag[3]["bias_cohort"] == "pooled"
+    _, diag_none = _fit_and_recal(loo=True, regime_year=None)
+    assert diag_none[3]["bias_cohort"] == "pooled"
 
 
 def test_planted_bias_suppressed_without_loo():

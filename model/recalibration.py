@@ -1,5 +1,7 @@
 """N5v4_Final.recalibrate, verbatim as a mixin (04c 1518-1869)."""
 
+import warnings
+
 import numpy as np
 import pandas as pd
 
@@ -57,6 +59,9 @@ class RecalibrationMixin:
         Sets self._recal_bias, self._recal_ci, self._recal_n dicts.
         Returns dict with calibration diagnostics.
         """
+        warnings.filterwarnings("ignore")  # scoped here from the old module-level call (P2b):
+        # numeric/sklearn noise fires inside this method; importing the
+        # model package no longer poisons every importer process-wide.
         if T_points is None:
             T_points = [90, 60, 42, 28, 14, 7, 3, 1]
 

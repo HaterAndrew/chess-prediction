@@ -274,7 +274,13 @@ def _is_roster_pending(t):
 
 
 def _is_main_path(t):
-    return t.get("status") in ("live", "complete") and not _is_roster_pending(t)
+    # v5 Cat R: roster-pending cards served by the MODEL are live predictions
+    # and must move nightly — watch them like any main-path card. Only the
+    # metadata_* interim cards keep the frozen-estimate exemption (those are
+    # expected to sit still between metadata refreshes).
+    if t.get("status") not in ("live", "complete"):
+        return False
+    return not _is_roster_pending(t) or t.get("prediction_source") == "model"
 
 
 def _hist_counts(t):
@@ -317,8 +323,9 @@ def scan(data, ctx):
                        f"current_count {cc} > point_estimate {pe} ({src})")
 
     # Mode 1b: a MAIN-PATH live card frozen on one estimate across runs while
-    # entries climbed — the World Open U13 shape, but for events that ARE in the
-    # trained roster (roster-pending interim cards are expected to sit still).
+    # entries climbed — the World Open U13 shape. Covers model-served cards
+    # including admitted roster-pending ones (v5 Cat R); only metadata_*
+    # interim cards are expected to sit still between metadata refreshes.
     for t in live_complete:
         if t.get("status") != "live" or not _is_main_path(t):
             continue

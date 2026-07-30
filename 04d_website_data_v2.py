@@ -17,7 +17,7 @@ from tournament_aliases import canonicalize_family, adjust_wo_top6_count
 from prediction_window import registration_close_date, window_decayed_estimate
 from pipeline_utils import (apply_plausibility_clamp, build_chart_series,
                             chart_series_start_date, is_event_complete,
-                            pace_gate_ok)
+                            pace_gate_ok, roster_pending_model_ok)
 # v3 T7: these two live in ratio_model now so the window-engine grader can
 # import them without executing this script's pipeline body. Imported here
 # under their original names, so every call site below is unchanged.
@@ -426,18 +426,23 @@ t2026 = summary[
     (~summary['family'].isin(EXCLUDE_FAMILIES))
 ].copy()
 
-# H2: roster-pending skeletons (reconcile_final_counts appended them so the grade
-# universe and freshness guard see the event) carry no registration timestamps and
-# no roster. They must NOT enter the main model card path — that would replace their
-# purpose-built metadata-path card (historical-band clamped, low_confidence) with a
-# raw model estimate and drop the roster-pending disclosure. Let them fall through
-# to the metadata loop below, which is designed for exactly this degraded mode.
-if 'roster_pending' in t2026.columns:
-    t2026 = t2026[~t2026['roster_pending'].fillna(False)].copy()
+# H2 → v5 Cat R: roster-pending skeletons (reconcile_final_counts appended them
+# so the grade universe and freshness guard see the event) carry no registration
+# timestamps — but the model card path does not need them: the scrape merge above
+# already wrote their live counts and injected a full daily curve, and the ratio
+# model trains only on pre-2026 editions. They now STAY in t2026 and are gated
+# per-row inside the loop by roster_pending_model_ok; rows that fail the gate
+# fall through to the metadata loop below exactly as before. Admitted cards keep
+# the roster-pending disclosure via a forced prediction_tier.
+if 'roster_pending' not in t2026.columns:
+    t2026['roster_pending'] = False
+t2026['roster_pending'] = t2026['roster_pending'].fillna(False).astype(bool)
 
 print(f"Found {len(t2026)} 2026 tournaments (after filtering)")
 
-# Build withdrawal lookup from latest scrape data (family -> withdrawal_count)
+# Build withdrawal lookup from latest scrape data (family -> withdrawal_count).
+# Keyed on the CANONICAL family so comma/whitespace variants between the
+# scraper's spelling and summary rows still match (v5 Cat R).
 withdrawal_lookup = {}
 if os.path.exists(scrape_path):
     for _, s in latest_scrape.iterrows():
@@ -445,7 +450,7 @@ if os.path.exists(scrape_path):
         fam = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
         wd = int(s.get('withdrawal_count', 0)) if pd.notna(s.get('withdrawal_count')) else 0
         gross = int(s.get('entry_count', 0))
-        withdrawal_lookup[fam] = {'withdrawal_count': wd, 'gross_count': gross}
+        withdrawal_lookup[canonicalize_family(fam)] = {'withdrawal_count': wd, 'gross_count': gross}
 
 tournaments_out = []
 
@@ -497,6 +502,18 @@ for _, row in t2026.iterrows():
     # Displayed countdown: days to event_start before the event, then days to
     # registration close once the event is underway (entries still arriving).
     days_remaining = days_to_start if days_to_start > 0 else days_to_close
+
+    # Registration curve (template) — also feeds the roster-pending gate below.
+    curve = curves.get(family, curves.get('__global__', {}))
+
+    # v5 Cat R: roster-pending rows ride the model path only when the same
+    # pace gate the interim path uses says the live curve is trustworthy;
+    # otherwise fall through to the metadata loop (metadata_pace /
+    # metadata_historical_avg / settled), exactly as before admission.
+    is_roster_pending = bool(row['roster_pending']) if 'roster_pending' in row.index else False
+    if is_roster_pending and not roster_pending_model_ok(
+            current_count, days_to_start, status, event_date, curve):
+        continue
 
     # Exclude tournaments too far out — predictions are meaningless with 1-3 registrants
     if days_to_start > 250:
@@ -586,8 +603,7 @@ for _, row in t2026.iterrows():
     # positions back from the generation date (v3 P1).
     daily_start_date = chart_series_start_date(tid, daily, event_date)
 
-    # Registration curve (template)
-    curve = curves.get(family, curves.get('__global__', {}))
+    # Registration curve (template) — `curve` computed above the gate.
     reg_curve = []
     for db in [120, 90, 75, 60, 42, 28, 21, 14, 7, 3, 1, 0]:
         pct = curve.get(db, 0)
@@ -629,8 +645,8 @@ for _, row in t2026.iterrows():
                         "final": int(prior_hist.iloc[0]['final_count']),
                     }
 
-    # Withdrawal data from scrape
-    wd_info = withdrawal_lookup.get(family, {})
+    # Withdrawal data from scrape (lookup is keyed canonical)
+    wd_info = withdrawal_lookup.get(canonicalize_family(family), {})
     withdrawal_count = wd_info.get('withdrawal_count', 0)
     gross_count = wd_info.get('gross_count', int(current_count))
 
@@ -682,7 +698,10 @@ for _, row in t2026.iterrows():
         "prior_year_pace": prior_year_pace,
         "low_confidence": low_confidence,
         "n_historical_editions": n_editions_for_family,
-        "prediction_tier": tier_used,
+        # v5 Cat R: an admitted roster-pending row keeps its disclosure — the
+        # badge string app.js already maps — even though the estimate is now
+        # model output rather than the old interim card.
+        "prediction_tier": 'roster-pending' if is_roster_pending else tier_used,
     }
 
     # Add event_end from metadata

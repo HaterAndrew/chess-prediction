@@ -100,3 +100,114 @@ def test_return_counts_bumped_plus_appended(tmp_output):
     # At least the 2 appended (Hartford, DC International); Atlantic City may also
     # bump depending on the frozen snapshot, so assert the appended floor.
     assert n >= 2
+
+
+# ── v5 Cat R: canonical identity — the exact-name join created duplicate rows
+# (export "World Open  top 6 sections" vs scraper "World Open, top 6 sections",
+# tid 4248 vs 4434) and the skeleton family string didn't match the training
+# rows' canonical form. ──────────────────────────────────────────────────────
+
+def _append_summary_row(out, **kw):
+    path = os.path.join(out, "tournament_summary.csv")
+    df = pd.read_csv(path)
+    row = {c: pd.NA for c in df.columns}
+    row.update(kw)
+    # Drop all-NA columns pre-concat (same dance as the module) so pandas'
+    # empty-entry concat deprecation stays quiet; the column union restores them.
+    new_df = pd.DataFrame([row]).dropna(axis=1, how="all")
+    df = pd.concat([df, new_df], ignore_index=True)
+    df.to_csv(path, index=False)
+
+
+def _append_scrape_rows(out, name, counts, start="2026-06-01"):
+    path = os.path.join(out, "daily_scrape.csv")
+    df = pd.read_csv(path)
+    dates = pd.date_range(start, periods=len(counts))
+    add = pd.DataFrame([{"date": d.strftime("%Y-%m-%d"), "tournament_name": name,
+                         "entry_count": c, "url": "https://example.invalid"}
+                        for d, c in zip(dates, counts)])
+    pd.concat([df, add], ignore_index=True).to_csv(path, index=False)
+
+
+def test_comma_variant_scrape_name_does_not_spawn_skeleton(tmp_output):
+    """A scrape spelling that canonicalizes onto an existing summary row must
+    bump that row (canonical fallback pass), never append a duplicate skeleton."""
+    _append_summary_row(tmp_output, tid=4248,
+                        tournament_name="2026 World Open  top 6 sections",
+                        family="World Open top 6 sections",
+                        tournament_year=2026.0, final_count=28,
+                        has_timestamps=True, ts_count=28,
+                        is_covid=False, is_online=False, early_bird_spike=False)
+    _append_scrape_rows(tmp_output, "2026 World Open, top 6 sections",
+                        [900, 1000, 1066])
+
+    reconcile_final_counts(tmp_output, verbose=False)
+    after = _summary(tmp_output)
+    assert "2026 World Open, top 6 sections" not in set(after["tournament_name"])
+    real = after.loc[after["tournament_name"] == "2026 World Open  top 6 sections"]
+    assert len(real) == 1
+    assert int(real.iloc[0]["final_count"]) == 1066
+
+
+def test_heals_existing_skeleton_real_duplicate_pair(tmp_output):
+    """A pre-existing skeleton whose canonical (family, year) collides with a
+    real row is dropped; the real row inherits the group's max final_count."""
+    _append_summary_row(tmp_output, tid=4248,
+                        tournament_name="2026 World Open  top 6 sections",
+                        family="World Open top 6 sections",
+                        tournament_year=2026.0, final_count=28,
+                        has_timestamps=True, ts_count=28,
+                        is_covid=False, is_online=False, early_bird_spike=False,
+                        roster_pending=False)
+    _append_summary_row(tmp_output, tid=4434,
+                        tournament_name="2026 World Open, top 6 sections",
+                        family="World Open, top 6 sections",
+                        tournament_year=2026.0, final_count=1066,
+                        has_timestamps=False, ts_count=0,
+                        is_covid=False, is_online=False, early_bird_spike=False,
+                        roster_pending=True)
+
+    reconcile_final_counts(tmp_output, verbose=False)
+    after = _summary(tmp_output)
+    assert 4434 not in set(after["tid"])
+    real = after.loc[after["tid"] == 4248]
+    assert len(real) == 1
+    assert int(real.iloc[0]["final_count"]) == 1066
+    assert bool(real.iloc[0]["has_timestamps"]) is True
+
+
+def test_heal_is_idempotent(tmp_output):
+    """Running reconcile twice after a heal changes nothing the second time."""
+    _append_summary_row(tmp_output, tid=4248,
+                        tournament_name="2026 World Open  top 6 sections",
+                        family="World Open top 6 sections",
+                        tournament_year=2026.0, final_count=28,
+                        has_timestamps=True, ts_count=28,
+                        is_covid=False, is_online=False, early_bird_spike=False,
+                        roster_pending=False)
+    _append_summary_row(tmp_output, tid=4434,
+                        tournament_name="2026 World Open, top 6 sections",
+                        family="World Open, top 6 sections",
+                        tournament_year=2026.0, final_count=1066,
+                        has_timestamps=False, ts_count=0,
+                        is_covid=False, is_online=False, early_bird_spike=False,
+                        roster_pending=True)
+    reconcile_final_counts(tmp_output, verbose=False)
+    first = _summary(tmp_output)
+    reconcile_final_counts(tmp_output, verbose=False)
+    second = _summary(tmp_output)
+    pd.testing.assert_frame_equal(first, second)
+
+
+def test_new_skeleton_family_is_canonical(tmp_output):
+    """Skeleton rows store the canonical family form so 04d's family joins,
+    history lookups and n_editions counts resolve; tournament_name stays
+    scraper-exact."""
+    _append_scrape_rows(tmp_output, "2026 World Open, lower sections", [40, 60, 93])
+
+    reconcile_final_counts(tmp_output, verbose=False)
+    after = _summary(tmp_output)
+    row = after.loc[after["tournament_name"] == "2026 World Open, lower sections"]
+    assert len(row) == 1
+    assert row.iloc[0]["family"] == "World Open lower sections"
+    assert bool(row.iloc[0]["roster_pending"]) is True

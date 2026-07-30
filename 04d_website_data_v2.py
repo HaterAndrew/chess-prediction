@@ -401,7 +401,11 @@ if len(recal_data) >= 5:
 else:
     print(f"  Recalibration skipped: need ≥5 completed tournaments, have {len(recal_data)}")
 
-ratios = build_ratio_model(train, daily)  # kept for families without timestamps
+# kept for families without timestamps; completed 2026 tids fold in under the
+# same rolling-retrain policy as prod_model.fit (v5 Cat L — without them no
+# 2026 event could inform a 2026 window prediction).
+ratios = build_ratio_model(train, daily,
+                           completed_tids=completed_tids if completed_tids else None)
 curves = build_template_curves(train, daily)
 
 # ── World Open: keep only Under 13, top 6, lower as separate families ──

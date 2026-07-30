@@ -288,8 +288,12 @@ def test_walkin_source_distinguishes_family_vs_estimate(tmp_path):
         'min_ratio': 1.4, 'max_ratio': 1.9,
     }]).to_csv(out / "walk_in_family_stats.csv", index=False)
 
-    orig = m04c.OUTPUT_DIR
-    m04c.OUTPUT_DIR = str(out)
+    # OUTPUT_DIR must be patched in the DEFINING module: load_walkin_multipliers
+    # lives in model/walkins.py since the 2026-07-30 decomposition and reads its
+    # own module global; the 04c shim name is a re-export, not the seam.
+    import model.walkins as walkins_mod
+    orig = walkins_mod.OUTPUT_DIR
+    walkins_mod.OUTPUT_DIR = str(out)
     try:
         mults = m04c.load_walkin_multipliers()
         assert 'Atlantic City Open' in mults
@@ -303,7 +307,7 @@ def test_walkin_source_distinguishes_family_vs_estimate(tmp_path):
         )
         assert source2 == 'estimate'
     finally:
-        m04c.OUTPUT_DIR = orig
+        walkins_mod.OUTPUT_DIR = orig
 
 
 # ── D5 — Walk-in freshness check ─────────────────────────────────────────
@@ -317,8 +321,9 @@ def test_walkin_freshness_warning(tmp_path):
     out = tmp_path / "output"
     out.mkdir()
     # Deliberately do NOT create walk_in_family_stats.csv
-    orig = m04c.OUTPUT_DIR
-    m04c.OUTPUT_DIR = str(out)
+    import model.walkins as walkins_mod  # the defining module is the patch seam
+    orig = walkins_mod.OUTPUT_DIR
+    walkins_mod.OUTPUT_DIR = str(out)
     try:
         mults = m04c.load_walkin_multipliers()
         assert mults == {}, "load_walkin_multipliers should return {} when file missing"
@@ -327,7 +332,7 @@ def test_walkin_freshness_warning(tmp_path):
         assert source == 'estimate'
         assert ratio == 1.1
     finally:
-        m04c.OUTPUT_DIR = orig
+        walkins_mod.OUTPUT_DIR = orig
 
 
 # ── D6 — Auto-update stale-mode propagates is_stale=True ────────────────

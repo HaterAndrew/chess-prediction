@@ -50,3 +50,44 @@ def _setup(tmp_path, monkeypatch, flyer_event_start):
 def test_date_guard(tmp_path, monkeypatch, event_start, expected_filled):
     _setup(tmp_path, monkeypatch, event_start)
     assert merge_fees.merge_fees(dry_run=True) == expected_filled
+
+
+def test_unmapped_family_warns_loudly(tmp_path, monkeypatch, capsys):
+    """v5 Cat F: a null-fee family with no FAMILY_TO_CODE entry was the only
+    silent skip path in the merge — four events sat fee-less for months with
+    their flyers already scraped. It must WARN in the harvestable format."""
+    _setup(tmp_path, monkeypatch, "2026-08-02")
+    monkeypatch.setattr(merge_fees, "FAMILY_TO_CODE", {})  # TestFam unmapped
+
+    # _setup's metadata row starts 2026-08-01; a "today" before it makes the
+    # event upcoming (today= is the injection seam).
+    filled = merge_fees.merge_fees(dry_run=True, today="2026-07-30")
+    out = capsys.readouterr().out
+    assert filled == 0
+    assert "WARNING: fee-merge: no FAMILY_TO_CODE mapping for TestFam" in out
+
+
+def test_unmapped_family_past_event_is_moot(tmp_path, monkeypatch, capsys):
+    """An unmapped family whose event already ended stays quiet — the fee is
+    permanently moot, and a weekly warning for it would be pure noise."""
+    _setup(tmp_path, monkeypatch, "2026-08-02")
+    monkeypatch.setattr(merge_fees, "FAMILY_TO_CODE", {})
+
+    merge_fees.merge_fees(dry_run=True, today="2026-09-15")
+    out = capsys.readouterr().out
+    assert "no FAMILY_TO_CODE mapping" not in out
+
+
+def test_production_table_maps_the_standing_null_fee_set():
+    """The four families from the 2026-07-30 data-health MEDIUM set (plus the
+    swapped Eastern pair) must stay in the production mapping."""
+    from validate_fees import FAMILY_TO_CODE
+    assert FAMILY_TO_CODE["Continental Open"] == "cono"
+    assert FAMILY_TO_CODE["Central California Open"] == "cco"
+    assert FAMILY_TO_CODE["Atlantic Open"] == "ao"
+    assert FAMILY_TO_CODE["Indianapolis Open"] == "io"
+    # 2026 flyers: ecc = Eastern CLASS (Oct 16), ecco = Eastern Chess
+    # CONGRESS (Oct 23) — the old Congress->ecc pairing failed the date
+    # guard every week, silently.
+    assert FAMILY_TO_CODE["Eastern Class Championships"] == "ecc"
+    assert FAMILY_TO_CODE["Eastern Chess Congress"] == "ecco"

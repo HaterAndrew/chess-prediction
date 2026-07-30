@@ -23,10 +23,11 @@ Usage:
     python3 merge_fees.py            # merge, write metadata
     python3 merge_fees.py --dry-run  # report what would change, write nothing
 
-MANUAL-ONLY (H7): this is NOT wired into the daily/weekly GitHub Actions
-pipeline. Fees only reach the cards when a human runs scrape_fees.py and then
-this. If fee columns look stale on near-events, that is expected until someone
-re-runs both by hand.
+Runs in CI weekly (v5 Cat F — the old MANUAL-ONLY note here was stale):
+scrape_fees.main() calls merge_fees() at the end of every run, and the weekly
+enrichment workflow runs scrape_fees. The enrichment workflow must also commit
+output/tournament_metadata.csv or the merge evaporates with the runner.
+--dry-run remains for manual inspection.
 """
 
 import os
@@ -56,7 +57,9 @@ def _code_for(family):
     return FAMILY_TO_CODE.get(family) or FAMILY_TO_CODE.get(canonicalize_family(family))
 
 
-def merge_fees(dry_run=False):
+def merge_fees(dry_run=False, today=None):
+    """today: injection seam for tests; defaults to the current date."""
+    today = pd.Timestamp(today) if today is not None else pd.Timestamp.now().normalize()
     if not os.path.exists(FEES_CSV) or not os.path.exists(META_CSV):
         print(f"WARNING: fee-merge skipped — missing {FEES_CSV} or {META_CSV}")
         return 0
@@ -73,6 +76,18 @@ def merge_fees(dry_run=False):
             continue  # already has a fee — never overwrite
         code = _code_for(family)
         if not code:
+            # v5 Cat F: this was the only silent skip path in the merge — the
+            # four standing null-fee events all had correct flyer rows sitting
+            # in tournament_fees.csv while their families were simply missing
+            # from FAMILY_TO_CODE, and nothing said so. Warn for UPCOMING
+            # events only: a fee that never reached an already-ended event's
+            # card is permanently moot, not actionable.
+            start = pd.to_datetime(row.get("start_date"), errors="coerce")
+            if pd.notna(start) and start >= today:
+                print(f"WARNING: fee-merge: no FAMILY_TO_CODE mapping for "
+                      f"{family} — scraped flyer fees (if any) cannot reach "
+                      f"the card")
+                skipped += 1
             continue
         match = fees[fees["url"].astype(str).str.contains(f"/{code}{YY}.", regex=False)]
         if len(match) == 0:

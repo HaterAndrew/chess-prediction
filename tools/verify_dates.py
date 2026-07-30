@@ -104,8 +104,16 @@ CHESSTOUR_PATTERNS = {
 }
 
 # chessevents.com slug map for past-year audit mode (--year <past>).
+# Keys are canonical family names (post _normalize_family). Slugs verified by
+# fetching the page and matching the <title> against the family (2026-07-30).
 CHESSEVENTS_SLUGS = {
+    # Pre-2026 editions of this lineage ran as the Princeton Open;
+    # FAMILY_GROUPS folds Princeton Open into Atlantic City Open. No
+    # atlanticcity slug exists yet — revisit when chessevents adds the
+    # renamed edition.
+    'Atlantic City Open': 'princeton',
     'Atlantic Open': 'atlantic',
+    'Boston Chess Congress': 'boston',
     'Bradley Open': 'bradley',
     'Central California Open': 'centralcalifornia',
     'Chicago Class': 'chicagoclass',
@@ -114,18 +122,27 @@ CHESSEVENTS_SLUGS = {
     'Continental Open': 'continentalopen',
     'Eastern Chess Congress': 'easternchesscongress',
     'Eastern Class Championships': 'easternclass',
+    'Eastern Open': 'easternopen',
+    'George Washington Open': 'georgewashington',
+    'Golden State Open': 'goldenstate',
     'Hartford Open': 'hartford',
     'Indianapolis Open': 'indianapolis',
     'Kings Island Open': 'kingsisland',
+    'Liberty Bell Open': 'libertybell',
     'Los Angeles Open': 'losangeles',
+    'Mid-America Open': 'midamerica',
     'Midwest Class Championships': 'midwestclass',
     'National Chess Congress': 'nationalchesscongress',
     'New York State Championship': 'nychampionship',
     'New York State Open': 'newyorkopen',
+    'Niagara Falls Open': 'niagarafalls',
     'North American Open': 'northamerican',
     'Pacific Coast Open': 'pacificcoast',
     'Pittsburgh Open': 'pittsburgh',
+    'Southern Class Championships': 'southernclass',
     'Southern Open': 'southernopen',
+    'Southwest Class Championships': 'southwestclass',
+    'Western Class Championships': 'westernclass',
 }
 
 # User-Agent — chesstour.com rejects Python-urllib default with 406

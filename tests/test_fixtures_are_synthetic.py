@@ -56,8 +56,12 @@ SCANNED = [
 @pytest.mark.parametrize("rel", SCANNED)
 def test_no_removed_identifiers_reappear(rel):
     path = REPO / rel
-    if not path.exists():
-        pytest.skip(f"{rel} not present")
+    # A missing path must FAIL, not skip: a rename/move that forgets to update
+    # SCANNED would otherwise silently disable this PII guard (decomposition
+    # P0 hardening — every move of a scanned file updates this list).
+    assert path.exists(), (
+        f"{rel} missing — SCANNED list is stale; renames must update it"
+    )
     text = path.read_text(encoding="utf-8")
     # Hash every word-ish token and compare against the denylist, so the check
     # works without this file naming anyone.

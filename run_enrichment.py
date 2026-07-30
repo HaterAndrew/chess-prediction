@@ -3,8 +3,8 @@
 The fee / standings / historical scrapers run in a separate weekly workflow. Run
 directly, their WARNING: lines only ever land in the GitHub Actions log and expire
 with it. This wrapper streams each scraper (so live progress is still visible in
-the Actions log) while harvesting its WARNING: lines through auto_update's warning
-machinery and persisting them to output/audit_warnings.json + docs/, exactly like
+the Actions log) while harvesting its WARNING: lines through the pipeline warning
+machinery (pipeline.warns since the P5 split) and persisting them to output/audit_warnings.json + docs/, exactly like
 the daily pipeline. Operators then see enrichment issues in the model-health tab,
 not only in a buried run log.
 
@@ -19,7 +19,7 @@ import os
 import subprocess
 import sys
 
-import auto_update
+from pipeline import warns
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -43,7 +43,7 @@ def _run_streamed(name, cmd):
         print(line, end="")
         captured.append(line)
     proc.wait()
-    auto_update._harvest_warnings(f"Enrichment: {name}", "".join(captured))
+    warns._harvest_warnings(f"Enrichment: {name}", "".join(captured))
     return proc.returncode
 
 
@@ -59,16 +59,16 @@ def main():
         try:
             rc = _run_streamed(name, cmd)
         except Exception as e:  # noqa: BLE001 - a scraper crash must not lose the others
-            auto_update._PIPELINE_WARNINGS.append(
+            warns._PIPELINE_WARNINGS.append(
                 {"step": f"Enrichment: {name}", "text": f"scraper errored: {e}"})
             failed.append(name)
             continue
         if rc != 0:
-            auto_update._PIPELINE_WARNINGS.append(
+            warns._PIPELINE_WARNINGS.append(
                 {"step": f"Enrichment: {name}", "text": f"scraper exited {rc}"})
             failed.append(name)
 
-    auto_update.write_audit_warnings()
+    warns.write_audit_warnings()
 
     if failed:
         print(f"\nEnrichment scrapers failed: {failed}")

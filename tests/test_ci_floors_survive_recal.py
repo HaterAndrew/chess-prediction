@@ -14,11 +14,9 @@ that the floors still bind after recal, and that the interval keeps the
 lognormal skew rather than being symmetrised.
 """
 import os
-import sys
 from importlib import import_module
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PROJECT_DIR)
 
 m04c = import_module("04c_final_model")
 

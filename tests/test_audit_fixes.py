@@ -5,7 +5,6 @@ Covers Cat A (reconciliation) + Cat B helpers + Cat D (test coverage gaps)
 where the underlying production code has already been written.
 """
 import os
-import sys
 from types import MethodType
 
 import numpy as np
@@ -13,7 +12,6 @@ import pandas as pd
 import pytest
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PROJECT_DIR)
 
 
 # ── D3 — WO exclusion helper (single source of truth) ────────────────────
@@ -167,7 +165,6 @@ def test_freshness_assertion_fires_on_stale_summary(tmp_path):
         'start_date': '2026-03-10', 'end_date': '2026-03-14',
     }]).to_csv(out / "tournament_metadata.csv", index=False)
 
-    sys.path.insert(0, PROJECT_DIR)
     perf = import_module("04e_performance_data")
     # Monkeypatch OUTPUT_DIR for the duration of the call
     orig = perf.OUTPUT_DIR
@@ -212,7 +209,6 @@ def test_freshness_assertion_skips_in_progress_events(tmp_path):
         'start_date': future, 'end_date': future,
     }]).to_csv(out / "tournament_metadata.csv", index=False)
 
-    sys.path.insert(0, PROJECT_DIR)
     perf = import_module("04e_performance_data")
     orig = perf.OUTPUT_DIR
     perf.OUTPUT_DIR = str(out)
@@ -277,7 +273,6 @@ def test_walkin_source_distinguishes_family_vs_estimate(tmp_path):
     """When walk_in_family_stats.csv has the family, source='family';
     when missing, source='estimate'."""
     from importlib import import_module
-    sys.path.insert(0, PROJECT_DIR)
     m04c = import_module("04c_final_model")
 
     out = tmp_path / "output"
@@ -315,7 +310,6 @@ def test_walkin_freshness_warning(tmp_path):
     """When walk_in_family_stats.csv is missing, the pipeline should
     surface that 100% of multipliers fall back to 'estimate'. AUDIT.md A1/B2."""
     from importlib import import_module
-    sys.path.insert(0, PROJECT_DIR)
     m04c = import_module("04c_final_model")
 
     out = tmp_path / "output"
@@ -342,7 +336,6 @@ def test_stale_flag_propagates_to_website_data(tmp_path):
     from importlib import import_module
     import json
 
-    sys.path.insert(0, PROJECT_DIR)
     auto_update = import_module("auto_update")
 
     wd = {
@@ -368,7 +361,6 @@ def test_tiny_family_emits_low_confidence(summary_df, daily_df):
     """Predictions for families with <4 historical editions must set
     self._last_low_confidence=True. AUDIT.md C8."""
     from importlib import import_module
-    sys.path.insert(0, PROJECT_DIR)
     m04c = import_module("04c_final_model")
 
     model = m04c.N5v4_Final()
@@ -389,7 +381,6 @@ def test_predict_nowcast_records_tier(summary_df, daily_df, metadata_df):
     """predict_nowcast must increment self._tier_counts on each call so 04d
     can surface fallback distribution. AUDIT.md B1."""
     from importlib import import_module
-    sys.path.insert(0, PROJECT_DIR)
     m04c = import_module("04c_final_model")
 
     model = m04c.N5v4_Final()
@@ -411,7 +402,6 @@ def test_recalibrate_does_not_pollute_tier_counts(summary_df, daily_df):
     prediction-tier telemetry. AUDIT.md B1.
     """
     from importlib import import_module
-    sys.path.insert(0, PROJECT_DIR)
     m04c = import_module("04c_final_model")
 
     model = m04c.N5v4_Final()
@@ -430,7 +420,6 @@ def test_recalibrate_targets_continuous_coverage(summary_df, daily_df):
     """recalibrate() should set ci_adj from empirical residual quantile, not
     snap to a 5-bucket step function. AUDIT.md C1."""
     from importlib import import_module
-    sys.path.insert(0, PROJECT_DIR)
     m04c = import_module("04c_final_model")
 
     model = m04c.N5v4_Final()
@@ -469,7 +458,6 @@ def test_recalibrate_ci_scale_applies_after_bias_recenter():
     actuals sit outside the interval at any in-band scale.
     """
     from importlib import import_module
-    sys.path.insert(0, PROJECT_DIR)
     m04c = import_module("04c_final_model")
 
     completed = pd.DataFrame({
@@ -506,7 +494,6 @@ def test_recalibrate_emits_stationarity_check(summary_df, daily_df):
     recalibrate splits chronologically and reports old vs new bias.
     AUDIT.md C2."""
     from importlib import import_module
-    sys.path.insert(0, PROJECT_DIR)
     m04c = import_module("04c_final_model")
 
     model = m04c.N5v4_Final()
@@ -525,7 +512,6 @@ def test_trim_outliers_records_per_label_stats():
     """trim_outliers(label=...) should accumulate per-label trim counts
     so users can audit which families lose the most points. AUDIT.md C7."""
     from importlib import import_module
-    sys.path.insert(0, PROJECT_DIR)
     m04c = import_module("04c_final_model")
 
     m04c.reset_trim_stats()
@@ -548,7 +534,6 @@ def test_trim_accounting_ignores_internal_repeated_ci_calls():
     must not inflate the once-per-fit trim audit. AUDIT.md C7.
     """
     from importlib import import_module
-    sys.path.insert(0, PROJECT_DIR)
     m04c = import_module("04c_final_model")
 
     vals = [1.1, 1.2, 1.0, 1.3, 1.15, 1.05, 1.25, 1.18, 50.0, 0.001]
@@ -567,7 +552,6 @@ def test_reanchor_logs_offset_source_distribution(capsys):
     """reanchor_daily_to_event_start should print offset source counts
     so silent DEFAULT_EVENT_START_OFFSET fallback is visible. AUDIT.md B3."""
     from importlib import import_module
-    sys.path.insert(0, PROJECT_DIR)
     m04c = import_module("04c_final_model")
 
     summary = pd.DataFrame([
@@ -648,7 +632,6 @@ def test_recalibrate_excludes_in_progress_events(tmp_path):
         {'family': 'Atlantic City Open', 'year': 2026, 'start_date': past, 'end_date': past},
     ]).to_csv(out / "tournament_metadata.csv", index=False)
 
-    sys.path.insert(0, PROJECT_DIR)
     recal = import_module("recalibrate")
     orig = recal.OUTPUT_DIR
     recal.OUTPUT_DIR = str(out)
@@ -688,7 +671,6 @@ def test_06_walk_in_excludes_in_progress_2026_events(tmp_path, monkeypatch):
         {'family': 'Atlantic City Open', 'year': 2026, 'start_date': past, 'end_date': past},
     ]).to_csv(out / "tournament_metadata.csv", index=False)
 
-    sys.path.insert(0, PROJECT_DIR)
     walkin = import_module("06_walk_in_multipliers")
     monkeypatch.setattr(walkin, 'SUMMARY_CSV', str(out / "tournament_summary.csv"))
     monkeypatch.setattr(walkin, 'METADATA_CSV', str(out / "tournament_metadata.csv"))

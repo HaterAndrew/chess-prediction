@@ -5,14 +5,12 @@ wrong grade rather than an error: scoring a fold that has no training data,
 scoring an event that never takes the window path in production, or letting a
 nine-observation day set the published letter.
 """
-import os
-import sys
 from importlib import import_module
 
 import pandas as pd
 import pytest
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 
 import window_grading as wg
 from ratio_model import ratio_observation_count

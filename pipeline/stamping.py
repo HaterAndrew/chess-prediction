@@ -55,7 +55,7 @@ def _stamp_site_data_version(json_data):
 # see scripts/bump_assets.py.
 STAMPED_SCRIPTS = ("app.js", "actions.js", "daily_series.js", "boot.js",
                    "audit.js", "styles.css", "util_core.js", "foundation.js",
-                   "cmdk.js")
+                   "cmdk.js", "tab_email.js")
 
 
 def _stamp_script_versions():

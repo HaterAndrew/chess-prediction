@@ -63,3 +63,43 @@ def test_pace_gate_parity_with_interim_path():
     ]:
         assert pace_gate_ok(count, days, curve)
         assert roster_pending_model_ok(count, days, "live", EVENT_DATE, curve)
+
+
+# ── step_data_prep parity: export-present runs keep skeleton rows ───────────
+# 01_data_prep rebuilds tournament_summary.csv from the export alone, which
+# drops the roster-pending skeletons reconcile_final_counts appended. The CI
+# path (export missing) already runs reconcile; the workstation path (export
+# present) must too, or the two environments publish structurally different
+# summaries — 13 live events silently fell off the model path locally.
+
+def test_step_data_prep_runs_reconcile_after_rebuild(monkeypatch, tmp_path):
+    import os
+
+    import auto_update
+    import reconcile_final_counts as rfc_module
+
+    export = tmp_path / "all_registrations.csv"
+    export.write_text("registration_time,tournament_name\n")
+
+    real_expanduser = os.path.expanduser
+    monkeypatch.setattr(
+        os.path, "expanduser",
+        lambda p: str(export) if "all_registrations" in p else real_expanduser(p),
+    )
+
+    calls = []
+    monkeypatch.setattr(
+        auto_update, "run_step",
+        lambda name, cmd, **kw: calls.append(("run_step", name)),
+    )
+    monkeypatch.setattr(
+        rfc_module, "reconcile_final_counts",
+        lambda *a, **kw: calls.append(("reconcile", a)),
+    )
+    monkeypatch.setattr(auto_update, "_PIPELINE_WARNINGS", [])
+
+    auto_update.step_data_prep()
+
+    assert [c[0] for c in calls] == ["run_step", "reconcile"], (
+        "export-present path must run 01_data_prep THEN reconcile_final_counts"
+    )

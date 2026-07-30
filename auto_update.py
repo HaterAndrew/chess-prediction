@@ -309,6 +309,13 @@ def step_data_prep():
         _PIPELINE_WARNINGS.append({'step': 'Refresh tournament summary', 'text': msg})
     run_step("Refresh tournament summary (01_data_prep.py)",
              [sys.executable, "01_data_prep.py"])
+    # v5 Cat R follow-through: 01_data_prep rebuilds the summary from the
+    # export alone, which drops the roster-pending skeleton rows that put
+    # scraped-but-never-exported events on the model path. Re-append them so
+    # a workstation run (export present) and a CI run (export missing) produce
+    # the same summary shape. Idempotent — safe on every run.
+    from reconcile_final_counts import reconcile_final_counts
+    reconcile_final_counts(OUTPUT_DIR)
 
 
 def step_walkin_multipliers():

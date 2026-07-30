@@ -51,8 +51,17 @@ def extract_family(name):
     return cleaned
 
 
-def canonicalize_family(name):
-    """Fix known typos and normalize spacing/punctuation in family names."""
+def repair_family_name(name):
+    """Fix known typos and normalize spacing/punctuation in family names.
+
+    NOT the same operation as tournament_aliases.canonicalize_family, despite
+    the historical shared name (renamed 2026-07-30): this is PRODUCER-side
+    repair that builds the family strings stored in tournament_summary.csv —
+    it deliberately does NOT fold FAMILY_GROUPS variants (pre-split "World
+    Open" must stay its own family here; the aliases version folds it into
+    "World Open top 6 sections" for join equality). Consumers that need
+    join-time folding use tournament_aliases.canonicalize_family.
+    """
     # Drop a trailing "(in <location>)" venue qualifier so a relocated edition
     # (e.g. "Eastern Class Championships (in Connecticut)") lands in the same
     # family as its prior years instead of a brand-new zero-history family.
@@ -95,7 +104,7 @@ ADMIN_ENTRIES = {
 }
 
 
-df['family'] = df['tournament_name'].apply(extract_family).apply(canonicalize_family)
+df['family'] = df['tournament_name'].apply(extract_family).apply(repair_family_name)
 
 # Filter out administrative entries
 admin_mask = df['family'].isin(ADMIN_ENTRIES)

@@ -16,7 +16,6 @@ from datetime import datetime, timedelta
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 HEALTH_LOG = os.path.join(OUTPUT_DIR, "scrape_health.json")
-HEALTH_HTML = os.path.join(OUTPUT_DIR, "scrape_health.html")
 
 
 def log_scrape_attempt(success, row_count, validation_errors, validation_warnings,

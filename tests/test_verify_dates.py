@@ -295,3 +295,65 @@ def test_parse_chessevents_dates_placeholder():
     start, end = parse_chessevents_dates(CHESSEVENTS_PLACEHOLDER_HTML)
     assert start is None
     assert end is None
+
+
+# ── v5 follow-up: schedule outage yields ONE warning, not one per event ──
+
+def _future_meta(tmp_path, monkeypatch):
+    # Two FUTURE events that are both in CHESSTOUR_PATTERNS: during an
+    # outage the old code emitted a per-event "source-parse failure" for
+    # each of these on top of the source-level warning.
+    fake_meta = tmp_path / "tournament_metadata.csv"
+    fake_meta.write_text(
+        "family,year,start_date,end_date,scrape_end,current,projection,final_count,city,state\n"
+        "North American Open,2026,2026-12-26,2026-12-29,,,,,,Las Vegas\n"
+        "Kings Island Open,2026,2026-11-13,2026-11-15,,,,,,Mason\n"
+    )
+    monkeypatch.setattr('tools.verify_dates.META_PATH', str(fake_meta))
+
+
+def test_outage_emits_single_warning_for_future_events(tmp_path, monkeypatch):
+    _future_meta(tmp_path, monkeypatch)
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        drift, unavailable, verified = verify_year(2026, fetcher=lambda url: None)
+    output = buf.getvalue()
+
+    assert output.count('WARNING:') == 1
+    assert 'source unavailable' in output
+    assert 'source-parse failure' not in output
+    assert verified == 0
+    assert unavailable == 2  # both were candidates the healthy path checks
+
+
+def test_unparseable_schedule_emits_single_warning(tmp_path, monkeypatch):
+    _future_meta(tmp_path, monkeypatch)
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        drift, unavailable, verified = verify_year(
+            2026, fetcher=lambda url: '<html><body>maintenance</body></html>')
+    output = buf.getvalue()
+
+    assert output.count('WARNING:') == 1
+    assert 'returned no date-listing blocks' in output
+    assert verified == 0
+    assert unavailable == 2
+
+
+def test_healthy_fetch_still_warns_per_missing_future_event(tmp_path, monkeypatch):
+    # Regression guard on the guard: a FUTURE event genuinely absent from a
+    # HEALTHY schedule page must keep its per-event warning. Southern Open is
+    # in CHESSTOUR_PATTERNS but not in the fixture schedule.
+    fake_meta = tmp_path / "tournament_metadata.csv"
+    fake_meta.write_text(
+        "family,year,start_date,end_date,scrape_end,current,projection,final_count,city,state\n"
+        "Southern Open,2026,2026-12-04,2026-12-06,,,,,,Orlando\n"
+    )
+    monkeypatch.setattr('tools.verify_dates.META_PATH', str(fake_meta))
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        verify_year(2026, fetcher=lambda url: CHESSTOUR_FIXTURE_HTML)
+    output = buf.getvalue()
+
+    assert 'source-parse failure' in output
+    assert 'Southern Open' in output

@@ -10,7 +10,6 @@ Covers:
 
 import csv
 import os
-import sys
 import statistics
 
 import numpy as np
@@ -19,7 +18,6 @@ import pytest
 # Moved into tests/ (was repo-root); project root is two levels up so the
 # digit-prefixed pipeline modules import and OUTPUT_DIR resolves to repo-root/output.
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PROJECT_DIR)
 
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 

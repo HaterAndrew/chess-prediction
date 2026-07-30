@@ -20,7 +20,6 @@ Contract after the fix:
   * ci_adj clamp pinning is surfaced in diagnostics, not silently absorbed.
 """
 import os
-import sys
 from importlib import import_module
 from types import MethodType
 
@@ -28,8 +27,6 @@ import pandas as pd
 import pytest
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_DIR not in sys.path:
-    sys.path.insert(0, PROJECT_DIR)
 
 m04c = import_module("04c_final_model")  # noqa: E402
 

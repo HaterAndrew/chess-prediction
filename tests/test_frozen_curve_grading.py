@@ -13,13 +13,11 @@ Pittsburgh Open, ~0.30x of 170), each recording ~40% T-3 errors and between them
 dragging the published headline grade from C to D.
 """
 import os
-import sys
 from importlib import import_module
 
 import pandas as pd
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PROJECT_DIR)
 
 m04e = import_module("04e_performance_data")
 

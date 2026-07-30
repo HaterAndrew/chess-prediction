@@ -20,7 +20,6 @@ from importlib import import_module
 import pandas as pd
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PROJECT_DIR)
 FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                         "fixtures", "incident_2026_07_25")
 

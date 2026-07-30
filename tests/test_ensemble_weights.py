@@ -5,11 +5,9 @@ weight-fitting script can try candidate tables. A refactor that shifted a bucket
 boundary by a day would change predictions for every event at that lead time
 without failing anything, so the boundaries are pinned here explicitly.
 """
-import os
-import sys
 from importlib import import_module
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 m04c = import_module("04c_final_model")
 
 

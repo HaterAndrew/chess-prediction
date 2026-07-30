@@ -341,6 +341,7 @@ def test_stale_flag_propagates_to_website_data(tmp_path):
     import json
 
     auto_update = import_module("auto_update")
+    config = import_module("pipeline.config")
 
     wd = {
         'generated': '2026-04-28', 'tournaments': [],
@@ -349,15 +350,17 @@ def test_stale_flag_propagates_to_website_data(tmp_path):
     wd_path = tmp_path / "website_data.json"
     wd_path.write_text(json.dumps(wd))
 
-    orig = auto_update.WEBSITE_JSON
-    auto_update.WEBSITE_JSON = str(wd_path)
+    # _stamp_stale_flag reads pipeline.config.WEBSITE_JSON at call time (P5);
+    # redirecting the shim's re-exported copy would not reach it.
+    orig = config.WEBSITE_JSON
+    config.WEBSITE_JSON = str(wd_path)
     try:
         auto_update._stamp_stale_flag(is_stale=True)
         result = json.loads(wd_path.read_text())
         assert result['is_stale'] is True
         assert result['last_updated'] is not None
     finally:
-        auto_update.WEBSITE_JSON = orig
+        config.WEBSITE_JSON = orig
 
 
 # ── D7 — Tiny-family fit emits low_confidence flag ──────────────────────

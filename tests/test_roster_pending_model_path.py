@@ -87,16 +87,21 @@ def test_step_data_prep_runs_reconcile_after_rebuild(monkeypatch, tmp_path):
         lambda p: str(export) if "all_registrations" in p else real_expanduser(p),
     )
 
+    # step_data_prep lives in pipeline.steps since P5 — patch the consumer's
+    # run_step and the defining module's warning list, not the shim copies.
+    import pipeline.steps
+    import pipeline.warns
+
     calls = []
     monkeypatch.setattr(
-        auto_update, "run_step",
+        pipeline.steps, "run_step",
         lambda name, cmd, **kw: calls.append(("run_step", name)),
     )
     monkeypatch.setattr(
         rfc_module, "reconcile_final_counts",
         lambda *a, **kw: calls.append(("reconcile", a)),
     )
-    monkeypatch.setattr(auto_update, "_PIPELINE_WARNINGS", [])
+    monkeypatch.setattr(pipeline.warns, "_PIPELINE_WARNINGS", [])
 
     auto_update.step_data_prep()
 

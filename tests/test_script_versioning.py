@@ -16,6 +16,7 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 import auto_update  # noqa: E402
+import pipeline.config  # noqa: E402
 
 
 @pytest.fixture
@@ -29,8 +30,10 @@ def site(tmp_path, monkeypatch):
         '<script src="boot.js?v=1"></script>\n'
         '<script src="app.js?v=40"></script>\n'
     )
-    monkeypatch.setattr(auto_update, "SITE_DIR", str(docs))
-    monkeypatch.setattr(auto_update, "INDEX_HTML", str(index))
+    # Patch the defining module (P5): the stampers derive targets from
+    # pipeline.config.SITE_DIR at call time; the shim's copy is inert.
+    monkeypatch.setattr(pipeline.config, "SITE_DIR", str(docs))
+    monkeypatch.setattr(pipeline.config, "INDEX_HTML", str(index))
     return {"docs": docs, "index": index}
 
 

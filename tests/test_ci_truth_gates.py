@@ -105,7 +105,10 @@ def test_step_data_health_raises_only_on_critical(monkeypatch, capsys):
     def fake_run_step(desc, cmd, timeout=None, check=True):
         return SimpleNamespace(returncode=fake_run_step.rc, stdout="", stderr="")
 
-    monkeypatch.setattr(auto_update, "run_step", fake_run_step)
+    # step_data_health lives in pipeline.steps since P5 and calls run_step
+    # through its own namespace — patch the consumer module, not the shim.
+    import pipeline.steps
+    monkeypatch.setattr(pipeline.steps, "run_step", fake_run_step)
     fake_run_step.rc = 0
     auto_update.step_data_health()  # clean: no raise
 

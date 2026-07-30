@@ -50,7 +50,15 @@ META_PATH = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
 # module attribute for merge_fees, validate_scraped_data, and the tests.
 from fees.codes import FAMILY_TO_CODE, UNMAPPED_CODES  # noqa: F401
 
-_session = polite_session()
+_session = None
+
+
+def _get_session():
+    """Create the polite session on first use (P7: no session at import)."""
+    global _session
+    if _session is None:
+        _session = polite_session()
+    return _session
 
 
 def candidate_urls(family, year):
@@ -66,7 +74,7 @@ def candidate_urls(family, year):
 
 def fetch_html(url):
     try:
-        resp = respectful_get(_session, url, timeout=DEFAULT_TIMEOUT)
+        resp = respectful_get(_get_session(), url, timeout=DEFAULT_TIMEOUT)
     except requests.RequestException as exc:
         return None, str(exc)
     if resp.status_code != 200:

@@ -75,7 +75,7 @@ async function loadData(env: Env, client: Anthropic): Promise<CachedData> {
   return cached!;
 }
 
-function pickAllowedOrigin(env: Env, request: Request): string {
+export function pickAllowedOrigin(env: Env, request: Request): string {
   const allow = env.ALLOWED_ORIGIN.split(",").map((s) => s.trim()).filter(Boolean);
   const origin = request.headers.get("Origin");
   if (!origin) return allow[0] ?? "https://haterandrew.github.io";
@@ -114,7 +114,7 @@ function corsPreflight(env: Env, request: Request): Response {
 // documented follow-up rather than shipped unverified — a broken DO migration
 // takes the live worker down on deploy, and it can't be exercised without
 // `wrangler dev` + a deployed DO.
-async function checkRateLimit(env: Env, ip: string): Promise<{ ok: boolean; retryAfter?: number }> {
+export async function checkRateLimit(env: Env, ip: string): Promise<{ ok: boolean; retryAfter?: number }> {
   // v3 S3: fail CLOSED when the KV binding is missing. This used to return
   // ok:true, so a KV outage, a renamed binding or a botched deploy silently
   // removed the rate limit and the daily budget at the same time — the two
@@ -140,7 +140,7 @@ async function checkRateLimit(env: Env, ip: string): Promise<{ ok: boolean; retr
 // with `|| 2`, which also silently doubled a blank cap). (I4)
 const DEFAULT_DAILY_BUDGET_USD = 1;
 
-async function checkDailyBudget(env: Env): Promise<{ ok: boolean; spent: number; cap: number }> {
+export async function checkDailyBudget(env: Env): Promise<{ ok: boolean; spent: number; cap: number }> {
   const parsed = parseFloat(env.DAILY_BUDGET_USD);
   const cap = Number.isFinite(parsed) ? parsed : DEFAULT_DAILY_BUDGET_USD;
   // v3 S3: fail closed for the same reason as checkRateLimit. Without KV the
@@ -156,7 +156,7 @@ async function checkDailyBudget(env: Env): Promise<{ ok: boolean; spent: number;
   return { ok: spent < cap, spent, cap };
 }
 
-async function recordCost(env: Env, usdDelta: number): Promise<void> {
+export async function recordCost(env: Env, usdDelta: number): Promise<void> {
   if (!env.KV) return;
   const day = new Date().toISOString().slice(0, 10);
   const key = `cost:${day}`;
@@ -186,7 +186,7 @@ const MODEL_PRICING: Record<string, ModelPricing> = {
 // wall-clock per request, so add a small per-invocation term when it ran.
 const CODE_EXEC_COST_PER_CALL = 0.0005;
 
-function pricingFor(model: string): ModelPricing {
+export function pricingFor(model: string): ModelPricing {
   const key = Object.keys(MODEL_PRICING).find(k => model.startsWith(k));
   if (!key) {
     throw new Error(`No price table entry for model "${model}" — add it to MODEL_PRICING before deploying.`);
@@ -194,7 +194,7 @@ function pricingFor(model: string): ModelPricing {
   return MODEL_PRICING[key];
 }
 
-function estimateCost(usage: Anthropic.Beta.BetaUsage, model: string, codeExecCalls = 0): number {
+export function estimateCost(usage: Anthropic.Beta.BetaUsage, model: string, codeExecCalls = 0): number {
   const p = pricingFor(model);
   const i = usage.input_tokens ?? 0;
   const o = usage.output_tokens ?? 0;
@@ -387,7 +387,7 @@ const CCA_VENDOR_ID = "3";
  * full length. Comparing lengths first would reintroduce a leak, so the length
  * difference is folded into the accumulator instead.
  */
-function timingSafeEqual(a: string, b: string): boolean {
+export function timingSafeEqual(a: string, b: string): boolean {
   const len = Math.max(a.length, b.length);
   let diff = a.length ^ b.length;
   for (let i = 0; i < len; i++) {

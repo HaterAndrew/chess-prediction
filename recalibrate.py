@@ -138,11 +138,15 @@ def suggest_shrinkage(coverage_pct):
         return None
 
     if coverage_pct < 75:
-        # Under-covering: CIs too narrow, widen them
+        # Under-covering: CIs too narrow, widen them.
+        # (v5 chore: the 0.05 sigma floor lives in ratio_model.py — the
+        # window engine — not 04c; 04c's empirical-Bayes floor is inside
+        # lognormal_ci. The old text pointed at a floor 04c doesn't have.)
         return (
             f"Coverage {coverage_pct:.1f}% is BELOW 75% target floor. "
-            f"CIs are too narrow — consider increasing sigma floor in 04c_final_model.py "
-            f"(e.g., raise from 0.05 to 0.08) or reducing empirical Bayes shrinkage."
+            f"CIs are too narrow — consider raising the sigma floor in "
+            f"ratio_model.py (0.05) for window-path predictions, or easing "
+            f"the empirical-Bayes shrinkage in 04c_final_model.lognormal_ci."
         )
     elif coverage_pct > 90:
         # Over-covering: CIs too wide, tighten them

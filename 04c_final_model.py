@@ -2249,7 +2249,10 @@ def build_website_json(summary, daily, meta_lookup, model, template_curves):
 
 def main():
     print("Loading data...")
-    summary, daily, meta = load_data()
+    # load_data returns 4 values (summary, daily, meta, hist); the old
+    # 3-tuple unpack crashed main() on entry (v5 chore — every other caller
+    # already unpacked 4).
+    summary, daily, meta, _hist = load_data()
     meta_lookup = load_meta_lookup(meta)
 
     # Fit model on all completed data

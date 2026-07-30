@@ -3,6 +3,8 @@
 import os
 import re
 
+import warnings
+
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import HuberRegressor
@@ -42,6 +44,9 @@ class FitMixin:
             current `summary` arg's families are used (less accurate when caller
             already filtered upstream — e.g., 04d passes train_ts).
         """
+        warnings.filterwarnings("ignore")  # scoped here from the old module-level call (P2b):
+        # numeric/sklearn noise fires inside this method; importing the
+        # model package no longer poisons every importer process-wide.
         self.enrichment = enrichment_lookup or {}
 
         # AUDIT.md C7 — reset trim counters at start of every fit so reports

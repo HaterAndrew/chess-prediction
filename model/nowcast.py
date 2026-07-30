@@ -1,5 +1,7 @@
 """N5v4_Final.predict_nowcast, verbatim as a mixin (04c 1142-1517)."""
 
+import warnings
+
 import numpy as np
 
 from feature_engineering import compute_adjustment_factor, compute_all_features
@@ -28,6 +30,9 @@ class NowcastMixin:
         ratio list for this one call — recalibrate()'s per-record LOO seam.
         Must be popped (kwargs is re-read for feature adjustments below).
         """
+        warnings.filterwarnings("ignore")  # scoped here from the old module-level call (P2b):
+        # numeric/sklearn noise fires inside this method; importing the
+        # model package no longer poisons every importer process-wide.
         track_tier = kwargs.pop('_track_tier', True)
         exclude_tid = kwargs.pop('_exclude_tid', None)
 

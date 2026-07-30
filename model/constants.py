@@ -26,12 +26,9 @@ T coordinate system:
 - For prediction, pass days_to_start directly — no duration offset needed.
 """
 
-import warnings
 from datetime import datetime
 
 import numpy as np
-
-warnings.filterwarnings('ignore')
 
 # __file__-derived paths do not survive relocation into a package — the
 # repo-level constant is the truth (shared/paths.py, decomposition P1).

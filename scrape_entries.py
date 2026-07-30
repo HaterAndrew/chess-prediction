@@ -76,42 +76,9 @@ def to_family(name):
 # ── CCA entry list URL codes ─────────────────────────────────────────────
 # Maps lowercase family name fragments to the short code used in CCA's
 # entry list URLs: /advlists/CCA/CCA_{CODE}{YY}/CCA_{CODE}{YY}_alp_n.html
-ENTRY_LIST_CODES = {
-    "atlantic city open": "ACO",
-    "atlantic open": "AO",
-    "world open": "WO",
-    "chicago open blitz": "COB",
-    "chicago open": "CHI",
-    "chicago class": "CC",
-    "liberty bell open": "LBO",
-    "george washington open": "GWO",
-    "golden state open": "GSO",
-    "pacific coast open": "PCO",
-    "pittsburgh open": "PIT",
-    "cleveland open": "CLEV",
-    "bradley open": "BRAD",
-    "dc international": "DCI",
-    "dc open": "DCO",
-    "hartford open": "HO",
-    "new york state championship": "NYSC",
-    "new york state open": "NYSO",
-    "southern open": "SO",
-    "central california open": "CCO",
-    "national chess congress": "NCC",
-    "north american open": "NAO",
-    "eastern open": "EO",
-    "los angeles open": "LAO",
-    "mid-america open": "MAO",
-    "mid america open": "MAO",
-    "new york open": "NYO",
-    "kings island open": "KIO",
-    "eastern chess congress": "ECC",
-    "western class": "WC",
-    "national open": "NO",
-    "las vegas open": "LVO",
-    "southwest class": "SWC",
-    "boston chess congress": "BCC",
-}
+# Entry-list code table lives in fees/codes.py (single home); the JS mirror
+# worker/src/entrylist_codes.mjs is pinned by tests/test_entrylist_codes_parity.
+from fees.codes import ENTRY_LIST_CODES  # noqa: F401
 
 # Withdrawal pattern from CCA entry list HTML pages
 _WD_PATTERN = re.compile(

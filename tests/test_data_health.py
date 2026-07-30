@@ -70,12 +70,24 @@ def test_critical_frozen_main_path_estimate():
 
 
 def test_frozen_check_ignores_roster_pending():
-    # roster-pending interim cards are EXPECTED to sit on the historical mean.
+    # roster-pending METADATA cards are EXPECTED to sit on the historical mean.
     keys, _ = run(
-        [card(family="Pending Open", prediction_tier="roster-pending")],
+        [card(family="Pending Open", prediction_tier="roster-pending",
+              prediction_source="metadata_historical_avg")],
         log_hist={"Pending Open": [(110, 18), (110, 25), (110, 31)]},
     )
     assert ("CRITICAL", "frozen-estimate") not in keys
+
+
+def test_frozen_check_watches_model_served_roster_pending():
+    # v5 Cat R: an admitted roster-pending card is model output and must move
+    # nightly — freezing while entries climb is the World Open U13 shape.
+    keys, _ = run(
+        [card(family="Pending Open", prediction_tier="roster-pending",
+              prediction_source="model")],
+        log_hist={"Pending Open": [(110, 18), (110, 25), (110, 31)]},
+    )
+    assert ("CRITICAL", "frozen-estimate") in keys
 
 
 def test_critical_dropped_event():

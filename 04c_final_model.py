@@ -47,14 +47,22 @@ TODAY = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 # all CCA tournaments with both metadata and timestamp data).
 DEFAULT_EVENT_START_OFFSET = 2
 
-# Recalibration cohort rules (v3 T3, audit/AUDIT_2026-07-25.md). recalibrate()
-# prefers residuals from tournaments the ratio model was NOT fitted on; below
-# this many held-out records it falls back to the in-sample cohort and widens the
-# derived CI scale by RECAL_IN_SAMPLE_WIDENING to offset training-set optimism.
-# The widening is a declared penalty, not a measured quantity — the alternative
-# is publishing an interval whose width was calibrated on training data.
+# Recalibration cohort rules (v3 T3 → v5 Cat L). Since v5, recalibrate()
+# defaults to per-record leave-one-out: each residual is computed with the
+# tournament's own ratio excluded (predict_nowcast _exclude_tid), so the whole
+# cohort is honest and these two constants only govern the loo=False fallback:
+# prefer genuinely held-out records; below RECAL_MIN_OOS_RECORDS fall back to
+# the in-sample cohort and widen the derived CI scale by
+# RECAL_IN_SAMPLE_WIDENING to offset training-set optimism. (The v3 preference
+# was dead code in production — every caller passed a subset of the fit frame,
+# so the cohort was always in-sample and both corrections were ~null.)
 RECAL_MIN_OOS_RECORDS = 5
 RECAL_IN_SAMPLE_WIDENING = 1.15
+# v5 Cat L: minimum records from the most recent tournament_year before the
+# bias correction is fitted on that regime subset instead of the pooled
+# multi-year mean (which dilutes a current-regime shift toward zero). Below
+# this, the pooled path with its stationarity auto-refit applies.
+RECAL_REGIME_MIN_N = 10
 
 # Ceiling on the withdrawal-rate correction (v3 N4). Rates above this are capped,
 # not discarded — the previous `if wd_rate < 0.15` turned the correction OFF for
@@ -547,6 +555,25 @@ def lognormal_ci(ratio_values, level=0.80, global_sigma=None, label=None,
     return med, lo, hi
 
 
+def _filter_ratios(fam_ratios, exclude_tid):
+    """Return fam_ratios with every entry belonging to exclude_tid removed.
+
+    Ratio entries are (ratio, year, tid) tuples everywhere (family, global,
+    and size-matched pools all carry the same shape). Used by recalibrate()'s
+    per-record LOO (v5 Cat L): excluding the target tournament's own ratio is
+    what makes a fit-cohort residual honest — with it included, an hmean over
+    3-4 family ratios nearly reproduces the actual, and measured bias reads ~0
+    against a real out-of-sample bias several times larger. Mirrors the LOO
+    _calibrate() already does (r[2] != tid).
+
+    Always returns a new dict; never mutates the input (which may be a live
+    reference into self.ratios).
+    """
+    if exclude_tid is None:
+        return fam_ratios
+    return {T: [r for r in rats if r[2] != exclude_tid]
+            for T, rats in fam_ratios.items()}
+
 
 class N5v4_Final:
     """
@@ -691,11 +718,14 @@ class N5v4_Final:
         else:
             valid = valid[valid['tournament_year'] < 2026]
 
-        # v3 T3: remember exactly which tournaments the ratio model was fitted
-        # on. recalibrate() needs it to tell an out-of-sample residual from an
-        # in-sample one; without it, recal measured its own training error and
-        # concluded the intervals were tighter than they really are.
-        self._fit_tids = set(valid['tid'].tolist())
+        # v3 T3 → v5 Cat L: remember exactly which tournaments contributed
+        # ratios. recalibrate() needs it to tell a genuinely held-out residual
+        # from a fit-cohort one. Populated INSIDE the loop below so a tid that
+        # passed the frame filter but contributed zero ratios (len(td) < 5, or
+        # no usable count at any T) doesn't count as in-sample — before v5 it
+        # was captured from the frame up front and would have masked genuine
+        # holdouts in n_out_of_sample.
+        self._fit_tids = set()
 
         self.ratios = {}
         self.global_ratios = {}
@@ -727,6 +757,7 @@ class N5v4_Final:
                 ratio = actual / count_at_T
                 self.ratios[family].setdefault(T, []).append((ratio, year, tid))
                 self.global_ratios.setdefault(T, []).append((ratio, year, tid))
+                self._fit_tids.add(tid)
 
         self.ratios['__global__'] = self.global_ratios
 
@@ -1119,8 +1150,13 @@ class N5v4_Final:
         can surface fallback distribution.
         Tiers: 'family-direct', 'family-alias', 'size-matched', 'guard-no-data',
         'guard-event-started', 'guard-no-ratios'.
+
+        `_exclude_tid` (v5 Cat L): drop that tournament's own ratio from every
+        ratio list for this one call — recalibrate()'s per-record LOO seam.
+        Must be popped (kwargs is re-read for feature adjustments below).
         """
         track_tier = kwargs.pop('_track_tier', True)
+        exclude_tid = kwargs.pop('_exclude_tid', None)
 
         # Initialize tier tracking lazily for user-facing predictions only.
         if track_tier and not hasattr(self, '_tier_counts'):
@@ -1167,6 +1203,11 @@ class N5v4_Final:
                         fam_ratios.setdefault(T, []).extend(rats)
             used_alias = bool(fam_ratios)
 
+        # v5 Cat L: LOO exclusion happens BEFORE the >=2 usable-ratios scan,
+        # so a family reduced below 2 ratios falls to size-matched exactly as
+        # it would for a genuinely unseen event (mirrors _calibrate's fallback).
+        fam_ratios = _filter_ratios(fam_ratios, exclude_tid)
+
         if fam_ratios:
             for T, rats in fam_ratios.items():
                 if isinstance(T, (int, float)) and len(rats) >= 2:
@@ -1178,7 +1219,8 @@ class N5v4_Final:
         else:
             record_tier('size-matched')
             # Fall back to size-matched families instead of global
-            fam_ratios = self._get_size_matched_ratios(current_count)
+            fam_ratios = _filter_ratios(
+                self._get_size_matched_ratios(current_count), exclude_tid)
             if not fam_ratios:
                 record_tier('guard-no-ratios')
                 return None, None, None
@@ -1473,7 +1515,8 @@ class N5v4_Final:
             n_editions=n_editions, is_blitz=is_blitz)
 
     def recalibrate(self, completed_tournaments, daily, T_points=None,
-                    target_coverage=0.80, ci_min_scale=0.5, ci_max_scale=1.8):
+                    target_coverage=0.80, ci_min_scale=0.5, ci_max_scale=3.0,
+                    loo=True):
         """Automated recalibration from completed tournament results.
 
         Computes per-T bias correction and CI width adjustment factors
@@ -1488,12 +1531,26 @@ class N5v4_Final:
         if they materially diverge so the user knows the per-T bias factors
         are time-dependent.
 
+        v5 Cat L: with loo=True (the default) every residual is computed with
+        the tournament's own ratio excluded from the ratio lists
+        (predict_nowcast(_exclude_tid=...)), so fit-cohort records are honest
+        pseudo-out-of-sample and the whole cohort is usable. Residual leakage
+        through the pooled regression, family anchors and _calibrate's scale
+        remains (diffuse, robust-estimator channels) — bounded optimism,
+        measured by tests/test_recal_honesty.py. loo=False preserves the
+        pre-v5 behavior: prefer genuinely held-out records, fall back to the
+        in-sample cohort with the declared RECAL_IN_SAMPLE_WIDENING penalty.
+
         completed_tournaments: DataFrame with completed tournaments
             (must have tid, family, final_count columns)
         daily: daily registration counts DataFrame
         T_points: list of T values to calibrate at (default: CHOP_POINTS)
         target_coverage: desired empirical CI coverage (default 0.80)
-        ci_min_scale, ci_max_scale: clamp range for ci_adj
+        ci_min_scale, ci_max_scale: clamp range for ci_adj. Ceiling raised
+            1.8 -> 3.0 in v5: honest LOO residuals need more headroom (T=7
+            already pinned 1.799 on optimistic in-sample residuals), and the
+            end-to-end multiplier implied by _calibrate's raw scales runs to
+            ~3.0. Pinning either clamp is surfaced in diagnostics.
 
         Sets self._recal_bias, self._recal_ci, self._recal_n dicts.
         Returns dict with calibration diagnostics.
@@ -1522,7 +1579,7 @@ class N5v4_Final:
 
         for T in T_points:
             # Records: (residual_pct, log_actual, log_point, log_halfwidth,
-            #           ci_hit, last_reg)
+            #           ci_hit, last_reg, in_sample, tournament_year)
             records = []
 
             for _, row in completed_sorted.iterrows():
@@ -1545,13 +1602,15 @@ class N5v4_Final:
                 if count_at_T <= 0:
                     continue
 
-                # Predict WITHOUT recalibration (use raw model)
+                # Predict WITHOUT recalibration (use raw model). Under loo,
+                # also without the tournament's own ratio (v5 Cat L).
                 old_bias = self._recal_bias
                 old_ci = self._recal_ci
                 self._recal_bias = {}
                 self._recal_ci = {}
                 point, lo, hi = self.predict_nowcast(
-                    count_at_T, T, family, _track_tier=False)
+                    count_at_T, T, family, _track_tier=False,
+                    _exclude_tid=tid if loo else None)
                 self._recal_bias = old_bias
                 self._recal_ci = old_ci
 
@@ -1567,22 +1626,27 @@ class N5v4_Final:
                 log_point = np.log(max(point, 1))
                 ci_hit = 1 if lo <= actual <= hi else 0
                 in_sample = tid in getattr(self, '_fit_tids', set())
+                year = row.get('tournament_year')
+                year = int(year) if pd.notna(year) else None
                 records.append((err_pct, log_actual, log_point, log_halfw, ci_hit,
-                                lr, in_sample))
+                                lr, in_sample, year))
 
             if len(records) < 3:
                 continue
 
-            # v3 T3 (audit/AUDIT_2026-07-25.md): prefer residuals from
-            # tournaments the ratio model was NOT fitted on. The recal cohort
-            # overlapped the fitting cohort, so predict_nowcast was partly
-            # reproducing values it had trained on; the residuals came out too
-            # small and ci_adj shrank the intervals below honest width. (The base
-            # CI scale is properly leave-one-out — the optimism is confined to
-            # this recalibration layer.)
+            # v3 T3 → v5 Cat L (audit/AUDIT_2026-07-30.md): the v3 oos-preference
+            # was dead code — every production caller hands recalibrate() a
+            # strict subset of the fit frame, so len(oos) was always 0, the
+            # cohort was always in-sample, and both corrections were ~null
+            # (measured bias ~0 against a real 2026 bias of +7..+11%). Under
+            # loo=True the residual loop above already excluded each
+            # tournament's own ratio, so every record is honest and the whole
+            # cohort is usable. The loo=False branch keeps the old logic.
             oos = [r for r in records if not r[6]]
             cohort_is_in_sample = False
-            if len(oos) >= RECAL_MIN_OOS_RECORDS:
+            if loo:
+                pass  # all records are pseudo-out-of-sample by construction
+            elif len(oos) >= RECAL_MIN_OOS_RECORDS:
                 records = oos
             elif len(oos) < len(records):
                 # Not enough held-out events to calibrate on. Keep the in-sample
@@ -1590,21 +1654,48 @@ class N5v4_Final:
                 # interval whose width was measured on training data.
                 cohort_is_in_sample = True
 
-            # ── Bias correction (with C2 stationarity check) ────────────
+            # ── Bias correction ─────────────────────────────────────────
             err_arr = np.array([r[0] for r in records])
-            # Trim extreme outliers (>2× IQR) before computing bias
-            q1, q3 = np.percentile(err_arr, [25, 75])
-            iqr = q3 - q1
-            mask = (err_arr >= q1 - 2 * iqr) & (err_arr <= q3 + 2 * iqr)
-            trimmed = err_arr[mask]
-            if len(trimmed) < 3:
-                trimmed = err_arr
 
-            mean_bias = float(np.mean(trimmed))
+            def _trimmed_mean(errs):
+                """IQR-trimmed mean (>2x IQR dropped), falling back to the
+                raw mean below 3 survivors — same rule the pooled path has
+                always used."""
+                errs = np.asarray(errs, dtype=float)
+                q1, q3 = np.percentile(errs, [25, 75])
+                iqr = q3 - q1
+                m = (errs >= q1 - 2 * iqr) & (errs <= q3 + 2 * iqr)
+                kept = errs[m]
+                return float(np.mean(kept if len(kept) >= 3 else errs))
+
+            # v5 Cat L: bias is a REGIME (location) property. Production recal
+            # exists to correct predictions for the current year, and a pooled
+            # multi-year mean dilutes a current-regime shift toward 0 (measured
+            # 2026-07-30: 2026-only bias +14.2% at T=3 / +4..5% at mid-T while
+            # the pooled mean read ~0). When the most recent tournament_year in
+            # the cohort has enough records, fit the bias on that subset —
+            # implementing what the 04d call site has always claimed ("Recent
+            # data is weighted more heavily"). The CI width quantile below
+            # stays pooled: scale is stable across years, and n~24 is too thin
+            # for an 80th percentile.
+            bias_cohort = 'pooled'
+            regime_year = None
+            years = [r[7] for r in records if r[7] is not None]
+            if years:
+                regime_year = max(years)
+                regime_errs = [r[0] for r in records if r[7] == regime_year]
+                if len(regime_errs) >= RECAL_REGIME_MIN_N:
+                    mean_bias = _trimmed_mean(regime_errs)
+                    bias_cohort = f'regime-{regime_year}'
+            if bias_cohort == 'pooled':
+                mean_bias = _trimmed_mean(err_arr)
             bias_factor = 1.0 / (1.0 + mean_bias)
             bias_factor = max(0.80, min(1.20, bias_factor))
 
-            # Stationarity probe: split records chronologically (older half vs newer half)
+            # Stationarity probe: split records chronologically (older half vs
+            # newer half). Diagnostic always; the auto-refit fires only on the
+            # pooled path — the regime path already fits on the newest cohort,
+            # and pruning records here would thin the pooled width quantile.
             stationarity = None
             recent_recalibrated = False
             if len(records) >= 6:
@@ -1621,7 +1712,7 @@ class N5v4_Final:
                 # half. Old-cohort behavior (pre-2024 conditions) shouldn't drag
                 # current predictions backward. The records list is also pruned
                 # so the CI scale below is computed from the same recent cohort.
-                if abs(stationarity['delta_pct']) > 5.0:
+                if bias_cohort == 'pooled' and abs(stationarity['delta_pct']) > 5.0:
                     new_records = records[mid:]
                     new_trimmed = new_half
                     nq1, nq3 = np.percentile(new_trimmed, [25, 75])
@@ -1654,11 +1745,25 @@ class N5v4_Final:
             # understate real error, so the scale derived from them would publish
             # intervals narrower than the model has earned. Widen by a fixed,
             # declared penalty rather than pretending the number is honest.
+            # (loo=False path only — under LOO the residuals are honest and the
+            # penalty would double-count.)
             if cohort_is_in_sample:
                 ci_adj *= RECAL_IN_SAMPLE_WIDENING
+            pre_clamp = ci_adj
             ci_adj = max(ci_min_scale, min(ci_max_scale, ci_adj))
 
             current_coverage = float(np.mean([r[4] for r in records]))
+
+            # v5 Cat L cohort provenance: 'held-out' only when every record is
+            # genuinely outside _fit_tids; 'loo' when fit-cohort records were
+            # predicted with their own ratio excluded (honest, but not a claim
+            # of true holdout); 'in-sample' only on the loo=False fallback.
+            if len(oos) == len(records):
+                cohort_label = 'held-out'
+            elif loo:
+                cohort_label = 'loo'
+            else:
+                cohort_label = 'in-sample' if cohort_is_in_sample else 'held-out'
 
             self._recal_bias[T] = bias_factor
             self._recal_ci[T] = ci_adj
@@ -1671,9 +1776,24 @@ class N5v4_Final:
                 'ci_adj': round(ci_adj, 3),
                 'target_coverage': int(target_coverage * 100),
                 # v3 T3: make the provenance of this scale inspectable.
-                'cohort': 'in-sample' if cohort_is_in_sample else 'held-out',
+                'cohort': cohort_label,
+                # v5 Cat L: which subset the bias (location) correction was
+                # fitted on — 'regime-<year>' or 'pooled'.
+                'bias_cohort': bias_cohort,
                 'n_out_of_sample': len(oos),
             }
+            # v5 Cat L: surface clamp pinning — a pinned scale means the model
+            # wants more correction than the clamp allows, and the published
+            # interval is narrower/wider than the residuals earned.
+            if pre_clamp > ci_max_scale:
+                diag['ci_adj_clamped'] = 'high'
+                print(f"  WARNING: T={T} ci_adj pinned at ceiling "
+                      f"{ci_max_scale} (residuals wanted {pre_clamp:.3f}) — "
+                      f"published CI narrower than measured error.")
+            elif pre_clamp < ci_min_scale:
+                diag['ci_adj_clamped'] = 'low'
+                print(f"  WARNING: T={T} ci_adj pinned at floor "
+                      f"{ci_min_scale} (residuals wanted {pre_clamp:.3f}).")
             if cohort_is_in_sample:
                 print(f"  WARNING: T={T} recalibration ran on an in-sample cohort "
                       f"({len(oos)} held-out record(s), need {RECAL_MIN_OOS_RECORDS}); "

@@ -160,7 +160,7 @@ jobs:
         # continue-on-error — the job then "succeeds" in degraded mode, but a
         # persistent scrape outage still needs a tracking issue.
         if: failure() || steps.scrape.outcome == 'failure'
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3  # v9.0.0
         with:
           script: |
             // v3 O4: reuse the open pipeline issue instead of filing a new one
@@ -197,7 +197,7 @@ jobs:
       # NOT a recovery — don't close the issue the previous step just fed.
       - name: Close pipeline issues on recovery
         if: success() && steps.scrape.outcome != 'failure'
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b  # v7
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3  # v9.0.0
         with:
           script: |
             const common = { owner: context.repo.owner, repo: context.repo.repo };

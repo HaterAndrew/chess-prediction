@@ -13,8 +13,9 @@
     "@anthropic-ai/sdk": "^0.96.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260101.0",
+    "@cloudflare/workers-types": "^5.20260730.1",
     "typescript": "^5.4.0",
-    "wrangler": "^3.80.0"
+    "vitest": "^4.1.10",
+    "wrangler": "^4.115.0"
   }
 }

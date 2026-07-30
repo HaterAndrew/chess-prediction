@@ -220,6 +220,10 @@ def grade_window_engine(summary, daily_raw, meta, eval_years, hist_lookup_fn,
 
     Same protocol as the main grade: for each year Y, the ratio model is built
     from data strictly before Y, so no event is scored by a model that saw it.
+    Production additionally folds completed current-year tids into its ratio
+    model (build_ratio_model completed_tids, v5 Cat L); the folds here do not,
+    so the graded window engine is slightly weaker than the published one —
+    the same documented direction as the main engine's 31-vs-23-tid mismatch.
 
     train_summary vs summary is a fidelity distinction, not a convenience.
     04d builds its ratio model from a summary filtered only for online and COVID

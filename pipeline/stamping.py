@@ -54,7 +54,7 @@ def _stamp_site_data_version(json_data):
 # appear in sw.js, and the G5 invariant is that the two files never disagree —
 # see scripts/bump_assets.py.
 STAMPED_SCRIPTS = ("app.js", "actions.js", "daily_series.js", "boot.js",
-                   "audit.js", "styles.css")
+                   "audit.js", "styles.css", "util_core.js")
 
 
 def _stamp_script_versions():

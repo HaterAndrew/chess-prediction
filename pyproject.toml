@@ -1,0 +1,20 @@
+# Single config authority for pytest + ruff (pytest.ini and ruff.toml deleted
+# in the same commit — both would take precedence over this file if present).
+# No [project] table: nothing here is pip-installed; requirements*.txt stay
+# the dependency authority (pins are deliberate, see requirements.txt header).
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+# Repo root on sys.path for every test — replaces the per-file
+# sys.path.insert(0, PROJECT_ROOT) pattern (47 occurrences; removed
+# opportunistically as files are touched).
+pythonpath = ["."]
+
+[tool.ruff.lint]
+# E402: pipeline scripts run sys.path.insert() and define module constants
+#       before importing their digit-prefixed siblings (04c/04d/04e/06).
+#       Dropped in decomposition P9 once the package layout removes the need.
+# E701: compact one-line `if cond: return` used throughout the pipeline.
+ignore = ["E402", "E701"]

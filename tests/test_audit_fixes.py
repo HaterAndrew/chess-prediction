@@ -170,16 +170,18 @@ def test_freshness_assertion_fires_on_stale_summary(tmp_path):
     }]).to_csv(out / "tournament_metadata.csv", index=False)
 
     perf = import_module("04e_performance_data")
-    # Monkeypatch OUTPUT_DIR for the duration of the call
-    orig = perf.OUTPUT_DIR
-    perf.OUTPUT_DIR = str(out)
+    # Patch OUTPUT_DIR on the DEFINING module (perf.evaluation since P6);
+    # the shim's re-exported copy is inert.
+    import perf.evaluation as perf_eval
+    orig = perf_eval.OUTPUT_DIR
+    perf_eval.OUTPUT_DIR = str(out)
     try:
         with pytest.raises(RuntimeError) as exc:
             perf.assert_truth_label_freshness(summary)
         assert '2026 Stale Open' in str(exc.value)
         assert '600' in str(exc.value)  # scrape peak named in error
     finally:
-        perf.OUTPUT_DIR = orig
+        perf_eval.OUTPUT_DIR = orig
 
 
 def test_freshness_assertion_skips_in_progress_events(tmp_path):
@@ -214,13 +216,14 @@ def test_freshness_assertion_skips_in_progress_events(tmp_path):
     }]).to_csv(out / "tournament_metadata.csv", index=False)
 
     perf = import_module("04e_performance_data")
-    orig = perf.OUTPUT_DIR
-    perf.OUTPUT_DIR = str(out)
+    import perf.evaluation as perf_eval
+    orig = perf_eval.OUTPUT_DIR
+    perf_eval.OUTPUT_DIR = str(out)
     try:
         # Should not raise — event is in-progress, summary is allowed to lag scrape.
         perf.assert_truth_label_freshness(summary)
     finally:
-        perf.OUTPUT_DIR = orig
+        perf_eval.OUTPUT_DIR = orig
 
 
 # ── A5 / D4 — Scrape-coverage gate edge cases ───────────────────────────

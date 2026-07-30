@@ -455,6 +455,13 @@ def test_recalibrate_ci_scale_applies_after_bias_recenter():
 
     This catches the bug where ci_adj was derived around the raw point estimate
     but later applied around a bias-corrected center. AUDIT.md C1.
+
+    v5 Cat L: runs under the PRODUCTION clamps (ci_min_scale=0.5,
+    ci_max_scale=3.0) instead of the old test-only (0.0, 10.0) pair that never
+    exercised them. With this residual stream the raw quantile lands below the
+    floor; the clamp holds the scale at 0.5, the pinning is surfaced in
+    diagnostics, and target coverage still holds because the two outlier
+    actuals sit outside the interval at any in-band scale.
     """
     from importlib import import_module
     sys.path.insert(0, PROJECT_DIR)
@@ -473,9 +480,7 @@ def test_recalibrate_ci_scale_applies_after_bias_recenter():
         return 100, 90, 110
 
     model.predict_nowcast = MethodType(fake_predict, model)
-    model.recalibrate(
-        completed, daily, T_points=[14], target_coverage=0.80,
-        ci_min_scale=0.0, ci_max_scale=10.0)
+    diag = model.recalibrate(completed, daily, T_points=[14], target_coverage=0.80)
 
     half = (np.log(110) - np.log(90)) / 2
     center = 100 * model._recal_bias[14]
@@ -485,6 +490,9 @@ def test_recalibrate_ci_scale_applies_after_bias_recenter():
     coverage = np.mean((lo <= actuals) & (actuals <= hi))
 
     assert coverage == pytest.approx(0.80)
+    # Real floor exercised and surfaced, not silently absorbed.
+    assert model._recal_ci[14] == pytest.approx(0.5)
+    assert diag[14].get('ci_adj_clamped') == 'low'
 
 
 # ── C2 — Stationarity probe surfaces in diagnostics ─────────────────────

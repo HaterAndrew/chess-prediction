@@ -746,8 +746,8 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 4183,2026 New York State Scholastic Championships Grades K-8,New York State Scholastic Championships Grades K-8,2026.0,1753,True,1753,2025-10-11 13:01:01,2026-03-06 12:56:46,False,False,2026-03-06 12:56:46,True,56.0,8.0,False
 4244,2026 Chicago Open,Chicago Open,2026.0,917,True,179,2025-11-26 10:20:11,2026-05-26 00:00:00,False,False,2026-03-20 17:04:07,True,67.0,16.5,False
 4245,2026 Chicago Open Blitz,Chicago Open Blitz,2026.0,134,True,4,2025-11-26 10:14:59,2026-05-26 00:00:00,False,False,2026-03-19 07:14:00,False,67.0,1.0,False
-4248,2026 World Open  top 6 sections,World Open top 6 sections,2026.0,28,True,28,2025-11-26 11:26:59,2026-03-20 23:31:56,False,False,2026-03-20 23:31:56,False,69.0,1.0,False
-4249,2026 World Open  lower sections,World Open lower sections,2026.0,2,True,2,2026-02-05 14:30:03,2026-02-26 09:25:19,False,False,2026-02-26 09:25:19,False,,0.0,False
+4248,2026 World Open  top 6 sections,World Open top 6 sections,2026.0,1066,True,28,2025-11-26 11:26:59,2026-03-20 23:31:56,False,False,2026-03-20 23:31:56,False,69.0,1.0,False
+4249,2026 World Open  lower sections,World Open lower sections,2026.0,93,True,2,2026-02-05 14:30:03,2026-02-26 09:25:19,False,False,2026-02-26 09:25:19,False,,0.0,False
 4284,2026 DC International,DC International,2026.0,107,True,5,2025-12-04 00:39:41,2026-06-29 00:00:00,False,False,2026-02-19 00:02:48,False,55.0,2.0,False
 4289,2026 Southern Class,Southern Class,2026.0,195,True,195,2025-12-15 13:05:36,2026-03-14 08:32:11,False,False,2026-03-14 08:32:11,False,67.0,1.0,False
 4349,2026 New York State Open,New York State Open,2026.0,109,True,1,2026-03-19 11:29:59,2026-06-21 00:00:00,False,False,2026-03-19 11:29:59,False,61.0,2.0,False
@@ -758,16 +758,16 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 4405,2026 World Open Action,World Open Action,2026.0,1,True,1,2026-03-04 00:53:40,2026-03-04 00:53:40,False,False,2026-03-04 00:53:40,False,,0.0,False
 4408,2026 World Open Blitz Championship,World Open Blitz Championship,2026.0,1,True,1,2026-03-04 00:51:31,2026-03-04 00:51:31,False,False,2026-03-04 00:51:31,False,,0.0,False
 4409,2026 World Open G 50 Championship,World Open G 50 Championship,2026.0,1,True,1,2026-03-04 01:03:09,2026-03-04 01:03:09,False,False,2026-03-04 01:03:09,False,,0.0,False
-4412,2026 Bradley Open,Bradley Open,2026.0,209,True,2,2026-02-16 09:38:22,2026-07-25 00:00:00,False,False,2026-03-08 21:13:17,False,67.0,1.0,False
+4412,2026 Bradley Open,Bradley Open,2026.0,209,True,2,2026-02-16 09:38:22,2026-07-26 00:00:00,False,False,2026-03-08 21:13:17,False,68.0,1.0,False
 4413,2026 Hartford Open,Hartford Open,2026.0,206,True,3,2026-03-08 21:12:04,2026-06-07 00:00:00,False,False,2026-03-19 10:23:59,False,65.0,3.0,False
 4414,2026 Pittsburgh Open,Pittsburgh Open,2026.0,170,True,2,2026-02-20 19:28:19,2026-07-19 00:00:00,False,False,2026-03-11 22:24:42,False,69.0,2.0,False
-4415,2026 Pacific Coast Open,Pacific Coast Open,2026.0,352,True,3,2026-03-03 22:56:45,2026-07-25 00:00:00,False,False,2026-03-10 19:06:24,False,60.0,2.0,False
+4415,2026 Pacific Coast Open,Pacific Coast Open,2026.0,352,True,3,2026-03-03 22:56:45,2026-07-30 00:00:00,False,False,2026-03-10 19:06:24,False,65.0,2.0,False
 4417,2026 Cleveland Open,Cleveland Open,2026.0,179,True,2,2026-03-01 19:24:30,2026-06-07 00:00:00,False,False,2026-03-16 21:23:52,False,71.0,1.0,False
 4418,2026 Atlantic Open,Atlantic Open,2026.0,37,False,0,,,False,False,,False,,,True
 4419,2026 Central California Open,Central California Open,2026.0,38,False,0,,,False,False,,False,,,True
 4420,2026 Continental Open,Continental Open,2026.0,56,False,0,,,False,False,,False,,,True
-4421,2026 Eastern Chess Congress (in New Jersey),Eastern Chess Congress (in New Jersey),2026.0,4,False,0,,,False,False,,False,,,True
-4422,2026 Eastern Class Championships (in Connecticut),Eastern Class Championships (in Connecticut),2026.0,6,False,0,,,False,False,,False,,,True
+4421,2026 Eastern Chess Congress (in New Jersey),Eastern Chess Congress,2026.0,4,False,0,,,False,False,,False,,,True
+4422,2026 Eastern Class Championships (in Connecticut),Eastern Class Championships,2026.0,6,False,0,,,False,False,,False,,,True
 4423,2026 Indianapolis Open,Indianapolis Open,2026.0,29,False,0,,,False,False,,False,,,True
 4424,2026 Kings Island Open,Kings Island Open,2026.0,3,False,0,,,False,False,,False,,,True
 4425,2026 Los Angeles Open,Los Angeles Open,2026.0,2,False,0,,,False,False,,False,,,True
@@ -778,5 +778,3 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 4430,2026 North American Open,North American Open,2026.0,19,False,0,,,False,False,,False,,,True
 4431,2026 Southern Open,Southern Open,2026.0,206,False,0,,,False,False,,False,,,True
 4432,2026 World Open Under 13 Championship,World Open Under 13 Championship,2026.0,82,False,0,,,False,False,,False,,,True
-4433,"2026 World Open, lower sections","World Open, lower sections",2026.0,93,False,0,,,False,False,,False,,,True
-4434,"2026 World Open, top 6 sections","World Open, top 6 sections",2026.0,1066,False,0,,,False,False,,False,,,True

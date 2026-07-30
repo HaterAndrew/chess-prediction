@@ -1,54 +1,42 @@
 {
   "generated": "2026-07-30",
-  "scanned_at": "2026-07-30T04:28:33",
+  "scanned_at": "2026-07-30T11:26:58",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
-    "MEDIUM": 4,
+    "MEDIUM": 0,
     "INFO": 17
   },
   "findings": [
     {
-      "severity": "MEDIUM",
-      "mode": "null-fee-near-event",
-      "family": "Continental Open",
-      "message": "regular_fee is null with 14 days remaining"
-    },
-    {
-      "severity": "MEDIUM",
-      "mode": "null-fee-near-event",
-      "family": "Central California Open",
-      "message": "regular_fee is null with 15 days remaining"
-    },
-    {
-      "severity": "MEDIUM",
-      "mode": "null-fee-near-event",
+      "severity": "INFO",
+      "mode": "roster-pending",
       "family": "Atlantic Open",
-      "message": "regular_fee is null with 22 days remaining"
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
-      "severity": "MEDIUM",
-      "mode": "null-fee-near-event",
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Central California Open",
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Continental Open",
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
       "family": "Indianapolis Open",
-      "message": "regular_fee is null with 22 days remaining"
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
-      "family": "Atlantic Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Central California Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Continental Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+      "family": "New York State Championship",
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
       "severity": "INFO",
@@ -66,12 +54,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Eastern Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Indianapolis Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {
@@ -96,12 +78,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "National Chess Congress",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "New York State Championship",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {

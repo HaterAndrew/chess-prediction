@@ -94,5 +94,37 @@
     "error_count": 0,
     "warning_count": 0,
     "duration_seconds": 390.5
+  },
+  {
+    "timestamp": "2026-07-30 10:28:51",
+    "success": true,
+    "row_count": 15,
+    "error_count": 0,
+    "warning_count": 1,
+    "duration_seconds": 283.3
+  },
+  {
+    "timestamp": "2026-07-30 11:10:10",
+    "success": true,
+    "row_count": 15,
+    "error_count": 0,
+    "warning_count": 1,
+    "duration_seconds": 269.3
+  },
+  {
+    "timestamp": "2026-07-30 11:19:21",
+    "success": true,
+    "row_count": 15,
+    "error_count": 0,
+    "warning_count": 1,
+    "duration_seconds": 287.7
+  },
+  {
+    "timestamp": "2026-07-30 11:26:58",
+    "success": true,
+    "row_count": 15,
+    "error_count": 0,
+    "warning_count": 1,
+    "duration_seconds": 281.3
   }
 ]

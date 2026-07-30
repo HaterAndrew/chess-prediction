@@ -80,6 +80,12 @@ FAMILY_TO_CODE = {
     # silently, because the unmapped/mismatched skip carried no warning.
     "Eastern Class Championships": "ecc",
     "Eastern Chess Congress": "ecco",
+    # v5 follow-up: eo verified from the eo22/eo23/eo24 flyer URLs already in
+    # tournament_fees.csv; naob follows the side-event blitz convention
+    # (aob/conob/eccob/...). Neither 2026 flyer is published yet — the mapping
+    # waits for it, and the +/-3-day date cross-check guards a wrong guess.
+    "Eastern Open": "eo",
+    "North American Blitz Championship": "naob",
     "Continental Class": "ccc",
     "Hartford Open": "ho",
     "New York State Open": "nyso",

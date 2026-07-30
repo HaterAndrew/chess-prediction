@@ -111,3 +111,42 @@ def test_equal_fees_rejected_as_no_price_hike():
     assert out is not None
     assert out["early_bird_fee"] == ""
     assert "not less than next tier" in out["eb_demoted_reason"]
+
+
+# ── v5 Cat F: code-table parity against the real scraped corpus ─────────
+
+def test_every_scraped_2026_code_is_mapped_or_allowlisted():
+    """Every flyer code the scraper actually captured must map to some family
+    in FAMILY_TO_CODE or be an explicit UNMAPPED_CODES entry —
+    TOURNAMENT_CODES and FAMILY_TO_CODE are independently maintained tables,
+    and codes falling between them (cono/io/lao/kio/mwcc/nysc/brad) left
+    events fee-less while their flyers sat scraped. Reads the real
+    output/tournament_fees.csv on purpose: this is data<->code parity, and CI
+    runs the tests right after the pipeline regenerates the data."""
+    import csv
+    import re
+
+    import pytest
+
+    fees_path = os.path.join(PROJECT_DIR, "output", "tournament_fees.csv")
+    if not os.path.exists(fees_path):
+        pytest.skip("no scraped fee corpus in this checkout")
+
+    from validate_fees import FAMILY_TO_CODE, UNMAPPED_CODES
+
+    with open(fees_path, encoding="utf-8") as fh:
+        rows = [r for r in csv.DictReader(fh) if r.get("year") == "2026"]
+    scraped = set()
+    for r in rows:
+        m = re.search(r"/([a-z]+)26\.", str(r.get("url", "")))
+        if m:
+            scraped.add(m.group(1))
+    assert scraped, "no 2026 codes parsed from tournament_fees.csv urls"
+
+    mapped = set(FAMILY_TO_CODE.values())
+    orphans = scraped - mapped - UNMAPPED_CODES
+    assert not orphans, (
+        f"scraped flyer code(s) {sorted(orphans)} map to no family and are "
+        f"not allowlisted in validate_fees.UNMAPPED_CODES — their events "
+        f"cannot receive fees"
+    )

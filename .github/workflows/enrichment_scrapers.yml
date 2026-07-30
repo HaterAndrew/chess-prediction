@@ -58,7 +58,11 @@ jobs:
         run: |
           git config user.name "CCA Bot"
           git config user.email "bot@users.noreply.github.com"
-          git add output/tournament_fees.csv output/historical_standings.csv output/historical_tournaments.csv output/audit_warnings.json docs/audit_warnings.json
+          # v5 Cat F: tournament_metadata.csv is the file merge_fees WRITES —
+          # without it in the add list, every successful weekly fee merge
+          # evaporated with the runner (the daily workflow commits the file
+          # but never runs the merge).
+          git add output/tournament_fees.csv output/historical_standings.csv output/historical_tournaments.csv output/tournament_metadata.csv output/audit_warnings.json docs/audit_warnings.json
           git diff --cached --quiet || git commit -m "Enrichment data update: $(date +%Y-%m-%d)"
           git pull --rebase || git pull --no-rebase
           git push

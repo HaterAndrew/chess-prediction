@@ -583,7 +583,9 @@ def main():
                     )
                 ].copy()
                 if len(recal_data) >= 5:
-                    model.recalibrate(recal_data, daily)
+                    # regime_year: the LOO cohort contains the other completed
+                    # 2026 events, so the bias fits on the current regime.
+                    model.recalibrate(recal_data, daily, regime_year=year)
                 results.extend(evaluate_tournaments(model, [tinfo], daily,
                                                     frozen_skipped=frozen_skipped,
                                                     hist_lookup=eval_hist))
@@ -622,7 +624,10 @@ def main():
                 (train_summary['tournament_year'].isin(recal_years))
             ].copy()
             if len(recal_data) >= 5:
-                model.recalibrate(recal_data, daily)
+                # regime_year=year: the cohort ends at year-1, so the regime
+                # path stays off and the pooled bias applies (v5 Cat L —
+                # year-1 carryover overcorrected the 2024 fold).
+                model.recalibrate(recal_data, daily, regime_year=year)
                 print(f"  Recalibration applied from {len(recal_data)} tournaments ({recal_years})")
 
             # Build test set

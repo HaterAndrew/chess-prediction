@@ -23,7 +23,7 @@ const OFFLINE_FALLBACKS = [
   'actions.js?v=886915259e',
   'audit.js?v=30eaa762a6',
   'daily_series.js?v=e326e2b1fc',
-  'data/site_data.js?v=85d418805e',
+  'data/site_data.js?v=c1f8c4809a',
   // v4 W4: Model Health fetches this at runtime; without a precached copy an
   // offline load 504s and the panel renders empty.
   'audit_warnings.json',

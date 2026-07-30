@@ -33,23 +33,10 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-# Common CCA tournament codes and the year suffixes to try
-TOURNAMENT_CODES = [
-    "wo",    # World Open
-    "chio",  # Chicago Open
-    "nao",   # North American Open
-    "lib",   # Liberty Bell Open
-    "ncc",   # National Chess Congress
-    "aco",   # Atlantic City Open
-    "scc",   # Southern California Chess
-    "pho",   # Philadelphia Open
-    "uso",   # US Open
-    "eo",    # Eastern Open
-    "ao",    # Atlantic Open
-    "lvo",   # Las Vegas Open
-    "cco",   # Cherry Blossom Classic / Continental Chess Open
-    "dc",    # DC area events
-]
+# Blind-probe code list lives in fees/codes.py (see the discrepancy notes
+# there); legacy name kept for the discovery loop and tests.
+from fees.codes import FLYER_PROBE_CODES as TOURNAMENT_CODES  # noqa: F401
+
 YEAR_SUFFIXES = ["22", "23", "24", "25", "26"]
 
 # ---------------------------------------------------------------------------

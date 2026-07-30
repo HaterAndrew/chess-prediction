@@ -45,64 +45,10 @@ OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 AUDIT_DIR = os.path.join(PROJECT_DIR, "audit", "eb-verification")
 META_PATH = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
 
-# Known short-code overrides; everything else falls back to brute-force
-# (the production scrape_fees.py also tries chessevents.com discovery — we
-# keep this file simple and rely on a per-family lookup table that grows
-# as new tournaments get verified once).
-FAMILY_TO_CODE = {
-    "Atlantic City Open": "aco",
-    "Atlantic Open": "ao",
-    "Bradley Open": "brad",
-    "Central California Open": "cco",
-    "Chicago Open": "chio",
-    "Cleveland Open": "clev",
-    "Continental Open": "cono",
-    "Indianapolis Open": "io",
-    "Kings Island Open": "kio",
-    "Los Angeles Open": "lao",
-    "Midwest Class Championships": "mwcc",
-    "New York State Championship": "nysc",
-    "Pittsburgh Open": "pit",
-    "Pacific Coast Open": "pco",
-    "National Chess Congress": "ncc",
-    "Liberty Bell Open": "lbo",
-    "Golden State Open": "gso",
-    "Mid-America Open": "mao",
-    "Chicago Class": "chcc",
-    "Southern Class": "scc",
-    "World Open": "wo",
-    "World Open top 6 sections": "wo",
-    "North American Open": "nao",
-    "Boston Chess Congress": "bcc",
-    # v5 Cat F: the 2026 flyers say ecc = Eastern CLASS (Oct 16), ecco =
-    # Eastern Chess CONGRESS (Oct 23). The old "Eastern Chess Congress: ecc"
-    # pairing failed merge_fees' +/-3-day date cross-check every week —
-    # silently, because the unmapped/mismatched skip carried no warning.
-    "Eastern Class Championships": "ecc",
-    "Eastern Chess Congress": "ecco",
-    # v5 follow-up: eo verified from the eo22/eo23/eo24 flyer URLs already in
-    # tournament_fees.csv; naob follows the side-event blitz convention
-    # (aob/conob/eccob/...). Neither 2026 flyer is published yet — the mapping
-    # waits for it, and the +/-3-day date cross-check guards a wrong guess.
-    "Eastern Open": "eo",
-    "North American Blitz Championship": "naob",
-    "Continental Class": "ccc",
-    "Hartford Open": "ho",
-    "New York State Open": "nyso",
-    "DC International": "dci",
-    "DC Open": "dco",
-    "World Open lower sections": "wolower",
-    "World Open Under 13 Championship": "wu",
-}
-
-# Flyer codes that exist on chesstour.com but deliberately map to no family:
-# blitz side events sharing the parent flyer's code with a "b" suffix carry
-# no advance fee schedule. The parity test in tests/test_scrape_fees.py
-# fails when a scraped code is neither mapped above nor listed here, so a
-# newly discovered flyer cannot fall through silently (v5 Cat F).
-UNMAPPED_CODES = {
-    "aob", "conob", "eccob", "kiob", "laob", "mwccb", "pcob",
-}
+# Code tables live in fees/codes.py (single home since the 2026-07-30
+# decomposition); re-imported here so validate_fees.FAMILY_TO_CODE stays a
+# module attribute for merge_fees, validate_scraped_data, and the tests.
+from fees.codes import FAMILY_TO_CODE, UNMAPPED_CODES  # noqa: F401
 
 _session = polite_session()
 

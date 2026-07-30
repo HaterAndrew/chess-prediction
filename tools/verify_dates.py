@@ -385,6 +385,13 @@ def verify_year(year: int, verbose: bool = False, fetcher=_fetch) -> tuple[int, 
     is_current = year >= datetime.now().year
 
     chesstour_map: dict[str, date] = {}
+    # v5 follow-up: when the schedule page itself is down (or parses to zero
+    # blocks), the per-event loop used to fall through the empty map and emit
+    # one "source-parse failure" per future event — a transient outage on
+    # 2026-07-30 produced 14 spurious per-event warnings beside the one real
+    # source-unavailable line. The source-level warning already says
+    # everything; per-event checks only make sense against a healthy page.
+    schedule_ok = False
     if is_current:
         html = fetcher(CHESSTOUR_URL)
         if html is None:
@@ -395,6 +402,8 @@ def verify_year(year: int, verbose: bool = False, fetcher=_fetch) -> tuple[int, 
             if not chesstour_map:
                 print(f'WARNING: source-parse failure — '
                       f'{CHESSTOUR_URL} returned no date-listing blocks')
+            else:
+                schedule_ok = True
 
     drift = 0
     unavailable = 0
@@ -417,6 +426,15 @@ def verify_year(year: int, verbose: bool = False, fetcher=_fetch) -> tuple[int, 
 
         # Current-year path: chesstour.com aggregate
         if is_current:
+            if not schedule_ok:
+                # Source down or unparseable — already warned once above. No
+                # per-event print; count only families the healthy path would
+                # have checked (unmapped ones skip quietly either way).
+                if family in CHESSTOUR_PATTERNS:
+                    unavailable += 1
+                elif verbose:
+                    print(f'INFO: {family} {year} has no source mapping; skipping')
+                continue
             if family in chesstour_map:
                 canon = chesstour_map[family]
             elif family in CHESSTOUR_PATTERNS:

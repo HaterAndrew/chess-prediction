@@ -1,7 +1,0 @@
-# Ruff config for the CI lint gate (G1).
-# Ignore rules that conflict with this repo's deliberate structure:
-#   E402 - pipeline scripts run sys.path.insert() and define module constants
-#          before importing their digit-prefixed siblings (04c/04d/04e/06).
-#   E701 - compact one-line `if cond: return` statements are used throughout.
-[lint]
-ignore = ["E402", "E701"]

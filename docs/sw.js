@@ -19,7 +19,7 @@ const OFFLINE_FALLBACKS = [
   'index.html',
   'styles.css?v=96f245ba47',
   'boot.js?v=ccde1eb234',
-  'app.js?v=cddaa2f4f7',
+  'app.js?v=aac98f13df',
   'actions.js?v=886915259e',
   'audit.js?v=30eaa762a6',
   'daily_series.js?v=e326e2b1fc',
@@ -27,6 +27,7 @@ const OFFLINE_FALLBACKS = [
   'foundation.js?v=4d4e27e30b',
   'cmdk.js?v=c497999f1f',
   'tab_email.js?v=62b9000739',
+  'tab_performance.js?v=e9814abef3',
   'data/site_data.js?v=77d937fc72',
   // v4 W4: Model Health fetches this at runtime; without a precached copy an
   // offline load 504s and the panel renders empty.

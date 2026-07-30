@@ -31,6 +31,12 @@ def dq_check(summary, daily_counts):
     # review. Warnings only — emitted as "WARNING:" so auto_update.py harvests
     # them into output/audit_warnings.json.
     _dq_threshold = 0.5
+    # Editions triaged by hand (issue #7): event date verified against the
+    # canonical source (drift 0) and the coverage gap confirmed real — a
+    # COVID-era edition whose ratio can never improve. Suppress the recurring
+    # WARNING (auto_update harvests that prefix) but keep the line visible;
+    # the guardrail still fires for any new edition that degrades.
+    _known_low_coverage = {('Continental Open', 2021)}
     # scrape_end = peak cum_regs per tid in daily_counts; final = summary.final_count
     _scrape_peak = daily_counts.groupby('tid')['cum_regs'].max().reset_index()
     _scrape_peak = _scrape_peak.rename(columns={'cum_regs': 'scrape_peak'})
@@ -51,9 +57,13 @@ def dq_check(summary, daily_counts):
                        bool(pd.notna(row['is_online']) and row['is_online'])
             suffix = (" (covid/online-flagged; excluded from model training)"
                       if excluded else "")
-            print(f"  WARNING: low scrape coverage — {row['family']} {int(row['tournament_year'])}: "
-                  f"scrape={int(row['scrape_peak'])}/final={int(row['final_count'])} "
-                  f"(ratio={row['ratio']:.2f}){suffix}")
+            detail = (f"{row['family']} {int(row['tournament_year'])}: "
+                      f"scrape={int(row['scrape_peak'])}/final={int(row['final_count'])} "
+                      f"(ratio={row['ratio']:.2f}){suffix}")
+            if (row['family'], int(row['tournament_year'])) in _known_low_coverage:
+                print(f"  known low coverage (allowlisted, issue #7) — {detail}")
+            else:
+                print(f"  WARNING: low scrape coverage — {detail}")
     else:
         print(f"\n  Data-quality: all editions have scrape coverage >= {_dq_threshold:.0%}")
 

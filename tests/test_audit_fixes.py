@@ -81,10 +81,14 @@ def test_standings_name_map_international_is_philadelphia():
 
 
 # ── D1 — Reconciliation fixture: snapshot 184 + scrape 424 → 424 ─────────
-def test_reconciliation_bumps_final_count(tmp_path):
+def test_reconciliation_bumps_final_count(tmp_path, monkeypatch):
     """01_data_prep should reconcile a stale snapshot up to the live scrape peak.
     Mirrors the real ACO 2026 pattern (snapshot 184, scrape peak 424).
+    Calls the real dataprep.summary.reconcile_with_scrape (decomposition P4) —
+    this test used to reimplement the max-rule inline, which could drift.
     """
+    import dataprep.summary as dp_summary
+
     pd.DataFrame({
         'date': pd.date_range('2026-03-22', periods=15, freq='D'),
         'tournament_name': ['2026 Test Open'] * 15,
@@ -103,16 +107,16 @@ def test_reconciliation_bumps_final_count(tmp_path):
         'is_covid': False, 'is_online': False,
     }])
 
-    # Apply the same reconciliation logic as 01_data_prep.py (extracted)
-    scrape = pd.read_csv(tmp_path / "daily_scrape.csv")
-    scrape['date'] = pd.to_datetime(scrape['date'])
-    peak = scrape.groupby('tournament_name')['entry_count'].max().reset_index()
-    peak.columns = ['tournament_name', 'scrape_peak']
-    summary = summary.merge(peak, on='tournament_name', how='left')
-    summary['final_count'] = summary[['final_count', 'scrape_peak']].max(axis=1).astype(int)
+    # Point the defining module's OUTPUT_DIR at the fixture dir (seam rule:
+    # patch where the name is read, not the shim).
+    monkeypatch.setattr(dp_summary, "OUTPUT_DIR", str(tmp_path))
+    summary, rebased_tids, _ = dp_summary.reconcile_with_scrape(summary)
 
     assert int(summary.iloc[0]['final_count']) == 424
-    assert int(summary.iloc[0]['scrape_peak']) == 424
+    # The scrape extends past the snapshot's last_reg, so the tid is rebased.
+    assert rebased_tids == {9999}
+    # The helper drops its merge columns before returning.
+    assert 'scrape_peak' not in summary.columns
 
 
 def test_curve_extension_keeps_higher_count_on_overlapping_t():

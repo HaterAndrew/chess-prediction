@@ -11,7 +11,7 @@ ALLOWED_ORIGIN = "https://haterandrew.github.io,http://localhost:8080,http://127
 # docs/, so the repo-root output/website_data.json was never reachable and every
 # /ask request 502'd. auto_update.step_update_html writes this file.
 DATA_URL = "https://haterandrew.github.io/chess-prediction/data/website_data.json"
-MODEL = "claude-sonnet-4-6"
+MODEL = "claude-sonnet-5"
 DAILY_BUDGET_USD = "1.00"
 RATE_LIMIT_PER_MIN = "20"
 

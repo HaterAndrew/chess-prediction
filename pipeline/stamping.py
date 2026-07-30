@@ -57,7 +57,8 @@ STAMPED_SCRIPTS = ("app.js", "actions.js", "daily_series.js", "boot.js",
                    "audit.js", "styles.css", "util_core.js", "foundation.js",
                    "cmdk.js", "tab_email.js", "tab_performance.js", "tab_puzzles.js",
                    "pickers.js", "panels_info.js", "hero_kpi.js", "chart_main.js",
-                   "chart_hist.js", "panels_grid.js", "panels_cal.js", "tab_about.js")
+                   "chart_hist.js", "panels_grid.js", "panels_cal.js", "tab_about.js",
+                   "tab_compare.js")
 
 
 def _stamp_script_versions():

@@ -36,7 +36,6 @@ import sys
 import pandas as pd
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, PROJECT_DIR)
 from validate_fees import FAMILY_TO_CODE  # noqa: E402
 from tournament_aliases import canonicalize_family  # noqa: E402
 

@@ -17,10 +17,11 @@ import os
 import pytest
 
 # Ensure project root is on sys.path so we can import pipeline modules
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Lazy-import pipeline modules (they live at repo root, not in a package)
 from importlib import import_module
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 m04c = import_module("04c_final_model")
 validate = import_module("validate_scraped_data")

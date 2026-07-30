@@ -1,13 +1,8 @@
 """Tests for update_log.csv time-window rotation (G10)."""
 import csv
-import os
-import sys
 from datetime import datetime, timedelta
 from importlib import import_module
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
 
 auto_update = import_module("auto_update")
 

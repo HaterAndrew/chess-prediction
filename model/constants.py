@@ -1,9 +1,7 @@
 """Model-wide constants (moved verbatim from 04c_final_model.py 2026-07-30).
 
 Original module docstring (the T-coordinate contract) follows.
-"""
 
-"""
 Phase 4C: Final production model with fixed CIs and website JSON output.
 
 Root cause of the [320, 2450] CI problem:
@@ -33,10 +31,10 @@ import numpy as np
 # __file__-derived paths do not survive relocation into a package — the
 # repo-level constant is the truth (shared/paths.py, decomposition P1).
 from shared.paths import OUTPUT_DIR  # noqa: F401  (re-exported)
-CHOP_POINTS = [90, 60, 42, 28, 21, 14, 10, 7, 5, 3, 1]
-
 # Family aliases: single source of truth in tournament_aliases.py
 from tournament_aliases import FAMILY_ALIASES  # noqa: F401  (re-exported)
+
+CHOP_POINTS = [90, 60, 42, 28, 21, 14, 10, 7, 5, 3, 1]
 T_GRID = np.arange(0, 121)
 TODAY = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 # Default offset: days between event_start and last_reg for tournaments

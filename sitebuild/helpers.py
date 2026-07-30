@@ -1,24 +1,23 @@
-"""04d module head, verbatim (imports, shared defs, constants)."""
+"""04d module head, verbatim (imports, shared defs, constants).
 
-"""
-Phase 4D: Clean website data generation.
+Original module docstring: Phase 4D — clean website data generation.
 Fix status detection, filter to main events, correct predictions.
 """
 
-import pandas as pd
-import numpy as np
-import os
-import sys
-
-# __file__ now lives under sitebuild/ — the digit-prefixed modules sit one
-# level up, so insert the repo root (relocation adjustment, P3b).
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from importlib import import_module
+
+import numpy as np
+import pandas as pd
+
+# __file__-derived paths do not survive relocation into a package — the
+# repo-level constant is the truth (shared/paths.py, decomposition P1).
+from shared.paths import OUTPUT_DIR  # noqa: F401
+from tournament_aliases import adjust_wo_top6_count, canonicalize_family
+
+# The entry that imported this package already put the repo root on
+# sys.path (root shims, pytest pythonpath) — the P3b defensive insert was
+# redundant and is gone (P9). The digit prefix still bars a plain import.
 m04c = import_module("04c_final_model")
-from tournament_aliases import canonicalize_family, adjust_wo_top6_count
-# v3 T7: these two live in ratio_model now so the window-engine grader can
-# import them without executing this script's pipeline body. Imported here
-# under their original names, so every call site below is unchanged.
 
 
 def _fam_eq(series, name):
@@ -65,9 +64,6 @@ def _apply_wo_top6_adjustment(target_family, entries, strip_family=False):
     return out
 
 
-# __file__-derived paths do not survive relocation into a package — the
-# repo-level constant is the truth (shared/paths.py, decomposition P1).
-from shared.paths import OUTPUT_DIR  # noqa: F401
 T_GRID = np.arange(0, 121)
 TODAY = pd.Timestamp.now().normalize()
 

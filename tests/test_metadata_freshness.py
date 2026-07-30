@@ -8,14 +8,9 @@ advance/onsite step, demoted by scrape_fees), that absence is source truth —
 neutral EB features are correct, and the nightly warning was noise. Only
 events with no flyer scraped yet are actionably unknown.
 """
-import os
-import sys
 
 import pandas as pd
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
 
 from validate_scraped_data import validate_metadata_freshness  # noqa: E402
 

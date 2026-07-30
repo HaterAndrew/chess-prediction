@@ -4,13 +4,8 @@ test_versions_consistent runs in the normal gate, so a hand-edit that bumps
 styles.css?v / app.js?v in one file but not the other now fails CI instead of
 shipping a stale asset.
 """
-import os
 import re
-import sys
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
 
 import importlib  # noqa: E402
 

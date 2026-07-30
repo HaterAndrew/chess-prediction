@@ -14,10 +14,7 @@ import json
 import os
 import shutil
 import subprocess
-import sys
 
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PROJECT_DIR)
 
 import pytest
 
@@ -31,6 +28,8 @@ from hotel_audit import (
     smart_case,
     split_last_first,
 )
+
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DRIVER = os.path.join(os.path.dirname(__file__), "js", "audit_parity_driver.js")
 FIXTURE_HTML = os.path.join(os.path.dirname(__file__), "fixtures",

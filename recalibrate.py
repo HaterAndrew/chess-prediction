@@ -17,13 +17,12 @@ import os
 import sys
 import argparse
 
+from pipeline_utils import is_event_complete
+
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 UPDATE_LOG = os.path.join(OUTPUT_DIR, "update_log.csv")
 ACCURACY_LOG = os.path.join(OUTPUT_DIR, "prediction_accuracy_log.csv")
-
-sys.path.insert(0, PROJECT_DIR)
-from pipeline_utils import is_event_complete
 
 
 def load_actuals():

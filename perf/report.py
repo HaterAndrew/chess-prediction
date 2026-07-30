@@ -3,23 +3,21 @@
 """
 import json
 import os
+from importlib import import_module
 
 import pandas as pd
 
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from importlib import import_module
-m04c = import_module("04c_final_model")
-from window_grading import grade_from_by_day, grade_window_engine
 from shared.clock import today_ts
 from shared.paths import OUTPUT_DIR
+from window_grading import grade_from_by_day, grade_window_engine
 
 from perf.evaluation import (_corpus_stats, _hist_lookup,
                              format_results, is_curve_gradeable)
 from perf.folds import EVAL_YEARS
 from perf.grading import (_GRADE_ORDER, compute_aggregate,
                           compute_grade, grade_from_aggregate)
+
+m04c = import_module("04c_final_model")
 
 TODAY = today_ts()
 

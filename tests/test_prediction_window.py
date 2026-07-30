@@ -6,14 +6,8 @@ start_date the predictor froze the estimate at the live count (806 entries ->
 arriving for days afterward. prediction_window keeps the model projecting
 forward through that window.
 """
-import os
-import sys
 
 import pandas as pd
-
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_DIR not in sys.path:
-    sys.path.insert(0, PROJECT_DIR)
 
 from prediction_window import registration_close_date, window_decayed_estimate
 

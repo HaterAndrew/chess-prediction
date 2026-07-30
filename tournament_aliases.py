@@ -13,6 +13,8 @@ CCA_CANONICALIZE: maps scraped CCA names → canonical family name (strips year
 prefix first). Only needed when CCA uses a different name than the canonical.
 """
 
+import re as _re
+
 import re
 
 # ── Tournament family groups ─────────────────────────────────────────────
@@ -122,8 +124,6 @@ def canonicalize_family(name):
 # patterns to exclude. Any "World Open …" not in WO_KEEP and matching
 # WO_EXCLUDE_PATTERN is dropped. New CCA variants automatically excluded
 # without needing to update both call sites.
-import re as _re
-
 WO_KEEP = {
     'World Open Under 13', 'World Open Under 13 Championship',
     'World Open top 6 sections', 'World Open, top 6 sections',

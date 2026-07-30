@@ -1,870 +1,107 @@
 {
-  "generated": "2026-07-30 04:22:03",
-  "count": 216,
+  "generated": "2026-07-30 11:22:17",
+  "count": 20,
+  "total_occurrences": 20,
   "warnings": [
     {
+      "step": "Validate scraped data",
+      "text": "15 upcoming 2026 event(s) missing early_bird_deadline in tournament_metadata.csv \u2014 model will use neutral feature values. Run update_metadata.py to populate.",
+      "count": 1
+    },
+    {
       "step": "Refresh tournament summary",
-      "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 tournament roster is frozen; tournaments that opened registration since the last export are invisible to the model and show a flat historical average. Re-export from the CCA admin."
+      "text": "all_registrations.csv export is 129 days old (dated 2026-03-22). Live predictions still run from scrape data, but events that opened registration after that date have no timestamps \u2014 they cannot join model training or 04e grading until a fresh export. Re-export from the CCA admin.",
+      "count": 1
+    },
+    {
+      "step": "Refresh tournament summary (01_data_prep.py)",
+      "text": "raised final_count for 1 in-progress 2026 event(s) (end_date >= today): 2026 Pacific Coast Open. Downstream perf/recalibration scripts must exclude these via is_event_complete.",
+      "count": 1
+    },
+    {
+      "step": "Refresh tournament summary (01_data_prep.py)",
+      "text": "low scrape coverage \u2014 Continental Open 2021: scrape=159/final=393 (ratio=0.40)",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Bradley Open 2026: pattern \"Bradley Open\" not found in chesstour.com schedule"
+      "text": "source unavailable \u2014 could not fetch https://www.chesstour.com/refs.html (current-year dates not verified this run)",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Chicago Class 2026: pattern \"Chicago Class Championships\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 Atlantic Open 2026: pattern \"Atlantic Open\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Chicago Open 2026: pattern \"Chicago Open\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 Central California Open 2026: pattern \"Central California Open\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Cleveland Open 2026: pattern \"Cleveland Open\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 Continental Open 2026: pattern \"Continental Open\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 DC International 2026: pattern \"DC International\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 Eastern Chess Congress 2026: pattern \"Eastern Chess Congress\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 DC Open 2026: pattern \"DC Open\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 Eastern Class Championships 2026: pattern \"Eastern Class Championships\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Hartford Open 2026: pattern \"Hartford Open\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 Indianapolis Open 2026: pattern \"Indianapolis Open\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 New York State Open 2026: pattern \"New York State Open And Senior Amateur\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 Kings Island Open 2026: pattern \"Kings Island Open\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Pittsburgh Open 2026: pattern \"Pittsburgh Open\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 Los Angeles Open 2026: pattern \"Los Angeles Open\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Southern Open 2026: pattern \"Southern Open\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 Midwest Class Championships 2026: pattern \"Midwest Class Championships\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 World Open top 6 sections 2026: pattern \"World Open, Top 6 Sections\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 National Chess Congress 2026: pattern \"National Chess Congress\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 World Open Under 13 Championship 2026: pattern \"World Open Under Age 13 Championship\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 New York State Championship 2026: pattern \"NY State Championship\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 World Open lower sections 2026: pattern \"World Open, Under 1200 and Under 1000 Sections\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 Pacific Coast Open 2026: pattern \"Pacific Coast Open\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
       "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 World Open lower sections 2026: pattern \"World Open, Under 1200 and Under 1000 Sections\" not found in chesstour.com schedule"
+      "text": "source-parse failure \u2014 North American Open 2026: pattern \"North American Open\" not found in chesstour.com schedule",
+      "count": 1
     },
     {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 World Open top 6 sections 2026: pattern \"World Open, Top 6 Sections\" not found in chesstour.com schedule"
-    },
-    {
-      "step": "Generate predictions (04d_website_data_v2.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate predictions (04d_website_data_v2.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate predictions (04d_website_data_v2.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate predictions (04d_website_data_v2.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate predictions (04d_website_data_v2.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate predictions (04d_website_data_v2.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate predictions (04d_website_data_v2.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate predictions (04d_website_data_v2.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=90 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=60 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=42 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=28 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=14 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=7 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
-    },
-    {
       "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
+      "text": "T=3 ci_adj pinned at ceiling 3.0 (residuals wanted 3.002) \u2014 published CI narrower than measured error.",
+      "count": 1
     },
     {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=1 recalibration ran on an in-sample cohort (0 held-out record(s), need 5); CI scale widened x1.15 to offset training-set optimism."
+      "step": "CCA structure drift",
+      "text": "structure check errored: HTTPSConnectionPool(host='www.chessaction.com', port=443): Read timed out. (read timeout=30)",
+      "count": 1
     }
   ]
 }

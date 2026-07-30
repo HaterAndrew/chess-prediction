@@ -6,13 +6,13 @@ April Open,2022,2022-04-07,2022-04-10,,,,,,
 April Open,2023,2023-03-30,2023-04-02,,,,,,
 April Rapid,2022,2022-04-14,2022-04-17,,,,,,
 Atlantic Action,2022,2022-08-18,2022-08-21,,,,,,
-Atlantic City Open,2026,2026-04-01,2026-04-05,,,,,Atlantic City,NJ
+Atlantic City Open,2026,2026-04-01,2026-04-05,,,218.0,240.0,Atlantic City,NJ
 Atlantic Open,2021,2021-08-26,2021-08-29,,,,,,
 Atlantic Open,2022,2022-08-26,2022-08-28,,,,,,
 Atlantic Open,2023,2023-08-25,2023-08-27,,,,,,
 Atlantic Open,2024,2024-08-23,2024-08-25,,198.0,218.0,230.0,Atlantic City,NJ
 Atlantic Open,2025,2025-08-22,2025-08-24,,208.0,228.0,240.0,Atlantic City,NJ
-Atlantic Open,2026,2026-08-21,2026-08-23,,,,,Atlantic City,NJ
+Atlantic Open,2026,2026-08-21,2026-08-23,,,148.0,,Atlantic City,NJ
 August Action,2023,2023-08-17,2023-08-20,,,,,,
 August Open,2021,2021-08-19,2021-08-22,,,,,,
 August Open,2022,2022-08-04,2022-08-07,,,,,,
@@ -27,7 +27,7 @@ Bradley Open,2022,2022-07-15,2022-07-17,,,,,,
 Bradley Open,2023,2023-07-28,2023-07-30,,,,,,
 Bradley Open,2024,2024-07-26,2024-07-28,,,,,,
 Bradley Open,2025,2025-07-25,2025-07-27,,,,,,
-Bradley Open,2026,2026-07-24,2026-07-26,,,,,,CT
+Bradley Open,2026,2026-07-24,2026-07-26,,,118.0,130.0,,CT
 CCA-ICC October Scholastic,2021,2021-10-14,2021-10-17,,,,,,
 CCA-ICC September Scholastic,2021,2021-09-16,2021-09-19,,,,,,
 Central California Open,2021,2021-08-18,2021-08-21,,,,,,
@@ -35,7 +35,7 @@ Central California Open,2022,2022-08-19,2022-08-21,,,,,,
 Central California Open,2023,2023-08-11,2023-08-13,,,,,,
 Central California Open,2024,2024-08-09,2024-08-11,,,,,,
 Central California Open,2025,2025-08-22,2025-08-24,,,,,,
-Central California Open,2026,2026-08-14,2026-08-16,,,,,,California
+Central California Open,2026,2026-08-14,2026-08-16,,,98.0,,,California
 Central New York Open,2021,2021-10-21,2021-10-24,,,,,,
 Central New York Open,2022,2022-10-20,2022-10-23,,,,,,
 Central New York Open,2023,2023-09-21,2023-09-24,,,,,,
@@ -64,7 +64,7 @@ Continental Open,2022,2022-07-27,2022-07-31,,,,,,
 Continental Open,2023,2023-07-13,2023-07-16,,,,,,
 Continental Open,2024,2024-08-15,2024-08-18,,,,,,
 Continental Open,2025,2025-08-14,2025-08-17,,,,,,
-Continental Open,2026,2026-08-13,2026-08-16,,,,,,Massachusetts
+Continental Open,2026,2026-08-13,2026-08-16,,,158.0,180.0,,Massachusetts
 DC International,2026,2026-06-25,2026-06-29,,,,,,District Of Columbia
 DC Open,2026,2026-06-26,2026-06-28,,,118.0,140.0,,District Of Columbia
 December Action,2022,2022-12-15,2022-12-18,,,,,,
@@ -77,14 +77,14 @@ Eastern Chess Congress,2022,2022-10-28,2022-10-30,,,,,,
 Eastern Chess Congress,2023,2023-10-27,2023-10-29,,,,,,
 Eastern Chess Congress,2024,2024-10-25,2024-10-27,,,,,,
 Eastern Chess Congress,2025,2025-10-24,2025-10-26,,,,,,
-Eastern Chess Congress (in New Jersey),2026,2026-10-23,2026-10-25,,,,,,New Jersey
+Eastern Chess Congress (in New Jersey),2026,2026-10-23,2026-10-25,,,138.0,,,New Jersey
 Eastern Chess Congress Action,2022,2022-10-20,2022-10-23,,,,,,
 Eastern Chess Congress Warmup,2021,2021-09-23,2021-09-26,,,,,,
 Eastern Class,2022,2022-04-28,2022-05-01,,,,,,
 Eastern Class,2023,2023-03-16,2023-03-19,,,,,,
 Eastern Class,2024,2024-06-06,2024-06-09,,,,,,
 Eastern Class,2025,2025-06-05,2025-06-08,,,,,,
-Eastern Class Championships (in Connecticut),2026,2026-10-16,2026-10-18,,,,,,Alabama
+Eastern Class Championships (in Connecticut),2026,2026-10-16,2026-10-18,,,118.0,130.0,,Alabama
 Eastern Open,2022,2022-12-26,2022-12-29,,,,,,
 Eastern Open,2023,2023-12-25,2023-12-28,,,,,,
 Eastern Open,2024,2024-12-26,2024-12-29,,,,,,
@@ -121,7 +121,7 @@ Indianapolis Open,2022,2022-08-26,2022-08-28,,,,,,
 Indianapolis Open,2023,2023-08-25,2023-08-27,,,,,,
 Indianapolis Open,2024,2024-08-23,2024-08-25,,,,,,
 Indianapolis Open,2025,2025-08-22,2025-08-24,,,,,,
-Indianapolis Open,2026,2026-08-21,2026-08-23,,,,,,Indiana
+Indianapolis Open,2026,2026-08-21,2026-08-23,,,118.0,,,Indiana
 January Action,2023,2023-01-19,2023-01-22,,,,,,
 January Classic,2024,2024-01-11,2024-01-14,,,,,,
 January Game 60,2022,2022-01-20,2022-01-23,,,,,,
@@ -138,7 +138,7 @@ Kings Island Open,2022,2022-11-11,2022-11-13,,,,,,
 Kings Island Open,2023,2023-11-10,2023-11-12,,,,,,
 Kings Island Open,2024,2024-11-15,2024-11-17,,,,,,
 Kings Island Open,2025,2025-11-14,2025-11-16,,,,,,
-Kings Island Open,2026,2026-11-13,2026-11-15,,,,,,Ohio
+Kings Island Open,2026,2026-11-13,2026-11-15,,,138.0,160.0,,Ohio
 Kings Island Open Warmup,2021,2021-11-04,2021-11-07,,,,,,
 Liberty Bell Action,2022,2021-12-31,2022-01-03,,,,,,
 Liberty Bell Open,2024,2024-01-12,2024-01-15,2024-01-09,128.0,148.0,160.0,Philadelphia,PA
@@ -149,7 +149,7 @@ Los Angeles Open,2022,2022-11-04,2022-11-06,,,,,,
 Los Angeles Open,2023,2023-11-03,2023-11-05,,,,,,
 Los Angeles Open,2024,2024-11-01,2024-11-03,,,,,,
 Los Angeles Open,2025,2025-11-07,2025-11-09,,,,,,
-Los Angeles Open,2026,2026-11-06,2026-11-08,,,,,,California
+Los Angeles Open,2026,2026-11-06,2026-11-08,,,128.0,,,California
 March Classic,2024,2024-03-07,2024-03-10,,,,,,
 March Game 60,2022,2022-03-24,2022-03-27,,,,,,
 March Open,2022,2022-03-10,2022-03-13,,,,,,
@@ -168,7 +168,7 @@ Midwest Class Championships,2022,2022-10-07,2022-10-09,,,,,,
 Midwest Class Championships,2023,2023-10-06,2023-10-08,,,,,,
 Midwest Class Championships,2024,2024-10-11,2024-10-13,,,,,,
 Midwest Class Championships,2025,2025-10-10,2025-10-12,,,,,,
-Midwest Class Championships,2026,2026-10-09,2026-10-11,,,,,,Illinois
+Midwest Class Championships,2026,2026-10-09,2026-10-11,,,118.0,140.0,,Illinois
 National Chess Congress,2023,2023-11-24,2023-11-26,2023-11-21,118.0,140.0,140.0,Philadelphia,PA
 National Chess Congress,2024,2024-11-29,2024-12-01,2024-11-26,128.0,150.0,150.0,Philadelphia,PA
 National Chess Congress,2025,2025-11-28,2025-11-30,2025-11-25,128.0,150.0,150.0,Philadelphia,PA
@@ -180,7 +180,7 @@ New York State Championship,2022,2022-09-02,2022-09-05,,,,,,
 New York State Championship,2023,2023-09-01,2023-09-04,,,,,,
 New York State Championship,2024,2024-08-30,2024-09-02,,,,,,
 New York State Championship,2025,2025-08-29,2025-09-01,,,,,,
-New York State Championship,2026,2026-09-04,2026-09-07,,,,,,New York
+New York State Championship,2026,2026-09-04,2026-09-07,,,118.0,130.0,,New York
 New York State High School Championship,2025,2025-03-12,2025-03-15,,,,,,
 New York State High School Championship,2026,2026-02-25,2026-02-28,,,,,,
 New York State Junior Championships,2021,2021-12-26,2021-12-29,,,,,,
@@ -248,7 +248,7 @@ Southern Class,2022,2022-03-17,2022-03-20,,,,,,
 Southern Class,2023,2023-03-16,2023-03-19,,,,,,
 Southern Class,2024,2024-03-14,2024-03-17,,,,,,
 Southern Class,2025,2025-03-06,2025-03-09,,,,,,
-Southern Class,2026,2026-03-12,2026-03-15,,,,,,
+Southern Class,2026,2026-03-12,2026-03-15,,,118.0,130.0,,
 Southern Open,2022,2022-07-22,2022-07-24,,,,,,
 Southern Open,2023,2023-07-28,2023-07-30,,,,,,
 Southern Open,2024,2024-07-19,2024-07-21,,,,,,

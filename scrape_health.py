@@ -39,6 +39,11 @@ def log_scrape_attempt(success, row_count, validation_errors, validation_warning
             try:
                 entries = json.load(f)
             except (json.JSONDecodeError, ValueError):
+                # v5 Cat T: never reset silently — the log is the only scrape
+                # telemetry history and a truncated write used to erase it
+                # without a trace.
+                print(f"WARNING: {HEALTH_LOG} unreadable — starting a fresh "
+                      f"scrape-health log (previous history lost)")
                 entries = []
 
     entry = {
@@ -61,32 +66,39 @@ def get_health_stats():
     """Read the health log and return summary statistics.
 
     Returns:
-        dict with keys: last_successful_run, success_rate_30d,
+        dict with keys: last_successful_run, last_data_run, success_rate_30d,
         total_runs, consecutive_failures, data_freshness_hours
     """
+    empty = {
+        "last_successful_run": None,
+        "last_data_run": None,
+        "success_rate_30d": 0.0,
+        "total_runs": 0,
+        "consecutive_failures": 0,
+        "data_freshness_hours": None,
+    }
     if not os.path.exists(HEALTH_LOG):
-        return {
-            "last_successful_run": None,
-            "success_rate_30d": 0.0,
-            "total_runs": 0,
-            "consecutive_failures": 0,
-            "data_freshness_hours": None,
-        }
+        return empty
 
     with open(HEALTH_LOG, "r") as f:
         try:
             entries = json.load(f)
         except (json.JSONDecodeError, ValueError):
+            print(f"WARNING: {HEALTH_LOG} unreadable — health stats reset")
             entries = []
 
     if not entries:
-        return {
-            "last_successful_run": None,
-            "success_rate_30d": 0.0,
-            "total_runs": 0,
-            "consecutive_failures": 0,
-            "data_freshness_hours": None,
-        }
+        return empty
+
+    def _ts(e):
+        """Parse an entry timestamp, or None on malformed data (v5 Cat T —
+        one corrupt entry used to crash the whole stats pass)."""
+        try:
+            return datetime.strptime(e["timestamp"], "%Y-%m-%d %H:%M:%S")
+        except (KeyError, TypeError, ValueError):
+            print(f"WARNING: scrape-health entry with malformed timestamp "
+                  f"skipped: {e.get('timestamp') if isinstance(e, dict) else e!r}")
+            return None
 
     now = datetime.now()
     cutoff_30d = now - timedelta(days=30)
@@ -94,15 +106,24 @@ def get_health_stats():
     # Last successful run
     last_success_ts = None
     for e in reversed(entries):
-        if e["success"]:
+        if e.get("success"):
             last_success_ts = e["timestamp"]
+            break
+
+    # v5 Cat T: last run that actually captured data. A run can succeed while
+    # scraping nothing (the CI --skip-scrape era logged success=True with
+    # row_count=0 every night), so freshness keyed off bare success lied.
+    last_data_ts = None
+    for e in reversed(entries):
+        if e.get("success") and e.get("row_count", 0) > 0:
+            last_data_ts = e["timestamp"]
             break
 
     # 30-day success rate
     recent = [e for e in entries
-              if datetime.strptime(e["timestamp"], "%Y-%m-%d %H:%M:%S") >= cutoff_30d]
+              if (t := _ts(e)) is not None and t >= cutoff_30d]
     if recent:
-        success_count = sum(1 for e in recent if e["success"])
+        success_count = sum(1 for e in recent if e.get("success"))
         success_rate = round(100.0 * success_count / len(recent), 1)
     else:
         success_rate = 0.0
@@ -110,20 +131,22 @@ def get_health_stats():
     # Consecutive failures (from most recent backwards)
     consecutive_failures = 0
     for e in reversed(entries):
-        if not e["success"]:
+        if not e.get("success"):
             consecutive_failures += 1
         else:
             break
 
-    # Data freshness
+    # Data freshness — hours since data was last CAPTURED, not since the
+    # pipeline last exited zero.
     freshness_hours = None
-    if last_success_ts:
-        last_dt = datetime.strptime(last_success_ts, "%Y-%m-%d %H:%M:%S")
-        delta = now - last_dt
-        freshness_hours = round(delta.total_seconds() / 3600, 1)
+    if last_data_ts:
+        last_dt = _ts({"timestamp": last_data_ts})
+        if last_dt is not None:
+            freshness_hours = round((now - last_dt).total_seconds() / 3600, 1)
 
     return {
         "last_successful_run": last_success_ts,
+        "last_data_run": last_data_ts,
         "success_rate_30d": success_rate,
         "total_runs": len(entries),
         "consecutive_failures": consecutive_failures,

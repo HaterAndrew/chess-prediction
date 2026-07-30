@@ -14,10 +14,7 @@ import json
 import os
 import shutil
 import subprocess
-import sys
 
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PROJECT_DIR)
 
 import pytest
 
@@ -26,6 +23,8 @@ from scrape_entries import (
     ENTRY_LIST_URL_TEMPLATE,
     _derive_entry_list_code,
 )
+
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 MJS_PATH = os.path.join(PROJECT_DIR, "worker", "src", "entrylist_codes.mjs")
 

@@ -19,12 +19,13 @@ from importlib import import_module
 
 import pandas as pd
 
+from pipeline_utils import build_chart_series
+
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FIXTURES = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                         "fixtures", "incident_2026_07_25")
 
 m04c = import_module("04c_final_model")
-from pipeline_utils import build_chart_series
 
 
 def test_reanchor_accepts_negative_offset_for_in_progress_event():

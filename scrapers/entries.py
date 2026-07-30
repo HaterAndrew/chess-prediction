@@ -32,6 +32,16 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from scraper_utils import rate_limit
 
+# Entry-list code table lives in fees/codes.py (single home); the JS mirror
+# worker/src/entrylist_codes.mjs is pinned by tests/test_entrylist_codes_parity.
+from fees.codes import ENTRY_LIST_CODES  # noqa: F401
+# __file__-derived paths do not survive relocation into a package (P7);
+# the repo-level constants are the truth.
+from shared.clock import today_iso
+from shared.paths import OUTPUT_DIR, PROJECT_DIR  # noqa: F401
+# CCA name -> canonical family name: single source of truth in tournament_aliases.py
+from tournament_aliases import CCA_CANONICALIZE as CCA_FAMILY_ALIASES
+
 # ---------------------------------------------------------------------------
 # Logging
 # ---------------------------------------------------------------------------
@@ -55,11 +65,6 @@ MAX_RETRY_ATTEMPTS = 5
 RETRY_BASE_DELAY = 2          # seconds; delays: 2, 4, 8, 16, 32
 CIRCUIT_BREAKER_THRESHOLD = 3  # consecutive full-pipeline failures before exit
 
-# __file__-derived paths do not survive relocation into a package (P7);
-# the repo-level constants are the truth.
-from shared.paths import OUTPUT_DIR, PROJECT_DIR  # noqa: F401
-from shared.clock import today_iso
-
 CSV_PATH = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
 META_PATH = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
 # Re-anchored at main() entry (P7) so a long-lived import cannot hold a
@@ -68,9 +73,6 @@ TODAY = today_iso()
 
 # World Open sub-events to KEEP as separate rows
 WO_KEEP_PATTERNS = re.compile(r'under\s*13|top\s+6\s+sections|lower\s+sections', re.IGNORECASE)
-
-# CCA name -> canonical family name: single source of truth in tournament_aliases.py
-from tournament_aliases import CCA_CANONICALIZE as CCA_FAMILY_ALIASES
 
 def to_family(name):
     """Strip year prefix from CCA tournament name and apply canonical aliases."""
@@ -81,10 +83,6 @@ def to_family(name):
 # ── CCA entry list URL codes ─────────────────────────────────────────────
 # Maps lowercase family name fragments to the short code used in CCA's
 # entry list URLs: /advlists/CCA/CCA_{CODE}{YY}/CCA_{CODE}{YY}_alp_n.html
-# Entry-list code table lives in fees/codes.py (single home); the JS mirror
-# worker/src/entrylist_codes.mjs is pinned by tests/test_entrylist_codes_parity.
-from fees.codes import ENTRY_LIST_CODES  # noqa: F401
-
 # Withdrawal pattern from CCA entry list HTML pages
 _WD_PATTERN = re.compile(
     r'(\d+)\s+Active\s+Players?\s*\[\s*\+?\s*(\d+)\s+Withdrawn\s*\]',

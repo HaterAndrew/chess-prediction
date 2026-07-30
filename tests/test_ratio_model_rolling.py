@@ -10,14 +10,9 @@ Contract: completed_tids admits exactly those tids alongside the pre-2026
 corpus; omitting the parameter reproduces the old behavior byte-for-byte
 (window_grading's leak-free folds depend on that).
 """
-import os
-import sys
 
 import pandas as pd
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
 
 from ratio_model import build_ratio_model  # noqa: E402
 

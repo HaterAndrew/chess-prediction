@@ -27,7 +27,7 @@ from datetime import datetime, timedelta
 
 from validate_scraped_data import validate_all
 from verify_checksums import generate_manifest
-from scrape_health import log_scrape_attempt, generate_health_html
+from scrape_health import log_scrape_attempt
 from alerts import compute_pace_alerts, inject_alerts
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -977,7 +977,7 @@ def main():
         print(f"{'─'*60}")
         generate_manifest(OUTPUT_DIR)
 
-        # Log health and generate dashboard
+        # Log health
         duration = time.time() - t_start
         log_scrape_attempt(
             success=scrape_ok,
@@ -986,7 +986,6 @@ def main():
             validation_warnings=validation_warnings,
             duration_seconds=duration,
         )
-        generate_health_html()
 
         # Non-blocking CCA markup drift alarm (H6) — feeds the warning list below.
         step_structure_check()
@@ -1009,7 +1008,6 @@ def main():
             validation_warnings=validation_warnings,
             duration_seconds=duration,
         )
-        generate_health_html()
 
         # v3 O1 (audit/AUDIT_2026-07-25.md): a mid-run crash used to be entirely
         # invisible to visitors. _stamp_stale_flag, alerts, data-health and the

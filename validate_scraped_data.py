@@ -290,11 +290,44 @@ def validate_metadata_freshness(csv_path=None, year=None):
         year = today.year
     upcoming = m[(m['year'] == year) & (m['start_date'] > today)]
     no_eb = upcoming[upcoming['early_bird_deadline'].isna()]
-    if len(no_eb) > 0:
+    if len(no_eb) == 0:
+        return report
+
+    # v5 follow-up: "missing" hid two different truths. If the year's flyer IS
+    # scraped and carries no early-bird tier (chesstour's modern advance/onsite
+    # step gets demoted by scrape_fees' T-window rule), the absence is verified
+    # source truth — merge_fees would have filled it otherwise — and warning
+    # about it nightly is noise. Only events with NO flyer scraped yet are
+    # actionably unknown.
+    from validate_fees import FAMILY_TO_CODE
+    fees_path = os.path.join(os.path.dirname(csv_path), "tournament_fees.csv")
+    flyer_keys = set()
+    if os.path.exists(fees_path):
+        fees = pd.read_csv(fees_path)
+        flyer_keys = set(fees['tournament_name'].astype(str))
+    yy = str(year)[2:]
+
+    verified_absent, unknown = [], []
+    for fam in no_eb['family'].astype(str):
+        code = FAMILY_TO_CODE.get(fam)
+        if code and f"{code}{yy}" in flyer_keys:
+            verified_absent.append(fam)
+        else:
+            unknown.append(fam)
+
+    if verified_absent:
+        logger.info(
+            f"{len(verified_absent)} upcoming {year} event(s) verified no early-bird "
+            f"tier on the scraped flyer (neutral EB features are correct): "
+            f"{', '.join(sorted(verified_absent))}"
+        )
+    if unknown:
         report.add_warning(
-            f"{len(no_eb)} upcoming {year} event(s) missing early_bird_deadline "
-            f"in tournament_metadata.csv — model will use neutral feature values. "
-            f"Run update_metadata.py to populate."
+            f"{len(unknown)} upcoming {year} event(s) have no flyer scraped yet — "
+            f"early_bird_deadline unknown, model uses neutral feature values "
+            f"(fees + EB fill automatically once chesstour publishes the flyer; "
+            f"update_metadata.py can estimate from spike patterns meanwhile): "
+            f"{', '.join(sorted(unknown))}"
         )
     return report
 

@@ -91,3 +91,8 @@ def test_production_table_maps_the_standing_null_fee_set():
     # guard every week, silently.
     assert FAMILY_TO_CODE["Eastern Class Championships"] == "ecc"
     assert FAMILY_TO_CODE["Eastern Chess Congress"] == "ecco"
+    # v5 follow-up: the last two families the merge warned about. eo is
+    # verified from the eo22/eo23/eo24 flyer URLs; naob follows the
+    # side-event blitz convention (aob/conob/eccob/...).
+    assert FAMILY_TO_CODE["Eastern Open"] == "eo"
+    assert FAMILY_TO_CODE["North American Blitz Championship"] == "naob"

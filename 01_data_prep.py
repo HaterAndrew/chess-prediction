@@ -433,7 +433,8 @@ _dq_threshold = 0.5
 # scrape_end = peak cum_regs per tid in daily_counts; final = summary.final_count
 _scrape_peak = daily_counts.groupby('tid')['cum_regs'].max().reset_index()
 _scrape_peak = _scrape_peak.rename(columns={'cum_regs': 'scrape_peak'})
-_dq = summary[['tid', 'family', 'tournament_year', 'final_count']].merge(
+_dq = summary[['tid', 'family', 'tournament_year', 'final_count',
+               'is_online', 'is_covid']].merge(
     _scrape_peak, on='tid', how='left'
 ).fillna({'scrape_peak': 0})
 _dq = _dq[(_dq['final_count'] > 0) & (_dq['scrape_peak'] > 0)]
@@ -442,9 +443,16 @@ _dq_flagged = _dq[_dq['ratio'] < _dq_threshold].sort_values('ratio')
 if len(_dq_flagged) > 0:
     print(f"\n  Data-quality: {len(_dq_flagged)} edition(s) with scrape coverage < {_dq_threshold:.0%}")
     for _, row in _dq_flagged.iterrows():
+        # Covid/online-flagged editions are excluded from both ratio engines
+        # (ratio_model.build_ratio_model, 04c fit filters) — say so, or the
+        # warning implies training pollution that cannot occur.
+        excluded = bool(pd.notna(row['is_covid']) and row['is_covid']) or \
+                   bool(pd.notna(row['is_online']) and row['is_online'])
+        suffix = (" (covid/online-flagged; excluded from model training)"
+                  if excluded else "")
         print(f"  WARNING: low scrape coverage — {row['family']} {int(row['tournament_year'])}: "
               f"scrape={int(row['scrape_peak'])}/final={int(row['final_count'])} "
-              f"(ratio={row['ratio']:.2f})")
+              f"(ratio={row['ratio']:.2f}){suffix}")
 else:
     print(f"\n  Data-quality: all editions have scrape coverage >= {_dq_threshold:.0%}")
 

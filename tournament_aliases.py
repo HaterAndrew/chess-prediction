@@ -29,6 +29,13 @@ FAMILY_GROUPS = [
     ['Western Class Championships', 'Western Class'],
     # World Open sub-event name variants
     ['World Open Under 13 Championship', 'World Open Under 13', 'World Open Under 13 Champ'],
+    # CCA's site spells the quick-chess sub-events with a slash ("G/7"); the
+    # historical lineage in summary/metadata uses the space or fused form.
+    # Same events (owner-confirmed 2026-07-30) — canonical is the lineage
+    # spelling the model's history is keyed on.
+    ['World Open G7 Championship', 'World Open G 7 Championship', 'World Open G/7 Championship'],
+    ['World Open G 10 Championship', 'World Open G/10 Championship'],
+    ['World Open G 50 Championship', 'World Open G/50 Championship'],
     ['World Open top 6 sections', 'World Open, top 6 sections', 'World Open'],
     ['World Open lower sections', 'World Open, lower sections'],
     # NY State Scholastic name variants
@@ -64,6 +71,13 @@ CCA_CANONICALIZE = {
     # unchanged vs. simply not in the map).
     'World Open, top 6 sections': 'World Open, top 6 sections',
     'World Open, lower sections': 'World Open, lower sections',
+    # Slash-spelled quick-chess sub-events fold onto the lineage spelling so
+    # scrapers.entries.sync_metadata matches the existing metadata rows
+    # instead of appending duplicate 2026 rows (same events, two spellings).
+    'World Open G/7 Championship': 'World Open G7 Championship',
+    'World Open G 7 Championship': 'World Open G7 Championship',
+    'World Open G/10 Championship': 'World Open G 10 Championship',
+    'World Open G/50 Championship': 'World Open G 50 Championship',
 }
 
 

@@ -4,16 +4,17 @@
 // limitation, not something these tests assert around.
 import { describe, expect, it } from "vitest";
 
+// W1 split: import from the defining modules, not the routing entry.
+import { timingSafeEqual } from "./cca-proxy";
+import type { Env } from "./env";
+import { pickAllowedOrigin } from "./http";
 import {
   checkDailyBudget,
   checkRateLimit,
   estimateCost,
-  pickAllowedOrigin,
   pricingFor,
   recordCost,
-  timingSafeEqual,
-  type Env,
-} from "./index";
+} from "./limits";
 
 function fakeKV() {
   const store = new Map<string, string>();

@@ -514,8 +514,16 @@ def scan(data, ctx):
 
     # ---- INFO (high-volume modes aggregated to avoid flooding) -------------
 
-    roster_pending = sorted({t.get("family") for t in tournaments if _is_roster_pending(t)})
-    for fam in roster_pending:
+    # v5 Cat R: model-served roster-pending cards are live predictions, not
+    # interim estimates — say which is which instead of one blanket message.
+    rp_cards = [t for t in tournaments if _is_roster_pending(t)]
+    for fam in sorted({t.get("family") for t in rp_cards
+                       if t.get("prediction_source") == "model"}):
+        report.add("INFO", "roster-pending", fam,
+                   "model prediction from live scrape — not in trained roster yet "
+                   "(joins training after the next all_registrations.csv export)")
+    for fam in sorted({t.get("family") for t in rp_cards
+                       if t.get("prediction_source") != "model"}):
         report.add("INFO", "roster-pending", fam,
                    "interim estimate — not in trained roster yet (pending fresh all_registrations.csv export)")
 

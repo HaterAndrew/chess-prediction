@@ -16,6 +16,7 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 import auto_update  # noqa: E402
+import pipeline.config  # noqa: E402
 
 # A minimal site_data.js carrying every const the splicer touches.
 STUB_SITE_DATA = (
@@ -41,13 +42,17 @@ def build_env(tmp_path, monkeypatch):
     index_html.write_text('<script src="data/site_data.js?v=0000000000"></script>\n')
     website_json = out / "website_data.json"
 
-    monkeypatch.setattr(auto_update, "OUTPUT_DIR", str(out))
-    monkeypatch.setattr(auto_update, "SITE_DATA_JS", str(site_data))
-    monkeypatch.setattr(auto_update, "WEBSITE_JSON", str(website_json))
+    # Patch the DEFINING module (pipeline.config), not the auto_update shim:
+    # since the P5 split the splicer/stampers read config.X at call time, and
+    # a patch on the shim's re-exported copy never reaches them — running this
+    # suite against the shim seam stomped the real docs/ files once already.
+    monkeypatch.setattr(pipeline.config, "OUTPUT_DIR", str(out))
+    monkeypatch.setattr(pipeline.config, "SITE_DATA_JS", str(site_data))
+    monkeypatch.setattr(pipeline.config, "WEBSITE_JSON", str(website_json))
     # SITE_DIR is monkeypatched to the tmp docs/ so a regression that re-adds a
     # docs/website_data.json copy is caught here instead of clobbering the real
     # tracked file (the isolation bug that motivated the G9 removal).
-    monkeypatch.setattr(auto_update, "SITE_DIR", str(docs_dir))
+    monkeypatch.setattr(pipeline.config, "SITE_DIR", str(docs_dir))
     return {"site_data": site_data, "website_json": website_json,
             "docs_dir": docs_dir, "index_html": index_html}
 

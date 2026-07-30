@@ -898,6 +898,20 @@
      init() (and any #audit deep link) synchronously at evaluation time. -->
 <script src="audit.js?v=30eaa762a6"></script>
 <script src="daily_series.js?v=e326e2b1fc"></script>
+<!-- Load-order contract (C-track split of app.js, 2026-07). These are classic
+     scripts sharing ONE global scope — that is the compatibility mechanism:
+     actions.js dispatches bare globals, so no wrappers, no modules. The order
+     below is load-bearing:
+       - util_core/foundation first: later files read their globals at load
+         time (e.g. tab_compare's COMPARE_COLORS reads foundation's PALETTE).
+       - tab_ask before app: the ASK_* consts must exist before app.js runs
+         init() at its tail (a #ask deep link reaches initAskTab from init).
+       - app.js LAST of the split set; its tail runs the override purge,
+         applyOverrides(), then init().
+       - actions.js stays after app.js (see its own comment below).
+     Adding a file? Insert its tag here in dependency order, append the name
+     to pipeline/stamping.py STAMPED_SCRIPTS and to sw.js OFFLINE_FALLBACKS
+     (test_global_uniqueness pins name collisions and suffix clashes). -->
 <script src="util_core.js?v=2824d286fc"></script>
 <script src="foundation.js?v=4d4e27e30b"></script>
 <script src="cmdk.js?v=c497999f1f"></script>

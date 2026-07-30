@@ -3,7 +3,7 @@
 // Cache name is bumped on each deploy that reshapes caching behavior so
 // old caches from prior SW versions get purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v77';
+const CACHE_NAME = 'cca-predictor-v78';
 
 // Version-pinned, SRI-locked CDN scripts. Immutable, so serve them cache-first
 // (see the fetch handler) instead of letting the cross-origin bypass drop them

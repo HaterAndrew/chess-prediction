@@ -224,13 +224,15 @@ def step_chess_history():
              [sys.executable, os.path.join("scripts", "gen_chess_history.py")])
 
 
-# A present-but-old all_registrations.csv silently freezes the tournament
-# roster: 01_data_prep reconciles *existing* events' counts against the live
-# scrape, but the set of tournaments only comes from the export. Anything that
-# opened registration after the export date is invisible to the model and falls
-# back to a flat historical-average estimate with no live daily chart (the
-# June 2026 World Open U13 / Eastern incident: a 75-day-old export). Warn loudly
-# past this age instead of degrading silently.
+# A present-but-old all_registrations.csv freezes the TRAINING side of the
+# roster. Since v5 Cat R, live prediction no longer depends on it — scraped
+# events get roster-pending skeleton rows (reconcile_final_counts) and ride the
+# model path off injected scrape curves. What a stale export still freezes:
+# per-registration timestamps (has_timestamps/first_reg/last_reg — the event
+# can never join the training corpus), early-bird-spike features,
+# snapshot_last_reg (04e's grading tier), truth labels for never-scraped
+# events, and sub-event TID folding. Warn loudly past this age instead of
+# degrading silently.
 EXPORT_STALE_WARN_DAYS = 14
 
 
@@ -252,10 +254,11 @@ def step_data_prep():
         # run that here instead of skipping outright. Otherwise a completed event
         # keeps its stale early-registration count and trips 04e's truth-label
         # freshness guard the day its end_date passes (June 2026 Hartford/Cleveland).
-        msg = (f"all_registrations.csv export missing at {src} — tournament roster "
-               f"is frozen; tournaments that opened registration since the last "
-               f"export are invisible to the model and show a flat historical "
-               f"average. Re-export from the CCA admin.")
+        msg = (f"all_registrations.csv export missing at {src} — live predictions "
+               f"still run from scrape data, but the training corpus is frozen: "
+               f"newly scraped events carry no registration timestamps, so they "
+               f"can never join model training or 04e grading, and early-bird "
+               f"spike features stay absent. Re-export from the CCA admin.")
         print(f"\n{'─'*60}")
         print("  STEP: Refresh tournament summary (export missing — reconcile-only)")
         print(f"{'─'*60}")
@@ -268,10 +271,10 @@ def step_data_prep():
     age_days = (datetime.now() - export_date).days
     if age_days >= EXPORT_STALE_WARN_DAYS:
         msg = (f"all_registrations.csv export is {age_days} days old "
-               f"(dated {export_date.strftime('%Y-%m-%d')}). Tournaments that opened "
-               f"registration after that date are absent from the roster and will "
-               f"show a flat historical-average estimate with no live entry chart. "
-               f"Re-export from the CCA admin to restore live forecasts.")
+               f"(dated {export_date.strftime('%Y-%m-%d')}). Live predictions still "
+               f"run from scrape data, but events that opened registration after "
+               f"that date have no timestamps — they cannot join model training or "
+               f"04e grading until a fresh export. Re-export from the CCA admin.")
         print(f"\n  WARNING: {msg}")
         _PIPELINE_WARNINGS.append({'step': 'Refresh tournament summary', 'text': msg})
     run_step("Refresh tournament summary (01_data_prep.py)",

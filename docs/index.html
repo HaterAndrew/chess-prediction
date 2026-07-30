@@ -634,11 +634,12 @@
       <p class="prose sp">
         We never test on data the model has seen. We train through (say) 2023, then predict every 2024 tournament as if living
         in early 2024: no future information leaks in, and each tournament is held out of its own training set. Across
-        <strong class="gold" id="about-n">133</strong> blind-tested tournaments, at two weeks out the median miss was
-        <strong class="gold" id="about-median">7.1%</strong> and the 80% interval captured the true result
-        <strong class="gold" id="about-cov">75%</strong> of the time. That coverage falls to about
-        <strong class="gold" id="about-cov-close">67%</strong> three days out: the intervals are overconfident
-        close to the event, which is exactly when people most want the number. The full lead-time breakdown is on the
+        <strong class="gold" id="about-n">136</strong> blind-tested tournaments, at two weeks out the median miss was
+        <strong class="gold" id="about-median">7.4%</strong> and the 80% interval captured the true result
+        <strong class="gold" id="about-cov">78%</strong> of the time. Coverage three days out sits near
+        <strong class="gold" id="about-cov-close">76%</strong>. Earlier releases ran overconfident close to the
+        event (three-day coverage as low as 67%) — exactly when people most want the number — and the 2026
+        recalibration widened short-lead intervals to close most of that gap. The full lead-time breakdown is on the
         Performance tab.
       </p>
       <p class="info-note">
@@ -892,7 +893,7 @@
 </div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js" integrity="sha384-Pqp51FUN2/qzfxZxBCtF0stpc9ONI6MYZpVqmo8m20SoaQCzf+arZvACkLkirlPz" crossorigin="anonymous"></script>
-<script src="data/site_data.js?v=2f26dcdb96"></script>
+<script src="data/site_data.js?v=77d937fc72"></script>
 <!-- audit.js defines initAuditTab and must precede app.js: app.js runs its
      init() (and any #audit deep link) synchronously at evaluation time. -->
 <script src="audit.js?v=30eaa762a6"></script>

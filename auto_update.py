@@ -97,8 +97,14 @@ def _step_timeout(cmd):
     return DEFAULT_STEP_TIMEOUT
 
 
-def run_step(description, cmd, timeout=None):
-    """Run a subprocess step, printing status and handling errors."""
+def run_step(description, cmd, timeout=None, check=True):
+    """Run a subprocess step, printing status and handling errors.
+
+    check=False returns the CompletedProcess instead of raising on a non-zero
+    exit, for callers that map specific exit codes to their own handling
+    (v5 Cat T: step_data_health tells "CRITICAL finding" apart from "scanner
+    crashed"). Stdout is tailed and harvested either way.
+    """
     print(f"\n{'─'*60}")
     print(f"  STEP: {description}")
     print(f"{'─'*60}")
@@ -130,7 +136,8 @@ def run_step(description, cmd, timeout=None):
     _harvest_warnings(description, result.stdout)
     if result.returncode != 0:
         print(f"  STDERR: {result.stderr[-500:]}" if result.stderr else "")
-        raise RuntimeError(f"Step failed with exit code {result.returncode}: {description}")
+        if check:
+            raise RuntimeError(f"Step failed with exit code {result.returncode}: {description}")
     return result
 
 
@@ -349,14 +356,24 @@ def step_data_health():
     findings print WARNING: lines that _harvest_warnings folds into
     audit_warnings.json (and the CI step summary).
 
-    Runs with --strict (v3 Q1, audit/AUDIT_2026-07-25.md): the scanner exits 1
-    on any CRITICAL finding and run_step aborts the pipeline. Before this, the
-    scan was advisory-only, so the 2026-07-25 corrupted-curve incident was free
-    to reach the published site. A CRITICAL here means the output is not fit to
-    publish — better to serve yesterday's data behind a stale banner (the flag
-    O1 now guarantees) than today's fabricated numbers."""
-    run_step("Scan prediction data health (data_health.py)",
-             [sys.executable, "data_health.py", "--strict"])
+    Runs with --strict (v3 Q1 → v5 Cat T): exit 3 = CRITICAL finding, and this
+    step RAISES so the pipeline aborts and the degraded banner publishes
+    last-known-good data — the 2026-07-25 corrupted-curve incident shipped
+    because the scan was advisory. Exit 4 = the scanner itself crashed; that
+    is telemetry loss, not a data verdict, so it stays non-fatal. The old
+    blanket try/except around this call treated both cases as ignorable and
+    silently defeated --strict."""
+    result = run_step("Scan prediction data health (data_health.py)",
+                      [sys.executable, "data_health.py", "--strict"],
+                      check=False)
+    if result.returncode == 3:
+        raise RuntimeError(
+            "data-health CRITICAL — aborting so the degraded banner publishes "
+            "last-known-good data instead of these findings")
+    if result.returncode != 0:
+        print(f"\n  Warning: data-health scanner failed "
+              f"(exit {result.returncode}, non-fatal) — findings unavailable "
+              f"this run")
 
 
 def step_update_html():
@@ -792,10 +809,42 @@ def mark_pipeline_degraded(reason, website_json=None):
     return True
 
 
+def _validate_and_count():
+    """Run the scrape validation gate and count today's scraped rows.
+
+    v5 Cat T: this used to live inside the not-skip-scrape branch, so CI —
+    which scrapes in its own workflow step and always passes --skip-scrape —
+    never ran the gate the README documents, and scrape_health.json logged
+    success=True row_count=0 every night. Now it runs regardless of who
+    scraped. Raises on a failed validation; returns
+    (validation_errors, validation_warnings, row_count).
+    """
+    print(f"\n{'─'*60}")
+    print("  STEP: Validate scraped data")
+    print(f"{'─'*60}")
+    report = validate_all()
+    print(report.summary())
+    for w in report.warnings:
+        _PIPELINE_WARNINGS.append({'step': 'Validate scraped data', 'text': w})
+    if not report.passed:
+        raise RuntimeError("Data validation failed (see errors above)")
+
+    row_count = 0
+    today = datetime.now().strftime('%Y-%m-%d')
+    if os.path.exists(SCRAPE_CSV):
+        with open(SCRAPE_CSV, 'r') as f:
+            reader = csv.DictReader(f)
+            row_count = sum(1 for r in reader if r.get('date') == today)
+    return len(report.errors), len(report.warnings), row_count
+
+
 def main():
     parser = argparse.ArgumentParser(description="Auto-update pipeline")
     parser.add_argument('--skip-scrape', action='store_true',
                         help="Skip the scraping step (use existing daily_scrape.csv)")
+    parser.add_argument('--scrape-failed', action='store_true',
+                        help="The external scrape step (CI) failed: keep "
+                             "last-known data, skip validation, stamp stale")
     args = parser.parse_args()
 
     print(f"{'='*60}")
@@ -809,29 +858,24 @@ def main():
     row_count = 0
 
     # --- Scrape phase (failures are non-fatal) ---
-    if args.skip_scrape:
-        print("\n  Skipping scrape step (--skip-scrape)")
+    if args.scrape_failed:
+        # v5 Cat T: CI runs the scraper as its own workflow step; when that
+        # step fails it now passes this flag instead of killing the job, so
+        # the stale-stamp path below finally runs in CI and the site says so.
+        scrape_ok = False
+        print(f"\n{'!'*60}")
+        print("  SCRAPE FAILED in the external scrape step (--scrape-failed).")
+        print("  Serving stale predictions with warning banner.")
+        print(f"{'!'*60}")
     else:
         try:
-            step_scrape()
-
-            # Validate scraped data before proceeding
-            print(f"\n{'─'*60}")
-            print("  STEP: Validate scraped data")
-            print(f"{'─'*60}")
-            report = validate_all()
-            validation_errors = len(report.errors)
-            validation_warnings = len(report.warnings)
-            print(report.summary())
-            if not report.passed:
-                raise RuntimeError("Data validation failed (see errors above)")
-
-            # Count rows scraped today
-            today = datetime.now().strftime('%Y-%m-%d')
-            if os.path.exists(SCRAPE_CSV):
-                with open(SCRAPE_CSV, 'r') as f:
-                    reader = csv.DictReader(f)
-                    row_count = sum(1 for r in reader if r.get('date') == today)
+            if args.skip_scrape:
+                print("\n  Skipping scrape step (--skip-scrape); validating "
+                      "existing daily_scrape.csv")
+            else:
+                step_scrape()
+            # Validation + row telemetry run regardless of who scraped.
+            validation_errors, validation_warnings, row_count = _validate_and_count()
         except Exception as e:
             scrape_ok = False
             print(f"\n{'!'*60}")
@@ -886,12 +930,12 @@ def main():
             print(f"  {len(alerts)} tournaments checked, {n_alerts} pace alert(s)")
 
         # Scan the final prediction output for degraded tournament cards.
-        # Read-only + non-blocking: findings surface via audit_warnings.json,
-        # a scanner failure must never abort the daily run.
-        try:
-            step_data_health()
-        except Exception as e:
-            print(f"\n  Warning: Data-health scan failed (non-fatal): {e}")
+        # v5 Cat T: a CRITICAL finding aborts (step_data_health raises on the
+        # scanner's exit 3) so the degraded-banner path publishes last-known-
+        # good data; only a scanner crash (exit 4) is non-fatal, handled
+        # inside the step. The blanket try/except that used to sit here
+        # swallowed both and silently defeated --strict.
+        step_data_health()
 
         # Always update HTML so the stale flag gets embedded in the page
         step_update_html()

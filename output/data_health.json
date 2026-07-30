@@ -1,10 +1,10 @@
 {
-  "generated": "2026-07-29",
-  "scanned_at": "2026-07-29T04:38:29",
+  "generated": "2026-07-30",
+  "scanned_at": "2026-07-30T04:28:33",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
-    "MEDIUM": 5,
+    "MEDIUM": 4,
     "INFO": 17
   },
   "findings": [
@@ -12,31 +12,25 @@
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Continental Open",
-      "message": "regular_fee is null with 15 days remaining"
+      "message": "regular_fee is null with 14 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Central California Open",
-      "message": "regular_fee is null with 16 days remaining"
+      "message": "regular_fee is null with 15 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Atlantic Open",
-      "message": "regular_fee is null with 23 days remaining"
+      "message": "regular_fee is null with 22 days remaining"
     },
     {
       "severity": "MEDIUM",
       "mode": "null-fee-near-event",
       "family": "Indianapolis Open",
-      "message": "regular_fee is null with 23 days remaining"
-    },
-    {
-      "severity": "MEDIUM",
-      "mode": "large-withdrawal-gap",
-      "family": "National Chess Congress",
-      "message": "1 of 3 scraped entries withdrawn (33%) as of 2026-07-29"
+      "message": "regular_fee is null with 22 days remaining"
     },
     {
       "severity": "INFO",

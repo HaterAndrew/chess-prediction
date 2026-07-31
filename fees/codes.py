@@ -76,6 +76,10 @@ FAMILY_TO_CODE = {
 # newly discovered flyer cannot fall through silently (v5 Cat F).
 UNMAPPED_CODES = {
     "aob", "conob", "eccob", "kiob", "laob", "mwccb", "pcob",
+    # Posted 2026-07-29, caught by the parity test on the 2026-07-31 fees
+    # run: Eastern Open Blitz and National Chess Congress Blitz — same
+    # no-advance-fee blitz side-event class as the rest of this set.
+    "eob", "nccb",
 }
 
 # Blind-discovery probe list (moved verbatim from scrape_fees.TOURNAMENT_CODES).

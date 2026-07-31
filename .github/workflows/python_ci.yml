@@ -1,0 +1,38 @@
+# PR gate for the Python side. Exists because the 2026-07-31 nightly outage
+# was a dependabot pip bump (numpy 2.5 dropped Python 3.11) merged with no CI
+# at all on pip PRs — the nightly was the first thing to run the new pins.
+# This mirrors the nightly's own env and gate (same pinned action SHAs, same
+# interpreter, same install, same ruff+pytest) so a requirements bump that
+# would break the nightly shows a red X on the PR instead.
+name: Python CI
+
+on:
+  pull_request:
+    paths:
+      - 'requirements*.txt'
+      - 'pyproject.toml'
+      - '**/*.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v4
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Lint + test (the nightly's own gate)
+        run: |
+          ruff check .
+          pytest tests/ -q

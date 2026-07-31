@@ -1,106 +1,16 @@
 {
-  "generated": "2026-07-30 11:22:17",
-  "count": 20,
-  "total_occurrences": 20,
+  "generated": "2026-07-31 06:57:29",
+  "count": 2,
+  "total_occurrences": 2,
   "warnings": [
     {
       "step": "Validate scraped data",
-      "text": "15 upcoming 2026 event(s) missing early_bird_deadline in tournament_metadata.csv \u2014 model will use neutral feature values. Run update_metadata.py to populate.",
+      "text": "8 upcoming 2026 event(s) have no flyer scraped yet \u2014 early_bird_deadline unknown, model uses neutral feature values (fees + EB fill automatically once chesstour publishes the flyer; update_metadata.py can estimate from spike patterns meanwhile): Central California Open, Eastern Chess Congress (in New Jersey), Eastern Class Championships (in Connecticut), Eastern Open, Midwest Class Championships, National Chess Congress, North American Blitz Championship, North American Open",
       "count": 1
     },
     {
       "step": "Refresh tournament summary",
-      "text": "all_registrations.csv export is 129 days old (dated 2026-03-22). Live predictions still run from scrape data, but events that opened registration after that date have no timestamps \u2014 they cannot join model training or 04e grading until a fresh export. Re-export from the CCA admin.",
-      "count": 1
-    },
-    {
-      "step": "Refresh tournament summary (01_data_prep.py)",
-      "text": "raised final_count for 1 in-progress 2026 event(s) (end_date >= today): 2026 Pacific Coast Open. Downstream perf/recalibration scripts must exclude these via is_event_complete.",
-      "count": 1
-    },
-    {
-      "step": "Refresh tournament summary (01_data_prep.py)",
-      "text": "low scrape coverage \u2014 Continental Open 2021: scrape=159/final=393 (ratio=0.40)",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source unavailable \u2014 could not fetch https://www.chesstour.com/refs.html (current-year dates not verified this run)",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Atlantic Open 2026: pattern \"Atlantic Open\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Central California Open 2026: pattern \"Central California Open\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Continental Open 2026: pattern \"Continental Open\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Eastern Chess Congress 2026: pattern \"Eastern Chess Congress\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Eastern Class Championships 2026: pattern \"Eastern Class Championships\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Indianapolis Open 2026: pattern \"Indianapolis Open\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Kings Island Open 2026: pattern \"Kings Island Open\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Los Angeles Open 2026: pattern \"Los Angeles Open\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Midwest Class Championships 2026: pattern \"Midwest Class Championships\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 National Chess Congress 2026: pattern \"National Chess Congress\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 New York State Championship 2026: pattern \"NY State Championship\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 Pacific Coast Open 2026: pattern \"Pacific Coast Open\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "source-parse failure \u2014 North American Open 2026: pattern \"North American Open\" not found in chesstour.com schedule",
-      "count": 1
-    },
-    {
-      "step": "Generate performance data (04e_performance_data.py)",
-      "text": "T=3 ci_adj pinned at ceiling 3.0 (residuals wanted 3.002) \u2014 published CI narrower than measured error.",
-      "count": 1
-    },
-    {
-      "step": "CCA structure drift",
-      "text": "structure check errored: HTTPSConnectionPool(host='www.chessaction.com', port=443): Read timed out. (read timeout=30)",
+      "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 live predictions still run from scrape data, but the training corpus is frozen: newly scraped events carry no registration timestamps, so they can never join model training or 04e grading, and early-bird spike features stay absent. Re-export from the CCA admin.",
       "count": 1
     }
   ]

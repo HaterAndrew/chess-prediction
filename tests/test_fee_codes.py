@@ -37,14 +37,16 @@ def test_probe_list_extras_are_exactly_the_documented_set():
     # Probe codes with no FAMILY_TO_CODE family are a recorded heuristic
     # surface. Growing or shrinking this set is a deliberate decision, not
     # drift: update fees/codes.py's discrepancy notes together with this set.
+    # Resolved 2026-07-31 by live probe: every remaining probe code maps.
     mapped = set(codes.FAMILY_TO_CODE.values())
     extras = {c for c in codes.FLYER_PROBE_CODES if c not in mapped}
-    assert extras == {"lib", "pho", "uso", "lvo", "dc"}
+    assert extras == set()
 
 
-def test_documented_lib_lbo_discrepancy_still_stands():
-    # FAMILY_TO_CODE says Liberty Bell Open = "lbo" while the probe list tries
-    # "lib". Parked behavior question (ledger); if either side changes, the
-    # notes in fees/codes.py must be resolved, not silently updated.
+def test_lib_lbo_discrepancy_resolved_to_lbo():
+    # Resolved 2026-07-31: lib26.htm 404s, lbo26.htm is the live Liberty
+    # Bell flyer. The probe list must carry the authoritative code and must
+    # not regrow the dead one.
     assert codes.FAMILY_TO_CODE["Liberty Bell Open"] == "lbo"
-    assert "lib" in codes.FLYER_PROBE_CODES
+    assert "lbo" in codes.FLYER_PROBE_CODES
+    assert "lib" not in codes.FLYER_PROBE_CODES

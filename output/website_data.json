@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-30",
-  "generated_time": "2026-07-30T05:23:17.279217-04:00",
+  "generated": "2026-07-31",
+  "generated_time": "2026-07-31T02:59:03.321520-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (40 family-years across 38 families).",
   "n_completed_in_training": 31,
@@ -15,13 +15,13 @@
       "early_bird_fee": null,
       "regular_fee": 158.0,
       "onsite_fee": 180.0,
-      "current_count": 352,
-      "gross_count": 352,
-      "withdrawal_count": 8,
+      "current_count": 367,
+      "gross_count": 367,
+      "withdrawal_count": 10,
       "days_remaining": 1,
-      "point_estimate": 362,
-      "ci_lower": 352,
-      "ci_upper": 395,
+      "point_estimate": 386,
+      "ci_lower": 367,
+      "ci_upper": 411,
       "ci_level": 0.8,
       "historical": [
         {
@@ -574,6 +574,10 @@
         [
           148,
           352
+        ],
+        [
+          149,
+          357
         ]
       ],
       "daily_start_date": "2026-03-04",
@@ -628,23 +632,23 @@
         }
       ],
       "status": "live",
-      "prediction_source": "model",
+      "prediction_source": "model_online_window",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 356,
+        "count_at_same_point": 372,
         "final": 391
       },
       "low_confidence": false,
       "n_historical_editions": 4,
-      "prediction_tier": "family-direct",
+      "prediction_tier": null,
       "pace_alert": {
         "family": "Pacific Coast Open",
         "status": "on_pace",
-        "actual": 352,
+        "actual": 367,
         "expected": 338,
-        "deviation_pct": 4.0,
+        "deviation_pct": 8.4,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+4%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+8%)"
       }
     },
     {
@@ -657,13 +661,13 @@
       "early_bird_fee": null,
       "regular_fee": 158.0,
       "onsite_fee": 180.0,
-      "current_count": 56,
-      "gross_count": 56,
+      "current_count": 64,
+      "gross_count": 64,
       "withdrawal_count": 0,
-      "days_remaining": 14,
-      "point_estimate": 261,
-      "ci_lower": 237,
-      "ci_upper": 288,
+      "days_remaining": 13,
+      "point_estimate": 267,
+      "ci_lower": 243,
+      "ci_upper": 294,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1096,6 +1100,10 @@
         [
           102,
           56
+        ],
+        [
+          103,
+          64
         ]
       ],
       "daily_start_date": "2026-04-19",
@@ -1153,7 +1161,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 59,
+        "count_at_same_point": 61,
         "final": 265
       },
       "low_confidence": false,
@@ -1162,11 +1170,11 @@
       "pace_alert": {
         "family": "Continental Open",
         "status": "on_pace",
-        "actual": 56,
-        "expected": 58,
-        "deviation_pct": -2.6,
+        "actual": 64,
+        "expected": 60,
+        "deviation_pct": 5.8,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-3%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+6%)"
       }
     },
     {
@@ -1179,13 +1187,13 @@
       "early_bird_fee": null,
       "regular_fee": 98.0,
       "onsite_fee": null,
-      "current_count": 38,
-      "gross_count": 38,
+      "current_count": 40,
+      "gross_count": 40,
       "withdrawal_count": 2,
-      "days_remaining": 15,
+      "days_remaining": 14,
       "point_estimate": 166,
-      "ci_lower": 152,
-      "ci_upper": 182,
+      "ci_lower": 153,
+      "ci_upper": 180,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1534,6 +1542,10 @@
         [
           115,
           36
+        ],
+        [
+          116,
+          38
         ]
       ],
       "daily_start_date": "2026-04-06",
@@ -1591,7 +1603,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 41,
+        "count_at_same_point": 44,
         "final": 179
       },
       "low_confidence": false,
@@ -1600,11 +1612,11 @@
       "pace_alert": {
         "family": "Central California Open",
         "status": "on_pace",
-        "actual": 38,
-        "expected": 46,
-        "deviation_pct": -16.9,
+        "actual": 40,
+        "expected": 49,
+        "deviation_pct": -18.4,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-17%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-18%)"
       }
     },
     {
@@ -1617,13 +1629,13 @@
       "early_bird_fee": null,
       "regular_fee": 148.0,
       "onsite_fee": null,
-      "current_count": 37,
-      "gross_count": 37,
+      "current_count": 45,
+      "gross_count": 45,
       "withdrawal_count": 0,
-      "days_remaining": 22,
-      "point_estimate": 241,
-      "ci_lower": 199,
-      "ci_upper": 292,
+      "days_remaining": 21,
+      "point_estimate": 248,
+      "ci_lower": 207,
+      "ci_upper": 297,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2104,6 +2116,10 @@
         [
           114,
           37
+        ],
+        [
+          115,
+          45
         ]
       ],
       "daily_start_date": "2026-04-07",
@@ -2161,7 +2177,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 43,
+        "count_at_same_point": 48,
         "final": 238
       },
       "low_confidence": false,
@@ -2170,11 +2186,11 @@
       "pace_alert": {
         "family": "Atlantic Open",
         "status": "below_pace",
-        "actual": 37,
-        "expected": 57,
-        "deviation_pct": -35.1,
+        "actual": 45,
+        "expected": 60,
+        "deviation_pct": -25.3,
         "n_years": 4,
-        "message": "Registrations are 35.1% below 4-year at-this-point pace"
+        "message": "Registrations are 25.3% below 4-year at-this-point pace"
       }
     },
     {
@@ -2187,13 +2203,13 @@
       "early_bird_fee": null,
       "regular_fee": 118.0,
       "onsite_fee": null,
-      "current_count": 29,
-      "gross_count": 29,
+      "current_count": 33,
+      "gross_count": 33,
       "withdrawal_count": 0,
-      "days_remaining": 22,
-      "point_estimate": 183,
-      "ci_lower": 165,
-      "ci_upper": 203,
+      "days_remaining": 21,
+      "point_estimate": 186,
+      "ci_lower": 171,
+      "ci_upper": 202,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2530,6 +2546,10 @@
         [
           78,
           29
+        ],
+        [
+          79,
+          33
         ]
       ],
       "daily_start_date": "2026-05-13",
@@ -2587,7 +2607,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 24,
+        "count_at_same_point": 26,
         "final": 187
       },
       "low_confidence": false,
@@ -2596,11 +2616,11 @@
       "pace_alert": {
         "family": "Indianapolis Open",
         "status": "on_pace",
-        "actual": 29,
-        "expected": 27,
-        "deviation_pct": 6.4,
+        "actual": 33,
+        "expected": 29,
+        "deviation_pct": 13.8,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+6%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
       }
     },
     {
@@ -2616,10 +2636,10 @@
       "current_count": 30,
       "gross_count": 30,
       "withdrawal_count": 0,
-      "days_remaining": 36,
-      "point_estimate": 322,
-      "ci_lower": 292,
-      "ci_upper": 354,
+      "days_remaining": 35,
+      "point_estimate": 321,
+      "ci_lower": 255,
+      "ci_upper": 404,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3100,6 +3120,10 @@
         [
           114,
           30
+        ],
+        [
+          115,
+          30
         ]
       ],
       "daily_start_date": "2026-04-07",
@@ -3157,7 +3181,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 34,
+        "count_at_same_point": 35,
         "final": 348
       },
       "low_confidence": false,
@@ -3167,10 +3191,10 @@
         "family": "New York State Championship",
         "status": "on_pace",
         "actual": 30,
-        "expected": 26,
-        "deviation_pct": 15.4,
+        "expected": 27,
+        "deviation_pct": 12.1,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+15%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+12%)"
       }
     },
     {
@@ -3185,7 +3209,7 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 71,
+      "days_remaining": 70,
       "point_estimate": 313,
       "ci_lower": 296,
       "ci_upper": 338,
@@ -3605,6 +3629,10 @@
         [
           98,
           3
+        ],
+        [
+          99,
+          3
         ]
       ],
       "daily_start_date": "2026-04-23",
@@ -3685,7 +3713,7 @@
       "current_count": 6,
       "gross_count": 6,
       "withdrawal_count": 0,
-      "days_remaining": 78,
+      "days_remaining": 77,
       "point_estimate": 221,
       "ci_lower": 198,
       "ci_upper": 246,
@@ -4105,6 +4133,10 @@
         [
           98,
           6
+        ],
+        [
+          99,
+          6
         ]
       ],
       "daily_start_date": "2026-04-23",
@@ -4143,7 +4175,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -4151,7 +4183,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -4176,7 +4208,7 @@
       "current_count": 4,
       "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 85,
+      "days_remaining": 84,
       "point_estimate": 469,
       "ci_lower": 404,
       "ci_upper": 513,
@@ -4596,6 +4628,10 @@
         [
           98,
           4
+        ],
+        [
+          99,
+          4
         ]
       ],
       "daily_start_date": "2026-04-23",
@@ -4634,7 +4670,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -4642,7 +4678,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -4667,7 +4703,7 @@
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 99,
+      "days_remaining": 98,
       "point_estimate": 365,
       "ci_lower": 289,
       "ci_upper": 413,
@@ -5059,6 +5095,10 @@
         [
           91,
           2
+        ],
+        [
+          92,
+          2
         ]
       ],
       "daily_start_date": "2026-04-30",
@@ -5122,9 +5162,9 @@
         "status": "below_pace",
         "actual": 2,
         "expected": 4,
-        "deviation_pct": -46.7,
+        "deviation_pct": -50.0,
         "n_years": 4,
-        "message": "Registrations are 46.7% below 4-year at-this-point pace"
+        "message": "Registrations are 50.0% below 4-year at-this-point pace"
       }
     },
     {
@@ -5139,7 +5179,7 @@
       "current_count": 3,
       "gross_count": 3,
       "withdrawal_count": 0,
-      "days_remaining": 106,
+      "days_remaining": 105,
       "point_estimate": 346,
       "ci_lower": 318,
       "ci_upper": 364,
@@ -5531,6 +5571,10 @@
         [
           91,
           3
+        ],
+        [
+          92,
+          3
         ]
       ],
       "daily_start_date": "2026-04-30",
@@ -5608,10 +5652,10 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 3,
-      "gross_count": 3,
+      "current_count": 4,
+      "gross_count": 4,
       "withdrawal_count": 0,
-      "days_remaining": 120,
+      "days_remaining": 119,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -6003,6 +6047,10 @@
         [
           91,
           3
+        ],
+        [
+          92,
+          4
         ]
       ],
       "daily_start_date": "2026-04-30",
@@ -6063,12 +6111,12 @@
       "prediction_source": "metadata_historical_avg",
       "pace_alert": {
         "family": "National Chess Congress",
-        "status": "on_pace",
-        "actual": 3,
+        "status": "above_pace",
+        "actual": 4,
         "expected": 3,
-        "deviation_pct": 0.0,
+        "deviation_pct": 23.1,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
+        "message": "Registrations are 23.1% above 4-year at-this-point pace"
       }
     },
     {
@@ -6083,7 +6131,7 @@
       "current_count": 19,
       "gross_count": 19,
       "withdrawal_count": 0,
-      "days_remaining": 149,
+      "days_remaining": 148,
       "point_estimate": 1081,
       "ci_lower": 946,
       "ci_upper": 1199,
@@ -6415,6 +6463,10 @@
         [
           76,
           19
+        ],
+        [
+          77,
+          19
         ]
       ],
       "daily_start_date": "2026-05-15",
@@ -6477,10 +6529,10 @@
         "family": "North American Open",
         "status": "above_pace",
         "actual": 19,
-        "expected": 6,
-        "deviation_pct": 192.3,
+        "expected": 7,
+        "deviation_pct": 162.1,
         "n_years": 4,
-        "message": "Registrations are 192.3% above 4-year at-this-point pace"
+        "message": "Registrations are 162.1% above 4-year at-this-point pace"
       }
     },
     {
@@ -6495,7 +6547,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 149,
+      "days_remaining": 148,
       "point_estimate": 387,
       "ci_lower": 367,
       "ci_upper": 404,
@@ -6713,6 +6765,10 @@
         ],
         [
           48,
+          0
+        ],
+        [
+          49,
           0
         ]
       ],
@@ -8886,7 +8942,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -8894,7 +8950,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -9816,7 +9872,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -9824,7 +9880,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -10030,7 +10086,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -10038,7 +10094,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -10660,7 +10716,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -10668,7 +10724,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -12546,7 +12602,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -12554,7 +12610,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -13777,7 +13833,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -13785,7 +13841,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -17436,7 +17492,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -17444,7 +17500,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -19210,7 +19266,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -19218,7 +19274,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -19299,7 +19355,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -19307,7 +19363,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -19392,7 +19448,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -19400,7 +19456,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -19477,7 +19533,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -19485,7 +19541,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -31311,7 +31367,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -31319,7 +31375,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -31396,7 +31452,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -31404,7 +31460,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -31485,7 +31541,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -31493,7 +31549,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -31578,7 +31634,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -31586,7 +31642,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -31675,7 +31731,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -31683,7 +31739,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -33341,7 +33397,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -33349,7 +33405,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -36443,7 +36499,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -36451,7 +36507,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -36532,7 +36588,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -36540,7 +36596,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -36625,7 +36681,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -36633,7 +36689,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -36722,7 +36778,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -36730,7 +36786,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -36823,7 +36879,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -36831,7 +36887,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -38116,7 +38172,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -38124,7 +38180,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -38205,7 +38261,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -38213,7 +38269,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -38298,7 +38354,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -38306,7 +38362,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -38395,7 +38451,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -38403,7 +38459,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -38496,7 +38552,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -38504,7 +38560,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -38605,7 +38661,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -38613,7 +38669,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -43107,7 +43163,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -43115,7 +43171,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -50211,7 +50267,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -50219,7 +50275,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -50300,7 +50356,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -50308,7 +50364,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -50393,7 +50449,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -50401,7 +50457,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -50490,7 +50546,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -50498,7 +50554,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -50591,7 +50647,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -50599,7 +50655,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -52449,7 +52505,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -52457,7 +52513,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -58221,7 +58277,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -58229,7 +58285,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -59019,7 +59075,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -59027,7 +59083,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -59108,7 +59164,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -59116,7 +59172,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -61621,7 +61677,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -61629,7 +61685,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -61710,7 +61766,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -61718,7 +61774,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -61891,7 +61947,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -61899,7 +61955,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -62092,43 +62148,43 @@
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0322
+          "cumulative_pct": 0.03
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.054
+          "cumulative_pct": 0.0478
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.1142
+          "cumulative_pct": 0.1095
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1792
+          "cumulative_pct": 0.1666
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.2804
+          "cumulative_pct": 0.2591
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.3549
+          "cumulative_pct": 0.3346
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.4467
+          "cumulative_pct": 0.4373
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.5649
+          "cumulative_pct": 0.559
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.7386
+          "cumulative_pct": 0.76
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.8911
+          "cumulative_pct": 0.9221
         },
         {
           "days_before": 0,
@@ -62365,43 +62421,43 @@
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0322
+          "cumulative_pct": 0.03
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.054
+          "cumulative_pct": 0.0478
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.1142
+          "cumulative_pct": 0.1095
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1792
+          "cumulative_pct": 0.1666
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.2804
+          "cumulative_pct": 0.2591
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.3549
+          "cumulative_pct": 0.3346
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.4467
+          "cumulative_pct": 0.4373
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.5649
+          "cumulative_pct": 0.559
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.7386
+          "cumulative_pct": 0.76
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.8911
+          "cumulative_pct": 0.9221
         },
         {
           "days_before": 0,
@@ -62418,7 +62474,7 @@
     {
       "family": "Niagara Falls Open",
       "year": 2024,
-      "event_start": "2024-05-29",
+      "event_start": "2024-05-31",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -62664,6 +62720,14 @@
         [
           110,
           154
+        ],
+        [
+          111,
+          167
+        ],
+        [
+          112,
+          177
         ]
       ],
       "daily_start_date": "2024-02-09",
@@ -62674,43 +62738,43 @@
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0322
+          "cumulative_pct": 0.03
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.054
+          "cumulative_pct": 0.0478
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.1142
+          "cumulative_pct": 0.1095
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1792
+          "cumulative_pct": 0.1666
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.2804
+          "cumulative_pct": 0.2591
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.3549
+          "cumulative_pct": 0.3346
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.4467
+          "cumulative_pct": 0.4373
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.5649
+          "cumulative_pct": 0.559
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.7386
+          "cumulative_pct": 0.76
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.8911
+          "cumulative_pct": 0.9221
         },
         {
           "days_before": 0,
@@ -62727,7 +62791,7 @@
     {
       "family": "Niagara Falls Open",
       "year": 2025,
-      "event_start": "2025-04-30",
+      "event_start": "2025-05-02",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -62913,6 +62977,14 @@
         [
           131,
           104
+        ],
+        [
+          132,
+          117
+        ],
+        [
+          133,
+          123
         ]
       ],
       "daily_start_date": "2024-12-20",
@@ -62923,43 +62995,43 @@
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0322
+          "cumulative_pct": 0.03
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.054
+          "cumulative_pct": 0.0478
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.1142
+          "cumulative_pct": 0.1095
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.1792
+          "cumulative_pct": 0.1666
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.2804
+          "cumulative_pct": 0.2591
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.3549
+          "cumulative_pct": 0.3346
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.4467
+          "cumulative_pct": 0.4373
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.5649
+          "cumulative_pct": 0.559
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.7386
+          "cumulative_pct": 0.76
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.8911
+          "cumulative_pct": 0.9221
         },
         {
           "days_before": 0,
@@ -66109,7 +66181,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -66117,7 +66189,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -66198,7 +66270,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -66206,7 +66278,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -66291,7 +66363,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -66299,7 +66371,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -66388,7 +66460,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -66396,7 +66468,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -66489,7 +66561,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -66497,7 +66569,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -66746,7 +66818,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -66754,7 +66826,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -69904,7 +69976,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -69912,7 +69984,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -69993,7 +70065,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -70001,7 +70073,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -70086,7 +70158,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -70094,7 +70166,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -75417,7 +75489,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -75425,7 +75497,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -75502,7 +75574,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -75510,7 +75582,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -75587,7 +75659,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -75595,7 +75667,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -75672,7 +75744,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -75680,7 +75752,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -76993,7 +77065,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -77001,7 +77073,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -77082,7 +77154,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -77090,7 +77162,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -77175,7 +77247,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -77183,7 +77255,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -77272,7 +77344,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -77280,7 +77352,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -77373,7 +77445,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -77381,7 +77453,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -79147,7 +79219,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -79155,7 +79227,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -79236,7 +79308,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -79244,7 +79316,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -79329,7 +79401,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -79337,7 +79409,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -79426,7 +79498,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -79434,7 +79506,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -79527,7 +79599,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -79535,7 +79607,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -81092,7 +81164,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -81100,7 +81172,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -81181,7 +81253,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -81189,7 +81261,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -81274,7 +81346,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -81282,7 +81354,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -81371,7 +81443,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -81379,7 +81451,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -81456,7 +81528,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -81464,7 +81536,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -81545,7 +81617,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -81553,7 +81625,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -81638,7 +81710,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -81646,7 +81718,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -81735,7 +81807,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -81743,7 +81815,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -81836,7 +81908,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -81844,7 +81916,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -82105,7 +82177,7 @@
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4865
+          "cumulative_pct": 0.4855
         },
         {
           "days_before": 3,
@@ -82113,7 +82185,7 @@
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9361
+          "cumulative_pct": 0.9375
         },
         {
           "days_before": 0,
@@ -87844,62 +87916,62 @@
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-07-30 11:22:17",
+  "last_updated": "2026-07-31 06:57:29",
   "is_stale": false,
   "alerts": [
     {
       "family": "Pacific Coast Open",
       "status": "on_pace",
-      "actual": 352,
+      "actual": 367,
       "expected": 338,
-      "deviation_pct": 4.0,
+      "deviation_pct": 8.4,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+4%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+8%)"
     },
     {
       "family": "Continental Open",
       "status": "on_pace",
-      "actual": 56,
-      "expected": 58,
-      "deviation_pct": -2.6,
+      "actual": 64,
+      "expected": 60,
+      "deviation_pct": 5.8,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-3%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+6%)"
     },
     {
       "family": "Central California Open",
       "status": "on_pace",
-      "actual": 38,
-      "expected": 46,
-      "deviation_pct": -16.9,
+      "actual": 40,
+      "expected": 49,
+      "deviation_pct": -18.4,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-17%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-18%)"
     },
     {
       "family": "Atlantic Open",
       "status": "below_pace",
-      "actual": 37,
-      "expected": 57,
-      "deviation_pct": -35.1,
+      "actual": 45,
+      "expected": 60,
+      "deviation_pct": -25.3,
       "n_years": 4,
-      "message": "Registrations are 35.1% below 4-year at-this-point pace"
+      "message": "Registrations are 25.3% below 4-year at-this-point pace"
     },
     {
       "family": "Indianapolis Open",
       "status": "on_pace",
-      "actual": 29,
-      "expected": 27,
-      "deviation_pct": 6.4,
+      "actual": 33,
+      "expected": 29,
+      "deviation_pct": 13.8,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+6%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
     },
     {
       "family": "New York State Championship",
       "status": "on_pace",
       "actual": 30,
-      "expected": 26,
-      "deviation_pct": 15.4,
+      "expected": 27,
+      "deviation_pct": 12.1,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+15%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+12%)"
     },
     {
       "family": "Midwest Class Championships",
@@ -87915,9 +87987,9 @@
       "status": "below_pace",
       "actual": 2,
       "expected": 4,
-      "deviation_pct": -46.7,
+      "deviation_pct": -50.0,
       "n_years": 4,
-      "message": "Registrations are 46.7% below 4-year at-this-point pace"
+      "message": "Registrations are 50.0% below 4-year at-this-point pace"
     },
     {
       "family": "Kings Island Open",
@@ -87930,21 +88002,21 @@
     },
     {
       "family": "National Chess Congress",
-      "status": "on_pace",
-      "actual": 3,
+      "status": "above_pace",
+      "actual": 4,
       "expected": 3,
-      "deviation_pct": 0.0,
+      "deviation_pct": 23.1,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
+      "message": "Registrations are 23.1% above 4-year at-this-point pace"
     },
     {
       "family": "North American Open",
       "status": "above_pace",
       "actual": 19,
-      "expected": 6,
-      "deviation_pct": 192.3,
+      "expected": 7,
+      "deviation_pct": 162.1,
       "n_years": 4,
-      "message": "Registrations are 192.3% above 4-year at-this-point pace"
+      "message": "Registrations are 162.1% above 4-year at-this-point pace"
     },
     {
       "family": "Eastern Open",

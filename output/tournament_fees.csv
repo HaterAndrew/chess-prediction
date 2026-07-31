@@ -5,7 +5,6 @@ Atlantic Open chess tournament,2023,2023-08-25,,,148,2023-08-23,,,False,"only on
 ao24,2024,2024-08-23,,,148,2024-08-21,,,False,"only one date-bound tier ($148 by 2024-08-21, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/ao24.htm
 ao26,2026,2026-08-21,,,148,2026-08-18,,,False,"only one date-bound tier ($148 by 2026-08-18, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/ao26.htm
 aob26,2026,2026-08-22,,,,,48,,False,,https://www.chesstour.com/aob26.htm
-brad26,2026,2026-07-24,,,118,2026-07-21,130,,False,"only one date-bound tier ($118 by 2026-07-21, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/brad26.htm
 2022 Central California Open chess tournament,2022,2022-08-19,,,93,2022-08-17,97,,False,"deadline 2022-08-17 is T-2 (< T-14) vs event 2022-08-19 — advance/onsite step, not early bird",https://www.chesstour.com/cco22.htm
 Central California Open chess tournament,2023,2023-08-11,,,98,2023-08-09,,,False,"only one date-bound tier ($98 by 2023-08-09, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/cco23.htm
 Central California Open chess tournament,2024,2024-08-09,,,98,2024-08-07,,,False,"only one date-bound tier ($98 by 2024-08-07, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/cco24.htm
@@ -25,6 +24,8 @@ eccob26,2026,2026-10-24,,,,,48,,False,,https://www.chesstour.com/eccob26.htm
 2023 Eastern Open chess tournament,2023,2023-12-26,,,148,2023-12-23,,3000,False,"only one date-bound tier ($148 by 2023-12-23, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/eo23.htm
 2023 Eastern Open chess tournament,2024,2024-12-26,,,148,2024-12-23,170,,False,"only one date-bound tier ($148 by 2024-12-23, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/eo24.htm
 2023 Eastern Open chess tournament,2025,2025-12-26,,,148,2025-12-23,170,,False,"only one date-bound tier ($148 by 2025-12-23, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/eo25.htm
+2023 Eastern Open chess tournament,2026,2026-12-26,,,148,2026-12-23,170,,False,"only one date-bound tier ($148 by 2026-12-23, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/eo26.htm
+eob26,2026,2026-12-28,,,,,48,,False,,https://www.chesstour.com/eob26.htm
 io26,2026,2026-08-21,,,118,2026-08-18,,,False,"only one date-bound tier ($118 by 2026-08-18, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/io26.htm
 kio26,2026,2026-11-13,,,138,2026-11-10,160,,False,"only one date-bound tier ($138 by 2026-11-10, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/kio26.htm
 kiob26,2026,2026-11-14,,,,,48,,False,,https://www.chesstour.com/kiob26.htm
@@ -36,10 +37,14 @@ NORTH AMERICAN OPEN CHESS TOURNAMENT,2022,2022-12-26,245,2022-09-20,275,2022-12-
 NORTH AMERICAN OPEN CHESS TOURNAMENT,2023,2023-12-26,245,2023-09-20,275,2023-12-23,,130000,False,,https://www.chesstour.com/nao23.htm
 nao24,2024,2024-12-26,245,2024-09-20,275,2024-12-23,,800,False,,https://www.chesstour.com/nao24.htm
 nao25,2025,2025-12-26,245,2025-09-20,275,2025-12-23,,800,False,,https://www.chesstour.com/nao25.htm
+nao26,2026,2026-12-26,245,2026-09-20,275,2026-12-23,,800,False,,https://www.chesstour.com/nao26.htm
+North American Blit,2026,2026-12-29,,,,,50,,False,,https://www.chesstour.com/naob26.htm
 National Chess Congress,2022,,,,138,2022-11-23,160,,False,could not parse event_start from flyer,https://www.chesstour.com/ncc22.htm
 ncc23,2023,,,,138,2023-11-22,160,,False,could not parse event_start from flyer,https://www.chesstour.com/ncc23.htm
 ncc24,2024,2024-12-01,,,138,2024-11-27,160,,False,"only one date-bound tier ($138 by 2024-11-27, T-4) — advance/onsite step, not early bird",https://www.chesstour.com/ncc24.htm
 ncc25,2025,,,,138,2025-11-25,160,,False,could not parse event_start from flyer,https://www.chesstour.com/ncc25.htm
+ncc26,2026,,,,138,2026-11-24,160,,False,could not parse event_start from flyer,https://www.chesstour.com/ncc26.htm
+National Chess Congress Blitz!,2026,2026-11-28,,,,,48,,False,,https://www.chesstour.com/nccb26.htm
 nysc26,2026,2026-09-04,,,118,2026-09-01,130,200,False,"only one date-bound tier ($118 by 2026-09-01, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/nysc26.htm
 pco26,2026,2026-08-01,,,158,2026-07-28,180,,False,"only one date-bound tier ($158 by 2026-07-28, T-4) — advance/onsite step, not early bird",https://www.chesstour.com/pco26.htm
 pcob26,2026,2026-08-01,,,,,48,,False,,https://www.chesstour.com/pcob26.htm

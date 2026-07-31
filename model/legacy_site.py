@@ -57,7 +57,15 @@ def get_event_info(family, year, meta_lookup, summary):
 
 
 def determine_status(event_info):
-    """Determine tournament status based on event dates."""
+    """Determine tournament status based on event dates.
+
+    Deliberately NOT the production rule (resolved 2026-07-31, was a parked
+    ledger question): sitebuild.helpers.determine_status drives the live
+    site and flips live -> in_progress on registration_close with no
+    end-of-event grace day. This frozen variant keeps the old start-day
+    flip and +1-day grace that tests/test_pipeline_integration.py pins.
+    Fix status behavior in sitebuild.helpers, never here.
+    """
     start = event_info['start_date']
     end = event_info['end_date']
     if isinstance(start, str):

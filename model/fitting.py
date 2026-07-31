@@ -1,7 +1,6 @@
 """N5v4_Final.fit, verbatim as a mixin (04c 664-995)."""
 
 import os
-import re
 
 import warnings
 
@@ -11,6 +10,7 @@ from sklearn.linear_model import HuberRegressor
 
 from model.constants import CHOP_POINTS, OUTPUT_DIR
 from model.stats import report_trim_stats, reset_trim_stats, trim_outliers
+from shared.side_events import SIDE_EVENT_RE
 
 class FitMixin:
     def fit(self, summary, daily, enrichment_lookup=None, completed_tids=None,
@@ -53,10 +53,11 @@ class FitMixin:
         # reflect this fit only, not accumulated across calls.
         reset_trim_stats()
 
-        # Auto-populate BLITZ_FAMILIES from data: any family matching the pattern
-        _blitz_pat = re.compile(r'Blitz|Rapid|Bullet|Bughouse|Armageddon|Action|G/\d+|G \d+', re.IGNORECASE)
+        # Auto-populate BLITZ_FAMILIES from data: any family matching the
+        # shared side-event pattern (shared.side_events — one definition for
+        # model flagging, card exclusion, grading exclusion, and health scan).
         for fam in summary['family'].unique():
-            if _blitz_pat.search(fam):
+            if SIDE_EVENT_RE.search(fam):
                 self.BLITZ_FAMILIES.add(fam)
 
         valid = summary[

@@ -11,6 +11,7 @@ from pipeline_utils import (clamp_stats,
                             is_event_complete, reset_clamp_stats)
 from shared.clock import today_ts
 from shared.paths import OUTPUT_DIR
+from shared.side_events import SIDE_EVENT_PATTERN
 from shared.thresholds import FROZEN_CURVE_MIN_RATIO, MIN_FINAL_COUNT
 
 from perf.evaluation import (_hist_lookup,
@@ -32,9 +33,12 @@ def prepare_folds():
     enrichment_lookup = m04c.build_enrichment_lookup(hist_enrich)
     meta['start_date'] = pd.to_datetime(meta['start_date'])
 
-    # ── Exclude blitz/rapid side events (not useful for logistical planning) ──
+    # ── Exclude quick-chess side events (not useful for logistical planning).
+    # Shared pattern: shared.side_events — the old narrow copy here kept
+    # grading Action and G-format events the model itself flags as surge
+    # events, polluting fold metrics with a different registration regime.
     blitz_mask = summary['family'].str.contains(
-        r'Blitz|Rapid|Bullet|Bughouse|Armageddon', case=False, na=False, regex=True
+        SIDE_EVENT_PATTERN, case=False, na=False, regex=True
     )
     excluded = summary[blitz_mask]['family'].unique()
     if len(excluded) > 0:

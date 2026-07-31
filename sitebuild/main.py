@@ -129,9 +129,12 @@ def main():
         'George Washington Saturday Octos', 'George Washington Sunday Octos',
     ])
 
-    # Exclude all blitz/rapid side events (not useful for logistical planning)
+    # Exclude all quick-chess side events (not useful for logistical
+    # planning). Shared pattern: shared.side_events (also covers Action and
+    # G-format events, which the old narrow copy missed).
+    from shared.side_events import SIDE_EVENT_PATTERN
     blitz_families = summary[summary['family'].str.contains(
-        r'Blitz|Rapid|Bullet|Bughouse|Armageddon', case=False, na=False, regex=True
+        SIDE_EVENT_PATTERN, case=False, na=False, regex=True
     )]['family'].unique().tolist()
     EXCLUDE_FAMILIES.extend(blitz_families)
     print(f"Excluding {len(blitz_families)} blitz/rapid families")

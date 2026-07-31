@@ -64,15 +64,18 @@ _EARLY_BIRD_PHRASE_RE = re.compile(
 # Event date heuristic. Tolerates CCA's multi-schedule headers, e.g.
 # "May 21-25, 22-25, 23-25, or 24-25, 2026" or "July 17-19 or 18-19, 2026"
 # or the simple "May 5, 2026". We capture month + FIRST day, then accept
-# up to 80 chars of glue (digits, dashes, commas, "or", whitespace) before
-# the 4-digit year. The non-greedy gap stops at the first plausible year.
+# glue (digits, dashes, commas, "or", whitespace, one short parenthetical
+# like "(Thanksgiving Weekend)") before the 4-digit year. The dash class
+# includes \x96/\x97: cp1252 en/em-dash bytes survive as those control
+# chars when a flyer is decoded as latin-1 (ncc26 was the first to hit
+# this). The non-greedy gap stops at the first plausible year.
 _EVENT_DATE_RE = re.compile(
     r'(?P<month>'
     r'January|February|March|April|May|June|July|August|September|October|November|December'
     r'|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec'
     r')\.?'
     r'\s+(?P<day>\d{1,2})'
-    r'(?:[\s\-–,]|\d|or)*?'
+    r'(?:[\s\-–—,\x96\x97]|\d|or|\([^()]{0,40}\))*?'
     r'(?P<year>20\d{2})',
     re.IGNORECASE,
 )

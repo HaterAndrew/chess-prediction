@@ -116,6 +116,10 @@ def determine_status(row, event_date, event_end_date=None, registration_close=No
     in_progress: online registration has closed, event still running — the
           live scrape is the count, the model no longer predicts forward.
     complete: event is over (today > end)
+
+    This is THE production status rule. model.legacy_site.determine_status
+    is a frozen pre-04d variant kept only for its pinned integration test;
+    the difference is intentional (resolved 2026-07-31).
     """
     if event_date is None:
         return 'unknown'

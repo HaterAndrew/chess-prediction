@@ -1,13 +1,13 @@
 """The ranked check catalog (data_health.scan, verbatim -- severity
 sections CRITICAL/HIGH/MEDIUM/INFO are marked inline).
 """
-import re
 from collections import defaultdict
 
 from tournament_aliases import is_wo_excluded
 
 from healthcheck.context import _canon
 from healthcheck.report import HealthReport
+from shared.side_events import SIDE_EVENT_RE
 
 
 # Gap (in days) between the last two chart points that counts as "large" for the
@@ -32,7 +32,9 @@ PERF_FROZEN_CURVE_RATIO = 0.60
 WITHDRAWAL_GAP_WARN_FRAC = 0.10
 
 # Side events that are intentionally not predicted as standalone tournaments.
-_BLITZ_RE = re.compile(r"Blitz|Rapid|Bullet|Bughouse|Armageddon", re.IGNORECASE)
+# Shared definition: shared.side_events (kept under the local name the scan
+# code reads).
+_BLITZ_RE = SIDE_EVENT_RE
 
 
 def _is_roster_pending(t):

@@ -112,6 +112,29 @@ def test_equal_fees_rejected_as_no_price_hike():
     assert "not less than next tier" in out["eb_demoted_reason"]
 
 
+def test_event_start_survives_parenthetical_and_cp1252_dashes():
+    """The ncc26 header shape (2026-07-31): abbreviated month with a period,
+    a split schedule joined by "or", a parenthetical between the day ranges
+    and the year, and en dashes that arrive as raw \\x96 bytes when a cp1252
+    flyer is decoded as latin-1. All three variants must yield the FIRST
+    start day."""
+    from fees.parse import _guess_event_start
+
+    variants = [
+        # latin-1 decode: 0x96 survives as the C1 control char
+        "Example Chess Congress Nov. 27\x9629 or 28\x9629 "
+        "(Thanksgiving Weekend), 2026, Anytown Hotel",
+        # cp1252/utf-8 decode: proper en dash
+        "Example Chess Congress Nov. 27–29 or 28–29 "
+        "(Thanksgiving Weekend), 2026, Anytown Hotel",
+        # no parenthetical regression check (the pre-fix shape still works)
+        "Example Open May 21-25, 22-25, 23-25, or 24-25, 2026",
+    ]
+    assert _guess_event_start(f"<html><body>{variants[0]}</body></html>", 2026) == "2026-11-27"
+    assert _guess_event_start(f"<html><body>{variants[1]}</body></html>", 2026) == "2026-11-27"
+    assert _guess_event_start(f"<html><body>{variants[2]}</body></html>", 2026) == "2026-05-21"
+
+
 # ── v5 Cat F: code-table parity against the real scraped corpus ─────────
 
 def test_every_scraped_2026_code_is_mapped_or_allowlisted():

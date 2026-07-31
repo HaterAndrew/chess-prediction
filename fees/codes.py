@@ -83,17 +83,20 @@ UNMAPPED_CODES = {
 }
 
 # Blind-discovery probe list (moved verbatim from scrape_fees.TOURNAMENT_CODES).
-# KNOWN DISCREPANCIES vs FAMILY_TO_CODE, recorded not fixed (changing the list
-# changes which URLs get probed — a behavior decision, parked in the ledger):
-#   "lib"  — FAMILY_TO_CODE says Liberty Bell Open = "lbo"
-#   "scc"  — annotated "Southern California Chess" upstream; the authoritative
-#            mapping says scc = Southern Class
-#   "cco"  — annotated "Cherry Blossom / Continental Chess"; authoritative
-#            mapping says cco = Central California Open
-#   "pho", "uso", "lvo", "dc" — probe-only codes with no mapped family
+# The parked discrepancies vs FAMILY_TO_CODE were resolved 2026-07-31 by
+# probing chesstour.com/<code>26.htm live:
+#   "lib" 404s, "lbo" is the live Liberty Bell flyer — FAMILY_TO_CODE was
+#     right; the probe list carried a dead code.
+#   "scc" flyer titles itself "Southern Class" — the stale "Southern
+#     California Chess" annotation was wrong, mapping confirmed.
+#   "cco" flyer titles itself "Central California Open" — the "Cherry
+#     Blossom" annotation was wrong, mapping confirmed.
+#   "pho"/"uso"/"lvo"/"dc" all 404 with no mapped family (DC Open's
+#     authoritative code is "dco") — removed; a newly posted event reaches
+#     the scraper through blind discovery from the chessevents listing.
 FLYER_PROBE_CODES = [
-    "wo", "chio", "nao", "lib", "ncc", "aco", "scc",
-    "pho", "uso", "eo", "ao", "lvo", "cco", "dc",
+    "wo", "chio", "nao", "lbo", "ncc", "aco", "scc",
+    "eo", "ao", "cco",
 ]
 
 # lowercase scraped tournament name (incl. spelling variants) ->

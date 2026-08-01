@@ -1,6 +1,6 @@
 {
-  "generated": "2026-07-31",
-  "scanned_at": "2026-07-31T07:05:09",
+  "generated": "2026-08-01",
+  "scanned_at": "2026-08-01T04:43:57",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -107,7 +107,7 @@
     {
       "severity": "INFO",
       "mode": "walkin-global-fallback",
-      "family": "122 cards",
+      "family": "121 cards",
       "message": "walk-in multiplier used the global 'estimate' fallback (no family-specific stats)"
     }
   ]

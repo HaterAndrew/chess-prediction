@@ -1,11 +1,16 @@
 {
-  "generated": "2026-07-31 07:29:24",
-  "count": 1,
-  "total_occurrences": 1,
+  "generated": "2026-08-01 04:36:12",
+  "count": 2,
+  "total_occurrences": 2,
   "warnings": [
     {
-      "step": "Enrichment: fees",
-      "text": "fee-merge skipped National Chess Congress: cannot verify flyer ncc26 date (metadata='2026-11-27', flyer=nan)",
+      "step": "Validate scraped data",
+      "text": "6 upcoming 2026 event(s) have no flyer scraped yet \u2014 early_bird_deadline unknown, model uses neutral feature values (fees + EB fill automatically once chesstour publishes the flyer; update_metadata.py can estimate from spike patterns meanwhile): Central California Open, Eastern Chess Congress (in New Jersey), Eastern Class Championships (in Connecticut), Eastern Open, Midwest Class Championships, North American Blitz Championship",
+      "count": 1
+    },
+    {
+      "step": "Refresh tournament summary",
+      "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 live predictions still run from scrape data, but the training corpus is frozen: newly scraped events carry no registration timestamps, so they can never join model training or 04e grading, and early-bird spike features stay absent. Re-export from the CCA admin.",
       "count": 1
     }
   ]

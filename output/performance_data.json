@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-01",
+  "generated": "2026-08-02",
   "model": "N5v4_Final",
   "n_tournaments": 21,
   "grade": "B+",
@@ -1790,7 +1790,7 @@
     }
   ],
   "n_corpus_tournaments": 779,
-  "n_entry_records": 194815,
+  "n_entry_records": 194847,
   "window_engine": {
     "n": 217,
     "n_events": 133,
@@ -1800,7 +1800,7 @@
     "by_day": {
       "0": {
         "n": 133,
-        "mae_pct": 9.06,
+        "mae_pct": 9.05,
         "ci_coverage": 91.7
       },
       "1": {
@@ -1832,7 +1832,7 @@
       },
       "2026": {
         "n": 38,
-        "mae_pct": 9.78,
+        "mae_pct": 9.74,
         "ci_coverage": 63.2
       }
     },
@@ -1845,7 +1845,7 @@
     "description": "T=0 lognormal ratio decayed toward the live count through the post-start online-registration window, then plausibility-clamped \u2014 the chain 04d uses once a multi-schedule event has begun.",
     "horizon_note": "Graded 0-2 days into the post-start registration window, a shorter and easier horizon than the T-14/7/3 the overall grade uses. Not comparable to it.",
     "grade": "A-",
-    "grade_detail": "worst of window days 0-1 \u2192 day 0: MAE 9.06%, CI coverage 91.7% (n=133)"
+    "grade_detail": "worst of window days 0-1 \u2192 day 0: MAE 9.05%, CI coverage 91.7% (n=133)"
   },
   "years": {
     "2022": {

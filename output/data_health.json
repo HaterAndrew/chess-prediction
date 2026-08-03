@@ -1,19 +1,13 @@
 {
-  "generated": "2026-08-02",
-  "scanned_at": "2026-08-02T04:47:37",
+  "generated": "2026-08-03",
+  "scanned_at": "2026-08-03T04:55:57",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
-    "MEDIUM": 1,
+    "MEDIUM": 0,
     "INFO": 17
   },
   "findings": [
-    {
-      "severity": "MEDIUM",
-      "mode": "large-withdrawal-gap",
-      "family": "Kings Island Open",
-      "message": "1 of 5 scraped entries withdrawn (20%) as of 2026-08-02"
-    },
     {
       "severity": "INFO",
       "mode": "roster-pending",

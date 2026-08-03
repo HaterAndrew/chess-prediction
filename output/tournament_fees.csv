@@ -31,6 +31,11 @@ kio26,2026,2026-11-13,,,138,2026-11-10,160,,False,"only one date-bound tier ($13
 kiob26,2026,2026-11-14,,,,,48,,False,,https://www.chesstour.com/kiob26.htm
 lao26,2026,2026-11-06,,,128,2026-11-03,,2000,False,"only one date-bound tier ($128 by 2026-11-03, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/lao26.htm
 laob26,2026,2026-11-07,,,,,48,,False,,https://www.chesstour.com/laob26.htm
+2022 Liberty Bell Open,2022,2022-01-14,,,112,2022-01-03,18,20000,False,"deadline 2022-01-03 is T-11 (< T-14) vs event 2022-01-14 — advance/onsite step, not early bird",https://www.chesstour.com/lbo22.htm
+2023 Liberty Bell Open,2023,2023-01-13,,,123,2023-01-11,,25000,False,"only one date-bound tier ($123 by 2023-01-11, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/lbo23.htm
+lbo24,2024,2024-01-12,,,138,2024-01-10,,25000,False,"only one date-bound tier ($138 by 2024-01-10, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/lbo24.htm
+lbo25,2025,2025-01-17,,,138,2025-01-15,160,25000,False,"only one date-bound tier ($138 by 2025-01-15, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/lbo25.htm
+lbo26,2026,2026-01-16,148,2026-01-02,158,2026-01-15,180,25000,False,,https://www.chesstour.com/lbo26.htm
 Midwest Class,2026,2026-10-09,,,118,2026-10-06,140,,False,"only one date-bound tier ($118 by 2026-10-06, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/mwcc26.htm
 mwccb26,2026,2026-10-10,,,,,48,,False,,https://www.chesstour.com/mwccb26.htm
 NORTH AMERICAN OPEN CHESS TOURNAMENT,2022,2022-12-26,245,2022-09-20,275,2022-12-23,,125000,False,,https://www.chesstour.com/nao22.htm
@@ -42,8 +47,8 @@ North American Blit,2026,2026-12-29,,,,,50,,False,,https://www.chesstour.com/nao
 National Chess Congress,2022,,,,138,2022-11-23,160,,False,could not parse event_start from flyer,https://www.chesstour.com/ncc22.htm
 ncc23,2023,,,,138,2023-11-22,160,,False,could not parse event_start from flyer,https://www.chesstour.com/ncc23.htm
 ncc24,2024,2024-12-01,,,138,2024-11-27,160,,False,"only one date-bound tier ($138 by 2024-11-27, T-4) — advance/onsite step, not early bird",https://www.chesstour.com/ncc24.htm
-ncc25,2025,,,,138,2025-11-25,160,,False,could not parse event_start from flyer,https://www.chesstour.com/ncc25.htm
-ncc26,2026,,,,138,2026-11-24,160,,False,could not parse event_start from flyer,https://www.chesstour.com/ncc26.htm
+ncc25,2025,2025-11-28,,,138,2025-11-25,160,,False,"only one date-bound tier ($138 by 2025-11-25, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/ncc25.htm
+ncc26,2026,2026-11-27,,,138,2026-11-24,160,,False,"only one date-bound tier ($138 by 2026-11-24, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/ncc26.htm
 National Chess Congress Blitz!,2026,2026-11-28,,,,,48,,False,,https://www.chesstour.com/nccb26.htm
 nysc26,2026,2026-09-04,,,118,2026-09-01,130,200,False,"only one date-bound tier ($118 by 2026-09-01, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/nysc26.htm
 pco26,2026,2026-08-01,,,158,2026-07-28,180,,False,"only one date-bound tier ($158 by 2026-07-28, T-4) — advance/onsite step, not early bird",https://www.chesstour.com/pco26.htm

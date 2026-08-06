@@ -2,7 +2,7 @@
 -r requirements.txt
 # Local chart generation in 01_data_prep.py (CI takes the reconcile-only path
 # when the registration export is absent, so it never imports these):
-matplotlib==3.10.8
+matplotlib==3.11.1
 seaborn==0.13.2
 # PDF whitepaper generator (manual tool: model_whitepaper.py):
 reportlab==4.4.10

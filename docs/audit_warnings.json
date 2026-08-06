@@ -1,7 +1,7 @@
 {
-  "generated": "2026-08-05 04:30:02",
-  "count": 3,
-  "total_occurrences": 3,
+  "generated": "2026-08-06 04:31:20",
+  "count": 2,
+  "total_occurrences": 2,
   "warnings": [
     {
       "step": "Validate scraped data",
@@ -11,11 +11,6 @@
     {
       "step": "Refresh tournament summary",
       "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 live predictions still run from scrape data, but the training corpus is frozen: newly scraped events carry no registration timestamps, so they can never join model training or 04e grading, and early-bird spike features stay absent. Re-export from the CCA admin.",
-      "count": 1
-    },
-    {
-      "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health: 1 MEDIUM finding(s) \u2014 see output/data_health.json",
       "count": 1
     }
   ]

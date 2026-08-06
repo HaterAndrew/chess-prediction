@@ -1,78 +1,4 @@
 run_timestamp,family,status,current_count,point_estimate,ci_lower,ci_upper,days_remaining
-2026-05-07 04:46:12,Chicago Open,live,441,881,845,917,14
-2026-05-07 04:46:12,Hartford Open,live,29,221,209,235,29
-2026-05-07 04:46:12,Cleveland Open,live,24,213,188,242,29
-2026-05-07 04:46:12,New York State Open,live,23,120,81,179,43
-2026-05-07 04:46:12,DC International,live,14,95,89,103,49
-2026-05-07 04:46:12,World Open lower sections,live,12,141,100,198,50
-2026-05-07 04:46:12,DC Open,live,9,268,243,297,50
-2026-05-07 04:46:12,World Open Under 13 Championship,live,10,110,77,145,53
-2026-05-07 04:46:12,World Open top 6 sections,live,136,1080,957,1219,55
-2026-05-07 04:46:12,Chicago Class,live,3,276,210,364,71
-2026-05-07 04:46:12,Pittsburgh Open,live,5,173,124,240,71
-2026-05-07 04:46:12,Southern Open,live,4,232,183,282,71
-2026-05-07 04:46:12,Bradley Open,live,4,257,195,338,78
-2026-05-07 04:46:12,Pacific Coast Open,live,9,393,295,524,85
-2026-05-07 04:46:12,Continental Open,live,2,283,252,317,98
-2026-05-07 04:46:12,Central California Open,live,2,175,144,203,99
-2026-05-07 04:46:12,Atlantic Open,live,2,316,251,395,106
-2026-05-07 04:46:12,Indianapolis Open,live,0,186,175,198,106
-2026-05-07 04:46:12,New York State Championship,live,6,304,237,347,120
-2026-05-07 04:46:12,Midwest Class Championships,live,2,313,296,338,155
-2026-05-07 04:46:12,Eastern Class Championships (in Connecticut),live,1,100,70,130,162
-2026-05-07 04:46:12,Eastern Chess Congress (in New Jersey),live,1,100,70,130,169
-2026-05-07 04:46:12,Los Angeles Open,live,1,365,289,413,183
-2026-05-07 04:46:12,Kings Island Open,live,0,346,318,364,190
-2026-05-07 04:46:12,National Chess Congress,live,1,623,572,677,204
-2026-05-07 04:46:12,Boston Chess Congress,complete,359,359,359,359,0
-2026-05-07 04:46:12,Liberty Bell Open,complete,564,564,564,564,0
-2026-05-07 04:46:12,Golden State Open,complete,387,387,387,387,0
-2026-05-07 04:46:12,George Washington Open,complete,209,209,209,209,0
-2026-05-07 04:46:12,Southwest Class Championships,complete,492,492,492,492,0
-2026-05-07 04:46:12,Atlantic City Open,complete,401,401,401,401,0
-2026-05-07 04:46:12,Western Class Championships,complete,318,318,318,318,0
-2026-05-07 04:46:12,Mid-America Open,complete,200,200,200,200,0
-2026-05-07 04:46:12,New York State High School Championship,complete,198,198,198,198,0
-2026-05-07 04:46:12,New York State Senior Championship With Young Adult Mi,complete,61,61,61,61,0
-2026-05-07 04:46:12,New York State Scholastic Championships Grades K-8,complete,1753,1753,1753,1753,0
-2026-05-07 04:46:12,Southern Class,complete,195,195,195,195,0
-2026-05-08 04:25:08,Chicago Open,live,456,884,850,920,13
-2026-05-08 04:25:08,Hartford Open,live,30,243,229,257,28
-2026-05-08 04:25:08,Cleveland Open,live,25,225,198,256,28
-2026-05-08 04:25:08,New York State Open,live,25,122,82,181,42
-2026-05-08 04:25:08,DC International,live,14,94,87,101,48
-2026-05-08 04:25:08,World Open lower sections,live,12,140,99,197,49
-2026-05-08 04:25:08,DC Open,live,9,267,243,294,49
-2026-05-08 04:25:08,World Open Under 13 Championship,live,11,110,77,145,52
-2026-05-08 04:25:08,World Open top 6 sections,live,142,1098,974,1237,54
-2026-05-08 04:25:08,Chicago Class,live,3,276,210,363,70
-2026-05-08 04:25:08,Pittsburgh Open,live,5,172,124,238,70
-2026-05-08 04:25:08,Southern Open,live,4,232,183,282,70
-2026-05-08 04:25:08,Bradley Open,live,4,256,195,337,77
-2026-05-08 04:25:08,Pacific Coast Open,live,9,391,295,518,84
-2026-05-08 04:25:08,Continental Open,live,2,283,252,317,97
-2026-05-08 04:25:08,Central California Open,live,2,175,144,203,98
-2026-05-08 04:25:08,Atlantic Open,live,2,316,251,395,105
-2026-05-08 04:25:08,Indianapolis Open,live,0,186,175,198,105
-2026-05-08 04:25:08,New York State Championship,live,6,304,237,347,119
-2026-05-08 04:25:08,Midwest Class Championships,live,2,313,296,338,154
-2026-05-08 04:25:08,Eastern Class Championships (in Connecticut),live,1,100,70,130,161
-2026-05-08 04:25:08,Eastern Chess Congress (in New Jersey),live,1,100,70,130,168
-2026-05-08 04:25:08,Los Angeles Open,live,1,365,289,413,182
-2026-05-08 04:25:08,Kings Island Open,live,0,346,318,364,189
-2026-05-08 04:25:08,National Chess Congress,live,1,623,572,677,203
-2026-05-08 04:25:08,Boston Chess Congress,complete,359,359,359,359,0
-2026-05-08 04:25:08,Liberty Bell Open,complete,564,564,564,564,0
-2026-05-08 04:25:08,Golden State Open,complete,387,387,387,387,0
-2026-05-08 04:25:08,George Washington Open,complete,209,209,209,209,0
-2026-05-08 04:25:08,Southwest Class Championships,complete,492,492,492,492,0
-2026-05-08 04:25:08,Atlantic City Open,complete,401,401,401,401,0
-2026-05-08 04:25:08,Western Class Championships,complete,318,318,318,318,0
-2026-05-08 04:25:08,Mid-America Open,complete,200,200,200,200,0
-2026-05-08 04:25:08,New York State High School Championship,complete,198,198,198,198,0
-2026-05-08 04:25:08,New York State Senior Championship With Young Adult Mi,complete,61,61,61,61,0
-2026-05-08 04:25:08,New York State Scholastic Championships Grades K-8,complete,1753,1753,1753,1753,0
-2026-05-08 04:25:08,Southern Class,complete,195,195,195,195,0
 2026-05-09 04:35:00,Chicago Open,live,467,884,851,919,12
 2026-05-09 04:35:00,Hartford Open,live,34,249,234,265,27
 2026-05-09 04:35:00,Cleveland Open,live,26,226,199,256,27
@@ -4070,3 +3996,42 @@ run_timestamp,family,status,current_count,point_estimate,ci_lower,ci_upper,days_
 2026-08-05 04:30:02,Cleveland Open,complete,179,179,179,179,0
 2026-08-05 04:30:02,Southern Open,complete,206,206,206,206,0
 2026-08-05 04:30:02,World Open Under 13 Championship,complete,82,82,82,82,0
+2026-08-06 04:31:20,Continental Open,live,116,301,274,332,7
+2026-08-06 04:31:20,Central California Open,live,71,172,164,179,8
+2026-08-06 04:31:20,Atlantic Open,live,64,248,224,274,15
+2026-08-06 04:31:20,Indianapolis Open,live,48,188,177,199,15
+2026-08-06 04:31:20,New York State Championship,live,42,321,280,368,29
+2026-08-06 04:31:20,Midwest Class Championships,live,8,313,296,338,64
+2026-08-06 04:31:20,Eastern Class Championships (in Connecticut),live,8,221,198,246,71
+2026-08-06 04:31:20,Eastern Chess Congress (in New Jersey),live,7,469,404,513,78
+2026-08-06 04:31:20,Los Angeles Open,live,3,365,289,413,92
+2026-08-06 04:31:20,Kings Island Open,live,6,346,318,364,99
+2026-08-06 04:31:20,National Chess Congress,live,5,623,572,677,113
+2026-08-06 04:31:20,North American Open,live,28,1081,946,1199,142
+2026-08-06 04:31:20,Eastern Open,live,0,387,367,404,142
+2026-08-06 04:31:20,Boston Chess Congress,complete,359,359,359,359,0
+2026-08-06 04:31:20,Liberty Bell Open,complete,564,564,564,564,0
+2026-08-06 04:31:20,Golden State Open,complete,387,387,387,387,0
+2026-08-06 04:31:20,George Washington Open,complete,209,209,209,209,0
+2026-08-06 04:31:20,Southwest Class Championships,complete,492,492,492,492,0
+2026-08-06 04:31:20,Atlantic City Open,complete,424,424,424,424,0
+2026-08-06 04:31:20,Western Class Championships,complete,318,318,318,318,0
+2026-08-06 04:31:20,Mid-America Open,complete,200,200,200,200,0
+2026-08-06 04:31:20,New York State High School Championship,complete,198,198,198,198,0
+2026-08-06 04:31:20,New York State Senior Championship With Young Adult Mi,complete,61,61,61,61,0
+2026-08-06 04:31:20,New York State Scholastic Championships Grades K-8,complete,1753,1753,1753,1753,0
+2026-08-06 04:31:20,Chicago Open,complete,917,917,917,917,0
+2026-08-06 04:31:20,World Open top 6 sections,complete,1066,1066,1066,1066,0
+2026-08-06 04:31:20,World Open lower sections,complete,93,93,93,93,0
+2026-08-06 04:31:20,DC International,complete,107,107,107,107,0
+2026-08-06 04:31:20,Southern Class Championships,complete,195,195,195,195,0
+2026-08-06 04:31:20,New York State Open,complete,109,109,109,109,0
+2026-08-06 04:31:20,DC Open,complete,188,188,188,188,0
+2026-08-06 04:31:20,Chicago Class,complete,288,288,288,288,0
+2026-08-06 04:31:20,Bradley Open,complete,209,209,209,209,0
+2026-08-06 04:31:20,Hartford Open,complete,206,206,206,206,0
+2026-08-06 04:31:20,Pittsburgh Open,complete,170,170,170,170,0
+2026-08-06 04:31:20,Pacific Coast Open,complete,394,394,394,394,0
+2026-08-06 04:31:20,Cleveland Open,complete,179,179,179,179,0
+2026-08-06 04:31:20,Southern Open,complete,206,206,206,206,0
+2026-08-06 04:31:20,World Open Under 13 Championship,complete,82,82,82,82,0

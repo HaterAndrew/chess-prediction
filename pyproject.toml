@@ -13,6 +13,11 @@ python_functions = ["test_*"]
 pythonpath = ["."]
 
 [tool.ruff.lint]
+# Pin the pre-0.16 default rule set: ruff 0.16 widened its defaults, which
+# turned the 0.15.7 -> 0.16.1 bump into 278 new findings on an unchanged tree.
+# Widening lint scope should be a deliberate decision, not a version side
+# effect — opt into new rule families here when actually wanted.
+select = ["E4", "E7", "E9", "F"]
 # E701: compact one-line `if cond: return` used throughout the pipeline.
 ignore = ["E701"]
 

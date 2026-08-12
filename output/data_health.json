@@ -1,19 +1,13 @@
 {
-  "generated": "2026-08-11",
-  "scanned_at": "2026-08-11T03:19:54",
+  "generated": "2026-08-12",
+  "scanned_at": "2026-08-12T03:37:46",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
-    "MEDIUM": 1,
+    "MEDIUM": 0,
     "INFO": 17
   },
   "findings": [
-    {
-      "severity": "MEDIUM",
-      "mode": "large-withdrawal-gap",
-      "family": "Los Angeles Open",
-      "message": "1 of 4 scraped entries withdrawn (25%) as of 2026-08-11"
-    },
     {
       "severity": "INFO",
       "mode": "roster-pending",

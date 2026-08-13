@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-12",
-  "scanned_at": "2026-08-12T03:37:46",
+  "generated": "2026-08-13",
+  "scanned_at": "2026-08-13T03:41:22",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -23,12 +23,6 @@
     {
       "severity": "INFO",
       "mode": "roster-pending",
-      "family": "Continental Open",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
       "family": "Indianapolis Open",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
@@ -37,6 +31,12 @@
       "mode": "roster-pending",
       "family": "New York State Championship",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Continental Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {
       "severity": "INFO",

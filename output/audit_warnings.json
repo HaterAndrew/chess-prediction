@@ -1,11 +1,11 @@
 {
-  "generated": "2026-08-13 03:33:19",
+  "generated": "2026-08-14 03:30:40",
   "count": 2,
   "total_occurrences": 2,
   "warnings": [
     {
       "step": "Validate scraped data",
-      "text": "6 upcoming 2026 event(s) have no flyer scraped yet \u2014 early_bird_deadline unknown, model uses neutral feature values (fees + EB fill automatically once chesstour publishes the flyer; update_metadata.py can estimate from spike patterns meanwhile): Central California Open, Eastern Chess Congress (in New Jersey), Eastern Class Championships (in Connecticut), Eastern Open, Midwest Class Championships, North American Blitz Championship",
+      "text": "5 upcoming 2026 event(s) have no flyer scraped yet \u2014 early_bird_deadline unknown, model uses neutral feature values (fees + EB fill automatically once chesstour publishes the flyer; update_metadata.py can estimate from spike patterns meanwhile): Eastern Chess Congress (in New Jersey), Eastern Class Championships (in Connecticut), Eastern Open, Midwest Class Championships, North American Blitz Championship",
       "count": 1
     },
     {

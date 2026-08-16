@@ -763,17 +763,17 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 4414,2026 Pittsburgh Open,Pittsburgh Open,2026.0,170,True,2,2026-02-20 19:28:19,2026-07-19 00:00:00,False,False,2026-03-11 22:24:42,False,69.0,2.0,False
 4415,2026 Pacific Coast Open,Pacific Coast Open,2026.0,394,True,3,2026-03-03 22:56:45,2026-07-30 00:00:00,False,False,2026-03-10 19:06:24,False,65.0,2.0,False
 4417,2026 Cleveland Open,Cleveland Open,2026.0,179,True,2,2026-03-01 19:24:30,2026-06-07 00:00:00,False,False,2026-03-16 21:23:52,False,71.0,1.0,False
-4418,2026 Atlantic Open,Atlantic Open,2026.0,112,False,0,,,False,False,,False,,,True
-4419,2026 Central California Open,Central California Open,2026.0,165,False,0,,,False,False,,False,,,True
+4418,2026 Atlantic Open,Atlantic Open,2026.0,122,False,0,,,False,False,,False,,,True
+4419,2026 Central California Open,Central California Open,2026.0,169,False,0,,,False,False,,False,,,True
 4420,2026 Continental Open,Continental Open,2026.0,266,False,0,,,False,False,,False,,,True
-4421,2026 Eastern Chess Congress (in New Jersey),Eastern Chess Congress,2026.0,9,False,0,,,False,False,,False,,,True
+4421,2026 Eastern Chess Congress (in New Jersey),Eastern Chess Congress,2026.0,10,False,0,,,False,False,,False,,,True
 4422,2026 Eastern Class Championships (in Connecticut),Eastern Class Championships,2026.0,9,False,0,,,False,False,,False,,,True
-4423,2026 Indianapolis Open,Indianapolis Open,2026.0,80,False,0,,,False,False,,False,,,True
+4423,2026 Indianapolis Open,Indianapolis Open,2026.0,93,False,0,,,False,False,,False,,,True
 4424,2026 Kings Island Open,Kings Island Open,2026.0,8,False,0,,,False,False,,False,,,True
-4425,2026 Los Angeles Open,Los Angeles Open,2026.0,5,False,0,,,False,False,,False,,,True
+4425,2026 Los Angeles Open,Los Angeles Open,2026.0,6,False,0,,,False,False,,False,,,True
 4426,2026 Midwest Class Championships,Midwest Class Championships,2026.0,12,False,0,,,False,False,,False,,,True
 4427,2026 National Chess Congress,National Chess Congress,2026.0,9,False,0,,,False,False,,False,,,True
-4428,2026 New York State Championship,New York State Championship,2026.0,72,False,0,,,False,False,,False,,,True
+4428,2026 New York State Championship,New York State Championship,2026.0,77,False,0,,,False,False,,False,,,True
 4429,2026 North American Blitz Championship,North American Blitz Championship,2026.0,6,False,0,,,False,False,,False,,,True
 4430,2026 North American Open,North American Open,2026.0,42,False,0,,,False,False,,False,,,True
 4431,2026 Southern Open,Southern Open,2026.0,206,False,0,,,False,False,,False,,,True

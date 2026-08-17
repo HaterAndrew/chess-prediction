@@ -1,1302 +1,10 @@
 {
-  "generated": "2026-08-16",
-  "generated_time": "2026-08-15T22:36:21.313295-04:00",
+  "generated": "2026-08-17",
+  "generated_time": "2026-08-16T22:35:48.439815-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (40 family-years across 38 families).",
   "n_completed_in_training": 32,
   "tournaments": [
-    {
-      "family": "Central California Open",
-      "year": 2026,
-      "event_start": "2026-08-14",
-      "event_end": "2026-08-16",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": 98.0,
-      "onsite_fee": null,
-      "current_count": 169,
-      "gross_count": 169,
-      "withdrawal_count": 4,
-      "days_remaining": 0,
-      "point_estimate": 169,
-      "ci_lower": 169,
-      "ci_upper": 169,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 128,
-          "family": "Central California Open"
-        },
-        {
-          "year": 2022,
-          "count": 188,
-          "family": "Central California Open"
-        },
-        {
-          "year": 2023,
-          "count": 214,
-          "family": "Central California Open"
-        },
-        {
-          "year": 2024,
-          "count": 169,
-          "family": "Central California Open"
-        },
-        {
-          "year": 2025,
-          "count": 179,
-          "family": "Central California Open"
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          6,
-          0
-        ],
-        [
-          7,
-          0
-        ],
-        [
-          8,
-          0
-        ],
-        [
-          9,
-          1
-        ],
-        [
-          10,
-          1
-        ],
-        [
-          11,
-          1
-        ],
-        [
-          12,
-          1
-        ],
-        [
-          13,
-          1
-        ],
-        [
-          14,
-          1
-        ],
-        [
-          15,
-          1
-        ],
-        [
-          16,
-          1
-        ],
-        [
-          17,
-          1
-        ],
-        [
-          18,
-          1
-        ],
-        [
-          19,
-          1
-        ],
-        [
-          20,
-          1
-        ],
-        [
-          21,
-          1
-        ],
-        [
-          22,
-          1
-        ],
-        [
-          23,
-          1
-        ],
-        [
-          24,
-          1
-        ],
-        [
-          25,
-          1
-        ],
-        [
-          26,
-          1
-        ],
-        [
-          27,
-          1
-        ],
-        [
-          28,
-          1
-        ],
-        [
-          29,
-          1
-        ],
-        [
-          30,
-          1
-        ],
-        [
-          31,
-          1
-        ],
-        [
-          32,
-          2
-        ],
-        [
-          33,
-          2
-        ],
-        [
-          34,
-          3
-        ],
-        [
-          35,
-          3
-        ],
-        [
-          36,
-          3
-        ],
-        [
-          37,
-          3
-        ],
-        [
-          38,
-          3
-        ],
-        [
-          39,
-          3
-        ],
-        [
-          40,
-          3
-        ],
-        [
-          41,
-          3
-        ],
-        [
-          42,
-          3
-        ],
-        [
-          43,
-          3
-        ],
-        [
-          44,
-          3
-        ],
-        [
-          45,
-          3
-        ],
-        [
-          46,
-          3
-        ],
-        [
-          47,
-          3
-        ],
-        [
-          48,
-          3
-        ],
-        [
-          49,
-          3
-        ],
-        [
-          50,
-          3
-        ],
-        [
-          51,
-          3
-        ],
-        [
-          52,
-          3
-        ],
-        [
-          53,
-          3
-        ],
-        [
-          54,
-          3
-        ],
-        [
-          55,
-          3
-        ],
-        [
-          56,
-          3
-        ],
-        [
-          57,
-          3
-        ],
-        [
-          59,
-          3
-        ],
-        [
-          60,
-          3
-        ],
-        [
-          61,
-          3
-        ],
-        [
-          62,
-          3
-        ],
-        [
-          63,
-          3
-        ],
-        [
-          64,
-          3
-        ],
-        [
-          65,
-          3
-        ],
-        [
-          66,
-          3
-        ],
-        [
-          67,
-          3
-        ],
-        [
-          68,
-          3
-        ],
-        [
-          69,
-          3
-        ],
-        [
-          70,
-          3
-        ],
-        [
-          71,
-          3
-        ],
-        [
-          72,
-          3
-        ],
-        [
-          73,
-          3
-        ],
-        [
-          74,
-          3
-        ],
-        [
-          75,
-          3
-        ],
-        [
-          76,
-          3
-        ],
-        [
-          77,
-          3
-        ],
-        [
-          78,
-          3
-        ],
-        [
-          79,
-          3
-        ],
-        [
-          80,
-          3
-        ],
-        [
-          81,
-          3
-        ],
-        [
-          82,
-          3
-        ],
-        [
-          83,
-          3
-        ],
-        [
-          84,
-          3
-        ],
-        [
-          85,
-          3
-        ],
-        [
-          86,
-          4
-        ],
-        [
-          87,
-          4
-        ],
-        [
-          88,
-          5
-        ],
-        [
-          89,
-          5
-        ],
-        [
-          90,
-          5
-        ],
-        [
-          91,
-          6
-        ],
-        [
-          92,
-          6
-        ],
-        [
-          93,
-          6
-        ],
-        [
-          94,
-          6
-        ],
-        [
-          95,
-          6
-        ],
-        [
-          96,
-          8
-        ],
-        [
-          97,
-          8
-        ],
-        [
-          98,
-          8
-        ],
-        [
-          99,
-          9
-        ],
-        [
-          100,
-          11
-        ],
-        [
-          101,
-          11
-        ],
-        [
-          102,
-          11
-        ],
-        [
-          103,
-          12
-        ],
-        [
-          104,
-          12
-        ],
-        [
-          105,
-          13
-        ],
-        [
-          106,
-          16
-        ],
-        [
-          107,
-          17
-        ],
-        [
-          108,
-          17
-        ],
-        [
-          109,
-          17
-        ],
-        [
-          110,
-          17
-        ],
-        [
-          111,
-          17
-        ],
-        [
-          112,
-          17
-        ],
-        [
-          113,
-          18
-        ],
-        [
-          114,
-          19
-        ],
-        [
-          115,
-          20
-        ],
-        [
-          117,
-          21
-        ],
-        [
-          118,
-          23
-        ],
-        [
-          119,
-          25
-        ],
-        [
-          120,
-          25
-        ],
-        [
-          121,
-          29
-        ],
-        [
-          122,
-          31
-        ],
-        [
-          123,
-          31
-        ],
-        [
-          124,
-          36
-        ],
-        [
-          125,
-          38
-        ],
-        [
-          126,
-          41
-        ],
-        [
-          127,
-          45
-        ],
-        [
-          128,
-          50
-        ],
-        [
-          129,
-          59
-        ],
-        [
-          130,
-          65
-        ],
-        [
-          131,
-          69
-        ],
-        [
-          132,
-          74
-        ],
-        [
-          133,
-          89
-        ],
-        [
-          134,
-          97
-        ],
-        [
-          135,
-          106
-        ],
-        [
-          136,
-          115
-        ],
-        [
-          137,
-          124
-        ],
-        [
-          138,
-          138
-        ],
-        [
-          139,
-          150
-        ],
-        [
-          140,
-          161
-        ],
-        [
-          141,
-          165
-        ]
-      ],
-      "daily_start_date": "2026-03-28",
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0024
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0151
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0228
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0448
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0868
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1275
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.1674
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.2662
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.4764
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.7096
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9559
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live",
-      "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "in_progress_actual",
-      "pace_alert": {
-        "family": "Central California Open",
-        "status": "on_pace",
-        "actual": 169,
-        "expected": 181,
-        "deviation_pct": -6.6,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-7%)"
-      }
-    },
-    {
-      "family": "Continental Open",
-      "year": 2026,
-      "event_start": "2026-08-13",
-      "event_end": "2026-08-16",
-      "early_bird_deadline": null,
-      "early_bird_fee": null,
-      "regular_fee": 158.0,
-      "onsite_fee": 180.0,
-      "current_count": 266,
-      "gross_count": 266,
-      "withdrawal_count": 0,
-      "days_remaining": 0,
-      "point_estimate": 266,
-      "ci_lower": 266,
-      "ci_upper": 266,
-      "ci_level": 0.8,
-      "historical": [
-        {
-          "year": 2019,
-          "count": 274,
-          "family": "Continental Open"
-        },
-        {
-          "year": 2022,
-          "count": 321,
-          "family": "Continental Open"
-        },
-        {
-          "year": 2023,
-          "count": 312,
-          "family": "Continental Open"
-        },
-        {
-          "year": 2024,
-          "count": 244,
-          "family": "Continental Open"
-        },
-        {
-          "year": 2025,
-          "count": 265,
-          "family": "Continental Open"
-        }
-      ],
-      "daily_data": [
-        [
-          0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          6,
-          0
-        ],
-        [
-          7,
-          0
-        ],
-        [
-          8,
-          0
-        ],
-        [
-          9,
-          1
-        ],
-        [
-          10,
-          1
-        ],
-        [
-          11,
-          1
-        ],
-        [
-          12,
-          1
-        ],
-        [
-          13,
-          1
-        ],
-        [
-          14,
-          1
-        ],
-        [
-          15,
-          1
-        ],
-        [
-          16,
-          1
-        ],
-        [
-          17,
-          1
-        ],
-        [
-          18,
-          1
-        ],
-        [
-          19,
-          1
-        ],
-        [
-          20,
-          1
-        ],
-        [
-          21,
-          1
-        ],
-        [
-          22,
-          1
-        ],
-        [
-          23,
-          1
-        ],
-        [
-          24,
-          1
-        ],
-        [
-          25,
-          2
-        ],
-        [
-          26,
-          2
-        ],
-        [
-          27,
-          2
-        ],
-        [
-          28,
-          2
-        ],
-        [
-          29,
-          2
-        ],
-        [
-          30,
-          2
-        ],
-        [
-          31,
-          2
-        ],
-        [
-          32,
-          2
-        ],
-        [
-          33,
-          2
-        ],
-        [
-          34,
-          2
-        ],
-        [
-          35,
-          2
-        ],
-        [
-          36,
-          2
-        ],
-        [
-          37,
-          2
-        ],
-        [
-          38,
-          2
-        ],
-        [
-          39,
-          2
-        ],
-        [
-          40,
-          2
-        ],
-        [
-          41,
-          3
-        ],
-        [
-          42,
-          3
-        ],
-        [
-          43,
-          3
-        ],
-        [
-          44,
-          3
-        ],
-        [
-          46,
-          4
-        ],
-        [
-          47,
-          4
-        ],
-        [
-          48,
-          4
-        ],
-        [
-          49,
-          4
-        ],
-        [
-          50,
-          6
-        ],
-        [
-          51,
-          6
-        ],
-        [
-          52,
-          8
-        ],
-        [
-          53,
-          8
-        ],
-        [
-          54,
-          8
-        ],
-        [
-          55,
-          8
-        ],
-        [
-          56,
-          8
-        ],
-        [
-          57,
-          8
-        ],
-        [
-          58,
-          8
-        ],
-        [
-          59,
-          8
-        ],
-        [
-          60,
-          9
-        ],
-        [
-          61,
-          10
-        ],
-        [
-          62,
-          10
-        ],
-        [
-          63,
-          12
-        ],
-        [
-          64,
-          12
-        ],
-        [
-          65,
-          12
-        ],
-        [
-          66,
-          12
-        ],
-        [
-          67,
-          12
-        ],
-        [
-          68,
-          12
-        ],
-        [
-          69,
-          12
-        ],
-        [
-          70,
-          12
-        ],
-        [
-          71,
-          12
-        ],
-        [
-          72,
-          12
-        ],
-        [
-          73,
-          12
-        ],
-        [
-          74,
-          12
-        ],
-        [
-          75,
-          12
-        ],
-        [
-          76,
-          12
-        ],
-        [
-          77,
-          13
-        ],
-        [
-          78,
-          13
-        ],
-        [
-          79,
-          13
-        ],
-        [
-          80,
-          14
-        ],
-        [
-          81,
-          14
-        ],
-        [
-          82,
-          15
-        ],
-        [
-          83,
-          16
-        ],
-        [
-          84,
-          16
-        ],
-        [
-          85,
-          17
-        ],
-        [
-          86,
-          17
-        ],
-        [
-          87,
-          18
-        ],
-        [
-          88,
-          19
-        ],
-        [
-          89,
-          19
-        ],
-        [
-          90,
-          19
-        ],
-        [
-          91,
-          19
-        ],
-        [
-          92,
-          19
-        ],
-        [
-          93,
-          19
-        ],
-        [
-          94,
-          20
-        ],
-        [
-          95,
-          20
-        ],
-        [
-          96,
-          20
-        ],
-        [
-          97,
-          22
-        ],
-        [
-          98,
-          23
-        ],
-        [
-          99,
-          23
-        ],
-        [
-          100,
-          23
-        ],
-        [
-          101,
-          24
-        ],
-        [
-          102,
-          25
-        ],
-        [
-          104,
-          28
-        ],
-        [
-          105,
-          29
-        ],
-        [
-          106,
-          33
-        ],
-        [
-          107,
-          34
-        ],
-        [
-          108,
-          38
-        ],
-        [
-          109,
-          46
-        ],
-        [
-          110,
-          51
-        ],
-        [
-          111,
-          56
-        ],
-        [
-          112,
-          64
-        ],
-        [
-          113,
-          68
-        ],
-        [
-          114,
-          73
-        ],
-        [
-          115,
-          83
-        ],
-        [
-          116,
-          94
-        ],
-        [
-          117,
-          104
-        ],
-        [
-          118,
-          116
-        ],
-        [
-          119,
-          121
-        ],
-        [
-          120,
-          127
-        ],
-        [
-          121,
-          141
-        ],
-        [
-          122,
-          156
-        ],
-        [
-          123,
-          195
-        ],
-        [
-          124,
-          235
-        ],
-        [
-          125,
-          249
-        ],
-        [
-          126,
-          261
-        ],
-        [
-          127,
-          266
-        ],
-        [
-          128,
-          266
-        ]
-      ],
-      "daily_start_date": "2026-04-10",
-      "registration_curve": [
-        {
-          "days_before": 120,
-          "cumulative_pct": 0.0053
-        },
-        {
-          "days_before": 90,
-          "cumulative_pct": 0.0104
-        },
-        {
-          "days_before": 75,
-          "cumulative_pct": 0.0153
-        },
-        {
-          "days_before": 60,
-          "cumulative_pct": 0.0331
-        },
-        {
-          "days_before": 42,
-          "cumulative_pct": 0.0637
-        },
-        {
-          "days_before": 28,
-          "cumulative_pct": 0.1021
-        },
-        {
-          "days_before": 21,
-          "cumulative_pct": 0.1332
-        },
-        {
-          "days_before": 14,
-          "cumulative_pct": 0.2253
-        },
-        {
-          "days_before": 7,
-          "cumulative_pct": 0.3567
-        },
-        {
-          "days_before": 3,
-          "cumulative_pct": 0.571
-        },
-        {
-          "days_before": 1,
-          "cumulative_pct": 0.9539
-        },
-        {
-          "days_before": 0,
-          "cumulative_pct": 1.0
-        }
-      ],
-      "status": "live",
-      "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "in_progress_actual",
-      "pace_alert": {
-        "family": "Continental Open",
-        "status": "on_pace",
-        "actual": 266,
-        "expected": 263,
-        "deviation_pct": 1.2,
-        "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+1%)"
-      }
-    },
     {
       "family": "Atlantic Open",
       "year": 2026,
@@ -1307,13 +15,13 @@
       "early_bird_fee": null,
       "regular_fee": 148.0,
       "onsite_fee": null,
-      "current_count": 122,
-      "gross_count": 122,
+      "current_count": 141,
+      "gross_count": 141,
       "withdrawal_count": 0,
-      "days_remaining": 5,
-      "point_estimate": 237,
-      "ci_lower": 209,
-      "ci_upper": 268,
+      "days_remaining": 4,
+      "point_estimate": 242,
+      "ci_lower": 207,
+      "ci_upper": 283,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1862,6 +570,10 @@
         [
           131,
           122
+        ],
+        [
+          132,
+          141
         ]
       ],
       "daily_start_date": "2026-04-07",
@@ -1919,7 +631,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 131,
+        "count_at_same_point": 145,
         "final": 238
       },
       "low_confidence": false,
@@ -1928,11 +640,11 @@
       "pace_alert": {
         "family": "Atlantic Open",
         "status": "below_pace",
-        "actual": 122,
-        "expected": 164,
-        "deviation_pct": -25.8,
+        "actual": 141,
+        "expected": 186,
+        "deviation_pct": -24.1,
         "n_years": 4,
-        "message": "Registrations are 25.8% below 4-year at-this-point pace"
+        "message": "Registrations are 24.1% below 4-year at-this-point pace"
       }
     },
     {
@@ -1945,13 +657,13 @@
       "early_bird_fee": null,
       "regular_fee": 118.0,
       "onsite_fee": null,
-      "current_count": 93,
-      "gross_count": 93,
+      "current_count": 103,
+      "gross_count": 103,
       "withdrawal_count": 1,
-      "days_remaining": 5,
-      "point_estimate": 176,
-      "ci_lower": 157,
-      "ci_upper": 198,
+      "days_remaining": 4,
+      "point_estimate": 169,
+      "ci_lower": 146,
+      "ci_upper": 196,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2356,6 +1068,10 @@
         [
           95,
           92
+        ],
+        [
+          96,
+          102
         ]
       ],
       "daily_start_date": "2026-05-13",
@@ -2413,7 +1129,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 88,
+        "count_at_same_point": 104,
         "final": 187
       },
       "low_confidence": false,
@@ -2422,11 +1138,11 @@
       "pace_alert": {
         "family": "Indianapolis Open",
         "status": "on_pace",
-        "actual": 93,
-        "expected": 80,
-        "deviation_pct": 16.6,
+        "actual": 103,
+        "expected": 92,
+        "deviation_pct": 12.0,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+17%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+12%)"
       }
     },
     {
@@ -2439,13 +1155,13 @@
       "early_bird_fee": null,
       "regular_fee": 118.0,
       "onsite_fee": 130.0,
-      "current_count": 77,
-      "gross_count": 77,
+      "current_count": 81,
+      "gross_count": 81,
       "withdrawal_count": 1,
-      "days_remaining": 19,
-      "point_estimate": 325,
+      "days_remaining": 18,
+      "point_estimate": 324,
       "ci_lower": 285,
-      "ci_upper": 370,
+      "ci_upper": 368,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2994,6 +1710,10 @@
         [
           131,
           76
+        ],
+        [
+          132,
+          80
         ]
       ],
       "daily_start_date": "2026-04-07",
@@ -3051,7 +1771,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 81,
+        "count_at_same_point": 86,
         "final": 348
       },
       "low_confidence": false,
@@ -3060,11 +1780,11 @@
       "pace_alert": {
         "family": "New York State Championship",
         "status": "on_pace",
-        "actual": 77,
-        "expected": 68,
-        "deviation_pct": 14.1,
+        "actual": 81,
+        "expected": 72,
+        "deviation_pct": 12.5,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+12%)"
       }
     },
     {
@@ -3079,7 +1799,7 @@
       "current_count": 12,
       "gross_count": 12,
       "withdrawal_count": 0,
-      "days_remaining": 54,
+      "days_remaining": 53,
       "point_estimate": 313,
       "ci_lower": 296,
       "ci_upper": 338,
@@ -3567,6 +2287,10 @@
         [
           115,
           12
+        ],
+        [
+          116,
+          12
         ]
       ],
       "daily_start_date": "2026-04-23",
@@ -3629,10 +2353,10 @@
         "family": "Midwest Class Championships",
         "status": "on_pace",
         "actual": 12,
-        "expected": 10,
-        "deviation_pct": 17.1,
+        "expected": 11,
+        "deviation_pct": 9.1,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+17%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+9%)"
       }
     },
     {
@@ -3647,7 +2371,7 @@
       "current_count": 9,
       "gross_count": 9,
       "withdrawal_count": 0,
-      "days_remaining": 61,
+      "days_remaining": 60,
       "point_estimate": 221,
       "ci_lower": 198,
       "ci_upper": 246,
@@ -4135,6 +2859,10 @@
         [
           115,
           9
+        ],
+        [
+          116,
+          9
         ]
       ],
       "daily_start_date": "2026-04-23",
@@ -4206,7 +2934,7 @@
       "current_count": 10,
       "gross_count": 10,
       "withdrawal_count": 1,
-      "days_remaining": 68,
+      "days_remaining": 67,
       "point_estimate": 469,
       "ci_lower": 404,
       "ci_upper": 513,
@@ -4694,6 +3422,10 @@
         [
           115,
           9
+        ],
+        [
+          116,
+          9
         ]
       ],
       "daily_start_date": "2026-04-23",
@@ -4765,7 +3497,7 @@
       "current_count": 6,
       "gross_count": 6,
       "withdrawal_count": 0,
-      "days_remaining": 82,
+      "days_remaining": 81,
       "point_estimate": 365,
       "ci_lower": 289,
       "ci_upper": 413,
@@ -5225,6 +3957,10 @@
         [
           108,
           6
+        ],
+        [
+          109,
+          6
         ]
       ],
       "daily_start_date": "2026-04-30",
@@ -5287,10 +4023,10 @@
         "family": "Los Angeles Open",
         "status": "below_pace",
         "actual": 6,
-        "expected": 9,
-        "deviation_pct": -31.4,
+        "expected": 10,
+        "deviation_pct": -42.9,
         "n_years": 4,
-        "message": "Registrations are 31.4% below 4-year at-this-point pace"
+        "message": "Registrations are 42.9% below 4-year at-this-point pace"
       }
     },
     {
@@ -5305,7 +4041,7 @@
       "current_count": 8,
       "gross_count": 8,
       "withdrawal_count": 0,
-      "days_remaining": 89,
+      "days_remaining": 88,
       "point_estimate": 346,
       "ci_lower": 318,
       "ci_upper": 364,
@@ -5765,6 +4501,10 @@
         [
           108,
           8
+        ],
+        [
+          109,
+          8
         ]
       ],
       "daily_start_date": "2026-04-30",
@@ -5845,7 +4585,7 @@
       "current_count": 9,
       "gross_count": 9,
       "withdrawal_count": 0,
-      "days_remaining": 103,
+      "days_remaining": 102,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -6305,6 +5045,10 @@
         [
           108,
           9
+        ],
+        [
+          109,
+          9
         ]
       ],
       "daily_start_date": "2026-04-30",
@@ -6367,10 +5111,10 @@
         "family": "National Chess Congress",
         "status": "above_pace",
         "actual": 9,
-        "expected": 6,
-        "deviation_pct": 38.5,
+        "expected": 7,
+        "deviation_pct": 33.3,
         "n_years": 4,
-        "message": "Registrations are 38.5% above 4-year at-this-point pace"
+        "message": "Registrations are 33.3% above 4-year at-this-point pace"
       }
     },
     {
@@ -6382,10 +5126,10 @@
       "early_bird_fee": null,
       "regular_fee": 275.0,
       "onsite_fee": null,
-      "current_count": 42,
-      "gross_count": 42,
+      "current_count": 43,
+      "gross_count": 43,
       "withdrawal_count": 0,
-      "days_remaining": 132,
+      "days_remaining": 131,
       "point_estimate": 1081,
       "ci_lower": 946,
       "ci_upper": 1199,
@@ -6785,6 +5529,10 @@
         [
           93,
           42
+        ],
+        [
+          94,
+          43
         ]
       ],
       "daily_start_date": "2026-05-15",
@@ -6846,11 +5594,11 @@
       "pace_alert": {
         "family": "North American Open",
         "status": "above_pace",
-        "actual": 42,
-        "expected": 20,
-        "deviation_pct": 104.9,
+        "actual": 43,
+        "expected": 22,
+        "deviation_pct": 97.7,
         "n_years": 4,
-        "message": "Registrations are 104.9% above 4-year at-this-point pace"
+        "message": "Registrations are 97.7% above 4-year at-this-point pace"
       }
     },
     {
@@ -6865,7 +5613,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 132,
+      "days_remaining": 131,
       "point_estimate": 387,
       "ci_lower": 367,
       "ci_upper": 404,
@@ -7151,6 +5899,10 @@
         ],
         [
           65,
+          0
+        ],
+        [
+          66,
           0
         ]
       ],
@@ -17469,6 +16221,1298 @@
       "total_estimate": 202,
       "total_ci_lower": 202,
       "total_ci_upper": 202
+    },
+    {
+      "family": "Central California Open",
+      "year": 2026,
+      "event_start": "2026-08-14",
+      "event_end": "2026-08-16",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": 98.0,
+      "onsite_fee": null,
+      "current_count": 169,
+      "gross_count": 169,
+      "withdrawal_count": 4,
+      "days_remaining": 0,
+      "point_estimate": 169,
+      "ci_lower": 169,
+      "ci_upper": 169,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 128,
+          "family": "Central California Open"
+        },
+        {
+          "year": 2022,
+          "count": 188,
+          "family": "Central California Open"
+        },
+        {
+          "year": 2023,
+          "count": 214,
+          "family": "Central California Open"
+        },
+        {
+          "year": 2024,
+          "count": 169,
+          "family": "Central California Open"
+        },
+        {
+          "year": 2025,
+          "count": 179,
+          "family": "Central California Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          10,
+          1
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          13,
+          1
+        ],
+        [
+          14,
+          1
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          17,
+          1
+        ],
+        [
+          18,
+          1
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          20,
+          1
+        ],
+        [
+          21,
+          1
+        ],
+        [
+          22,
+          1
+        ],
+        [
+          23,
+          1
+        ],
+        [
+          24,
+          1
+        ],
+        [
+          25,
+          1
+        ],
+        [
+          26,
+          1
+        ],
+        [
+          27,
+          1
+        ],
+        [
+          28,
+          1
+        ],
+        [
+          29,
+          1
+        ],
+        [
+          30,
+          1
+        ],
+        [
+          31,
+          1
+        ],
+        [
+          32,
+          2
+        ],
+        [
+          33,
+          2
+        ],
+        [
+          34,
+          3
+        ],
+        [
+          35,
+          3
+        ],
+        [
+          36,
+          3
+        ],
+        [
+          37,
+          3
+        ],
+        [
+          38,
+          3
+        ],
+        [
+          39,
+          3
+        ],
+        [
+          40,
+          3
+        ],
+        [
+          41,
+          3
+        ],
+        [
+          42,
+          3
+        ],
+        [
+          43,
+          3
+        ],
+        [
+          44,
+          3
+        ],
+        [
+          45,
+          3
+        ],
+        [
+          46,
+          3
+        ],
+        [
+          47,
+          3
+        ],
+        [
+          48,
+          3
+        ],
+        [
+          49,
+          3
+        ],
+        [
+          50,
+          3
+        ],
+        [
+          51,
+          3
+        ],
+        [
+          52,
+          3
+        ],
+        [
+          53,
+          3
+        ],
+        [
+          54,
+          3
+        ],
+        [
+          55,
+          3
+        ],
+        [
+          56,
+          3
+        ],
+        [
+          57,
+          3
+        ],
+        [
+          59,
+          3
+        ],
+        [
+          60,
+          3
+        ],
+        [
+          61,
+          3
+        ],
+        [
+          62,
+          3
+        ],
+        [
+          63,
+          3
+        ],
+        [
+          64,
+          3
+        ],
+        [
+          65,
+          3
+        ],
+        [
+          66,
+          3
+        ],
+        [
+          67,
+          3
+        ],
+        [
+          68,
+          3
+        ],
+        [
+          69,
+          3
+        ],
+        [
+          70,
+          3
+        ],
+        [
+          71,
+          3
+        ],
+        [
+          72,
+          3
+        ],
+        [
+          73,
+          3
+        ],
+        [
+          74,
+          3
+        ],
+        [
+          75,
+          3
+        ],
+        [
+          76,
+          3
+        ],
+        [
+          77,
+          3
+        ],
+        [
+          78,
+          3
+        ],
+        [
+          79,
+          3
+        ],
+        [
+          80,
+          3
+        ],
+        [
+          81,
+          3
+        ],
+        [
+          82,
+          3
+        ],
+        [
+          83,
+          3
+        ],
+        [
+          84,
+          3
+        ],
+        [
+          85,
+          3
+        ],
+        [
+          86,
+          4
+        ],
+        [
+          87,
+          4
+        ],
+        [
+          88,
+          5
+        ],
+        [
+          89,
+          5
+        ],
+        [
+          90,
+          5
+        ],
+        [
+          91,
+          6
+        ],
+        [
+          92,
+          6
+        ],
+        [
+          93,
+          6
+        ],
+        [
+          94,
+          6
+        ],
+        [
+          95,
+          6
+        ],
+        [
+          96,
+          8
+        ],
+        [
+          97,
+          8
+        ],
+        [
+          98,
+          8
+        ],
+        [
+          99,
+          9
+        ],
+        [
+          100,
+          11
+        ],
+        [
+          101,
+          11
+        ],
+        [
+          102,
+          11
+        ],
+        [
+          103,
+          12
+        ],
+        [
+          104,
+          12
+        ],
+        [
+          105,
+          13
+        ],
+        [
+          106,
+          16
+        ],
+        [
+          107,
+          17
+        ],
+        [
+          108,
+          17
+        ],
+        [
+          109,
+          17
+        ],
+        [
+          110,
+          17
+        ],
+        [
+          111,
+          17
+        ],
+        [
+          112,
+          17
+        ],
+        [
+          113,
+          18
+        ],
+        [
+          114,
+          19
+        ],
+        [
+          115,
+          20
+        ],
+        [
+          117,
+          21
+        ],
+        [
+          118,
+          23
+        ],
+        [
+          119,
+          25
+        ],
+        [
+          120,
+          25
+        ],
+        [
+          121,
+          29
+        ],
+        [
+          122,
+          31
+        ],
+        [
+          123,
+          31
+        ],
+        [
+          124,
+          36
+        ],
+        [
+          125,
+          38
+        ],
+        [
+          126,
+          41
+        ],
+        [
+          127,
+          45
+        ],
+        [
+          128,
+          50
+        ],
+        [
+          129,
+          59
+        ],
+        [
+          130,
+          65
+        ],
+        [
+          131,
+          69
+        ],
+        [
+          132,
+          74
+        ],
+        [
+          133,
+          89
+        ],
+        [
+          134,
+          97
+        ],
+        [
+          135,
+          106
+        ],
+        [
+          136,
+          115
+        ],
+        [
+          137,
+          124
+        ],
+        [
+          138,
+          138
+        ],
+        [
+          139,
+          150
+        ],
+        [
+          140,
+          161
+        ],
+        [
+          141,
+          165
+        ],
+        [
+          142,
+          165
+        ]
+      ],
+      "daily_start_date": "2026-03-28",
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0024
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0151
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0228
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0448
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0868
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1275
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.1674
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.2662
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4764
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7096
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9559
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "complete",
+      "n_historical_editions": 5,
+      "low_confidence": true,
+      "prediction_tier": "roster-pending",
+      "prediction_source": "settled_actual",
+      "walkin_multiplier": 1.126,
+      "walkin_source": "family",
+      "total_estimate": 190,
+      "total_ci_lower": 190,
+      "total_ci_upper": 190
+    },
+    {
+      "family": "Continental Open",
+      "year": 2026,
+      "event_start": "2026-08-13",
+      "event_end": "2026-08-16",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": 158.0,
+      "onsite_fee": 180.0,
+      "current_count": 266,
+      "gross_count": 266,
+      "withdrawal_count": 0,
+      "days_remaining": 0,
+      "point_estimate": 266,
+      "ci_lower": 266,
+      "ci_upper": 266,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 274,
+          "family": "Continental Open"
+        },
+        {
+          "year": 2022,
+          "count": 321,
+          "family": "Continental Open"
+        },
+        {
+          "year": 2023,
+          "count": 312,
+          "family": "Continental Open"
+        },
+        {
+          "year": 2024,
+          "count": 244,
+          "family": "Continental Open"
+        },
+        {
+          "year": 2025,
+          "count": 265,
+          "family": "Continental Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          10,
+          1
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          13,
+          1
+        ],
+        [
+          14,
+          1
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          17,
+          1
+        ],
+        [
+          18,
+          1
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          20,
+          1
+        ],
+        [
+          21,
+          1
+        ],
+        [
+          22,
+          1
+        ],
+        [
+          23,
+          1
+        ],
+        [
+          24,
+          1
+        ],
+        [
+          25,
+          2
+        ],
+        [
+          26,
+          2
+        ],
+        [
+          27,
+          2
+        ],
+        [
+          28,
+          2
+        ],
+        [
+          29,
+          2
+        ],
+        [
+          30,
+          2
+        ],
+        [
+          31,
+          2
+        ],
+        [
+          32,
+          2
+        ],
+        [
+          33,
+          2
+        ],
+        [
+          34,
+          2
+        ],
+        [
+          35,
+          2
+        ],
+        [
+          36,
+          2
+        ],
+        [
+          37,
+          2
+        ],
+        [
+          38,
+          2
+        ],
+        [
+          39,
+          2
+        ],
+        [
+          40,
+          2
+        ],
+        [
+          41,
+          3
+        ],
+        [
+          42,
+          3
+        ],
+        [
+          43,
+          3
+        ],
+        [
+          44,
+          3
+        ],
+        [
+          46,
+          4
+        ],
+        [
+          47,
+          4
+        ],
+        [
+          48,
+          4
+        ],
+        [
+          49,
+          4
+        ],
+        [
+          50,
+          6
+        ],
+        [
+          51,
+          6
+        ],
+        [
+          52,
+          8
+        ],
+        [
+          53,
+          8
+        ],
+        [
+          54,
+          8
+        ],
+        [
+          55,
+          8
+        ],
+        [
+          56,
+          8
+        ],
+        [
+          57,
+          8
+        ],
+        [
+          58,
+          8
+        ],
+        [
+          59,
+          8
+        ],
+        [
+          60,
+          9
+        ],
+        [
+          61,
+          10
+        ],
+        [
+          62,
+          10
+        ],
+        [
+          63,
+          12
+        ],
+        [
+          64,
+          12
+        ],
+        [
+          65,
+          12
+        ],
+        [
+          66,
+          12
+        ],
+        [
+          67,
+          12
+        ],
+        [
+          68,
+          12
+        ],
+        [
+          69,
+          12
+        ],
+        [
+          70,
+          12
+        ],
+        [
+          71,
+          12
+        ],
+        [
+          72,
+          12
+        ],
+        [
+          73,
+          12
+        ],
+        [
+          74,
+          12
+        ],
+        [
+          75,
+          12
+        ],
+        [
+          76,
+          12
+        ],
+        [
+          77,
+          13
+        ],
+        [
+          78,
+          13
+        ],
+        [
+          79,
+          13
+        ],
+        [
+          80,
+          14
+        ],
+        [
+          81,
+          14
+        ],
+        [
+          82,
+          15
+        ],
+        [
+          83,
+          16
+        ],
+        [
+          84,
+          16
+        ],
+        [
+          85,
+          17
+        ],
+        [
+          86,
+          17
+        ],
+        [
+          87,
+          18
+        ],
+        [
+          88,
+          19
+        ],
+        [
+          89,
+          19
+        ],
+        [
+          90,
+          19
+        ],
+        [
+          91,
+          19
+        ],
+        [
+          92,
+          19
+        ],
+        [
+          93,
+          19
+        ],
+        [
+          94,
+          20
+        ],
+        [
+          95,
+          20
+        ],
+        [
+          96,
+          20
+        ],
+        [
+          97,
+          22
+        ],
+        [
+          98,
+          23
+        ],
+        [
+          99,
+          23
+        ],
+        [
+          100,
+          23
+        ],
+        [
+          101,
+          24
+        ],
+        [
+          102,
+          25
+        ],
+        [
+          104,
+          28
+        ],
+        [
+          105,
+          29
+        ],
+        [
+          106,
+          33
+        ],
+        [
+          107,
+          34
+        ],
+        [
+          108,
+          38
+        ],
+        [
+          109,
+          46
+        ],
+        [
+          110,
+          51
+        ],
+        [
+          111,
+          56
+        ],
+        [
+          112,
+          64
+        ],
+        [
+          113,
+          68
+        ],
+        [
+          114,
+          73
+        ],
+        [
+          115,
+          83
+        ],
+        [
+          116,
+          94
+        ],
+        [
+          117,
+          104
+        ],
+        [
+          118,
+          116
+        ],
+        [
+          119,
+          121
+        ],
+        [
+          120,
+          127
+        ],
+        [
+          121,
+          141
+        ],
+        [
+          122,
+          156
+        ],
+        [
+          123,
+          195
+        ],
+        [
+          124,
+          235
+        ],
+        [
+          125,
+          249
+        ],
+        [
+          126,
+          261
+        ],
+        [
+          127,
+          266
+        ],
+        [
+          128,
+          266
+        ],
+        [
+          129,
+          266
+        ]
+      ],
+      "daily_start_date": "2026-04-10",
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0053
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0104
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0153
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0331
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0637
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1021
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.1332
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.2253
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.3567
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.571
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9539
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "complete",
+      "n_historical_editions": 5,
+      "low_confidence": true,
+      "prediction_tier": "roster-pending",
+      "prediction_source": "settled_actual",
+      "walkin_multiplier": 1.137,
+      "walkin_source": "family",
+      "total_estimate": 302,
+      "total_ci_lower": 302,
+      "total_ci_upper": 302
     },
     {
       "family": "Southern Open",
@@ -88819,71 +88863,53 @@
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-08-16 02:34:53",
+  "last_updated": "2026-08-17 02:34:21",
   "is_stale": false,
   "alerts": [
     {
-      "family": "Central California Open",
-      "status": "on_pace",
-      "actual": 169,
-      "expected": 181,
-      "deviation_pct": -6.6,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-7%)"
-    },
-    {
-      "family": "Continental Open",
-      "status": "on_pace",
-      "actual": 266,
-      "expected": 263,
-      "deviation_pct": 1.2,
-      "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+1%)"
-    },
-    {
       "family": "Atlantic Open",
       "status": "below_pace",
-      "actual": 122,
-      "expected": 164,
-      "deviation_pct": -25.8,
+      "actual": 141,
+      "expected": 186,
+      "deviation_pct": -24.1,
       "n_years": 4,
-      "message": "Registrations are 25.8% below 4-year at-this-point pace"
+      "message": "Registrations are 24.1% below 4-year at-this-point pace"
     },
     {
       "family": "Indianapolis Open",
       "status": "on_pace",
-      "actual": 93,
-      "expected": 80,
-      "deviation_pct": 16.6,
+      "actual": 103,
+      "expected": 92,
+      "deviation_pct": 12.0,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+17%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+12%)"
     },
     {
       "family": "New York State Championship",
       "status": "on_pace",
-      "actual": 77,
-      "expected": 68,
-      "deviation_pct": 14.1,
+      "actual": 81,
+      "expected": 72,
+      "deviation_pct": 12.5,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+12%)"
     },
     {
       "family": "Midwest Class Championships",
       "status": "on_pace",
       "actual": 12,
-      "expected": 10,
-      "deviation_pct": 17.1,
+      "expected": 11,
+      "deviation_pct": 9.1,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+17%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+9%)"
     },
     {
       "family": "Los Angeles Open",
       "status": "below_pace",
       "actual": 6,
-      "expected": 9,
-      "deviation_pct": -31.4,
+      "expected": 10,
+      "deviation_pct": -42.9,
       "n_years": 4,
-      "message": "Registrations are 31.4% below 4-year at-this-point pace"
+      "message": "Registrations are 42.9% below 4-year at-this-point pace"
     },
     {
       "family": "Kings Island Open",
@@ -88898,19 +88924,19 @@
       "family": "National Chess Congress",
       "status": "above_pace",
       "actual": 9,
-      "expected": 6,
-      "deviation_pct": 38.5,
+      "expected": 7,
+      "deviation_pct": 33.3,
       "n_years": 4,
-      "message": "Registrations are 38.5% above 4-year at-this-point pace"
+      "message": "Registrations are 33.3% above 4-year at-this-point pace"
     },
     {
       "family": "North American Open",
       "status": "above_pace",
-      "actual": 42,
-      "expected": 20,
-      "deviation_pct": 104.9,
+      "actual": 43,
+      "expected": 22,
+      "deviation_pct": 97.7,
       "n_years": 4,
-      "message": "Registrations are 104.9% above 4-year at-this-point pace"
+      "message": "Registrations are 97.7% above 4-year at-this-point pace"
     },
     {
       "family": "Eastern Open",

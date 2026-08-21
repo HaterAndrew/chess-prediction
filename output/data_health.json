@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-20",
-  "scanned_at": "2026-08-20T02:37:30",
+  "generated": "2026-08-21",
+  "scanned_at": "2026-08-21T02:43:48",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -12,18 +12,12 @@
       "severity": "MEDIUM",
       "mode": "large-withdrawal-gap",
       "family": "Eastern Chess Congress (in New Jersey)",
-      "message": "2 of 11 scraped entries withdrawn (18%) as of 2026-08-20"
+      "message": "4 of 14 scraped entries withdrawn (29%) as of 2026-08-21"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
-      "family": "Atlantic Open",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Indianapolis Open",
+      "family": "Eastern Class Championships",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
@@ -31,6 +25,12 @@
       "mode": "roster-pending",
       "family": "New York State Championship",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Atlantic Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {
       "severity": "INFO",
@@ -53,13 +53,13 @@
     {
       "severity": "INFO",
       "mode": "roster-pending",
-      "family": "Eastern Class Championships (in Connecticut)",
+      "family": "Eastern Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
-      "family": "Eastern Open",
+      "family": "Indianapolis Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {

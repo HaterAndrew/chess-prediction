@@ -4,67 +4,67 @@
       "filename": "daily_registration_counts.csv",
       "sha256": "91ef397ff5118798100451dc8571373441547a9681fce2acb0eadc5b4031bbff",
       "row_count": 13438,
-      "timestamp": "2026-08-21T02:43:48Z"
+      "timestamp": "2026-08-22T02:37:11Z"
     },
     {
       "filename": "daily_scrape.csv",
-      "sha256": "30d1fd7f3e20e4993e66b76cc9f18eecdd485597961129d43f6e7a2391481635",
-      "row_count": 3088,
-      "timestamp": "2026-08-21T02:43:48Z"
+      "sha256": "299b2d27e1a00fd2b84d36110881e7b654907b782d952b625b2fdc9d7034ef0b",
+      "row_count": 3100,
+      "timestamp": "2026-08-22T02:37:11Z"
     },
     {
       "filename": "historical_standings.csv",
       "sha256": "6ae2d69b869c38ba30318432cac5c33f7217e4f464c3e7c16fa7b0da0e588052",
       "row_count": 195,
-      "timestamp": "2026-08-21T02:43:48Z"
+      "timestamp": "2026-08-22T02:37:11Z"
     },
     {
       "filename": "historical_tournaments.csv",
       "sha256": "25a3798881c47c0e822e44c8cb4c39cc8cdea213dce50c0042a1bcd8955b9c58",
       "row_count": 747,
-      "timestamp": "2026-08-21T02:43:48Z"
+      "timestamp": "2026-08-22T02:37:11Z"
     },
     {
       "filename": "puzzle_bank.csv",
       "sha256": "df04ad37184099378ece71e936d449c82afaed2f0a651c2ad7c90d4c2d00da40",
       "row_count": 5000,
-      "timestamp": "2026-08-21T02:43:49Z"
+      "timestamp": "2026-08-22T02:37:11Z"
     },
     {
       "filename": "tournament_fees.csv",
       "sha256": "32666960c1ac2788631765a901a6e271c1874e7f6f97cdeba7e4ddf01822fd10",
       "row_count": 62,
-      "timestamp": "2026-08-21T02:43:49Z"
+      "timestamp": "2026-08-22T02:37:11Z"
     },
     {
       "filename": "tournament_metadata.csv",
       "sha256": "75d5177cf3e925adef80b1591c29ce197301475e42b082fc67ee5128ad6036bd",
       "row_count": 326,
-      "timestamp": "2026-08-21T02:43:49Z"
+      "timestamp": "2026-08-22T02:37:11Z"
     },
     {
       "filename": "tournament_summary.csv",
-      "sha256": "6234ada89789e9f14a0a57ceabb1ff5ff05fabfacf22235d01a83fad1bde2cb3",
+      "sha256": "76db84255bc9a1248937c774821e712fe78301c3f14682c6e4bbb79f8679c452",
       "row_count": 779,
-      "timestamp": "2026-08-21T02:43:49Z"
+      "timestamp": "2026-08-22T02:37:11Z"
     },
     {
       "filename": "update_log.csv",
-      "sha256": "3805708105026077ded97a3f6f884511ac3fcfdd981db32bfcd45753d457ce1a",
-      "row_count": 3753,
-      "timestamp": "2026-08-21T02:43:49Z"
+      "sha256": "93924519fbb2a53ef1f4fbc2a52856bd4cde5f72586460769314337ef2169f46",
+      "row_count": 3754,
+      "timestamp": "2026-08-22T02:37:11Z"
     },
     {
       "filename": "walk_in_family_stats.csv",
       "sha256": "4a2ee58fce107c96f615f92d49f37dadbb641a19c596f9bfbfe47192a8080d0f",
       "row_count": 38,
-      "timestamp": "2026-08-21T02:43:49Z"
+      "timestamp": "2026-08-22T02:37:11Z"
     },
     {
       "filename": "walk_in_multipliers.csv",
       "sha256": "0eaa26ba0785e47865bcf3628e29307bce39cd9f0559e34bae82610de265cdca",
       "row_count": 135,
-      "timestamp": "2026-08-21T02:43:49Z"
+      "timestamp": "2026-08-22T02:37:11Z"
     }
   ]
 }

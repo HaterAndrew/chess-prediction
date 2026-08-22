@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-21",
+  "generated": "2026-08-22",
   "model": "N5v4_Final",
   "n_tournaments": 22,
   "grade": "B+",
@@ -1877,7 +1877,7 @@
     }
   ],
   "n_corpus_tournaments": 779,
-  "n_entry_records": 195588,
+  "n_entry_records": 195632,
   "window_engine": {
     "n": 217,
     "n_events": 133,

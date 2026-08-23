@@ -5,7 +5,7 @@ the __file__ derivations would not survive the package move.
 import csv
 import json
 import os
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 
 from tournament_aliases import canonicalize_family
 
@@ -16,6 +16,37 @@ from shared.paths import SCRAPE_CSV as DAILY_SCRAPE_CSV
 
 def _canon(name):
     return canonicalize_family(name) if isinstance(name, str) else name
+
+
+# One logged run of one card. prediction_source names the estimator that
+# produced the row, so the freeze check can tell an interim metadata mean
+# (expected to sit still) from model output (expected to move nightly).
+LogRun = namedtuple("LogRun", "point_estimate current_count prediction_source")
+
+
+def load_log_history(path=None):
+    """canon_family -> ordered list of LogRun for live rows, used to detect an
+    estimate frozen while entries rise.
+
+    Runs logged before update_log.csv carried prediction_source read as None:
+    unattributable, and counted toward no card's freeze window.
+    """
+    hist = defaultdict(list)
+    path = path or UPDATE_LOG_CSV
+    if not os.path.exists(path):
+        return hist
+    with open(path, newline="") as fh:
+        for row in csv.DictReader(fh):
+            if row.get("status") != "live":
+                continue
+            try:
+                pe = int(float(row.get("point_estimate") or 0))
+                cc = int(float(row.get("current_count") or 0))
+            except ValueError:
+                continue
+            hist[_canon(row.get("family", ""))].append(
+                LogRun(pe, cc, row.get("prediction_source") or None))
+    return hist
 
 
 def _strip_year(name):
@@ -94,20 +125,4 @@ class Context:
         return fams
 
     def _load_log_history(self):
-        """canon_family -> ordered list of (point_estimate, current_count) for
-        live rows, used to detect an estimate frozen while entries rise."""
-        hist = defaultdict(list)
-        if not os.path.exists(UPDATE_LOG_CSV):
-            return hist
-        with open(UPDATE_LOG_CSV, newline="") as fh:
-            for row in csv.DictReader(fh):
-                if row.get("status") != "live":
-                    continue
-                fam = _canon(row.get("family", ""))
-                try:
-                    pe = int(float(row.get("point_estimate") or 0))
-                    cc = int(float(row.get("current_count") or 0))
-                except ValueError:
-                    continue
-                hist[fam].append((pe, cc))
-        return hist
+        return load_log_history(UPDATE_LOG_CSV)

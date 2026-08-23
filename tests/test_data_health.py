@@ -64,7 +64,8 @@ def test_critical_count_exceeds_estimate():
 def test_critical_frozen_main_path_estimate():
     keys, _ = run(
         [card(family="Frozen Open")],
-        log_hist={"Frozen Open": [(110, 18), (110, 25), (110, 31)]},
+        log_hist={"Frozen Open": [(110, 18, "model"), (110, 25, "model"),
+                                  (110, 31, "model")]},
     )
     assert ("CRITICAL", "frozen-estimate") in keys
 
@@ -74,7 +75,9 @@ def test_frozen_check_ignores_roster_pending():
     keys, _ = run(
         [card(family="Pending Open", prediction_tier="roster-pending",
               prediction_source="metadata_historical_avg")],
-        log_hist={"Pending Open": [(110, 18), (110, 25), (110, 31)]},
+        log_hist={"Pending Open": [(110, 18, "metadata_historical_avg"),
+                                   (110, 25, "metadata_historical_avg"),
+                                   (110, 31, "metadata_historical_avg")]},
     )
     assert ("CRITICAL", "frozen-estimate") not in keys
 
@@ -85,7 +88,61 @@ def test_frozen_check_watches_model_served_roster_pending():
     keys, _ = run(
         [card(family="Pending Open", prediction_tier="roster-pending",
               prediction_source="model")],
-        log_hist={"Pending Open": [(110, 18), (110, 25), (110, 31)]},
+        log_hist={"Pending Open": [(110, 18, "model"), (110, 25, "model"),
+                                   (110, 31, "model")]},
+    )
+    assert ("CRITICAL", "frozen-estimate") in keys
+
+
+# ── the freeze window belongs to one estimator (2026-08-23) ─────────────────
+# Midwest Class Championships sat on the interim metadata mean of 313 for 97
+# runs, which is what that estimator is supposed to do, then graduated to the
+# model path. The scanner replayed all 97 interim runs against the model's
+# first night, raised CRITICAL, and auto_update aborted the pipeline: the site
+# served 08-22 data behind a degraded banner for a day over a card that was
+# working as designed. An estimate is only frozen while ONE estimator owns it.
+
+
+def test_freeze_window_resets_when_the_estimator_changes():
+    interim = [(313, c, "metadata_historical_avg") for c in (5, 9, 12, 13)]
+    keys, _ = run(
+        [card(family="Graduated Open", prediction_tier="roster-pending",
+              prediction_source="model", point_estimate=313, current_count=13,
+              daily_data=[[0, 5], [1, 9], [2, 13]])],
+        log_hist={"Graduated Open": interim + [(313, 13, "model")]},
+    )
+    assert ("CRITICAL", "frozen-estimate") not in keys
+
+
+def test_freeze_window_ignores_runs_logged_before_the_source_column():
+    # Runs written before update_log.csv carried prediction_source cannot be
+    # attributed to an estimator, so they count toward no card's freeze.
+    legacy = [(110, c, None) for c in (18, 25, 31)]
+    keys, _ = run(
+        [card(family="Legacy Open")],
+        log_hist={"Legacy Open": legacy + [(110, 33, "model")]},
+    )
+    assert ("CRITICAL", "frozen-estimate") not in keys
+
+
+def test_freeze_window_is_the_trailing_run_of_the_current_estimator():
+    # A hand-back to the model re-arms after three of ITS runs; an older
+    # stretch under the same name is not joined across the interruption.
+    keys, _ = run(
+        [card(family="Handback Open")],
+        log_hist={"Handback Open": [(110, 18, "model"), (110, 25, "model"),
+                                    (313, 28, "metadata_historical_avg"),
+                                    (110, 31, "model")]},
+    )
+    assert ("CRITICAL", "frozen-estimate") not in keys
+
+
+def test_freeze_still_fires_on_three_runs_of_the_current_estimator():
+    keys, _ = run(
+        [card(family="Refrozen Open")],
+        log_hist={"Refrozen Open": [(313, 12, "metadata_historical_avg"),
+                                    (110, 18, "model"), (110, 25, "model"),
+                                    (110, 31, "model")]},
     )
     assert ("CRITICAL", "frozen-estimate") in keys
 

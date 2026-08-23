@@ -55,6 +55,28 @@ def _hist_counts(t):
     return [h.get("count") for h in (t.get("historical") or []) if h.get("count") is not None]
 
 
+def _current_estimator_runs(seq, source):
+    """The trailing logged runs the card's CURRENT estimator produced.
+
+    An estimate counts as frozen only while one estimator owns it. Midwest
+    Class Championships (2026-08-23) sat on the interim metadata mean of 313
+    for 97 runs — the behaviour that estimator is designed for — then graduated
+    to the model path, and replaying those runs against the model's first night
+    aborted the pipeline. Runs with no logged estimator predate the
+    update_log.csv column and are attributable to nobody, so they end the
+    window too.
+    """
+    if not source:
+        return []
+    window = []
+    for run in reversed(seq):
+        if run[2] != source:
+            break
+        window.append(run)
+    window.reverse()
+    return window
+
+
 # ── Checks (full ranked catalog) ────────────────────────────────────────────
 
 def scan(data, ctx):
@@ -98,13 +120,15 @@ def scan(data, ctx):
         if t.get("status") != "live" or not _is_main_path(t):
             continue
         seq = ctx.log_hist.get(_canon(t.get("family", "")), [])
-        if len(seq) < 3:
+        window = _current_estimator_runs(seq, t.get("prediction_source"))
+        if len(window) < 3:
             continue
-        ests = {pe for pe, _ in seq}
-        counts = [cc for _, cc in seq]
+        ests = {pe for pe, _, _ in window}
+        counts = [cc for _, cc, _ in window]
         if len(ests) == 1 and max(counts) > min(counts):
             report.add("CRITICAL", "frozen-estimate", t.get("family", "?"),
-                       f"estimate stuck at {next(iter(ests))} across {len(seq)} runs "
+                       f"estimate stuck at {next(iter(ests))} across {len(window)} "
+                       f"{t.get('prediction_source')} runs "
                        f"while entries rose {min(counts)}->{max(counts)}")
 
     # Modes daily-*: chart-series integrity (v3 Q1/Q3, audit/AUDIT_2026-07-25.md).

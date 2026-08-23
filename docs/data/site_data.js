@@ -89230,7 +89230,7 @@ const TOURNAMENT_DATA = {
     }
   ],
   "last_updated": "2026-08-22 02:29:07",
-  "is_stale": false,
+  "is_stale": true,
   "alerts": [
     {
       "family": "Atlantic Open",
@@ -89322,7 +89322,10 @@ const TOURNAMENT_DATA = {
       "n_years": 4,
       "message": "Registrations are 100.0% below 4-year at-this-point pace"
     }
-  ]
+  ],
+  "pipeline_degraded": true,
+  "degraded_reason": "data-health CRITICAL \u2014 aborting so the degraded banner publishes last-known-good data instead of these findings",
+  "degraded_at": "2026-08-23 02:37:34"
 };
 
 // ══════════════════════════════════════════════════════════

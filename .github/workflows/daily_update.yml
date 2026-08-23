@@ -112,7 +112,12 @@ jobs:
           print("Restored last-known-good data and re-applied degraded flags")
           PY
           python3 -c "import auto_update; auto_update.step_update_html()"
-          git add output/website_data.json docs/data/site_data.js docs/index.html
+          # Stage everything step_update_html just rewrote. On 2026-08-23 this
+          # line stopped at index.html: sw.js kept precaching the previous
+          # site_data.js hash and docs/data/website_data.json (the Ask Worker
+          # endpoint) still said is_stale false while the page banner said
+          # stale. The unstaged leftovers also broke the git pull --rebase below.
+          git add output/website_data.json docs/data/site_data.js docs/data/website_data.json docs/index.html docs/sw.js
           git diff --cached --quiet || git commit -m "Pipeline degraded: mark data stale ($(date +%Y-%m-%d))"
           git pull --rebase || git pull --no-rebase
           git push

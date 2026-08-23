@@ -130,3 +130,22 @@ def test_daily_workflow_keeps_degraded_scrape_wiring():
     assert "success() && steps.scrape.outcome != 'failure'" in yml
     # and must still feed the failure issue
     assert "failure() || steps.scrape.outcome == 'failure'" in yml
+
+
+def test_degraded_banner_stages_every_file_the_rebuild_touches():
+    """2026-08-23: the degraded step staged three of the five files
+    step_update_html rewrites. The published site then disagreed with itself —
+    index.html asked for site_data.js?v=1282b8f5e6 while sw.js still precached
+    ?v=adcba11d88, and docs/data/website_data.json (the Ask Worker endpoint)
+    reported is_stale false under a page banner that said stale. The file left
+    unstaged also broke `git pull --rebase` in the same step.
+    """
+    path = os.path.join(PROJECT_ROOT, ".github", "workflows", "daily_update.yml")
+    with open(path) as fh:
+        yml = fh.read()
+    degraded = yml.split("Publish degraded-state banner on failure")[1]
+    add_line = next(ln for ln in degraded.splitlines()
+                    if ln.strip().startswith("git add "))
+    for target in ("output/website_data.json", "docs/index.html", "docs/sw.js",
+                   "docs/data/site_data.js", "docs/data/website_data.json"):
+        assert target in add_line, f"degraded step must stage {target}"

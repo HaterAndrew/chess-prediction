@@ -1,6 +1,6 @@
 {
-  "generated": "2026-08-23",
-  "scanned_at": "2026-08-23T17:34:53",
+  "generated": "2026-08-24",
+  "scanned_at": "2026-08-24T02:45:43",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -12,7 +12,7 @@
       "severity": "MEDIUM",
       "mode": "large-withdrawal-gap",
       "family": "Eastern Chess Congress (in New Jersey)",
-      "message": "3 of 14 scraped entries withdrawn (21%) as of 2026-08-23"
+      "message": "2 of 14 scraped entries withdrawn (14%) as of 2026-08-24"
     },
     {
       "severity": "INFO",

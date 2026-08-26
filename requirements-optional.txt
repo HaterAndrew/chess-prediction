@@ -12,4 +12,4 @@ reportlab==5.0.0
 openpyxl==3.1.5
 # Markup-drift monitor (structure_monitor.py); Phase 3 rewrites this to
 # requests+bs4 so selenium can be dropped:
-selenium==4.46.0
+selenium==4.47.0

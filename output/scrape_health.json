@@ -342,5 +342,13 @@
     "error_count": 0,
     "warning_count": 1,
     "duration_seconds": 483.6
+  },
+  {
+    "timestamp": "2026-08-27 11:21:02",
+    "success": true,
+    "row_count": 10,
+    "error_count": 0,
+    "warning_count": 1,
+    "duration_seconds": 483.3
   }
 ]

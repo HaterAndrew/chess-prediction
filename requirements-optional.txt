@@ -5,7 +5,7 @@
 matplotlib==3.11.1
 seaborn==0.13.2
 # PDF whitepaper generator (manual tool: model_whitepaper.py):
-reportlab==5.0.0
+reportlab==5.0.1
 # Hotel room-block audit list generator (manual tool: hotel_audit.py);
 # also in requirements-dev.txt because its test suite exercises the
 # workbook writer:

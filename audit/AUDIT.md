@@ -1,7 +1,7 @@
 # Comprehensive Audit: chess_prediction
 
 Started: 2026-04-28
-Scope: `/home/dale/chess_prediction` only (stale duplicate clones at `~/chess-prediction`, `~/Desktop/chess-entry-predictor` get a one-line note in F2).
+Scope: the primary working clone only (stale duplicate clones get a one-line note in F2).
 Trigger: stakeholder caught ACO 2026 displaying `final=184` (real: 424). Root cause shipped in commit `c5c516d`: this audit hunts the rest of the same defect class plus other Tier-1 risks.
 
 ## Status (current)

@@ -1,6 +1,6 @@
 # CCA Entry Predictor — Product Requirements Document
 # Version: 1.0 | Date: 15 April 2026
-# Owner: Andrew Hater
+# Owner: project maintainer
 
 ## 1. OVERVIEW
 

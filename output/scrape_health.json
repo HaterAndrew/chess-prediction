@@ -390,5 +390,13 @@
     "error_count": 0,
     "warning_count": 1,
     "duration_seconds": 392.7
+  },
+  {
+    "timestamp": "2026-09-02 05:57:28",
+    "success": true,
+    "row_count": 10,
+    "error_count": 0,
+    "warning_count": 1,
+    "duration_seconds": 362.3
   }
 ]

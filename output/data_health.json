@@ -1,6 +1,6 @@
 {
-  "generated": "2026-09-03",
-  "scanned_at": "2026-09-03T05:56:49",
+  "generated": "2026-09-04",
+  "scanned_at": "2026-09-04T06:03:47",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -24,12 +24,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Midwest Class Championships",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "New York State Championship",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
@@ -78,6 +72,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "National Chess Congress",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "New York State Championship",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {

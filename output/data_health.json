@@ -1,6 +1,6 @@
 {
-  "generated": "2026-09-04",
-  "scanned_at": "2026-09-04T06:03:47",
+  "generated": "2026-09-05",
+  "scanned_at": "2026-09-05T05:52:00",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -8,6 +8,12 @@
     "INFO": 17
   },
   "findings": [
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Eastern Chess Congress",
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+    },
     {
       "severity": "INFO",
       "mode": "roster-pending",
@@ -42,12 +48,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Continental Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Eastern Chess Congress (in New Jersey)",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {

@@ -47,6 +47,14 @@ function renderHero(t) {
   const heroNum = document.getElementById('heroNumber');
   // Animate number count-up (skip the tween under prefers-reduced-motion)
   const target = t.point_estimate;
+  // #heroNumber is aria-hidden and the tween writes it every frame; the value
+  // reaches assistive tech once, from this dedicated live region, with the
+  // label included so the number is not announced bare (2026-09-07 review).
+  const announce = document.getElementById('heroAnnounce');
+  if (announce) {
+    const labelText = (document.getElementById('heroLabel') || {}).textContent || '';
+    announce.textContent = `${labelText.trim()}: ${fmt(Math.round(target))}`;
+  }
   if (_reduceMotion()) {
     heroNum.textContent = fmt(Math.round(target));
   } else {

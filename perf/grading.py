@@ -1,6 +1,13 @@
-"""Grade rubric + aggregation (04e, verbatim)."""
+"""Grade rubric + aggregation (04e, verbatim) + proper scoring rules."""
 import numpy as np
 
+from perf.scoring import summarize
+
+
+# Naive point forecasts published beside the model so "MAE 9.9%" has something
+# to be measured against (2026-09-07 review). Keys match the fields
+# perf.evaluation attaches to each prediction record.
+BASELINES = ("baseline_last_year", "baseline_ratio")
 
 # T-points to evaluate (days before event)
 T_POINTS = [90, 60, 42, 28, 14, 7, 3, 1]
@@ -23,30 +30,66 @@ def compute_grade(mae_pct, ci_coverage):
 
 
 def compute_aggregate(tournament_results):
-    """Compute aggregate metrics at each T-point from tournament results."""
+    """Compute aggregate metrics at each T-point from tournament results.
+
+    MAE and coverage stay exactly as they were, so the published history remains
+    comparable. The interval score and PIT block are added alongside them
+    (2026-09-07 review): MAE plus coverage is gameable in one direction, since
+    widening every interval raises coverage and leaves MAE untouched, so it
+    cannot distinguish a well-calibrated interval from a merely large one.
+    """
     aggregate = []
     for T in T_POINTS:
+        baseline_scored = {name: [] for name in BASELINES}
         errors = []
         abs_errors = []
         ci_hits = []
+        scored = []          # records for the proper scoring rules
         for tr in tournament_results:
             pred = tr['predictions'].get(T)
             if pred:
                 errors.append(pred['error_pct'])
                 abs_errors.append(pred['abs_error_pct'])
                 ci_hits.append(pred['in_ci'])
+                scored.append({
+                    "actual": tr.get('final_count'),
+                    "point": pred.get('predicted'),
+                    "lo": pred.get('ci_lower'),
+                    "hi": pred.get('ci_upper'),
+                })
+                for name in BASELINES:
+                    bp = pred.get(name)
+                    if bp:
+                        baseline_scored[name].append(
+                            {"actual": tr.get('final_count'), "point": bp})
 
         if not abs_errors:
             continue
 
-        aggregate.append({
+        row = {
             "T": T,
             "n": len(abs_errors),
             "mae_pct": round(np.mean(abs_errors), 1),
             "median_ape_pct": round(np.median(abs_errors), 1),
             "ci_coverage": round(np.mean(ci_hits) * 100, 0),
             "bias_pct": round(np.mean(errors), 1),
-        })
+        }
+        scores = summarize(scored)
+        if scores:
+            row["interval_score_pct"] = scores["interval_score_pct"]
+            row["pit"] = scores["pit"]
+        # Naive baselines at the same horizon. Point forecasts only, so they
+        # report MAE and nothing that would let them look good by skipping the
+        # interval-width charge.
+        bl = {}
+        for name, recs in baseline_scored.items():
+            bs = summarize(recs)
+            if bs:
+                bl[name] = {"n": bs["n"], "mae_pct": bs["mae_pct"],
+                            "median_ape_pct": bs["median_ape_pct"]}
+        if bl:
+            row["baselines"] = bl
+        aggregate.append(row)
     return aggregate
 
 

@@ -11,6 +11,7 @@ from sklearn.linear_model import HuberRegressor
 from model.constants import CHOP_POINTS, OUTPUT_DIR
 from model.stats import report_trim_stats, reset_trim_stats, trim_outliers
 from shared.side_events import SIDE_EVENT_RE
+from shared.season import CURRENT_SEASON
 
 class FitMixin:
     def fit(self, summary, daily, enrichment_lookup=None, completed_tids=None,
@@ -69,11 +70,11 @@ class FitMixin:
         # Exclude in-progress 2026 tournaments, but keep completed ones
         if completed_tids:
             valid = valid[
-                (valid['tournament_year'] < 2026) |
+                (valid['tournament_year'] < CURRENT_SEASON) |
                 (valid['tid'].isin(completed_tids))
             ]
         else:
-            valid = valid[valid['tournament_year'] < 2026]
+            valid = valid[valid['tournament_year'] < CURRENT_SEASON]
 
         # v3 T3 → v5 Cat L: remember exactly which tournaments contributed
         # ratios. recalibrate() needs it to tell a genuinely held-out residual
@@ -153,6 +154,15 @@ class FitMixin:
             standings = standings[standings['total_players'] > 10]
             # v3 T5: a backtest fold must not see standings from its own target
             # year or later. Production (fold_year=None) keeps everything.
+            # Canonicalize BEFORE any name-keyed filtering. exclude_family_years
+            # holds canonical summary family names, but this filter used to run
+            # against the raw standings spelling, and 56 of the mapped names
+            # differ ('Kingsisland Open' -> 'Kings Island Open'). For every one
+            # of those the 2026 leave-one-out fold failed to withhold the
+            # target's own standings row, which is exactly the size-anchor leak
+            # this method's docstring says it closed (2026-09-07 review).
+            standings['tournament_name'] = standings['tournament_name'].replace(
+                STANDINGS_NAME_MAP)
             if fold_year is not None and 'year' in standings.columns:
                 before = len(standings)
                 standings = standings[standings['year'] < fold_year]
@@ -160,11 +170,14 @@ class FitMixin:
                     print(f"  Standings restricted to year < {fold_year}: "
                           f"{before} -> {len(standings)} rows")
             if exclude_family_years and 'year' in standings.columns:
-                standings = standings[~standings.apply(
-                    lambda r: (r['tournament_name'], int(r['year'])) in exclude_family_years,
-                    axis=1)]
-            standings['tournament_name'] = standings['tournament_name'].replace(
-                STANDINGS_NAME_MAP)
+                # A NaN year would raise inside the apply and kill the fit; an
+                # unparseable year cannot match an exclusion, so keep the row.
+                def _excluded(r):
+                    try:
+                        return (r['tournament_name'], int(r['year'])) in exclude_family_years
+                    except (TypeError, ValueError):
+                        return False
+                standings = standings[~standings.apply(_excluded, axis=1)]
             # Surface unmapped names so silent drops become visible.
             # Cross-check against the full summary families, not just the
             # training subset (which excludes pre-timestamp / online / covid

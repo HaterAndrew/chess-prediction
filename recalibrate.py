@@ -13,6 +13,7 @@ Usage:
 """
 
 import pandas as pd
+from shared.season import CURRENT_SEASON
 import os
 import sys
 import argparse
@@ -35,7 +36,7 @@ def load_actuals():
     """
     summary = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_summary.csv"))
     completed = summary[
-        (summary['tournament_year'] == 2026) &
+        (summary['tournament_year'] == CURRENT_SEASON) &
         (~summary['is_online'].fillna(False)) &
         (~summary['is_covid'].fillna(False))
     ][['family', 'final_count']].copy()
@@ -43,7 +44,7 @@ def load_actuals():
     meta_path = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
     if os.path.exists(meta_path):
         meta = pd.read_csv(meta_path)
-        meta_2026 = meta[meta['year'] == 2026][['family', 'end_date']].copy()
+        meta_2026 = meta[meta['year'] == CURRENT_SEASON][['family', 'end_date']].copy()
         meta_2026['end_date'] = pd.to_datetime(meta_2026['end_date'], errors='coerce')
         completed = completed.merge(meta_2026, on='family', how='left')
         today = pd.Timestamp.now().normalize()

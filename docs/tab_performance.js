@@ -112,6 +112,8 @@ function perfPaint(view) {
   if (!agg.length) {
     document.getElementById('perfKPIs').innerHTML = '';
     document.getElementById('perfHorizonStrip').innerHTML = '';
+    const sc = document.getElementById('perfScoring');
+    if (sc) sc.innerHTML = '';
     document.getElementById('perfTable').innerHTML = '<div style="color:var(--muted);padding:12px 0;font-size:var(--fs-2)">No completed tournaments for this selection.</div>';
     return;
   }
@@ -124,7 +126,10 @@ function perfPaint(view) {
   const kpis = [
     {v: t14.mae_pct.toFixed(1) + '%', l: '2-Week Error', s: 'MAE at T-14', c: t14.mae_pct <= 8 ? PALETTE.green : t14.mae_pct <= 15 ? 'var(--gold)' : PALETTE.red},
     {v: t1 ? t1.mae_pct.toFixed(1) + '%' : '--', l: 'Day-Before', s: 'MAE at T-1', c: t1 && t1.mae_pct <= 5 ? PALETTE.green : PALETTE.greenBright},
-    {v: avgCov + '%', l: 'CI Coverage', s: 'Target 80%', c: avgCov >= 75 ? PALETTE.green : avgCov >= 60 ? 'var(--gold)' : PALETTE.red},
+    // Green means "meets the advertised 80%", not "close enough". The old
+    // threshold passed at >= 75, below the number the site itself advertises,
+    // so a miscalibrated interval read as healthy (2026-09-07 review).
+    {v: avgCov + '%', l: 'CI Coverage', s: 'Target 80%', c: avgCov >= 80 ? PALETTE.green : avgCov >= 70 ? 'var(--gold)' : PALETTE.red},
     {v: (avgBias > 0 ? '+' : '') + avgBias + '%', l: 'Bias', s: avgBias > 2 ? 'Over-predicts' : avgBias < -2 ? 'Under-predicts' : 'Well-centered', c: Math.abs(avgBias) <= 5 ? PALETTE.green : 'var(--gold)'},
   ];
   document.getElementById('perfKPIs').innerHTML = kpis.map(k => `
@@ -143,14 +148,92 @@ function perfPaint(view) {
   strip.innerHTML = agg.map(a => {
     // One encoding: the MAE value alone carries the traffic color.
     const tc = a.mae_pct <= 8 ? PALETTE.green : a.mae_pct <= 12 ? 'var(--gold)' : PALETTE.red;
-    return `<div class="horizon-tile" title="n=${a.n}, bias ${a.bias_pct > 0 ? '+' : ''}${a.bias_pct}%">
+    const isTip = a.interval_score_pct != null
+      ? `, interval score ${a.interval_score_pct}% of final (lower is better)` : '';
+    return `<div class="horizon-tile" title="n=${a.n}, bias ${a.bias_pct > 0 ? '+' : ''}${a.bias_pct}%${isTip}">
       <div class="horizon-t">T-${a.T}</div>
       <div class="horizon-val" style="color:${tc}">${a.mae_pct.toFixed(1)}%</div>
       <div class="horizon-ci">CI ${a.ci_coverage}%</div>
     </div>`;
   }).join('');
 
+  perfDrawScoring(view);
   perfDrawTable(view);
+}
+
+// Proper scoring rules and the naive baselines (2026-09-07 review).
+//
+// MAE plus coverage is gameable in one direction: widening every interval
+// raises coverage and leaves MAE untouched, so the pair cannot distinguish a
+// well-calibrated interval from a merely large one. The interval score charges
+// for width and for misses in the same units. The baselines answer the separate
+// question the site could not previously answer at all: is the model better
+// than doing nothing?
+function perfDrawScoring(data) {
+  const el = document.getElementById('perfScoring');
+  if (!el) return;
+  const agg = (data && data.aggregate) || [];
+  const t14 = agg.find(a => a.T === 14) || agg.find(a => a.T === 7) || agg[0];
+  if (!t14) { el.innerHTML = ''; return; }
+
+  const parts = [];
+
+  // ── Model vs. doing nothing, at the planning horizon ──
+  const bl = t14.baselines || {};
+  const rows = [
+    {k: 'model', label: 'This model', mae: t14.mae_pct, n: t14.n},
+    {k: 'baseline_ratio', label: 'Today\u2019s count \u00d7 typical pace',
+     mae: bl.baseline_ratio && bl.baseline_ratio.mae_pct, n: bl.baseline_ratio && bl.baseline_ratio.n},
+    {k: 'baseline_last_year', label: 'Last year\u2019s final count',
+     mae: bl.baseline_last_year && bl.baseline_last_year.mae_pct, n: bl.baseline_last_year && bl.baseline_last_year.n},
+  ].filter(r => r.mae != null);
+
+  if (rows.length > 1) {
+    const worst = Math.max(...rows.map(r => r.mae));
+    parts.push(`<div class="perf-scoring-block">
+      <div class="perf-scoring-title">Against doing nothing &middot; average miss at T-${t14.T}</div>
+      ${rows.map(r => {
+        const pct = worst > 0 ? Math.max(4, Math.round(r.mae / worst * 100)) : 4;
+        const isModel = r.k === 'model';
+        const col = isModel ? PALETTE.green : 'var(--muted)';
+        return `<div class="perf-bar-row">
+          <div class="perf-bar-label">${r.label}</div>
+          <div class="perf-bar-track"><div class="perf-bar-fill" style="width:${pct}%;background:${col}"></div></div>
+          <div class="perf-bar-val" style="color:${col};font-weight:${isModel ? 700 : 500}">${r.mae.toFixed(1)}%</div>
+        </div>`;
+      }).join('')}
+      <div class="perf-scoring-note">Lower is better. A baseline that matches or beats
+        the model at any horizon is a finding, not a rounding artifact.</div>
+    </div>`);
+  }
+
+  // ── Calibration (PIT) ──
+  // A well-calibrated forecaster spreads outcomes evenly across the interval.
+  // Mass piled at both ends means the intervals are too narrow; a lean to one
+  // side means the point estimate is biased.
+  const pit = t14.pit;
+  if (pit && pit.n && pit.counts) {
+    const maxC = Math.max(...pit.counts, 1);
+    const expected = pit.n / pit.bins;
+    parts.push(`<div class="perf-scoring-block">
+      <div class="perf-scoring-title">Calibration at T-${t14.T}
+        <span class="perf-scoring-sub">where the actual landed inside the predicted range (n=${pit.n})</span></div>
+      <div class="perf-pit">
+        ${pit.counts.map((c, i) => {
+          const h = Math.max(2, Math.round(c / maxC * 46));
+          const over = c > expected * 1.5;
+          return `<div class="perf-pit-col" title="${(i * 10)}\u2013${(i + 1) * 10}% of the range: ${c} tournament(s), even split would be ${expected.toFixed(1)}">
+            <div class="perf-pit-bar" style="height:${h}px;background:${over ? 'var(--gold)' : PALETTE.blue}"></div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="perf-pit-axis"><span>low end of range</span><span>middle</span><span>high end</span></div>
+      <div class="perf-scoring-note">An even set of bars means the range is honest.
+        Tall bars at both ends mean it is too narrow.</div>
+    </div>`);
+  }
+
+  el.innerHTML = parts.join('');
 }
 
 function perfDrawScatter(data) {

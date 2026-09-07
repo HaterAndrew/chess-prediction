@@ -40,6 +40,34 @@ def load_walkin_multipliers():
 WALKIN_SHRINK_K = 4
 
 
+def walkin_dispersion_floor(multipliers):
+    """Minimum walk-in sigma, derived from spread ACROSS families.
+
+    2026-09-07 review: 37 of 38 families sit at n_years=1, and a single
+    observation has no dispersion, so std_ratio is 0 for all of them. The
+    `if std > 0` guard below then collapsed m_low and m_high onto the point
+    ratio, and the published interval was multiplied by a constant — a
+    genuinely uncertain quantity propagated as if it were known exactly.
+
+    With no within-family signal, the honest floor is the between-family
+    spread: absent evidence that this family behaves differently, it could
+    plausibly sit anywhere in the range families occupy. Uses the IQR-based
+    robust estimate rather than the raw standard deviation, which a couple of
+    2x outliers inflate. On the corpus at the time of the review this returns
+    ~0.08, against the 0.063 measured for the one family that does have
+    multi-year history — close enough to be a floor rather than a distortion.
+
+    Returns 0.0 when there is nothing to derive it from, which preserves the
+    old behaviour rather than inventing a number.
+    """
+    med = [m.get("median_ratio") for m in multipliers.values()]
+    med = [float(r) for r in med if r is not None and np.isfinite(r) and r > 0]
+    if len(med) < 4:
+        return 0.0
+    q1, q3 = np.percentile(med, [25, 75])
+    return float(max((q3 - q1) / 1.349, 0.0))
+
+
 def apply_walkin_multiplier(prereg_point, prereg_low, prereg_high, family,
                             multipliers=None):
     """
@@ -60,7 +88,13 @@ def apply_walkin_multiplier(prereg_point, prereg_low, prereg_high, family,
         n_years = m.get("n_years", 0)
         shrink = n_years / (n_years + WALKIN_SHRINK_K)   # J3: trust measurement with more history
         ratio = 1.1 + (m["median_ratio"] - 1.1) * shrink
+        # A single-edition family reports std_ratio = 0, which is an absence of
+        # measurement, not a claim of certainty. Floor it on the between-family
+        # spread so the interval carries walk-in uncertainty for the 97% of the
+        # corpus in that state (2026-09-07 review).
         std = m["std_ratio"]
+        if not std or std <= 0:
+            std = walkin_dispersion_floor(multipliers)
         source = "family"
     else:
         # Global guesstimate based on 2023+ median, capped at 1.1x

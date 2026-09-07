@@ -111,33 +111,41 @@ class RecalibrationMixin:
 
                 # Predict WITHOUT recalibration (use raw model). Under loo,
                 # also without the tournament's own ratio (v5 Cat L).
+                # The blank-and-restore must survive an exception from either
+                # predict_nowcast call (2026-09-07 review). Without the finally,
+                # one raising tournament left _recal_bias = {} on the instance
+                # for good: recalibration silently switched off for every
+                # remaining T and for every production prediction that model
+                # went on to make, with nothing logged.
                 old_bias = self._recal_bias
                 old_ci = self._recal_ci
-                self._recal_bias = {}
-                self._recal_ci = {}
-                point, lo, hi = self.predict_nowcast(
-                    count_at_T, T, family, _track_tier=False,
-                    _exclude_tid=tid if loo else None)
-                # v5 Cat L width geometry: the LOO interval is systematically
-                # WIDER than the interval production will publish — dropping a
-                # ratio from a 3-5 entry family list triggers the small-n EB
-                # sigma floor. Normalizing honest residuals by LOO widths
-                # understated the needed scale (measured: fold ci_adj fell to
-                # the 0.5 floor and fold coverage collapsed to ~41%). So: LOO
-                # point for the residual NUMERATOR (honest location error),
-                # full-list width for the DENOMINATOR (application geometry).
-                if loo:
-                    point_full, lo_full, hi_full = self.predict_nowcast(
-                        count_at_T, T, family, _track_tier=False)
-                    if (point_full is not None and point_full > 0
-                            and lo_full > 0 and hi_full > 0):
-                        lo_w, hi_w = lo_full, hi_full
+                try:
+                    self._recal_bias = {}
+                    self._recal_ci = {}
+                    point, lo, hi = self.predict_nowcast(
+                        count_at_T, T, family, _track_tier=False,
+                        _exclude_tid=tid if loo else None)
+                    # v5 Cat L width geometry: the LOO interval is systematically
+                    # WIDER than the interval production will publish — dropping a
+                    # ratio from a 3-5 entry family list triggers the small-n EB
+                    # sigma floor. Normalizing honest residuals by LOO widths
+                    # understated the needed scale (measured: fold ci_adj fell to
+                    # the 0.5 floor and fold coverage collapsed to ~41%). So: LOO
+                    # point for the residual NUMERATOR (honest location error),
+                    # full-list width for the DENOMINATOR (application geometry).
+                    if loo:
+                        point_full, lo_full, hi_full = self.predict_nowcast(
+                            count_at_T, T, family, _track_tier=False)
+                        if (point_full is not None and point_full > 0
+                                and lo_full > 0 and hi_full > 0):
+                            lo_w, hi_w = lo_full, hi_full
+                        else:
+                            lo_w, hi_w = lo, hi
                     else:
                         lo_w, hi_w = lo, hi
-                else:
-                    lo_w, hi_w = lo, hi
-                self._recal_bias = old_bias
-                self._recal_ci = old_ci
+                finally:
+                    self._recal_bias = old_bias
+                    self._recal_ci = old_ci
 
                 if point is None or point <= 0 or lo <= 0 or hi <= 0:
                     continue

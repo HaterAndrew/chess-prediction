@@ -61,6 +61,13 @@ class N5v4_Final(FitMixin, NowcastMixin, RecalibrationMixin):
         self.ci_scale = {}
         self.reg_params = {}  # family -> [slope_count, slope_T, intercept]
         self.family_n_editions = {}  # family -> count of training editions
+        # Own copy: fit() adds data-detected side-event families, and doing that
+        # to the class attribute mutated a set shared by every instance in the
+        # process (2026-09-07 review). 04e builds a fresh model per year-fold and
+        # per 2026 LOO tournament, dozens per run, so one corpus's blitz
+        # classification would leak into another's predictions the moment two
+        # different corpora shared an interpreter.
+        self.BLITZ_FAMILIES = set(N5v4_Final.BLITZ_FAMILIES)
 
     def _ensemble_weight(self, days_remaining):
         """Ratio-model weight for this lead time.

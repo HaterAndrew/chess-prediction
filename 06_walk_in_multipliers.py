@@ -20,6 +20,7 @@ from datetime import datetime
 
 # Map standings tournament names to summary family names — single source of
 # truth in tournament_aliases.py (AUDIT.md A2).
+from shared.season import CURRENT_SEASON
 from tournament_aliases import STANDINGS_NAME_MAP
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -28,6 +29,11 @@ OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 STANDINGS_CSV = os.path.join(OUTPUT_DIR, "historical_standings.csv")
 SUMMARY_CSV = os.path.join(OUTPUT_DIR, "tournament_summary.csv")
 METADATA_CSV = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
+
+# Walk-in rates have declined significantly (1.68x in 2013 -> 1.23x in 2025), so
+# only recent editions describe current behaviour. Module-level because
+# check_history_depth names it when the cut is what starved a family's history.
+MIN_DATA_YEAR = 2023
 MULTIPLIER_CSV = os.path.join(OUTPUT_DIR, "walk_in_multipliers.csv")
 FAMILY_STATS_CSV = os.path.join(OUTPUT_DIR, "walk_in_family_stats.csv")
 
@@ -86,7 +92,7 @@ def load_in_progress_2026_families():
                 year = int(float(row["year"]))
             except (ValueError, KeyError, TypeError):
                 continue
-            if year != 2026:
+            if year != CURRENT_SEASON:
                 continue
             end = row.get("end_date") or None
             if not is_event_complete(end, today):
@@ -114,7 +120,7 @@ def load_summary():
             if count < 10:
                 continue
             family = row["family"]
-            if year == 2026 and family in in_progress:
+            if year == CURRENT_SEASON and family in in_progress:
                 continue
             summary[(family, year)] = count
     return summary
@@ -174,10 +180,6 @@ def compute_family_stats(rows):
     for r in rows:
         by_family[r["family"]].append((r["year"], r["walk_in_ratio"]))
 
-    # Walk-in rates have declined significantly (1.68x in 2013 -> 1.23x in 2025).
-    # Only use data from 2023+ to reflect current walk-in patterns.
-    MIN_DATA_YEAR = 2023
-
     stats = []
     for fam in sorted(by_family):
         year_ratios = sorted(by_family[fam], key=lambda x: x[0], reverse=True)
@@ -208,6 +210,45 @@ def compute_family_stats(rows):
         })
 
     return stats
+
+
+# A family needs at least this many editions before its walk-in ratio is an
+# estimate rather than a single observation. Below it, apply_walkin_multiplier's
+# n/(n+k) shrinkage discards most of the measured signal and std_ratio is 0, so
+# the multiplier contributes no interval width either.
+MIN_HEALTHY_N_YEARS = 2
+
+
+def check_history_depth(stats, min_n=MIN_HEALTHY_N_YEARS):
+    """Return a WARNING string when the walk-in history has collapsed, else None.
+
+    2026-09-07 review: MIN_DATA_YEAR's hard 2023 cut, plus the frozen training
+    corpus (the missing all_registrations.csv export), had left 37 of 38
+    families at n_years=1. The per-family multiplier had quietly degenerated
+    into the flat 1.1 baseline for almost the whole corpus (measured effective
+    median 1.118), and every one of those families reported std_ratio=0, so the
+    published interval claimed zero walk-in uncertainty.
+
+    None of that surfaced anywhere: the three tests that would have caught it
+    were marked xfail. This puts it on the site's warnings panel instead.
+    """
+    if not stats:
+        return None
+    n_years = [int(s["n_years"]) for s in stats]
+    thin = [s for s in stats if int(s["n_years"]) < min_n]
+    if len(thin) * 2 <= len(stats):
+        return None
+    median_n = statistics.median(n_years)
+    zero_std = sum(1 for s in stats if float(s["std_ratio"]) == 0)
+    return (
+        f"walk-in history collapsed: {len(thin)} of {len(stats)} families have "
+        f"fewer than {min_n} usable editions (median n_years={median_n:g}). "
+        f"Per-family multipliers shrink toward the 1.1 baseline at this depth, "
+        f"so the walk-in adjustment is close to inert, and {zero_std} family/ies "
+        f"report std_ratio=0, contributing no interval width. Cause is usually "
+        f"the MIN_DATA_YEAR={MIN_DATA_YEAR} recency cut combined with a frozen "
+        f"training corpus (missing all_registrations.csv export)."
+    )
 
 
 def main():
@@ -244,6 +285,13 @@ def main():
         writer.writeheader()
         writer.writerows(stats)
     print(f"  Wrote {FAMILY_STATS_CSV}")
+
+    # Surface a collapsed history on the site's warnings panel. The pipeline
+    # harvests any line containing "WARNING:" out of this step's stdout
+    # (pipeline/warns.py::_harvest_warnings).
+    depth_warning = check_history_depth(stats)
+    if depth_warning:
+        print(f"  WARNING: {depth_warning}")
 
     # Print summary
     print("\n" + "=" * 70)

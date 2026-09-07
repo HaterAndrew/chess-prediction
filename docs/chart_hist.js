@@ -52,7 +52,10 @@ function renderHistorical(t) {
       ctx2.setLineDash([6, 4]);
       ctx2.strokeStyle = 'rgba(188,140,255,0.5)';
       ctx2.lineWidth = 1;
-      ctx2.moveTo(yScale.left, y);
+      // Span the plot area, not the y-axis bounding box. yScale.left sits
+      // behind the tick labels, so the line started well left of the first bar
+      // while its other end already used the x scale (2026-09-07 review).
+      ctx2.moveTo(chartInstance.scales.x.left, y);
       ctx2.lineTo(chartInstance.scales.x.right, y);
       ctx2.stroke();
       ctx2.fillStyle = 'rgba(188,140,255,0.7)';

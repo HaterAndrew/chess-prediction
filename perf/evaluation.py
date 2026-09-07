@@ -4,16 +4,18 @@ module's OUTPUT_DIR at call time -- tests patch perf.evaluation.
 """
 import os
 
+import numpy as np
 import pandas as pd
 
 from pipeline_utils import apply_plausibility_clamp
 from shared.paths import OUTPUT_DIR
 # Calibration rationale for the 0.60 threshold lives with the constant
 # (shared/thresholds.py); is_curve_gradeable is its consumer here.
-from shared.thresholds import FROZEN_CURVE_MIN_RATIO  # noqa: F401
+from shared.thresholds import FROZEN_CURVE_MIN_RATIO
 from shared.clock import today_ts
 
 from perf.grading import T_POINTS
+from perf.scoring import baseline_current_ratio, baseline_last_year
 
 TODAY = today_ts()
 
@@ -29,10 +31,19 @@ def _corpus_stats():
     if not os.path.exists(path):
         return {"n_corpus_tournaments": None, "n_entry_records": None}
     s = pd.read_csv(path)
-    return {
+    years = pd.to_numeric(s["tournament_year"], errors="coerce").dropna()
+    out = {
         "n_corpus_tournaments": int(s["tid"].nunique()),
         "n_entry_records": int(s["final_count"].fillna(0).sum()),
     }
+    # The footer's "15 years of data" was a literal beside two pipeline-sourced
+    # spans, so it would have gone stale the moment a season rolled over
+    # (2026-09-07 review).
+    if len(years):
+        out["corpus_year_min"] = int(years.min())
+        out["corpus_year_max"] = int(years.max())
+        out["corpus_year_span"] = int(years.max() - years.min() + 1)
+    return out
 
 
 def _hist_lookup(train_summary):
@@ -46,6 +57,40 @@ def _hist_lookup(train_summary):
     ]
     return pool.groupby('family')['final_count'].apply(
         lambda s: [int(v) for v in s]).to_dict()
+
+
+def _hist_by_year(train_summary):
+    """{family: [(year, final_count), ...]} over the training rows.
+
+    _hist_lookup drops the year, which the display clamp does not need but the
+    last-year baseline does. Same online/COVID exclusions so the baseline is
+    drawn from the same population the model trains on (2026-09-07 review).
+    """
+    pool = train_summary[
+        (~train_summary['is_online'].fillna(False))
+        & (~train_summary['is_covid'].fillna(False))
+        & (train_summary['final_count'] > 0)
+    ]
+    out = {}
+    for fam, grp in pool.groupby('family'):
+        out[fam] = [(int(y), float(c)) for y, c in
+                    zip(grp['tournament_year'], grp['final_count'])]
+    return out
+
+
+def _event_year(tinfo):
+    """Year of the edition being predicted, from its event_start date."""
+    try:
+        return int(str(tinfo['event_start'])[:4])
+    except (KeyError, TypeError, ValueError):
+        return 10**9   # no usable year: admit all prior history rather than none
+
+
+def _global_median_ratio(model, T):
+    """Corpus-wide median final/count_at_T ratio at this horizon, or None."""
+    rats = getattr(model, 'global_ratios', {}).get(T) or []
+    vals = [r[0] for r in rats if r[0] and np.isfinite(r[0])]
+    return float(np.median(vals)) if vals else None
 
 
 def is_curve_gradeable(tid_daily, final, min_ratio=FROZEN_CURVE_MIN_RATIO):
@@ -74,7 +119,7 @@ def is_curve_gradeable(tid_daily, final, min_ratio=FROZEN_CURVE_MIN_RATIO):
 
 
 def evaluate_tournaments(model, test_tournaments, daily, frozen_skipped=None,
-                         hist_lookup=None):
+                         hist_lookup=None, baseline_hist=None):
     """Run blind test predictions for a set of tournaments.
 
     test_tournaments: list of dicts with family, tid, final_count, event_start
@@ -85,6 +130,10 @@ def evaluate_tournaments(model, test_tournaments, daily, frozen_skipped=None,
     website applies before display (v3 T2), so the published grade is the grade
     of the published forecast rather than of a raw model output no visitor sees.
     Leave it None to grade the unclamped model.
+    baseline_hist: optional {family: [(year, final)]} from the training years,
+    from _hist_by_year. When supplied, each prediction also carries the two
+    naive baselines scored alongside the model, so the published accuracy has
+    something to be measured against (2026-09-07 review).
 
     Returns list of result dicts with predictions at each T-point.
     """
@@ -150,6 +199,20 @@ def evaluate_tournaments(model, test_tournaments, daily, frozen_skipped=None,
                 "abs_error_pct": abs(error_pct),
                 "in_ci": 1 if ci_lo <= final <= ci_hi else 0,
             }
+
+            # Naive baselines, scored through the same path. Both are computed
+            # from training-year data only, so they carry the same expanding
+            # -window discipline as the model they are compared against.
+            if baseline_hist is not None:
+                prior = [(y, c) for y, c in baseline_hist.get(family, [])
+                         if y < _event_year(tinfo)]
+                bl_ly = baseline_last_year(prior)
+                bl_ratio = baseline_current_ratio(
+                    count_at_T, _global_median_ratio(model, T))
+                t_predictions[T]["baseline_last_year"] = (
+                    int(round(bl_ly)) if bl_ly else None)
+                t_predictions[T]["baseline_ratio"] = (
+                    int(round(bl_ratio)) if bl_ratio else None)
 
         if not t_predictions:
             continue

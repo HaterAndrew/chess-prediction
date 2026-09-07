@@ -19,12 +19,16 @@ import sys
 from datetime import datetime, timedelta
 
 from scraper_utils import rate_limit
+from shared.paths import OUTPUT_DIR, SCRAPE_CSV
 from validate_scraped_data import validate_daily_scrape
 
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
-CSV_PATH = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
-FIELDNAMES = ["date", "tournament_name", "entry_count", "url"]
+CSV_PATH = SCRAPE_CSV
+# The schema has one home: the scraper that writes this file. A local copy went
+# stale when active_count/withdrawal_count were added, and because
+# merge_backfill() truncates before it writes, the resulting DictWriter
+# extrasaction='raise' landed AFTER the file was already emptied — one `fill`
+# run wiped daily_scrape.csv down to a header. Import it instead.
+from scrapers.entries import CSV_FIELDS as FIELDNAMES  # noqa: E402
 
 logging.basicConfig(
     level=logging.INFO,
@@ -77,8 +81,15 @@ def backfill_date(date_str):
         logger.warning("No tournaments returned for %s", date_str)
         return []
     consolidated = consolidate_world_open(tournaments)
-    rows = [{"date": date_str, "tournament_name": t["name"],
-             "entry_count": str(t["entry_count"]), "url": t["url"]}
+    # Mirror update_csv()'s row shape exactly — every CSV_FIELDS key present.
+    # A backfill row missing active_count/withdrawal_count would write blanks
+    # that the downstream readers treat as zero entries, not as unknown.
+    rows = [{"date": date_str,
+             "tournament_name": t["name"],
+             "entry_count": str(t["entry_count"]),
+             "active_count": str(t.get("active_count", t["entry_count"])),
+             "withdrawal_count": str(t.get("withdrawal_count", 0)),
+             "url": t["url"]}
             for t in consolidated]
     logger.info("Scraped %d tournaments for %s", len(rows), date_str)
     return rows
@@ -101,19 +112,53 @@ def merge_backfill(existing_csv, new_rows, dry_run=False):
             index[key] = row
             added += 1
 
-    merged = sorted(index.values(), key=lambda r: (r["date"], r["tournament_name"]))
+    merged = [_normalize_row(r) for r in
+              sorted(index.values(), key=lambda r: (r["date"], r["tournament_name"]))]
     logger.info("Merge: %d existing + %d new = %d total", len(existing), added, len(merged))
 
     if not dry_run:
-        os.makedirs(OUTPUT_DIR, exist_ok=True)
-        with open(existing_csv, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
-            writer.writeheader()
-            writer.writerows(merged)
+        _write_atomic(existing_csv, merged)
         logger.info("Wrote %d rows to %s", len(merged), existing_csv)
 
     report = validate_daily_scrape(existing_csv)
     return merged, report
+
+
+def _normalize_row(row):
+    """Project a row onto FIELDNAMES exactly.
+
+    Rows read off disk predate active_count/withdrawal_count in the oldest
+    part of the corpus; rows carrying an unexpected key would make DictWriter
+    raise. Same defaults scrapers.entries.backfill_active_withdrawal uses, so
+    a backfilled row and a scraped one are indistinguishable downstream.
+    """
+    out = {k: row.get(k, "") for k in FIELDNAMES}
+    if not out.get("active_count"):
+        out["active_count"] = out.get("entry_count", "0")
+    if not out.get("withdrawal_count"):
+        out["withdrawal_count"] = "0"
+    return out
+
+
+def _write_atomic(path, rows):
+    """Write rows to path via a temp file + os.replace.
+
+    Never truncate the destination before the new content is known-good: the
+    previous in-place `open(path, "w")` emptied daily_scrape.csv and only then
+    hit the DictWriter error, leaving the pipeline's input file destroyed.
+    """
+    os.makedirs(os.path.dirname(path) or OUTPUT_DIR, exist_ok=True)
+    tmp = f"{path}.tmp"
+    try:
+        with open(tmp, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
+            writer.writeheader()
+            writer.writerows(rows)
+        os.replace(tmp, path)
+    except Exception:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+        raise
 
 
 # ---------------------------------------------------------------------------

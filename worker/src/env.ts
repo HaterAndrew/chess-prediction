@@ -8,6 +8,8 @@ export interface Env {
   MODEL: string;
   DAILY_BUDGET_USD: string;
   RATE_LIMIT_PER_MIN: string;
+  // Ceiling across all callers, not per-IP. See checkGlobalRateLimit.
+  GLOBAL_RATE_LIMIT_PER_MIN?: string;
   KV?: KVNamespace;
   // Shared secret gating the /cca-tourlist scrape proxy (see proxyCcaTourList).
   CCA_PROXY_KEY?: string;

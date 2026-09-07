@@ -75,6 +75,10 @@ function renderModelHealth() {
       const n = PERFORMANCE_DATA.n_entry_records;
       er.textContent = n >= 1000 ? Math.round(n / 1000) + 'K' : String(n);
     }
+    const fy = document.getElementById('footerYears');
+    if (fy && PERFORMANCE_DATA.corpus_year_span) {
+      fy.textContent = PERFORMANCE_DATA.corpus_year_span;
+    }
   }
 
   // K1/L2: single-source the "How We Tested It" prose numbers from
@@ -100,6 +104,39 @@ function renderModelHealth() {
       setTxt('mc-ci-cover-footer', cov14 + '%');
     }
     if (t3) setTxt('about-cov-close', Math.round(t3.ci_coverage) + '%');
+
+    // "About This Model" stat chips. These were static markup until the
+    // 2026-09-07 review; the Overall MAPE chip had drifted to 33.6% against a
+    // graded 10.3%. Same payload, same horizons as the prose above.
+    const t1 = at(1);
+    if (t1) setTxt('mc-mae-t1', t1.mae_pct.toFixed(1) + '%');
+    if (t14) setTxt('mc-mae-t14', t14.mae_pct.toFixed(1) + '%');
+
+    // Convergence: does the average miss actually shrink as the event nears?
+    // The chip asserted "Pass" as static markup and had never been checked.
+    // Walk the graded horizons from long to short and count the steps that
+    // improve; report what the data says rather than a fixed verdict.
+    const byT = cagg.filter(a => typeof a.mae_pct === 'number')
+      .sort((a, b) => b.T - a.T);
+    if (byT.length >= 2) {
+      let improved = 0;
+      for (let i = 1; i < byT.length; i++) {
+        if (byT[i].mae_pct <= byT[i - 1].mae_pct) improved++;
+      }
+      const steps = byT.length - 1;
+      const el = document.getElementById('mc-convergence');
+      if (el) {
+        const clean = improved === steps;
+        el.textContent = clean ? 'Pass' : 'Mixed';
+        el.classList.remove('green', 'gold');
+        el.classList.add(clean ? 'green' : 'gold');
+        el.title = clean
+          ? `Error shrank at every one of the ${steps} horizon steps.`
+          : `Error shrank at ${improved} of ${steps} horizon steps; it rises again `
+            + `at the others, so the curve is not strictly monotonic.`;
+      }
+      setTxt('mc-convergence-sub', `${improved}/${steps} steps`);
+    }
     const yrs = Object.keys(PERFORMANCE_DATA.years || {})
       .filter(y => (PERFORMANCE_DATA.years[y].n_tournaments || 0) > 0).sort();
     if (cum.n_tournaments && yrs.length) {

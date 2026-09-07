@@ -14,6 +14,9 @@ DATA_URL = "https://haterandrew.github.io/chess-prediction/data/website_data.jso
 MODEL = "claude-sonnet-5"
 DAILY_BUDGET_USD = "1.00"
 RATE_LIMIT_PER_MIN = "20"
+# Ceiling across every caller. The per-IP limit above cannot bind an attacker
+# who rotates addresses or drives the endpoint from other people's browsers.
+GLOBAL_RATE_LIMIT_PER_MIN = "60"
 
 # KV namespace: rate-limit buckets + daily-cost counter
 [[kv_namespaces]]

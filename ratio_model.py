@@ -14,6 +14,7 @@ declines to produce an estimate.
 """
 import numpy as np
 from scipy.stats import lognorm
+from shared.season import CURRENT_SEASON
 
 # Lead times (days before event) at which count->final ratios are tabulated.
 # T=0 is the event-start bucket the window engine depends on: the full
@@ -31,7 +32,7 @@ def build_ratio_model(train_summary, train_daily, completed_tids=None):
     its 2023-25 folds. Backtest folds (window_grading) deliberately do NOT
     pass it, so their train-on-<year cut stays leak-free.
     """
-    year_ok = train_summary['tournament_year'] < 2026
+    year_ok = train_summary['tournament_year'] < CURRENT_SEASON
     if completed_tids:
         year_ok = year_ok | train_summary['tid'].isin(completed_tids)
     valid = train_summary[

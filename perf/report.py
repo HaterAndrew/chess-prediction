@@ -9,6 +9,7 @@ import pandas as pd
 
 from shared.clock import today_ts
 from shared.paths import OUTPUT_DIR
+from shared.season import CURRENT_SEASON
 from window_grading import grade_from_by_day, grade_window_engine
 
 from perf.evaluation import (_corpus_stats, _hist_lookup,
@@ -62,8 +63,9 @@ def build_report(summary, year_results, all_tournament_results):
         print("  Window engine: N/A — no gradeable window predictions")
 
     # ── Build output ──
-    # Top-level fields use 2026 (YTD) for backward compatibility with bias correction
-    ytd = year_results.get(2026, {})
+    # Top-level fields carry the current season (YTD) for backward
+    # compatibility with the bias correction that reads them.
+    ytd = year_results.get(CURRENT_SEASON, {})
 
     output = {
         "generated": TODAY.strftime('%Y-%m-%d'),

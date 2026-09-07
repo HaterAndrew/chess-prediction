@@ -6,6 +6,7 @@ import re
 
 import numpy as np
 import pandas as pd
+from shared.season import CURRENT_SEASON
 
 from model.constants import DEFAULT_EVENT_START_OFFSET, OUTPUT_DIR, TODAY
 
@@ -43,7 +44,7 @@ def reanchor_daily_to_event_start(summary, daily, meta, keep_post_start=False):
         fam = row['family']
         yr = int(row['tournament_year']) if pd.notna(row['tournament_year']) else 0
         lr = pd.to_datetime(row['last_reg'], errors='coerce') if pd.notna(row.get('last_reg')) else pd.NaT
-        if pd.isna(lr) or yr >= 2026:
+        if pd.isna(lr) or yr >= CURRENT_SEASON:
             continue
         start = meta_starts.get((fam, yr))
         if start is not None:
@@ -233,9 +234,9 @@ def is_complete(row):
     if pd.isna(yr):
         return False
     yr = int(yr)
-    if yr < 2026:
+    if yr < CURRENT_SEASON:
         return True
-    # For 2026, check if the event has already passed
+    # Current season: check if the event has already passed
     # We'll handle this with metadata in the caller
     return False
 

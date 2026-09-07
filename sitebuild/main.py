@@ -10,6 +10,7 @@ import pandas as pd
 from pipeline_utils import is_event_complete
 from ratio_model import build_ratio_model
 from tournament_aliases import canonicalize_family
+from shared.season import CURRENT_SEASON
 
 from sitebuild.assemble import finalize_cards
 from sitebuild.cards import build_model_cards
@@ -66,7 +67,7 @@ def main():
             # Match by family name (strip year prefix "2026 " from scrape name)
             scrape_name = s['tournament_name']
             family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
-            mask = _fam_eq(summary['family'], family_name) & (summary['tournament_year'] == 2026)
+            mask = _fam_eq(summary['family'], family_name) & (summary['tournament_year'] == CURRENT_SEASON)
             gross_count = int(s['entry_count']) if s['entry_count'] > 0 else int(s['active_count'])
             net_count = int(s['active_count']) if s['active_count'] > 0 else gross_count
             if mask.any() and gross_count > 0:
@@ -84,14 +85,14 @@ def main():
         for _, s in scrape.iterrows():
             scrape_name = s['tournament_name']
             family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
-            tid_match = summary[_fam_eq(summary['family'], family_name) & (summary['tournament_year'] == 2026)]
+            tid_match = summary[_fam_eq(summary['family'], family_name) & (summary['tournament_year'] == CURRENT_SEASON)]
             if len(tid_match) == 0:
                 continue
             tid = tid_match.iloc[0]['tid']
             last_reg = tid_match.iloc[0].get('last_reg')
-            meta_row = meta[_fam_eq(meta['family'], family_name) & (meta['year'] == 2026)]
+            meta_row = meta[_fam_eq(meta['family'], family_name) & (meta['year'] == CURRENT_SEASON)]
             if len(meta_row) == 0:
-                meta_row = meta[(meta['year'] == 2026) & (meta['start_date'] > pd.Timestamp.now())]
+                meta_row = meta[(meta['year'] == CURRENT_SEASON) & (meta['start_date'] > pd.Timestamp.now())]
                 meta_row = meta_row[meta_row['family'].str.contains(family_name.split()[0], case=False, na=False)]
             if len(meta_row) > 0:
                 event_start = pd.to_datetime(meta_row.iloc[0]['start_date'])
@@ -187,7 +188,7 @@ def main():
 
     # Identify completed 2026 tournaments (last_reg in the past) for rolling retraining
     completed_2026 = summary[
-        (summary['tournament_year'] == 2026) &
+        (summary['tournament_year'] == CURRENT_SEASON) &
         (~summary['is_online'].fillna(False)) &
         (summary['has_timestamps'])
     ].copy()
@@ -202,7 +203,7 @@ def main():
         # admitted mid-event tournaments (Chicago Open, May 21–25) whose
         # summary.final_count was still being raised by daily scrapes — corrupting
         # prod_model.fit() and recalibrate() with non-final truth labels.
-        end_dt = get_event_end_date(family, 2026)
+        end_dt = get_event_end_date(family, CURRENT_SEASON)
         if not is_event_complete(end_dt, TODAY):
             continue
         completed_tids.add(row['tid'])
@@ -236,7 +237,7 @@ def main():
         # contains its completed events — the bias correction fits on them.
         recal_diag = prod_model.recalibrate(recal_data, daily,
                                             regime_year=int(TODAY.year))
-        n_2026 = len(recal_data[recal_data['tournament_year'] == 2026])
+        n_2026 = len(recal_data[recal_data['tournament_year'] == CURRENT_SEASON])
         n_older = len(recal_data) - n_2026
         print(f"  Recalibration from {len(recal_data)} tournaments ({n_older} from 2024-25, {n_2026} from 2026):")
         for T, d in sorted(recal_diag.items()):
@@ -270,7 +271,7 @@ def main():
 
     # Get 2026 tournaments
     t2026 = summary[
-        (summary['tournament_year'] == 2026) &
+        (summary['tournament_year'] == CURRENT_SEASON) &
         (~summary['is_online'].fillna(False)) &
         (~summary['family'].isin(EXCLUDE_FAMILIES))
     ].copy()
@@ -423,11 +424,11 @@ def main():
     # Compare scrape counts to website output. Flag any tournament where the
     # scrape has entries but the website shows 0 — that's a linking failure.
     if os.path.exists(scrape_path):
-        all_2026 = {canonicalize_family(t['family']): t['current_count'] for t in tournaments_out if t.get('year') == 2026}
-        live_2026 = {canonicalize_family(t['family']): t['current_count'] for t in tournaments_out if t.get('year') == 2026 and t.get('status') == 'live'}
+        all_2026 = {canonicalize_family(t['family']): t['current_count'] for t in tournaments_out if t.get('year') == CURRENT_SEASON}
+        live_2026 = {canonicalize_family(t['family']): t['current_count'] for t in tournaments_out if t.get('year') == CURRENT_SEASON and t.get('status') == 'live'}
         # Tournaments that are intentionally excluded (completed, blitz, WO sub-events, etc.)
         excluded_or_complete = {canonicalize_family(f) for f in EXCLUDE_FAMILIES}
-        excluded_or_complete.update(canonicalize_family(t['family']) for t in tournaments_out if t.get('year') == 2026 and t.get('status') in ('complete', 'in_progress'))
+        excluded_or_complete.update(canonicalize_family(t['family']) for t in tournaments_out if t.get('year') == CURRENT_SEASON and t.get('status') in ('complete', 'in_progress'))
         link_warnings = []
         for _, s in latest_scrape.iterrows():
             sn = s['tournament_name']

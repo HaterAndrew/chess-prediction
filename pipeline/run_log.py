@@ -1,5 +1,6 @@
 """update_log.csv writer + retention pruning (auto_update, verbatim)."""
 import csv
+from shared.season import CURRENT_SEASON
 import json
 import os
 from datetime import datetime, timedelta
@@ -91,7 +92,7 @@ def step_log_run():
         if write_header:
             writer.writerow(LOG_FIELDS)
         for t in data.get('tournaments', []):
-            if t.get('year') != 2026:
+            if t.get('year') != CURRENT_SEASON:
                 continue
             if t.get('status') not in ('live', 'complete'):
                 continue

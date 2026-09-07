@@ -11,10 +11,11 @@ from pipeline_utils import (clamp_stats,
                             is_event_complete, reset_clamp_stats)
 from shared.clock import today_ts
 from shared.paths import OUTPUT_DIR
+from shared.season import CURRENT_SEASON, eval_years
 from shared.side_events import SIDE_EVENT_PATTERN
 from shared.thresholds import FROZEN_CURVE_MIN_RATIO, MIN_FINAL_COUNT
 
-from perf.evaluation import (_hist_lookup,
+from perf.evaluation import (_hist_by_year, _hist_lookup,
                              assert_truth_label_freshness,
                              evaluate_tournaments, format_results)
 from perf.grading import compute_aggregate, grade_from_aggregate
@@ -23,8 +24,9 @@ m04c = import_module("04c_final_model")
 
 TODAY = today_ts()
 
-# Years to evaluate (expanding window: train on < Y, predict Y)
-EVAL_YEARS = [2022, 2023, 2024, 2025, 2026]
+# Expanding window: train on < Y, predict Y. Derived from the season so the
+# fold list keeps growing instead of stopping at a literal final year.
+EVAL_YEARS = eval_years(first=2022)
 
 
 def prepare_folds():
@@ -96,7 +98,7 @@ def prepare_folds():
     # Family historical baseline for Tier 3. Excludes COVID and online seasons
     # so the median represents normal in-person turnout.
     history_pool = summary[
-        (summary['tournament_year'] < 2026)
+        (summary['tournament_year'] < CURRENT_SEASON)
         & (~summary['is_online'].fillna(False))
         & (~summary['is_covid'].fillna(False))
         & (summary['final_count'] > 0)
@@ -106,7 +108,7 @@ def prepare_folds():
     MIN_FAMILY_HISTORY = 3      # need at least this many prior years to score
 
     completed_2026_all = summary[
-        (summary['tournament_year'] == 2026) &
+        (summary['tournament_year'] == CURRENT_SEASON) &
         (~summary['is_online'].fillna(False)) &
         (summary['has_timestamps'])
     ].copy()
@@ -120,7 +122,7 @@ def prepare_folds():
         if pd.isna(lr) or lr > TODAY:
             continue
         family = row['family']
-        m_row = meta[(meta['family'] == family) & (meta['year'] == 2026)]
+        m_row = meta[(meta['family'] == family) & (meta['year'] == CURRENT_SEASON)]
         start_date = m_row.iloc[0]['start_date'] if len(m_row) > 0 else pd.NaT
         end_date = m_row.iloc[0]['end_date'] if len(m_row) > 0 else pd.NaT
         if pd.notna(start_date) and start_date > TODAY:
@@ -233,7 +235,7 @@ def run_year_folds(summary, daily, meta, enrichment_lookup, completed_2026_tids)
         print(f"  Evaluating {year}")
         print(f"{'─'*60}")
 
-        if year == 2026:
+        if year == CURRENT_SEASON:
             # J1: leave-one-out. The prior code fit ONE model on all completed
             # 2026 tids and then predicted those same tids in-sample, inflating
             # the 2026 grade (the headline number). Build the test set, then refit
@@ -243,14 +245,14 @@ def run_year_folds(summary, daily, meta, enrichment_lookup, completed_2026_tids)
             # provenance.
             test_tournaments = []
             completed_2026 = summary[
-                (summary['tournament_year'] == 2026) &
+                (summary['tournament_year'] == CURRENT_SEASON) &
                 (~summary['is_online'].fillna(False)) &
                 (summary['final_count'] >= MIN_FINAL_COUNT) &
                 (summary['tid'].isin(completed_2026_tids))
             ]
             for _, row in completed_2026.iterrows():
                 family = row['family']
-                m_row = meta[(meta['family'] == family) & (meta['year'] == 2026)]
+                m_row = meta[(meta['family'] == family) & (meta['year'] == CURRENT_SEASON)]
                 if len(m_row) > 0 and pd.notna(m_row.iloc[0]['start_date']):
                     event_start_str = m_row.iloc[0]['start_date'].strftime('%Y-%m-%d')
                 else:
@@ -266,7 +268,9 @@ def run_year_folds(summary, daily, meta, enrichment_lookup, completed_2026_tids)
             frozen_skipped = []
             # Prior-year finals only — the clamp must not see 2026 outcomes, or
             # the leak-free property of the LOO refit above would be undone.
-            eval_hist = _hist_lookup(summary[summary['tournament_year'] < 2026])
+            _prior = summary[summary['tournament_year'] < CURRENT_SEASON]
+            eval_hist = _hist_lookup(_prior)
+            eval_baseline_hist = _hist_by_year(_prior)
             reset_clamp_stats()
             for tinfo in test_tournaments:
                 loo_tids = completed_2026_tids - {tinfo['tid']}
@@ -277,7 +281,7 @@ def run_year_folds(summary, daily, meta, enrichment_lookup, completed_2026_tids)
                 model.fit(summary, daily, enrichment_lookup,
                           completed_tids=loo_tids if loo_tids else None,
                           verbose_standings_join=False,
-                          exclude_family_years={(tinfo['family'], 2026)})
+                          exclude_family_years={(tinfo['family'], CURRENT_SEASON)})
                 recal_data = summary[
                     (summary['has_timestamps']) &
                     (~summary['is_online'].fillna(False)) &
@@ -294,7 +298,8 @@ def run_year_folds(summary, daily, meta, enrichment_lookup, completed_2026_tids)
                     model.recalibrate(recal_data, daily, regime_year=year)
                 results.extend(evaluate_tournaments(model, [tinfo], daily,
                                                     frozen_skipped=frozen_skipped,
-                                                    hist_lookup=eval_hist))
+                                                    hist_lookup=eval_hist,
+                                                    baseline_hist=eval_baseline_hist))
             print(f"  LOO-refit {len(test_tournaments)} completed 2026 tournaments (leak-free)")
             # v3 T2: the eval now runs the display clamp, so report how often it
             # actually altered a graded prediction. If this reads all zeros the
@@ -361,13 +366,14 @@ def run_year_folds(summary, daily, meta, enrichment_lookup, completed_2026_tids)
                 })
 
         # Run evaluation (the 2026 fold already did its own LOO evaluation above)
-        if year != 2026:
+        if year != CURRENT_SEASON:
             frozen_skipped = []
             results = evaluate_tournaments(
                 model, test_tournaments, daily,
                 frozen_skipped=frozen_skipped,
                 # Training years only — same expanding window the model saw.
-                hist_lookup=_hist_lookup(train_summary))
+                hist_lookup=_hist_lookup(train_summary),
+                baseline_hist=_hist_by_year(train_summary))
             if frozen_skipped:
                 print(f"  Excluded {len(frozen_skipped)} tournament(s) from grading — daily curve "
                       f"frozen below {int(FROZEN_CURVE_MIN_RATIO*100)}% of final:")

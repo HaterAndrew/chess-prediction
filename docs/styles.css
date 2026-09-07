@@ -3002,6 +3002,41 @@ footer a { color: var(--muted); }
 .chart-tile-body { position: relative; height: 220px; }
 .chart-tile-canvas { width: 100%; }
 .perf-horizon-strip { display: flex; gap: 6px; margin-bottom: 22px; flex-wrap: wrap; }
+
+/* Proper scoring rules + naive baselines (2026-09-07 review). Two blocks:
+   a bar comparison of the model against doing nothing, and a PIT strip
+   showing whether the published range is honest. */
+.perf-scoring { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .perf-scoring { grid-template-columns: 1fr 1fr; } }
+.perf-scoring-block {
+  padding: 12px 14px; background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 10px;
+}
+.perf-scoring-title {
+  font-size: var(--fs-2); font-weight: 600; color: var(--text);
+  margin-bottom: 10px; letter-spacing: .01em;
+}
+.perf-scoring-sub { display: block; font-weight: 400; color: var(--muted); font-size: var(--fs-1); margin-top: 2px; }
+.perf-scoring-note { font-size: var(--fs-1); color: var(--muted); margin-top: 9px; line-height: 1.45; }
+
+.perf-bar-row { display: grid; grid-template-columns: minmax(0, 11em) 1fr 3.2em; align-items: center; gap: 8px; margin-bottom: 6px; }
+.perf-bar-label { font-size: var(--fs-1); color: var(--text2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.perf-bar-track { height: 8px; background: var(--surface); border-radius: 4px; overflow: hidden; }
+.perf-bar-fill { height: 100%; border-radius: 4px; }
+.perf-bar-val { font-size: var(--fs-1); text-align: right; font-variant-numeric: tabular-nums; }
+
+.perf-pit { display: flex; align-items: flex-end; gap: 3px; height: 48px; padding-top: 2px; }
+.perf-pit-col { flex: 1; display: flex; align-items: flex-end; justify-content: center; height: 100%; }
+.perf-pit-bar { width: 100%; border-radius: 2px 2px 0 0; }
+.perf-pit-axis { display: flex; justify-content: space-between; font-size: var(--fs-1); color: var(--muted); margin-top: 5px; }
+
+/* Colour is not the only cue: an over-weighted PIT bucket also gets a top rule,
+   so the "range is too narrow" signal survives Windows High Contrast Mode and
+   colour-vision differences. */
+@media (forced-colors: active) {
+  .perf-bar-fill { forced-color-adjust: none; background: Highlight !important; }
+  .perf-pit-bar { forced-color-adjust: none; background: CanvasText !important; }
+}
 .perf-summary {
   font-size: var(--fs-2); font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
   color: var(--muted); cursor: pointer; padding: 10px 0; user-select: none;

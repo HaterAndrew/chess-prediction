@@ -313,6 +313,81 @@ def test_backtest_vs_naive():
     print("  PASS: per-family multiplier beats global baseline")
 
 
+# ── 5e. History-depth alarm (2026-09-07 review) ────────────────────────────
+#
+# The spot checks below were marked xfail when the walk-in history collapsed to
+# n_years=1 for 37 of 38 families, which turned the only signal that anything
+# was wrong into a silent skip. check_history_depth is the alarm that should
+# have fired instead: it reaches audit_warnings.json and the site's warnings
+# panel through the pipeline's WARNING: harvest.
+
+def _stats_rows(n_years_list, std=0.0):
+    return [{"family": f"Fam {i}", "n_years": str(n),
+             "median_ratio": "1.20", "std_ratio": str(std)}
+            for i, n in enumerate(n_years_list)]
+
+
+def _check():
+    from importlib import import_module
+    return import_module("06_walk_in_multipliers").check_history_depth
+
+
+def test_history_depth_alarm_fires_on_a_collapsed_corpus():
+    """The live shape as of the review: 37 of 38 families at n_years=1."""
+    msg = _check()(_stats_rows([1] * 37 + [3]))
+    assert msg is not None
+    assert "37 of 38" in msg
+    assert "std_ratio=0" in msg
+
+
+def test_history_depth_alarm_quiet_when_history_is_healthy():
+    assert _check()(_stats_rows([4, 5, 6, 3, 7])) is None
+
+
+def test_history_depth_alarm_needs_a_majority_to_be_thin():
+    """One or two thin families is normal; most of them is the failure mode."""
+    assert _check()(_stats_rows([1, 1, 4, 5, 6])) is None
+    assert _check()(_stats_rows([1, 1, 1, 5, 6])) is not None
+
+
+def test_history_depth_alarm_handles_an_empty_corpus():
+    assert _check()([]) is None
+
+
+def test_history_depth_alarm_names_the_recency_cut():
+    """The operator needs the cause, not just the symptom."""
+    msg = _check()(_stats_rows([1] * 10))
+    assert "MIN_DATA_YEAR=2023" in msg
+    assert "all_registrations.csv" in msg
+
+
+def test_history_depth_alarm_text_is_harvestable():
+    """pipeline/warns.py picks up lines containing 'WARNING:'; the message must
+    be a single line or the harvest truncates it."""
+    msg = _check()(_stats_rows([1] * 10))
+    assert "\n" not in msg
+
+
+def test_live_corpus_alarm_state_is_reported_not_hidden():
+    """Whatever the current corpus looks like, the alarm must agree with it.
+
+    Not an assertion that the corpus is healthy — it is not — but that the
+    alarm's verdict matches the data on disk rather than drifting from it.
+    """
+    stats_csv = os.path.join(OUTPUT_DIR, "walk_in_family_stats.csv")
+    if not os.path.exists(stats_csv):
+        pytest.skip("walk_in_family_stats.csv not built")
+    with open(stats_csv) as f:
+        rows = list(csv.DictReader(f))
+    thin = [r for r in rows if int(r["n_years"]) < 2]
+    msg = _check()(rows)
+    if len(thin) * 2 > len(rows):
+        assert msg is not None, "history has collapsed but no warning is raised"
+        assert f"{len(thin)} of {len(rows)}" in msg
+    else:
+        assert msg is None
+
+
 # ── 5d. Spot Checks ────────────────────────────────────────────────────────
 
 @pytest.mark.xfail(reason="Walk-in history collapsed: Kings Island now n_years=1 "
@@ -320,7 +395,9 @@ def test_backtest_vs_naive():
                           "assumes. The 2023+ recency restriction (06:179) plus "
                           "standings-join gaps shrank the family history. Also asserts "
                           "live-data ranges rather than a fixture. Revisit in Phase 5 (J3).",
-                   strict=False)
+                   # strict: if the corpus recovers, this must be un-xfailed
+                   # deliberately rather than passing unnoticed (2026-09-07 review).
+                   strict=True)
 def test_spot_check_kings_island():
     """Kings Island Open: stable open, 7 years, ratio ~1.65, std < 0.07."""
     stats_csv = os.path.join(OUTPUT_DIR, "walk_in_family_stats.csv")
@@ -341,7 +418,9 @@ def test_spot_check_kings_island():
                           "(2026, ratio 1.236) vs the 5 years/ratio~1.55 this test assumes "
                           "(2023+ recency + standings-join gaps). Asserts live-data ranges. "
                           "Revisit in Phase 5 (J3).",
-                   strict=False)
+                   # strict: if the corpus recovers, this must be un-xfailed
+                   # deliberately rather than passing unnoticed (2026-09-07 review).
+                   strict=True)
 def test_spot_check_southwest_class():
     """Southwest Class: class tournament, 5 years, ratio ~1.55-1.60."""
     stats_csv = os.path.join(OUTPUT_DIR, "walk_in_family_stats.csv")
@@ -364,7 +443,9 @@ def test_spot_check_southwest_class():
                           "(2026, ratio 1.335) vs the ~3.5 outlier this test assumes "
                           "(2023+ recency + standings-join gaps). Asserts live-data ranges. "
                           "Revisit in Phase 5 (J3).",
-                   strict=False)
+                   # strict: if the corpus recovers, this must be un-xfailed
+                   # deliberately rather than passing unnoticed (2026-09-07 review).
+                   strict=True)
 def test_spot_check_mid_america():
     """Mid-America Open: extreme outlier, ratio ~3.5, own family multiplier."""
     stats_csv = os.path.join(OUTPUT_DIR, "walk_in_family_stats.csv")

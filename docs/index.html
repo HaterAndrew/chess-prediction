@@ -21,7 +21,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://chess-ask.hater-andrewd.workers.dev">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=96f245ba47">
+<link rel="stylesheet" href="styles.css?v=84be1b82d4">
 </head>
 <body>
 
@@ -140,10 +140,15 @@
   </div>
 
   <!-- ── Hero KPI ── -->
-  <div class="hero" id="heroSection" aria-live="polite" aria-atomic="true">
+  <!-- No aria-live on this container: #heroNumber is driven by a ~600ms
+       requestAnimationFrame count-up, and a live region wrapping a tween
+       announces every intermediate frame instead of the result. The final
+       value is announced once from #heroAnnounce below (2026-09-07 review). -->
+  <div class="hero" id="heroSection">
     <div class="hero-primary">
       <div class="hero-label" id="heroLabel">Predicted Final Entries</div>
-      <div class="hero-number" id="heroNumber"></div>
+      <div class="hero-number" id="heroNumber" aria-hidden="true"></div>
+      <span class="sr-only" id="heroAnnounce" aria-live="polite" aria-atomic="true"></span>
       <div class="hero-ci" id="heroCi"></div>
       <div class="hero-narrative" id="heroNarrative" aria-live="polite"></div>
       <div class="festival-cluster" id="festivalCluster" aria-label="Festival sub-events"></div>
@@ -246,25 +251,30 @@
     <div class="model-info-row">
       <p class="model-info-blurb">Ensemble model (N5v4): historical ratio + per-family Huber regression, predicting final count from current entries at each lead time. 80% confidence intervals (CIs) from lognormal fits with IQR outlier removal. Leave-one-out blind-tested on held-out 2023–2026 data.</p>
       <div class="stat-chip-row">
+        <!-- Every figure here is set from PERFORMANCE_DATA in tab_about.js.
+             Until 2026-09-07 three of these four were static markup that no JS
+             touched, so they drifted from the nightly regrade unnoticed: the
+             "Overall MAPE" chip read 33.6% against a graded 10.3%. Do not
+             hardcode a value into a stat-chip-num; give it an id and source it. -->
         <div class="stat-chip">
-          <div class="stat-chip-label">Chicago Open</div>
-          <div class="stat-chip-num gold">12.0%</div>
-          <div class="stat-chip-sub" title="Mean Absolute Percentage Error">MAPE</div>
+          <div class="stat-chip-label">Day Before</div>
+          <div class="stat-chip-num gold" id="mc-mae-t1">–</div>
+          <div class="stat-chip-sub" title="Mean Absolute Percentage Error at T-1">MAPE</div>
         </div>
         <div class="stat-chip">
           <div class="stat-chip-label">CI Cover</div>
-          <div class="stat-chip-num gold" id="mc-ci-cover">75%</div>
+          <div class="stat-chip-num gold" id="mc-ci-cover">–</div>
           <div class="stat-chip-sub">target 80% (T-14)</div>
         </div>
         <div class="stat-chip">
           <div class="stat-chip-label">Overall</div>
-          <div class="stat-chip-num">33.6%</div>
-          <div class="stat-chip-sub" title="Mean Absolute Percentage Error">MAPE</div>
+          <div class="stat-chip-num" id="mc-mae-t14">–</div>
+          <div class="stat-chip-sub" title="Mean Absolute Percentage Error at T-14">MAPE</div>
         </div>
         <div class="stat-chip">
           <div class="stat-chip-label">Conv.</div>
-          <div class="stat-chip-num green">Pass</div>
-          <div class="stat-chip-sub">monotonic</div>
+          <div class="stat-chip-num" id="mc-convergence">–</div>
+          <div class="stat-chip-sub" id="mc-convergence-sub">monotonic</div>
         </div>
       </div>
     </div>
@@ -300,7 +310,7 @@
               <th class="sortable" data-act="sort-table" data-col="date">Event Date</th>
               <th class="sortable" data-act="sort-table" data-col="current">Current</th>
               <th class="sortable" data-act="sort-table" data-col="predicted">Predicted</th>
-              <th title="The 80% likely range: actual entries land inside this range 8 times out of 10">Likely Range</th>
+              <th id="thLikelyRange" title="The interval targets 80% coverage. Measured rate loads with the performance data.">Likely Range</th>
               <th class="sortable" data-act="sort-table" data-col="progress">Progress</th>
             </tr>
           </thead>
@@ -465,6 +475,12 @@
 
     <!-- Horizon detail strip -->
     <div id="perfHorizonStrip" class="perf-horizon-strip"></div>
+
+    <!-- Proper scoring rules + naive baselines (2026-09-07 review). MAE and
+         coverage alone cannot tell a calibrated interval from a large one, and
+         an error figure with nothing to compare it against does not say whether
+         the model beats doing nothing. Rendered by tab_performance.js. -->
+    <div id="perfScoring" class="perf-scoring mb24"></div>
 
     <!-- Per-tournament table -->
     <details class="mb24" open>
@@ -881,7 +897,7 @@
 
 <footer role="contentinfo">
   <div class="container">
-    <div class="footer-line">CCA Entry Predictor &middot; Built on <span id="footerEntryRecords">&mdash;</span> entry records across <span id="footerTournamentCount">&mdash;</span> tournaments &middot; 15 years of data</div>
+    <div class="footer-line">CCA Entry Predictor &middot; Built on <span id="footerEntryRecords">&mdash;</span> entry records across <span id="footerTournamentCount">&mdash;</span> tournaments &middot; <span id="footerYears">&mdash;</span> years of data</div>
     <div>Ensemble Model (N5v4) &middot; <span id="mc-ci-cover-footer">75%</span> CI coverage at 2 wks &middot; Blind-tested on 2023–2026 data &middot; Data from <a href="https://www.chessaction.com" target="_blank" rel="noopener">chessaction.com</a></div>
     <div class="footer-hints">
       <span class="kbd-hint">&larr;</span> <span class="kbd-hint">&rarr;</span> navigate tournaments &middot;
@@ -916,17 +932,17 @@
 <script src="foundation.js?v=4d4e27e30b"></script>
 <script src="cmdk.js?v=c497999f1f"></script>
 <script src="tab_email.js?v=62b9000739"></script>
-<script src="tab_performance.js?v=e9814abef3"></script>
+<script src="tab_performance.js?v=21b7653569"></script>
 <script src="tab_puzzles.js?v=c0b01b5c3e"></script>
 <script src="pickers.js?v=00fe32ddb5"></script>
 <script src="panels_info.js?v=85cb77359f"></script>
-<script src="hero_kpi.js?v=b50035a2fc"></script>
+<script src="hero_kpi.js?v=6c9bbd7c11"></script>
 <script src="chart_main.js?v=14f63c8b82"></script>
-<script src="chart_hist.js?v=df0ad1a8e2"></script>
-<script src="panels_grid.js?v=b50a890ae4"></script>
+<script src="chart_hist.js?v=ca416e2737"></script>
+<script src="panels_grid.js?v=60b509a4c5"></script>
 <script src="panels_cal.js?v=28d15e5f60"></script>
-<script src="tab_about.js?v=1a12f01317"></script>
-<script src="tab_compare.js?v=fa214e72e7"></script>
+<script src="tab_about.js?v=565544d1dc"></script>
+<script src="tab_compare.js?v=2bf04e3339"></script>
 <script src="tab_ask.js?v=07df7455b0"></script>
 <script src="app.js?v=9c09a86d56"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the

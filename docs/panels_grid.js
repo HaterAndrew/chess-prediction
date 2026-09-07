@@ -237,6 +237,19 @@ function renderAccuracyStrip() {
   const mae = t14 ? t14.mae_pct : null;
   const cov = t14 ? t14.ci_coverage : null;
 
+  // The "Likely Range" column header used to assert "8 times out of 10" as a
+  // flat fact. Measured cumulative coverage is below the 80% target at most
+  // horizons, and the About tab already renders the real figure from this same
+  // payload — the tooltip a director actually hovers should not disagree with
+  // it. Single-source it here (2026-09-07 review).
+  const th = document.getElementById('thLikelyRange');
+  if (th && cov != null) {
+    const rounded = Math.round(cov);
+    th.title = `Targets an 80% range. Measured: actual entries landed inside `
+      + `it ${rounded}% of the time at two weeks out`
+      + (nEvents ? `, across ${nEvents} blind-tested tournaments.` : '.');
+  }
+
   // Grade-color mapping (matches the Performance tab letter conventions).
   function gradeCls(g) {
     if (!g) return 'flat';

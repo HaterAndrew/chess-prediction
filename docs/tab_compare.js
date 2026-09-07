@@ -127,7 +127,10 @@ function renderCompareTab() {
       { label: 'CI Range', fn: t => t.ci_lower && t.ci_upper ? `${fmt(t.ci_lower)} – ${fmt(t.ci_upper)}` : '—' },
       { label: 'Days Remaining', fn: t => t.days_remaining != null ? t.days_remaining : '—' },
       { label: 'Historical Avg', fn: t => t.historical && t.historical.length > 0 ? fmt(Math.round(t.historical.reduce((s, h) => s + h.count, 0) / t.historical.length)) : '—' },
-      { label: 'Event Date', fn: t => t.event_date ? fmtDate(t.event_date) : '—' },
+      // The payload field is event_start. Reading a non-existent event_date
+      // rendered the em-dash placeholder for every tournament in every
+      // comparison, which looked like missing data rather than a bug.
+      { label: 'Event Date', fn: t => t.event_start ? fmtDate(t.event_start) : '—' },
     ];
 
     rows.forEach(row => {

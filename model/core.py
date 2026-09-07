@@ -44,6 +44,29 @@ class N5v4_Final(FitMixin, NowcastMixin, RecalibrationMixin):
     # docstring.
     ENSEMBLE_WEIGHTS = ((3, 0.80), (7, 0.55), (28, 0.30), (None, 0.15))
 
+    # Weight given to the family's most recent final count when blending it into
+    # the ensemble output, by lead-time bucket, in the same shape as
+    # ENSEMBLE_WEIGHTS. The bounds are deliberately NOT the ensemble's: the
+    # first bucket runs to 14 because that is where the model stops losing to
+    # the naive forecast, and it is pinned at zero so nothing changes on the
+    # horizons the model already wins.
+    #
+    # The naive "last year's final count" forecast beat the full ensemble on MAE
+    # at every horizon beyond two weeks (2026-09-07 review): T-90 10.5% against
+    # 14.4%, T-60 11.5 against 15.5, T-42 12.2 against 13.4, T-28 12.2 against
+    # 15.0. That is a signal the model was discarding, not a defect in the
+    # baseline: at long lead times the registration curve carries little
+    # information and the ratio leg amplifies whatever noise it has, while last
+    # year's size is already close to right.
+    #
+    # These are fitted, not chosen. scripts/fit_anchor_weights.py sweeps them
+    # jointly against held-out folds; do not change them without re-running it.
+    # Measured there: nested selection improves held-out MAE by 1.01 points at
+    # T>=28 and moves T<28 by 0.00, and the pooled curve is flat across
+    # 0.4-0.6 x 0.6. These sit at the tied minimum of that flat region, taking
+    # the more conservative of the tied pair.
+    ANCHOR_WEIGHTS = ((14, 0.0), (28, 0.40), (None, 0.60))
+
     # (v3 T6: CI_ENSEMBLE_SHRINK = 0.32 used to sit here with zero readers — the
     # actual shrinkage is the T-dependent table in fit(). Removed rather than
     # left to imply a knob that does nothing.)
@@ -76,6 +99,24 @@ class N5v4_Final(FitMixin, NowcastMixin, RecalibrationMixin):
         script can try candidate tables without touching the class default.
         """
         table = getattr(self, 'ensemble_weights', None) or self.ENSEMBLE_WEIGHTS
+        return self._bucket_weight(table, days_remaining)
+
+    def _anchor_weight(self, days_remaining):
+        """Weight on the family's most recent final count at this lead time.
+
+        Same instance-override contract as _ensemble_weight, so
+        fit_anchor_weights.py can sweep candidate tables. `or` is not usable
+        here: an all-zero candidate table is falsy in the same way None is, and
+        an all-zero sweep row is exactly how the script measures the model
+        without the anchor.
+        """
+        table = getattr(self, 'anchor_weights', None)
+        if table is None:
+            table = self.ANCHOR_WEIGHTS
+        return self._bucket_weight(table, days_remaining)
+
+    @staticmethod
+    def _bucket_weight(table, days_remaining):
         for bound, weight in table:
             if bound is None or days_remaining <= bound:
                 return weight
@@ -88,7 +129,7 @@ class N5v4_Final(FitMixin, NowcastMixin, RecalibrationMixin):
     # stage defaults to ON, so production behaviour is unchanged unless a caller
     # explicitly ablates something.
     ABLATABLE_STAGES = ('late_surge', 'ratio_caps', 'trend', 'withdrawal',
-                        'features', 'recal')
+                        'features', 'recal', 'anchor')
 
     def set_stage_flags(self, **flags):
         """Enable/disable individual prediction stages. Unknown names raise, so

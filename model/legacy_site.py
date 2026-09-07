@@ -222,6 +222,8 @@ def build_website_json(summary, daily, meta_lookup, model, template_curves):
             'Ensemble model (N5v4): historical ratio (harmonic mean) + '
             'per-family pooled Huber regression (final ~ count_at_T + T). '
             'T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). '
+            "Beyond T-14 the point estimate is blended toward the family's most "
+            'recent final count (0.40 at T<=28, 0.60 beyond). '
             '80% CI from lognormal prediction intervals, LOO-calibrated with '
             'ensemble shrinkage. Empirical Bayes sigma shrinkage, T-interpolation, '
             'expanding-window calibration, and plausibility guardrails.'

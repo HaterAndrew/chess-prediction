@@ -9,6 +9,7 @@ import pandas as pd
 
 from tournament_aliases import canonicalize_family
 
+from shared.season import CURRENT_SEASON
 from sitebuild.helpers import OUTPUT_DIR, TODAY, m04c
 
 
@@ -93,7 +94,19 @@ def finalize_cards(completed_tids, prod_model, tournaments_out):
         "generated": TODAY.strftime('%Y-%m-%d'),
         "generated_time": pd.Timestamp.now(tz='America/New_York').isoformat(),
         "model": "N5v4_Final",
-        "model_description": ("Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (" + _walkin_prov + ")."),
+        "model_description": (
+            "Ensemble model (N5v4): historical ratio (harmonic mean) + "
+            "per-family pooled Huber regression (final ~ count_at_T + T). "
+            "T anchored to event_start. T-dependent weights (ratio: 0.80 at "
+            "T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). Beyond T-14 the "
+            "point estimate is blended toward the family's most recent final "
+            "count (0.40 at T<=28, 0.60 beyond), which measures better than the "
+            "ensemble alone at those lead times. 80% CI from lognormal "
+            "prediction intervals, LOO-calibrated with T-dependent shrinkage. "
+            f"Rolling retraining on completed {CURRENT_SEASON} tournaments. "
+            "Automated bias + CI recalibration. Walk-in multiplier: post-hoc "
+            "adjustment using historical standings-to-prereg ratios ("
+            + _walkin_prov + ")."),
         "n_completed_in_training": len(completed_tids) if completed_tids else 0,
         "tournaments": tournaments_out
     }

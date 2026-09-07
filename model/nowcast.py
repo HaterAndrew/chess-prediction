@@ -293,6 +293,29 @@ class NowcastMixin:
         # (YoY pacing tested: hurt MAPE in all configs. Ratio model already
         # captures count-level info; pacing adds noise from timing variability.)
 
+        # Long-lead anchor: blend toward the family's most recent final count.
+        #
+        # 2026-09-07 review. Scored against the model, "last year's final count"
+        # wins on MAE at every horizon past T-14, by 1.2 to 4.0 points. The
+        # registration curve simply does not carry much signal three months out,
+        # and both legs of the ensemble are built on it. Last year's size does,
+        # and the model already held that number for other purposes without
+        # letting it near the point estimate at these horizons.
+        #
+        # Deliberately placed after the ensemble and before the log-space
+        # re-centre below, so the interval follows the point rather than being
+        # left centred on a value the model no longer publishes. Weights are
+        # zero inside T-14, so nothing changes on the horizons the model
+        # already wins.
+        anchor = self.family_recent_final.get(family, 0)
+        w_anchor = self._anchor_weight(days_remaining) if self._stage_on('anchor') else 0.0
+        if w_anchor > 0 and anchor and anchor > 0 and point > 0:
+            # Never anchor below what has already registered: the final count
+            # cannot come in under the current count, and a family that has
+            # grown sharply would otherwise be dragged under its own floor.
+            anchor = max(anchor, current_count)
+            point = w_anchor * anchor + (1 - w_anchor) * point
+
         # Re-center CI on ensemble point estimate in log-space to preserve
         # lognormal asymmetry (right-skewed, appropriate for count data)
         if point > 0 and low > 0 and high > 0:

@@ -1,0 +1,5 @@
+# Node 22 for the Cloudflare Worker: wrangler requires >=22, and the machine
+# default is pinned to 20 elsewhere for another org's CI parity. Matches the
+# version .github/workflows/worker_ci.yml installs.
+[tools]
+node = "22"

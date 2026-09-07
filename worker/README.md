@@ -61,9 +61,16 @@ npm run tail
 |---|---|---|
 | `ALLOWED_ORIGIN` | `https://haterandrew.github.io` | CORS origin. Set to `http://localhost:8080` (or whatever the frontend uses) for local dev. |
 | `DATA_URL` | `https://haterandrew.github.io/chess-prediction/website_data.json` | Where to fetch tournament data. |
-| `MODEL` | `claude-sonnet-4-6` | Anthropic model id. Swap to `claude-haiku-4-5` for ~5× cost reduction. |
-| `DAILY_BUDGET_USD` | `2.00` | Hard cap; 503 past this. |
+| `MODEL` | `claude-sonnet-5` | Anthropic model id. Swap to `claude-haiku-4-5` for ~5× cost reduction. |
+| `DAILY_BUDGET_USD` | `1.00` | Hard cap; 503 past this. Charges are recorded one KV key each and summed by prefix, so concurrent turns cannot lose updates. |
 | `RATE_LIMIT_PER_MIN` | `20` | Per-IP request cap per 60-second window. |
+| `GLOBAL_RATE_LIMIT_PER_MIN` | `60` | Cap across every caller. The per-IP limit alone cannot bind an attacker who rotates through an IPv6 /64 or drives the endpoint from other people's browsers. |
+
+`/ask` requires `Content-Type: application/json` and refuses a request whose
+`Origin` header is present and not on the `ALLOWED_ORIGIN` list. Together those
+close the cross-site POST path, which otherwise let any page spend the key
+without ever reading a response. A request with no `Origin` at all (curl, the
+health probe) still passes and stays covered by the rate limits and the budget.
 
 ## Files
 

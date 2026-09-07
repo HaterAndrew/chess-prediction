@@ -69,3 +69,17 @@ Thumbs.db
 # Broadened to catch suffixed variants like *.bak.eb-verify-<date> (G8).
 *.bak
 *.bak.*
+
+# Hotel-audit inputs and outputs — PII, never committable.
+# hotel_audit.py reads a registration-admin export (LastName, FirstName, City,
+# State, ZipCode, PayerName) and writes a workbook keyed on the same people,
+# ~1.9K of them for a major, including parents of minors. This repo is public
+# and GitHub keeps orphaned blobs after a delete, so one `git add -A` before
+# these rules existed would have been irreversible. The tool now defaults its
+# output into hotel_audit_out/; the bare patterns cover the documented
+# `-o worldopen_audit.xlsx` / `--payers export.csv` invocations at repo root.
+hotel_audit_out/
+*.xlsx
+*.xls
+export*.csv
+*_audit.csv

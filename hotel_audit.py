@@ -487,13 +487,19 @@ def main(argv=None):
 
     people, stats = build_people(scraped, export_rows)
 
+    # Default outputs land in a gitignored directory. The workbook carries
+    # names, cities, ZIPs and payer names for every entrant; defaulting it to
+    # the repo root put PII one `git add -A` away from a public repo.
+    # An explicit -o is the operator's call and is left alone.
     if args.output:
         out_path = Path(args.output)
-    elif code:
-        out_path = Path(f"hotel_audit_CCA_{code}{str(args.year)[-2:]}.xlsx")
     else:
-        out_path = Path(args.payers).with_suffix("").with_name(
-            Path(args.payers).stem + "_audit.xlsx")
+        out_dir = Path(__file__).resolve().parent / "hotel_audit_out"
+        out_dir.mkdir(exist_ok=True)
+        if code:
+            out_path = out_dir / f"hotel_audit_CCA_{code}{str(args.year)[-2:]}.xlsx"
+        else:
+            out_path = out_dir / (Path(args.payers).stem + "_audit.xlsx")
     write_workbook(people, out_path)
 
     print()

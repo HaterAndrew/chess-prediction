@@ -115,12 +115,21 @@ def lognormal_ci(ratio_values, level=0.80, global_sigma=None, label=None,
     mu = np.mean(log_r)
     sigma = np.std(log_r, ddof=1)
 
-    # Empirical Bayes shrinkage: pull family sigma toward global sigma
-    # only when family sigma is unrealistically low (n <= 3). For well-
-    # estimated families (n >= 4), trust the family-specific sigma.
-    # Use shrinkage as a floor, not a blend — don't penalize tight families.
-    if global_sigma is not None and global_sigma > 0 and n <= 3:
-        k = 1  # shrinkage strength (reduced from 3 to tighten CIs)
+    # Empirical Bayes shrinkage: pull family sigma toward global sigma.
+    # Applied as a FLOOR, not a blend, so a genuinely tight family is never
+    # penalised — max() can only widen.
+    #
+    # 2026-09-07 review: this used to fire only at n <= 3, on the reasoning that
+    # n >= 4 is "well-estimated". A sigma from four log-ratios with ddof=1 is
+    # not well estimated: its own sampling distribution is wide and biased low,
+    # and 4 <= n <= 14 is where most families live. Measured coverage sat at
+    # 68-79% against an 80% target across six of eight horizons, which is the
+    # signature of intervals that are systematically too narrow. The shrinkage
+    # now applies across the whole parametric path (n < 15), with strength
+    # decaying in n so a long-history family still dominates its own estimate:
+    # k = 1 at n <= 3 as before, tapering to a light touch by n = 14.
+    if global_sigma is not None and global_sigma > 0:
+        k = 1.0 if n <= 3 else 3.0 / n
         sigma = max(sigma, np.sqrt((n * sigma**2 + k * global_sigma**2) / (n + k)))
 
     t_val = stats.t.ppf(1 - alpha / 2, df=max(n - 1, 1))

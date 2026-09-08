@@ -1,6 +1,6 @@
 {
-  "generated": "2026-09-07",
-  "scanned_at": "2026-09-07T06:13:20",
+  "generated": "2026-09-08",
+  "scanned_at": "2026-09-08T06:03:29",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -12,7 +12,7 @@
       "severity": "MEDIUM",
       "mode": "large-withdrawal-gap",
       "family": "Eastern Chess Congress",
-      "message": "6 of 28 scraped entries withdrawn (21%) as of 2026-09-07"
+      "message": "7 of 33 scraped entries withdrawn (21%) as of 2026-09-08"
     },
     {
       "severity": "INFO",

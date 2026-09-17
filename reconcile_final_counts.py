@@ -26,7 +26,7 @@ import re
 
 import pandas as pd
 
-from tournament_aliases import canonicalize_family
+from tournament_aliases import canonicalize_family, cca_family
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 
@@ -46,7 +46,7 @@ def _scrape_key(name):
     m = _YEAR_PREFIX_RE.match(str(name))
     if not m:
         return None
-    return canonicalize_family(m.group(2)), int(m.group(1))
+    return canonicalize_family(cca_family(name)), int(m.group(1))
 
 
 def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
@@ -173,14 +173,14 @@ def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
         m = _YEAR_PREFIX_RE.match(str(name))
         if not m:
             continue
-        if (canonicalize_family(m.group(2)), int(m.group(1))) in known_keys:
+        if _scrape_key(name) in known_keys:
             continue
         new_rows.append({
             # family is stored canonical so 04d's family joins, history lookups
             # and n_editions counts resolve; tournament_name stays scraper-exact
             # (04e's scrape joins depend on it).
             "tid": next_tid, "tournament_name": name,
-            "family": canonicalize_family(m.group(2)),
+            "family": _scrape_key(name)[0],
             "tournament_year": int(m.group(1)), "final_count": peak,
             "has_timestamps": False, "ts_count": 0, "first_reg": pd.NA,
             "last_reg": pd.NA, "is_covid": False, "is_online": False,

@@ -1,6 +1,6 @@
 """update_log.csv writer + retention pruning (auto_update, verbatim)."""
 import csv
-from shared.season import CURRENT_SEASON
+from shared.season import is_open_season
 import json
 import os
 from datetime import datetime, timedelta
@@ -10,9 +10,14 @@ from pipeline import config
 # prediction_source joined the schema on 2026-08-23: without the estimator that
 # produced a row, the freeze scanner counted months of interim metadata runs
 # against a card the model had just taken over and aborted the pipeline.
+#
+# year joined on 2026-09-17, when next season's cards started being logged
+# beside this season's: without it the 2027 Atlantic City Open's runs and the
+# 2026 edition's read as one card. It sits last because migrate_log_header only
+# widens a header it recognises as a prefix.
 LOG_FIELDS = ['run_timestamp', 'family', 'status', 'current_count',
               'point_estimate', 'ci_lower', 'ci_upper', 'days_remaining',
-              'prediction_source']
+              'prediction_source', 'year']
 
 
 def migrate_log_header(path=None, fields=None):
@@ -92,14 +97,15 @@ def step_log_run():
         if write_header:
             writer.writerow(LOG_FIELDS)
         for t in data.get('tournaments', []):
-            if t.get('year') != CURRENT_SEASON:
+            if not is_open_season(t.get('year')):
                 continue
             if t.get('status') not in ('live', 'complete'):
                 continue
             writer.writerow([
                 config.RUN_TS, t['family'], t['status'], t['current_count'],
                 t['point_estimate'], t['ci_lower'], t['ci_upper'],
-                t['days_remaining'], t.get('prediction_source') or ''
+                t['days_remaining'], t.get('prediction_source') or '',
+                t['year']
             ])
             lines_logged += 1
 

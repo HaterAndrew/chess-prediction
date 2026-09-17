@@ -64,7 +64,7 @@ def test_critical_count_exceeds_estimate():
 def test_critical_frozen_main_path_estimate():
     keys, _ = run(
         [card(family="Frozen Open")],
-        log_hist={"Frozen Open": [(110, 18, "model"), (110, 25, "model"),
+        log_hist={("Frozen Open", 2026): [(110, 18, "model"), (110, 25, "model"),
                                   (110, 31, "model")]},
     )
     assert ("CRITICAL", "frozen-estimate") in keys
@@ -75,7 +75,7 @@ def test_frozen_check_ignores_roster_pending():
     keys, _ = run(
         [card(family="Pending Open", prediction_tier="roster-pending",
               prediction_source="metadata_historical_avg")],
-        log_hist={"Pending Open": [(110, 18, "metadata_historical_avg"),
+        log_hist={("Pending Open", 2026): [(110, 18, "metadata_historical_avg"),
                                    (110, 25, "metadata_historical_avg"),
                                    (110, 31, "metadata_historical_avg")]},
     )
@@ -88,7 +88,7 @@ def test_frozen_check_watches_model_served_roster_pending():
     keys, _ = run(
         [card(family="Pending Open", prediction_tier="roster-pending",
               prediction_source="model")],
-        log_hist={"Pending Open": [(110, 18, "model"), (110, 25, "model"),
+        log_hist={("Pending Open", 2026): [(110, 18, "model"), (110, 25, "model"),
                                    (110, 31, "model")]},
     )
     assert ("CRITICAL", "frozen-estimate") in keys
@@ -109,7 +109,7 @@ def test_freeze_window_resets_when_the_estimator_changes():
         [card(family="Graduated Open", prediction_tier="roster-pending",
               prediction_source="model", point_estimate=313, current_count=13,
               daily_data=[[0, 5], [1, 9], [2, 13]])],
-        log_hist={"Graduated Open": interim + [(313, 13, "model")]},
+        log_hist={("Graduated Open", 2026): interim + [(313, 13, "model")]},
     )
     assert ("CRITICAL", "frozen-estimate") not in keys
 
@@ -120,7 +120,7 @@ def test_freeze_window_ignores_runs_logged_before_the_source_column():
     legacy = [(110, c, None) for c in (18, 25, 31)]
     keys, _ = run(
         [card(family="Legacy Open")],
-        log_hist={"Legacy Open": legacy + [(110, 33, "model")]},
+        log_hist={("Legacy Open", 2026): legacy + [(110, 33, "model")]},
     )
     assert ("CRITICAL", "frozen-estimate") not in keys
 
@@ -130,7 +130,7 @@ def test_freeze_window_is_the_trailing_run_of_the_current_estimator():
     # stretch under the same name is not joined across the interruption.
     keys, _ = run(
         [card(family="Handback Open")],
-        log_hist={"Handback Open": [(110, 18, "model"), (110, 25, "model"),
+        log_hist={("Handback Open", 2026): [(110, 18, "model"), (110, 25, "model"),
                                     (313, 28, "metadata_historical_avg"),
                                     (110, 31, "model")]},
     )
@@ -140,7 +140,7 @@ def test_freeze_window_is_the_trailing_run_of_the_current_estimator():
 def test_freeze_still_fires_on_three_runs_of_the_current_estimator():
     keys, _ = run(
         [card(family="Refrozen Open")],
-        log_hist={"Refrozen Open": [(313, 12, "metadata_historical_avg"),
+        log_hist={("Refrozen Open", 2026): [(313, 12, "metadata_historical_avg"),
                                     (110, 18, "model"), (110, 25, "model"),
                                     (110, 31, "model")]},
     )
@@ -149,7 +149,7 @@ def test_freeze_still_fires_on_three_runs_of_the_current_estimator():
 
 def test_critical_dropped_event():
     # Scraped 50 entries but no card carries that family.
-    keys, _ = run([card()], scrape_latest={"Ghost Open": {"net": 50, "gross": 50, "date": "2026-06-05"}})
+    keys, _ = run([card()], scrape_latest={("Ghost Open", 2026): {"net": 50, "gross": 50, "date": "2026-06-05"}})
     assert ("CRITICAL", "dropped-event") in keys
 
 
@@ -161,7 +161,7 @@ def test_high_alias_n_editions_mislabel():
 def test_high_stale_count():
     keys, _ = run(
         [card(family="Stale Open", current_count=10)],
-        scrape_latest={"Stale Open": {"net": 42, "gross": 42, "date": "2026-06-05"}},
+        scrape_latest={("Stale Open", 2026): {"net": 42, "gross": 42, "date": "2026-06-05"}},
     )
     assert ("HIGH", "stale-count") in keys
 

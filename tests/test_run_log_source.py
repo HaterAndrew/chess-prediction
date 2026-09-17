@@ -81,7 +81,7 @@ def test_log_history_carries_the_estimator_per_run(tmp_path):
 
     hist = context.load_log_history(str(log))
 
-    assert list(hist[canonicalize_family("Graduated Open")]) == [
+    assert list(hist[(canonicalize_family("Graduated Open"), 2026)]) == [
         (313, 12, "metadata_historical_avg"),
         (313, 13, "model"),
     ]
@@ -99,6 +99,6 @@ def test_runs_predating_the_column_carry_no_estimator(tmp_path):
     absent.write_text(LEGACY_HEADER + "\n"
                       "2026-08-21 02:00:00,Graduated Open,live,12,313,296,338,49\n")
 
-    fam = canonicalize_family("Graduated Open")
+    fam = (canonicalize_family("Graduated Open"), 2026)
     assert [r.prediction_source for r in context.load_log_history(str(log))[fam]] == [None]
     assert [r.prediction_source for r in context.load_log_history(str(absent))[fam]] == [None]

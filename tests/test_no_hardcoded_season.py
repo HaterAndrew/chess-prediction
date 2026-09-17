@@ -44,6 +44,22 @@ SCANNED = [
     "recalibrate.py",
     "ratio_model.py",
     "06_walk_in_multipliers.py",
+    # 2026-09-17: the literals that kept next season's open events off the site.
+    "scrapers/entries.py",
+    "scrapers/metadata_sync.py",
+    "sitebuild/cards.py",
+    "sitebuild/metadata.py",
+    "sitebuild/history.py",
+    "sitebuild/scrape_join.py",
+    "sitebuild/editions.py",
+    "model/curves.py",
+    "healthcheck/context.py",
+    "healthcheck/checks.py",
+    "merge_fees.py",
+    "fees/discover.py",
+    "update_metadata.py",
+    "validate_fees.py",
+    "tools/verify_dates.py",
 ]
 
 # path -> reason. Anything listed here is exempt from the scan.

@@ -10,7 +10,7 @@ import pandas as pd
 from pipeline_utils import is_event_complete
 from ratio_model import build_ratio_model
 from tournament_aliases import canonicalize_family
-from shared.season import CURRENT_SEASON
+from shared.season import CURRENT_SEASON, is_open_season
 
 from sitebuild.assemble import finalize_cards
 from sitebuild.cards import build_model_cards
@@ -19,6 +19,9 @@ from sitebuild.helpers import (OUTPUT_DIR, TODAY, _fam_eq, determine_status,
                                m04c)
 from sitebuild.history import add_historical_editions
 from sitebuild.metadata import build_metadata_cards
+from sitebuild.scrape_join import (annotate_editions, consecutive_zero_scrape_days,
+                                   counts_by_edition, edition_mask,
+                                   latest_by_edition, scrape_daily_series)
 
 
 def main():
@@ -34,7 +37,8 @@ def main():
     meta = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_metadata.csv"))
     meta['start_date'] = pd.to_datetime(meta['start_date'])
 
-    # Merge fresh scrape data into summary for 2026 tournaments
+    # Merge fresh scrape data into summary for every open edition (this season
+    # and any later one CCA already lists — see sitebuild.scrape_join).
     # daily_scrape.csv has the latest entry counts from chessaction.com
     # Use active_count (net of withdrawals) when available, fall back to entry_count
     scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
@@ -50,8 +54,9 @@ def main():
             scrape['withdrawal_count'] = 0
         else:
             scrape['withdrawal_count'] = scrape['withdrawal_count'].fillna(0)
-        # Get the most recent scrape per tournament
-        latest_scrape = scrape.sort_values('date').groupby('tournament_name').last().reset_index()
+        scrape = annotate_editions(scrape, default_year=CURRENT_SEASON)
+        # Get the most recent scrape per edition
+        latest_scrape = latest_by_edition(scrape)
         # H13: publish ONE count semantic — gross (row-count, entry_count), matching
         # tournament_summary.csv, the performance tab, the freshness guard, and how
         # 04e grades. The old code overrode final_count with active_count (net), so
@@ -64,10 +69,10 @@ def main():
             summary['withdrawal_count'] = pd.NA
         updated = 0
         for _, s in latest_scrape.iterrows():
-            # Match by family name (strip year prefix "2026 " from scrape name)
-            scrape_name = s['tournament_name']
-            family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
-            mask = _fam_eq(summary['family'], family_name) & (summary['tournament_year'] == CURRENT_SEASON)
+            # Past-season editions are settled; reconcile_final_counts owns them.
+            if not is_open_season(s['year']):
+                continue
+            mask = edition_mask(summary, s['family'], s['year'])
             gross_count = int(s['entry_count']) if s['entry_count'] > 0 else int(s['active_count'])
             net_count = int(s['active_count']) if s['active_count'] > 0 else gross_count
             if mask.any() and gross_count > 0:
@@ -83,16 +88,17 @@ def main():
 
         # Insert scrape rows using event_start-based T
         for _, s in scrape.iterrows():
-            scrape_name = s['tournament_name']
-            family_name = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
-            tid_match = summary[_fam_eq(summary['family'], family_name) & (summary['tournament_year'] == CURRENT_SEASON)]
+            if not is_open_season(s['year']):
+                continue
+            family_name, edition_year = s['family'], s['year']
+            tid_match = summary[edition_mask(summary, family_name, edition_year)]
             if len(tid_match) == 0:
                 continue
             tid = tid_match.iloc[0]['tid']
             last_reg = tid_match.iloc[0].get('last_reg')
-            meta_row = meta[_fam_eq(meta['family'], family_name) & (meta['year'] == CURRENT_SEASON)]
+            meta_row = meta[edition_mask(meta, family_name, edition_year, year_col='year')]
             if len(meta_row) == 0:
-                meta_row = meta[(meta['year'] == CURRENT_SEASON) & (meta['start_date'] > pd.Timestamp.now())]
+                meta_row = meta[(meta['year'] == edition_year) & (meta['start_date'] > pd.Timestamp.now())]
                 meta_row = meta_row[meta_row['family'].str.contains(family_name.split()[0], case=False, na=False)]
             if len(meta_row) > 0:
                 event_start = pd.to_datetime(meta_row.iloc[0]['start_date'])
@@ -269,9 +275,12 @@ def main():
         print(f"Excluding {len(wo_extra_exclude)} additional World Open sub-families: {wo_extra_exclude}")
     print(f"World Open: keeping {WO_KEEP & set(summary['family'].unique())}")
 
-    # Get 2026 tournaments
+    # Every open edition gets a card: this season's, plus next season's events
+    # CCA is already taking entries for (2026-09-17: nine 2027 events were open
+    # and none showed, because this selected the current season only). The name
+    # t2026 predates that; it is the open-edition roster.
     t2026 = summary[
-        (summary['tournament_year'] == CURRENT_SEASON) &
+        (summary['tournament_year'] >= CURRENT_SEASON) &
         (~summary['is_online'].fillna(False)) &
         (~summary['family'].isin(EXCLUDE_FAMILIES))
     ].copy()
@@ -288,19 +297,19 @@ def main():
         t2026['roster_pending'] = False
     t2026['roster_pending'] = t2026['roster_pending'].fillna(False).astype(bool)
 
-    print(f"Found {len(t2026)} 2026 tournaments (after filtering)")
+    print(f"Found {len(t2026)} open-edition tournaments (after filtering)")
 
-    # Build withdrawal lookup from latest scrape data (family -> withdrawal_count).
-    # Keyed on the CANONICAL family so comma/whitespace variants between the
-    # scraper's spelling and summary rows still match (v5 Cat R).
-    withdrawal_lookup = {}
-    if os.path.exists(scrape_path):
-        for _, s in latest_scrape.iterrows():
-            scrape_name = s['tournament_name']
-            fam = scrape_name.replace('2026 ', '', 1) if scrape_name.startswith('2026 ') else scrape_name
-            wd = int(s.get('withdrawal_count', 0)) if pd.notna(s.get('withdrawal_count')) else 0
-            gross = int(s.get('entry_count', 0))
-            withdrawal_lookup[canonicalize_family(fam)] = {'withdrawal_count': wd, 'gross_count': gross}
+    # Live counts of each scraped edition, (family, year) -> net/gross/wd.
+    # Metadata-only tournaments pick their entry counts up from here.
+    _scrape_lookup = counts_by_edition(latest_scrape) if os.path.exists(scrape_path) else {}
+
+    # Withdrawal lookup for the model cards. Keyed on the CANONICAL family so
+    # comma/whitespace variants between the scraper's spelling and summary rows
+    # still match (v5 Cat R), and on the year so two editions stay apart.
+    withdrawal_lookup = {
+        (canonicalize_family(fam), yr): {'withdrawal_count': c['wd'], 'gross_count': c['gross']}
+        for (fam, yr), c in _scrape_lookup.items()
+    }
 
     tournaments_out = []
 
@@ -310,107 +319,33 @@ def main():
 
 
     # Add tournaments from metadata that have no registrations yet
-    # Build scrape lookup so metadata-only tournaments can pick up live entry counts
-    _scrape_lookup = {}
-    if os.path.exists(scrape_path):
-        for _, s in latest_scrape.iterrows():
-            sn = s['tournament_name']
-            fam = sn.replace('2026 ', '', 1) if sn.startswith('2026 ') else sn
-            net = int(s['active_count']) if pd.notna(s['active_count']) and s['active_count'] > 0 else int(s['entry_count'])
-            gross = int(s.get('entry_count', 0))
-            wd = int(s.get('withdrawal_count', 0)) if pd.notna(s.get('withdrawal_count')) else 0
-            _scrape_lookup[fam] = {'net': net, 'gross': gross, 'wd': wd}
 
     # Consecutive scrape days at 0 entries before a near-event card is relabelled
     # not_tracked (v3 N8). One zero is a scrape hiccup; several in a row is a real
     # cancellation.
     NOT_TRACKED_MIN_ZERO_DAYS = 3
 
-
-    def _consecutive_zero_scrape_days(family_name):
-        """How many of the most recent consecutive scrape days show 0 entries.
-
-        Returns a large number when the family has never been scraped at all, since
-        "no scrape rows ever" is genuinely untracked rather than a transient miss.
-        """
+    def _consecutive_zero_scrape_days(family_name, year):
         if not os.path.exists(scrape_path):
             return NOT_TRACKED_MIN_ZERO_DAYS
+        return consecutive_zero_scrape_days(scrape, family_name, year,
+                                            never_scraped=NOT_TRACKED_MIN_ZERO_DAYS)
 
-        def _strip_year(n):
-            return n[5:] if isinstance(n, str) and n.startswith('2026 ') else n
-
-        ev = scrape[scrape['tournament_name'].apply(_strip_year) == family_name]
-        if len(ev) == 0:
-            return NOT_TRACKED_MIN_ZERO_DAYS
-
-        by_day = {}
-        for _, r in ev.iterrows():
-            cnt = int(r['active_count']) if pd.notna(r.get('active_count')) and r['active_count'] > 0 else int(r['entry_count'])
-            day = pd.to_datetime(r['date']).normalize()
-            by_day[day] = max(by_day.get(day, 0), cnt)
-
-        streak = 0
-        for day in sorted(by_day, reverse=True):
-            if by_day[day] == 0:
-                streak += 1
-            else:
-                break
-        return streak
-
-
-    def _scrape_daily_series(family_name, fallback_count):
-        """Real [day_index, cumulative_count] entry-bar history for a 2026 event,
-        read straight from daily_scrape.csv and matched by family name. Mirrors the
-        main path's cummax cleaning. Falls back to a single point only when fewer
-        than two scrapes exist — the chart needs >=3 points to draw bars, so the old
-        hardcoded [[0, count]] rendered nothing for these events.
-
-        Returns (series, start_date) where start_date is the 'YYYY-MM-DD' calendar
-        date of day 0, or None when unknown. v3 P1: the front end dates every chart
-        point from this anchor plus the point's own day index, so a gap in scraping
-        can no longer shift the labels. v3 N9: this path now runs the same
-        max-vs-count invariant as build_chart_series instead of going unchecked.
-        """
+    def _scrape_daily_series(family_name, year, fallback_count):
         if not os.path.exists(scrape_path):
             return [[0, int(fallback_count)]], None
-
-        def _strip_year(n):
-            return n[5:] if isinstance(n, str) and n.startswith('2026 ') else n
-
-        ev = scrape[scrape['tournament_name'].apply(_strip_year) == family_name].sort_values('date')
-        if len(ev) < 2:
-            return [[0, int(fallback_count)]], None
-        by_day = {}
-        min_date = ev['date'].min()
-        for _, r in ev.iterrows():
-            cnt = int(r['active_count']) if pd.notna(r.get('active_count')) and r['active_count'] > 0 else int(r['entry_count'])
-            day = int((r['date'] - min_date).days)
-            by_day[day] = max(by_day.get(day, 0), cnt)
-        peak, series = 0, []
-        for day in sorted(by_day):
-            peak = max(peak, by_day[day])
-            series.append([day, peak])
-
-        # v3 N9: same post-build invariant the main path enforces. This series is
-        # built from the scrape itself so it should never exceed the scraped count;
-        # if it does, the family-name match pulled in another event's rows.
-        if series and fallback_count and max(p[1] for p in series) > int(fallback_count):
-            print(f"WARNING: roster-pending series max ({max(p[1] for p in series)}) "
-                  f"exceeds count ({int(fallback_count)}) for {family_name}; "
-                  f"check the family-name match.")
-
-        start_date = pd.to_datetime(min_date).strftime('%Y-%m-%d')
-        return series, start_date
-
+        return scrape_daily_series(scrape, family_name, year, fallback_count)
 
     # Canonical-aware so a metadata event ("... (in Connecticut)") isn't re-added
     # when the main path already emitted its folded form ("Eastern Class
     # Championships") once a fresh export pulls it into the roster.
-    existing_families = {canonicalize_family(t['family']) for t in tournaments_out}
+    # Keyed on the edition: the finished 2026 card of a family must not stop
+    # the same family's 2027 metadata card from being added.
+    existing_editions = {(canonicalize_family(t['family']), t['year']) for t in tournaments_out}
     build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS,
                          _consecutive_zero_scrape_days, _scrape_daily_series,
-                         _scrape_lookup, curves, existing_families, meta,
-                         ratios, summary, tournaments_out)
+                         _scrape_lookup, curves, existing_editions,
+                         get_event_end_date, meta, ratios, summary, tournaments_out)
 
 
     add_historical_editions(EXCLUDE_FAMILIES, curves, daily,
@@ -424,23 +359,27 @@ def main():
     # Compare scrape counts to website output. Flag any tournament where the
     # scrape has entries but the website shows 0 — that's a linking failure.
     if os.path.exists(scrape_path):
-        all_2026 = {canonicalize_family(t['family']): t['current_count'] for t in tournaments_out if t.get('year') == CURRENT_SEASON}
-        live_2026 = {canonicalize_family(t['family']): t['current_count'] for t in tournaments_out if t.get('year') == CURRENT_SEASON and t.get('status') == 'live'}
+        def _edition(t):
+            return canonicalize_family(t['family']), t.get('year')
+
+        open_cards = [t for t in tournaments_out if is_open_season(t.get('year'))]
+        all_open = {_edition(t): t['current_count'] for t in open_cards}
+        live_open = {_edition(t): t['current_count'] for t in open_cards if t.get('status') == 'live'}
         # Tournaments that are intentionally excluded (completed, blitz, WO sub-events, etc.)
-        excluded_or_complete = {canonicalize_family(f) for f in EXCLUDE_FAMILIES}
-        excluded_or_complete.update(canonicalize_family(t['family']) for t in tournaments_out if t.get('year') == CURRENT_SEASON and t.get('status') in ('complete', 'in_progress'))
+        excluded_families = {canonicalize_family(f) for f in EXCLUDE_FAMILIES}
+        settled = {_edition(t) for t in open_cards if t.get('status') in ('complete', 'in_progress')}
         link_warnings = []
-        for _, s in latest_scrape.iterrows():
-            sn = s['tournament_name']
-            fam = sn.replace('2026 ', '', 1) if sn.startswith('2026 ') else sn
-            fam_canon = canonicalize_family(fam)
-            if fam_canon in excluded_or_complete:
+        for (fam, yr), counts in _scrape_lookup.items():
+            if not is_open_season(yr):
                 continue
-            scrape_count = int(s['active_count']) if pd.notna(s['active_count']) and s['active_count'] > 0 else int(s['entry_count'])
-            if scrape_count > 0 and fam_canon in live_2026 and live_2026[fam_canon] == 0:
-                link_warnings.append(f"  ⚠ {fam}: scrape={scrape_count}, website=0")
-            elif scrape_count > 0 and fam_canon not in all_2026:
-                link_warnings.append(f"  ⚠ {fam}: scrape={scrape_count}, NOT IN OUTPUT")
+            key = (canonicalize_family(fam), yr)
+            if key[0] in excluded_families or key in settled:
+                continue
+            scrape_count = counts['net']
+            if scrape_count > 0 and live_open.get(key) == 0:
+                link_warnings.append(f"  ⚠ {fam} {yr}: scrape={scrape_count}, website=0")
+            elif scrape_count > 0 and key not in all_open:
+                link_warnings.append(f"  ⚠ {fam} {yr}: scrape={scrape_count}, NOT IN OUTPUT")
         if link_warnings:
             print(f"\n{'!'*60}")
             print(f"  DATA LINKING WARNINGS — {len(link_warnings)} tournaments with scrape data not reflected in output:")

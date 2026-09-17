@@ -2,18 +2,26 @@
 import numpy as np
 import pandas as pd
 
-from pipeline_utils import (pace_gate_ok)
+from pipeline_utils import is_event_complete, pace_gate_ok
 from ratio_model import predict_with_lognormal_ci
+from shared.season import CURRENT_SEASON
 from tournament_aliases import canonicalize_family
 
+from sitebuild.editions import prior_editions
 from sitebuild.helpers import (TODAY, _apply_wo_top6_adjustment,
                                m04c, sanitize_early_bird)
 
 
-def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecutive_zero_scrape_days, _scrape_daily_series, _scrape_lookup, curves, existing_families, meta, ratios, summary, tournaments_out):
-    for _, mrow in meta[meta['year'] == 2026].iterrows():
+def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecutive_zero_scrape_days, _scrape_daily_series, _scrape_lookup, curves, existing_editions, get_event_end_date, meta, ratios, summary, tournaments_out):
+    def is_settled(fam, yr):
+        return is_event_complete(get_event_end_date(fam, yr), TODAY)
+
+    # Every open edition: this season's, and next season's events CCA already
+    # lists. The >300-day skip below keeps far-future rows off the site.
+    for _, mrow in meta[meta['year'] >= CURRENT_SEASON].iterrows():
         mfamily = mrow['family']
-        if canonicalize_family(mfamily) in existing_families or mfamily in EXCLUDE_FAMILIES:
+        myear = int(mrow['year'])
+        if (canonicalize_family(mfamily), myear) in existing_editions or mfamily in EXCLUDE_FAMILIES:
             continue
         event_date = pd.to_datetime(mrow['start_date'])
         event_end = pd.to_datetime(mrow['end_date']) if pd.notna(mrow.get('end_date')) else event_date
@@ -33,7 +41,7 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
         #
         # The withdrawal figures stay available below as their own fields; they are
         # a separate fact, not a competing version of this one.
-        scrape_info = _scrape_lookup.get(mfamily, {})
+        scrape_info = _scrape_lookup.get((mfamily, myear), {})
         gross_count = scrape_info.get('gross', 0) or scrape_info.get('net', 0)
         current_count = gross_count
         withdrawal_count = scrape_info.get('wd', 0)
@@ -48,13 +56,7 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
             + _aliases.get(mfamily, [])
             + _aliases.get(canon_family, [])
         ))
-        hist = summary[
-            (summary['family'].isin(hist_families)) &
-            (~summary['is_online'].fillna(False)) &
-            (~summary['is_covid'].fillna(False)) &
-            (summary['tournament_year'] < 2026) &
-            (summary['tournament_year'] >= 2019)
-        ].sort_values('tournament_year')
+        hist = prior_editions(summary, hist_families, myear, is_settled)
         historical = _apply_wo_top6_adjustment(mfamily, [
             {"year": int(h['tournament_year']), "count": int(h['final_count']),
              "family": h['family']}
@@ -83,11 +85,14 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
             onsite_fee = float(mrow['onsite_fee']) if pd.notna(mrow.get('onsite_fee')) else None
             _eb_dl_norm = str(eb_deadline)[:10] if pd.notna(eb_deadline) and str(eb_deadline) != 'nan' else None
             _eb_dl_norm, eb_fee = sanitize_early_bird(
-                mfamily, 2026, _eb_dl_norm, eb_fee, reg_fee, event_date.strftime('%Y-%m-%d'))
-            _rp_series, _rp_start = _scrape_daily_series(mfamily, settled_count)
+                mfamily, myear, _eb_dl_norm, eb_fee, reg_fee, event_date.strftime('%Y-%m-%d'))
+            _rp_series, _rp_start = _scrape_daily_series(mfamily, myear, settled_count)
             t_out = {
-                "family": mfamily,
-                "year": 2026,
+                # Canonical, like the model path, so a card and its family's history
+                # (pace alerts, charts, pickers) share one name: CCA lists 2027's
+                # "Southern Class" where history says "Southern Class Championships".
+                "family": canon_family,
+                "year": myear,
                 "event_start": event_date.strftime('%Y-%m-%d'),
                 "event_end": str(mrow['end_date'])[:10] if pd.notna(mrow.get('end_date')) else None,
                 "early_bird_deadline": _eb_dl_norm,
@@ -132,7 +137,7 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
         # several consecutive scrape days before relabelling, and say so out loud
         # when it happens — a real cancellation stays at zero, a scrape hiccup does not.
         if days_remaining < 30 and current_count == 0:
-            zero_days = _consecutive_zero_scrape_days(mfamily)
+            zero_days = _consecutive_zero_scrape_days(mfamily, myear)
             if zero_days >= NOT_TRACKED_MIN_ZERO_DAYS:
                 status_label = "not_tracked"
                 print(f"WARNING: relabelling {mfamily} as not_tracked — 0 entries "
@@ -201,11 +206,11 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
         reg_fee = float(mrow['regular_fee']) if pd.notna(mrow.get('regular_fee')) else None
         onsite_fee = float(mrow['onsite_fee']) if pd.notna(mrow.get('onsite_fee')) else None
         _eb_dl_norm = str(eb_deadline)[:10] if pd.notna(eb_deadline) and str(eb_deadline) != 'nan' else None
-        _eb_dl_norm, eb_fee = sanitize_early_bird(mfamily, 2026, _eb_dl_norm, eb_fee, reg_fee, event_date.strftime('%Y-%m-%d'))
-        _rp_series, _rp_start = _scrape_daily_series(mfamily, current_count)
+        _eb_dl_norm, eb_fee = sanitize_early_bird(mfamily, myear, _eb_dl_norm, eb_fee, reg_fee, event_date.strftime('%Y-%m-%d'))
+        _rp_series, _rp_start = _scrape_daily_series(mfamily, myear, current_count)
         t_out = {
-            "family": mfamily,
-            "year": 2026,
+            "family": canon_family,
+            "year": myear,
             "event_start": event_date.strftime('%Y-%m-%d'),
             "event_end": str(mrow['end_date'])[:10] if pd.notna(mrow.get('end_date')) else None,
             "early_bird_deadline": _eb_dl_norm,

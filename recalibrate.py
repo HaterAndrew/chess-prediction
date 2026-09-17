@@ -64,6 +64,11 @@ def load_predictions():
         sys.exit(1)
     log = pd.read_csv(UPDATE_LOG)
     log['run_timestamp'] = pd.to_datetime(log['run_timestamp'])
+    # The log also carries next season's cards (year column, 2026-09-17). This
+    # tool scores the current season, so a family's 2027 prediction must not be
+    # matched to its 2026 final. Rows from before the column are current-season.
+    if 'year' in log.columns:
+        log = log[log['year'].isna() | (log['year'] == CURRENT_SEASON)]
     return log
 
 

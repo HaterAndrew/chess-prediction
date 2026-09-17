@@ -37,14 +37,13 @@ import pandas as pd
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 from validate_fees import FAMILY_TO_CODE  # noqa: E402
+from shared.season import CURRENT_SEASON  # noqa: E402
 from tournament_aliases import canonicalize_family  # noqa: E402
 
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 FEES_CSV = os.path.join(OUTPUT_DIR, "tournament_fees.csv")
 META_CSV = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
 
-YEAR = 2026
-YY = str(YEAR)[2:]
 FEE_MAX = 2000  # upper sanity bound on a single entry fee
 
 
@@ -56,21 +55,32 @@ def _code_for(family):
     return FAMILY_TO_CODE.get(family) or FAMILY_TO_CODE.get(canonicalize_family(family))
 
 
-def merge_fees(dry_run=False, today=None):
-    """today: injection seam for tests; defaults to the current date."""
+def merge_fees(dry_run=False, today=None, first_season=None):
+    """Fill missing fees on every open edition's metadata row from its flyer.
+
+    An edition takes the flyer of its own year ("aco27" for the 2027 Atlantic
+    City Open). Until 2026-09-17 the year was the literal 2026, so next season's
+    rows, open for entries months early, could never receive fees.
+
+    today / first_season: injection seams for tests; default to the current
+    date and the current season.
+    """
+    first_season = CURRENT_SEASON if first_season is None else int(first_season)
     today = pd.Timestamp(today) if today is not None else pd.Timestamp.now().normalize()
     if not os.path.exists(FEES_CSV) or not os.path.exists(META_CSV):
         print(f"WARNING: fee-merge skipped — missing {FEES_CSV} or {META_CSV}")
         return 0
 
-    fees = pd.read_csv(FEES_CSV)
-    fees = fees[fees["year"] == YEAR]
+    all_fees = pd.read_csv(FEES_CSV)
     meta = pd.read_csv(META_CSV)
 
     filled = 0
     skipped = 0
-    for idx, row in meta[meta["year"] == YEAR].iterrows():
+    for idx, row in meta[meta["year"] >= first_season].iterrows():
         family = row["family"]
+        year = int(row["year"])
+        YY = str(year)[2:]
+        fees = all_fees[all_fees["year"] == year]
         if pd.notna(row.get("regular_fee")):
             continue  # already has a fee — never overwrite
         code = _code_for(family)

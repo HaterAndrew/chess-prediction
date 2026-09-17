@@ -127,7 +127,8 @@ def test_verify_year_emits_drift_warning(tmp_path, monkeypatch):
     buf = io.StringIO()
     with redirect_stdout(buf):
         drift, unavailable, verified = verify_year(
-            2026, fetcher=lambda url: CHESSTOUR_FIXTURE_HTML)
+            2026, fetcher=lambda url: CHESSTOUR_FIXTURE_HTML,
+            today=date(2026, 5, 1))  # the rows are June/July 2026 events
     output = buf.getvalue()
 
     assert 'WARNING: date drift' in output
@@ -173,7 +174,8 @@ def test_verify_year_no_warning_on_match(tmp_path, monkeypatch):
     buf = io.StringIO()
     with redirect_stdout(buf):
         drift, unavailable, verified = verify_year(
-            2026, fetcher=lambda url: CHESSTOUR_FIXTURE_HTML)
+            2026, fetcher=lambda url: CHESSTOUR_FIXTURE_HTML,
+            today=date(2026, 5, 1))  # the rows are June/July 2026 events
     output = buf.getvalue()
 
     assert 'WARNING: date drift' not in output
@@ -196,7 +198,8 @@ def test_verify_year_handles_comma_canonical_form(tmp_path, monkeypatch):
     buf = io.StringIO()
     with redirect_stdout(buf):
         drift, unavailable, verified = verify_year(
-            2026, fetcher=lambda url: CHESSTOUR_FIXTURE_HTML)
+            2026, fetcher=lambda url: CHESSTOUR_FIXTURE_HTML,
+            today=date(2026, 5, 1))  # the rows are June/July 2026 events
 
     assert drift == 0
     assert verified == 1
@@ -357,3 +360,108 @@ def test_healthy_fetch_still_warns_per_missing_future_event(tmp_path, monkeypatc
 
     assert 'source-parse failure' in output
     assert 'Southern Open' in output
+
+
+# ── next season's listing (2026-09-17) ───────────────────────────────────
+# chesstour.com lists next season under a "2027" marker in the secondary
+# listing, and several of its months (May, June, July) read the same short or
+# long. The main pass matched those and stamped them with the requested year,
+# so the nightly run reported "Chicago Open 2026 ... drift=6 days" against the
+# 2027 listing, and no 2027 row could be verified at all.
+
+NEXT_SEASON_HTML = """
+<html><body>
+<p>October 9-11: Midwest Class Championships, Wheeling, IL ENTER NOW</p>
+<p>COMING EVENTS, continued (other events and details to be added closer to the
+tournament dates) 2026 Nov 27-29: National Chess Congress, Philadelphia, PA
+Dec 26-30, North American Open, Las Vegas, NV
+2027 Jan 8-10 : Boston Chess Congress, Boston, MA Jan 15-18: Liberty Bell Open,
+Philadelphia, PA Mar 24-28: Atlantic City Open, Atlantic City, NJ
+May 27-31: Chicago Open, Wheeling, IL June 6-8: Cleveland Open, Independence, OH
+July 1-5: World Open, Top 6 Sections, Philadelphia, PA
+2028 Jan 7-9: Boston Chess Congress, Boston, MA</p>
+</body></html>
+"""
+
+
+def test_next_seasons_listing_is_not_read_as_this_season():
+    parsed = parse_chesstour_schedule(NEXT_SEASON_HTML, year=2026)
+    assert parsed.get('Midwest Class Championships') == date(2026, 10, 9)
+    assert parsed.get('National Chess Congress') == date(2026, 11, 27)
+    for family in ('Chicago Open', 'Cleveland Open', 'World Open top 6 sections',
+                   'Boston Chess Congress', 'Atlantic City Open'):
+        assert family not in parsed, f"{family} leaked from the 2027 listing"
+
+
+def test_next_seasons_listing_resolves_for_next_season():
+    parsed = parse_chesstour_schedule(NEXT_SEASON_HTML, year=2027)
+    assert parsed.get('Boston Chess Congress') == date(2027, 1, 8)
+    assert parsed.get('Liberty Bell Open') == date(2027, 1, 15)
+    assert parsed.get('Atlantic City Open') == date(2027, 3, 24)
+    assert parsed.get('Chicago Open') == date(2027, 5, 27)
+    assert parsed.get('Cleveland Open') == date(2027, 6, 6)
+    assert parsed.get('World Open top 6 sections') == date(2027, 7, 1)
+
+
+def test_next_season_row_is_verified(tmp_path, monkeypatch):
+    fake_meta = tmp_path / "tournament_metadata.csv"
+    fake_meta.write_text(
+        "family,year,start_date,end_date\n"
+        "Atlantic City Open,2027,2027-03-24,2027-03-28\n"
+        "Liberty Bell Open,2027,2027-01-22,2027-01-25\n"
+    )
+    monkeypatch.setattr('tools.verify_dates.META_PATH', str(fake_meta))
+
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        drift, unavailable, verified = verify_year(
+            2027, fetcher=lambda url: NEXT_SEASON_HTML, today=date(2026, 9, 17))
+    output = buf.getvalue()
+
+    assert verified == 2
+    assert drift == 1
+    assert 'WARNING: date drift — Liberty Bell Open 2027' in output
+    assert 'Atlantic City Open' not in output
+
+
+def test_finished_event_is_moot_even_when_next_years_listing_matches(tmp_path, monkeypatch):
+    """The page lists upcoming events only. A finished edition cannot be
+    checked against it, and must not be compared with next year's listing of
+    the same family."""
+    fake_meta = tmp_path / "tournament_metadata.csv"
+    fake_meta.write_text(
+        "family,year,start_date,end_date\n"
+        "Midwest Class Championships,2026,2026-10-02,2026-10-04\n"
+    )
+    monkeypatch.setattr('tools.verify_dates.META_PATH', str(fake_meta))
+
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        drift, _unavailable, _verified = verify_year(
+            2026, fetcher=lambda url: NEXT_SEASON_HTML, today=date(2026, 10, 20))
+    assert drift == 0
+    assert 'event over' in buf.getvalue()
+
+
+def test_default_run_covers_every_open_season_with_rows(tmp_path, monkeypatch):
+    from tools import verify_dates
+    fake_meta = tmp_path / "tournament_metadata.csv"
+    fake_meta.write_text(
+        "family,year,start_date,end_date\n"
+        "Chicago Open,2025,2025-05-22,2025-05-26\n"
+        "Chicago Open,2026,2026-05-21,2026-05-25\n"
+        "Atlantic City Open,2027,2027-03-24,2027-03-28\n"
+    )
+    monkeypatch.setattr('tools.verify_dates.META_PATH', str(fake_meta))
+    assert verify_dates.open_seasons_with_rows(2026) == [2026, 2027]
+    assert verify_dates.open_seasons_with_rows(2027) == [2027]
+
+    calls = []
+    monkeypatch.setattr(verify_dates, 'verify_year',
+                        lambda year, verbose=False: calls.append(year) or (0, 0, 0))
+    monkeypatch.setattr(verify_dates, 'CURRENT_SEASON', 2026)
+    assert verify_dates.main([]) == 0
+    assert calls == [2026, 2027]
+    calls.clear()
+    assert verify_dates.main(['--year', '2025']) == 0
+    assert calls == [2025]

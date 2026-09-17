@@ -17,6 +17,8 @@ import re as _re
 
 import re
 
+from shared.editions import split_edition_name
+
 # ── Tournament family groups ─────────────────────────────────────────────
 # Each group = same tournament lineage. First entry = canonical 2026 name.
 FAMILY_GROUPS = [
@@ -79,6 +81,41 @@ CCA_CANONICALIZE = {
     'World Open G/10 Championship': 'World Open G 10 Championship',
     'World Open G/50 Championship': 'World Open G 50 Championship',
 }
+
+
+# Misspellings CCA has published in card names. "Championshps" is on the
+# Western Class card every year (2024-2027).
+_KNOWN_TYPOS = (
+    ('Championshps', 'Championships'),
+    ('Championsips', 'Championships'),
+    ('Cahmpionships', 'Championships'),
+    # AUDIT.md C6 — Washington Chess Congress typo merging two families
+    ('Chess Congess', 'Chess Congress'),
+)
+
+
+def fix_known_typos(name):
+    """Correct the misspellings CCA has published in tournament names."""
+    for wrong, right in _KNOWN_TYPOS:
+        name = name.replace(wrong, right)
+    return name
+
+
+def cca_family(name):
+    """Family for a scraped CCA card name: year prefix off, known typos fixed,
+    then CCA_CANONICALIZE.
+
+    "2027 Western Class Championshps" -> "Western Class Championships". The one
+    place a scraped name becomes a family, so the scraper, its metadata sync and
+    every reader of daily_scrape.csv agree on which edition a card belongs to.
+    Without the typo fix the 2027 Western Class card read as a new family with
+    no history and published the flat 100 [70-130] default.
+    """
+    family, _year = split_edition_name(name)
+    if family is None:
+        return None
+    family = fix_known_typos(family)
+    return CCA_CANONICALIZE.get(family, family)
 
 
 # Trailing "(in <location>)" venue qualifier. CCA titles a relocated edition

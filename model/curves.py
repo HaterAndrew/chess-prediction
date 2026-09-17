@@ -5,6 +5,7 @@ import pandas as pd
 from scipy.interpolate import interp1d
 
 from model.constants import T_GRID
+from shared.season import TRAINING_CUTOFF
 
 def build_template_curves(summary, daily):
     """Build family template curves from completed tournaments using raw T."""
@@ -12,7 +13,7 @@ def build_template_curves(summary, daily):
         (summary['has_timestamps']) &
         (~summary.get('is_online', pd.Series(False)).fillna(False)) &
         (~summary.get('is_covid', pd.Series(False)).fillna(False)) &
-        (summary['tournament_year'] < 2026)
+        (summary['tournament_year'] < TRAINING_CUTOFF)
     ]
 
     curves = {}

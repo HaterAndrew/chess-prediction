@@ -167,7 +167,7 @@ function emailFormatTournament(t, len) {
       else parts.push(`At this point last year we were at ${pace.count_at_same_point} and finished at ${pace.final}.`);
     }
     if (sorted.length >= 2) {
-      const rows = [[2026, t.current_count, t.point_estimate, '']];
+      const rows = [[t.year, t.current_count, t.point_estimate, '']];
       sorted.forEach(h => rows.push([h.year, '', '', h.count]));
       parts.push(emailTable(['YEAR', 'ENTRIES', 'PROJECTION', 'FINAL'], rows));
     }
@@ -209,7 +209,7 @@ function emailFormatTournament(t, len) {
   }
 
   if (sorted.length >= 2) {
-    const rows = [[2026, t.current_count, t.point_estimate, `${t.ci_lower}-${t.ci_upper}`, '']];
+    const rows = [[t.year, t.current_count, t.point_estimate, `${t.ci_lower}-${t.ci_upper}`, '']];
     sorted.forEach(h => rows.push([h.year, '', '', '', h.count]));
     parts.push(emailTable(['YEAR', 'ENTRIES', 'PROJECTION', 'RANGE', 'FINAL'], rows));
   }
@@ -353,10 +353,10 @@ function emailHTMLTournament(t, len) {
     const hdrs = len === 'long' ? ['Year', 'Entries', 'Projection', 'Range', 'Final'] : ['Year', 'Entries', 'Projection', 'Final'];
     const rows = [];
     if (len === 'long') {
-      rows.push([2026, t.current_count, t.point_estimate, `${t.ci_lower}\u2013${t.ci_upper}`, '']);
+      rows.push([t.year, t.current_count, t.point_estimate, `${t.ci_lower}\u2013${t.ci_upper}`, '']);
       sorted.forEach(h => rows.push([h.year, '', '', '', h.count]));
     } else {
-      rows.push([2026, t.current_count, t.point_estimate, '']);
+      rows.push([t.year, t.current_count, t.point_estimate, '']);
       sorted.forEach(h => rows.push([h.year, '', '', h.count]));
     }
     parts.push(emailHTMLTable(hdrs, rows));

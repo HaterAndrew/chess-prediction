@@ -68,6 +68,23 @@ def is_current_season(year) -> bool:
         return False
 
 
+def is_open_season(year) -> bool:
+    """True when `year` is a season the site predicts: the current one or later.
+
+    CCA opens registration for next season's events months before this season
+    ends (the 2027 January-March events were taking entries in September 2026),
+    so "the season being predicted" is not one year. Training and grading stay
+    on CURRENT_SEASON and earlier; this only widens which editions get a card.
+    Tolerates None/NaN/str.
+    """
+    if year is None:
+        return False
+    try:
+        return int(year) >= CURRENT_SEASON
+    except (TypeError, ValueError):
+        return False
+
+
 def eval_years(first=2022, last=None):
     """Expanding-window fold years, inclusive of the current season.
 

@@ -4,6 +4,7 @@ get_event_date arrives as a parameter -- it closes over main()-scope
 meta/summary. tournaments_out is mutated in place, as before.
 """
 from pipeline_utils import chart_series_start_date
+from shared.season import CURRENT_SEASON
 from tournament_aliases import canonicalize_family
 
 from sitebuild.helpers import _apply_wo_top6_adjustment, m04c
@@ -34,7 +35,7 @@ def add_historical_editions(EXCLUDE_FAMILIES, curves, daily, get_event_date,
         (~summary['is_covid'].fillna(False)) &
         (summary['final_count'] >= 10) &
         (~summary['family'].isin(EXCLUDE_FAMILIES)) &
-        (summary['tournament_year'] < 2026) &
+        (summary['tournament_year'] < CURRENT_SEASON) &
         (summary['tournament_year'] >= 2015)
     ].sort_values(['family', 'tournament_year'])
 

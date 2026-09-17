@@ -3,7 +3,7 @@ import re
 
 # Shared venue-suffix stripper so a relocated edition folds onto its history
 # both here (summary build) and in tournament_aliases.canonicalize_family.
-from tournament_aliases import strip_venue_suffix
+from tournament_aliases import fix_known_typos, strip_venue_suffix
 
 
 def extract_family(name):
@@ -34,12 +34,8 @@ def repair_family_name(name):
     # (e.g. "Eastern Class Championships (in Connecticut)") lands in the same
     # family as its prior years instead of a brand-new zero-history family.
     name = strip_venue_suffix(name)
-    # Fix common typos
-    name = name.replace('Championshps', 'Championships')
-    name = name.replace('Championsips', 'Championships')
-    name = name.replace('Cahmpionships', 'Championships')
-    # AUDIT.md C6 — fix Washington Chess Congress typo merging two families
-    name = name.replace('Chess Congess', 'Chess Congress')
+    # Fix common typos (one list, shared with the scraper's cca_family)
+    name = fix_known_typos(name)
     # Normalize whitespace: collapse multiple spaces to one
     name = re.sub(r'\s{2,}', ' ', name)
     # Normalize apostrophes

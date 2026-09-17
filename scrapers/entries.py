@@ -1,7 +1,8 @@
 """
 Daily scraper for CCA tournament entry counts from chessaction.com.
 
-Scrapes all 2026 tournaments from the CCA index page, extracting:
+Scrapes every open-season tournament (this season and any later one CCA has
+listed) from the CCA index page, extracting:
   - Entry counts from "Entry List [NNN]" pattern (gross registrations)
   - Withdrawal counts from entry list HTML ("N Active [+M Withdrawn]")
   - Active counts (gross minus withdrawals)
@@ -38,9 +39,14 @@ from fees.codes import ENTRY_LIST_CODES  # noqa: F401
 # __file__-derived paths do not survive relocation into a package (P7);
 # the repo-level constants are the truth.
 from shared.clock import today_iso
+from shared.editions import split_edition_name
 from shared.paths import OUTPUT_DIR, PROJECT_DIR  # noqa: F401
+from shared.season import CURRENT_SEASON
 # CCA name -> canonical family name: single source of truth in tournament_aliases.py
-from tournament_aliases import CCA_CANONICALIZE as CCA_FAMILY_ALIASES
+from tournament_aliases import CCA_CANONICALIZE as CCA_FAMILY_ALIASES  # noqa: F401
+from tournament_aliases import cca_family
+
+from scrapers.metadata_sync import META_PATH, sync_metadata  # noqa: F401
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -66,7 +72,6 @@ RETRY_BASE_DELAY = 2          # seconds; delays: 2, 4, 8, 16, 32
 CIRCUIT_BREAKER_THRESHOLD = 3  # consecutive full-pipeline failures before exit
 
 CSV_PATH = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
-META_PATH = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
 # Re-anchored at main() entry (P7) so a long-lived import cannot hold a
 # stale date; module-level value serves direct function callers.
 TODAY = today_iso()
@@ -76,8 +81,7 @@ WO_KEEP_PATTERNS = re.compile(r'under\s*13|top\s+6\s+sections|lower\s+sections',
 
 def to_family(name):
     """Strip year prefix from CCA tournament name and apply canonical aliases."""
-    family = re.sub(r'^\d{4}\s+', '', name).strip()
-    return CCA_FAMILY_ALIASES.get(family, family)
+    return cca_family(name)
 
 
 # ── CCA entry list URL codes ─────────────────────────────────────────────
@@ -147,7 +151,19 @@ def _create_session():
     return session
 
 
-def scrape_withdrawals(tournaments, year=2026):
+def _entry_list_url(tournament):
+    """Entry-list page URL for one scraped edition, or None without a code.
+
+    The two-digit year in the path is the edition's own: the 2027 Atlantic City
+    Open lives at CCA_ACO27, not under whichever season the run happens in.
+    """
+    code = _derive_entry_list_code(tournament['name'])
+    if not code:
+        return None
+    return ENTRY_LIST_URL_TEMPLATE.format(code=code, yy=str(tournament['year'])[-2:])
+
+
+def scrape_withdrawals(tournaments):
     """
     Hit each tournament's CCA entry list page to get withdrawal counts.
 
@@ -159,20 +175,19 @@ def scrape_withdrawals(tournaments, year=2026):
     page as the main World Open, so we only scrape the main WO page once
     and skip sub-events (they'll be consolidated separately).
     """
-    yy = str(year)[-2:]
     session = _create_session()
     print("\n── Scraping withdrawal counts from entry list pages ──")
 
-    # Track codes already fetched to avoid hitting the same page twice
+    # Track pages already fetched to avoid hitting the same one twice
     # (World Open sub-events all map to WO)
-    fetched_cache = {}  # code -> (active, withdrawn)
+    fetched_cache = {}  # entry-list url -> (active, withdrawn)
 
     for t in tournaments:
-        code = _derive_entry_list_code(t['name'])
+        url = _entry_list_url(t)
         t['withdrawal_count'] = 0
         t['active_count'] = t['entry_count']
 
-        if not code or t['entry_count'] == 0:
+        if not url or t['entry_count'] == 0:
             continue
 
         # World Open: all sub-events resolve to entry-list code "WO" and share
@@ -187,18 +202,17 @@ def scrape_withdrawals(tournaments, year=2026):
         if 'world open' in name_lower:
             continue
 
-        # Use cache if we already fetched this code.
-        if code in fetched_cache:
-            active, withdrawn = fetched_cache[code]
+        # Use cache if we already fetched this page.
+        if url in fetched_cache:
+            active, withdrawn = fetched_cache[url]
             t['withdrawal_count'] = withdrawn
             t['active_count'] = active
             continue
 
-        url = ENTRY_LIST_URL_TEMPLATE.format(code=code, yy=yy)
         try:
             resp = session.get(url, timeout=10)
             if resp.status_code != 200 or len(resp.text) < 1000:
-                fetched_cache[code] = (t['entry_count'], 0)
+                fetched_cache[url] = (t['entry_count'], 0)
                 continue
 
             wd_match = _WD_PATTERN.search(resp.text)
@@ -209,20 +223,20 @@ def scrape_withdrawals(tournaments, year=2026):
                 t['active_count'] = active
                 # Entry list is authoritative: override index page gross count
                 t['entry_count'] = active + withdrawn
-                fetched_cache[code] = (active, withdrawn)
+                fetched_cache[url] = (active, withdrawn)
                 print(f"  {t['name']:<40s}  {active} active + {withdrawn} withdrawn")
             else:
                 active_match = _ACTIVE_ONLY_PATTERN.search(resp.text)
                 if active_match:
                     active = int(active_match.group(1))
                     t['active_count'] = active
-                    fetched_cache[code] = (active, 0)
+                    fetched_cache[url] = (active, 0)
                 else:
-                    fetched_cache[code] = (t['entry_count'], 0)
+                    fetched_cache[url] = (t['entry_count'], 0)
 
             time.sleep(0.3)  # rate limit
         except requests.RequestException:
-            fetched_cache[code] = (t['entry_count'], 0)
+            fetched_cache[url] = (t['entry_count'], 0)
             continue
 
     # ── Invariant validation ──
@@ -248,22 +262,34 @@ def scrape_withdrawals(tournaments, year=2026):
     return tournaments
 
 
-def _parse_index(html):
-    """Parse a CCA tournament-list HTML response into 2026 tournament dicts.
+def _parse_index(html, first_season=None):
+    """Parse a CCA tournament-list HTML response into tournament dicts.
 
     Pure function (no network) so it can be regression-tested against a
-    captured response. Each dict carries name, url, start/end date (ISO),
-    state, and entry_count. Rows that are not 2026 events are skipped.
+    captured response. Each dict carries name, year, url, start/end date
+    (ISO), state, and entry_count.
+
+    Keeps every edition from `first_season` (default: the current season) on.
+    Until 2026-09-17 this kept only cards carrying the literal "2026", so the
+    nine 2027 events CCA was already taking entries for never left the scraper.
+    The edition's year is the one in its name; a card named without a year
+    takes the year it starts in.
     """
+    first_season = CURRENT_SEASON if first_season is None else int(first_season)
     tournaments = []
     for rel_url, name, start_date, end_date, state, count in _INDEX_PATTERN.findall(html):
-        if '2026' not in name and '2026' not in rel_url:
+        start = datetime.strptime(start_date.strip(), '%b %d, %Y')
+        _family, year = split_edition_name(name)
+        if year is None:
+            year = start.year
+        if year < first_season:
             continue
         full_url = f'https://www.chessaction.com/{rel_url}'.replace('&amp;', '&')
-        start_iso = datetime.strptime(start_date.strip(), '%b %d, %Y').strftime('%Y-%m-%d')
+        start_iso = start.strftime('%Y-%m-%d')
         end_iso = datetime.strptime(end_date.strip(), '%b %d, %Y').strftime('%Y-%m-%d')
         tournaments.append({
             'name': name.strip(),
+            'year': year,
             'url': full_url,
             'start_date': start_iso,
             'end_date': end_iso,
@@ -310,8 +336,8 @@ def _fetch_tourlist_html(session, timeout=30):
 
 def scrape_index(max_retries=3, backoff=15):
     """
-    Fetch the CCA tournament list and extract all 2026 tournaments with their
-    name, URL, dates, state, and entry count in a single pass.
+    Fetch the CCA tournament list and extract every open-season tournament with
+    its name, year, URL, dates, state, and entry count in a single pass.
 
     Pulls the homepage's AJAX data source (ajaxFrontGetTourListNew) rather than
     rendering the page, which sidesteps the AJAX load race and the /CCA/ ->
@@ -332,7 +358,8 @@ def scrape_index(max_retries=3, backoff=15):
                     "Regex matched 0 tournaments — endpoint response may have changed"
                 )
 
-            print(f"Found {len(tournaments)} tournaments for 2026")
+            seasons = sorted({t['year'] for t in tournaments})
+            print(f"Found {len(tournaments)} tournaments for {seasons}")
             return tournaments
 
         except RETRY_EXCEPTIONS as e:
@@ -419,75 +446,6 @@ def update_csv(tournaments):
     return all_rows
 
 
-def sync_metadata(tournaments):
-    """
-    Update tournament_metadata.csv with dates scraped from chessaction.com.
-    Updates existing 2026 rows AND adds new rows for tournaments that
-    appear on chessaction but aren't in the CSV yet.
-    Preserves fee and venue info already in the CSV.
-    """
-    if not os.path.exists(META_PATH):
-        print("  No metadata CSV found — skipping metadata sync.")
-        return
-
-    with open(META_PATH, 'r', newline='') as f:
-        reader = csv.DictReader(f)
-        fieldnames = reader.fieldnames
-        meta_rows = list(reader)
-
-    # Build lookup of scraped dates by family name
-    scraped = {}
-    for t in tournaments:
-        family = to_family(t['name'])
-        scraped[family] = t
-
-    # Track which scraped families already have a 2026 row
-    existing_2026 = set()
-    updated = 0
-    for row in meta_rows:
-        if row['year'] != '2026':
-            continue
-        family = row['family']
-        existing_2026.add(family)
-        if family not in scraped:
-            continue
-
-        t = scraped[family]
-        old_start = row.get('start_date', '')
-        old_end = row.get('end_date', '')
-
-        if old_start != t['start_date'] or old_end != t['end_date']:
-            print(f"  UPDATED {family}: {old_start}..{old_end} -> {t['start_date']}..{t['end_date']}")
-            row['start_date'] = t['start_date']
-            row['end_date'] = t['end_date']
-            updated += 1
-
-    # Add new rows for scraped tournaments missing from metadata
-    added = 0
-    for family, t in scraped.items():
-        if family in existing_2026:
-            continue
-        new_row = {fn: '' for fn in fieldnames}
-        new_row['family'] = family
-        new_row['year'] = '2026'
-        new_row['start_date'] = t['start_date']
-        new_row['end_date'] = t['end_date']
-        if 'venue_state' in fieldnames:
-            new_row['venue_state'] = t.get('state', '')
-        meta_rows.append(new_row)
-        print(f"  ADDED {family}: {t['start_date']}..{t['end_date']}")
-        added += 1
-
-    if updated or added:
-        with open(META_PATH, 'w', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(meta_rows)
-        print(f"  Synced metadata: {updated} updated, {added} added to {META_PATH}")
-    else:
-        print("  All 2026 metadata dates match CCA — no changes needed.")
-
-
 def print_comparison(all_rows):
     """Print today's counts vs yesterday's (if available)."""
     yesterday = (date.today() - timedelta(days=1)).isoformat()
@@ -537,7 +495,7 @@ def run_scrape_pipeline():
     # Step 1: Extract all data from the tournament-list endpoint
     tournaments = scrape_index()
     if not tournaments:
-        raise ValueError("No 2026 tournaments found on CCA index page.")
+        raise ValueError("No open-season tournaments found on CCA index page.")
 
     for t in tournaments:
         logger.info("  %s  %s - %s  [%d]",

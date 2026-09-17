@@ -26,7 +26,7 @@ Exit codes:
   - 1: --strict and any drift > 1 day found
 
 Run manually:
-  python3 tools/verify_dates.py                       # default: current year
+  python3 tools/verify_dates.py                       # default: every open season
   python3 tools/verify_dates.py --year 2026           # specific year
   python3 tools/verify_dates.py --strict              # exit 1 on drift
   python3 tools/verify_dates.py --verbose             # show every OK row
@@ -49,6 +49,7 @@ META_PATH = os.path.join(PROJECT_DIR, 'output', 'tournament_metadata.csv')
 # strips parenthetical suffixes ("(in New Jersey)") that metadata uses to
 # disambiguate venue-of-the-year for the Eastern events.
 sys.path.insert(0, PROJECT_DIR)
+from shared.season import CURRENT_SEASON  # noqa: E402
 from tournament_aliases import canonicalize_family  # noqa: E402
 
 _PAREN_SUFFIX_RE = re.compile(r'\s*\([^)]*\)\s*$')
@@ -73,7 +74,9 @@ CHESSTOUR_URL = 'https://www.chesstour.com/refs.html'
 # must be unique enough to avoid matching the wrong row. Update if CCA
 # renames a sub-event.
 CHESSTOUR_PATTERNS = {
+    'Atlantic City Open': 'Atlantic City Open',
     'Atlantic Open': 'Atlantic Open',
+    'Boston Chess Congress': 'Boston Chess Congress',
     'Bradley Open': 'Bradley Open',
     'Central California Open': 'Central California Open',
     'Chicago Class': 'Chicago Class Championships',
@@ -84,10 +87,14 @@ CHESSTOUR_PATTERNS = {
     'DC International': 'DC International',
     'Eastern Chess Congress': 'Eastern Chess Congress',
     'Eastern Class Championships': 'Eastern Class Championships',
+    'George Washington Open': 'George Washington Open',
+    'Golden State Open': 'Golden State Open',
     'Hartford Open': 'Hartford Open',
     'Indianapolis Open': 'Indianapolis Open',
     'Kings Island Open': 'Kings Island Open',
+    'Liberty Bell Open': 'Liberty Bell Open',
     'Los Angeles Open': 'Los Angeles Open',
+    'Mid-America Open': 'Mid-America Open',
     'Midwest Class Championships': 'Midwest Class Championships',
     'National Chess Congress': 'National Chess Congress',
     'New York State Championship': 'NY State Championship',
@@ -95,7 +102,10 @@ CHESSTOUR_PATTERNS = {
     'North American Open': 'North American Open',
     'Pacific Coast Open': 'Pacific Coast Open',
     'Pittsburgh Open': 'Pittsburgh Open',
+    'Southern Class Championships': 'Southern Class Championships',
     'Southern Open': 'Southern Open',
+    'Southwest Class Championships': 'Southwest Class Championships',
+    'Western Class Championships': 'Western Class Championships',
     # World Open sub-events: chesstour.com lists each separately with its
     # own date prefix (unlike chessevents.com which lumps the festival).
     'World Open lower sections': 'World Open, Under 1200 and Under 1000 Sections',
@@ -158,12 +168,13 @@ _MONTHS_RE = '|'.join(_MONTH_INDEX.keys())
 # (Sept, Nov, Dec, Jan...). Parse those too — events in that section are
 # the canonical CCA fall/winter calendar even if dates are "approximate".
 _MONTH_ABBR_INDEX = {
-    'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'Jun': 6,
-    'Jul': 7, 'Aug': 8, 'Sept': 9, 'Sep': 9, 'Oct': 10,
+    'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'June': 6, 'Jun': 6,
+    'July': 7, 'Jul': 7, 'Aug': 8, 'Sept': 9, 'Sep': 9, 'Oct': 10,
     'Nov': 11, 'Dec': 12,
-    # 'May' is intentionally omitted: it's identical full/abbrev and is
-    # already handled by the main parser. Adding it here would create
-    # duplicate matches.
+    # May, June and July read the same short or long, and the secondary listing
+    # spells them that way. They belong here: the main pass stops at the
+    # secondary listing's header (see parse_chesstour_schedule), so it can no
+    # longer match them and stamp next season's listing with this season's year.
 }
 _MONTH_ABBR_RE = '|'.join(_MONTH_ABBR_INDEX.keys())
 
@@ -261,7 +272,15 @@ def parse_chesstour_schedule(html: str, year: int) -> dict[str, date]:
     positives. Returns {our canonical family name: earliest start date}.
     """
     text = _strip_html(html)
-    matches = list(CHESSTOUR_BLOCK_RE.finditer(text))
+    # The main pass reads the detailed listing only. Everything from the
+    # secondary listing's header on carries its own year markers and belongs to
+    # parse_chesstour_abbr_schedule. Until 2026-09-17 the main pass ran over the
+    # whole page: "May 27-31: Chicago Open" under the 2027 marker matched the
+    # full-month regex, took the requested year, and the nightly run reported a
+    # 6-day drift on the finished 2026 Chicago Open.
+    header = _APPROX_HEADER_RE.search(text)
+    main_text = text[:header.start()] if header else text
+    matches = list(CHESSTOUR_BLOCK_RE.finditer(main_text))
     out: dict[str, date] = {}
     for m in matches:
         month = m.group('month')
@@ -387,10 +406,12 @@ def _parse_iso(s: str) -> Optional[date]:
         return None
 
 
-def verify_year(year: int, verbose: bool = False, fetcher=_fetch) -> tuple[int, int, int]:
+def verify_year(year: int, verbose: bool = False, fetcher=_fetch,
+                today: Optional[date] = None) -> tuple[int, int, int]:
     """Verify metadata against canonical sources for the given year.
 
-    fetcher is an injection seam for tests — defaults to _fetch.
+    fetcher and today are injection seams for tests — default to _fetch and
+    the current date.
 
     Returns (drift_count, unavailable_count, verified_count).
     """
@@ -399,7 +420,8 @@ def verify_year(year: int, verbose: bool = False, fetcher=_fetch) -> tuple[int, 
         print(f'INFO: verify_dates {year}: no metadata rows for this year')
         return 0, 0, 0
 
-    is_current = year >= datetime.now().year
+    today = today or datetime.now().date()
+    is_current = year >= today.year
 
     chesstour_map: dict[str, date] = {}
     # v5 follow-up: when the schedule page itself is down (or parses to zero
@@ -452,18 +474,19 @@ def verify_year(year: int, verbose: bool = False, fetcher=_fetch) -> tuple[int, 
                 elif verbose:
                     print(f'INFO: {family} {year} has no source mapping; skipping')
                 continue
+            # v5 Cat V: chesstour.com's schedule page lists upcoming events
+            # only, so a finished event cannot be verified against it —
+            # verification is moot. Checked before the lookup: once an event is
+            # over, the only listing left under its family is next year's.
+            event_end = _parse_iso(row.get('end_date', '')) or meta_start
+            if family in CHESSTOUR_PATTERNS and event_end < today:
+                print(f'INFO: {family} {year}: event over — dropped from '
+                      f'chesstour.com schedule; verification moot')
+                continue
             if family in chesstour_map:
                 canon = chesstour_map[family]
             elif family in CHESSTOUR_PATTERNS:
-                # v5 Cat V: chesstour.com's schedule page drops events once
-                # they are over, so a past event missing from it is expected,
-                # not a parse failure — verification is moot. A FUTURE event
-                # missing from the schedule is still a real WARNING.
-                event_end = _parse_iso(row.get('end_date', '')) or meta_start
-                if event_end < datetime.now().date():
-                    print(f'INFO: {family} {year}: event over — dropped from '
-                          f'chesstour.com schedule; verification moot')
-                    continue
+                # A FUTURE event missing from the schedule is a real WARNING.
                 # We expected to find it but didn't — listing structure
                 # changed or pattern is stale.
                 print(f'WARNING: source-parse failure — {family} {year}: '
@@ -512,17 +535,34 @@ def verify_year(year: int, verbose: bool = False, fetcher=_fetch) -> tuple[int, 
     return drift, unavailable, verified
 
 
+def open_seasons_with_rows(current_season: int) -> list[int]:
+    """Seasons from `current_season` on that have metadata rows, in order.
+
+    CCA opens next season's registration months early, so the default run
+    verifies those rows too instead of stopping at the current year.
+    """
+    with open(META_PATH) as f:
+        years = {int(r['year']) for r in csv.DictReader(f)
+                 if (r.get('year') or '').strip().isdigit()}
+    return sorted(y for y in years if y >= current_season)
+
+
 def main(argv: Optional[Iterable[str]] = None) -> int:
     parser = argparse.ArgumentParser(description='Verify tournament dates against canonical sources.')
-    parser.add_argument('--year', type=int, default=datetime.now().year,
-                        help='Year to verify (default: current year)')
+    parser.add_argument('--year', type=int, default=None,
+                        help='Year to verify (default: every open season with '
+                             'metadata rows — the current one and any later)')
     parser.add_argument('--strict', action='store_true',
                         help='Exit non-zero if any drift > 1 day is found')
     parser.add_argument('--verbose', '-v', action='store_true',
                         help='Print every comparison, not just warnings')
     args = parser.parse_args(list(argv) if argv is not None else None)
 
-    drift, _unavailable, _verified = verify_year(args.year, verbose=args.verbose)
+    years = [args.year] if args.year is not None else open_seasons_with_rows(CURRENT_SEASON)
+    drift = 0
+    for year in years:
+        year_drift, _unavailable, _verified = verify_year(year, verbose=args.verbose)
+        drift += year_drift
 
     if args.strict and drift > 0:
         return 1

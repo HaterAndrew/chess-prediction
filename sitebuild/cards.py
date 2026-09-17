@@ -10,15 +10,23 @@ from pipeline_utils import (apply_plausibility_clamp, build_chart_series,
                             chart_series_start_date, roster_pending_model_ok)
 from prediction_window import registration_close_date, window_decayed_estimate
 from ratio_model import predict_with_lognormal_ci
+from pipeline_utils import is_event_complete
 from tournament_aliases import canonicalize_family
 
+from sitebuild.editions import prior_editions
 from sitebuild.helpers import (TODAY, _apply_wo_top6_adjustment,
                                _fam_eq, m04c, sanitize_early_bird)
 
 
 def build_model_cards(curves, daily, determine_status, get_event_date, get_event_end_date, meta, prod_model, ratios, summary, t2026, tournaments_out, withdrawal_lookup):
+    def is_settled(fam, yr):
+        return is_event_complete(get_event_end_date(fam, yr), TODAY)
+
     for _, row in t2026.iterrows():
         family = row['family']
+        # The edition's own year: a 2027 card reads 2027 metadata and counts
+        # the finished 2026 edition as history.
+        year = int(row['tournament_year'])
         tid = row['tid']
         current_count = row['final_count']
 
@@ -30,18 +38,12 @@ def build_model_cards(curves, daily, determine_status, get_event_date, get_event
         hist_families = [family]
         if hasattr(m04c, 'FAMILY_ALIASES') and family in m04c.FAMILY_ALIASES:
             hist_families.extend(m04c.FAMILY_ALIASES[family])
-        hist_check = summary[
-            (summary['family'].isin(hist_families)) &
-            (~summary['is_online'].fillna(False)) &
-            (~summary['is_covid'].fillna(False)) &
-            (summary['tournament_year'] < 2026) &
-            (summary['tournament_year'] >= 2019)
-        ]
+        hist_check = prior_editions(summary, hist_families, year, is_settled)
         if current_count < 10 and len(hist_check) == 0:
             continue
 
-        event_date = get_event_date(family, 2026)
-        event_end_date = get_event_end_date(family, 2026)
+        event_date = get_event_date(family, year)
+        event_end_date = get_event_end_date(family, year)
         registration_close = registration_close_date(event_date, event_end_date)
         status = determine_status(row, event_date, event_end_date, registration_close)
 
@@ -83,14 +85,14 @@ def build_model_cards(curves, daily, determine_status, get_event_date, get_event
             continue
 
         # Get metadata
-        m = meta[_fam_eq(meta['family'], family) & (meta['year'] == 2026)]
+        m = meta[_fam_eq(meta['family'], family) & (meta['year'] == year)]
         eb_deadline = m.iloc[0]['early_bird_deadline'] if len(m) > 0 and pd.notna(m.iloc[0].get('early_bird_deadline')) else None
         eb_fee = float(m.iloc[0]['early_bird_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('early_bird_fee')) else None
         reg_fee = float(m.iloc[0]['regular_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('regular_fee')) else None
         onsite_fee = float(m.iloc[0]['onsite_fee']) if len(m) > 0 and pd.notna(m.iloc[0].get('onsite_fee')) else None
         # Anchor the EB gap check to THIS card's event date, not a stale event_start
         # left over from an earlier loop (H14). Matches the sibling call below.
-        eb_deadline, eb_fee = sanitize_early_bird(family, 2026, eb_deadline, eb_fee, reg_fee,
+        eb_deadline, eb_fee = sanitize_early_bird(family, year, eb_deadline, eb_fee, reg_fee,
                                                   event_date.strftime('%Y-%m-%d') if event_date else None)
 
         # Historical data (needed for guardrails and output)
@@ -98,13 +100,7 @@ def build_model_cards(curves, daily, determine_status, get_event_date, get_event
         families_to_search = [family]
         if hasattr(m04c, 'FAMILY_ALIASES') and family in m04c.FAMILY_ALIASES:
             families_to_search.extend(m04c.FAMILY_ALIASES[family])
-        hist = summary[
-            (summary['family'].isin(families_to_search)) &
-            (~summary['is_online'].fillna(False)) &
-            (~summary['is_covid'].fillna(False)) &
-            (summary['tournament_year'] < 2026) &
-            (summary['tournament_year'] >= 2019)
-        ].sort_values('tournament_year')
+        hist = prior_editions(summary, families_to_search, year, is_settled)
         historical = _apply_wo_top6_adjustment(family, [
             {"year": int(h['tournament_year']), "count": int(h['final_count']),
              "family": h['family']}
@@ -188,7 +184,7 @@ def build_model_cards(curves, daily, determine_status, get_event_date, get_event
                 _fam_mask &
                 (summary['tournament_year'] == summary[
                     _fam_mask &
-                    (summary['tournament_year'] < 2026)
+                    (summary['tournament_year'] < year)
                 ]['tournament_year'].max())
             ]
             if len(prior_hist) > 0:
@@ -209,7 +205,7 @@ def build_model_cards(curves, daily, determine_status, get_event_date, get_event
                         }
 
         # Withdrawal data from scrape (lookup is keyed canonical)
-        wd_info = withdrawal_lookup.get(canonicalize_family(family), {})
+        wd_info = withdrawal_lookup.get((canonicalize_family(family), year), {})
         withdrawal_count = wd_info.get('withdrawal_count', 0)
         gross_count = wd_info.get('gross_count', int(current_count))
 
@@ -235,7 +231,7 @@ def build_model_cards(curves, daily, determine_status, get_event_date, get_event
 
         t_out = {
             "family": display_family,
-            "year": 2026,
+            "year": year,
             "event_start": event_date.strftime('%Y-%m-%d') if event_date else None,
             "event_end": None,
             "registration_close": (registration_close.strftime('%Y-%m-%d')

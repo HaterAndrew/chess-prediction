@@ -51,6 +51,13 @@ def _is_main_path(t):
     return not _is_roster_pending(t) or t.get("prediction_source") == "model"
 
 
+def _edition(t):
+    """(canon_family, year): the identity a card shares with its scrape rows
+    and its logged runs. The family alone stops being unique once next season's
+    card opens beside this season's."""
+    return _canon(t.get("family", "")), t.get("year")
+
+
 def _hist_counts(t):
     return [h.get("count") for h in (t.get("historical") or []) if h.get("count") is not None]
 
@@ -84,22 +91,22 @@ def scan(data, ctx):
     tournaments = data.get("tournaments", [])
     live_complete = [t for t in tournaments if t.get("status") in ("live", "complete", "not_tracked")]
 
-    # canon families that appear as any 2026 card, and canon families that have
+    # editions that appear as any card, and canon families that have
     # historical editions (for name-mismatch + dropped-event detection).
-    card_canon_2026 = {_canon(t["family"]) for t in tournaments if t.get("year") == 2026}
+    card_editions = {_edition(t) for t in tournaments}
     hist_canon = {_canon(t["family"]) for t in tournaments if t.get("status") == "historical"}
 
     # ---- CRITICAL ----------------------------------------------------------
 
-    # Mode 12: scraped >=10 entries but no 2026 card at all (silently dropped).
-    for fam, info in ctx.scrape_latest.items():
+    # Mode 12: scraped >=10 entries but no card for that edition (silently dropped).
+    for (fam, year), info in ctx.scrape_latest.items():
         if info["gross"] < 10:
             continue
         if not fam or is_wo_excluded(fam) or _BLITZ_RE.search(fam):
             continue
-        if fam not in card_canon_2026:
+        if (fam, year) not in card_editions:
             report.add("CRITICAL", "dropped-event", fam,
-                       f"scraped {info['gross']} entries on {info['date']} but no 2026 card in output")
+                       f"scraped {info['gross']} entries on {info['date']} but no {year} card in output")
 
     for t in live_complete:
         fam = t.get("family", "?")
@@ -119,7 +126,7 @@ def scan(data, ctx):
     for t in live_complete:
         if t.get("status") != "live" or not _is_main_path(t):
             continue
-        seq = ctx.log_hist.get(_canon(t.get("family", "")), [])
+        seq = ctx.log_hist.get(_edition(t), [])
         window = _current_estimator_runs(seq, t.get("prediction_source"))
         if len(window) < 3:
             continue
@@ -238,7 +245,7 @@ def scan(data, ctx):
         # The net/gross gap is worth surfacing, but it is a different fact and
         # is reported below at its own severity.
         if t.get("status") in ("live", "complete"):
-            sl = ctx.scrape_latest.get(_canon(fam))
+            sl = ctx.scrape_latest.get(_edition(t))
             cc = t.get("current_count")
             if sl is not None and isinstance(cc, int) and cc != sl["gross"]:
                 report.add("HIGH", "stale-count", fam,
@@ -271,7 +278,7 @@ def scan(data, ctx):
         # This is the signal the old stale-count rule was accidentally emitting,
         # separated out and given a threshold. At >0 it fired on nearly every
         # event and meant nothing.
-        sl = ctx.scrape_latest.get(_canon(fam))
+        sl = ctx.scrape_latest.get(_edition(t))
         if sl and sl["gross"] > 0:
             gap = sl["gross"] - sl["net"]
             if gap > 0 and gap / sl["gross"] > WITHDRAWAL_GAP_WARN_FRAC:

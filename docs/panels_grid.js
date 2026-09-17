@@ -34,8 +34,23 @@ function filterTourneyTable(status) {
   renderAllTournaments();
 }
 
+// "2026" or "2026–27": the seasons of the cards the overview table lists. Next
+// season's events open while this season's are still running, so the heading
+// follows the data instead of naming one year.
+function overviewSeasonLabel(tournaments) {
+  const years = [...new Set(tournaments
+    .filter(t => t.status === 'live' || t.status === 'complete')
+    .map(t => t.year))].sort();
+  if (!years.length) return '';
+  const first = String(years[0]);
+  const last = String(years[years.length - 1]);
+  return years.length === 1 ? first : `${first}–${last.slice(-2)}`;
+}
+
 function renderAllTournaments() {
   const body = document.getElementById('tourneyBody');
+  const seasonTitle = `${overviewSeasonLabel(TOURNAMENT_DATA.tournaments)} Tournament Overview`.trim();
+  document.querySelectorAll('[data-season-title]').forEach(el => { el.textContent = seasonTitle; });
   const filterInput = document.getElementById('tourneyFilter');
   const q = filterInput ? filterInput.value.trim().toLowerCase() : '';
   // Only show upcoming + complete (not 361 historical rows)
@@ -117,7 +132,11 @@ function renderAllTournaments() {
 function renderSummaryBar() {
   const ts = TOURNAMENT_DATA.tournaments;
   const live = ts.filter(t => t.status === 'live');
-  const complete2026 = ts.filter(t => t.status === 'complete');
+  const complete = ts.filter(t => t.status === 'complete');
+  // Seasons the finished cards belong to, as '26 or '26–'27: next season's
+  // events open while this season's are still finishing.
+  const seasons = [...new Set(complete.map(t => t.year))].sort();
+  const seasonLabel = seasons.map(y => "'" + String(y).slice(-2)).join('–');
   const historical = ts.filter(t => t.status === 'historical');
   const totalRegs = ts.filter(t => t.status !== 'historical').reduce((s, t) => s + t.current_count, 0);
   const nextEvent = [...live].sort((a, b) => a.days_remaining - b.days_remaining)[0];
@@ -125,7 +144,7 @@ function renderSummaryBar() {
   const el = document.getElementById('summaryBar');
   el.innerHTML = `
     <span><strong style="color:var(--green)">${live.length}</strong> upcoming</span>
-    <span><strong style="color:var(--muted)">${complete2026.length}</strong> complete '26</span>
+    <span><strong style="color:var(--muted)">${complete.length}</strong> complete ${seasonLabel}</span>
     <span><strong style="color:var(--purple)">${historical.length}</strong> historical</span>
     <span><strong style="color:var(--blue)">${fmt(totalRegs)}</strong> YTD entries</span>
     ${nextEvent ? `<span style="cursor:pointer" data-act="select-tournament" data-idx="${TOURNAMENT_DATA.tournaments.indexOf(nextEvent)}">Next: <strong style="color:var(--gold)">${nextEvent.family}</strong> in ${nextEvent.days_remaining}d</span>` : ''}

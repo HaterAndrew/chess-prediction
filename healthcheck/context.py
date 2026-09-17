@@ -7,8 +7,9 @@ import json
 import os
 from collections import defaultdict, namedtuple
 
-from tournament_aliases import canonicalize_family
+from tournament_aliases import canonicalize_family, cca_family
 
+from shared.editions import split_edition_name
 from shared.paths import (METADATA_CSV, PERFORMANCE_JSON, SUMMARY_CSV,
                           UPDATE_LOG_CSV)
 from shared.paths import SCRAPE_CSV as DAILY_SCRAPE_CSV
@@ -24,9 +25,25 @@ def _canon(name):
 LogRun = namedtuple("LogRun", "point_estimate current_count prediction_source")
 
 
+def _run_year(row):
+    """The edition year of one logged run.
+
+    Rows written before the `year` column existed carry none. The writer logged
+    current-season cards only back then, so the run's own year is the edition's.
+    """
+    raw = (row.get("year") or "").strip()
+    if raw:
+        return int(float(raw))
+    stamp = row.get("run_timestamp") or ""
+    return int(stamp[:4]) if stamp[:4].isdigit() else None
+
+
 def load_log_history(path=None):
-    """canon_family -> ordered list of LogRun for live rows, used to detect an
-    estimate frozen while entries rise.
+    """(canon_family, year) -> ordered list of LogRun for live rows, used to
+    detect an estimate frozen while entries rise.
+
+    Keyed on the edition so next season's card, open while this season's card
+    of the same family is still in the 90-day log, reads only its own runs.
 
     Runs logged before update_log.csv carried prediction_source read as None:
     unattributable, and counted toward no card's freeze window.
@@ -44,15 +61,29 @@ def load_log_history(path=None):
                 cc = int(float(row.get("current_count") or 0))
             except ValueError:
                 continue
-            hist[_canon(row.get("family", ""))].append(
+            try:
+                year = _run_year(row)
+            except ValueError:
+                continue
+            hist[(_canon(row.get("family", "")), year)].append(
                 LogRun(pe, cc, row.get("prediction_source") or None))
     return hist
 
 
 def _strip_year(name):
-    if isinstance(name, str) and name.startswith("2026 "):
-        return name[5:]
-    return name
+    family, _year = split_edition_name(name)
+    return family if family is not None else name
+
+
+def _scrape_edition(row):
+    """(canon_family, year) of one daily_scrape.csv row. A name with no year
+    prefix takes the year it was scraped in."""
+    name = row.get("tournament_name", "")
+    family, year = cca_family(name), split_edition_name(name)[1]
+    if year is None:
+        date = row.get("date", "")
+        year = int(date[:4]) if date[:4].isdigit() else None
+    return _canon(family), year
 
 
 class Context:
@@ -90,13 +121,14 @@ class Context:
         return out
 
     def _load_scrape_latest(self):
-        """canon_family -> {'net', 'gross', 'date'} from the most recent scrape."""
+        """(canon_family, year) -> {'net', 'gross', 'date'} from the most recent
+        scrape of each edition."""
         latest = {}
         if not os.path.exists(DAILY_SCRAPE_CSV):
             return latest
         with open(DAILY_SCRAPE_CSV, newline="") as fh:
             for row in csv.DictReader(fh):
-                fam = _canon(_strip_year(row.get("tournament_name", "")))
+                fam = _scrape_edition(row)
                 date = row.get("date", "")
                 try:
                     entry = int(float(row.get("entry_count") or 0))

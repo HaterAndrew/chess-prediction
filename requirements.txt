@@ -3,9 +3,9 @@
 # a PyPI release cannot silently change model output on the next cron run (G2).
 # Bump deliberately via a PR that re-runs the test gate.
 pandas==3.0.5
-numpy==2.5.2
+numpy==2.5.3
 scipy==1.18.1
-scikit-learn==1.9.0
+scikit-learn==1.9.1
 requests==2.34.2
 urllib3==2.7.0
 beautifulsoup4==4.15.0

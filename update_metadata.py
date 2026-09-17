@@ -21,6 +21,8 @@ import numpy as np
 import os
 import argparse
 
+from shared.season import CURRENT_SEASON
+
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 META_PATH = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
@@ -150,8 +152,11 @@ def generate_expanded_metadata(summary, daily, meta, year_filter=None):
         avg_month = int(hist_dates.dt.month.median())
         avg_day = int(hist_dates.dt.day.median())
 
-        # Generate rows for recent + upcoming years
-        years_to_generate = [2025, 2026] if year_filter is None else [year_filter]
+        # Generate rows for last season and this one. Next season's rows are not
+        # estimated here: the scraper writes them with CCA's own dates the day
+        # registration opens (scrapers.metadata_sync).
+        years_to_generate = ([CURRENT_SEASON - 1, CURRENT_SEASON]
+                             if year_filter is None else [year_filter])
         for yr in years_to_generate:
             try:
                 est_start = pd.Timestamp(yr, avg_month, avg_day)
@@ -222,7 +227,7 @@ def repair_bad_offset_rows(summary, meta, today=None):
     meta_start = pd.to_datetime(meta['start_date'], errors='coerce')
     family_offsets = {}
     for fam, yr, sd in zip(meta['family'], meta_yr, meta_start):
-        if pd.isna(fam) or pd.isna(yr) or pd.isna(sd) or yr >= 2026:
+        if pd.isna(fam) or pd.isna(yr) or pd.isna(sd) or yr >= CURRENT_SEASON:
             continue
         try:
             lr = s_idx.loc[(fam, yr)]
@@ -287,14 +292,14 @@ def backfill_inferred_dates(summary, meta):
     metadata.
 
     Skip criterion: 04c_final_model computes a per-family median offset
-    from metadata rows where year < 2026 (current-year rows are excluded
+    from metadata rows where year < CURRENT_SEASON (open-season rows are excluded
     because their final outcome isn't yet observed). Families with at least
     one such "usable" row contribute a family-median that 04c uses for any
     missing years — and that estimate is more accurate than the global
     default. Backfilling those families would override the family-median
     via the metadata-direct path, so we skip them.
 
-    Families that ONLY have 2026 metadata (or none) have no usable median
+    Families that ONLY have open-season metadata (or none) have no usable median
     in 04c — every missing year falls to the global default. For those,
     inferring metadata here changes the source counter from global-default
     to metadata-direct without changing the actual offset value (both are
@@ -331,7 +336,7 @@ def backfill_inferred_dates(summary, meta):
 
     families_with_useful_median = set()
     for fam, yr, sd in zip(meta['family'], meta_yr, meta_start):
-        if pd.isna(fam) or pd.isna(yr) or pd.isna(sd) or yr >= 2026:
+        if pd.isna(fam) or pd.isna(yr) or pd.isna(sd) or yr >= CURRENT_SEASON:
             continue
         try:
             lr = s_lookup.loc[(fam, yr)]

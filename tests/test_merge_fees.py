@@ -44,7 +44,7 @@ def _setup(tmp_path, monkeypatch, flyer_event_start):
 ])
 def test_date_guard(tmp_path, monkeypatch, event_start, expected_filled):
     _setup(tmp_path, monkeypatch, event_start)
-    assert merge_fees.merge_fees(dry_run=True) == expected_filled
+    assert merge_fees.merge_fees(dry_run=True, first_season=2026) == expected_filled
 
 
 def test_unmapped_family_warns_loudly(tmp_path, monkeypatch, capsys):
@@ -56,7 +56,7 @@ def test_unmapped_family_warns_loudly(tmp_path, monkeypatch, capsys):
 
     # _setup's metadata row starts 2026-08-01; a "today" before it makes the
     # event upcoming (today= is the injection seam).
-    filled = merge_fees.merge_fees(dry_run=True, today="2026-07-30")
+    filled = merge_fees.merge_fees(dry_run=True, today="2026-07-30", first_season=2026)
     out = capsys.readouterr().out
     assert filled == 0
     assert "WARNING: fee-merge: no FAMILY_TO_CODE mapping for TestFam" in out
@@ -68,7 +68,7 @@ def test_unmapped_family_past_event_is_moot(tmp_path, monkeypatch, capsys):
     _setup(tmp_path, monkeypatch, "2026-08-02")
     monkeypatch.setattr(merge_fees, "FAMILY_TO_CODE", {})
 
-    merge_fees.merge_fees(dry_run=True, today="2026-09-15")
+    merge_fees.merge_fees(dry_run=True, today="2026-09-15", first_season=2026)
     out = capsys.readouterr().out
     assert "no FAMILY_TO_CODE mapping" not in out
 
@@ -91,3 +91,46 @@ def test_production_table_maps_the_standing_null_fee_set():
     # side-event blitz convention (aob/conob/eccob/...).
     assert FAMILY_TO_CODE["Eastern Open"] == "eo"
     assert FAMILY_TO_CODE["North American Blitz Championship"] == "naob"
+
+
+# ── next season's editions (2026-09-17) ──────────────────────────────────
+# YEAR was the literal 2026: fees merged into 2026 rows from "<code>26" flyers
+# only, so a 2027 edition open for entries could never receive its fees.
+
+def _two_editions(tmp_path, monkeypatch, fee_rows):
+    meta = pd.DataFrame([
+        {"family": "TestFam", "year": 2026, "regular_fee": 100, "onsite_fee": 120,
+         "early_bird_fee": "", "early_bird_deadline": "", "start_date": "2026-03-25"},
+        {"family": "TestFam", "year": 2027, "regular_fee": "", "onsite_fee": "",
+         "early_bird_fee": "", "early_bird_deadline": "", "start_date": "2027-03-24"},
+    ], columns=META_COLS)
+    meta_csv = tmp_path / "tournament_metadata.csv"
+    fees_csv = tmp_path / "tournament_fees.csv"
+    meta.to_csv(meta_csv, index=False)
+    pd.DataFrame(fee_rows).to_csv(fees_csv, index=False)
+    monkeypatch.setattr(merge_fees, "META_CSV", str(meta_csv))
+    monkeypatch.setattr(merge_fees, "FEES_CSV", str(fees_csv))
+    monkeypatch.setattr(merge_fees, "FAMILY_TO_CODE", {"TestFam": "tf"})
+    return meta_csv
+
+
+def _flyer(year, event_start, regular):
+    yy = str(year)[2:]
+    return {"year": year, "url": f"https://chesstour.com/tf{yy}.htm",
+            "event_start": event_start, "regular_fee": regular, "onsite_fee": regular + 20,
+            "early_bird_fee": "", "eb_demoted_reason": "", "early_bird_deadline": ""}
+
+
+def test_next_season_row_takes_its_own_flyer(tmp_path, monkeypatch):
+    meta_csv = _two_editions(tmp_path, monkeypatch, [
+        _flyer(2026, "2026-03-25", 100), _flyer(2027, "2027-03-24", 115)])
+    assert merge_fees.merge_fees(first_season=2026) == 1
+    rows = pd.read_csv(meta_csv).set_index("year")
+    assert rows.loc[2027, "regular_fee"] == 115
+    assert rows.loc[2026, "regular_fee"] == 100
+
+
+def test_next_season_row_never_takes_last_seasons_flyer(tmp_path, monkeypatch):
+    meta_csv = _two_editions(tmp_path, monkeypatch, [_flyer(2026, "2026-03-25", 100)])
+    assert merge_fees.merge_fees(first_season=2026) == 0
+    assert pd.isna(pd.read_csv(meta_csv).set_index("year").loc[2027, "regular_fee"])

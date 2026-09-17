@@ -50,3 +50,16 @@ def test_lib_lbo_discrepancy_resolved_to_lbo():
     assert codes.FAMILY_TO_CODE["Liberty Bell Open"] == "lbo"
     assert "lbo" in codes.FLYER_PROBE_CODES
     assert "lib" not in codes.FLYER_PROBE_CODES
+
+
+def test_validate_fees_audits_every_open_season_by_default():
+    # 2026-09-17: the default was the literal 2026 although the usage text
+    # promised "2026+", so next season's rows were never audited.
+    import validate_fees
+    from shared.season import CURRENT_SEASON
+    assert validate_fees._in_scope(CURRENT_SEASON, None)
+    assert validate_fees._in_scope(CURRENT_SEASON + 1, None)
+    assert not validate_fees._in_scope(CURRENT_SEASON - 1, None)
+    # --year pins exactly one season, past or future.
+    assert validate_fees._in_scope(CURRENT_SEASON - 1, CURRENT_SEASON - 1)
+    assert not validate_fees._in_scope(CURRENT_SEASON, CURRENT_SEASON - 1)

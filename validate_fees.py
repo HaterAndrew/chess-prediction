@@ -2,7 +2,8 @@
 validate_fees.py — Live audit of early-bird / fee data vs the source flyer.
 
 Loads tournament_metadata.csv, fetches the matching chesstour.com flyer
-for each upcoming (year=2026+) tournament that carries any fee signal,
+for each open-season tournament (this season's and any later one's) that
+carries any fee signal,
 runs the parse_flyer() guardrails against the live HTML, and writes a
 markdown report to audit/eb-verification/<date>.md with three buckets:
 
@@ -17,7 +18,7 @@ Exit status:
   1 if any DRIFT or PHANTOM_EB row exists (suitable for CI use)
 
 Usage:
-  python3 validate_fees.py                  # all 2026+ rows with fees
+  python3 validate_fees.py                  # every open-season row with fees
   python3 validate_fees.py --year 2026      # one year
   python3 validate_fees.py --family "Cleveland Open"
 """
@@ -40,6 +41,7 @@ from scrape_fees import (
 # module attribute for merge_fees, validate_scraped_data, and the tests.
 from fees.codes import FAMILY_TO_CODE, UNMAPPED_CODES  # noqa: F401
 from scraper_utils import polite_session, respectful_get, DEFAULT_TIMEOUT
+from shared.season import CURRENT_SEASON
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%H:%M:%S")
 log = logging.getLogger(__name__)
@@ -130,9 +132,20 @@ def compare(meta_row, flyer):
     return "OK", notes
 
 
+def _in_scope(row_year, year_arg):
+    """Is a metadata row of `row_year` audited? `--year N` pins one season;
+    the default is every open season. Until 2026-09-17 the default was the
+    literal 2026 although the usage text promised "2026+", so next season's
+    rows were never audited."""
+    if year_arg is not None:
+        return row_year == year_arg
+    return row_year >= CURRENT_SEASON
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--year", type=int, default=2026)
+    ap.add_argument("--year", type=int, default=None,
+                    help="One season only (default: every open season)")
     ap.add_argument("--family", help="Restrict to one family name (exact match)")
     ap.add_argument("--out", default=None, help="Markdown report path")
     args = ap.parse_args()
@@ -144,7 +157,7 @@ def main():
     rows = list(csv.DictReader(open(META_PATH)))
     targets = []
     for r in rows:
-        if int(r.get("year", "0") or 0) != args.year:
+        if not _in_scope(int(r.get("year", "0") or 0), args.year):
             continue
         if args.family and r["family"] != args.family:
             continue
@@ -153,7 +166,8 @@ def main():
             continue
         targets.append(r)
 
-    log.info("Auditing %d row(s) for year=%s", len(targets), args.year)
+    scope = args.year if args.year is not None else f"{CURRENT_SEASON}+"
+    log.info("Auditing %d row(s) for year=%s", len(targets), scope)
 
     results = []  # list of (family, year, url, verdict, notes, flyer)
     for r in targets:
@@ -181,7 +195,7 @@ def main():
         counts[v] = counts.get(v, 0) + 1
 
     lines = []
-    lines.append(f"# Fee data audit — year {args.year}")
+    lines.append(f"# Fee data audit — year {scope}")
     lines.append(f"_Generated {datetime.now().isoformat(timespec='seconds')}_")
     lines.append("")
     lines.append("**Source:** live `chesstour.com` flyer pages parsed by `scrape_fees.parse_flyer`.")

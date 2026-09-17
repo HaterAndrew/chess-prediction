@@ -9,6 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from scraper_utils import polite_session, respectful_get, DEFAULT_TIMEOUT
+from shared.season import CURRENT_SEASON
 
 # Blind-probe code list lives in fees/codes.py (see the discrepancy notes
 # there); legacy name kept for the discovery loop and tests.
@@ -16,7 +17,9 @@ from fees.codes import FLYER_PROBE_CODES as TOURNAMENT_CODES  # noqa: F401
 
 log = logging.getLogger(__name__)
 
-YEAR_SUFFIXES = ["22", "23", "24", "25", "26"]
+# 2022 through next season: CCA posts next season's flyers while this season
+# is still running (the 2027 January-March events were open in September 2026).
+YEAR_SUFFIXES = [f"{y % 100:02d}" for y in range(2022, CURRENT_SEASON + 2)]
 
 # ---------------------------------------------------------------------------
 # HTTP helper

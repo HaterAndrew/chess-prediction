@@ -1,6 +1,6 @@
 {
   "generated": "2026-09-17",
-  "generated_time": "2026-09-17T02:11:20.033166-04:00",
+  "generated_time": "2026-09-17T10:31:10.974438-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). Beyond T-14 the point estimate is blended toward the family's most recent final count (0.40 at T<=28, 0.60 beyond), which measures better than the ensemble alone at those lead times. 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (40 family-years across 38 families).",
   "n_completed_in_training": 32,
@@ -4006,8 +4006,8 @@
       "early_bird_fee": null,
       "regular_fee": 275.0,
       "onsite_fee": null,
-      "current_count": 137,
-      "gross_count": 137,
+      "current_count": 138,
+      "gross_count": 138,
       "withdrawal_count": 1,
       "days_remaining": 100,
       "point_estimate": 1081,
@@ -4536,7 +4536,7 @@
         ],
         [
           125,
-          136
+          137
         ]
       ],
       "daily_start_date": "2026-05-15",
@@ -4598,11 +4598,11 @@
       "pace_alert": {
         "family": "North American Open",
         "status": "on_pace",
-        "actual": 137,
+        "actual": 138,
         "expected": 119,
-        "deviation_pct": 14.9,
+        "deviation_pct": 15.7,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+15%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+16%)"
       }
     },
     {
@@ -5098,6 +5098,1090 @@
         "deviation_pct": -83.3,
         "n_years": 4,
         "message": "Registrations are 83.3% below 4-year at-this-point pace"
+      }
+    },
+    {
+      "family": "Boston Chess Congress",
+      "year": 2027,
+      "event_start": "2027-01-08",
+      "event_end": "2027-01-10",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 1,
+      "gross_count": 1,
+      "withdrawal_count": 0,
+      "days_remaining": 113,
+      "point_estimate": 338,
+      "ci_lower": 278,
+      "ci_upper": 387,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 270,
+          "family": "Boston Chess Congress"
+        },
+        {
+          "year": 2022,
+          "count": 287,
+          "family": "Boston Chess Congress"
+        },
+        {
+          "year": 2023,
+          "count": 391,
+          "family": "Boston Chess Congress"
+        },
+        {
+          "year": 2024,
+          "count": 342,
+          "family": "Boston Chess Congress"
+        },
+        {
+          "year": 2025,
+          "count": 383,
+          "family": "Boston Chess Congress"
+        },
+        {
+          "year": 2026,
+          "count": 359,
+          "family": "Boston Chess Congress"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          1
+        ]
+      ],
+      "daily_start_date": null,
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0052
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0087
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0357
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0829
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1548
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.2068
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.2705
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.3841
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.5736
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.8168
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "n_historical_editions": 6,
+      "low_confidence": true,
+      "prediction_tier": "roster-pending",
+      "prediction_source": "metadata_historical_avg",
+      "pace_alert": {
+        "family": "Boston Chess Congress",
+        "status": "below_pace",
+        "actual": 1,
+        "expected": 2,
+        "deviation_pct": -42.9,
+        "n_years": 4,
+        "message": "Registrations are 42.9% below 4-year at-this-point pace"
+      }
+    },
+    {
+      "family": "Golden State Open",
+      "year": 2027,
+      "event_start": "2027-01-15",
+      "event_end": "2027-01-18",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 120,
+      "point_estimate": 316,
+      "ci_lower": 274,
+      "ci_upper": 382,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 273,
+          "family": "Golden State Open"
+        },
+        {
+          "year": 2022,
+          "count": 275,
+          "family": "Golden State Open"
+        },
+        {
+          "year": 2023,
+          "count": 293,
+          "family": "Golden State Open"
+        },
+        {
+          "year": 2024,
+          "count": 293,
+          "family": "Golden State Open"
+        },
+        {
+          "year": 2025,
+          "count": 377,
+          "family": "Golden State Open"
+        },
+        {
+          "year": 2026,
+          "count": 387,
+          "family": "Golden State Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "daily_start_date": null,
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0026
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0043
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0252
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0569
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1096
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.1463
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.2155
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4315
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.636
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9384
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "n_historical_editions": 6,
+      "low_confidence": true,
+      "prediction_tier": "roster-pending",
+      "prediction_source": "metadata_historical_avg",
+      "pace_alert": {
+        "family": "Golden State Open",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 2,
+        "deviation_pct": -100.0,
+        "n_years": 4,
+        "message": "Registrations are 100.0% below 4-year at-this-point pace"
+      }
+    },
+    {
+      "family": "Liberty Bell Open",
+      "year": 2027,
+      "event_start": "2027-01-15",
+      "event_end": "2027-01-18",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 2,
+      "gross_count": 2,
+      "withdrawal_count": 0,
+      "days_remaining": 120,
+      "point_estimate": 449,
+      "ci_lower": 324,
+      "ci_upper": 547,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 287,
+          "family": "Liberty Bell Open"
+        },
+        {
+          "year": 2022,
+          "count": 362,
+          "family": "Liberty Bell Open"
+        },
+        {
+          "year": 2023,
+          "count": 473,
+          "family": "Liberty Bell Open"
+        },
+        {
+          "year": 2024,
+          "count": 481,
+          "family": "Liberty Bell Open"
+        },
+        {
+          "year": 2025,
+          "count": 530,
+          "family": "Liberty Bell Open"
+        },
+        {
+          "year": 2026,
+          "count": 564,
+          "family": "Liberty Bell Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          2
+        ]
+      ],
+      "daily_start_date": null,
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0036
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0067
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0274
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0585
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1298
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.1696
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.2387
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.3946
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.5678
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9408
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "n_historical_editions": 6,
+      "low_confidence": true,
+      "prediction_tier": "roster-pending",
+      "prediction_source": "metadata_historical_avg",
+      "pace_alert": {
+        "family": "Liberty Bell Open",
+        "status": "above_pace",
+        "actual": 2,
+        "expected": 2,
+        "deviation_pct": 33.3,
+        "n_years": 4,
+        "message": "Registrations are 33.3% above 4-year at-this-point pace"
+      }
+    },
+    {
+      "family": "Southwest Class Championships",
+      "year": 2027,
+      "event_start": "2027-02-11",
+      "event_end": "2027-02-15",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 147,
+      "point_estimate": 438,
+      "ci_lower": 391,
+      "ci_upper": 490,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 385,
+          "family": "Southwest Class"
+        },
+        {
+          "year": 2022,
+          "count": 397,
+          "family": "Southwest Class Championships"
+        },
+        {
+          "year": 2023,
+          "count": 426,
+          "family": "Southwest Class Championships"
+        },
+        {
+          "year": 2024,
+          "count": 441,
+          "family": "Southwest Class Championships"
+        },
+        {
+          "year": 2025,
+          "count": 488,
+          "family": "Southwest Class Championships"
+        },
+        {
+          "year": 2026,
+          "count": 492,
+          "family": "Southwest Class Championships"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "daily_start_date": null,
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0135
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0254
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0484
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0856
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1912
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.2993
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.4478
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.6187
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7334
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9233
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "n_historical_editions": 6,
+      "low_confidence": true,
+      "prediction_tier": "roster-pending",
+      "prediction_source": "metadata_historical_avg",
+      "pace_alert": {
+        "family": "Southwest Class Championships",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 2,
+        "deviation_pct": -100.0,
+        "n_years": 4,
+        "message": "Registrations are 100.0% below 4-year at-this-point pace"
+      }
+    },
+    {
+      "family": "George Washington Open",
+      "year": 2027,
+      "event_start": "2027-02-26",
+      "event_end": "2027-02-28",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 1,
+      "gross_count": 1,
+      "withdrawal_count": 0,
+      "days_remaining": 162,
+      "point_estimate": 264,
+      "ci_lower": 225,
+      "ci_upper": 313,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 253,
+          "family": "George Washington Open"
+        },
+        {
+          "year": 2023,
+          "count": 345,
+          "family": "George Washington Open"
+        },
+        {
+          "year": 2024,
+          "count": 266,
+          "family": "George Washington Open"
+        },
+        {
+          "year": 2025,
+          "count": 250,
+          "family": "George Washington Open"
+        },
+        {
+          "year": 2026,
+          "count": 209,
+          "family": "George Washington Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          1
+        ]
+      ],
+      "daily_start_date": null,
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0077
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.015
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0329
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0888
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1598
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.2329
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3333
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4698
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.5708
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.7808
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "n_historical_editions": 5,
+      "low_confidence": true,
+      "prediction_tier": "roster-pending",
+      "prediction_source": "metadata_historical_avg",
+      "pace_alert": {
+        "family": "George Washington Open",
+        "status": "below_pace",
+        "actual": 1,
+        "expected": 1,
+        "deviation_pct": -25.0,
+        "n_years": 3,
+        "message": "Registrations are 25.0% below 3-year at-this-point pace"
+      }
+    },
+    {
+      "family": "Western Class Championships",
+      "year": 2027,
+      "event_start": "2027-03-12",
+      "event_end": "2027-03-14",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 176,
+      "point_estimate": 348,
+      "ci_lower": 285,
+      "ci_upper": 405,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 253,
+          "family": "Western Class Championships"
+        },
+        {
+          "year": 2022,
+          "count": 362,
+          "family": "Western Class"
+        },
+        {
+          "year": 2023,
+          "count": 346,
+          "family": "Western Class"
+        },
+        {
+          "year": 2024,
+          "count": 421,
+          "family": "Western Class Championships"
+        },
+        {
+          "year": 2025,
+          "count": 389,
+          "family": "Western Class Championships"
+        },
+        {
+          "year": 2026,
+          "count": 318,
+          "family": "Western Class Championships"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "daily_start_date": null,
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0037
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0243
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0377
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.1123
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.2215
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.2817
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3795
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.5576
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.7269
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.873
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "n_historical_editions": 6,
+      "low_confidence": true,
+      "prediction_tier": "roster-pending",
+      "prediction_source": "metadata_historical_avg",
+      "pace_alert": {
+        "family": "Western Class Championships",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 1,
+        "deviation_pct": -100.0,
+        "n_years": 4,
+        "message": "Registrations are 100.0% below 4-year at-this-point pace"
+      }
+    },
+    {
+      "family": "Mid-America Open",
+      "year": 2027,
+      "event_start": "2027-03-19",
+      "event_end": "2027-03-21",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 183,
+      "point_estimate": 283,
+      "ci_lower": 231,
+      "ci_upper": 324,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 320,
+          "family": "Mid-America Open"
+        },
+        {
+          "year": 2022,
+          "count": 288,
+          "family": "Mid-America Open"
+        },
+        {
+          "year": 2023,
+          "count": 328,
+          "family": "Mid-America Open"
+        },
+        {
+          "year": 2024,
+          "count": 305,
+          "family": "Mid-America Open"
+        },
+        {
+          "year": 2025,
+          "count": 262,
+          "family": "Mid-America Open"
+        },
+        {
+          "year": 2026,
+          "count": 200,
+          "family": "Mid-America Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "daily_start_date": null,
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0039
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0174
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.031
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0638
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1428
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.1934
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.2797
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4071
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.6307
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9175
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "n_historical_editions": 6,
+      "low_confidence": true,
+      "prediction_tier": "roster-pending",
+      "prediction_source": "metadata_historical_avg",
+      "pace_alert": {
+        "family": "Mid-America Open",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 1,
+        "deviation_pct": -100.0,
+        "n_years": 4,
+        "message": "Registrations are 100.0% below 4-year at-this-point pace"
+      }
+    },
+    {
+      "family": "Southern Class Championships",
+      "year": 2027,
+      "event_start": "2027-03-19",
+      "event_end": "2027-03-21",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 0,
+      "gross_count": 0,
+      "withdrawal_count": 0,
+      "days_remaining": 183,
+      "point_estimate": 214,
+      "ci_lower": 182,
+      "ci_upper": 261,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 196,
+          "family": "Southern Class Championships"
+        },
+        {
+          "year": 2022,
+          "count": 200,
+          "family": "Southern Class"
+        },
+        {
+          "year": 2023,
+          "count": 264,
+          "family": "Southern Class"
+        },
+        {
+          "year": 2024,
+          "count": 259,
+          "family": "Southern Class"
+        },
+        {
+          "year": 2025,
+          "count": 170,
+          "family": "Southern Class"
+        },
+        {
+          "year": 2026,
+          "count": 195,
+          "family": "Southern Class"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          0
+        ]
+      ],
+      "daily_start_date": null,
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.013
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0428
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.1089
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1986
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.2527
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3625
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.508
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.6425
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.8616
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "n_historical_editions": 6,
+      "low_confidence": true,
+      "prediction_tier": "roster-pending",
+      "prediction_source": "metadata_historical_avg",
+      "pace_alert": {
+        "family": "Southern Class Championships",
+        "status": "below_pace",
+        "actual": 0,
+        "expected": 1,
+        "deviation_pct": -100.0,
+        "n_years": 4,
+        "message": "Registrations are 100.0% below 4-year at-this-point pace"
+      }
+    },
+    {
+      "family": "Atlantic City Open",
+      "year": 2027,
+      "event_start": "2027-03-24",
+      "event_end": "2027-03-28",
+      "early_bird_deadline": null,
+      "early_bird_fee": null,
+      "regular_fee": null,
+      "onsite_fee": null,
+      "current_count": 1,
+      "gross_count": 1,
+      "withdrawal_count": 0,
+      "days_remaining": 188,
+      "point_estimate": 465,
+      "ci_lower": 419,
+      "ci_upper": 523,
+      "ci_level": 0.8,
+      "historical": [
+        {
+          "year": 2019,
+          "count": 415,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2022,
+          "count": 472,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2023,
+          "count": 445,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2024,
+          "count": 465,
+          "family": "Open at Foxwoods"
+        },
+        {
+          "year": 2025,
+          "count": 574,
+          "family": "Princeton Open"
+        },
+        {
+          "year": 2026,
+          "count": 424,
+          "family": "Atlantic City Open"
+        }
+      ],
+      "daily_data": [
+        [
+          0,
+          1
+        ]
+      ],
+      "daily_start_date": null,
+      "registration_curve": [
+        {
+          "days_before": 120,
+          "cumulative_pct": 0.0
+        },
+        {
+          "days_before": 90,
+          "cumulative_pct": 0.0114
+        },
+        {
+          "days_before": 75,
+          "cumulative_pct": 0.0235
+        },
+        {
+          "days_before": 60,
+          "cumulative_pct": 0.0442
+        },
+        {
+          "days_before": 42,
+          "cumulative_pct": 0.0955
+        },
+        {
+          "days_before": 28,
+          "cumulative_pct": 0.1686
+        },
+        {
+          "days_before": 21,
+          "cumulative_pct": 0.2321
+        },
+        {
+          "days_before": 14,
+          "cumulative_pct": 0.3226
+        },
+        {
+          "days_before": 7,
+          "cumulative_pct": 0.4855
+        },
+        {
+          "days_before": 3,
+          "cumulative_pct": 0.693
+        },
+        {
+          "days_before": 1,
+          "cumulative_pct": 0.9375
+        },
+        {
+          "days_before": 0,
+          "cumulative_pct": 1.0
+        }
+      ],
+      "status": "live",
+      "n_historical_editions": 6,
+      "low_confidence": true,
+      "prediction_tier": "roster-pending",
+      "prediction_source": "metadata_historical_avg",
+      "pace_alert": {
+        "family": "Atlantic City Open",
+        "status": "on_pace",
+        "actual": 1,
+        "expected": 1,
+        "deviation_pct": -20.0,
+        "n_years": 4,
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-20%)"
       }
     },
     {
@@ -90067,7 +91151,7 @@
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-09-17 06:10:05",
+  "last_updated": "2026-09-17 14:29:23",
   "is_stale": false,
   "alerts": [
     {
@@ -90127,11 +91211,11 @@
     {
       "family": "North American Open",
       "status": "on_pace",
-      "actual": 137,
+      "actual": 138,
       "expected": 119,
-      "deviation_pct": 14.9,
+      "deviation_pct": 15.7,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+15%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+16%)"
     },
     {
       "family": "Eastern Open",
@@ -90141,6 +91225,87 @@
       "deviation_pct": -83.3,
       "n_years": 4,
       "message": "Registrations are 83.3% below 4-year at-this-point pace"
+    },
+    {
+      "family": "Boston Chess Congress",
+      "status": "below_pace",
+      "actual": 1,
+      "expected": 2,
+      "deviation_pct": -42.9,
+      "n_years": 4,
+      "message": "Registrations are 42.9% below 4-year at-this-point pace"
+    },
+    {
+      "family": "Golden State Open",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 2,
+      "deviation_pct": -100.0,
+      "n_years": 4,
+      "message": "Registrations are 100.0% below 4-year at-this-point pace"
+    },
+    {
+      "family": "Liberty Bell Open",
+      "status": "above_pace",
+      "actual": 2,
+      "expected": 2,
+      "deviation_pct": 33.3,
+      "n_years": 4,
+      "message": "Registrations are 33.3% above 4-year at-this-point pace"
+    },
+    {
+      "family": "Southwest Class Championships",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 2,
+      "deviation_pct": -100.0,
+      "n_years": 4,
+      "message": "Registrations are 100.0% below 4-year at-this-point pace"
+    },
+    {
+      "family": "George Washington Open",
+      "status": "below_pace",
+      "actual": 1,
+      "expected": 1,
+      "deviation_pct": -25.0,
+      "n_years": 3,
+      "message": "Registrations are 25.0% below 3-year at-this-point pace"
+    },
+    {
+      "family": "Western Class Championships",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 1,
+      "deviation_pct": -100.0,
+      "n_years": 4,
+      "message": "Registrations are 100.0% below 4-year at-this-point pace"
+    },
+    {
+      "family": "Mid-America Open",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 1,
+      "deviation_pct": -100.0,
+      "n_years": 4,
+      "message": "Registrations are 100.0% below 4-year at-this-point pace"
+    },
+    {
+      "family": "Southern Class Championships",
+      "status": "below_pace",
+      "actual": 0,
+      "expected": 1,
+      "deviation_pct": -100.0,
+      "n_years": 4,
+      "message": "Registrations are 100.0% below 4-year at-this-point pace"
+    },
+    {
+      "family": "Atlantic City Open",
+      "status": "on_pace",
+      "actual": 1,
+      "expected": 1,
+      "deviation_pct": -20.0,
+      "n_years": 4,
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-20%)"
     }
   ]
 }

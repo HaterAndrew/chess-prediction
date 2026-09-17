@@ -775,7 +775,11 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 4427,2026 National Chess Congress,National Chess Congress,2026.0,24,False,0,,,False,False,,False,,,True
 4428,2026 New York State Championship,New York State Championship,2026.0,332,False,0,,,False,False,,False,,,True
 4429,2026 North American Blitz Championship,North American Blitz Championship,2026.0,8,False,0,,,False,False,,False,,,True
-4430,2026 North American Open,North American Open,2026.0,137,False,0,,,False,False,,False,,,True
+4430,2026 North American Open,North American Open,2026.0,138,False,0,,,False,False,,False,,,True
 4431,2026 Southern Open,Southern Open,2026.0,206,False,0,,,False,False,,False,,,True
 4432,2026 World Open Under 13 Championship,World Open Under 13 Championship,2026.0,82,False,0,,,False,False,,False,,,True
 4433,2026 Eastern Open,Eastern Open,2026.0,1,False,0,,,False,False,,False,,,True
+4434,2027 Atlantic City Open,Atlantic City Open,2027.0,1,False,0,,,False,False,,False,,,True
+4435,2027 Boston Chess Congress,Boston Chess Congress,2027.0,1,False,0,,,False,False,,False,,,True
+4436,2027 George Washington Open,George Washington Open,2027.0,1,False,0,,,False,False,,False,,,True
+4437,2027 Liberty Bell Open,Liberty Bell Open,2027.0,2,False,0,,,False,False,,False,,,True

@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-17 06:10:05",
-  "count": 5,
-  "total_occurrences": 5,
+  "generated": "2026-09-17 14:29:23",
+  "count": 4,
+  "total_occurrences": 4,
   "warnings": [
     {
       "step": "Validate scraped data",
@@ -16,11 +16,6 @@
     {
       "step": "Refresh walk-in multipliers (06_walk_in_multipliers.py)",
       "text": "walk-in history collapsed: 37 of 38 families have fewer than 2 usable editions (median n_years=1). Per-family multipliers shrink toward the 1.1 baseline at this depth, so the walk-in adjustment is close to inert, and 37 family/ies report std_ratio=0, contributing no interval width. Cause is usually the MIN_DATA_YEAR=2023 recency cut combined with a frozen training corpus (missing all_registrations.csv export).",
-      "count": 1
-    },
-    {
-      "step": "Verify dates against canonical sources (tools/verify_dates.py)",
-      "text": "date drift \u2014 Chicago Open 2026: metadata=2026-05-21 canonical=2026-05-27 drift=6 days",
       "count": 1
     },
     {

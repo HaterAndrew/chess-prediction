@@ -26,7 +26,7 @@ const OFFLINE_FALLBACKS = [
   'util_core.js?v=2824d286fc',
   'foundation.js?v=4d4e27e30b',
   'cmdk.js?v=c497999f1f',
-  'tab_email.js?v=62b9000739',
+  'tab_email.js?v=09dda48c3a',
   'tab_performance.js?v=21b7653569',
   'tab_puzzles.js?v=c0b01b5c3e',
   'pickers.js?v=00fe32ddb5',
@@ -34,12 +34,12 @@ const OFFLINE_FALLBACKS = [
   'hero_kpi.js?v=6c9bbd7c11',
   'chart_main.js?v=14f63c8b82',
   'chart_hist.js?v=ca416e2737',
-  'panels_grid.js?v=60b509a4c5',
+  'panels_grid.js?v=328099e6c3',
   'panels_cal.js?v=28d15e5f60',
   'tab_about.js?v=565544d1dc',
   'tab_compare.js?v=2bf04e3339',
   'tab_ask.js?v=07df7455b0',
-  'data/site_data.js?v=662f6f9434',
+  'data/site_data.js?v=34c4bf4f33',
   // v4 W4: Model Health fetches this at runtime; without a precached copy an
   // offline load 504s and the panel renders empty.
   'audit_warnings.json',

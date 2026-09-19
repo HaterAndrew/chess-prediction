@@ -1,6 +1,6 @@
 {
-  "generated": "2026-09-18",
-  "scanned_at": "2026-09-18T06:04:48",
+  "generated": "2026-09-19",
+  "scanned_at": "2026-09-19T06:03:47",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -12,7 +12,7 @@
       "severity": "MEDIUM",
       "mode": "large-withdrawal-gap",
       "family": "Eastern Chess Congress",
-      "message": "11 of 51 scraped entries withdrawn (22%) as of 2026-09-18"
+      "message": "13 of 53 scraped entries withdrawn (25%) as of 2026-09-19"
     },
     {
       "severity": "INFO",
@@ -24,6 +24,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Eastern Class Championships",
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Kings Island Open",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
@@ -90,12 +96,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Indianapolis Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Kings Island Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {

@@ -1,6 +1,6 @@
 {
-  "generated": "2026-09-19",
-  "generated_time": "2026-09-19T01:57:27.354839-04:00",
+  "generated": "2026-09-20",
+  "generated_time": "2026-09-20T02:21:17.831101-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). Beyond T-14 the point estimate is blended toward the family's most recent final count (0.40 at T<=28, 0.60 beyond), which measures better than the ensemble alone at those lead times. 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (40 family-years across 38 families).",
   "n_completed_in_training": 32,
@@ -15,13 +15,13 @@
       "early_bird_fee": null,
       "regular_fee": 118.0,
       "onsite_fee": 140.0,
-      "current_count": 46,
-      "gross_count": 46,
+      "current_count": 48,
+      "gross_count": 48,
       "withdrawal_count": 0,
-      "days_remaining": 20,
+      "days_remaining": 19,
       "point_estimate": 279,
-      "ci_lower": 247,
-      "ci_upper": 314,
+      "ci_lower": 248,
+      "ci_upper": 313,
       "ci_level": 0.8,
       "historical": [
         {
@@ -630,6 +630,10 @@
         [
           146,
           46
+        ],
+        [
+          147,
+          48
         ]
       ],
       "daily_start_date": "2026-04-26",
@@ -687,7 +691,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 61,
+        "count_at_same_point": 65,
         "final": 306
       },
       "low_confidence": false,
@@ -696,11 +700,11 @@
       "pace_alert": {
         "family": "Midwest Class Championships",
         "status": "below_pace",
-        "actual": 46,
-        "expected": 58,
-        "deviation_pct": -21.4,
+        "actual": 48,
+        "expected": 62,
+        "deviation_pct": -22.3,
         "n_years": 4,
-        "message": "Registrations are 21.4% below 4-year at-this-point pace"
+        "message": "Registrations are 22.3% below 4-year at-this-point pace"
       }
     },
     {
@@ -713,10 +717,10 @@
       "early_bird_fee": null,
       "regular_fee": 118.0,
       "onsite_fee": 130.0,
-      "current_count": 40,
-      "gross_count": 40,
+      "current_count": 42,
+      "gross_count": 42,
       "withdrawal_count": 0,
-      "days_remaining": 27,
+      "days_remaining": 26,
       "point_estimate": 246,
       "ci_lower": 219,
       "ci_upper": 277,
@@ -1336,6 +1340,10 @@
         [
           148,
           40
+        ],
+        [
+          149,
+          42
         ]
       ],
       "daily_start_date": "2026-04-24",
@@ -1402,11 +1410,11 @@
       "pace_alert": {
         "family": "Eastern Class Championships",
         "status": "above_pace",
-        "actual": 40,
-        "expected": 26,
-        "deviation_pct": 50.9,
+        "actual": 42,
+        "expected": 28,
+        "deviation_pct": 50.0,
         "n_years": 4,
-        "message": "Registrations are 50.9% above 4-year at-this-point pace"
+        "message": "Registrations are 50.0% above 4-year at-this-point pace"
       }
     },
     {
@@ -1419,13 +1427,13 @@
       "early_bird_fee": null,
       "regular_fee": 138.0,
       "onsite_fee": null,
-      "current_count": 53,
-      "gross_count": 53,
-      "withdrawal_count": 13,
-      "days_remaining": 34,
+      "current_count": 54,
+      "gross_count": 54,
+      "withdrawal_count": 12,
+      "days_remaining": 33,
       "point_estimate": 483,
-      "ci_lower": 420,
-      "ci_upper": 556,
+      "ci_lower": 421,
+      "ci_upper": 553,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1962,6 +1970,10 @@
         [
           148,
           40
+        ],
+        [
+          149,
+          42
         ]
       ],
       "daily_start_date": "2026-04-24",
@@ -2028,11 +2040,11 @@
       "pace_alert": {
         "family": "Eastern Chess Congress",
         "status": "on_pace",
-        "actual": 53,
-        "expected": 50,
-        "deviation_pct": 5.5,
+        "actual": 54,
+        "expected": 54,
+        "deviation_pct": 0.9,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+6%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+1%)"
       }
     },
     {
@@ -2048,10 +2060,10 @@
       "current_count": 28,
       "gross_count": 28,
       "withdrawal_count": 1,
-      "days_remaining": 48,
+      "days_remaining": 47,
       "point_estimate": 394,
       "ci_lower": 362,
-      "ci_upper": 430,
+      "ci_upper": 428,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2620,6 +2632,10 @@
         [
           138,
           27
+        ],
+        [
+          139,
+          27
         ]
       ],
       "daily_start_date": "2026-05-04",
@@ -2677,7 +2693,7 @@
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 44,
+        "count_at_same_point": 45,
         "final": 397
       },
       "low_confidence": false,
@@ -2687,10 +2703,10 @@
         "family": "Los Angeles Open",
         "status": "below_pace",
         "actual": 28,
-        "expected": 44,
-        "deviation_pct": -37.1,
+        "expected": 46,
+        "deviation_pct": -38.5,
         "n_years": 4,
-        "message": "Registrations are 37.1% below 4-year at-this-point pace"
+        "message": "Registrations are 38.5% below 4-year at-this-point pace"
       }
     },
     {
@@ -2706,10 +2722,10 @@
       "current_count": 14,
       "gross_count": 14,
       "withdrawal_count": 0,
-      "days_remaining": 55,
+      "days_remaining": 54,
       "point_estimate": 350,
       "ci_lower": 266,
-      "ci_upper": 461,
+      "ci_upper": 460,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3250,6 +3266,10 @@
         [
           129,
           14
+        ],
+        [
+          130,
+          14
         ]
       ],
       "daily_start_date": "2026-05-13",
@@ -3318,9 +3338,9 @@
         "status": "on_pace",
         "actual": 14,
         "expected": 17,
-        "deviation_pct": -16.4,
+        "deviation_pct": -17.6,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-16%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-18%)"
       }
     },
     {
@@ -3332,10 +3352,10 @@
       "early_bird_fee": null,
       "regular_fee": 138.0,
       "onsite_fee": 160.0,
-      "current_count": 26,
-      "gross_count": 26,
+      "current_count": 27,
+      "gross_count": 27,
       "withdrawal_count": 0,
-      "days_remaining": 69,
+      "days_remaining": 68,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -3931,6 +3951,10 @@
         [
           142,
           26
+        ],
+        [
+          143,
+          27
         ]
       ],
       "daily_start_date": "2026-04-30",
@@ -3992,11 +4016,11 @@
       "pace_alert": {
         "family": "National Chess Congress",
         "status": "on_pace",
-        "actual": 26,
-        "expected": 23,
-        "deviation_pct": 13.0,
+        "actual": 27,
+        "expected": 24,
+        "deviation_pct": 14.9,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+13%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+15%)"
       }
     },
     {
@@ -4008,10 +4032,10 @@
       "early_bird_fee": null,
       "regular_fee": 275.0,
       "onsite_fee": null,
-      "current_count": 159,
-      "gross_count": 159,
+      "current_count": 203,
+      "gross_count": 203,
       "withdrawal_count": 1,
-      "days_remaining": 98,
+      "days_remaining": 97,
       "point_estimate": 1081,
       "ci_lower": 946,
       "ci_upper": 1199,
@@ -4547,6 +4571,10 @@
         [
           127,
           158
+        ],
+        [
+          128,
+          202
         ]
       ],
       "daily_start_date": "2026-05-15",
@@ -4608,11 +4636,11 @@
       "pace_alert": {
         "family": "North American Open",
         "status": "on_pace",
-        "actual": 159,
-        "expected": 152,
-        "deviation_pct": 4.6,
+        "actual": 203,
+        "expected": 190,
+        "deviation_pct": 6.8,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+5%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+7%)"
       }
     },
     {
@@ -4627,7 +4655,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 98,
+      "days_remaining": 97,
       "point_estimate": 387,
       "ci_lower": 367,
       "ci_upper": 404,
@@ -5050,6 +5078,10 @@
         [
           99,
           1
+        ],
+        [
+          100,
+          1
         ]
       ],
       "daily_start_date": "2026-06-12",
@@ -5130,7 +5162,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 111,
+      "days_remaining": 110,
       "point_estimate": 338,
       "ci_lower": 278,
       "ci_upper": 387,
@@ -5178,6 +5210,10 @@
         ],
         [
           2,
+          1
+        ],
+        [
+          3,
           1
         ]
       ],
@@ -5259,7 +5295,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 118,
+      "days_remaining": 117,
       "point_estimate": 316,
       "ci_lower": 274,
       "ci_upper": 382,
@@ -5307,6 +5343,10 @@
         ],
         [
           2,
+          0
+        ],
+        [
+          3,
           0
         ]
       ],
@@ -5388,7 +5428,7 @@
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 118,
+      "days_remaining": 117,
       "point_estimate": 449,
       "ci_lower": 324,
       "ci_upper": 547,
@@ -5436,6 +5476,10 @@
         ],
         [
           2,
+          2
+        ],
+        [
+          3,
           2
         ]
       ],
@@ -5517,7 +5561,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 145,
+      "days_remaining": 144,
       "point_estimate": 438,
       "ci_lower": 391,
       "ci_upper": 490,
@@ -5565,6 +5609,10 @@
         ],
         [
           2,
+          0
+        ],
+        [
+          3,
           0
         ]
       ],
@@ -5646,7 +5694,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 160,
+      "days_remaining": 159,
       "point_estimate": 264,
       "ci_lower": 225,
       "ci_upper": 313,
@@ -5689,6 +5737,10 @@
         ],
         [
           2,
+          1
+        ],
+        [
+          3,
           1
         ]
       ],
@@ -5770,7 +5822,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 174,
+      "days_remaining": 173,
       "point_estimate": 348,
       "ci_lower": 285,
       "ci_upper": 405,
@@ -5818,6 +5870,10 @@
         ],
         [
           2,
+          0
+        ],
+        [
+          3,
           0
         ]
       ],
@@ -5899,7 +5955,7 @@
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 181,
+      "days_remaining": 180,
       "point_estimate": 283,
       "ci_lower": 231,
       "ci_upper": 324,
@@ -5947,6 +6003,10 @@
         ],
         [
           2,
+          0
+        ],
+        [
+          3,
           0
         ]
       ],
@@ -6028,7 +6088,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 181,
+      "days_remaining": 180,
       "point_estimate": 214,
       "ci_lower": 182,
       "ci_upper": 261,
@@ -6076,6 +6136,10 @@
         ],
         [
           2,
+          1
+        ],
+        [
+          3,
           1
         ]
       ],
@@ -6157,7 +6221,7 @@
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 186,
+      "days_remaining": 185,
       "point_estimate": 465,
       "ci_lower": 419,
       "ci_upper": 523,
@@ -6205,6 +6269,10 @@
         ],
         [
           2,
+          1
+        ],
+        [
+          3,
           1
         ]
       ],
@@ -91241,71 +91309,71 @@
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-09-19 05:55:38",
+  "last_updated": "2026-09-20 06:19:32",
   "is_stale": false,
   "alerts": [
     {
       "family": "Midwest Class Championships",
       "status": "below_pace",
-      "actual": 46,
-      "expected": 58,
-      "deviation_pct": -21.4,
+      "actual": 48,
+      "expected": 62,
+      "deviation_pct": -22.3,
       "n_years": 4,
-      "message": "Registrations are 21.4% below 4-year at-this-point pace"
+      "message": "Registrations are 22.3% below 4-year at-this-point pace"
     },
     {
       "family": "Eastern Class Championships",
       "status": "above_pace",
-      "actual": 40,
-      "expected": 26,
-      "deviation_pct": 50.9,
+      "actual": 42,
+      "expected": 28,
+      "deviation_pct": 50.0,
       "n_years": 4,
-      "message": "Registrations are 50.9% above 4-year at-this-point pace"
+      "message": "Registrations are 50.0% above 4-year at-this-point pace"
     },
     {
       "family": "Eastern Chess Congress",
       "status": "on_pace",
-      "actual": 53,
-      "expected": 50,
-      "deviation_pct": 5.5,
+      "actual": 54,
+      "expected": 54,
+      "deviation_pct": 0.9,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+6%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+1%)"
     },
     {
       "family": "Los Angeles Open",
       "status": "below_pace",
       "actual": 28,
-      "expected": 44,
-      "deviation_pct": -37.1,
+      "expected": 46,
+      "deviation_pct": -38.5,
       "n_years": 4,
-      "message": "Registrations are 37.1% below 4-year at-this-point pace"
+      "message": "Registrations are 38.5% below 4-year at-this-point pace"
     },
     {
       "family": "Kings Island Open",
       "status": "on_pace",
       "actual": 14,
       "expected": 17,
-      "deviation_pct": -16.4,
+      "deviation_pct": -17.6,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-16%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-18%)"
     },
     {
       "family": "National Chess Congress",
       "status": "on_pace",
-      "actual": 26,
-      "expected": 23,
-      "deviation_pct": 13.0,
+      "actual": 27,
+      "expected": 24,
+      "deviation_pct": 14.9,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+13%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+15%)"
     },
     {
       "family": "North American Open",
       "status": "on_pace",
-      "actual": 159,
-      "expected": 152,
-      "deviation_pct": 4.6,
+      "actual": 203,
+      "expected": 190,
+      "deviation_pct": 6.8,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+5%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+7%)"
     },
     {
       "family": "Eastern Open",

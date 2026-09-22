@@ -1,19 +1,13 @@
 {
-  "generated": "2026-09-21",
-  "scanned_at": "2026-09-21T06:31:37",
+  "generated": "2026-09-22",
+  "scanned_at": "2026-09-22T12:40:44",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
-    "MEDIUM": 1,
+    "MEDIUM": 0,
     "INFO": 26
   },
   "findings": [
-    {
-      "severity": "MEDIUM",
-      "mode": "large-withdrawal-gap",
-      "family": "Eastern Chess Congress",
-      "message": "8 of 55 scraped entries withdrawn (15%) as of 2026-09-21"
-    },
     {
       "severity": "INFO",
       "mode": "roster-pending",

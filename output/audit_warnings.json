@@ -1,21 +1,21 @@
 {
-  "generated": "2026-09-21 17:30:50",
+  "generated": "2026-09-22 12:32:39",
   "count": 3,
   "total_occurrences": 3,
   "warnings": [
     {
-      "step": "Enrichment: fees",
-      "text": "fee-merge: no FAMILY_TO_CODE mapping for Southwest Class Championships \u2014 scraped flyer fees (if any) cannot reach the card",
+      "step": "Validate scraped data",
+      "text": "5 upcoming 2026 event(s) have no flyer scraped yet \u2014 early_bird_deadline unknown, model uses neutral feature values (fees + EB fill automatically once chesstour publishes the flyer; update_metadata.py can estimate from spike patterns meanwhile): Eastern Chess Congress (in New Jersey), Eastern Class Championships (in Connecticut), Eastern Open, Midwest Class Championships, North American Blitz Championship",
       "count": 1
     },
     {
-      "step": "Enrichment: fees",
-      "text": "fee-merge: no FAMILY_TO_CODE mapping for George Washington Open \u2014 scraped flyer fees (if any) cannot reach the card",
+      "step": "Refresh tournament summary",
+      "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 live predictions still run from scrape data, but the training corpus is frozen: newly scraped events carry no registration timestamps, so they can never join model training or 04e grading, and early-bird spike features stay absent. Re-export from the CCA admin.",
       "count": 1
     },
     {
-      "step": "Enrichment: fees",
-      "text": "fee-merge: no FAMILY_TO_CODE mapping for Western Class Championships \u2014 scraped flyer fees (if any) cannot reach the card",
+      "step": "Refresh walk-in multipliers (06_walk_in_multipliers.py)",
+      "text": "walk-in history collapsed: 37 of 38 families have fewer than 2 usable editions (median n_years=1). Per-family multipliers shrink toward the 1.1 baseline at this depth, so the walk-in adjustment is close to inert, and 37 family/ies report std_ratio=0, contributing no interval width. Cause is usually the MIN_DATA_YEAR=2023 recency cut combined with a frozen training corpus (missing all_registrations.csv export).",
       "count": 1
     }
   ]

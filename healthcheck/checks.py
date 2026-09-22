@@ -6,6 +6,9 @@ from collections import defaultdict
 from tournament_aliases import is_wo_excluded
 
 from healthcheck.context import _canon
+from healthcheck.freeze import (_edition, _is_main_path,  # noqa: F401
+                                _is_roster_pending,
+                                frozen_estimate_findings)
 from healthcheck.report import HealthReport
 from shared.side_events import SIDE_EVENT_RE
 
@@ -37,51 +40,8 @@ WITHDRAWAL_GAP_WARN_FRAC = 0.10
 _BLITZ_RE = SIDE_EVENT_RE
 
 
-def _is_roster_pending(t):
-    return t.get("prediction_tier") == "roster-pending"
-
-
-def _is_main_path(t):
-    # v5 Cat R: roster-pending cards served by the MODEL are live predictions
-    # and must move nightly — watch them like any main-path card. Only the
-    # metadata_* interim cards keep the frozen-estimate exemption (those are
-    # expected to sit still between metadata refreshes).
-    if t.get("status") not in ("live", "complete"):
-        return False
-    return not _is_roster_pending(t) or t.get("prediction_source") == "model"
-
-
-def _edition(t):
-    """(canon_family, year): the identity a card shares with its scrape rows
-    and its logged runs. The family alone stops being unique once next season's
-    card opens beside this season's."""
-    return _canon(t.get("family", "")), t.get("year")
-
-
 def _hist_counts(t):
     return [h.get("count") for h in (t.get("historical") or []) if h.get("count") is not None]
-
-
-def _current_estimator_runs(seq, source):
-    """The trailing logged runs the card's CURRENT estimator produced.
-
-    An estimate counts as frozen only while one estimator owns it. Midwest
-    Class Championships (2026-08-23) sat on the interim metadata mean of 313
-    for 97 runs — the behaviour that estimator is designed for — then graduated
-    to the model path, and replaying those runs against the model's first night
-    aborted the pipeline. Runs with no logged estimator predate the
-    update_log.csv column and are attributable to nobody, so they end the
-    window too.
-    """
-    if not source:
-        return []
-    window = []
-    for run in reversed(seq):
-        if run[2] != source:
-            break
-        window.append(run)
-    window.reverse()
-    return window
 
 
 # ── Checks (full ranked catalog) ────────────────────────────────────────────
@@ -119,24 +79,8 @@ def scan(data, ctx):
             report.add("CRITICAL", "count-exceeds-estimate", fam,
                        f"current_count {cc} > point_estimate {pe} ({src})")
 
-    # Mode 1b: a MAIN-PATH live card frozen on one estimate across runs while
-    # entries climbed — the World Open U13 shape. Covers model-served cards
-    # including admitted roster-pending ones (v5 Cat R); only metadata_*
-    # interim cards are expected to sit still between metadata refreshes.
-    for t in live_complete:
-        if t.get("status") != "live" or not _is_main_path(t):
-            continue
-        seq = ctx.log_hist.get(_edition(t), [])
-        window = _current_estimator_runs(seq, t.get("prediction_source"))
-        if len(window) < 3:
-            continue
-        ests = {pe for pe, _, _ in window}
-        counts = [cc for _, cc, _ in window]
-        if len(ests) == 1 and max(counts) > min(counts):
-            report.add("CRITICAL", "frozen-estimate", t.get("family", "?"),
-                       f"estimate stuck at {next(iter(ests))} across {len(window)} "
-                       f"{t.get('prediction_source')} runs "
-                       f"while entries rose {min(counts)}->{max(counts)}")
+    # Mode 1b: frozen-estimate (healthcheck/freeze.py).
+    frozen_estimate_findings(data, ctx, live_complete, report)
 
     # Modes daily-*: chart-series integrity (v3 Q1/Q3, audit/AUDIT_2026-07-25.md).
     # The 2026-07-25 incident shipped a Bradley Open curve topping out at 625

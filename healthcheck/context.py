@@ -70,6 +70,22 @@ def load_log_history(path=None):
     return hist
 
 
+def load_last_run_timestamp(path=None):
+    """run_timestamp of the newest run in update_log.csv, or None.
+
+    step_log_run writes the run's RUN_TS, the same value stamped into
+    website_data.json as last_updated, so the freeze check can tell whether
+    tonight's run is already in the log.
+    """
+    path = path or UPDATE_LOG_CSV
+    if not os.path.exists(path):
+        return None
+    with open(path, newline="") as fh:
+        stamps = [row.get("run_timestamp") for row in csv.DictReader(fh)]
+    stamps = [s for s in stamps if s]
+    return max(stamps) if stamps else None
+
+
 def _strip_year(name):
     family, _year = split_edition_name(name)
     return family if family is not None else name
@@ -92,6 +108,7 @@ class Context:
         self.summary_2026 = self._load_2026_families(SUMMARY_CSV, "tournament_year")
         self.metadata_2026 = self._load_2026_families(METADATA_CSV, "year")
         self.log_hist = self._load_log_history()
+        self.last_logged_run = load_last_run_timestamp(UPDATE_LOG_CSV)
         self.perf_finals = self._load_performance_finals()
 
     def _load_performance_finals(self):

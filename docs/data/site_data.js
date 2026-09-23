@@ -2,8 +2,8 @@
 // TOURNAMENT DATA (embedded from model pipeline)
 // ══════════════════════════════════════════════════════════
 const TOURNAMENT_DATA = {
-  "generated": "2026-09-22",
-  "generated_time": "2026-09-22T08:34:26.497233-04:00",
+  "generated": "2026-09-23",
+  "generated_time": "2026-09-23T02:01:52.386039-04:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). Beyond T-14 the point estimate is blended toward the family's most recent final count (0.40 at T<=28, 0.60 beyond), which measures better than the ensemble alone at those lead times. 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (40 family-years across 38 families).",
   "n_completed_in_training": 32,
@@ -21,10 +21,10 @@ const TOURNAMENT_DATA = {
       "current_count": 50,
       "gross_count": 50,
       "withdrawal_count": 0,
-      "days_remaining": 17,
-      "point_estimate": 276,
-      "ci_lower": 248,
-      "ci_upper": 307,
+      "days_remaining": 16,
+      "point_estimate": 274,
+      "ci_lower": 247,
+      "ci_upper": 304,
       "ci_level": 0.8,
       "historical": [
         {
@@ -645,6 +645,10 @@ const TOURNAMENT_DATA = {
         [
           149,
           50
+        ],
+        [
+          150,
+          50
         ]
       ],
       "daily_start_date": "2026-04-26",
@@ -702,7 +706,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 70,
+        "count_at_same_point": 75,
         "final": 306
       },
       "low_confidence": false,
@@ -712,10 +716,10 @@ const TOURNAMENT_DATA = {
         "family": "Midwest Class Championships",
         "status": "below_pace",
         "actual": 50,
-        "expected": 69,
-        "deviation_pct": -27.5,
+        "expected": 72,
+        "deviation_pct": -30.6,
         "n_years": 4,
-        "message": "Registrations are 27.5% below 4-year at-this-point pace"
+        "message": "Registrations are 30.6% below 4-year at-this-point pace"
       }
     },
     {
@@ -731,10 +735,10 @@ const TOURNAMENT_DATA = {
       "current_count": 49,
       "gross_count": 49,
       "withdrawal_count": 0,
-      "days_remaining": 24,
-      "point_estimate": 253,
-      "ci_lower": 225,
-      "ci_upper": 284,
+      "days_remaining": 23,
+      "point_estimate": 248,
+      "ci_lower": 220,
+      "ci_upper": 279,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1363,6 +1367,10 @@ const TOURNAMENT_DATA = {
         [
           151,
           49
+        ],
+        [
+          152,
+          49
         ]
       ],
       "daily_start_date": "2026-04-24",
@@ -1420,7 +1428,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 31,
+        "count_at_same_point": 36,
         "final": 195
       },
       "low_confidence": false,
@@ -1430,10 +1438,10 @@ const TOURNAMENT_DATA = {
         "family": "Eastern Class Championships",
         "status": "above_pace",
         "actual": 49,
-        "expected": 30,
-        "deviation_pct": 60.7,
+        "expected": 34,
+        "deviation_pct": 46.3,
         "n_years": 4,
-        "message": "Registrations are 60.7% above 4-year at-this-point pace"
+        "message": "Registrations are 46.3% above 4-year at-this-point pace"
       }
     },
     {
@@ -1446,13 +1454,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 138.0,
       "onsite_fee": null,
-      "current_count": 50,
-      "gross_count": 50,
-      "withdrawal_count": 1,
-      "days_remaining": 31,
+      "current_count": 51,
+      "gross_count": 51,
+      "withdrawal_count": 2,
+      "days_remaining": 30,
       "point_estimate": 478,
-      "ci_lower": 420,
-      "ci_upper": 545,
+      "ci_lower": 421,
+      "ci_upper": 542,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2001,6 +2009,10 @@ const TOURNAMENT_DATA = {
         [
           151,
           49
+        ],
+        [
+          152,
+          49
         ]
       ],
       "daily_start_date": "2026-04-24",
@@ -2058,7 +2070,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 81,
+        "count_at_same_point": 86,
         "final": 487
       },
       "low_confidence": false,
@@ -2066,12 +2078,12 @@ const TOURNAMENT_DATA = {
       "prediction_tier": "roster-pending",
       "pace_alert": {
         "family": "Eastern Chess Congress",
-        "status": "on_pace",
-        "actual": 50,
-        "expected": 61,
-        "deviation_pct": -17.7,
+        "status": "below_pace",
+        "actual": 51,
+        "expected": 64,
+        "deviation_pct": -20.6,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-18%)"
+        "message": "Registrations are 20.6% below 4-year at-this-point pace"
       }
     },
     {
@@ -2084,13 +2096,13 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 128.0,
       "onsite_fee": null,
-      "current_count": 28,
-      "gross_count": 28,
+      "current_count": 30,
+      "gross_count": 30,
       "withdrawal_count": 1,
-      "days_remaining": 45,
-      "point_estimate": 392,
-      "ci_lower": 363,
-      "ci_upper": 424,
+      "days_remaining": 44,
+      "point_estimate": 393,
+      "ci_lower": 364,
+      "ci_upper": 423,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2671,6 +2683,10 @@ const TOURNAMENT_DATA = {
         [
           141,
           27
+        ],
+        [
+          142,
+          29
         ]
       ],
       "daily_start_date": "2026-05-04",
@@ -2728,7 +2744,7 @@ const TOURNAMENT_DATA = {
       "prediction_source": "model",
       "prior_year_pace": {
         "year": 2025,
-        "count_at_same_point": 47,
+        "count_at_same_point": 50,
         "final": 397
       },
       "low_confidence": false,
@@ -2737,11 +2753,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "Los Angeles Open",
         "status": "below_pace",
-        "actual": 28,
-        "expected": 49,
-        "deviation_pct": -43.1,
+        "actual": 30,
+        "expected": 52,
+        "deviation_pct": -41.7,
         "n_years": 4,
-        "message": "Registrations are 43.1% below 4-year at-this-point pace"
+        "message": "Registrations are 41.7% below 4-year at-this-point pace"
       }
     },
     {
@@ -2757,9 +2773,9 @@ const TOURNAMENT_DATA = {
       "current_count": 15,
       "gross_count": 15,
       "withdrawal_count": 0,
-      "days_remaining": 52,
-      "point_estimate": 349,
-      "ci_lower": 324,
+      "days_remaining": 51,
+      "point_estimate": 350,
+      "ci_lower": 325,
       "ci_upper": 376,
       "ci_level": 0.8,
       "historical": [
@@ -3313,6 +3329,10 @@ const TOURNAMENT_DATA = {
         [
           132,
           15
+        ],
+        [
+          133,
+          15
         ]
       ],
       "daily_start_date": "2026-05-13",
@@ -3378,12 +3398,12 @@ const TOURNAMENT_DATA = {
       "prediction_tier": "roster-pending",
       "pace_alert": {
         "family": "Kings Island Open",
-        "status": "on_pace",
+        "status": "below_pace",
         "actual": 15,
-        "expected": 18,
-        "deviation_pct": -16.7,
+        "expected": 19,
+        "deviation_pct": -22.1,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-17%)"
+        "message": "Registrations are 22.1% below 4-year at-this-point pace"
       }
     },
     {
@@ -3395,10 +3415,10 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 138.0,
       "onsite_fee": 160.0,
-      "current_count": 28,
-      "gross_count": 28,
+      "current_count": 30,
+      "gross_count": 30,
       "withdrawal_count": 0,
-      "days_remaining": 66,
+      "days_remaining": 65,
       "point_estimate": 623,
       "ci_lower": 572,
       "ci_upper": 677,
@@ -4006,6 +4026,10 @@ const TOURNAMENT_DATA = {
         [
           145,
           28
+        ],
+        [
+          146,
+          30
         ]
       ],
       "daily_start_date": "2026-04-30",
@@ -4067,11 +4091,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "National Chess Congress",
         "status": "on_pace",
-        "actual": 28,
-        "expected": 25,
-        "deviation_pct": 13.1,
+        "actual": 30,
+        "expected": 26,
+        "deviation_pct": 17.6,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+13%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+18%)"
       }
     },
     {
@@ -4083,10 +4107,10 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": 275.0,
       "onsite_fee": null,
-      "current_count": 285,
-      "gross_count": 285,
-      "withdrawal_count": 1,
-      "days_remaining": 95,
+      "current_count": 286,
+      "gross_count": 286,
+      "withdrawal_count": 2,
+      "days_remaining": 94,
       "point_estimate": 1081,
       "ci_lower": 946,
       "ci_upper": 1199,
@@ -4634,6 +4658,10 @@ const TOURNAMENT_DATA = {
         [
           130,
           284
+        ],
+        [
+          131,
+          284
         ]
       ],
       "daily_start_date": "2026-05-15",
@@ -4695,11 +4723,11 @@ const TOURNAMENT_DATA = {
       "pace_alert": {
         "family": "North American Open",
         "status": "on_pace",
-        "actual": 285,
-        "expected": 249,
-        "deviation_pct": 14.6,
+        "actual": 286,
+        "expected": 252,
+        "deviation_pct": 13.7,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+15%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
       }
     },
     {
@@ -4714,7 +4742,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 95,
+      "days_remaining": 94,
       "point_estimate": 387,
       "ci_lower": 367,
       "ci_upper": 404,
@@ -5149,6 +5177,10 @@ const TOURNAMENT_DATA = {
         [
           102,
           1
+        ],
+        [
+          103,
+          1
         ]
       ],
       "daily_start_date": "2026-06-12",
@@ -5226,10 +5258,10 @@ const TOURNAMENT_DATA = {
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 1,
-      "gross_count": 1,
+      "current_count": 2,
+      "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 108,
+      "days_remaining": 107,
       "point_estimate": 338,
       "ci_lower": 278,
       "ci_upper": 387,
@@ -5290,6 +5322,10 @@ const TOURNAMENT_DATA = {
         [
           5,
           1
+        ],
+        [
+          6,
+          2
         ]
       ],
       "daily_start_date": "2026-09-17",
@@ -5350,12 +5386,12 @@ const TOURNAMENT_DATA = {
       "prediction_source": "metadata_historical_avg",
       "pace_alert": {
         "family": "Boston Chess Congress",
-        "status": "below_pace",
-        "actual": 1,
+        "status": "on_pace",
+        "actual": 2,
         "expected": 2,
-        "deviation_pct": -42.9,
+        "deviation_pct": 14.3,
         "n_years": 4,
-        "message": "Registrations are 42.9% below 4-year at-this-point pace"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
       }
     },
     {
@@ -5370,7 +5406,7 @@ const TOURNAMENT_DATA = {
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 115,
+      "days_remaining": 114,
       "point_estimate": 316,
       "ci_lower": 274,
       "ci_upper": 382,
@@ -5430,6 +5466,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           5,
+          0
+        ],
+        [
+          6,
           0
         ]
       ],
@@ -5511,7 +5551,7 @@ const TOURNAMENT_DATA = {
       "current_count": 2,
       "gross_count": 2,
       "withdrawal_count": 0,
-      "days_remaining": 115,
+      "days_remaining": 114,
       "point_estimate": 449,
       "ci_lower": 324,
       "ci_upper": 547,
@@ -5571,6 +5611,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           5,
+          2
+        ],
+        [
+          6,
           2
         ]
       ],
@@ -5652,7 +5696,7 @@ const TOURNAMENT_DATA = {
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 142,
+      "days_remaining": 141,
       "point_estimate": 438,
       "ci_lower": 391,
       "ci_upper": 490,
@@ -5712,6 +5756,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           5,
+          0
+        ],
+        [
+          6,
           0
         ]
       ],
@@ -5793,7 +5841,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 157,
+      "days_remaining": 156,
       "point_estimate": 264,
       "ci_lower": 225,
       "ci_upper": 313,
@@ -5848,6 +5896,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           5,
+          1
+        ],
+        [
+          6,
           1
         ]
       ],
@@ -5929,7 +5981,7 @@ const TOURNAMENT_DATA = {
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 171,
+      "days_remaining": 170,
       "point_estimate": 348,
       "ci_lower": 285,
       "ci_upper": 405,
@@ -5989,6 +6041,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           5,
+          0
+        ],
+        [
+          6,
           0
         ]
       ],
@@ -6070,7 +6126,7 @@ const TOURNAMENT_DATA = {
       "current_count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "days_remaining": 178,
+      "days_remaining": 177,
       "point_estimate": 283,
       "ci_lower": 231,
       "ci_upper": 324,
@@ -6130,6 +6186,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           5,
+          0
+        ],
+        [
+          6,
           0
         ]
       ],
@@ -6211,7 +6271,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 178,
+      "days_remaining": 177,
       "point_estimate": 214,
       "ci_lower": 182,
       "ci_upper": 261,
@@ -6271,6 +6331,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           5,
+          1
+        ],
+        [
+          6,
           1
         ]
       ],
@@ -6352,7 +6416,7 @@ const TOURNAMENT_DATA = {
       "current_count": 1,
       "gross_count": 1,
       "withdrawal_count": 0,
-      "days_remaining": 183,
+      "days_remaining": 182,
       "point_estimate": 465,
       "ci_lower": 419,
       "ci_upper": 523,
@@ -6412,6 +6476,10 @@ const TOURNAMENT_DATA = {
         ],
         [
           5,
+          1
+        ],
+        [
+          6,
           1
         ]
       ],
@@ -91448,71 +91516,71 @@ const TOURNAMENT_DATA = {
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-09-22 12:32:39",
+  "last_updated": "2026-09-23 06:00:15",
   "is_stale": false,
   "alerts": [
     {
       "family": "Midwest Class Championships",
       "status": "below_pace",
       "actual": 50,
-      "expected": 69,
-      "deviation_pct": -27.5,
+      "expected": 72,
+      "deviation_pct": -30.6,
       "n_years": 4,
-      "message": "Registrations are 27.5% below 4-year at-this-point pace"
+      "message": "Registrations are 30.6% below 4-year at-this-point pace"
     },
     {
       "family": "Eastern Class Championships",
       "status": "above_pace",
       "actual": 49,
-      "expected": 30,
-      "deviation_pct": 60.7,
+      "expected": 34,
+      "deviation_pct": 46.3,
       "n_years": 4,
-      "message": "Registrations are 60.7% above 4-year at-this-point pace"
+      "message": "Registrations are 46.3% above 4-year at-this-point pace"
     },
     {
       "family": "Eastern Chess Congress",
-      "status": "on_pace",
-      "actual": 50,
-      "expected": 61,
-      "deviation_pct": -17.7,
+      "status": "below_pace",
+      "actual": 51,
+      "expected": 64,
+      "deviation_pct": -20.6,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-18%)"
+      "message": "Registrations are 20.6% below 4-year at-this-point pace"
     },
     {
       "family": "Los Angeles Open",
       "status": "below_pace",
-      "actual": 28,
-      "expected": 49,
-      "deviation_pct": -43.1,
+      "actual": 30,
+      "expected": 52,
+      "deviation_pct": -41.7,
       "n_years": 4,
-      "message": "Registrations are 43.1% below 4-year at-this-point pace"
+      "message": "Registrations are 41.7% below 4-year at-this-point pace"
     },
     {
       "family": "Kings Island Open",
-      "status": "on_pace",
+      "status": "below_pace",
       "actual": 15,
-      "expected": 18,
-      "deviation_pct": -16.7,
+      "expected": 19,
+      "deviation_pct": -22.1,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-17%)"
+      "message": "Registrations are 22.1% below 4-year at-this-point pace"
     },
     {
       "family": "National Chess Congress",
       "status": "on_pace",
-      "actual": 28,
-      "expected": 25,
-      "deviation_pct": 13.1,
+      "actual": 30,
+      "expected": 26,
+      "deviation_pct": 17.6,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+13%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+18%)"
     },
     {
       "family": "North American Open",
       "status": "on_pace",
-      "actual": 285,
-      "expected": 249,
-      "deviation_pct": 14.6,
+      "actual": 286,
+      "expected": 252,
+      "deviation_pct": 13.7,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+15%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
     },
     {
       "family": "Eastern Open",
@@ -91525,12 +91593,12 @@ const TOURNAMENT_DATA = {
     },
     {
       "family": "Boston Chess Congress",
-      "status": "below_pace",
-      "actual": 1,
+      "status": "on_pace",
+      "actual": 2,
       "expected": 2,
-      "deviation_pct": -42.9,
+      "deviation_pct": 14.3,
       "n_years": 4,
-      "message": "Registrations are 42.9% below 4-year at-this-point pace"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+14%)"
     },
     {
       "family": "Golden State Open",
@@ -91611,158 +91679,143 @@ const TOURNAMENT_DATA = {
 // PUZZLE DATA (embedded from puzzle pipeline)
 // ══════════════════════════════════════════════════════════
 const PUZZLE_DATA = {
-  "date": "2026-09-22",
+  "date": "2026-09-23",
   "puzzles": [
     {
-      "id": "0QmOE",
-      "fen": "2r3k1/8/1P6/4p1p1/P2p1p2/8/K7/3R4 b - - 0 44",
-      "moves": "e5e4 b6b7 c8b8 d1b1 f4f3 a4a5 b8b7 b1b7 f3f2 b7b1 e4e3 a5a6 g8g7 a6a7",
-      "rating": 2562,
+      "id": "0gBfM",
+      "fen": "r4r1k/2Q3pp/p7/1p6/3qb3/1B4P1/P1P3PP/R4R1K w - - 3 24",
+      "moves": "c7e7 f8f2 e7e4 f2f1 a1f1 d4e4",
+      "rating": 2173,
       "themes": [
-        "advancedPawn",
+        "collinearMove",
+        "crushing",
+        "long",
+        "middlegame"
+      ],
+      "url": "https://lichess.org/training/0gBfM",
+      "game_url": "https://lichess.org/YlgGtdPR#47"
+    },
+    {
+      "id": "0CASm",
+      "fen": "8/4R3/1N4k1/5p2/2N1p1np/8/PP1K4/7r w - - 0 39",
+      "moves": "c4e5 g4e5 e7e5 h4h3",
+      "rating": 2347,
+      "themes": [
         "crushing",
         "endgame",
-        "master",
-        "masterVsMaster",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0CASm",
+      "game_url": "https://lichess.org/HaxHK7iT#77"
+    },
+    {
+      "id": "00GWg",
+      "fen": "1r1r2k1/pp4pp/2nNb3/2R2p2/2P1p3/8/P4PPP/3BR1K1 w - - 1 26",
+      "moves": "d6b7 b8b7 c5c6 b7b1 g1f1 d8d1 e1d1 b1d1 f1e2 e6d7",
+      "rating": 2091,
+      "themes": [
+        "crushing",
+        "middlegame",
+        "veryLong"
+      ],
+      "url": "https://lichess.org/training/00GWg",
+      "game_url": "https://lichess.org/M7Dta3mv#51"
+    },
+    {
+      "id": "0Q9d9",
+      "fen": "r3r1k1/ppp2pb1/1q2bn2/6N1/4PR1Q/P2P4/6PP/5R1K b - - 0 23",
+      "moves": "a8d8 e4e5 f6h5 h4h5",
+      "rating": 2574,
+      "themes": [
+        "advantage",
+        "middlegame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0Q9d9",
+      "game_url": "https://lichess.org/G0SZTdJk/black#46"
+    },
+    {
+      "id": "0dU0w",
+      "fen": "4r1kb/pp2pp2/1q1p2p1/4n1Q1/6nP/1PBB4/2P3P1/R4R1K w - - 10 26",
+      "moves": "d3g6 f7g6 c3e5 g4e5",
+      "rating": 2246,
+      "themes": [
+        "advantage",
+        "middlegame",
+        "short"
+      ],
+      "url": "https://lichess.org/training/0dU0w",
+      "game_url": "https://lichess.org/4JUcwGyj#51"
+    },
+    {
+      "id": "0Sn1v",
+      "fen": "4r3/6pk/P2b4/2pQ3P/5rK1/1P1P4/1BP5/8 w - - 3 40",
+      "moves": "g4g5 e8f8 d5e4 f4e4",
+      "rating": 2081,
+      "themes": [
+        "crushing",
+        "endgame",
         "quietMove",
-        "rookEndgame",
-        "veryLong"
+        "short"
       ],
-      "url": "https://lichess.org/training/0QmOE",
-      "game_url": "https://lichess.org/32Ziadfv/black#88"
+      "url": "https://lichess.org/training/0Sn1v",
+      "game_url": "https://lichess.org/xUCKhwDG#79"
     },
     {
-      "id": "0bFbi",
-      "fen": "2kr3r/1ppq1ppp/p4b2/P2Np3/2B1P3/3P1Q2/1PP3PP/R6K b - - 1 16",
-      "moves": "f6e7 f3f7 e7d6 d5b6 c7b6 c4e6",
-      "rating": 2031,
+      "id": "0LAWT",
+      "fen": "2k1r3/ppp2pbp/3prp2/1P1N4/2P5/5P1P/PB1PnKP1/R3R3 w - - 5 20",
+      "moves": "b2f6 e6f6 d5f6 g7f6",
+      "rating": 2165,
       "themes": [
         "advantage",
-        "clearance",
-        "long",
         "middlegame",
-        "pin",
-        "sacrifice"
+        "short"
       ],
-      "url": "https://lichess.org/training/0bFbi",
-      "game_url": "https://lichess.org/CoG05qel/black#32"
+      "url": "https://lichess.org/training/0LAWT",
+      "game_url": "https://lichess.org/zVUJSgJq#39"
     },
     {
-      "id": "0Wqk9",
-      "fen": "8/2k5/8/PPP5/5pp1/7p/7K/8 b - - 1 48",
-      "moves": "c7b7 b5b6 f4f3 h2g3 f3f2 g3f2 h3h2 f2g2 h2h1q g2h1",
-      "rating": 2355,
+      "id": "0l9ZP",
+      "fen": "r1b1k1nN/pppp2pp/3n1q2/4p3/4P3/1QP5/P4PPP/bNB2RK1 b q - 2 11",
+      "moves": "g7g6 b3g8 f6f8 g8h7",
+      "rating": 2068,
       "themes": [
         "crushing",
-        "endgame",
-        "pawnEndgame",
-        "veryLong",
-        "zugzwang"
+        "hangingPiece",
+        "opening",
+        "short"
       ],
-      "url": "https://lichess.org/training/0Wqk9",
-      "game_url": "https://lichess.org/iX7FZ3xJ/black#96"
+      "url": "https://lichess.org/training/0l9ZP",
+      "game_url": "https://lichess.org/IBEeERIm/black#22"
     },
     {
-      "id": "02uIX",
-      "fen": "2r5/8/p7/3R2pk/1P3pp1/8/PP3PKP/8 w - - 0 34",
-      "moves": "a2a4 f4f3 g2g3 c8c1 h2h3 c1g1 g3h2 g1g2",
-      "rating": 2129,
+      "id": "0yobu",
+      "fen": "r1bq1r1k/1ppn2b1/p3Q2p/8/3P3P/2P1PN2/PP1N1PP1/R3K2R w KQ - 1 15",
+      "moves": "f3g5 d7e5 e6b3 e5d3 e1e2 d3f2 g5f7 f8f7 b3f7 f2h1",
+      "rating": 2409,
       "themes": [
-        "crushing",
-        "endgame",
+        "advantage",
         "master",
+        "middlegame",
         "quietMove",
-        "rookEndgame",
         "veryLong"
       ],
-      "url": "https://lichess.org/training/02uIX",
-      "game_url": "https://lichess.org/XcgohB7X#67"
+      "url": "https://lichess.org/training/0yobu",
+      "game_url": "https://lichess.org/iuhMszMX#29"
     },
     {
-      "id": "0EtnL",
-      "fen": "2r5/1b5p/1p1r1kp1/p2p4/P2Kp3/1BP1RP1P/1P4P1/3R4 w - - 2 37",
-      "moves": "d1f1 c8c4 b3c4 d5c4 d4c4 b7a6 c4b3 a6f1",
-      "rating": 2065,
-      "themes": [
-        "advantage",
-        "attraction",
-        "discoveredAttack",
-        "discoveredCheck",
-        "endgame",
-        "sacrifice",
-        "skewer",
-        "veryLong"
-      ],
-      "url": "https://lichess.org/training/0EtnL",
-      "game_url": "https://lichess.org/5Ojb8HlM#73"
-    },
-    {
-      "id": "0IDvu",
-      "fen": "r1b1rbk1/2qn4/1p2p1p1/3pP3/Np1B2P1/2PQ4/P6P/4RRK1 b - - 1 22",
-      "moves": "g8g7 f1f6 d7f6 e5f6 g7h7 d3h3",
-      "rating": 2265,
-      "themes": [
-        "crushing",
-        "long",
-        "middlegame",
-        "sacrifice"
-      ],
-      "url": "https://lichess.org/training/0IDvu",
-      "game_url": "https://lichess.org/et5fJYYx/black#44"
-    },
-    {
-      "id": "0QwI5",
-      "fen": "8/8/8/4Qr1k/5rp1/5P1p/7P/5RK1 w - - 2 49",
-      "moves": "f3g4 f4g4 g1h1 f5e5 f1f5 g4g5",
-      "rating": 2110,
+      "id": "0nxtH",
+      "fen": "8/1R6/2P5/p7/5k2/8/r5p1/6K1 b - - 1 47",
+      "moves": "f4g3 b7b3 g3g4 b3c3 a2a1 g1g2",
+      "rating": 2078,
       "themes": [
         "crushing",
         "endgame",
         "long",
-        "queenRookEndgame"
+        "rookEndgame"
       ],
-      "url": "https://lichess.org/training/0QwI5",
-      "game_url": "https://lichess.org/SWwHjr8H#97"
-    },
-    {
-      "id": "0tlvF",
-      "fen": "rn1q1rk1/1b3p1p/pp1b1np1/1N1Pp1B1/2B4N/8/PP3PPP/R2Q1RK1 w - - 0 15",
-      "moves": "d1f3 a6b5 g5f6 e5e4",
-      "rating": 2793,
-      "themes": [
-        "advantage",
-        "middlegame",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0tlvF",
-      "game_url": "https://lichess.org/lTLDc4Re#29"
-    },
-    {
-      "id": "0ijNN",
-      "fen": "r1q3k1/1p3pp1/2p2nr1/p3p2p/P3Pb1P/B1N3P1/1PP1QP1K/R4R2 w - - 5 25",
-      "moves": "g3f4 f6g4 h2h1 c8d8",
-      "rating": 2349,
-      "themes": [
-        "crushing",
-        "middlegame",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0ijNN",
-      "game_url": "https://lichess.org/6hoHbjeD#49"
-    },
-    {
-      "id": "0IKWe",
-      "fen": "8/8/8/1B6/1R6/p1P1nk2/r7/2K5 w - - 0 48",
-      "moves": "b4a4 a2a1 c1d2 a1d1",
-      "rating": 2093,
-      "themes": [
-        "endgame",
-        "mate",
-        "mateIn2",
-        "short"
-      ],
-      "url": "https://lichess.org/training/0IKWe",
-      "game_url": "https://lichess.org/zjmF0YUY#95"
+      "url": "https://lichess.org/training/0nxtH",
+      "game_url": "https://lichess.org/jSKKZznj/black#94"
     }
   ]
 };
@@ -93608,7 +93661,7 @@ const CHESS_HISTORY = {
 // PERFORMANCE DATA (model blind test results)
 // ══════════════════════════════════════════════════════════
 const PERFORMANCE_DATA = {
-  "generated": "2026-09-22",
+  "generated": "2026-09-23",
   "model": "N5v4_Final",
   "n_tournaments": 22,
   "grade": "B+",
@@ -96056,7 +96109,7 @@ const PERFORMANCE_DATA = {
     }
   ],
   "n_corpus_tournaments": 785,
-  "n_entry_records": 196265,
+  "n_entry_records": 196271,
   "corpus_year_min": 2012,
   "corpus_year_max": 2027,
   "corpus_year_span": 16,

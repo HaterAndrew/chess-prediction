@@ -1,19 +1,31 @@
-// Network-first service worker. Always fetch fresh when online so deploys
-// show immediately; fall back to cache only when offline.
-// Cache name is bumped on each deploy that reshapes caching behavior so
-// old caches from prior SW versions get purged on activate.
+// Service worker: the browser's rule for what may come from cache.
+//
+// The document is always fetched fresh (network-first, no-store): it carries
+// every asset's `?v=` pointer, so it is the one thing that must never be
+// stale. Everything referenced with a content hash (`?v=`) and the font files
+// are immutable by construction, so they are served cache-first, and a new
+// hash evicts the old entry for the same path. Unhashed same-origin files
+// (audit_warnings.json, manifest.json, icons) stay network-first with the
+// cache as the offline fallback. Cross-origin requests bypass the worker,
+// except the pinned, SRI-locked CDN scripts, which are cache-first too.
+//
+// CACHE_NAME is bumped on every deploy that reshapes caching behaviour so
+// caches from prior worker versions are purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v79';
+const CACHE_NAME = 'cca-predictor-v80';
 
-// Version-pinned, SRI-locked CDN scripts. Immutable, so serve them cache-first
-// (see the fetch handler) instead of letting the cross-origin bypass drop them
-// — that bypass meant a repeat/offline load got "Chart is not defined".
+// Version-pinned, SRI-locked CDN scripts. Immutable, so cache-first. This is
+// also the runtime allowlist for the on-demand ExcelJS load in audit.js.
 const CDN_ASSETS = [
   'https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js',
   'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js',
   'https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js'
 ];
 
+// The app shell, precached at install so an offline return visit still boots.
+// The data file is not listed: it is a `?v=` URL, cached on first use by the
+// fetch handler, and precaching 2.4 MB during the first visit competed with
+// the page's own requests. The CDN scripts are cached the same way.
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
@@ -53,7 +65,7 @@ const OFFLINE_FALLBACKS = [
   'fonts/inter/inter-latin-ext.woff2',
   'fonts/inter/inter-latin.woff2',
   'theme.js?v=33c380c35b',
-  'boot.js?v=495fc9422f',
+  'boot.js?v=b9c1bc6557',
   'app.js?v=612241529c',
   'actions.js?v=a953337851',
   'audit.js?v=c8288fbf68',
@@ -74,21 +86,29 @@ const OFFLINE_FALLBACKS = [
   'tab_about.js?v=93bd7709b3',
   'tab_compare.js?v=c14237e866',
   'tab_ask.js?v=07df7455b0',
-  'data/site_data.js?v=8d6b725c62',
-  // v4 W4: Model Health fetches this at runtime; without a precached copy an
-  // offline load 504s and the panel renders empty.
-  'audit_warnings.json',
   'manifest.json',
-  'icons/icon-192.png',
-  ...CDN_ASSETS
+  'icons/icon-192.png'
 ];
+
+// The document and its alias are fetched no-cache at install so the precached
+// copy is the current deploy, not whatever the HTTP cache held. Every other
+// entry was just fetched by the page that registered this worker, so the
+// default cache mode makes those precache reads free.
+const FRESH_AT_INSTALL = new Set(['./', 'index.html']);
+
+const OFFLINE_PAGE =
+  '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Offline</title>' +
+  '<style>body{background:#F7F4EC;color:#28241B;font-family:Inter,system-ui,sans-serif;display:flex;' +
+  'justify-content:center;align-items:center;height:100vh;margin:0;text-align:center}' +
+  'h1{color:#9A7010}</style></head><body><div><h1>Offline</h1><p>CCA Entry Predictor is unavailable. ' +
+  'Check your connection and try again.</p></div></body></html>';
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache =>
       Promise.all(
         OFFLINE_FALLBACKS.map(url =>
-          fetch(url, { cache: 'no-cache' })
+          fetch(url, FRESH_AT_INSTALL.has(url) ? { cache: 'no-cache' } : undefined)
             .then(resp => resp.ok ? cache.put(url, resp) : null)
             .catch(() => null)
         )
@@ -106,72 +126,84 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch: network-first for same-origin GETs only. Never intercept cross-origin
-// requests (the Ask Worker lives at chess-ask.workers.dev and must bypass the
-// SW entirely) and never intercept non-GET methods.
-self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-  const url = new URL(event.request.url);
+// Immutable by construction: a `?v=` URL changes when its content does, and
+// the font files are fixed subsets that only ever change with their path.
+function isImmutable(url) {
+  return url.searchParams.has('v') || url.pathname.includes('/fonts/');
+}
 
-  // Cache-first for the pinned CDN chart scripts: immutable + SRI-verified, so
-  // serve instantly from cache and only touch the network on a miss. This is
-  // the one cross-origin exception; everything else cross-origin still bypasses.
+// Store the response and evict every other version of the same path, so a
+// nightly restamp of the data file does not leave yesterday's copy behind.
+function putAndPrune(request, response) {
+  return caches.open(CACHE_NAME).then(cache =>
+    cache.keys(request, { ignoreSearch: true })
+      .then(stale => Promise.all(
+        stale.filter(r => r.url !== request.url).map(r => cache.delete(r))))
+      .then(() => cache.put(request, response)));
+}
+
+function cacheFirst(request) {
+  return caches.match(request).then(cached => {
+    if (cached) return cached;
+    return fetch(request).then(response => {
+      if (response && (response.ok || response.type === 'opaque')) {
+        putAndPrune(request, response.clone());
+      }
+      return response;
+    });
+  }).catch(() => new Response('', { status: 504 }));
+}
+
+function networkFirst(request) {
+  return fetch(request)
+    .then(response => {
+      if (response && response.ok && response.type !== 'opaque') {
+        caches.open(CACHE_NAME).then(cache => cache.put(request, response.clone()));
+      }
+      return response;
+    })
+    .catch(() => caches.match(request))
+    .then(response => response || new Response('', { status: 504 }));
+}
+
+// The document carries every asset's `?v=` pointer, so it is fetched with
+// no-store: Pages serves it with `max-age=600`, and inside that window the
+// HTTP cache would hand a returning visitor a document that still points at
+// the previous data URL, which made the cache-busting do nothing for exactly
+// the visitor it exists to protect.
+function navigation(request) {
+  return fetch(request, { cache: 'no-store' })
+    .then(response => {
+      if (response && response.ok) {
+        caches.open(CACHE_NAME).then(cache => cache.put(request, response.clone()));
+      }
+      return response;
+    })
+    .catch(() => caches.match(request))
+    .then(response => response || new Response(OFFLINE_PAGE, {
+      status: 503, headers: { 'Content-Type': 'text/html' }
+    }));
+}
+
+self.addEventListener('fetch', event => {
+  const request = event.request;
+  if (request.method !== 'GET') return;
+  const url = new URL(request.url);
+
   if (CDN_ASSETS.includes(url.href)) {
-    event.respondWith(
-      caches.match(event.request).then(cached => {
-        if (cached) return cached;
-        return fetch(event.request).then(response => {
-          if (response && (response.ok || response.type === 'opaque')) {
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
-          }
-          return response;
-        });
-      })
-    );
+    event.respondWith(cacheFirst(request));
     return;
   }
-
+  // Everything else cross-origin (the Ask Worker) bypasses the worker.
   if (url.origin !== self.location.origin) return;
 
-  // v3 P5: force a real network read for the data file. Without no-store the
-  // HTTP cache could satisfy this fetch from a stale entry, so an installed PWA
-  // kept serving old numbers even after a corrected build shipped — which would
-  // have hidden the incident data-fix from exactly the returning users who saw
-  // the bad numbers first.
-  //
-  // The document itself needs the same treatment. Pages serves index.html with
-  // `Cache-Control: max-age=600`, and index.html is what carries every asset's
-  // `?v=` cache-buster — so a returning visitor inside that window gets a
-  // ten-minute-old document pointing at the PREVIOUS data URL, and the
-  // busting does nothing. Fetching the navigation with no-store makes the
-  // document the one thing guaranteed fresh, which is what every other
-  // version pointer depends on.
-  const isData = url.pathname.endsWith('/site_data.js');
-  const isDocument = event.request.mode === 'navigate';
-  event.respondWith(
-    fetch(event.request, (isData || isDocument) ? { cache: 'no-store' } : undefined)
-      .then(response => {
-        if (response && response.ok && response.type !== 'opaque') {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        }
-        return response;
-      })
-      .catch(() =>
-        caches.match(event.request).then(cached => {
-          if (cached) return cached;
-          if (event.request.mode === 'navigate') {
-            return new Response(
-              '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Offline</title>' +
-              '<style>body{background:#F7F4EC;color:#28241B;font-family:Inter,system-ui,sans-serif;display:flex;' +
-              'justify-content:center;align-items:center;height:100vh;margin:0;text-align:center}' +
-              'h1{color:#9A7010}</style></head><body><div><h1>Offline</h1><p>CCA Entry Predictor is unavailable. ' +
-              'Check your connection and try again.</p></div></body></html>',
-              { status: 503, headers: { 'Content-Type': 'text/html' } }
-            );
-          }
-          return new Response('', { status: 504 });
-        })
-      )
-  );
+  if (request.mode === 'navigate') {
+    event.respondWith(navigation(request));
+    return;
+  }
+  if (isImmutable(url)) {
+    event.respondWith(cacheFirst(request));
+    return;
+  }
+  event.respondWith(networkFirst(request));
 });

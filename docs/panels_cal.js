@@ -1,5 +1,5 @@
-// panels_cal.js — calendar timeline, section disclosure and mini cards,
-// split verbatim from app.js (C13).
+// panels_cal.js — the Season's Upcoming Events timeline and the disclosure
+// of the details.sect sections. The cards are in season_cards.js.
 
 // ══════════════════════════════════════════════════════════
 // UPCOMING-EVENTS CALENDAR TIMELINE
@@ -43,10 +43,10 @@ function renderCalendar() {
   }
 
   let html = `<div class="cal-head">
-    <div class="cal-title">Upcoming events</div>
+    <div class="cal-title">Upcoming Events</div>
     <div class="cal-legend">
       <span class="cal-legend-item"><span class="cal-dot-mini cal-pace-pos"></span>Ahead</span>
-      <span class="cal-legend-item"><span class="cal-dot-mini cal-pace-flat"></span>On pace</span>
+      <span class="cal-legend-item"><span class="cal-dot-mini cal-pace-flat"></span>On Pace</span>
       <span class="cal-legend-item"><span class="cal-dot-mini cal-pace-neg"></span>Behind</span>
     </div>
   </div>
@@ -59,9 +59,9 @@ function renderCalendar() {
     const pace = paceClass(e.t);
     const monthDay = e.d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     const longDate = e.d.toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric' });
-    const paceLabel = pace === 'pos' ? 'Ahead of pace'
-                    : pace === 'neg' ? 'Behind pace'
-                    : 'On pace';
+    const paceLabel = pace === 'pos' ? 'Ahead of Pace'
+                    : pace === 'neg' ? 'Behind Pace'
+                    : 'On Pace';
     const ariaLabel = `${e.t.family} on ${monthDay}, T-${e.daysOut}, predicted ${fmt(e.t.point_estimate || 0)}`;
     html += `<button class="cal-dot cal-pace-${pace}" style="left:${xPct.toFixed(2)}%;width:${sizePx}px;height:${sizePx}px"
       data-act="select-tournament" data-idx="${e.idx}"
@@ -156,98 +156,22 @@ function _bindCalendarTooltips(scopeEl) {
 }
 
 // ══════════════════════════════════════════════════════════
-// UPCOMING MINI CARDS
+// SECTION DISCLOSURE
 // ══════════════════════════════════════════════════════════
-// Progressive disclosure (phase 5): the wrapped Predictions sections are
-// summary-first on phones and always open on desktop and in print.
+// Each details.sect on the Forecast and the Season carries data-open:
+// "always" (open on every width), "wide" (open from 640 px up, closed on a
+// phone) or "closed" (closed until the visitor opens it; never touched here).
+// The width rule applies when the width class changes, so a section the
+// visitor toggled keeps their choice until it does. app.js opens every
+// section for print and restores them after.
 let _sectWide = null;
 function syncSectionDisclosure(force) {
   const wide = window.innerWidth >= 640;
   if (!force && wide === _sectWide) return;
   _sectWide = wide;
-  document.querySelectorAll('details.sect').forEach(d => { d.open = wide; });
-}
-
-function renderMiniCards() {
-  const el = document.getElementById('miniGrid');
-  const ts = TOURNAMENT_DATA.tournaments;
-  const live = ts.map((t, i) => ({t, i}))
-    .filter(({t}) => t.status === 'live')
-    .sort((a, b) => a.t.days_remaining - b.t.days_remaining);
-
-  const card = ({t, i}) => {
-    const isSelected = i === selectedIndex;
-    const pct = t.point_estimate > 0 ? (t.current_count / t.point_estimate * 100).toFixed(0) : 0;
-    // Today's delta surfaces velocity on the selector card itself instead of
-    // forcing a click through. v3 P1: this used to be a raw last-minus-prior
-    // with no gap check, so when a scrape day went missing it reported several
-    // days of registrations — or a corrupted jump — as "today's change". That
-    // is the "+125 entries" the incident put on screen. latestDailyChange
-    // returns null unless the final interval really is one day; anything wider
-    // gets labelled with its true span instead.
-    let deltaChip = '';
-    if (typeof DailySeries !== 'undefined') {
-      const todayDelta = DailySeries.latestDailyChange(t, { isLive: !isDone(t) });
-      if (todayDelta != null && todayDelta !== 0) {
-        deltaChip = `<span class="mini-card-delta ${todayDelta > 0 ? 'pos' : 'neg'}" title="Change since the previous day's scrape">${todayDelta > 0 ? '+' : ''}${todayDelta}</span>`;
-      } else {
-        const iv = DailySeries.latestInterval(t, { isLive: !isDone(t) });
-        if (iv && iv.isGap && iv.added > 0) {
-          deltaChip = `<span class="mini-card-delta pos" title="No scrape for ${iv.span} days: the value covers the whole period, not one day">+${iv.added} / ${iv.span}d</span>`;
-        }
-      }
-    }
-    // Pace comparison — same metric as the detail-view YoY banner:
-    // compare current_count to prior_year_pace.count_at_same_point. Falls
-    // back to last-year × curve-pct only when 2025 daily data is missing.
-    // Previously used point_estimate × curve%, which produced a third
-    // disagreeing pace metric on the same screen.
-    let paceIndicator = '';
-    let expectedCount = null;
-    if (t.prior_year_pace && t.prior_year_pace.count_at_same_point > 0) {
-      expectedCount = t.prior_year_pace.count_at_same_point;
-    } else if (t.registration_curve && t.historical && t.historical.length > 0) {
-      const lastYr = t.historical[t.historical.length - 1];
-      const expectedPct = interpCurve(t.registration_curve, t.days_remaining);
-      const c = Math.round(lastYr.count * expectedPct);
-      if (c > 0) expectedCount = c;
-    }
-    if (expectedCount != null) {
-      if (t.current_count > expectedCount * 1.05) {
-        paceIndicator = `<span style="color:var(--green);font-size:var(--fs-1)">&#9650; ahead</span>`;
-      } else if (t.current_count < expectedCount * 0.95) {
-        paceIndicator = `<span style="color:var(--orange);font-size:var(--fs-1)">&#9660; behind</span>`;
-      } else {
-        paceIndicator = `<span style="color:var(--muted);font-size:var(--fs-1)">&#8212; on pace</span>`;
-      }
-    }
-    return `<div class="mini-card ${isSelected ? 'mini-card-active' : ''}" data-act="select-tournament" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="button" aria-label="${esc(t.family)} - ${fmt(t.point_estimate)} predicted">
-      <div class="mini-card-header">
-        <span class="mini-card-name" title="${esc(t.family)} ${t.year}">${esc(t.family)}</span>
-        <div class="mini-card-chips">
-          ${deltaChip}
-          <span class="mini-badge badge-live"><span class="live-dot" style="width:5px;height:5px"></span>T-${t.days_remaining}</span>
-        </div>
-      </div>
-      <div style="display:flex;align-items:baseline;gap:8px">
-        <div class="mini-card-number">${fmt(t.point_estimate)}</div>
-        ${paceIndicator}
-      </div>
-      <div class="mini-card-details">
-        ${fmt(t.current_count)} registered · ${fmtDate(t.event_start)}
-        <div style="margin-top:6px">
-          <div class="pace-bar-wrap" style="width:100%;display:block"><div class="pace-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--blue),var(--gold))"></div></div>
-        </div>
-      </div>
-    </div>`;
-  };
-
-  // Tiered layout: the next three events get the featured row; the rest stay
-  // compact. Everything remains clickable and information-identical.
-  const featured = live.slice(0, 3);
-  const later = live.slice(3);
-  el.classList.add('mini-grid-tiered');
-  el.innerHTML =
-    (featured.length ? `<div class="mini-section-label">Next up</div><div class="mini-grid-featured">${featured.map(card).join('')}</div>` : '') +
-    (later.length ? `<div class="mini-section-label">Later</div><div class="mini-grid-rest">${later.map(card).join('')}</div>` : '');
+  document.querySelectorAll('details.sect').forEach(d => {
+    const mode = d.dataset.open || 'always';
+    if (mode === 'always') d.open = true;
+    else if (mode === 'wide') d.open = wide;
+  });
 }

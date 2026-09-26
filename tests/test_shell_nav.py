@@ -26,7 +26,7 @@ ACTIONS_JS = DOCS / "actions.js"
 PICKERS_JS = DOCS / "pickers.js"
 SW_JS = DOCS / "sw.js"
 FONTS_CSS = DOCS / "styles" / "fonts.css"
-SHELL_STYLESHEETS = ("shell.css", "controls.css", "overlays.css", "cards.css", "picker.css")
+SHELL_STYLESHEETS = ("shell.css", "controls.css", "overlays.css", "picker.css", "forecast.css", "sections.css", "season.css")
 
 NAV_ITEMS = ["Forecast", "Season", "Model", "Tools"]
 GROUPS = {"model": ["performance", "audit", "about"], "tools": ["compare", "ask", "email", "puzzles"]}
@@ -219,5 +219,6 @@ def test_shell_stylesheets_stay_small():
 
 
 def test_the_removed_stylesheets_stay_removed():
-    for name in ("02-header.css", "04-tab-bar.css", "13-page-tabs.css"):
+    for name in ("02-header.css", "04-tab-bar.css", "05-delta-banner.css", "06-mobile-predictions.css", "07-hero.css",
+                 "08-chart.css", "09-timeline.css", "11-tables.css", "12-calendar.css", "13-page-tabs.css", "cards.css"):
         assert not os.path.exists(DOCS / "styles" / name), f"styles/{name} is back"

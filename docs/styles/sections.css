@@ -1,0 +1,97 @@
+/* sections.css — the Forecast's evidence below the chart and the panel
+   vocabulary the views share: the disclosure sections (a ruled header you
+   open and close on every width; panels_cal.js syncSectionDisclosure sets
+   the default from data-open), the panel and the two-column grid, the key
+   milestones, the milestone strip, the fee panel, the compact About This
+   Model section, and the Up Next strip (season.css draws its cards). */
+
+/* ── Panels ── */
+.grid-2 { display: grid; gap: var(--s-4); grid-template-columns: 1fr; margin-bottom: var(--s-4); }
+.panel { border: 1px solid var(--line); padding: var(--s-4); }
+.panel.roomy { padding: var(--s-5); }
+.panel-title { border-bottom: 1px solid var(--line-soft); color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin: 0 0 var(--s-3); padding-bottom: 8px; text-transform: uppercase; }
+@media (min-width: 768px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .panel { padding: var(--s-5) var(--s-6); } }
+
+/* ── Disclosure sections: a rule, the name in condensed capitals, a caret ── */
+details.sect { margin-bottom: var(--s-3); }
+details.sect > .sect-summary { align-items: center; border-top: 2px solid var(--line); cursor: pointer; display: flex; gap: 10px; justify-content: space-between; list-style: none; min-height: var(--touch); padding: 10px 0; user-select: none; }
+details.sect > .sect-summary::-webkit-details-marker { display: none; }
+details.sect > .sect-summary:hover .sect-summary-h { color: var(--signal); }
+details.sect[open] > .sect-summary { margin-bottom: var(--s-3); }
+.sect-summary-h { font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; margin: 0; text-transform: uppercase; }
+.sect-caret { flex: none; height: 18px; transition: transform var(--dur) var(--ease-out); width: 18px; }
+details.sect[open] > .sect-summary .sect-caret { transform: rotate(180deg); }
+/* the summary names these sections; the inner title would say it twice */
+#sect-model .model-info > .panel-title, #sect-table .tt-head > .panel-title { display: none; }
+#sect-model .model-info { margin-bottom: 0; }
+.sect-link { margin-top: var(--s-3); }
+
+/* ── Key milestones: the nodes (panels_info.js renderTimeline) ── */
+.timeline { display: grid; gap: var(--s-3); grid-template-columns: repeat(2, 1fr); padding: var(--s-3) 0 var(--s-2); }
+.timeline-node { align-items: center; display: flex; flex-direction: column; }
+.timeline-dot { border: 2px solid var(--ink); border-radius: 50%; height: 12px; margin-bottom: 8px; width: 12px; }
+.timeline-dot.past { background: var(--ink); }
+.timeline-dot.now { background: var(--mark); }
+.timeline-dot.future { background: var(--void); border-color: var(--line-soft); }
+.timeline-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-align: center; text-transform: uppercase; }
+.timeline-date { font: 700 13px var(--mono); text-align: center; }
+.timeline-figure { color: var(--signal); font-size: 16px; }
+.timeline-count { color: var(--ink-2); font: 12px var(--mono); margin-top: 2px; text-align: center; }
+@media (min-width: 640px) { .timeline { grid-template-columns: repeat(4, 1fr); } }
+
+/* ── Milestone strip (panels_info.js renderMilestones): the checkpoints on
+   one rule, inked up to today, the current one under the highlighter ── */
+.ms-strip { display: grid; gap: 4px; grid-auto-columns: 1fr; grid-auto-flow: column; margin-top: 4px; padding: 20px 0 8px; position: relative; }
+.ms-line { background: var(--line-soft); height: 2px; left: 8%; position: absolute; right: 8%; top: 28px; z-index: 0; }
+.ms-line-past { background: var(--ink); height: 100%; transition: width var(--dur-slow) var(--ease-out); }
+.ms-node { align-items: center; display: flex; flex-direction: column; gap: 4px; min-width: 0; position: relative; text-align: center; z-index: 1; }
+.ms-dot { background: var(--void); border: 2px solid var(--ink); border-radius: 50%; height: 14px; width: 14px; }
+.ms-node.ms-past .ms-dot { background: var(--ink); }
+.ms-node.ms-now .ms-dot { background: var(--mark); transform: scale(1.15); }
+.ms-node.ms-future .ms-dot { border-color: var(--line-soft); }
+.ms-node-label { color: var(--ink-2); font: 700 var(--fs-label) var(--display); letter-spacing: .04em; line-height: 1.25; margin-top: 6px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.ms-node.ms-past .ms-node-label { color: var(--muted); }
+.ms-node.ms-now .ms-node-label { color: var(--ink); }
+.ms-node-date { color: var(--muted); font: 12px var(--mono); }
+.ms-node-count { font: 700 14px var(--mono); margin-top: 2px; }
+.ms-node.ms-past .ms-node-count { color: var(--ink-2); font-weight: 400; }
+@media (max-width: 639px) {
+  .ms-strip { gap: var(--s-3) 4px; grid-auto-columns: auto; grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); padding-top: 16px; }
+  .ms-line { display: none; }
+  .ms-strip:has(.ms-node:nth-child(7)) { gap: var(--s-2) 2px; grid-template-columns: repeat(4, 1fr); }
+  .ms-strip:has(.ms-node:nth-child(7)) .ms-dot { height: 10px; width: 10px; }
+}
+
+/* ── Fees (panels_info.js renderFees) ── */
+.fee-current { border-bottom: 1px solid var(--line-soft); margin-bottom: var(--s-4); padding: var(--s-3) 0 var(--s-4); text-align: center; }
+.fee-current-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin-bottom: 6px; text-transform: uppercase; }
+.fee-current-amount { font: 700 34px/1 var(--mono); }
+.fee-current-status { color: var(--muted); font-size: 12px; margin-top: 6px; }
+.fee-grid { display: grid; gap: var(--s-3); grid-template-columns: repeat(3, 1fr); text-align: center; }
+.fee-cell { border: 1px solid var(--line-soft); padding: 10px; }
+.fee-cell-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin-bottom: 4px; text-transform: uppercase; }
+.fee-cell-amount { font: 700 16px var(--mono); }
+.fee-empty { color: var(--muted); font-size: 13px; padding: var(--s-5) 0; text-align: center; }
+
+/* ── About This Model, the compact section (tab_about.js fills the chips) ── */
+#sect-model .stat-chip { background: transparent; border: 1px solid var(--line-soft); border-radius: 0; }
+#sect-model .stat-chip-num { font-family: var(--mono); }
+
+/* ── Up Next: the next three events, then the whole season ── */
+.up-next { border-top: 2px solid var(--line); margin-top: var(--s-5); padding-top: var(--s-3); }
+.up-next-head { align-items: center; display: flex; flex-wrap: wrap; gap: 10px 16px; justify-content: space-between; margin-bottom: var(--s-3); }
+.up-next-head h2 { font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; margin: 0; text-transform: uppercase; }
+.up-next-strip { display: grid; gap: var(--s-3); grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* A phone scrolls the strip sideways, one card at a time. */
+@media (max-width: 767px) {
+  .up-next-strip { display: flex; gap: var(--s-3); margin: 0 calc(-1 * var(--gutter)); overflow-x: auto; overscroll-behavior-x: contain; padding: 0 var(--gutter) 6px; scroll-padding: 0 var(--gutter); scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .up-next-strip::-webkit-scrollbar { display: none; }
+  .up-next-strip > .mini-card { flex: 0 0 min(78%, 320px); scroll-snap-align: start; }
+}
+@media (max-width: 639px) {
+  .up-next-strip { margin: 0 -14px; padding: 0 14px 6px; scroll-padding: 0 14px; }
+}
+
+/* ── The accuracy strip: hidden, kept for the owner's call ── */
+.accuracy-strip:empty, .accuracy-strip[hidden] { display: none; }

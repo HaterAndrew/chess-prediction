@@ -56,7 +56,9 @@ main { margin: 0 auto; max-width: 1400px; min-width: 0; padding: var(--s-6) var(
 /* tab_compare.js marks the button while the selected tournament is in Compare. */
 .compare-add-btn.compare-active { background: var(--mark); border-color: var(--line); color: var(--mark-ink); }
 .page-tab-panel { display: none; max-width: 1320px; }
-.page-tab-panel.active { display: block; }
+.page-tab-panel.active { animation: viewIn var(--dur) var(--ease-out); display: block; }
+@keyframes viewIn { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .page-tab-panel.active { animation: none; } }
 .site-foot { border-top: 1px solid var(--line); color: var(--muted); font: 12px/1.7 var(--mono); margin-top: var(--s-7); max-width: 1320px; padding-top: var(--s-4); }
 .site-foot a { color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; }
 .site-foot a:hover { color: var(--ink); }

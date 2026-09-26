@@ -41,6 +41,14 @@ html.sheet-open { overflow: hidden; }
   to { opacity: 1; transform: none; }
 }
 @keyframes scrimIn { from { opacity: 0; } to { opacity: 1; } }
+/* Leaving the way it came: the dialog and the popover fade, the phone's
+   sheet drops back below the foot (sheet.js closeSheet). While a finger
+   holds a sheet or a view, no transition fights the hand. */
+.sheet.sheet-closing .sheet-scrim { animation: scrimOut var(--dur-fast) var(--ease-out) forwards; }
+.sheet.sheet-closing .sheet-panel { animation: sheetOut var(--dur-fast) var(--ease-out) forwards; }
+@keyframes scrimOut { to { opacity: 0; } }
+@keyframes sheetOut { to { opacity: 0; transform: translate(-50%, -50%) scale(.98); } }
+.sheet-panel.dragging, .page-tab-panel.dragging { transition: none; }
 
 /* A popover: the sheet hangs under the control that opened it, the scrim
    stays clear (it still catches the click outside). sheet.js sets the
@@ -49,6 +57,8 @@ html.sheet-open { overflow: hidden; }
 @media (min-width: 640px) {
   .sheet.anchored .sheet-scrim { animation: none; background: transparent; }
   .sheet.anchored .sheet-panel { animation: sheetDown var(--dur) var(--ease-out); left: var(--anchor-x); max-height: min(70vh, 640px); top: var(--anchor-y); transform: none; width: var(--sheet-w, 320px); }
+  .sheet.anchored.sheet-closing .sheet-panel { animation: sheetDownOut var(--dur-fast) var(--ease-out) forwards; }
+  @keyframes sheetDownOut { to { opacity: 0; transform: translateY(-6px); } }
   .sheet.anchored[data-align="end"] .sheet-panel { left: auto; right: var(--anchor-right); }
   .sheet.anchored .sheet-handle, .sheet.anchored .sheet-actions { display: none; }
   .group-sheet.anchored .sheet-panel { padding: 0; }
@@ -60,6 +70,8 @@ html.sheet-open { overflow: hidden; }
 /* Phones: the sheet rises from the foot, full width, with a handle. */
 @media (max-width: 639px) {
   .sheet-panel { animation: sheetUp var(--dur-slow) var(--ease-out); border-bottom: 0; border-left: 0; border-right: 0; border-top-width: 2px; bottom: 0; left: 0; max-height: 92vh; max-height: 92svh; padding: 10px 16px calc(16px + env(safe-area-inset-bottom, 0px)); right: 0; top: auto; transform: none; width: 100%; }
+  .sheet.sheet-closing .sheet-panel { animation: sheetUpOut var(--dur-fast) var(--ease-out) forwards; }
+  @keyframes sheetUpOut { to { opacity: 0; transform: translateY(24px); } }
   .sheet-handle { background: var(--line-soft); display: block; height: 4px; margin: 0 auto var(--s-3); width: 40px; }
   .sheet-actions button { flex: 1; }
   .picker-panel { padding-bottom: env(safe-area-inset-bottom, 0px); }
@@ -76,5 +88,5 @@ html.sheet-open { overflow: hidden; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sheet-panel, .sheet-scrim { animation: none; }
+  .sheet-panel, .sheet-scrim, .sheet.sheet-closing .sheet-panel, .sheet.sheet-closing .sheet-scrim { animation: none; }
 }

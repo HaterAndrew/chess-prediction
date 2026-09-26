@@ -93,7 +93,7 @@ def test_the_csp_forbids_inline_script():
 def test_the_delegation_layer_is_actually_loaded():
     """Nothing on the page responds if this script tag is dropped."""
     html = _read(INDEX)
-    assert re.search(r'<script src="actions\.js\?v=[A-Za-z0-9]+"></script>', html), \
+    assert re.search(r'<script defer src="actions\.js\?v=[A-Za-z0-9]+"></script>', html), \
         "actions.js is not loaded by index.html; every control would be dead"
 
 

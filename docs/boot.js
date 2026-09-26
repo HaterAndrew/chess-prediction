@@ -25,6 +25,15 @@
   } catch (_) {}
   document.documentElement.setAttribute('data-theme', theme);
 
+  // The first-run note is in the page for a new visitor; a returning one
+  // (who saw the old splash gate, or dismissed the note) is marked here so
+  // the note is never laid out and then removed.
+  try {
+    if (localStorage.getItem('cep:splash:seen') || localStorage.getItem('cep:hint:seen')) {
+      document.documentElement.setAttribute('data-hint', 'seen');
+    }
+  } catch (_) {}
+
   // The site lives at https://chessentries.com. A visit to the old GitHub
   // Pages address goes there with its path, query and hash intact, and the
   // old service worker is unregistered first so it cannot resurrect this

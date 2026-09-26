@@ -50,7 +50,7 @@ function _renderHeroFigures(t, done) {
     const avg = Math.round(t.historical.reduce((s, h) => s + h.count, 0) / t.historical.length);
     const diff = t.current_count - avg;
     const pct = ((diff / avg) * 100).toFixed(0);
-    paceHtml = _kpiHTML('vs Average', `${diff >= 0 ? '+' : ''}${pct}%`, `hist avg: ${fmt(avg)}`, diff >= 0 ? 'v-green' : 'v-red');
+    paceHtml = _kpiHTML('vs Average', `${diff >= 0 ? '+' : ''}${pct}%`, `hist avg: ${fmt(avg)}`, diff >= 0 ? 'v-blue' : 'v-red');
   }
   document.getElementById('kpiPace').innerHTML = paceHtml || _kpiHTML('Historical', '–', 'No pace data', 'kpi-value-text');
 }
@@ -66,13 +66,13 @@ function _renderKpiProgress(t, done) {
     if (lastYr && lastYr.count) {
       const diff = t.current_count - lastYr.count;
       const pct = ((diff / lastYr.count) * 100).toFixed(0);
-      kpiProg.innerHTML = _kpiHTML(`vs ${lastYr.year}`, `${diff >= 0 ? '+' : ''}${pct}%`, `${fmt(lastYr.count)} prior`, diff >= 0 ? 'v-green' : 'v-red');
+      kpiProg.innerHTML = _kpiHTML(`vs ${lastYr.year}`, `${diff >= 0 ? '+' : ''}${pct}%`, `${fmt(lastYr.count)} prior`, diff >= 0 ? 'v-blue' : 'v-red');
     } else {
-      kpiProg.innerHTML = _kpiHTML('Status', 'Final', fmtDate(t.event_start), 'v-green kpi-value-text');
+      kpiProg.innerHTML = _kpiHTML('Status', 'Final', fmtDate(t.event_start), 'v-blue kpi-value-text');
     }
   } else if (t.point_estimate > 0) {
     const pct = Math.min(100, Math.round(t.current_count / t.point_estimate * 100));
-    const color = pct >= 80 ? 'v-green' : pct >= 40 ? 'v-gold' : 'v-blue';
+    const color = pct >= 40 && pct < 80 ? 'v-ink' : 'v-blue';
     kpiProg.innerHTML = _kpiHTML('Progress', `${pct}%`, 'of predicted', color);
   } else {
     kpiProg.innerHTML = _kpiHTML('Progress', '–', 'No prediction', 'kpi-value-text');
@@ -138,7 +138,7 @@ function renderKPIRow(t) {
     const regPct = t.point_estimate > 0 ? (t.current_count / t.point_estimate * 100).toFixed(1) : '–';
     cards.push(`<div class="kpi-card">
       <div class="kpi-label">% Registered</div>
-      <div class="kpi-value v-green">${regPct}%</div>
+      <div class="kpi-value v-blue">${regPct}%</div>
       <div class="kpi-sub">of predicted final</div>
     </div>`);
   }
@@ -151,7 +151,7 @@ function renderKPIRow(t) {
     const daysToEB = Math.ceil((ebDate - today) / 86400000);
     cards.push(`<div class="kpi-card">
       <div class="kpi-label">Early Bird</div>
-      <div class="kpi-value ${ebPassed ? 'v-red' : 'v-green'}">${ebPassed ? 'Ended' : daysToEB + 'd'}</div>
+      <div class="kpi-value ${ebPassed ? 'v-red' : 'v-blue'}">${ebPassed ? 'Ended' : daysToEB + 'd'}</div>
       <div class="kpi-sub">${fmtDate(t.early_bird_deadline)}${t.early_bird_fee ? ' · $' + t.early_bird_fee : ''}</div>
     </div>`);
   }
@@ -161,7 +161,7 @@ function renderKPIRow(t) {
     const avg = Math.round(t.historical.reduce((s,h) => s+h.count, 0) / t.historical.length);
     cards.push(`<div class="kpi-card">
       <div class="kpi-label">Past Average</div>
-      <div class="kpi-value v-purple">${fmt(avg)}</div>
+      <div class="kpi-value v-ink">${fmt(avg)}</div>
       <div class="kpi-sub">${t.historical.length} editions</div>
     </div>`);
 
@@ -172,7 +172,7 @@ function renderKPIRow(t) {
       const suffix = rank === 1 ? 'st' : rank === 2 ? 'nd' : rank === 3 ? 'rd' : 'th';
       cards.push(`<div class="kpi-card">
         <div class="kpi-label">All-Time Rank</div>
-        <div class="kpi-value ${rank <= 3 ? 'v-gold' : ''}">${rank}${suffix}</div>
+        <div class="kpi-value ${rank <= 3 ? 'v-ink' : ''}">${rank}${suffix}</div>
         <div class="kpi-sub">of ${allCounts.length} editions</div>
       </div>`);
     }
@@ -184,7 +184,7 @@ function renderKPIRow(t) {
     const widthPct = (width / t.point_estimate * 100).toFixed(0);
     cards.push(`<div class="kpi-card">
       <div class="kpi-label">CI Width</div>
-      <div class="kpi-value v-orange">&plusmn;${widthPct}%</div>
+      <div class="kpi-value v-ink">&plusmn;${widthPct}%</div>
       <div class="kpi-sub">${fmt(t.ci_lower)} – ${fmt(t.ci_upper)}</div>
     </div>`);
   }
@@ -193,7 +193,7 @@ function renderKPIRow(t) {
   if (t.regular_fee) {
     cards.push(`<div class="kpi-card">
       <div class="kpi-label">Regular Fee</div>
-      <div class="kpi-value" style="color:var(--text2)">$${t.regular_fee}</div>
+      <div class="kpi-value v-ink">$${t.regular_fee}</div>
       <div class="kpi-sub">${t.onsite_fee ? 'Onsite: $' + t.onsite_fee : ''}</div>
     </div>`);
   }

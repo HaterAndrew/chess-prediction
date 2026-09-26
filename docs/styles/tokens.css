@@ -9,12 +9,11 @@
    selected card, the forecast figure). Dark is the charcoal sheet: the
    same pens lifted, the stocks deepened, the highlighter unchanged with
    dark type on it.
-   Four layers, resolved top to bottom:
+   Three layers, resolved top to bottom:
      1. raw palette per theme, on :root[data-theme=...]
      2. semantic roles every component uses (--panel, --ink, --signal ...)
      3. per-theme corrections
-     4. compatibility aliases for the pre-2026-09 token names, kept until
-        every rule is rewritten on the semantic layer (then deleted)
+   Every rule reads the semantic layer; the raw names stay inside this file.
    Light is the default: a page with no data-theme attribute (no JS, print)
    renders light. boot.js sets the attribute before first paint from the
    stored preference; theme.js flips it.
@@ -35,7 +34,7 @@
   --text: #111111;
   --text-2: #3D3D3D;
   --text-muted: #5A5A5A;
-  --text-dim: #7A7A7A;
+  --text-dim: #767676;
   --accent: #1F4E9C;
   --accent-bright: #173C7A;
   --pen-red: #C8102E;
@@ -178,44 +177,6 @@
   --scrim: rgba(0, 0, 0, .6);
 }
 
-/* ── 4. Compatibility aliases (delete when no rule uses them) ── */
-:root {
-  --bg: var(--void);
-  --surface: var(--panel);
-  --surface2: var(--raised);
-  --surface3: var(--hover);
-  --border-light: var(--line-soft);
-  --text2: var(--ink-2);
-  --text3: var(--dim);
-  --blue-bright: var(--blue);
-  --blue-dim: var(--blue-tint);
-  --gold: var(--signal);
-  --gold-bright: var(--signal-soft);
-  --gold-dim: var(--signal-tint);
-  --green-bright: var(--green);
-  --green-dim: var(--green-tint);
-  --red: var(--ember);
-  --red-dim: var(--ember-tint);
-  --orange: var(--amber);
-  --orange-bright: var(--amber);
-  --orange-dim: var(--amber-tint);
-  --purple: var(--muted);
-  --purple-dim: var(--raised);
-  --radius-sm: var(--radius-lg);
-  --transition: var(--dur) var(--ease-out);
-  --shadow: var(--elevation);
-  --shadow-sm: none;
-  --glow-blue: none;
-  --glow-gold: none;
-  --font-mono: var(--mono);
-  --fs-1: var(--fs-meta);
-  --fs-2: var(--fs-body);
-  --fs-3: var(--fs-body-lg);
-  --fs-4: var(--fs-body-lg);
-  --fs-5: var(--fs-h2);
-  --fs-6: var(--fs-h2-lg);
-}
-
 /* ── Print is always the white sheet ────────────────── */
 @media print {
   :root,
@@ -232,7 +193,7 @@
     --text: #111111;
     --text-2: #3D3D3D;
     --text-muted: #5A5A5A;
-    --text-dim: #7A7A7A;
+    --text-dim: #767676;
     --accent: #1F4E9C;
     --accent-bright: #173C7A;
     --pen-red: #C8102E;

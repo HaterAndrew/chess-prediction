@@ -266,8 +266,8 @@ function renderCompareChart(selected) {
             pointRadius: 7,
             pointStyle: 'circle',
             pointBorderWidth: 2,
-            // Canvas cannot resolve CSS custom properties; 'var(--bg)' here
-            // silently painted the ring black on every theme.
+            // Canvas cannot resolve CSS custom properties, so the ring reads the
+            // paper through PALETTE (a var() here painted it black on every theme).
             pointBorderColor: PALETTE.bg,
             showLine: false,
           });
@@ -424,7 +424,7 @@ function renderCompareChart(selected) {
           bodyColor: PALETTE.text2,
           footerColor: PALETTE.muted,
           padding: 12,
-          cornerRadius: 8,
+          cornerRadius: 0,
           titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' },
           bodyFont: { size: 12 },
           usePointStyle: true, pointStyleWidth: _mobileVP() ? 6 : 8,

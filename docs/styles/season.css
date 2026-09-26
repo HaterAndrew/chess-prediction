@@ -22,7 +22,9 @@
 .cal-dot-mini.cal-pace-pos { background: var(--signal); border-color: var(--signal); }
 .cal-dot-mini.cal-pace-neg { background: var(--ember); border-color: var(--ember); }
 .cal-track-wrap { padding: 14px 14px 26px; position: relative; }
-.cal-track { background: linear-gradient(180deg, transparent 14px, var(--ink) 14px, var(--ink) 16px, transparent 16px); height: 30px; position: relative; }
+.cal-track { height: 30px; position: relative; }
+/* the stem is a 2px ink rule drawn through the nodes */
+.cal-track::before { background: var(--ink); content: ""; height: 2px; left: 0; position: absolute; right: 0; top: 14px; }
 .cal-axis-now { background: var(--mark); border: 1px solid var(--ink); bottom: -6px; left: 0; pointer-events: none; position: absolute; top: -6px; transform: translateX(-50%); width: 6px; }
 .cal-dot { background: var(--void); border: 2px solid var(--ink); border-radius: 50%; cursor: pointer; padding: 0; position: absolute; top: 50%; transform: translate(-50%, -50%); transition: transform var(--dur-fast) var(--ease-out); }
 .cal-dot::before { content: ""; inset: -12px; position: absolute; }

@@ -33,7 +33,7 @@
 .sp { margin-bottom: 14px; }
 .info-note { color: var(--muted); font-size: var(--fs-body); line-height: 1.6; margin-top: 10px; }
 .info-note.down { margin-bottom: 14px; margin-top: 0; }
-.gold-link { color: var(--signal); text-decoration: underline; }
+.pen-link { color: var(--signal); text-decoration: underline; }
 .code-chip { background: var(--raised); border: 1px solid var(--line-soft); color: var(--ink-2); font: 12px var(--mono); padding: 1px 4px; }
 
 /* ── Formulas: typed on the raised sheet ── */
@@ -50,7 +50,7 @@
 .info-table td { border-bottom: 1px solid var(--line-soft); color: var(--ink-2); padding: 8px 10px; vertical-align: top; }
 .info-table tbody tr:last-child td { border-bottom: 0; }
 .info-table .tc { text-align: center; }
-.info-table td.gold { color: var(--signal); font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 700; }
+.info-table td.pen { color: var(--signal); font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 700; }
 .info-table td.lbl { color: var(--ink); font-weight: 700; }
 .info-table td.mut { color: var(--muted); }
 .info-table tr.highlight td { background: var(--stock-yellow); color: var(--ink); }

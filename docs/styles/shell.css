@@ -31,7 +31,7 @@ main :is(h1, h2, h3, [id]) { scroll-margin-top: calc(var(--topbar-height) + 12px
 
 /* The nav: four items, the open one under the highlighter. */
 .nav { display: flex; flex: none; gap: 2px; margin-left: auto; }
-.nav-item { align-items: center; background: transparent; border: 0; color: var(--ink-2); cursor: pointer; display: inline-flex; font: 700 13px var(--display); font-stretch: var(--stretch-label); gap: 7px; height: 34px; letter-spacing: .06em; padding: 0 10px; text-transform: uppercase; transition: background var(--dur-fast), color var(--dur-fast); }
+.nav-item { align-items: center; background: transparent; border: 0; color: var(--ink-2); cursor: pointer; display: inline-flex; font: 700 13px var(--display); font-stretch: var(--stretch-label); gap: 7px; height: 34px; letter-spacing: .04em; padding: 0 10px; text-transform: uppercase; transition: background var(--dur-fast), color var(--dur-fast); }
 .nav-item:hover { background: var(--raised); color: var(--ink); }
 .nav-item.active { background: var(--mark); color: var(--mark-ink); }
 .nav-icon { flex: none; height: 16px; width: 16px; }
@@ -49,6 +49,9 @@ main :is(h1, h2, h3, [id]) { scroll-margin-top: calc(var(--topbar-height) + 12px
 main { margin: 0 auto; max-width: 1400px; min-width: 0; padding: var(--s-6) var(--s-6) 96px; }
 /* The view header is the title row on the sheet: the name in condensed
    capitals, a rule under it, the view's actions at the right. */
+/* while the data loads the header holds the dateline's line and, on a phone, the two lines of a tournament's name */
+html[data-loading] .view-dateline[hidden] { display: block; min-height: 15px; visibility: hidden; }
+@media (max-width: 639px) { html[data-loading] .view-header h1 { min-height: 2em; } html[data-loading] .view-title-block { width: 100%; } }
 .view-header { align-items: flex-end; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-4); justify-content: space-between; margin-bottom: var(--s-5); max-width: 1320px; padding-bottom: 14px; }
 .view-header h1 { color: var(--ink); font-size: var(--fs-h1); font-stretch: var(--stretch-display); font-weight: 800; letter-spacing: .01em; line-height: 1; margin: 0; text-transform: uppercase; }
 .view-actions { display: flex; flex: none; gap: 8px; }

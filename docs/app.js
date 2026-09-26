@@ -244,14 +244,8 @@ function init() {
   _idle(ensureModelHealth);
   _idle(renderAllTournaments);
   document.getElementById('lastUpdated').textContent = fmtDateTimeLong(TOURNAMENT_DATA.generated_time || TOURNAMENT_DATA.generated);
-  // First-run hint: shown once to genuinely new visitors. Anyone who already
-  // saw the old splash gate (cep:splash:seen) counts as a returning user.
-  try {
-    if (!localStorage.getItem('cep:splash:seen') && !localStorage.getItem('cep:hint:seen')) {
-      const hint = document.getElementById('firstRunHint');
-      if (hint) hint.hidden = false;
-    }
-  } catch (_) {}
+  // The first-run note is in the markup; boot.js hides it before paint for a
+  // returning visitor (cep:splash:seen or cep:hint:seen), so nothing here.
 
   renderSummaryBar();
 

@@ -61,24 +61,19 @@ function readPalette() {
   };
   const font = (name, fb) => (cs.getPropertyValue(name) || '').trim() || fb;
   const p = {
+    // surfaces and ink (tokens.css "semantic roles")
     bg: t('--void', '#151517'),
     surface: t('--panel', '#151517'),
     surface2: t('--raised', '#1F1F23'),
-    surface3: t('--hover', '#26262A'),
     border: t('--line', '#8F8F8E'),
     text: t('--ink', '#F2F2EF'),
-    text2: t('--text2', '#D4D4CF'),
+    text2: t('--ink-2', '#D4D4CF'),
     muted: t('--muted', '#A7A7A3'),
-    dim: t('--dim', '#8A8A86'),
+    // the two pens and the highlighter, for state drawn on canvas
     blue: t('--blue', '#8FB4F0'),
-    blueBright: t('--blue', '#B3CCF5'),
-    gold: t('--signal', '#8FB4F0'),
-    goldBright: t('--signal-soft', '#B3CCF5'),
-    green: t('--green', '#8FB4F0'),
-    greenBright: t('--green', '#B3CCF5'),
     red: t('--ember', '#FF7A8A'),
-    orange: t('--amber', '#F2F2EF'),
-    orangeBright: t('--amber', '#F2F2EF'),
+    mark: t('--mark', '#FFE94D'),
+    markInk: t('--mark-ink', '#151517'),
     // chart roles (tokens.css "chart roles")
     actual: t('--chart-actual', '#8FB4F0'),
     projected: t('--chart-projected', '#F2F2EF'),
@@ -114,24 +109,6 @@ function themeRgba(color, alpha) {
   return `rgba(${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)},${alpha})`;
 }
 
-// Vertical gradient for scriptable backgroundColor, cached per chart area.
-// Chart.js resolves scriptable colors once before layout, when chartArea is
-// still undefined — return the bottom stop as a flat fallback for that pass.
-// The cache object is supplied by the call site (one per dataset) and keyed
-// on the chart-area extent so resize rebuilds the CanvasGradient exactly once
-// instead of allocating a new one on every scriptable resolution.
-function areaGradient(chart2, cache, stops) {
-  const { ctx, chartArea } = chart2;
-  if (!chartArea) return stops[stops.length - 1][1];
-  const key = chartArea.top + ':' + chartArea.bottom;
-  if (cache.key !== key) {
-    const g = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-    stops.forEach(([at, color]) => g.addColorStop(at, color));
-    cache.key = key;
-    cache.grad = g;
-  }
-  return cache.grad;
-}
 let selectedIndex = 0;
 let chart = null;
 let histChartObj = null;
@@ -183,10 +160,11 @@ function _idle(fn, timeout) {
   }
   return setTimeout(fn, 0);
 }
+// The fold has rendered: the loading reservations (forecast.css, shell.css
+// under html[data-loading]) and any placeholder blocks come off.
 function hideSkeletons() {
+  document.documentElement.removeAttribute('data-loading');
   document.querySelectorAll('.skeleton').forEach(el => el.style.display = 'none');
-  const loader = document.getElementById('skeletonLoader');
-  if (loader) loader.style.display = 'none';
 }
 
 function esc(s) {

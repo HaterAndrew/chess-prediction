@@ -292,7 +292,7 @@ function perfDrawScatter(data) {
       pts.forEach(p => {
         const px = xS.getPixelForValue(p.a);
         if (px < xS.left || px > xS.right) return;
-        const col = p.ok ? PALETTE.green : PALETTE.red;
+        const col = p.ok ? PALETTE.blue : PALETTE.red;
         const yLo = yS.getPixelForValue(p.lo), yHi = yS.getPixelForValue(p.hi);
         ctx2.strokeStyle = col; ctx2.globalAlpha = 0.25; ctx2.lineWidth = 2;
         ctx2.beginPath();
@@ -321,7 +321,7 @@ function perfDrawScatter(data) {
     type: 'scatter',
     data: {
       datasets: [
-        { label: 'Within CI', data: toXY(pts.filter(p => p.ok)), ...dotCfg(PALETTE.green) },
+        { label: 'Within CI', data: toXY(pts.filter(p => p.ok)), ...dotCfg(PALETTE.blue) },
         { label: 'Outside CI', data: toXY(pts.filter(p => !p.ok)), ...dotCfg(PALETTE.red) },
         { label: 'perfect', type: 'line', data: [{ x: 0, y: 0 }, { x: maxV, y: maxV }],
           borderColor: themeRgba(PALETTE.text, 0.35), borderDash: [8, 5], borderWidth: 1.5,
@@ -353,7 +353,7 @@ function perfDrawScatter(data) {
         tooltip: {
           backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
           titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
-          padding: 12, cornerRadius: 8,
+          padding: 12, cornerRadius: 0,
           titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' }, bodyFont: { size: 12 },
           footerFont: { size: 11, style: 'italic' },
           usePointStyle: true, pointStyleWidth: _mobileVP() ? 6 : 8,
@@ -384,11 +384,11 @@ function perfDrawTimeline(data) {
   if (!agg.length) return;
 
   const maxMAE = Math.max(15, ...agg.map(a => a.mae_pct)) * 1.2;
-  const threshold = v => v <= 8 ? PALETTE.green : v <= 12 ? PALETTE.greenBright : PALETTE.gold;
+  // The pens as on the tiles: blue for good, ink for fair, red for a miss.
+  const threshold = v => v <= 8 ? PALETTE.blue : v <= 12 ? PALETTE.text : PALETTE.red;
   const dotColors = agg.map(a => threshold(a.mae_pct));
-  const _tlGrad = {};
 
-  // Green "good zone" under the 10% MAE line.
+  // The good zone under the 10% MAE line, one wash of the blue pen.
   const goodZone = {
     id: 'goodZone',
     beforeDraw(c) {
@@ -396,7 +396,7 @@ function perfDrawTimeline(data) {
       const y10 = c.scales.y.getPixelForValue(10);
       if (y10 >= area.bottom) return;
       c.ctx.save();
-      c.ctx.fillStyle = themeRgba(PALETTE.green, 0.05);
+      c.ctx.fillStyle = themeRgba(PALETTE.blue, 0.06);
       c.ctx.fillRect(area.left, y10, area.right - area.left, area.bottom - y10);
       c.ctx.restore();
     }
@@ -430,13 +430,10 @@ function perfDrawTimeline(data) {
       labels: agg.map(a => 'T-' + a.T),
       datasets: [{
         data: agg.map(a => a.mae_pct),
-        borderColor: PALETTE.gold,
+        borderColor: PALETTE.projected,
         borderWidth: 2.5,
         borderCapStyle: 'round',
-        backgroundColor: (context) => areaGradient(context.chart, _tlGrad, [
-          [0, themeRgba(PALETTE.gold, 0.18)],
-          [1, themeRgba(PALETTE.gold, 0.02)]
-        ]),
+        backgroundColor: themeRgba(PALETTE.text, 0.04),
         fill: 'origin',
         pointRadius: 4,
         pointHoverRadius: 7,
@@ -471,7 +468,7 @@ function perfDrawTimeline(data) {
         tooltip: {
           backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
           titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
-          padding: 12, cornerRadius: 8,
+          padding: 12, cornerRadius: 0,
           titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' }, bodyFont: { size: 12 },
           displayColors: false,
           callbacks: {

@@ -37,6 +37,7 @@
     'dismiss-hint': function () {
       const hint = document.getElementById('firstRunHint');
       if (hint) hint.hidden = true;
+      document.documentElement.setAttribute('data-hint', 'seen');
       try { localStorage.setItem('cep:hint:seen', '1'); } catch (_) {}
     },
     'scroll-top': function () { window.scrollTo({ top: 0, behavior: 'smooth' }); },

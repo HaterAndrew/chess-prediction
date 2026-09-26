@@ -23,6 +23,19 @@
 .note-context:empty { display: none; }
 
 /* ── Hero: a wallchart cell. ── */
+/* While the data loads (html[data-loading], cleared by hideSkeletons once
+   the fold has rendered) the markup carries placeholders shaped like what a
+   live event renders: the note's lines, the range and its tags, seven week
+   rows, the three cards with their folds, the chart's legend. They are laid
+   out but invisible, the figure and the card values pulse, and the two-line
+   note and title on a phone hold their height, so nothing moves when the
+   figures land. */
+html[data-loading] :is(#deltaSub, #deltaContext, #deltaValue, #heroCi, #weekBars, .kpi-card, #chartLegend, #chartSubtitle, #chartMobileDates) { visibility: hidden; }
+html[data-loading] .hero-number:empty, html[data-loading] .kpi-value { animation: skeleton-pulse 1.5s ease-in-out infinite; background: var(--hover); color: transparent; visibility: visible; }
+html[data-loading] .hero-number:empty { min-height: 1em; min-width: 3ch; }
+html[data-loading] .hero-tags .tag { min-width: 18em; }
+/* beside the figure, the verdict runs to three lines and its context to two */
+@media (max-width: 639px) { html[data-loading] #deltaSub { min-height: 4.5em; } html[data-loading] #deltaContext { min-height: 3em; } }
 .hero { border-bottom: 1px solid var(--line); border-top: 2px solid var(--line); display: grid; gap: var(--s-4); grid-template-columns: 1fr; padding: var(--s-4) 0; }
 .hero-primary, .hero-week { min-width: 0; }
 .hero-label { align-items: center; color: var(--muted); display: flex; font: 700 var(--fs-label) var(--display); font-stretch: var(--stretch-label); gap: 6px; letter-spacing: var(--track-label); margin-bottom: 8px; text-transform: uppercase; }
@@ -66,9 +79,7 @@
 .kpi-sub { color: var(--muted); font-size: 12px; margin-top: 6px; }
 .v-blue { color: var(--blue); }
 .v-red { color: var(--ember); }
-.v-green { color: var(--green); }
 .v-ink { color: var(--ink); }
-.v-gold, .v-orange, .v-purple { color: var(--ink); }
 .kpi-fold { margin-top: 10px; }
 .kpi-fold:empty { display: none; }
 .fold-head { color: var(--muted); display: flex; font-size: 11px; gap: 8px; justify-content: space-between; margin-bottom: 4px; }
@@ -119,6 +130,7 @@
 .chart-legend { align-items: center; display: flex; flex-wrap: wrap; gap: var(--s-3); }
 .legend-item { align-items: center; color: var(--muted); display: flex; font-size: 12px; gap: 6px; }
 .legend-swatch { height: 3px; width: 16px; }
+/* a hard-stop gradient draws the dash rhythm (6 on, 4 off): a pattern, not shading */
 .legend-swatch.dashed { background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 10px); }
 .legend-swatch.band { height: 10px; opacity: .4; }
 .chart-wrap { height: 320px; position: relative; }

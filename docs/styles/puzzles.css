@@ -30,7 +30,7 @@
 .puzzle-dot { border: 1px solid var(--line); cursor: pointer; height: 12px; transition: background var(--dur); width: 12px; }
 .puzzle-dot.solved { background: var(--signal); border-color: var(--signal); }
 .puzzle-dot.failed { background: var(--ember); border-color: var(--ember); }
-.puzzle-dot.current { box-shadow: 0 0 0 3px var(--mark); }
+.puzzle-dot.current { outline: 3px solid var(--mark); }
 .puzzle-nav { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-3); }
 .puzzle-nav .btn svg, .puzzle-nav .button svg { height: 15px; width: 15px; }
 
@@ -55,4 +55,4 @@
 .history-event:last-child { border-bottom: 0; }
 .history-event.muted { color: var(--muted); }
 .history-year { color: var(--signal); font: 700 14px var(--mono); margin-right: 8px; }
-.history-cat { border: 1px solid var(--line-soft); color: var(--muted); display: inline-block; font: 700 10px var(--display); letter-spacing: .06em; margin-left: 8px; padding: 1px 6px; text-transform: uppercase; vertical-align: 1px; }
+.history-cat { border: 1px solid var(--line-soft); color: var(--muted); display: inline-block; font: 700 10px var(--display); letter-spacing: var(--track-label); margin-left: 8px; padding: 1px 6px; text-transform: uppercase; vertical-align: 1px; }

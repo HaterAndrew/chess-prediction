@@ -25,12 +25,11 @@
   } catch (_) {}
   document.documentElement.setAttribute('data-theme', theme);
 
-  // The site is moving to https://chessentries.com. Once the domain answers
-  // (the cutover PR flips this flag), a visit to the old GitHub Pages address
-  // goes there with its path, query and hash intact, and the old service
-  // worker is unregistered first so it cannot resurrect this copy. Until then
-  // the Pages copy keeps serving as it always has.
-  var CUTOVER = false;
+  // The site lives at https://chessentries.com. A visit to the old GitHub
+  // Pages address goes there with its path, query and hash intact, and the
+  // old service worker is unregistered first so it cannot resurrect this
+  // copy. The flag stays so a rollback is a one-line change.
+  var CUTOVER = true;
   if (CUTOVER && typeof location !== 'undefined' && /\.github\.io$/.test(location.hostname)) {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(function (regs) {

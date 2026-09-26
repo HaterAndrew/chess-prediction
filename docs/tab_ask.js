@@ -18,9 +18,6 @@ const ASK_ENDPOINT = (function() {
   const localStatic = (l.hostname === 'localhost' || l.hostname === '127.0.0.1' || l.hostname === '')
     && l.port !== '8787';
   if (localStatic) return 'http://localhost:8787/ask';
-  // The GitHub Pages copy has no /ask of its own: until the cutover it keeps
-  // using the Worker it always used.
-  if (/\.github\.io$/.test(l.hostname)) return 'https://chess-ask.hater-andrewd.workers.dev/ask';
   return '/ask';
 })();
 const ASK_SUGGESTIONS = [

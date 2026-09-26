@@ -90,10 +90,26 @@ function navigateToHash() {
     // skeletons, so if it never runs they never clear.
     const inRange = route.idx !== null && route.idx >= 0 && route.idx <= maxIdx;
     selectTournament(inRange ? route.idx : 0, inRange);
+  } else if (!_subjectRendered) {
+    // A deep link to another view (#season, #compare) still needs a subject:
+    // the top bar names it, and the Season's timeline and cards render from
+    // the same pass. Without this a fresh load on #season showed "Loading..."
+    // in the top bar and a Season with no cards.
+    selectTournament(_defaultTournamentIndex(), true);
   }
   // Set hash without re-triggering (already at the right hash)
   return true;
 }
+
+// The tournament a fresh load opens on: the Chicago Open when it is live,
+// else the first live one, else the first in the list.
+function _defaultTournamentIndex() {
+  const ts = TOURNAMENT_DATA.tournaments;
+  const chiIdx = ts.findIndex(t => t.status === 'live' && t.family.includes('Chicago Open'));
+  const liveIdx = chiIdx >= 0 ? chiIdx : ts.findIndex(t => t.status === 'live');
+  return liveIdx >= 0 ? liveIdx : 0;
+}
+let _subjectRendered = false;
 
 window.addEventListener('hashchange', () => navigateToHash());
 
@@ -166,6 +182,7 @@ function _renderAboveTheFold(t, sections) {
 function _renderCalendarAndCards() {
   renderCalendar();
   renderMiniCards();
+  renderUpNext();
 }
 
 // Phase C: everything below the chart.
@@ -182,6 +199,7 @@ function _renderBelowTheChart(t) {
 
 function selectTournament(index, skipHash) {
   selectedIndex = index;
+  _subjectRendered = true;
   const t = TOURNAMENT_DATA.tournaments[index];
   const gen = ++_renderGen;
   if (!skipHash) updateHash();
@@ -194,7 +212,7 @@ function selectTournament(index, skipHash) {
   updateCompareBtn();
 
   // Staggered fade-in for visual polish
-  const sections = document.querySelectorAll('.delta-banner, .chart-card, .kpi-row, .progress-row, .grid-2');
+  const sections = document.querySelectorAll('.pace-note, .chart-card, .kpi-row, .grid-2, .up-next');
   sections.forEach(s => s.style.opacity = '0');
 
   _runRenderPhases(gen, [
@@ -261,23 +279,23 @@ function init() {
 
   renderSummaryBar();
 
+  // The sections open per their data-open on load and when the width class
+  // changes; print opens every one and restores them after.
   syncSectionDisclosure();
   window.addEventListener('resize', () => syncSectionDisclosure());
   window.addEventListener('beforeprint', () => {
-    document.querySelectorAll('details.sect').forEach(d => { d.open = true; });
+    document.querySelectorAll('details.sect').forEach(d => { d.dataset.wasOpen = d.open ? '1' : '0'; d.open = true; });
   });
-  window.addEventListener('afterprint', () => syncSectionDisclosure(true));
+  window.addEventListener('afterprint', () => {
+    document.querySelectorAll('details.sect').forEach(d => { if ('wasOpen' in d.dataset) d.open = d.dataset.wasOpen === '1'; });
+  });
 
   // Set default sort indicator on the date column
   const defaultSortTh = document.querySelector('.tourney-table th[data-act="sort-table"][data-col="date"]');
   if (defaultSortTh) defaultSortTh.classList.add('asc');
 
-  // Part B: Deep link from hash, or default to Chicago Open / first live
-  if (!navigateToHash()) {
-    const chiIdx = TOURNAMENT_DATA.tournaments.findIndex(t => t.status === 'live' && t.family.includes('Chicago Open'));
-    const liveIdx = chiIdx >= 0 ? chiIdx : TOURNAMENT_DATA.tournaments.findIndex(t => t.status === 'live');
-    selectTournament(liveIdx >= 0 ? liveIdx : 0);
-  }
+  // Part B: Deep link from hash, or the default tournament
+  if (!navigateToHash()) selectTournament(_defaultTournamentIndex());
 }
 
 // Back to top visibility

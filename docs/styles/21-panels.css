@@ -91,17 +91,10 @@
 .mh-updated { font-size: var(--fs-2); color: var(--muted); }
 .mh-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 14px; }
 
-.summary-bar {
-  display: flex; gap: 20px; flex-wrap: wrap;
-  padding: 14px 0 10px;
-  font-size: var(--fs-2); color: var(--muted);
-  border-bottom: 1px solid var(--border-light);
-}
 .chart-box { margin-bottom: 12px; }
 .chart-box.h180 { height: 180px; }
 .chart-box.h200 { height: 200px; }
 .chart-caption { font-size: var(--fs-2); color: var(--muted); }
-.tourn-label-text { font-weight: 700; font-size: var(--fs-3); }
 
 .model-info-row { display: flex; align-items: flex-start; gap: 20px; flex-wrap: wrap; }
 .model-info-blurb { flex: 1; min-width: 240px; margin: 0; }

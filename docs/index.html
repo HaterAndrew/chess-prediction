@@ -27,29 +27,24 @@
 <link rel="stylesheet" href="styles/tokens.css?v=56b8c4ba24">
 <link rel="stylesheet" href="styles/01-base.css?v=03f7525f8c">
 <link rel="stylesheet" href="styles/shell.css?v=963c55f4d6">
-<link rel="stylesheet" href="styles/controls.css?v=b613b1aa7d">
+<link rel="stylesheet" href="styles/controls.css?v=d500d9c9ff">
 <link rel="stylesheet" href="styles/overlays.css?v=f86784d8b1">
 <link rel="stylesheet" href="styles/picker.css?v=d1ecc80b37">
 <link rel="stylesheet" href="styles/03-cmdk.css?v=8be0b8a479">
-<link rel="stylesheet" href="styles/05-delta-banner.css?v=c417adc28d">
-<link rel="stylesheet" href="styles/06-mobile-predictions.css?v=2a44f6db76">
-<link rel="stylesheet" href="styles/07-hero.css?v=30b8537fa1">
-<link rel="stylesheet" href="styles/08-chart.css?v=c0add30020">
-<link rel="stylesheet" href="styles/09-timeline.css?v=10d9c06e16">
-<link rel="stylesheet" href="styles/10-comparison.css?v=95f4408fbe">
-<link rel="stylesheet" href="styles/11-tables.css?v=52afde408e">
-<link rel="stylesheet" href="styles/12-calendar.css?v=72c2b03dd8">
-<link rel="stylesheet" href="styles/cards.css?v=72fbc82335">
+<link rel="stylesheet" href="styles/forecast.css?v=02728b132f">
+<link rel="stylesheet" href="styles/sections.css?v=6b375b459d">
+<link rel="stylesheet" href="styles/season.css?v=b483f627f1">
+<link rel="stylesheet" href="styles/10-comparison.css?v=e1594e165c">
 <link rel="stylesheet" href="styles/14-puzzles.css?v=aa45d7e583">
 <link rel="stylesheet" href="styles/15-data-entry.css?v=c68b8317e2">
 <link rel="stylesheet" href="styles/16-email.css?v=774e6cca13">
 <link rel="stylesheet" href="styles/17-compare.css?v=33bdbebd97">
 <link rel="stylesheet" href="styles/18-performance.css?v=854b88f78f">
-<link rel="stylesheet" href="styles/19-motion.css?v=272bb138e5">
-<link rel="stylesheet" href="styles/20-mobile.css?v=68d5a1d54c">
-<link rel="stylesheet" href="styles/21-panels.css?v=8d1d4e15e7">
-<link rel="stylesheet" href="styles/22-panels-shared.css?v=e73fd9661f">
-<link rel="stylesheet" href="styles/23-print.css?v=ed72791308">
+<link rel="stylesheet" href="styles/19-motion.css?v=72ee71ee5f">
+<link rel="stylesheet" href="styles/20-mobile.css?v=53e0e81839">
+<link rel="stylesheet" href="styles/21-panels.css?v=b6db1dc191">
+<link rel="stylesheet" href="styles/22-panels-shared.css?v=9d13292a70">
+<link rel="stylesheet" href="styles/23-print.css?v=b75fa9d7c0">
 <link rel="stylesheet" href="styles/24-ask-audit.css?v=62b5d908cd">
 <link rel="stylesheet" href="styles/theme.css?v=86ed0bd11f">
 </head>
@@ -154,7 +149,10 @@
   <!-- ── View header: the open view's name and, on the Forecast, its
        actions (shell.js reflectNav) ── -->
   <section class="view-header">
-    <h1 id="viewTitle">Forecast</h1>
+    <div class="view-title-block">
+      <h1 id="viewTitle">Forecast</h1>
+      <p class="view-dateline" id="viewDateline" hidden></p>
+    </div>
     <div class="view-actions" id="viewActions">
       <button type="button" class="btn compare-add-btn" id="compareAddBtn" data-act="add-to-compare" title="Add to Compare" aria-label="Add tournament to compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg><span class="btn-label">Add to Compare</span></button>
     </div>
@@ -184,15 +182,15 @@
     </div>
   </div>
 
-  <!-- ── Delta Banner (YoY headline + multi-year pace context as sub-line) ── -->
-  <div class="delta-banner muted" id="deltaBanner">
-    <div class="delta-icon" id="deltaIcon">&#9654;</div>
-    <div class="delta-text">
-      <div class="delta-main" id="deltaMain">Loading...</div>
-      <div class="delta-sub" id="deltaSub"></div>
-      <div class="delta-context" id="deltaContext"></div>
+  <!-- ── Pace note: the verdict against last year, with the multi-year pace
+       as its context line (panels_info.js renderDelta) ── -->
+  <div class="note pace-note" id="deltaBanner" role="status">
+    <div class="note-body">
+      <div class="note-title" id="deltaMain">Loading...</div>
+      <div class="note-detail" id="deltaSub"></div>
+      <div class="note-context" id="deltaContext"></div>
     </div>
-    <div class="delta-value" id="deltaValue"></div>
+    <div class="pace-figure num" id="deltaValue"></div>
   </div>
 
   <!-- ── Manual override note ── -->
@@ -272,17 +270,13 @@
   <!-- ── KPI Row ── -->
   <div class="kpi-row" id="kpiRow" hidden></div>
 
-  <!-- ── Progress Bars ── -->
-  <div class="progress-row" id="progressRow"></div>
-
-
-  <!-- ── Timeline + Historical (collapsible on phones) ── -->
-  <!-- v4 W1: `open` in markup so a JS fault degrades to visible content on
-       desktop (the summary is display:none there); syncSectionDisclosure still
-       closes these on phones once it runs. v4 W5: summary text is an h3 for
-       screen-reader heading navigation. -->
-  <details class="sect" id="sect-milestones" open>
-  <summary class="sect-summary"><h3 class="sect-summary-h">Milestones and History</h3></summary>
+  <!-- ── The evidence, in disclosure sections. data-open sets the default
+       (panels_cal.js syncSectionDisclosure): Milestones and History open from
+       640 px up, the rest closed until opened; print opens them all. The
+       `open` on the first keeps it visible if the script never runs. The
+       summary text is an h3 for screen-reader heading navigation. ── -->
+  <details class="sect" id="sect-milestones" data-open="wide" open>
+  <summary class="sect-summary"><h3 class="sect-summary-h">Milestones and History</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
   <div class="grid-2 mt4">
     <div class="panel">
       <h3 class="panel-title">Key Milestones</h3>
@@ -297,9 +291,9 @@
   </div>
   </details>
 
-  <!-- ── Registration Curve + Fees (collapsible on phones) ── -->
-  <details class="sect" id="sect-curve" open>
-  <summary class="sect-summary"><h3 class="sect-summary-h">Registration Curve and Fees</h3></summary>
+  <!-- ── Registration Curve + Fees ── -->
+  <details class="sect" id="sect-curve" data-open="closed">
+  <summary class="sect-summary"><h3 class="sect-summary-h">Registration Curve and Fees</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
   <div class="grid-2" id="curveAndFeeRow">
     <div class="panel" id="regCurvePanel">
       <h3 class="panel-title">Registration Curve Pattern</h3>
@@ -313,9 +307,9 @@
   </div>
   </details>
 
-  <!-- ── Model Info (compact, collapsible on phones) ── -->
-  <details class="sect" id="sect-model" open>
-  <summary class="sect-summary"><h3 class="sect-summary-h">About This Model</h3></summary>
+  <!-- ── Model Info (compact; the Performance view has the whole story) ── -->
+  <details class="sect" id="sect-model" data-open="closed">
+  <summary class="sect-summary"><h3 class="sect-summary-h">About This Model</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
   <div class="panel model-info mb24">
     <h3 class="panel-title">About This Model</h3>
     <div class="model-info-row">
@@ -348,9 +342,20 @@
         </div>
       </div>
     </div>
+    <p class="sect-link"><button type="button" class="btn" data-act="page-tab" data-tab="performance">See the Performance View</button></p>
   </div>
 
   </details>
+
+  <!-- ── Up Next: the next three events, then the whole season
+       (season_cards.js renderUpNext) ── -->
+  <section class="up-next" id="upNext" aria-labelledby="upNextTitle">
+    <div class="up-next-head">
+      <h2 id="upNextTitle">Up Next</h2>
+      <button type="button" class="btn" data-act="page-tab" data-tab="season">See the Full Season</button>
+    </div>
+    <div class="up-next-strip" id="upNextStrip"></div>
+  </section>
 
   </div><!-- /panel-predictions -->
 
@@ -371,8 +376,8 @@
   <div class="mini-grid mt16" id="miniGrid"></div>
 
   <!-- ── Tournament Overview table ── -->
-  <details class="sect" id="sect-table" open>
-  <summary class="sect-summary"><h3 class="sect-summary-h" data-season-title>Tournament Overview</h3></summary>
+  <details class="sect" id="sect-table" data-open="always" open>
+  <summary class="sect-summary"><h3 class="sect-summary-h" data-season-title>Tournament Overview</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
   <div class="all-tournaments">
     <div class="panel roomy" >
       <div class="tt-head">
@@ -1037,26 +1042,28 @@
      precede it. -->
 <script defer src="icons.js?v=eeee8884c1"></script>
 <script defer src="sheet.js?v=7c8a1ac5ef"></script>
-<script defer src="shell.js?v=75f177706e"></script>
+<script defer src="shell.js?v=cc24bf74ec"></script>
 <script defer src="cmdk.js?v=c497999f1f"></script>
 <script defer src="tab_email.js?v=09dda48c3a"></script>
 <script defer src="tab_performance.js?v=63e8c55dc2"></script>
 <script defer src="tab_puzzles.js?v=d37fdbb7f7"></script>
 <script defer src="pickers.js?v=fbcaedd103"></script>
-<script defer src="panels_info.js?v=85cb77359f"></script>
-<script defer src="hero_kpi.js?v=9347620d65"></script>
-<script defer src="chart_main.js?v=209e0a59c4"></script>
+<script defer src="panels_info.js?v=e948552625"></script>
+<script defer src="hero_kpi.js?v=b2888a0b1b"></script>
+<script defer src="hero_figures.js?v=3c3f4c96ca"></script>
+<script defer src="chart_main.js?v=2f5e38058c"></script>
 <script defer src="chart_hist.js?v=6bdf6c4896"></script>
-<script defer src="panels_grid.js?v=dc54324367"></script>
-<script defer src="panels_cal.js?v=28d15e5f60"></script>
+<script defer src="panels_grid.js?v=586d1d446a"></script>
+<script defer src="panels_cal.js?v=ab545ee2e4"></script>
+<script defer src="season_cards.js?v=c15ab193dd"></script>
 <script defer src="tab_about.js?v=e7497b7332"></script>
 <script defer src="tab_compare.js?v=f99dade8a4"></script>
 <script defer src="tab_ask.js?v=ac0057506c"></script>
-<script defer src="app.js?v=41adebf7d3"></script>
+<script defer src="app.js?v=c10dabd0d5"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,
      so it is load-bearing: without it nothing on the page responds. It comes
      last because it dispatches into the globals the files above define. -->
-<script defer src="actions.js?v=332edb1511"></script>
+<script defer src="actions.js?v=74ce6eb830"></script>
 </body>
 </html>

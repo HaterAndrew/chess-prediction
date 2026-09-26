@@ -62,62 +62,13 @@
 }
 
 
-/* ── Progressive disclosure (phase 5): the four lower Predictions sections
-   collapse behind native <details> on phones; desktop and print always render
-   them open (JS syncSectionDisclosure + beforeprint force open). ── */
-details.sect > .sect-summary { display: none; }
-details.sect > .sect-summary::-webkit-details-marker { display: none; }
-/* v4 W5: the summary text is a real h3 so screen-reader heading navigation
-   lands on section boundaries on phones; inherit flattens the h3 defaults so
-   the summary renders exactly as before. */
-.sect-summary-h { font: inherit; margin: 0; display: inline; }
-@media (max-width: 639px) {
-  details.sect > .sect-summary {
-    display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    min-height: var(--touch);
-    padding: 10px 14px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: var(--fs-3); font-weight: 700; color: var(--text);
-    cursor: pointer; user-select: none;
-    list-style: none;
-  }
-  details.sect > .sect-summary::after {
-    content: '\25BE';
-    color: var(--muted);
-    transition: transform .2s;
-  }
-  details.sect[open] > .sect-summary::after { transform: rotate(180deg); }
-  details.sect[open] > .sect-summary { margin-bottom: var(--s-3); }
-  /* the summary already names these sections; drop the duplicated inner titles */
-  #sect-model .model-info > .panel-title { display: none; }
-  #sect-table .tt-head > .panel-title { display: none; }
-}
+/* The disclosure sections (details.sect), the panel and the two-column grid
+   are in sections.css; the Season cards in season.css. */
 
-/* ── Mini-grid hierarchy (phase 5): "Next up" featured row above a compact
-   "Later" grid; renderMiniCards adds .mini-grid-tiered to the container. ── */
-.mini-grid.mini-grid-tiered { display: block; }
-.mini-section-label {
-  font-size: var(--fs-1); font-weight: 700;
-  letter-spacing: .08em; text-transform: uppercase;
-  color: var(--muted);
-  margin: 2px 0 8px;
-}
-.mini-grid-featured {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: var(--s-3);
-  margin-bottom: var(--s-4);
-}
-.mini-grid-featured .mini-card { padding: var(--s-5); }
-.mini-grid-featured .mini-card-number { font-size: 1.75rem; }
-.mini-grid-rest {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: var(--s-2);
-}
-.mini-grid-rest .mini-card { padding: var(--s-3); }
+/* The About view's jump nav (R3 restyles the view). */
+.about-jump { color: var(--muted); display: block; font-size: var(--fs-2); margin: 0 0 22px; }
+.about-jump a { border-bottom: 1px dashed var(--border); color: var(--text2); text-decoration: none; transition: color .15s, border-color .15s; }
+.about-jump a:hover, .about-jump a:focus-visible { border-bottom-color: var(--blue); color: var(--blue); }
 
 
 /* Horizon strip (phase 6): neutral tiles, the MAE value is the one colored

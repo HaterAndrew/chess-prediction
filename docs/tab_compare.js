@@ -85,16 +85,16 @@ function renderCompareTab() {
   }
 
   // One-line caption above the selectors
-  let captionHTML = '<div class="compare-caption" style="font-size:var(--fs-2);color:var(--muted);margin:0 0 10px">Pick up to 3 tournaments to compare entry trajectories side-by-side.</div>';
+  let captionHTML = '<p class="compare-caption">Pick up to three tournaments to compare their entry curves side by side.</p>';
 
   // Build selector UI
   let selectorHTML = captionHTML + '<div class="compare-selectors">';
   for (let s = 0; s < 3; s++) {
     const currentIdx = _compareSlots[s];
-    const colorDot = `<span class="compare-color-dot" style="background:${compareColors()[s]}"></span>`;
+    const colorDot = `<span class="compare-color-dot series-${s + 1}" aria-hidden="true"></span>`;
     selectorHTML += `<div class="compare-selector">
       ${colorDot}
-      <select class="compare-dropdown" data-inputact="compare-slot-changed" data-slot="${s}">
+      <select class="field compare-dropdown" data-inputact="compare-slot-changed" data-slot="${s}" aria-label="Tournament ${s + 1}">
         <option value="">Select tournament...</option>
         ${tournaments.map((t, i) => {
           const sel = i === currentIdx ? 'selected' : '';
@@ -102,7 +102,7 @@ function renderCompareTab() {
           return `<option value="${i}" ${sel}>${label}</option>`;
         }).join('')}
       </select>
-      ${currentIdx != null ? `<button class="compare-remove-btn" data-act="compare-slot-remove" data-slot="${s}" title="Remove">&#10005;</button>` : ''}
+      ${currentIdx != null ? `<button class="icon-button compare-remove-btn" data-act="compare-slot-remove" data-slot="${s}" title="Remove" aria-label="Remove tournament ${s + 1}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>` : ''}
     </div>`;
   }
   selectorHTML += '</div>';
@@ -116,14 +116,15 @@ function renderCompareTab() {
   if (selected.length >= 2) {
     statsHTML = '<div class="compare-table-wrap"><table class="compare-table"><thead><tr><th>Stat</th>';
     selected.forEach((s, ci) => {
-      statsHTML += `<th style="color:${compareColors()[ci]}">${esc(s.t.family)} ${s.t.year}</th>`;
+      statsHTML += `<th class="series-${ci + 1}">${esc(s.t.family)} ${s.t.year}</th>`;
     });
     statsHTML += '</tr></thead><tbody>';
 
     const rows = [
       { label: 'Status', fn: t => {
-        const s = t.status === 'live' ? 'Live' : t.status === 'complete' ? 'Complete' : 'Upcoming';
-        return `<span class="mini-badge badge-${t.status === 'live' ? 'live' : t.status === 'complete' ? 'complete' : 'upcoming'}">${s}</span>`;
+        const s = t.status === 'live' ? 'Upcoming' : t.status === 'complete' ? 'Complete' : 'Historical';
+        const kind = t.status === 'live' ? 'live' : t.status === 'complete' ? 'complete' : 'hist';
+        return `<span class="pill pill-${kind}">${t.status === 'live' ? '<span class="live-dot"></span>' : ''}${s}</span>`;
       }},
       { label: 'Current Count', fn: t => fmt(t.current_count) },
       { label: 'Predicted Final', fn: t => fmt(t.point_estimate) },
@@ -160,10 +161,9 @@ function renderCompareTab() {
     // Chart container
     chartHTML = `<div class="compare-chart-wrap"><canvas id="compareChart"></canvas></div>`;
   } else if (selected.length < 2) {
-    statsHTML = `<div class="compare-empty">
-      <div style="font-size:2.5rem;margin-bottom:12px">&#9878;</div>
-      <div style="font-size:1rem;font-weight:600;margin-bottom:6px">Select at least 2 tournaments to compare</div>
-      <div style="font-size:var(--fs-3);color:var(--muted)">Use the dropdowns above or click &#9878; on any tournament in the Predictions tab</div>
+    statsHTML = `<div class="empty compare-empty">
+      <div>Pick at least two tournaments to compare.</div>
+      <div class="compare-empty-sub">Use the selectors above, or Add to Compare on the Forecast.</div>
     </div>`;
   }
 
@@ -360,7 +360,7 @@ function renderCompareChart(selected) {
         drawn.push({ x: px, y: py, w: pillW, h: pillH });
         ctx2.fillStyle = themeRgba(PALETTE.surface, 0.85);
         ctx2.beginPath();
-        ctx2.roundRect(px, py, pillW, pillH, 4);
+        ctx2.rect(px, py, pillW, pillH);
         ctx2.fill();
         ctx2.strokeStyle = ds.borderColor;
         ctx2.globalAlpha = 0.6;

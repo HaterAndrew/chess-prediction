@@ -1,0 +1,58 @@
+/* puzzles.css — the Puzzles view (tab_puzzles.js): the board as a printed
+   diagram (paper and grey squares under a black rule, the highlighter on
+   the selected square, the stocks for the last move, a hint, a right or a
+   wrong move), the puzzle sheet beside it with its typed rating, and the
+   day's history. */
+
+.puzzle-layout { display: grid; gap: var(--s-5); grid-template-columns: 1fr; margin: 0 auto; max-width: 1080px; }
+@media (min-width: 768px) { .puzzle-layout { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); } }
+.puzzle-head { align-items: baseline; display: flex; gap: 10px; justify-content: space-between; margin-bottom: var(--s-3); }
+.puzzle-head h2 { font: 700 var(--fs-h2-lg) var(--display); margin: 0; }
+.puzzle-score { color: var(--muted); font: 12px var(--mono); }
+
+/* ── The board ── */
+.chess-board-wrap { margin: 0 auto; max-width: 480px; position: relative; width: 100%; }
+.chess-board { aspect-ratio: 1; border: 2px solid var(--line); display: grid; grid-template-columns: repeat(8, 1fr); user-select: none; }
+.chess-sq { align-items: center; aspect-ratio: 1; cursor: pointer; display: flex; font-size: 0; justify-content: center; position: relative; transition: background var(--dur-fast); }
+.chess-sq:focus-visible { outline-offset: -2px; z-index: 1; }
+.chess-sq .piece { font-size: clamp(24px, 5.5vw, 48px); line-height: 1; pointer-events: none; }
+.chess-sq.light { background: var(--panel); }
+.chess-sq.dark { background: var(--line-soft); }
+.chess-sq.last-move { background: var(--stock-blue); }
+.chess-sq.hint { background: var(--stock-yellow); }
+.chess-sq.selected { background: var(--mark); }
+.chess-sq.correct { background: var(--stock-blue); }
+.chess-sq.wrong { background: var(--stock-pink); }
+.chess-board .empty { grid-column: 1 / -1; }
+
+/* ── Progress and the buttons ── */
+.puzzle-progress { display: flex; flex-wrap: wrap; gap: 8px; margin: var(--s-3) 0; }
+.puzzle-dot { border: 1px solid var(--line); cursor: pointer; height: 12px; transition: background var(--dur); width: 12px; }
+.puzzle-dot.solved { background: var(--signal); border-color: var(--signal); }
+.puzzle-dot.failed { background: var(--ember); border-color: var(--ember); }
+.puzzle-dot.current { box-shadow: 0 0 0 3px var(--mark); }
+.puzzle-nav { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-3); }
+.puzzle-nav .btn svg, .puzzle-nav .button svg { height: 15px; width: 15px; }
+
+/* ── The puzzle sheet ── */
+.puzzle-info { border: 1px solid var(--line); padding: var(--s-4); }
+.puzzle-count { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin-bottom: 4px; text-transform: uppercase; }
+.puzzle-rating { font: 700 34px/1 var(--mono); font-variant-numeric: tabular-nums; }
+.puzzle-diff { color: var(--muted); font-size: var(--fs-body); margin-top: 4px; }
+.puzzle-themes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.puzzle-status { font-size: 15px; font-weight: 700; margin: var(--s-3) 0; min-height: 28px; }
+.puzzle-status.is-good { color: var(--signal); }
+.puzzle-status.is-bad { color: var(--ember); }
+.puzzle-status.is-plain { color: var(--muted); }
+.puzzle-moves { color: var(--muted); font: 13px var(--mono); margin-top: 8px; }
+.puzzle-moves:empty { display: none; }
+.puzzle-lichess { color: var(--signal); display: inline-block; font-size: var(--fs-body); margin-top: 12px; text-decoration: underline; }
+
+/* ── This day in chess history ── */
+.history-card { border: 1px solid var(--line); margin-top: var(--s-4); padding: var(--s-4); }
+.history-card h3 { border-bottom: 1px solid var(--line-soft); font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; margin: 0 0 var(--s-3); padding-bottom: 8px; text-transform: uppercase; }
+.history-event { border-bottom: 1px solid var(--line-soft); font-size: var(--fs-body-lg); line-height: 1.5; padding: 10px 0; }
+.history-event:last-child { border-bottom: 0; }
+.history-event.muted { color: var(--muted); }
+.history-year { color: var(--signal); font: 700 14px var(--mono); margin-right: 8px; }
+.history-cat { border: 1px solid var(--line-soft); color: var(--muted); display: inline-block; font: 700 10px var(--display); letter-spacing: .06em; margin-left: 8px; padding: 1px 6px; text-transform: uppercase; vertical-align: 1px; }

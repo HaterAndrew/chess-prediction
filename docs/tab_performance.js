@@ -48,8 +48,8 @@ function perfInitFromData() {
     years.forEach(y => buttons.push({key: String(y), label: y === nowYear ? `${y} YTD` : String(y)}));
     if (hasCumulative) buttons.push({key: 'cumulative', label: 'Cumulative'});
 
-    selector.innerHTML = '<span class="perf-view-label">View:</span>' +
-      buttons.map(b => `<button data-act="perf-year" data-year="${b.key}" id="perfYearBtn_${b.key}" class="perf-year-btn">${b.label}</button>`).join('');
+    selector.innerHTML = '<span class="perf-view-label">View</span><div class="segmented" role="group" aria-label="Performance view">' +
+      buttons.map(b => `<button data-act="perf-year" data-year="${b.key}" id="perfYearBtn_${b.key}">${b.label}</button>`).join('') + '</div>';
 
     const defaultKey = years.includes(nowYear) ? String(nowYear) : (years.length ? String(years[years.length - 1]) : 'cumulative');
     perfSelectYear(defaultKey);
@@ -103,12 +103,23 @@ function perfRenderFlat(data) {
   });
 }
 
+// The pens for a figure against its mark: blue when it meets it, ink when
+// it is fair, red when it misses. Classes, not colours: the stylesheet owns
+// the palette in both themes.
+function _perfTone(good, fair) {
+  return good ? 'v-blue' : fair ? 'v-ink' : 'v-red';
+}
+
 function perfPaint(view) {
   const agg = view.aggregate || [];
-  const gc = {'A+':PALETTE.green,'A':PALETTE.green,'A-':PALETTE.greenBright,'B+':PALETTE.greenBright,'B':'var(--gold)','B-':'var(--gold)','C+':PALETTE.orangeBright,'C':PALETTE.orangeBright,'C-':PALETTE.orange,'D':PALETTE.red,'F':PALETTE.red};
-  document.getElementById('perfGradeLetter').textContent = view.grade || '--';
-  document.getElementById('perfGradeLetter').style.color = gc[view.grade] || 'var(--muted)';
-  document.getElementById('perfGradeLabel').textContent = 'MODEL GRADE';
+  const letter = document.getElementById('perfGradeLetter');
+  const grade = view.grade || '--';
+  letter.textContent = grade;
+  letter.classList.remove('grade-good', 'grade-warn', 'grade-bad');
+  if (/^[AB]/.test(grade)) letter.classList.add('grade-good');
+  else if (/^C/.test(grade)) letter.classList.add('grade-warn');
+  else if (/^[DF]/.test(grade)) letter.classList.add('grade-bad');
+  document.getElementById('perfGradeLabel').textContent = 'Model Grade';
   document.getElementById('perfGradeDetail').textContent = view.detail;
   document.getElementById('perfGradeMeta').textContent = `N5v4_Final Ensemble \u00b7 Rolling retrain + auto-recalibration \u00b7 Updated ${view.generated || ''}`;
 
@@ -133,7 +144,7 @@ function perfPaint(view) {
     document.getElementById('perfHorizonStrip').innerHTML = '';
     const sc = document.getElementById('perfScoring');
     if (sc) sc.innerHTML = '';
-    document.getElementById('perfTable').innerHTML = '<div style="color:var(--muted);padding:12px 0;font-size:var(--fs-2)">No completed tournaments for this selection.</div>';
+    document.getElementById('perfTable').innerHTML = '<div class="empty">No completed tournaments for this selection.</div>';
     return;
   }
 
@@ -143,19 +154,19 @@ function perfPaint(view) {
   const avgBias = +(agg.reduce((s, a) => s + a.bias_pct, 0) / agg.length).toFixed(1);
 
   const kpis = [
-    {v: t14.mae_pct.toFixed(1) + '%', l: '2-Week Error', s: 'MAE at T-14', c: t14.mae_pct <= 8 ? PALETTE.green : t14.mae_pct <= 15 ? 'var(--gold)' : PALETTE.red},
-    {v: t1 ? t1.mae_pct.toFixed(1) + '%' : '--', l: 'Day-Before', s: 'MAE at T-1', c: t1 && t1.mae_pct <= 5 ? PALETTE.green : PALETTE.greenBright},
-    // Green means "meets the advertised 80%", not "close enough". The old
+    {v: t14.mae_pct.toFixed(1) + '%', l: '2-Week Error', s: 'MAE at T-14', c: _perfTone(t14.mae_pct <= 8, t14.mae_pct <= 15)},
+    {v: t1 ? t1.mae_pct.toFixed(1) + '%' : '--', l: 'Day Before', s: 'MAE at T-1', c: _perfTone(t1 && t1.mae_pct <= 5, true)},
+    // Blue means "meets the advertised 80%", not "close enough". The old
     // threshold passed at >= 75, below the number the site itself advertises,
     // so a miscalibrated interval read as healthy (2026-09-07 review).
-    {v: avgCov + '%', l: 'CI Coverage', s: 'Target 80%', c: avgCov >= 80 ? PALETTE.green : avgCov >= 70 ? 'var(--gold)' : PALETTE.red},
-    {v: (avgBias > 0 ? '+' : '') + avgBias + '%', l: 'Bias', s: avgBias > 2 ? 'Over-predicts' : avgBias < -2 ? 'Under-predicts' : 'Well-centered', c: Math.abs(avgBias) <= 5 ? PALETTE.green : 'var(--gold)'},
+    {v: avgCov + '%', l: 'CI Coverage', s: 'Target 80%', c: _perfTone(avgCov >= 80, avgCov >= 70)},
+    {v: (avgBias > 0 ? '+' : '') + avgBias + '%', l: 'Bias', s: avgBias > 2 ? 'Over-predicts' : avgBias < -2 ? 'Under-predicts' : 'Well-centered', c: _perfTone(Math.abs(avgBias) <= 5, true)},
   ];
   document.getElementById('perfKPIs').innerHTML = kpis.map(k => `
-    <div style="padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-align:center">
-      <div style="font-size:1.4rem;font-weight:800;color:${k.c};line-height:1;font-variant-numeric:tabular-nums">${k.v}</div>
-      <div style="font-size:var(--fs-1);font-weight:600;color:var(--text);margin-top:5px;letter-spacing:.03em">${k.l}</div>
-      <div style="font-size:var(--fs-1);color:var(--muted);margin-top:1px">${k.s}</div>
+    <div class="perf-kpi">
+      <div class="kpi-label">${k.l}</div>
+      <div class="kpi-value ${k.c}">${k.v}</div>
+      <div class="kpi-sub">${k.s}</div>
     </div>`).join('');
 
   requestAnimationFrame(() => {
@@ -165,13 +176,13 @@ function perfPaint(view) {
 
   const strip = document.getElementById('perfHorizonStrip');
   strip.innerHTML = agg.map(a => {
-    // One encoding: the MAE value alone carries the traffic color.
-    const tc = a.mae_pct <= 8 ? PALETTE.green : a.mae_pct <= 12 ? 'var(--gold)' : PALETTE.red;
+    // One encoding: the MAE value alone carries the pen.
+    const tc = _perfTone(a.mae_pct <= 8, a.mae_pct <= 12);
     const isTip = a.interval_score_pct != null
       ? `, interval score ${a.interval_score_pct}% of final (lower is better)` : '';
     return `<div class="horizon-tile" title="n=${a.n}, bias ${a.bias_pct > 0 ? '+' : ''}${a.bias_pct}%${isTip}">
       <div class="horizon-t">T-${a.T}</div>
-      <div class="horizon-val" style="color:${tc}">${a.mae_pct.toFixed(1)}%</div>
+      <div class="horizon-val ${tc}">${a.mae_pct.toFixed(1)}%</div>
       <div class="horizon-ci">CI ${a.ci_coverage}%</div>
     </div>`;
   }).join('');
@@ -213,12 +224,11 @@ function perfDrawScoring(data) {
       <div class="perf-scoring-title">Against doing nothing &middot; average miss at T-${t14.T}</div>
       ${rows.map(r => {
         const pct = worst > 0 ? Math.max(4, Math.round(r.mae / worst * 100)) : 4;
-        const isModel = r.k === 'model';
-        const col = isModel ? PALETTE.green : 'var(--muted)';
+        const mod = r.k === 'model' ? ' is-model' : '';
         return `<div class="perf-bar-row">
           <div class="perf-bar-label">${r.label}</div>
-          <div class="perf-bar-track"><div class="perf-bar-fill" style="width:${pct}%;background:${col}"></div></div>
-          <div class="perf-bar-val" style="color:${col};font-weight:${isModel ? 700 : 500}">${r.mae.toFixed(1)}%</div>
+          <div class="perf-bar-track"><div class="perf-bar-fill${mod}" style="width:${pct}%"></div></div>
+          <div class="perf-bar-val${mod}">${r.mae.toFixed(1)}%</div>
         </div>`;
       }).join('')}
       <div class="perf-scoring-note">Lower is better. A baseline that matches or beats
@@ -242,7 +252,7 @@ function perfDrawScoring(data) {
           const h = Math.max(2, Math.round(c / maxC * 46));
           const over = c > expected * 1.5;
           return `<div class="perf-pit-col" title="${(i * 10)}\u2013${(i + 1) * 10}% of the range: ${c} tournament(s), even split would be ${expected.toFixed(1)}">
-            <div class="perf-pit-bar" style="height:${h}px;background:${over ? 'var(--gold)' : PALETTE.blue}"></div>
+            <div class="perf-pit-bar${over ? ' is-over' : ''}" style="height:${h}px"></div>
           </div>`;
         }).join('')}
       </div>
@@ -292,27 +302,11 @@ function perfDrawScatter(data) {
         ctx2.stroke();
         ctx2.globalAlpha = 1;
       });
-      ctx2.fillStyle = themeRgba(PALETTE.gold, 0.9);
+      ctx2.fillStyle = PALETTE.muted;
       ctx2.font = `${_mobileVP() ? 9 : 8}px system-ui`;
       ctx2.textAlign = 'right';
       ctx2.fillText('Perfect prediction', xS.right - 2, yS.top + 10);
       ctx2.restore();
-    }
-  };
-
-  // Per-dataset dot glow (the in-CI and out-CI buckets are separate datasets
-  // precisely so each gets its own shadow color).
-  const dotGlow = {
-    id: 'perfDotGlow',
-    beforeDatasetDraw(c, args) {
-      if (args.index > 1) return;
-      c.ctx.save();
-      c.ctx.shadowBlur = 8;
-      c.ctx.shadowColor = args.index === 0 ? PALETTE.green : PALETTE.red;
-    },
-    afterDatasetDraw(c, args) {
-      if (args.index > 1) return;
-      c.ctx.restore();
     }
   };
 
@@ -330,11 +324,11 @@ function perfDrawScatter(data) {
         { label: 'Within CI', data: toXY(pts.filter(p => p.ok)), ...dotCfg(PALETTE.green) },
         { label: 'Outside CI', data: toXY(pts.filter(p => !p.ok)), ...dotCfg(PALETTE.red) },
         { label: 'perfect', type: 'line', data: [{ x: 0, y: 0 }, { x: maxV, y: maxV }],
-          borderColor: themeRgba(PALETTE.gold, 0.2), borderDash: [8, 5], borderWidth: 1.5,
+          borderColor: themeRgba(PALETTE.text, 0.35), borderDash: [8, 5], borderWidth: 1.5,
           pointRadius: 0, pointHitRadius: 0, pointHoverRadius: 0 }
       ]
     },
-    plugins: [ciWhiskers, dotGlow],
+    plugins: [ciWhiskers],
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'nearest', intersect: false },
@@ -408,9 +402,8 @@ function perfDrawTimeline(data) {
     }
   };
 
-  // Threshold-colored glow dots + always-on value labels, as in the
-  // hand-rolled renderer (shadowed redraws over the dataset's own points so
-  // each dot keeps its own glow color).
+  // Threshold-coloured dots and always-on value labels (redrawn over the
+  // dataset's own points so each dot keeps its own pen).
   const dotsAndLabels = {
     id: 'tlDotsLabels',
     afterDatasetsDraw(c) {
@@ -419,10 +412,8 @@ function perfDrawTimeline(data) {
       ctx2.save();
       meta.data.forEach((el, i) => {
         const col = dotColors[i];
-        ctx2.shadowColor = col; ctx2.shadowBlur = 6;
         ctx2.fillStyle = col;
         ctx2.beginPath(); ctx2.arc(el.x, el.y, 4, 0, Math.PI * 2); ctx2.fill();
-        ctx2.shadowBlur = 0;
         ctx2.strokeStyle = PALETTE.surface2; ctx2.lineWidth = 1.5; ctx2.stroke();
         ctx2.fillStyle = PALETTE.text;
         ctx2.font = `bold ${_mobileVP() ? 10 : 9}px system-ui`;
@@ -508,47 +499,45 @@ function perfDrawTable(data) {
   const agg = data.aggregate;
   const tPoints = agg.map(a => a.T);
 
-  let html = `<table style="width:100%;border-collapse:collapse;font-size:var(--fs-2)">
-    <thead><tr style="border-bottom:2px solid var(--border)">
-      <th style="padding:8px 10px;text-align:left;white-space:nowrap">Tournament</th>
-      <th style="padding:8px 8px;text-align:right;white-space:nowrap">Final</th>`;
-  tPoints.forEach(T => { html += `<th style="padding:8px 4px;text-align:center;font-size:var(--fs-1);white-space:nowrap">T-${T}</th>`; });
+  let html = `<table class="perf-table">
+    <thead><tr>
+      <th>Tournament</th>
+      <th class="num">Final</th>`;
+  tPoints.forEach(T => { html += `<th class="perf-th-t">T-${T}</th>`; });
   html += `</tr></thead><tbody>`;
 
-  data.tournaments.forEach((t, idx) => {
-    const bg = idx % 2 ? 'background:var(--surface2)' : '';
-    html += `<tr style="border-bottom:1px solid ${themeRgba(PALETTE.border,.4)};${bg}">
-      <td data-label="Tournament" style="padding:5px 10px;white-space:nowrap;font-weight:500">${esc(t.family)}</td>
-      <td data-label="Final" style="padding:5px 8px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums">${t.final_count.toLocaleString()}</td>`;
+  data.tournaments.forEach(t => {
+    html += `<tr>
+      <td data-label="Tournament" class="perf-name">${esc(t.family)}</td>
+      <td data-label="Final" class="num">${t.final_count.toLocaleString()}</td>`;
     tPoints.forEach(T => {
       const p = t.predictions.find(p => p.T === T);
       if (p) {
-        // Neutral by default; color marks exceptions only (phase 6). A cell
-        // goes red when the miss is large or the CI failed to cover.
+        // Neutral by default; the pen marks exceptions only. A large miss is
+        // written in red; a result outside the range is boxed in red.
         const bigMiss = Math.abs(p.error_pct) > 15;
-        const ec = bigMiss ? PALETTE.red : PALETTE.text2;
-        const ci = p.in_ci ? '\u2713' : '\u2717';
-        const cic = p.in_ci ? PALETTE.muted : PALETTE.red;
-        html += `<td data-label="T-${T}" style="padding:5px 4px;text-align:center;font-size:var(--fs-1)" title="Pred ${p.predicted} from ${p.count_at_T} reg, CI [${p.ci_lower}-${p.ci_upper}]">
-          <span style="color:${ec};font-weight:600;font-variant-numeric:tabular-nums">${p.error_pct > 0 ? '+' : ''}${p.error_pct}%</span><span style="color:${cic};font-size:var(--fs-1);margin-left:2px">${ci}</span></td>`;
+        const err = `${p.error_pct > 0 ? '+' : ''}${p.error_pct}%`;
+        const title = `Predicted ${p.predicted} from ${p.count_at_T} registered, range ${p.ci_lower} to ${p.ci_upper}${p.in_ci ? '' : ', actual outside the range'}`;
+        html += `<td data-label="T-${T}" class="perf-cell${bigMiss ? ' perf-miss-big' : ''}" title="${title}">${p.in_ci ? err : `<span class="perf-miss">${err}</span>`}</td>`;
       } else {
-        html += `<td data-label="T-${T}" style="padding:5px 4px;text-align:center;color:var(--muted)">\u2014</td>`;
+        html += `<td data-label="T-${T}" class="perf-cell perf-none">\u2014</td>`;
       }
     });
     html += '</tr>';
   });
 
   // Aggregate
-  html += `<tr style="border-top:2px solid var(--border);font-weight:700;background:var(--signal-tint)">
-    <td data-label="Average" style="padding:8px 10px" colspan="2">Average (${data.n_tournaments})</td>`;
+  html += `<tr class="perf-agg">
+    <td data-label="Average" colspan="2">Average (${data.n_tournaments})</td>`;
   tPoints.forEach(T => {
     const a = agg.find(x => x.T === T);
     if (a) {
-      html += `<td data-label="T-${T}" style="padding:8px 4px;text-align:center;font-size:var(--fs-1)">
-        <div style="color:var(--text)">${a.mae_pct}%</div>
-        <div style="font-size:var(--fs-1);color:var(--muted);font-weight:400">CI ${a.ci_coverage}%</div></td>`;
-    } else html += `<td data-label="T-${T}">\u2014</td>`;
+      html += `<td data-label="T-${T}" class="perf-cell">
+        <div>${a.mae_pct}%</div>
+        <div class="perf-cell-ci">CI ${a.ci_coverage}%</div></td>`;
+    } else html += `<td data-label="T-${T}" class="perf-cell perf-none">\u2014</td>`;
   });
   html += '</tr></tbody></table>';
+  html += '<p class="perf-table-key">Each cell is the miss at that lead time. A miss over 15% is written in red; a figure boxed in red is one where the actual landed outside the predicted range.</p>';
   table.innerHTML = html;
 }

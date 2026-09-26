@@ -1,31 +1,18 @@
 /* ══════════════════════════════════════════════════════
    BREAKPOINTS (mobile-first, min-width only)
+   The views carry their own breakpoints; what is left here is the gutter
+   step, the skeleton heights, the touch feedback and the narrow-phone
+   tightening.
    ══════════════════════════════════════════════════════ */
-
-/* ── 480px: mid-size phones ── */
-@media (min-width: 480px) {
-}
 
 /* ── 640px: larger phones / small tablets ── */
 @media (min-width: 640px) {
   :root { --gutter: 20px; }
   .skeleton-chart { height: 320px; }
   .compare-chart-wrap { height: 340px; }
-  .fav-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .email-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .email-meta { grid-template-columns: 1fr 1fr; }
 }
 
-/* ── 768px: tablet portrait ── */
-@media (min-width: 768px) {
-  .puzzle-layout { grid-template-columns: 1fr 1fr; }
-  .compare-selectors { grid-template-columns: repeat(3, 1fr); }
-}
-
-/* ── 768px: tablets (iPad portrait, large phones landscape) ──
-   Bridges mobile (<640px) and laptop (>=1024px) which previously
-   inherited mobile defaults at this range and wasted horizontal
-   real estate. */
+/* ── 768px: tablets (iPad portrait, large phones landscape) ── */
 @media (min-width: 768px) {
   .skeleton-chart { height: 360px; }
 }
@@ -34,68 +21,42 @@
 @media (min-width: 1024px) {
   .skeleton-chart { height: 380px; }
   .compare-chart-wrap { height: 360px; }
-  .fav-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .email-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .email-split { grid-template-columns: 1fr 1fr; }
+  .email-split.email-split-both { grid-template-columns: 1fr 1fr; }
   .email-split .email-output, .email-split .email-preview { min-height: 420px; }
-  .puzzle-rating { font-size: 1.8rem; }
 }
 
 /* ══════════════════════════════════════════════════════
    TOUCH FEEDBACK
    ══════════════════════════════════════════════════════ */
-/* Suppress the iOS gray tap-highlight flash; custom :active states below provide feedback. */
+/* Suppress the iOS gray tap-highlight flash; the :active states below provide feedback. */
 * { -webkit-tap-highlight-color: transparent; }
 
-/* Subtle press feedback on interactive elements that mostly relied on :hover */
-.fav-card, .puzzle-btn, .de-save-btn,
-.email-generate-btn, .email-copy-btn, .email-link-btn,
-.email-split-tab, .compare-add-btn, .fav-btn {
-  transition: transform .12s ease, opacity .12s ease,
-    color .15s, border-color .15s, background .15s, box-shadow .2s;
+/* Press feedback on the controls that mostly relied on :hover. */
+.btn, .button, .email-link-btn, .email-split-tab, .compare-add-btn, .ask-chip, .ask-recent-item {
+  transition: transform .12s ease, opacity .12s ease, color .15s, border-color .15s, background .15s;
 }
-.fav-card:active { transform: scale(.985); }
-.puzzle-btn:active, .de-save-btn:active, .email-generate-btn:active,
-.email-copy-btn:active, .email-link-btn:active, .email-split-tab:active,
-.compare-add-btn:active, .fav-btn:active { transform: scale(.96); opacity: .85; }
+.btn:active, .button:active, .email-link-btn:active, .email-split-tab:active,
+.compare-add-btn:active, .ask-chip:active, .ask-recent-item:active { opacity: .85; transform: scale(.96); }
 
-/* Prevent iOS auto-zoom on focused inputs (fires when computed font-size < 16px) */
-@media (max-width: 639px) {
-  .email-meta-input,
-  .de-table input[type="text"],
-  .de-table input[type="number"],
-  .de-table input[type="date"] {
-    font-size: 16px;
-  }
+/* ── Narrow phones (< 420px): tighter panels, the board edge to edge ── */
+@media (max-width: 419px) {
+  .chart-card, .panel, .mini-card { padding: var(--s-3); }
+  .kpi-card { padding: var(--s-2) var(--s-3); }
+  .hero-label { letter-spacing: .05em; }
 }
 
-/* ── Puzzles tab mobile polish (< 640px) — Round 32 ──
-   - Button row: 2-col grid; primary "Next" spans full width as the prominent CTA.
-   - Rating prominence: bump font-size, add letter-spacing.
-   - Info card: tighten padding, larger status text. */
+/* ── Phones (< 640px): 16px fields (iOS zooms a smaller focused input), the
+   puzzle buttons as a two-column grid with Next across the bottom ── */
 @media (max-width: 639px) {
+  .field { font-size: 16px; }
   .puzzle-layout { gap: var(--s-3); }
-  .puzzle-nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--s-2);
-    margin-top: var(--s-3);
-  }
-  .puzzle-nav .puzzle-btn {
-    width: 100%;
-    padding: 12px 12px;
-    font-size: var(--fs-3);
-    margin: 0;
-  }
-  .puzzle-nav .puzzle-btn.primary { grid-column: 1 / -1; }
-  .puzzle-rating { font-size: 2.1rem; letter-spacing: -.5px; }
+  .puzzle-nav { display: grid; gap: var(--s-2); grid-template-columns: 1fr 1fr; margin-top: var(--s-3); }
+  .puzzle-nav .btn, .puzzle-nav .button { margin: 0; width: 100%; }
+  .puzzle-nav .button { grid-column: 1 / -1; }
   .puzzle-info { padding: var(--s-3); }
-  .puzzle-status { font-size: var(--fs-4); min-height: 24px; margin: var(--s-2) 0; }
+  .puzzle-status { font-size: 14px; margin: var(--s-2) 0; min-height: 24px; }
   .puzzle-themes { gap: 4px; margin-top: 6px; }
-  .puzzle-theme-tag { font-size: var(--fs-1); padding: 2px 8px; }
-  .puzzle-progress { gap: 4px; margin: var(--s-2) 0; }
-  .puzzle-dot { width: 9px; height: 9px; }
-  .puzzle-score { font-size: var(--fs-2); }
+  .puzzle-progress { gap: 6px; margin: var(--s-2) 0; }
   .chess-board-wrap { max-width: 100%; }
 }
 
@@ -110,4 +71,3 @@
     scroll-behavior: auto !important;
   }
 }
-

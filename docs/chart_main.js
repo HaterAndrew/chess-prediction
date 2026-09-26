@@ -383,7 +383,7 @@ function renderChart(t) {
       }
       g.fillStyle = themeRgba(PALETTE.surface, 0.85);
       g.beginPath();
-      g.roundRect(bx, by, tw + padX * 2, boxH, 4);
+      g.rect(bx, by, tw + padX * 2, boxH);
       g.fill();
       g.fillStyle = PALETTE.gold;
       g.textAlign = 'left';

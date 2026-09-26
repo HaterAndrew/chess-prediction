@@ -171,7 +171,7 @@ function puzzleSquareClick(r, c) {
         puzzleSolved();
       } else {
         // Play opponent's response after a brief delay
-        puzzleStatus('&#10003; Correct! Keep going...', 'var(--green)');
+        puzzleStatus('Correct. Keep going.', 'good');
         ps.animating = true;
         setTimeout(() => {
           const opMove = moves[ps.moveIdx];
@@ -183,7 +183,7 @@ function puzzleSquareClick(r, c) {
           ps.animating = false;
           renderBoard();
           if (ps.moveIdx >= moves.length) puzzleSolved();
-          else puzzleStatus('Find the best move for ' + (ps.turn === 'w' ? 'White' : 'Black'), 'var(--muted)');
+          else puzzleStatus('Find the best move for ' + (ps.turn === 'w' ? 'White' : 'Black'), 'plain');
         }, 500);
       }
     } else {
@@ -198,15 +198,18 @@ function puzzleSquareClick(r, c) {
   }
 }
 
-function puzzleStatus(msg, color) {
+// kind: 'good' (the blue pen), 'bad' (the red pen) or 'plain'.
+function puzzleStatus(msg, kind) {
   const el = document.getElementById('puzzleStatus');
-  if (el) el.innerHTML = `<span style="color:${color}">${msg}</span>`;
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'puzzle-status is-' + (kind || 'plain');
 }
 
 function puzzleSolved() {
   const ps = puzzleState;
   if (ps.solved[ps.currentIdx] !== 'failed') ps.solved[ps.currentIdx] = 'solved';
-  puzzleStatus('&#9733; Puzzle solved!', 'var(--green)');
+  puzzleStatus('Puzzle solved.', 'good');
   renderPuzzleProgress();
   document.getElementById('puzzleRetry').style.display = 'none';
   // Round 32: tactile reward — short success pattern (Android only; iOS no-ops).
@@ -216,7 +219,7 @@ function puzzleSolved() {
 function puzzleFailed() {
   const ps = puzzleState;
   ps.solved[ps.currentIdx] = 'failed';
-  puzzleStatus('&#10007; Incorrect. Try again or click Retry', 'var(--red)');
+  puzzleStatus('Not that one. Try again, or press Retry.', 'bad');
   renderPuzzleProgress();
   document.getElementById('puzzleRetry').style.display = '';
   // Round 32: tactile error — single longer buzz.
@@ -274,7 +277,7 @@ function loadPuzzle(idx) {
   document.getElementById('puzzleRating').textContent = puzzle.rating;
   const diff = puzzle.rating >= 2500 ? 'Master' : puzzle.rating >= 2200 ? 'Expert' : puzzle.rating >= 2000 ? 'Advanced' : 'Intermediate';
   document.getElementById('puzzleDifficulty').textContent = diff;
-  document.getElementById('puzzleThemes').innerHTML = (puzzle.themes || []).map(t => `<span class="puzzle-theme-tag">${esc(t.replace(/([A-Z])/g, ' $1').trim())}</span>`).join('');
+  document.getElementById('puzzleThemes').innerHTML = (puzzle.themes || []).map(t => `<span class="tag">${esc(t.replace(/([A-Z])/g, ' $1').trim())}</span>`).join('');
   document.getElementById('puzzleLink').href = puzzle.url || '#';
   // #puzzleTurn is a span INSIDE #puzzleStatus, and puzzleStatus() on the next
   // line replaces that container's innerHTML — so the span exists only until
@@ -287,7 +290,7 @@ function loadPuzzle(idx) {
   // thing either way.
   const turnEl = document.getElementById('puzzleTurn');
   if (turnEl) turnEl.textContent = ps.turn === 'w' ? 'White' : 'Black';
-  puzzleStatus('Find the best move for ' + (ps.turn === 'w' ? 'White' : 'Black'), 'var(--muted)');
+  puzzleStatus('Find the best move for ' + (ps.turn === 'w' ? 'White' : 'Black'), 'plain');
   document.getElementById('puzzleMoveList').textContent = '';
   document.getElementById('puzzlePrev').disabled = idx === 0;
   document.getElementById('puzzleNext').disabled = idx === ps.puzzles.length - 1;
@@ -306,7 +309,7 @@ function renderPuzzleProgress() {
     if (ps.solved[i] === 'solved') cls += ' solved';
     else if (ps.solved[i] === 'failed') cls += ' failed';
     if (i === ps.currentIdx) cls += ' current';
-    return `<div class="${cls}" data-act="load-puzzle" data-idx="${i}" style="cursor:pointer" title="Puzzle ${i+1}"></div>`;
+    return `<button type="button" class="${cls}" data-act="load-puzzle" data-idx="${i}" title="Puzzle ${i+1}" aria-label="Puzzle ${i+1}"></button>`;
   }).join('');
   const solved = ps.solved.filter(s => s === 'solved').length;
   document.getElementById('puzzleScore').textContent = `${solved}/${ps.puzzles.length} solved`;
@@ -319,7 +322,7 @@ function loadHistoryEvents() {
   if (!el) return;
   loadDataFile('history').then(renderHistoryEvents, err => {
     console.error(err);
-    el.innerHTML = '<div class="history-event" style="color:var(--muted)">Could not load the history file. Check your connection and reopen this tab.</div>';
+    el.innerHTML = '<div class="history-event muted">Could not load the history file. Check your connection and reopen this tab.</div>';
   });
 }
 
@@ -331,10 +334,10 @@ function renderHistoryEvents() {
   if (typeof CHESS_HISTORY !== 'undefined' && CHESS_HISTORY[key]) {
     const events = CHESS_HISTORY[key];
     el.innerHTML = events.map(e =>
-      `<div class="history-event"><span class="history-year">${e.year}</span>${esc(e.event)}<span class="history-cat">${esc(e.category)}</span></div>`
+      `<div class="history-event"><span class="history-year">${e.year}</span>${esc(e.event)}<span class="history-cat">${esc(String(e.category).replace(/_/g, ' '))}</span></div>`
     ).join('');
   } else {
-    el.innerHTML = '<div class="history-event" style="color:var(--muted)">No historical events found for today.</div>';
+    el.innerHTML = '<div class="history-event muted">No historical events found for today.</div>';
   }
 }
 
@@ -349,7 +352,7 @@ function initPuzzles() {
     document.getElementById('puzzleTotal').textContent = ps.puzzles.length;
     loadPuzzle(0);
   } else {
-    document.getElementById('chessBoard').innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted);grid-column:1/-1">No puzzles available. Run the puzzle scraper to generate daily puzzles.</div>';
+    document.getElementById('chessBoard').innerHTML = '<div class="empty">No puzzles available. Run the puzzle scraper to generate daily puzzles.</div>';
   }
   loadHistoryEvents();
 }

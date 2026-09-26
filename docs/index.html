@@ -25,27 +25,24 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/archivo/archivo-latin.woff2">
 <link rel="stylesheet" href="styles/fonts.css?v=d265109c48">
 <link rel="stylesheet" href="styles/tokens.css?v=56b8c4ba24">
-<link rel="stylesheet" href="styles/01-base.css?v=03f7525f8c">
+<link rel="stylesheet" href="styles/01-base.css?v=01aea6dc00">
 <link rel="stylesheet" href="styles/shell.css?v=963c55f4d6">
-<link rel="stylesheet" href="styles/controls.css?v=d500d9c9ff">
+<link rel="stylesheet" href="styles/controls.css?v=058c81536b">
 <link rel="stylesheet" href="styles/overlays.css?v=f86784d8b1">
 <link rel="stylesheet" href="styles/picker.css?v=d1ecc80b37">
-<link rel="stylesheet" href="styles/03-cmdk.css?v=8be0b8a479">
-<link rel="stylesheet" href="styles/forecast.css?v=02728b132f">
-<link rel="stylesheet" href="styles/sections.css?v=6b375b459d">
-<link rel="stylesheet" href="styles/season.css?v=b483f627f1">
-<link rel="stylesheet" href="styles/10-comparison.css?v=e1594e165c">
-<link rel="stylesheet" href="styles/14-puzzles.css?v=aa45d7e583">
-<link rel="stylesheet" href="styles/15-data-entry.css?v=c68b8317e2">
-<link rel="stylesheet" href="styles/16-email.css?v=774e6cca13">
-<link rel="stylesheet" href="styles/17-compare.css?v=33bdbebd97">
-<link rel="stylesheet" href="styles/18-performance.css?v=854b88f78f">
+<link rel="stylesheet" href="styles/03-cmdk.css?v=9823c33751">
+<link rel="stylesheet" href="styles/forecast.css?v=e9e5b33a7f">
+<link rel="stylesheet" href="styles/sections.css?v=db3956d491">
+<link rel="stylesheet" href="styles/season.css?v=bbda8254df">
+<link rel="stylesheet" href="styles/about.css?v=78c8fc8acf">
+<link rel="stylesheet" href="styles/performance.css?v=a5c5f99f96">
+<link rel="stylesheet" href="styles/compare.css?v=7b35d9ec29">
+<link rel="stylesheet" href="styles/ask.css?v=592bb524aa">
+<link rel="stylesheet" href="styles/email.css?v=b8b6cdb598">
+<link rel="stylesheet" href="styles/puzzles.css?v=1598ab5d84">
 <link rel="stylesheet" href="styles/19-motion.css?v=72ee71ee5f">
-<link rel="stylesheet" href="styles/20-mobile.css?v=53e0e81839">
-<link rel="stylesheet" href="styles/21-panels.css?v=b6db1dc191">
-<link rel="stylesheet" href="styles/22-panels-shared.css?v=9d13292a70">
+<link rel="stylesheet" href="styles/20-mobile.css?v=0e3623d111">
 <link rel="stylesheet" href="styles/23-print.css?v=b75fa9d7c0">
-<link rel="stylesheet" href="styles/24-ask-audit.css?v=62b5d908cd">
 <link rel="stylesheet" href="styles/theme.css?v=86ed0bd11f">
 </head>
 <body>
@@ -165,7 +162,7 @@
       <div class="cmdk-input-wrap">
         <span class="cmdk-input-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
         <input type="search" class="cmdk-input" id="cmdkInput" placeholder="Search tournaments..." autocomplete="off" aria-controls="cmdkResults">
-        <button class="cmdk-close" data-act="close-cmdk" aria-label="Close search">&times;</button>
+        <button class="cmdk-close" data-act="close-cmdk" aria-label="Close search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
       </div>
       <div class="cmdk-results" id="cmdkResults" role="listbox"></div>
     </div>
@@ -429,10 +426,10 @@
           <div class="chess-board" id="chessBoard"></div>
         </div>
         <div class="puzzle-nav">
-          <button class="puzzle-btn" id="puzzlePrev" data-act="puzzle-nav" data-delta="-1" disabled>&#9664; Prev</button>
-          <button class="puzzle-btn" id="puzzleHint" data-act="puzzle-hint">Hint</button>
-          <button class="puzzle-btn" id="puzzleRetry" data-act="puzzle-retry" style="display:none">Retry</button>
-          <button class="puzzle-btn primary" id="puzzleNext" data-act="puzzle-nav" data-delta="1">Next &#9654;</button>
+          <button class="btn" id="puzzlePrev" data-act="puzzle-nav" data-delta="-1" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Prev</button>
+          <button class="btn" id="puzzleHint" data-act="puzzle-hint">Hint</button>
+          <button class="btn" id="puzzleRetry" data-act="puzzle-retry" style="display:none">Retry</button>
+          <button class="button" id="puzzleNext" data-act="puzzle-nav" data-delta="1">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
         </div>
       </div>
       <div>
@@ -448,7 +445,7 @@
           <a id="puzzleLink" href="#" target="_blank" rel="noopener" class="puzzle-lichess">View on Lichess &rarr;</a>
         </div>
         <div class="history-card" id="historyCard">
-          <h3>&#9812; This Day in Chess History</h3>
+          <h3>This Day in Chess History</h3>
           <div id="historyEvents">Loading...</div>
         </div>
       </div>
@@ -469,15 +466,15 @@
     <div class="email-meta">
       <label class="email-meta-row">
         <span class="email-meta-label">Subject</span>
-        <input id="emailSubject" type="text" class="email-meta-input" placeholder="CCA Entries Update" />
+        <input id="emailSubject" type="text" class="field" placeholder="CCA Entries Update" />
       </label>
       <label class="email-meta-row">
         <span class="email-meta-label">Intro (optional)</span>
-        <input id="emailIntro" type="text" class="email-meta-input" placeholder="Leave blank to use default 'Team,'" />
+        <input id="emailIntro" type="text" class="field" placeholder="Leave blank to use default 'Team,'" />
       </label>
       <label class="email-meta-row">
         <span class="email-meta-label">Sign-off (optional)</span>
-        <input id="emailSignoff" type="text" class="email-meta-input" placeholder="Your name; leave blank for none" />
+        <input id="emailSignoff" type="text" class="field" placeholder="Your name; leave blank for none" />
       </label>
     </div>
 
@@ -494,13 +491,13 @@
     <!-- Length + format settings -->
     <div class="email-toolbar">
       <span class="email-toolbar-label">Length</span>
-      <div class="email-seg" id="emailLenToggle">
+      <div class="segmented" id="emailLenToggle" role="group" aria-label="Email length">
         <button data-act="email-length" data-len="short">Short</button>
         <button data-act="email-length" data-len="medium" class="active">Medium</button>
         <button data-act="email-length" data-len="long">Long</button>
       </div>
       <span class="email-toolbar-label">Format</span>
-      <div class="email-seg" id="emailFormatToggle">
+      <div class="segmented" id="emailFormatToggle" role="group" aria-label="Email format">
         <button data-act="email-format" data-fmt="plain" class="active">Plain text</button>
         <button data-act="email-format" data-fmt="html">HTML</button>
       </div>
@@ -508,9 +505,9 @@
 
     <!-- Unified action bar: Generate + Copy + Source/Preview toggle, sticky above output -->
     <div class="email-action-bar">
-      <button data-act="email-generate" class="email-generate-btn">Generate</button>
-      <button id="emailCopyBtn" data-act="email-copy" class="email-copy-btn">Copy</button>
-      <button id="emailCopyHtmlBtn" data-act="email-copy-html" class="email-copy-btn" style="display:none">Copy HTML</button>
+      <button data-act="email-generate" class="button">Generate</button>
+      <button id="emailCopyBtn" data-act="email-copy" class="btn email-copy-btn">Copy</button>
+      <button id="emailCopyHtmlBtn" data-act="email-copy-html" class="btn email-copy-btn" style="display:none">Copy HTML</button>
       <div class="email-split-tabs" id="emailSplitTabs" role="tablist" aria-label="Email view" style="display:none">
         <button class="email-split-tab active" role="tab" aria-selected="true" data-act="email-split-tab" data-tab="source">Source</button>
         <button class="email-split-tab" role="tab" aria-selected="false" data-act="email-split-tab" data-tab="preview">Preview</button>
@@ -574,9 +571,9 @@
     <div id="perfScoring" class="perf-scoring mb24"></div>
 
     <!-- Per-tournament table -->
-    <details class="mb24" open>
-      <summary class="perf-summary">Tournament Results</summary>
-      <div id="perfTable" class="table-scroll mt8"></div>
+    <details class="sect" id="sect-perf-table" data-open="always" open>
+      <summary class="sect-summary"><h3 class="sect-summary-h">Tournament Results</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+      <div id="perfTable" class="table-scroll"></div>
     </details>
   </div><!-- /panel-performance -->
 
@@ -951,8 +948,8 @@
         <div class="ask-sub" id="askDataInfo">Plain English works. Numbers, schedules, comparisons.</div>
       </div>
       <div class="ask-input-row">
-        <textarea id="askInput" class="ask-input" rows="2" placeholder="e.g. When does Liberty Bell start?" aria-label="Your question"></textarea>
-        <button id="askSubmit" type="button" class="ask-submit">Ask</button>
+        <textarea id="askInput" class="field ask-input" rows="2" placeholder="e.g. When does Liberty Bell start?" aria-label="Your question"></textarea>
+        <button id="askSubmit" type="button" class="button ask-submit">Ask</button>
       </div>
       <div class="ask-chips" id="askChips" aria-label="Suggested questions"></div>
       <div class="ask-banner" id="askBanner" hidden></div>
@@ -970,17 +967,17 @@
       </div>
       <div class="audit-controls">
         <label class="audit-label" for="auditEvent">Event</label>
-        <select id="auditEvent" class="audit-select" aria-label="Event"></select>
+        <select id="auditEvent" class="field audit-select" aria-label="Event"></select>
         <label class="audit-label" for="auditFile">Registration export (.csv or .xlsx)</label>
         <div class="audit-file-row">
           <input type="file" id="auditFile" accept=".csv,.xlsx,.xls" aria-label="Registration export file">
         </div>
         <div class="audit-hint">The export needs columns: LastName, FirstName, City, State, ZipCode, PayerName (payer as &quot;Last, First&quot;).</div>
-        <button id="auditGenerate" type="button" class="ask-submit">Generate audit list</button>
+        <button id="auditGenerate" type="button" class="button ask-submit">Generate the Audit List</button>
       </div>
       <div class="audit-banner" id="auditBanner" hidden></div>
       <div class="audit-summary" id="auditSummary" hidden aria-live="polite"></div>
-      <button id="auditDownload" type="button" class="ask-submit audit-download" hidden>Download the spreadsheet</button>
+      <button id="auditDownload" type="button" class="btn audit-download" hidden>Download the Spreadsheet</button>
     </div>
   </div>
 
@@ -1032,7 +1029,7 @@
      OFFLINE_FALLBACKS (test_global_uniqueness pins name collisions and
      suffix clashes; test_script_loading pins the defer attribute). -->
 <script defer src="util_core.js?v=2824d286fc"></script>
-<script defer src="foundation.js?v=02d5d663f8"></script>
+<script defer src="foundation.js?v=c101b7a670"></script>
 <!-- theme.js reads PALETTE/rebuildPalette from foundation.js at load and
      sets the Chart.js defaults before any chart is built. -->
 <script defer src="theme.js?v=33c380c35b"></script>
@@ -1044,20 +1041,20 @@
 <script defer src="sheet.js?v=7c8a1ac5ef"></script>
 <script defer src="shell.js?v=cc24bf74ec"></script>
 <script defer src="cmdk.js?v=c497999f1f"></script>
-<script defer src="tab_email.js?v=09dda48c3a"></script>
-<script defer src="tab_performance.js?v=63e8c55dc2"></script>
-<script defer src="tab_puzzles.js?v=d37fdbb7f7"></script>
+<script defer src="tab_email.js?v=cdc29ce20b"></script>
+<script defer src="tab_performance.js?v=25c7cb8779"></script>
+<script defer src="tab_puzzles.js?v=7d25085766"></script>
 <script defer src="pickers.js?v=fbcaedd103"></script>
 <script defer src="panels_info.js?v=e948552625"></script>
-<script defer src="hero_kpi.js?v=b2888a0b1b"></script>
+<script defer src="hero_kpi.js?v=f476409077"></script>
 <script defer src="hero_figures.js?v=3c3f4c96ca"></script>
-<script defer src="chart_main.js?v=2f5e38058c"></script>
-<script defer src="chart_hist.js?v=6bdf6c4896"></script>
+<script defer src="chart_main.js?v=85ad025049"></script>
+<script defer src="chart_hist.js?v=4ad01878ac"></script>
 <script defer src="panels_grid.js?v=586d1d446a"></script>
 <script defer src="panels_cal.js?v=ab545ee2e4"></script>
 <script defer src="season_cards.js?v=c15ab193dd"></script>
-<script defer src="tab_about.js?v=e7497b7332"></script>
-<script defer src="tab_compare.js?v=f99dade8a4"></script>
+<script defer src="tab_about.js?v=edbf709211"></script>
+<script defer src="tab_compare.js?v=acc24bba98"></script>
 <script defer src="tab_ask.js?v=ac0057506c"></script>
 <script defer src="app.js?v=c10dabd0d5"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the

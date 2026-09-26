@@ -74,9 +74,21 @@ details.sect[open] > .sect-summary .sect-caret { transform: rotate(180deg); }
 .fee-cell-amount { font: 700 16px var(--mono); }
 .fee-empty { color: var(--muted); font-size: 13px; padding: var(--s-5) 0; text-align: center; }
 
+/* ── The small charts inside a panel (chart_hist.js, chart_curve.js) ── */
+.chart-box { margin-bottom: 12px; }
+.chart-box.h180 { height: 180px; }
+.chart-box.h200 { height: 200px; }
+.chart-caption { color: var(--muted); font-size: 12px; }
+
 /* ── About This Model, the compact section (tab_about.js fills the chips) ── */
-#sect-model .stat-chip { background: transparent; border: 1px solid var(--line-soft); border-radius: 0; }
-#sect-model .stat-chip-num { font-family: var(--mono); }
+.model-info p { color: var(--ink-2); font-size: var(--fs-body); line-height: 1.6; margin-bottom: 8px; }
+.model-info-row { align-items: flex-start; display: flex; flex-wrap: wrap; gap: 20px; }
+.model-info-blurb { flex: 1; margin: 0; min-width: 240px; }
+.stat-chip-row { align-self: center; display: flex; flex-wrap: wrap; gap: 8px; }
+.stat-chip { border: 1px solid var(--line-soft); min-width: 80px; padding: 8px 14px; text-align: center; }
+.stat-chip-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+.stat-chip-num { font: 700 16px var(--mono); font-variant-numeric: tabular-nums; }
+.stat-chip-sub { color: var(--muted); font-size: 11px; }
 
 /* ── Up Next: the next three events, then the whole season ── */
 .up-next { border-top: 2px solid var(--line); margin-top: var(--s-5); padding-top: var(--s-3); }

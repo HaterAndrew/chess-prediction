@@ -41,7 +41,7 @@ kbd, .kbd-hint { background: transparent; border: 1px solid var(--line-soft); co
 /* ── Note: a message in the flow, printed on the stock its state calls
    for. Replaces the stale, override and first-run banners. ── */
 .note { background: var(--panel); border: 1px solid var(--line); color: var(--ink); font: 13px/1.5 var(--display); margin: 0 0 var(--s-4); padding: 12px 16px; }
-.note[hidden] { display: none; }
+.note[hidden], html[data-hint="seen"] #firstRunHint { display: none; }
 .note-signal, .note-blue, .note-green { background: var(--stock-blue); }
 .note-amber { background: var(--stock-yellow); }
 .note-ember { background: var(--stock-pink); }
@@ -56,12 +56,12 @@ kbd, .kbd-hint { background: transparent; border: 1px solid var(--line-soft); co
 /* ── Tags and pills: printed labels in a ruled box. The status pill is
    the tournament's: Upcoming on blue stock with the live dot, Complete
    and Historical in a quieter rule. ── */
-.tag { border: 1px solid var(--line); color: var(--muted); display: inline-block; font: 700 11px var(--display); letter-spacing: .06em; padding: 3px 7px; text-transform: uppercase; }
+.tag { border: 1px solid var(--line); color: var(--muted); display: inline-block; font: 700 11px var(--display); letter-spacing: var(--track-label); padding: 3px 7px; text-transform: uppercase; }
 .tag-signal { border-color: var(--signal); color: var(--signal); }
 .tag-ember { border-color: var(--ember); color: var(--ember); }
 .tag-ink { color: var(--ink); }
 .tag-live { align-items: center; background: var(--stock-blue); border-color: var(--blue); color: var(--blue); display: inline-flex; font-family: var(--mono); gap: 5px; letter-spacing: 0; }
-.pill, .status-pill { align-items: center; border: 1px solid var(--line); color: var(--ink-2); display: inline-flex; font: 700 11px var(--display); gap: 6px; letter-spacing: .06em; padding: 2px 8px; text-transform: uppercase; white-space: nowrap; }
+.pill, .status-pill { align-items: center; border: 1px solid var(--line); color: var(--ink-2); display: inline-flex; font: 700 11px var(--display); gap: 6px; letter-spacing: var(--track-label); padding: 2px 8px; text-transform: uppercase; white-space: nowrap; }
 .pill-green, .pill-blue, .pill-live { background: var(--stock-blue); border-color: var(--blue); color: var(--blue); }
 .pill-amber { background: var(--stock-yellow); color: var(--ink); }
 .pill-ember { background: var(--stock-pink); border-color: var(--ember); color: var(--ember); }

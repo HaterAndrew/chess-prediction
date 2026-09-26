@@ -10,13 +10,13 @@ function renderHistorical(t) {
   if (histChartObj) { histChartObj.destroy(); histChartObj = null; }
   const wrap = document.getElementById('compTableWrap');
   if (!t.historical || t.historical.length === 0) {
-    wrap.innerHTML = `<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:var(--fs-2);opacity:.6">No historical editions on record</div>`;
+    wrap.innerHTML = `<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:var(--fs-body);opacity:.6">No historical editions on record</div>`;
     return;
   }
   if (typeof Chart === 'undefined') {
     // Charting library did not load (CDN blocked or offline): say so rather
     // than throw, so the rest of the panel still renders.
-    wrap.innerHTML = `<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:var(--fs-2);opacity:.6">Chart unavailable (the charting library did not load)</div>`;
+    wrap.innerHTML = `<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:var(--fs-body);opacity:.6">Chart unavailable (the charting library did not load)</div>`;
     return;
   }
 
@@ -25,25 +25,13 @@ function renderHistorical(t) {
   const hasAdjusted = histFlags.some(Boolean);
   const labels = [...hist.map(h => h.adjusted ? `${h.year}*` : String(h.year)), String(t.year)];
   const counts = [...hist.map(h => h.count), isDone(t) ? t.current_count : t.point_estimate];
-  // Gradient bars: current year in gold, history in blue, both fading toward
-  // the baseline. One cache per bucket; scriptable by dataIndex.
-  const _goldBarGrad = {}, _blueBarGrad = {};
-  const colors = (context) => {
-    const isCurrent = context.dataIndex === counts.length - 1;
-    return isCurrent
-      ? areaGradient(context.chart, _goldBarGrad, [
-          [0, themeRgba(PALETTE.goldBright, 0.85)],
-          [1, themeRgba(PALETTE.gold, 0.45)]
-        ])
-      : areaGradient(context.chart, _blueBarGrad, [
-          [0, themeRgba(PALETTE.blue, 0.55)],
-          [1, themeRgba(PALETTE.blue, 0.18)]
-        ]);
-  };
-  const hoverColors = counts.map((_, i) => i === counts.length-1
-    ? themeRgba(PALETTE.goldBright, 0.95) : themeRgba(PALETTE.blue, 0.7));
-  const borders = counts.map((_, i) => i === counts.length-1 ? PALETTE.gold : PALETTE.blue);
-  const hoverBorders = counts.map((_, i) => i === counts.length-1 ? PALETTE.goldBright : PALETTE.blueBright);
+  // Flat bars: past editions in the history grey, this edition on the
+  // highlighter with an ink rule round it (the current thing on the sheet).
+  const isCurrent = i => i === counts.length - 1;
+  const colors = counts.map((_, i) => isCurrent(i) ? PALETTE.mark : themeRgba(PALETTE.hist, 0.35));
+  const hoverColors = counts.map((_, i) => isCurrent(i) ? PALETTE.mark : themeRgba(PALETTE.hist, 0.55));
+  const borders = counts.map((_, i) => isCurrent(i) ? PALETTE.text : PALETTE.hist);
+  const hoverBorders = counts.map(() => PALETTE.text);
 
   // Average line plugin
   const histAvg = Math.round(hist.reduce((s, h) => s + h.count, 0) / hist.length);
@@ -78,7 +66,7 @@ function renderHistorical(t) {
       labels, datasets: [{
         data: counts, backgroundColor: colors, borderColor: borders,
         hoverBackgroundColor: hoverColors, hoverBorderColor: hoverBorders,
-        borderWidth: 1.5, borderRadius: 6, borderSkipped: 'bottom',
+        borderWidth: 1.5, borderRadius: 0, borderSkipped: 'bottom',
         categoryPercentage: 0.72, barPercentage: 0.85
       }]
     },
@@ -90,7 +78,7 @@ function renderHistorical(t) {
         tooltip: {
           backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
           titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
-          padding: 12, cornerRadius: 8,
+          padding: 12, cornerRadius: 0,
           titleFont: { size: 14, weight: 'bold' }, bodyFont: { size: 12 }, footerFont: { size: 11, style: 'italic' },
           displayColors: true,
           callbacks: {
@@ -207,14 +195,11 @@ function renderRegCurve(t) {
   const labels = sorted.map(pt => pt.days_before);
   const data = sorted.map(pt => ((pt.cumulative_pct || pt.pct || 0) * 100));
 
-  // Mark where "today" is
+  // Mark where "today" is: the elapsed days in the blue pen, the days still
+  // to come in ink; a finished event is all elapsed.
   const todayIdx = labels.findIndex(db => db <= t.days_remaining);
-  const pointColors = labels.map((db, i) => {
-    if (isDone(t)) return themeRgba(PALETTE.blue, 0.6);
-    return db >= t.days_remaining ? themeRgba(PALETTE.blue, 0.6) : themeRgba(PALETTE.gold, 0.6);
-  });
-
-  const _regGrad = {};
+  const pointColors = labels.map(db =>
+    isDone(t) || db >= t.days_remaining ? PALETTE.actual : PALETTE.projected);
 
   // "You are here" annotation plugin for reg curve
   const regCurveAnnotation = makeVertMarkersPlugin('regCurveAnnotation', () => {
@@ -227,7 +212,7 @@ function renderRegCurve(t) {
       if (d < minDiff) { minDiff = d; idx = i; }
     });
     if (idx < 0) return [];
-    return [{ value: idx, label: 'Today', color: PALETTE.blue }];
+    return [{ value: idx, label: 'Today', color: PALETTE.markerToday }];
   });
 
   regCurveObj = new Chart(ctx, {
@@ -236,20 +221,16 @@ function renderRegCurve(t) {
       labels: labels.map(db => db === 0 ? 'Event' : db >= 7 ? `${db}d` : `${db}d`),
       datasets: [{
         data,
-        borderColor: themeRgba(PALETTE.gold, 0.6),
-        backgroundColor: (context) => areaGradient(context.chart, _regGrad, [
-          [0, themeRgba(PALETTE.gold, 0.16)],
-          [1, themeRgba(PALETTE.gold, 0.02)]
-        ]),
+        borderColor: PALETTE.actual,
+        backgroundColor: themeRgba(PALETTE.actual, 0.06),
         fill: true,
         borderWidth: 2.25,
         // Elapsed/ahead split at today, matching pointColors and the main
-        // chart: blue = behind us, gold = still to come. Done tournaments
-        // keep the flat base color (no split to show).
+        // chart: blue = behind us, ink = still to come. Done tournaments
+        // keep the base pen (no split to show).
         segment: {
           borderColor: (c) => isDone(t) ? undefined :
-            (c.p1DataIndex <= todayIdx ? themeRgba(PALETTE.blue, 0.75)
-                                       : themeRgba(PALETTE.gold, 0.75))
+            (c.p1DataIndex <= todayIdx ? PALETTE.actual : PALETTE.projected)
         },
         pointRadius: labels.map(db => db === 0 || db === t.days_remaining ? 5 : 0),
         pointHoverRadius: 6,
@@ -269,7 +250,7 @@ function renderRegCurve(t) {
         tooltip: {
           backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
           titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
-          padding: 12, cornerRadius: 8,
+          padding: 12, cornerRadius: 0,
           titleFont: { size: 14, weight: 'bold' }, bodyFont: { size: 12 }, footerFont: { size: 11, style: 'italic' },
           displayColors: true,
           callbacks: {

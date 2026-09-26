@@ -26,7 +26,7 @@
 .cmdk-row { align-items: center; color: var(--ink); cursor: pointer; display: grid; font-size: var(--fs-body-lg); gap: var(--s-3); grid-template-columns: auto 1fr auto; padding: 10px 12px; text-align: left; transition: background var(--dur-fast); width: 100%; }
 .cmdk-row:hover { background: var(--raised); }
 .cmdk-row-active, .cmdk-row-active:hover { background: var(--mark); color: var(--mark-ink); }
-.cmdk-row-status { align-items: center; border: 1px solid var(--line-soft); color: var(--muted); display: inline-flex; font: 700 10px var(--display); letter-spacing: .06em; min-width: 76px; justify-content: center; padding: 2px 6px; text-transform: uppercase; }
+.cmdk-row-status { align-items: center; border: 1px solid var(--line-soft); color: var(--muted); display: inline-flex; font: 700 10px var(--display); letter-spacing: var(--track-label); min-width: 76px; justify-content: center; padding: 2px 6px; text-transform: uppercase; }
 .cmdk-status-live { background: var(--stock-blue); border-color: var(--blue); color: var(--blue); }
 .cmdk-status-complete { color: var(--ink-2); }
 .cmdk-status-hist { background: var(--stock-grey); }

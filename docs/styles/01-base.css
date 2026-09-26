@@ -43,7 +43,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 
 /* Utilities the views' markup carries: the blue pen on a figure, the mono
    face, weights and the spacing steps. */
-.gold, .green { color: var(--signal); }
+.pen { color: var(--signal); }
 .muted { color: var(--muted); }
 .mono { font-family: var(--mono); }
 .w600 { font-weight: 600; }
@@ -60,3 +60,14 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 ::-webkit-scrollbar-track { background: var(--void); }
 ::-webkit-scrollbar-thumb { background: var(--line-soft); border: 2px solid var(--void); }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* Forced colours drop every fill, so the highlighter and the inked segment
+   mark the current thing with an outline, and the current node keeps its
+   mark in the system highlight. */
+@media (forced-colors: active) {
+  .nav-item.active, .segmented button.active, .sheet-row.active, .pick-row.active,
+  .cmdk-row-active, .fc-card-active, .mini-card-active, .compare-add-btn.compare-active,
+  .comp-table .current-year td, .perf-grade-letter.grade-good, .result-card-num,
+  .hero-number, .chess-sq.selected { outline: 2px solid CanvasText; outline-offset: -2px; }
+  .timeline-dot.now, .ms-node.ms-now .ms-dot, .cal-axis-now, .puzzle-dot.current { background: Highlight; forced-color-adjust: none; }
+}

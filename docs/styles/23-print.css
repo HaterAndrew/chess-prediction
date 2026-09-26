@@ -44,8 +44,8 @@
     text-shadow: none !important;
   }
   .chart-card, .panel, .note { page-break-inside: avoid; }
-  .hero-number { background: transparent !important; color: #111 !important; font-size: 36pt !important; padding: 0 !important; }
-  .hero-narrative strong { color: #000 !important; }
+  .hero-number { background: transparent !important; color: var(--ink) !important; font-size: 36pt !important; padding: 0 !important; }
+  .hero-narrative strong { color: var(--ink) !important; }
   /* Chart canvas: ensure it stays at a reasonable height. */
   .chart-wrap { height: 280px !important; }
   /* Page break opportunities */

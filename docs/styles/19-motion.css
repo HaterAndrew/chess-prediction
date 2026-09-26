@@ -1,15 +1,15 @@
 /* ══════════════════════════════════════════════════════
    TRANSITIONS
    ══════════════════════════════════════════════════════ */
-.fade-enter { animation: fadeSlideIn .45s cubic-bezier(.22,1,.36,1) forwards; }
+.fade-enter { animation: fadeSlideIn var(--dur-slow) var(--ease-out) forwards; }
 @keyframes fadeSlideIn {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .hero, .chart-card, .pace-note, .kpi-row, .grid-2, .up-next,
 .all-tournaments {
-  transition: opacity .35s cubic-bezier(.22,1,.36,1),
-              transform .35s cubic-bezier(.22,1,.36,1);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
 }
 @media (prefers-reduced-motion: reduce) {
   .fade-enter { animation: none; }
@@ -28,22 +28,11 @@
   50% { opacity: 1.0; }
 }
 .skeleton {
-  background: var(--surface3);
-  border-radius: var(--radius-sm);
+  background: var(--hover);
+  border-radius: var(--radius);
   animation: skeleton-pulse 1.5s ease-in-out infinite;
 }
-.skeleton-chart { height: 260px; width: 100%; border-radius: var(--radius); }
-.skeleton-text { height: 14px; margin-bottom: 10px; border-radius: 4px; }
-.skeleton-text:nth-child(1) { width: 80%; }
-.skeleton-text:nth-child(2) { width: 60%; }
-.skeleton-text:nth-child(3) { width: 70%; }
-.skeleton-text:nth-child(4) { width: 50%; }
-.skeleton-card { height: 80px; width: 100%; border-radius: var(--radius); }
 @media (max-width: 639px) {
-  /* Hero on mobile is ~150–180px tall (number + label + CI + 2-up KPIs).
-     Bumping skeleton-card from 80px reduces CLS when real content lands. */
-  .skeleton-card { height: 160px; }
-  .skeleton-chart { height: 240px; }
   .compare-empty { padding: var(--s-5) var(--s-4); }
 }
 

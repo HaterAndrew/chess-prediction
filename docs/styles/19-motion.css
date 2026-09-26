@@ -17,31 +17,8 @@
   .all-tournaments, .movements-strip { transition: none; }
 }
 
-/* ══════════════════════════════════════════════════════
-   BACK TO TOP BUTTON
-   ══════════════════════════════════════════════════════ */
-.back-to-top {
-  position: fixed;
-  bottom: max(20px, env(safe-area-inset-bottom));
-  right: 20px; z-index: 900;
-  width: var(--touch); height: var(--touch); border-radius: 50%;
-  background: var(--surface2); border: 1px solid var(--border);
-  color: var(--muted); font-size: var(--fs-5); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; visibility: hidden; transform: translateY(10px);
-  transition: opacity .3s, visibility .3s, transform .3s, background .2s, color .2s;
-  box-shadow: var(--shadow-sm);
-}
-.back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
-.back-to-top:hover { background: var(--blue); color: var(--signal-ink); border-color: var(--blue); }
-
-/* Keyboard hint */
-.kbd-hint {
-  display: inline-block; padding: 1px 5px; border-radius: 3px;
-  background: var(--surface3); border: 1px solid var(--border);
-  font-size: var(--fs-1); color: var(--muted); font-family: monospace;
-  vertical-align: middle; margin: 0 1px;
-}
+/* The back-to-top control and the keyboard hints live in shell.css and
+   controls.css. */
 
 /* ══════════════════════════════════════════════════════
    SKELETON LOADING STATES

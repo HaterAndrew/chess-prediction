@@ -135,6 +135,7 @@
   --rail-width: 232px;
   --rail-collapsed: 64px;
   --bottom-nav: calc(60px + env(safe-area-inset-bottom, 0px));
+  --layer-rail: 20;
   --layer-topbar: 30;
   --layer-nav: 35;
   --layer-popover: 100;

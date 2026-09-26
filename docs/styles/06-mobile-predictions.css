@@ -14,10 +14,6 @@
      This mobile-scoped counter-rule (previously only in @media print) fixes it. */
   .page-tab-panel:not(.active) { display: none !important; }
 
-  /* --- Hide redundant chrome on phones --- */
-  #summaryBar { display: none !important; }   /* duplicates dropdown counts + mini-grid */
-  .header-meta { display: none; }              /* "Updated:" timestamp eats vertical space */
-
   /* --- Predictions panel: flex column with explicit order (only when active) --- */
   #panel-predictions.active {
     display: flex;
@@ -33,15 +29,12 @@
   #panel-predictions > .delta-banner   { order: 2; }
   #panel-predictions > .chart-card     { order: 3; }
   #panel-predictions > #tabBar         { order: 4; }   /* 3 category dropdowns, now below the hero+chart */
-  #panel-predictions > .calendar-strip { order: 5; }
   #panel-predictions > .accuracy-strip { order: 6; }
-  #panel-predictions > .mini-grid      { order: 7; }
   #panel-predictions > .kpi-row        { order: 8; }
   #panel-predictions > .progress-row   { order: 9; }
   #panel-predictions > #sect-milestones { order: 10; }
   #panel-predictions > #sect-curve      { order: 11; }
   #panel-predictions > #sect-model      { order: 12; }
-  #panel-predictions > #sect-table      { order: 13; }
 
   /* --- Delta banner: tighter, single-row feel --- */
   .delta-banner {
@@ -102,31 +95,9 @@ body.drawer-open .back-to-top { display: none !important; }
    header tournament label (Spotify "Now Playing" pattern).
    ══════════════════════════════════════════════════════ */
 @media (max-width: 639px) {
-  /* Hide the 3 cat-btn pills entirely on phones — picker covers all 3 */
+  /* Hide the 3 cat-btn pills entirely on phones — picker covers all 3. The
+     trigger is the top bar's tournament chip (shell.css .tourn-trigger). */
   #panel-predictions > #tabBar { display: none; }
-
-  /* Trigger affordance: clearly button-like (subtle chip with border + colored
-     chevron) so users discover that the tournament name is the picker. */
-  #headerTournLabel {
-    cursor: pointer;
-    border-radius: 8px;
-    padding: 6px 10px;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    transition: background .15s, border-color .15s, transform .12s;
-  }
-  #headerTournLabel:active {
-    background: var(--surface3);
-    border-color: var(--blue);
-    transform: scale(.98);
-  }
-  #tournLabel::after {
-    content: ' \25BE';
-    font-size: var(--fs-2);
-    color: var(--blue);
-    margin-left: 6px;
-    font-weight: 700;
-  }
 
   /* Picker drawer base styles inherit from .drop-menu (round 12 bottom-sheet);
      this overrides the layout for the unified picker shell. */
@@ -207,10 +178,8 @@ body.drawer-open .back-to-top { display: none !important; }
   }
 }
 @media (min-width: 640px) {
-  /* Desktop safety: ensure the unified picker is fully suppressed and the
-     trigger affordance never shows. */
+  /* Desktop safety: ensure the unified picker is fully suppressed. */
   #dropMenu_tourney { display: none !important; }
-  #tournLabel::after { content: none; }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -221,8 +190,6 @@ body.drawer-open .back-to-top { display: none !important; }
    to fit "Chicago Open 2026 ▾" without ellipsis.
    ══════════════════════════════════════════════════════ */
 @media (max-width: 639px) {
-  /* Header tournament label: widen past the 20ch desktop base to fit the chevron. */
-  .header-tourn-label #tournLabel { max-width: 22ch; }
   /* Tighter chart-card padding gives the canvas ≈16px more horizontal room. */
   .chart-card { padding: var(--s-3); min-height: 280px; }
   /* More plot area on mobile (was 300px). With title+legend ~75px overhead,

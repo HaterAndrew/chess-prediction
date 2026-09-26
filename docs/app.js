@@ -2,34 +2,14 @@
 // PAGE TABS
 // ══════════════════════════════════════════════════════════
 let _currentTab = 'predictions';
-const MORE_MENU_TABS = ['compare', 'email', 'about', 'puzzles'];
 function switchPageTab(tab, skipHash) {
   if (_mobileVP() && _currentTab !== tab) _haptic(8);
   _currentTab = tab;
-  // Reset active + aria-selected across both the visible strip and the overflow
-  // disclosure (its items are role="tab"); only touch aria-selected where present
-  // so the "Other" disclosure trigger keeps aria-expanded semantics instead.
-  document.querySelectorAll('.page-tab, .page-tab-drop .cat-item').forEach(t => {
-    t.classList.remove('active');
-    if (t.hasAttribute('aria-selected')) t.setAttribute('aria-selected', 'false');
-  });
+  // The rail, the phone's bottom bar and the More sheet mark the open view,
+  // and the view title under the top bar names it: shell.js owns all four.
+  reflectNav(tab);
+  closeSheet();
   document.querySelectorAll('.page-tab-panel').forEach(p => p.classList.remove('active'));
-  const tabBtn = document.getElementById('ptab-' + tab);
-  if (tabBtn) {
-    tabBtn.classList.add('active');
-    tabBtn.setAttribute('aria-selected', 'true');
-    // Scroll active tab into view only when the strip actually overflows
-    const tabsContainer = tabBtn.closest('.page-tabs');
-    if (tabsContainer && tabsContainer.scrollWidth > tabsContainer.clientWidth + 1) {
-      tabBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
-  }
-  // Mirror active underline onto the "Menu" page-tab when current tab is in the dropdown
-  if (MORE_MENU_TABS.includes(tab)) {
-    const moreBtn = document.getElementById('ptab-more');
-    if (moreBtn) { moreBtn.classList.add('active'); moreBtn.removeAttribute('aria-selected'); }
-  }
-  closeMoreMenu();
   const panel = document.getElementById('panel-' + tab);
   panel.classList.add('active');
   if (tab === 'puzzles') initPuzzles();
@@ -45,8 +25,8 @@ function switchPageTab(tab, skipHash) {
   if (!skipHash) updateHash();
 }
 
-// Mobile swipe-between-tabs navigation
-const PAGE_TAB_ORDER = ['predictions', 'compare', 'email', 'performance', 'audit', 'about', 'puzzles', 'ask'];
+// Mobile swipe-between-tabs navigation, in the rail's order.
+const PAGE_TAB_ORDER = ['predictions', 'season', 'performance', 'compare', 'ask', 'email', 'audit', 'about', 'puzzles'];
 (function setupSwipeNav() {
   if (typeof window === 'undefined' || !('ontouchstart' in window)) return;
   let startX = 0, startY = 0, startT = 0;
@@ -72,87 +52,10 @@ const PAGE_TAB_ORDER = ['predictions', 'compare', 'email', 'performance', 'audit
   }, { passive: true });
 })();
 
-// ── "Other" overflow: a disclosure (button + aria-expanded region) holding the
-//    less-used tabs. Not a role=menu — the items navigate to tabpanels. ──
-function _moreMenuItems() {
-  const drop = document.getElementById('moreMenuDrop');
-  return drop ? Array.from(drop.querySelectorAll('.cat-item')) : [];
-}
-function openMoreMenuDrop() {
-  const drop = document.getElementById('moreMenuDrop');
-  const btn = document.getElementById('ptab-more');
-  if (!drop || !btn) return;
-  const r = btn.getBoundingClientRect();
-  const desiredLeft = r.left;                     // anchor below the button
-  drop.style.top = (r.bottom + 6) + 'px';
-  drop.style.left = '0px';
-  drop.classList.add('open');
-  const dw = drop.offsetWidth;                    // clamp horizontally once rendered
-  const maxLeft = Math.max(8, window.innerWidth - dw - 8);
-  drop.style.left = Math.min(desiredLeft, maxLeft) + 'px';
-  btn.setAttribute('aria-expanded', 'true');
-}
-function toggleMoreMenu(e) {
-  if (e) e.stopPropagation();
-  const drop = document.getElementById('moreMenuDrop');
-  if (!drop) return;
-  if (drop.classList.contains('open')) closeMoreMenu();
-  else openMoreMenuDrop();
-}
-function closeMoreMenu() {
-  const drop = document.getElementById('moreMenuDrop');
-  const btn = document.getElementById('ptab-more');
-  if (!drop) return;
-  drop.classList.remove('open');
-  if (btn) btn.setAttribute('aria-expanded', 'false');
-}
-function pickMoreTab(tab) {
-  closeMoreMenu();
-  switchPageTab(tab);
-}
-document.addEventListener('click', (e) => {
-  const wrap = document.getElementById('moreMenuWrap');
-  if (!wrap) return;
-  if (!wrap.contains(e.target)) closeMoreMenu();
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeMoreMenu();
-});
-window.addEventListener('resize', closeMoreMenu);
-window.addEventListener('scroll', closeMoreMenu, { passive: true });
-
-// Disclosure keyboard support: ArrowUp/Down from the trigger opens and enters
-// the panel; inside, arrows rove (with wrap), Home/End jump, Escape closes and
-// restores focus to the trigger, Tab closes.
-(function moreMenuKeys() {
-  const btn = document.getElementById('ptab-more');
-  const drop = document.getElementById('moreMenuDrop');
-  if (!btn || !drop) return;
-  btn.addEventListener('keydown', e => {
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      openMoreMenuDrop();
-      const items = _moreMenuItems();
-      if (items.length) (e.key === 'ArrowUp' ? items[items.length - 1] : items[0]).focus();
-    }
-  });
-  drop.addEventListener('keydown', e => {
-    const items = _moreMenuItems();
-    if (!items.length) return;
-    const i = items.indexOf(document.activeElement);
-    if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
-    else if (e.key === 'Home') { e.preventDefault(); items[0].focus(); }
-    else if (e.key === 'End') { e.preventDefault(); items[items.length - 1].focus(); }
-    else if (e.key === 'Escape') { e.preventDefault(); closeMoreMenu(); btn.focus(); }
-    else if (e.key === 'Tab') { closeMoreMenu(); }
-  });
-})();
-
 // ══════════════════════════════════════════════════════════
 // DEEP LINKING (hash routing)
 // ══════════════════════════════════════════════════════════
-const VALID_TABS = ['predictions', 'compare', 'email', 'performance', 'audit', 'about', 'puzzles', 'ask'];
+const VALID_TABS = ['predictions', 'season', 'performance', 'compare', 'ask', 'email', 'audit', 'about', 'puzzles'];
 
 function updateHash() {
   const tab = _currentTab || 'predictions';
@@ -252,13 +155,11 @@ function _renderAboveTheFold(t, sections) {
   }
 }
 
-// Phase B: the season calendar and the live-event cards.
-function _renderCalendarAndCards(t) {
+// Phase B: the Season view's calendar and cards, which mark the selected
+// tournament and so follow every selection.
+function _renderCalendarAndCards() {
   renderCalendar();
-  // Model accuracy summary lives on the Performance tab; removed from home.
   renderMiniCards();
-  // Show/hide sections based on tournament type
-  document.getElementById('miniGrid').style.display = t.status === 'live' ? '' : 'none';
 }
 
 // Phase C: everything below the chart.
@@ -296,7 +197,7 @@ function selectTournament(index, skipHash) {
 
   _runRenderPhases(gen, [
     () => _renderAboveTheFold(t, sections),
-    () => _renderCalendarAndCards(t),
+    () => _renderCalendarAndCards(),
     () => _renderBelowTheChart(t),
   ]);
 }
@@ -323,21 +224,20 @@ function init() {
       if (freshness.degraded) {
         // The pipeline told us it failed partway. Say so plainly rather than
         // implying a transient upstream outage.
-        msg = '\u26A0 The update pipeline failed on its last run. Showing the last '
+        msg = 'The update pipeline failed on its last run. Showing the last '
             + 'complete data, from ' + ts + '. Counts and predictions below may be out of date.';
       } else if (freshness.reason === 'age' && !TOURNAMENT_DATA.is_stale) {
-        // Nothing flagged this, but the browser clock says the data is old \u2014
+        // Nothing flagged this, but the browser clock says the data is old,
         // the case a mid-run crash used to hide entirely.
         const days = Math.floor(freshness.ageHours / 24);
-        msg = '\u26A0 This data is ' + (days >= 1 ? days + ' day' + (days === 1 ? '' : 's') : Math.round(freshness.ageHours) + ' hours')
+        msg = 'This data is ' + (days >= 1 ? days + ' day' + (days === 1 ? '' : 's') : Math.round(freshness.ageHours) + ' hours')
             + ' old (generated ' + ts + '). The nightly update has not completed since then.';
       } else {
-        msg = '\u26A0 Predictions last updated ' + ts + '. Live data temporarily unavailable.';
+        msg = 'Predictions last updated ' + ts + '. Live data temporarily unavailable.';
       }
       bannerText.textContent = msg;
-      banner.style.display = 'block';
-      // Push page content down so banner doesn't overlap
-      document.body.style.paddingTop = banner.offsetHeight + 'px';
+      // A note at the top of the main column, in the flow: nothing to push down.
+      banner.hidden = false;
     }
   }
 
@@ -426,7 +326,7 @@ function saveDataEntry() {
     }
   });
   if (invalid.length > 0) {
-    showDataEntryBanner(`${invalid.length} field${invalid.length === 1 ? '' : 's'} need fixing; see highlighted rows.`, 'error');
+    showToast(`${invalid.length} field${invalid.length === 1 ? '' : 's'} need fixing; see highlighted rows.`, 'error');
     return;
   }
 
@@ -465,25 +365,11 @@ function saveDataEntry() {
   // Re-render the current tournament view
   selectTournament(selectedIndex);
 
-  // Show saved message (legacy inline + new toast)
+  // Show saved message (legacy inline + the toast)
   const msg = document.getElementById('deSavedMsg');
   msg.classList.add('show');
   setTimeout(() => msg.classList.remove('show'), 2000);
-  showDataEntryBanner('Saved.', 'success');
-}
-
-function showDataEntryBanner(text, kind) {
-  let toast = document.getElementById('deToast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'deToast';
-    toast.className = 'de-toast';
-    document.body.appendChild(toast);
-  }
-  toast.textContent = text;
-  toast.className = `de-toast de-toast-${kind} show`;
-  clearTimeout(showDataEntryBanner._t);
-  showDataEntryBanner._t = setTimeout(() => { toast.className = 'de-toast'; }, 2500);
+  showToast('Saved.', 'success');
 }
 
 function clearDataEntry() {

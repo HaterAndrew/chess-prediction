@@ -32,7 +32,7 @@
     // ---- chrome / navigation -------------------------------------------
     'dismiss-stale': function () {
       const banner = document.getElementById('staleBanner');
-      if (banner) banner.style.display = 'none';
+      if (banner) banner.hidden = true;
     },
     'dismiss-hint': function () {
       const hint = document.getElementById('firstRunHint');
@@ -44,8 +44,9 @@
     'open-cmdk': function () { openCmdK(); },
     'chart-range': function (el) { setChartRange(el.dataset.range); },
     'page-tab': function (el) { switchPageTab(el.dataset.tab); },
-    'more-tab': function (el) { pickMoreTab(el.dataset.tab); },
-    'toggle-more-menu': function (el, ev) { toggleMoreMenu(ev); },
+    'toggle-rail': function () { toggleRail(); },
+    'open-more-sheet': function () { openMoreSheet(); },
+    'close-sheet': function () { closeSheet(); },
     'open-tourney-picker': function (el, ev) { maybeOpenTourneyPicker(ev); },
     'add-to-compare': function (el, ev) {
       addToCompareSelected();

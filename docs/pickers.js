@@ -293,7 +293,7 @@ function renderTourneyPicker() {
     html += '</div>';
   } else if (_tourneyTab === 'hist') {
     html += '<div class="tab-search-bar">';
-    html += '<span style="opacity:.5">&#128269;</span>';
+    html += '<span class="tab-search-glyph">' + icon('search', 14) + '</span>';
     html += '<input class="tab-search-input" id="tourneyHistSearch" type="text" placeholder="Search tournaments..." data-inputact="filter-tourney-hist" autocomplete="off">';
     html += '</div>';
     html += '<div class="tourney-list" id="tourneyHistList">';
@@ -511,7 +511,7 @@ function renderTabs() {
   // ── Upcoming dropdown ──
   html += `<div class="drop-wrap">`;
   html += `<div class="cat-btn cat-btn--live" id="dropBtn_live" data-act="toggle-drop" data-drop="live" data-keyable="1" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
-  html += `<span class="live-dot"></span>Upcoming <span class="cat-count" style="background:var(--green-dim);color:var(--green)">${live.length}</span> <span class="cat-arrow">&#9662;</span></div>`;
+  html += `<span class="live-dot"></span>Upcoming <span class="cat-count" style="background:var(--green-dim);color:var(--green)">${live.length}</span> <span class="cat-arrow">${icon('chevron-down', 12)}</span></div>`;
   html += `<div class="drop-menu" id="dropMenu_live" role="listbox" aria-label="Upcoming tournaments">`;
   live.sort((a, b) => a.t.days_remaining - b.t.days_remaining).forEach(({t, i}) => {
     html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-act="select-from-drop" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="option">`;
@@ -523,7 +523,7 @@ function renderTabs() {
   // ── Complete dropdown ──
   html += `<div class="drop-wrap">`;
   html += `<div class="cat-btn cat-btn--complete" id="dropBtn_complete" data-act="toggle-drop" data-drop="complete" data-keyable="1" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
-  html += `Complete <span class="cat-count">${complete.length}</span> <span class="cat-arrow">&#9662;</span></div>`;
+  html += `Complete <span class="cat-count">${complete.length}</span> <span class="cat-arrow">${icon('chevron-down', 12)}</span></div>`;
   html += `<div class="drop-menu" id="dropMenu_complete" role="listbox" aria-label="Completed tournaments">`;
   complete.forEach(({t, i}) => {
     html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-act="select-from-drop" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="option">`;
@@ -535,10 +535,10 @@ function renderTabs() {
   // ── Historical search dropdown ──
   html += `<div class="drop-wrap">`;
   html += `<div class="cat-btn cat-btn--hist" id="dropBtn_hist" data-act="toggle-drop" data-drop="hist" data-keyable="1" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
-  html += `<span style="opacity:.6">&#128269;</span> Historical <span class="cat-count" style="background:var(--purple-dim);color:var(--purple)">${nHist}</span> <span class="cat-arrow">&#9662;</span></div>`;
+  html += `${icon('search', 12)} Historical <span class="cat-count" style="background:var(--purple-dim);color:var(--purple)">${nHist}</span> <span class="cat-arrow">${icon('chevron-down', 12)}</span></div>`;
   html += `<div class="drop-menu drop-menu-search" id="dropMenu_hist" role="listbox" aria-label="Historical tournaments">`;
   html += `<div class="tab-search-bar">`;
-  html += `<span style="opacity:.5">&#128269;</span>`;
+  html += `<span class="tab-search-glyph">${icon('search', 14)}</span>`;
   html += `<input class="tab-search-input" id="histSearchInput" type="text" placeholder="Search tournaments..." data-inputact="filter-hist" autocomplete="off">`;
   html += `</div>`;
   html += `<div class="tab-search-results" id="histSearchResults"></div>`;

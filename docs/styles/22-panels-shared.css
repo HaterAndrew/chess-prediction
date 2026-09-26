@@ -46,15 +46,6 @@
 .puzzle-lichess { display: inline-block; margin-top: 12px; font-size: var(--fs-2); color: var(--blue); }
 
 .email-split-tabs { margin-left: auto; }
-.skip-link {
-  position: absolute; top: -100%; left: 0;
-  padding: 8px 16px;
-  background: var(--gold); color: var(--signal-ink);
-  z-index: 10000; font-weight: 700; text-decoration: none;
-  border-radius: 0 0 6px 0;
-}
-.footer-line { margin-bottom: 6px; }
-.footer-hints { margin-top: 8px; font-size: var(--fs-1); opacity: .5; }
 
 /* Programmatic focus lands on the active tab panel for screen-reader context;
    the global :focus-visible ring must not paint a frame around the whole tab. */

@@ -22,7 +22,6 @@
 .info-panel > h3.accent-blue { color: var(--signal); }
 .info-panel > h3.accent-red { color: var(--ember); }
 .info-panel h4 { color: var(--ink); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin: var(--s-4) 0 8px; text-transform: uppercase; }
-.h3-sub { color: var(--muted); font: 400 var(--fs-meta) var(--display); font-stretch: 100%; letter-spacing: 0; text-transform: none; }
 @media (min-width: 640px) { .about-submodels { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px) { .info-panel { padding: var(--s-5) var(--s-6); } }
 

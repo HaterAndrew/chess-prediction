@@ -103,9 +103,9 @@ function _heroTags(t, done) {
   // The fallback tier, when the prediction did not use direct family ratios.
   const tierLabelMap = {
     'family-direct': 'Direct · 5+ Yr History',
-    'family-alias': 'Family Alias · Pooled History',
-    'size-matched': 'Size Matched · No Family History',
-    'roster-pending': 'Interim · Not in Roster Yet',
+    'family-alias': 'Pooled History',
+    'size-matched': 'No Family History',
+    'roster-pending': 'Interim Estimate',
   };
   const tier = (!done && t.prediction_tier && t.prediction_tier !== 'family-direct')
     ? `<span class="tag" title="Prediction used the '${t.prediction_tier}' fallback path. 'family-alias' pools history from related families; 'size-matched' uses families with comparable historical size when this family has no direct history.">${tierLabelMap[t.prediction_tier] || t.prediction_tier.replace('-', ' ')}</span>`
@@ -131,7 +131,8 @@ function _confidenceReason(t) {
 function _heroRangeHTML(t, done) {
   const tags = _heroTags(t, done);
   if (t.ci_lower === t.ci_upper) {
-    return `<span class="ci-final">${fmt(t.current_count)}</span> total entries<div class="hero-tags">${tags}</div>`;
+    // The figure above is the final count; nothing to repeat under it.
+    return tags ? `<div class="hero-tags">${tags}</div>` : '';
   }
   const ciLevel = Math.round((t.ci_level || .8) * 100);
   const lo = t.ci_lower, hi = t.ci_upper, pe = t.point_estimate;
@@ -144,7 +145,7 @@ function _heroRangeHTML(t, done) {
         <div class="range-track"><div class="range-mark" style="left:${pct.toFixed(2)}%" title="Point estimate: ${fmt(pe)}. ${reason}"></div></div>
         <span class="range-bound">${fmt(hi)}</span>
       </div>
-      <div class="range-caption">Estimated final entries &middot; ${ciLevel}% range</div>
+      <div class="range-caption">${ciLevel}% range</div>
       <div class="hero-tags">${tags}</div>`;
 }
 

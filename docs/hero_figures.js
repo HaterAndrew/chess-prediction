@@ -13,7 +13,7 @@ function _kpiHTML(label, value, sub, cls, foldId) {
 // The three figures: Registered, Days to Event, 7-Day Pace.
 function _renderHeroFigures(t, done) {
   document.getElementById('kpiCurrent').innerHTML =
-    _kpiHTML('Registered', fmt(t.current_count), done ? 'Final' : 'as of today', 'v-blue', 'kpiCurrentFold');
+    _kpiHTML('Registered', fmt(t.current_count), done ? 'final' : 'entries', 'v-blue', 'kpiCurrentFold');
 
   // Once the event has started, the live countdown is to online-registration
   // close (the 2-day schedule), not to an event start that already passed.
@@ -23,7 +23,7 @@ function _renderHeroFigures(t, done) {
   if (done) {
     daysLabel = 'Event Date';
     daysValue = fmtDate(t.event_start);
-    daysSub = t.event_end ? fmtDate(t.event_start) + ' – ' + fmtDate(t.event_end) : '';
+    daysSub = t.event_end && t.event_end !== t.event_start ? 'to ' + fmtDate(t.event_end) : '';
     daysClass = 'kpi-value-text';
   } else if (evStarted) {
     daysLabel = 'Days to Reg. Close';
@@ -32,7 +32,7 @@ function _renderHeroFigures(t, done) {
   } else {
     daysLabel = 'Days to Event';
     daysValue = t.days_remaining;
-    daysSub = fmtDate(t.event_start);
+    daysSub = t.days_remaining === 1 ? 'day' : 'days';
   }
   if (!done && t.days_remaining <= 7) daysClass = 'v-red';
   document.getElementById('kpiDays').innerHTML = _kpiHTML(daysLabel, daysValue, daysSub, daysClass, 'kpiDaysFold');
@@ -50,7 +50,7 @@ function _renderHeroFigures(t, done) {
     const avg = Math.round(t.historical.reduce((s, h) => s + h.count, 0) / t.historical.length);
     const diff = t.current_count - avg;
     const pct = ((diff / avg) * 100).toFixed(0);
-    paceHtml = _kpiHTML('vs Average', `${diff >= 0 ? '+' : ''}${pct}%`, `hist avg: ${fmt(avg)}`, diff >= 0 ? 'v-blue' : 'v-red');
+    paceHtml = _kpiHTML('vs Average', `${diff >= 0 ? '+' : ''}${pct}%`, `over ${t.historical.length} edition${t.historical.length === 1 ? '' : 's'}`, diff >= 0 ? 'v-blue' : 'v-red');
   }
   document.getElementById('kpiPace').innerHTML = paceHtml || _kpiHTML('Historical', '–', 'No pace data', 'kpi-value-text');
 }

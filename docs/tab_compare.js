@@ -84,11 +84,8 @@ function renderCompareTab() {
     if (priorIdx >= 0) _compareSlots.push(priorIdx);
   }
 
-  // One-line caption above the selectors
-  let captionHTML = '<p class="compare-caption">Pick up to three tournaments to compare their entry curves side by side.</p>';
-
   // Build selector UI
-  let selectorHTML = captionHTML + '<div class="compare-selectors">';
+  let selectorHTML = '<div class="compare-selectors">';
   for (let s = 0; s < 3; s++) {
     const currentIdx = _compareSlots[s];
     const colorDot = `<span class="compare-color-dot series-${s + 1}" aria-hidden="true"></span>`;

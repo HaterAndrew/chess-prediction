@@ -6,7 +6,6 @@
 
 /* ── The view switch and the grade ── */
 .perf-year-row { align-items: center; display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 var(--s-4); }
-.perf-view-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
 .perf-hero-row { align-items: stretch; border-bottom: 1px solid var(--line-soft); border-top: 2px solid var(--line); display: flex; flex-wrap: wrap; gap: var(--s-5); margin: 0 0 var(--s-5); padding: var(--s-4) 0; }
 .perf-grade-card { align-items: center; display: flex; flex: 0 0 auto; flex-direction: column; justify-content: center; min-width: 120px; padding: 0 var(--s-4) 0 0; }
 .perf-grade-letter { font: 700 64px/1 var(--mono); padding: 0 .12em; }

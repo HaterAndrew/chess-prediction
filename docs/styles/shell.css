@@ -67,6 +67,7 @@ html[data-loading] .view-dateline[hidden] { display: block; min-height: 15px; vi
 .site-foot a:hover { color: var(--ink); }
 .footer-line { margin-bottom: 4px; }
 .footer-hints { margin-top: 6px; }
+@media (max-width: 639px), (pointer: coarse) { .footer-hints { display: none; } }
 
 /* ── Back to top ── */
 .back-to-top { align-items: center; background: var(--panel); border: 1px solid var(--line); bottom: max(20px, env(safe-area-inset-bottom)); box-shadow: var(--elevation); color: var(--ink-2); cursor: pointer; display: flex; height: var(--touch); justify-content: center; opacity: 0; position: fixed; right: 20px; transform: translateY(10px); transition: opacity var(--dur), transform var(--dur), visibility var(--dur), background var(--dur-fast); visibility: hidden; width: var(--touch); z-index: var(--layer-popover); }

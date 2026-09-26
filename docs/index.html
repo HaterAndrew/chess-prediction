@@ -13,7 +13,7 @@
 <!-- Render-blocking on purpose: it sets the theme attribute before first
      paint and registers the service worker before any other request. See
      docs/boot.js. -->
-<script src="boot.js?v=ef8436b139"></script>
+<script src="boot.js?v=cc39f2ee1b"></script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="CCA Predictor">
@@ -25,10 +25,15 @@
 <script defer src="vendor/chart.umd.min.js?v=48444a82d4"></script>
 <script defer src="vendor/chartjs-adapter-date-fns.bundle.min.js?v=ea7ab30d26"></script>
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/archivo/archivo-latin.woff2">
+<!-- Courier Prime sets the figures (the forecast, the T-minus, the dates):
+     preloaded so its swap lands before the first render instead of
+     moving the top bar and the header after it. -->
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/courier-prime/courier-prime-700-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/courier-prime/courier-prime-400-latin.woff2">
 <!-- One stylesheet: the bundle pipeline/bundling.py builds from
      docs/styles/*.css in cascade order (STYLE_SOURCES). Edit the sources,
      then `python3 -m pipeline.bundling`. -->
-<link rel="stylesheet" href="styles/site.css?v=1b71359a89">
+<link rel="stylesheet" href="styles/site.css?v=df95681741">
 </head>
 <body>
 
@@ -156,14 +161,6 @@
   <!-- ══════ FORECAST ══════ -->
   <div class="page-tab-panel active" id="panel-predictions" role="region" aria-labelledby="ptab-predictions">
 
-  <!-- ── First-run note (new visitors only; replaces the old splash gate) ── -->
-  <div id="firstRunHint" class="note note-signal">
-    <div class="note-row">
-      <span class="note-body">Pick a tournament in the top bar. Predictions update daily.</span>
-      <button type="button" class="icon-button note-dismiss" data-act="dismiss-hint" aria-label="Dismiss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
-    </div>
-  </div>
-
   <!-- ── Pace note: the verdict against last year, with the multi-year pace
        as its context line (panels_info.js renderDelta) ── -->
   <div class="note pace-note" id="deltaBanner" role="status">
@@ -196,7 +193,7 @@
       <div class="hero-label" id="heroLabel">Predicted Final Entries</div>
       <div class="hero-number" id="heroNumber" aria-hidden="true"></div>
       <span class="sr-only" id="heroAnnounce" aria-live="polite" aria-atomic="true"></span>
-      <div class="hero-ci" id="heroCi"><div class="range" aria-hidden="true"><span class="range-bound">&nbsp;</span><div class="range-track"></div><span class="range-bound">&nbsp;</span></div><div class="range-caption">&nbsp;</div><div class="hero-tags"><span class="tag">&nbsp;</span><span class="tag">&nbsp;</span></div></div>
+      <div class="hero-ci" id="heroCi"><div class="range" aria-hidden="true"><span class="range-bound">&nbsp;</span><div class="range-track"></div><span class="range-bound">&nbsp;</span></div><div class="range-caption">&nbsp;</div><div class="hero-tags"><span class="tag">&nbsp;</span></div></div>
       <div class="hero-narrative" id="heroNarrative" aria-live="polite"></div>
       <div class="festival-cluster" id="festivalCluster" aria-label="Festival sub-events"></div>
     </div>
@@ -251,12 +248,12 @@
   <summary class="sect-summary"><h3 class="sect-summary-h">Milestones and History</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
   <div class="grid-2 mt4">
     <div class="panel">
-      <h3 class="panel-title">Key Milestones</h3>
+      <h3 class="panel-title">Milestones</h3>
       <div class="timeline" id="timeline"></div>
       <div id="milestoneTable" class="mt16"></div>
     </div>
     <div class="panel">
-      <h3 class="panel-title">Historical Comparison</h3>
+      <h3 class="panel-title">History</h3>
       <div class="chart-box h180"><canvas id="histChart" aria-label="Historical comparison chart showing past tournament entry counts" role="img"></canvas></div>
       <div id="compTableWrap"></div>
     </div>
@@ -268,12 +265,12 @@
   <summary class="sect-summary"><h3 class="sect-summary-h">Registration Curve and Fees</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
   <div class="grid-2" id="curveAndFeeRow">
     <div class="panel" id="regCurvePanel">
-      <h3 class="panel-title">Registration Curve Pattern</h3>
+      <h3 class="panel-title">Registration Curve</h3>
       <div class="chart-box h200"><canvas id="regCurveChart" aria-label="Registration curve chart showing predicted entries over time" role="img"></canvas></div>
       <div id="regCurveCaption" class="chart-caption"></div>
     </div>
     <div class="panel" id="feePanel">
-      <h3 class="panel-title">Registration Fees</h3>
+      <h3 class="panel-title">Fees</h3>
       <div id="feeContent"></div>
     </div>
   </div>
@@ -283,9 +280,8 @@
   <details class="sect" id="sect-model" data-open="closed">
   <summary class="sect-summary"><h3 class="sect-summary-h">About This Model</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
   <div class="panel model-info mb24">
-    <h3 class="panel-title">About This Model</h3>
     <div class="model-info-row">
-      <p class="model-info-blurb">Ensemble model (N5v4): historical ratio + per-family Huber regression, predicting final count from current entries at each lead time. 80% confidence intervals (CIs) from lognormal fits with IQR outlier removal. Leave-one-out blind-tested on held-out 2023–2026 data.</p>
+      <p class="model-info-blurb">Ensemble model: historical ratio + per-family Huber regression, predicting final count from current entries at each lead time. 80% confidence intervals (CIs) from lognormal fits with IQR outlier removal. Leave-one-out blind-tested on held-out 2023–2026 data.</p>
       <div class="stat-chip-row">
         <!-- Every figure here is set from PERFORMANCE_DATA in tab_about.js.
              Until 2026-09-07 three of these four were static markup that no JS
@@ -433,9 +429,7 @@
 
   <!-- ══════ EMAIL TAB ══════ -->
   <div class="page-tab-panel" id="panel-email" role="region" aria-labelledby="ptab-email">
-    <div class="email-hint">
-      Generate prediction update emails for CCA staff. Auto-fills subject, highlights, and per-tournament summaries.
-    </div>
+    <div class="email-hint">Prediction update emails for CCA staff.</div>
 
     <!-- Subject + intro -->
     <div class="email-meta">
@@ -499,7 +493,6 @@
 
     <!-- Year selector -->
     <div id="perfYearSelector" class="perf-year-row">
-      <span class="perf-view-label">View:</span>
     </div>
 
     <!-- Hero: grade + stats -->
@@ -557,7 +550,6 @@
     <!-- Title -->
     <div class="tab-head">
       <h2>CCA Tournament Entry Prediction Model</h2>
-      <p>A plain-English explanation of how the model works, how it was tested, and where it falls short.</p>
     </div>
 
     <!-- Inline jump strip — anchor links to deep sections. Kept single-line, muted, not a card. -->
@@ -572,7 +564,7 @@
     <!-- Model Health (audit-derived telemetry): populated by renderModelHealth() at init -->
     <div id="modelHealthPanel" class="info-panel">
       <div class="mh-head">
-        <h3>Model Health <span class="h3-sub">&middot; last pipeline run, calibration vs claim, fallback rates</span></h3>
+        <h3>Model Health</h3>
         <span id="mh-updated" class="mh-updated"></span>
       </div>
       <div id="mh-grid" class="mh-grid"></div>
@@ -920,7 +912,7 @@
     <div class="ask-wrap">
       <div class="ask-header">
         <h2 class="ask-title">Ask a question about the tournaments</h2>
-        <div class="ask-sub" id="askDataInfo">Plain English works. Numbers, schedules, comparisons.</div>
+        <div class="ask-sub" id="askDataInfo"></div>
       </div>
       <div class="ask-input-row">
         <textarea id="askInput" class="field ask-input" rows="2" placeholder="e.g. When does Liberty Bell start?" aria-label="Your question"></textarea>
@@ -937,8 +929,8 @@
   <div class="page-tab-panel" id="panel-audit" role="region" aria-labelledby="ptab-audit">
     <div class="audit-wrap">
       <div class="ask-header">
-        <h2 class="ask-title">Hotel room-block audit list</h2>
-        <div class="ask-sub">Pick the event, upload your registration export, or both. The list combines the public entry list with the people who paid each entry, deduped, ready to hand to the hotel. Your file is processed on this device and never uploaded.</div>
+        <h2 class="ask-title">Hotel Room-Block Audit List</h2>
+        <div class="ask-sub">Pick the event, upload your registration export, or both. You get one deduped list for the hotel. Your file stays on this device.</div>
       </div>
       <div class="audit-controls">
         <label class="audit-label" for="auditEvent">Event</label>
@@ -957,13 +949,8 @@
   </div>
 
   <footer class="site-foot" role="contentinfo">
-    <div class="footer-line">CCA Entry Predictor &middot; Built on <span id="footerEntryRecords">&mdash;</span> entry records across <span id="footerTournamentCount">&mdash;</span> tournaments &middot; <span id="footerYears">&mdash;</span> years of data</div>
-    <div>Ensemble Model (N5v4) &middot; <span id="mc-ci-cover-footer">75%</span> CI coverage at 2 wks &middot; Blind-tested on 2023–2026 data &middot; Data from <a href="https://www.chessaction.com" target="_blank" rel="noopener">chessaction.com</a></div>
-    <div class="footer-hints">
-      <kbd>&larr;</kbd> <kbd>&rarr;</kbd> navigate tournaments &middot;
-      <kbd>Ctrl K</kbd> search &middot;
-      <kbd>Esc</kbd> closes the picker
-    </div>
+    <div class="footer-line"><span id="footerEntryRecords">&mdash;</span> entry records &middot; <span id="footerTournamentCount">&mdash;</span> tournaments &middot; <span id="footerYears">&mdash;</span> years &middot; <span id="mc-ci-cover-footer">75%</span> CI coverage at 2 weeks &middot; Data from <a href="https://www.chessaction.com" target="_blank" rel="noopener">chessaction.com</a></div>
+    <div class="footer-hints"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> switch tournaments</div>
   </footer>
 
   </main>
@@ -990,6 +977,6 @@
      the bundle, dispatches bare globals, so there are no wrappers and no
      modules. Deferred, so it runs after the data tag above and after the
      chart library in <head>. Edit a source, then `python3 -m pipeline.bundling`. -->
-<script defer src="site.js?v=2006ec7d32"></script>
+<script defer src="site.js?v=4baa410689"></script>
 </body>
 </html>

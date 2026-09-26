@@ -41,7 +41,7 @@ kbd, .kbd-hint { background: transparent; border: 1px solid var(--line-soft); co
 /* ── Note: a message in the flow, printed on the stock its state calls
    for. Replaces the stale, override and first-run banners. ── */
 .note { background: var(--panel); border: 1px solid var(--line); color: var(--ink); font: 13px/1.5 var(--display); margin: 0 0 var(--s-4); padding: 12px 16px; }
-.note[hidden], html[data-hint="seen"] #firstRunHint { display: none; }
+.note[hidden] { display: none; }
 .note-signal, .note-blue, .note-green { background: var(--stock-blue); }
 .note-amber { background: var(--stock-yellow); }
 .note-ember { background: var(--stock-pink); }

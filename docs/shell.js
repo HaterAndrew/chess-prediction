@@ -74,7 +74,6 @@ let _subjectTitle = '';
 
 function _subjectDateline(t) {
   const parts = [t.status === 'live' ? 'Upcoming' : t.status === 'complete' ? 'Complete' : 'Historical'];
-  if (t.status === 'live' && t.days_remaining != null) parts.push(`<span class="num">T-${t.days_remaining}</span>`);
   if (t.event_start) {
     const span = (t.event_end && t.event_end !== t.event_start) ? `${fmtDate(t.event_start)} to ${fmtDate(t.event_end)}` : fmtDate(t.event_start);
     parts.push(`<span class="num">${span}</span>`);

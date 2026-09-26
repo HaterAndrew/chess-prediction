@@ -18,51 +18,41 @@ function _paceNote(kind, main, sub, figure) {
   val.className = `pace-figure num pace-${kind === 'plain' ? 'even' : kind}`;
 }
 
-// The multi-year line under the verdict. Verdict-first phrasing ("Tracking
-// ahead of 4-year aggregate pace") so the eye lands on the direction first.
+// The multi-year line under the verdict. Verdict-first phrasing ("Behind
+// the 4-year pace") so the eye lands on the direction first.
 function _paceContext(t) {
   const ctx = document.getElementById('deltaContext');
   if (!ctx) return;
   const alert = getPaceAlert(t);
   if (!alert || !alert.status) { ctx.textContent = ''; return; }
-  const verdict = alert.status === 'above_pace' ? 'ahead of'
-                : alert.status === 'below_pace' ? 'behind'
-                : 'on pace with';
+  const verdict = alert.status === 'above_pace' ? 'Ahead of'
+                : alert.status === 'below_pace' ? 'Behind'
+                : 'On'
   // Prefer the explicit n_years field (pipeline 2026-05-17+); fall back to
   // the older message string for a stale website_data.json.
   const n = alert.n_years || ((alert.message || '').match(/(\d+)-year/) || [])[1];
-  const yrs = n ? `${n}-year aggregate` : 'multi-year aggregate';
+  const yrs = n ? `${n}-year` : 'multi-year';
   const dev = alert.deviation_pct;
-  ctx.textContent = `Tracking ${verdict} ${yrs} pace (${dev > 0 ? '+' : ''}${dev}%)`;
-}
-
-// The recent daily pace, for the verdict's second line.
-function _recentPaceSuffix(t) {
-  if (!t.daily_data || t.daily_data.length < 3) return '';
-  const recent = t.daily_data.slice(-7);
-  if (recent.length < 2) return '';
-  const daySpan = recent[recent.length - 1][0] - recent[0][0];
-  const regSpan = recent[recent.length - 1][1] - recent[0][1];
-  return daySpan > 0 ? ` · ${(regSpan / daySpan).toFixed(1)}/day recent pace` : '';
+  ctx.textContent = `${verdict} the ${yrs} pace (${dev > 0 ? '+' : ''}${dev}%)`;
 }
 
 function _renderDeltaDone(t) {
   if (!t.historical || t.historical.length === 0) {
-    _paceNote('plain', `${t.family} ${t.year}: Complete`, `Final count: ${fmt(t.current_count)} entries`, '');
+    _paceNote('plain', 'Complete', `${fmt(t.current_count)} entries`, '');
     return;
   }
   const avg = t.historical.reduce((s, h) => s + h.count, 0) / t.historical.length;
   const diff = (t.current_count - avg) / avg * 100;
   const absDiff = Math.abs(diff).toFixed(1);
   if (diff > 5) {
-    _paceNote('ahead', `${t.family} ${t.year}: Above Average`,
-      `${fmt(t.current_count)} entries · ${absDiff}% above historical average of ${fmt(Math.round(avg))}`, `+${absDiff}%`);
+    _paceNote('ahead', 'Above Average',
+      `${fmt(t.current_count)} entries vs a ${fmt(Math.round(avg))} average`, `+${absDiff}%`);
   } else if (diff < -5) {
-    _paceNote('behind', `${t.family} ${t.year}: Below Average`,
-      `${fmt(t.current_count)} entries · ${absDiff}% below historical average of ${fmt(Math.round(avg))}`, `-${absDiff}%`);
+    _paceNote('behind', 'Below Average',
+      `${fmt(t.current_count)} entries vs a ${fmt(Math.round(avg))} average`, `-${absDiff}%`);
   } else {
-    _paceNote('even', `${t.family} ${t.year}: On Par`,
-      `${fmt(t.current_count)} entries · In line with historical average of ${fmt(Math.round(avg))}`,
+    _paceNote('even', 'On Par',
+      `${fmt(t.current_count)} entries vs a ${fmt(Math.round(avg))} average`,
       `${diff >= 0 ? '+' : ''}${diff.toFixed(1)}%`);
   }
 }
@@ -89,10 +79,10 @@ function renderDelta(t) {
     if (lastYrAtT && lastYrAtT > 0) {
       const diff = t.current_count - lastYrAtT;
       const absPct = Math.abs(diff / lastYrAtT * 100).toFixed(1);
-      const compared = `${fmt(t.current_count)} registered now vs ${fmt(lastYrAtT)} at the same days-to-event mark in ${lastYrLabel}${_recentPaceSuffix(t)}`;
-      if (diff > 0) _paceNote('ahead', `Tracking ahead of ${lastYrLabel} pace`, compared, `+${absPct}%`);
-      else if (diff < 0) _paceNote('behind', `Tracking behind ${lastYrLabel} pace`, compared, `-${absPct}%`);
-      else _paceNote('even', `Tracking on pace with ${lastYrLabel}`, `${fmt(t.current_count)} registered${_recentPaceSuffix(t)}`, '0%');
+      const compared = `${fmt(t.current_count)} now vs ${fmt(lastYrAtT)} at T-${t.days_remaining} in ${lastYrLabel}`;
+      if (diff > 0) _paceNote('ahead', `Ahead of ${lastYrLabel} Pace`, compared, `+${absPct}%`);
+      else if (diff < 0) _paceNote('behind', `Behind ${lastYrLabel} Pace`, compared, `-${absPct}%`);
+      else _paceNote('even', `On ${lastYrLabel} Pace`, compared, '0%');
       return;
     }
   }
@@ -100,11 +90,8 @@ function renderDelta(t) {
   // No historical comparison available
   const evStarted = t.event_start &&
     new Date(t.event_start + 'T00:00:00') <= new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
-  const countdown = evStarted
-    ? `${t.days_remaining} days of online registration left`
-    : `${t.days_remaining} days until event`;
-  _paceNote('even', `${t.family}: Registration in progress`,
-    `${fmt(t.current_count)} entries registered · ${countdown} · predicted final: ${fmt(t.point_estimate)}`,
+  _paceNote('even', 'No Prior Edition',
+    evStarted ? `${fmt(t.current_count)} entries · online registration open` : `${fmt(t.current_count)} entries so far`,
     `T-${t.days_remaining}`);
 }
 
@@ -159,20 +146,11 @@ function renderTimeline(t) {
     return;
   }
 
-  const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
-  const nodes = [];
-
-  if (hasValidEarlyBird(t)) {
-    const d = new Date(t.early_bird_deadline + 'T00:00:00');
-    const status = d < today ? 'past' : 'future';
-    const estCount = t.registration_curve
-      ? Math.round(t.point_estimate * interpCurve(t.registration_curve, daysBetween(t.early_bird_deadline, t.event_start)))
-      : null;
-    nodes.push({ label: 'Early Bird', date: fmtDate(t.early_bird_deadline), status, count: estCount ? `~${fmt(estCount)}` : null });
-  }
-
-  nodes.push({ label: 'Today', date: fmtDate(TOURNAMENT_DATA.generated), status: 'now', count: fmt(t.current_count) });
-  nodes.push({ label: 'Event Start', date: fmtDate(t.event_start), status: 'future', count: `~${fmt(t.point_estimate)}` });
+  // Today only: the early bird and the event day are on the milestone strip
+  // right below, with the same dates and counts.
+  const nodes = [
+    { label: 'Today', date: fmtDate(TOURNAMENT_DATA.generated), status: 'now', count: fmt(t.current_count) },
+  ];
 
   el.innerHTML = nodes.map(n => `
     <div class="timeline-node">

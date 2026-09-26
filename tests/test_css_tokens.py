@@ -11,6 +11,8 @@ import glob
 import os
 import re
 
+from pipeline.bundling import BUNDLES
+
 DOCS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs")
 STYLES = os.path.join(DOCS, "styles")
 TOKENS = os.path.join(STYLES, "tokens.css")
@@ -53,7 +55,10 @@ def _block(css, selector_start):
 
 
 def _stylesheets():
-    files = sorted(glob.glob(os.path.join(STYLES, "*.css")))
+    """The source stylesheets; the generated bundle is those over again."""
+    bundled = {os.path.basename(name) for name in BUNDLES if name.endswith(".css")}
+    files = sorted(f for f in glob.glob(os.path.join(STYLES, "*.css"))
+                   if os.path.basename(f) not in bundled)
     assert files, "docs/styles/ has no stylesheets"
     return files
 

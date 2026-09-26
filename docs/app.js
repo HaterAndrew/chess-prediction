@@ -114,7 +114,7 @@ function _runRenderPhases(gen, phases) {
   setTimeout(() => step(0), 0);
 }
 
-// Phase A: what the visitor is looking at. The renders run inside try/finally
+// Phase A: what the visitor is looking at, without the chart. The renders run inside try/finally
 // so a throw in any one of them can never strand the page on the skeleton
 // loader again. That was the refresh bug: renderChart threw while Chart.js
 // was still loading, the callback aborted before hideSkeletons(), and the
@@ -129,7 +129,6 @@ function _renderAboveTheFold(t, sections) {
     // the chart annotations + subtitle, Past Average shows in Historical
     // Comparison, CI Width is the CI bar itself, Regular Fee has its own panel.
     renderProgress(t);
-    renderChart(t);
     // Scroll to the delta banner when the visitor switches tournaments. The
     // first render leaves the page at the top: on a phone the banner sits
     // under the hero, and a landing that opens half a screen down reads as
@@ -153,19 +152,34 @@ function _renderAboveTheFold(t, sections) {
   }
 }
 
-// Phase B: the Season view's calendar and cards, which mark the selected
-// tournament and so follow every selection.
-function _renderCalendarAndCards() {
+// The chart is the one heavy render (Chart.js builds every point and reads
+// the container's style), so it gets a task of its own after the hero has
+// painted: the figure is on screen before the chart's work starts, and
+// Chart.js reads a clean layout instead of forcing one.
+function _renderMainChart(t) {
+  renderChart(t);
+}
+
+// The Season view's calendar and cards, which mark the selected tournament
+// and so follow every selection.
+function _renderCalendar() {
   renderCalendar();
+}
+function _renderCards() {
   renderMiniCards();
   renderUpNext();
 }
 
-// Phase C: everything below the chart.
-function _renderBelowTheChart(t) {
+// Everything below the chart, one chart or table per task so none of them
+// holds the main thread past a frame.
+function _renderTimelineAndMilestones(t) {
   renderTimeline(t);
   renderMilestones(t);
+}
+function _renderHistoricalChart(t) {
   renderHistorical(t);
+}
+function _renderCurveAndFees(t) {
   renderRegCurve(t);
   renderFees(t);
   // Hide fee panel for historical tournaments (no fee data)
@@ -193,8 +207,12 @@ function selectTournament(index, skipHash) {
 
   _runRenderPhases(gen, [
     () => _renderAboveTheFold(t, sections),
-    () => _renderCalendarAndCards(),
-    () => _renderBelowTheChart(t),
+    () => _renderMainChart(t),
+    () => _renderCalendar(),
+    () => _renderCards(),
+    () => _renderTimelineAndMilestones(t),
+    () => _renderHistoricalChart(t),
+    () => _renderCurveAndFees(t),
   ]);
 }
 

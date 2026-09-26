@@ -15,7 +15,7 @@ const vm = require('vm');
 const SW = path.join(__dirname, '..', '..', 'docs', 'sw.js');
 const ORIGIN = 'https://chessentries.com';
 const SCOPE = `${ORIGIN}/`;
-const CDN_CHART = 'https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js';
+const CDN_EXCELJS = 'https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js';
 
 class Response {
   constructor(body, opts) {
@@ -138,8 +138,8 @@ async function main() {
   results.api_health = await online.dispatch({ url: `${SCOPE}health` });
   results.api_entrylist = await online.dispatch({ url: `${SCOPE}cca-entrylist?code=ABC` });
   results.post = await online.dispatch({ url: SCOPE, method: 'POST', mode: 'navigate' });
-  results.cdn_miss = await online.dispatch({ url: CDN_CHART });
-  results.cdn_hit = await online.dispatch({ url: CDN_CHART });
+  results.cdn_miss = await online.dispatch({ url: CDN_EXCELJS });
+  results.cdn_hit = await online.dispatch({ url: CDN_EXCELJS });
 
   const restamped = scenario({ seed: ['app.js?v=0000000000', 'data/site_data.js?v=1111111111'] });
   await restamped.dispatch({ url: hashedApp });

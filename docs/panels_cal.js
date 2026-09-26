@@ -57,8 +57,8 @@ function renderCalendar() {
     const xPct = (e.daysOut / maxDaysOut) * 100;
     const sizePx = Math.max(10, Math.min(28, 10 + 18 * Math.sqrt((e.t.point_estimate || 0) / maxPred)));
     const pace = paceClass(e.t);
-    const monthDay = e.d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    const longDate = e.d.toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric' });
+    const monthDay = DATE_FMT.short.format(e.d);
+    const longDate = DATE_FMT.weekdayLong.format(e.d);
     const paceLabel = pace === 'pos' ? 'Ahead of Pace'
                     : pace === 'neg' ? 'Behind Pace'
                     : 'On Pace';
@@ -85,7 +85,7 @@ function renderCalendar() {
   }
   html += '</div><div class="cal-axis">';
   months.forEach(m => {
-    html += `<span class="cal-axis-tick" style="left:${m.xPct.toFixed(2)}%">${m.d.toLocaleDateString('en-US', { month: 'short' })}</span>`;
+    html += `<span class="cal-axis-tick" style="left:${m.xPct.toFixed(2)}%">${DATE_FMT.month.format(m.d)}</span>`;
   });
   html += '</div></div>';
   el.innerHTML = html;

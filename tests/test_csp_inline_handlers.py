@@ -91,10 +91,13 @@ def test_the_csp_forbids_inline_script():
 
 
 def test_the_delegation_layer_is_actually_loaded():
-    """Nothing on the page responds if this script tag is dropped."""
+    """Nothing on the page responds if actions.js is dropped: it is the last
+    source of the script bundle, and the page loads that bundle."""
+    from pipeline.bundling import SCRIPT_SOURCES
+    assert SCRIPT_SOURCES[-1] == "actions.js", "actions.js must close the bundle"
     html = _read(INDEX)
-    assert re.search(r'<script defer src="actions\.js\?v=[A-Za-z0-9]+"></script>', html), \
-        "actions.js is not loaded by index.html; every control would be dead"
+    assert re.search(r'<script defer src="site\.js\?v=[A-Za-z0-9]+"></script>', html), \
+        "the script bundle is not loaded by index.html; every control would be dead"
 
 
 def _registered_action_names():

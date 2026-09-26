@@ -18,13 +18,15 @@ Two hazards come with it:
 import re
 from pathlib import Path
 
+from pipeline.bundling import BUNDLES
 from pipeline.stamping import STAMPED_DATA, STAMPED_SCRIPTS
 
 DOCS = Path(__file__).resolve().parent.parent / "docs"
 
 # Page-scope classic scripts share one global namespace. sw.js runs in the
-# service-worker scope and cannot collide with them.
-PAGE_SCOPE_EXEMPT = {"sw.js"}
+# service-worker scope and cannot collide with them, and the generated bundle
+# is the sources over again.
+PAGE_SCOPE_EXEMPT = {"sw.js"} | set(BUNDLES)
 
 DECL_RE = re.compile(r"^(?:const|let|var|function|class)\s+([A-Za-z_$][\w$]*)",
                      re.M)

@@ -1,0 +1,4 @@
+# Generated bundles (pipeline/bundling.py) and vendored builds: collapsed in diffs.
+docs/site.js linguist-generated=true
+docs/styles/site.css linguist-generated=true
+docs/vendor/*.min.js linguist-vendored=true

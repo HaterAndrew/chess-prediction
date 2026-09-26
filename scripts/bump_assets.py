@@ -30,7 +30,7 @@ SW = os.path.join(DOCS, "sw.js")
 ASSETS = {name: rf"{re.escape(name)}\?v=([A-Za-z0-9]+)"
           for name in STAMPED_SCRIPTS}
 # Legacy CLI aliases from the two-asset era.
-ALIASES = {"css": "styles.css", "js": "app.js"}
+ALIASES = {"css": "styles/site.css", "js": "site.js"}
 CACHE_RE = r"cca-predictor-v(\d+)"
 
 

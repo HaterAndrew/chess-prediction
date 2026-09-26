@@ -277,7 +277,7 @@ function emailHighlightBullets(h) {
 
 // ── Auto subject line ──
 function emailAutoSubject(selected) {
-  const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const today = DATE_FMT.short.format(new Date());
   const n = selected.length;
   if (n === 0) return `CCA Entries Update: ${today}`;
   if (n === 1) return `CCA Entries Update: ${selected[0].family} (${today})`;

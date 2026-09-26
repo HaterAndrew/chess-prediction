@@ -56,24 +56,23 @@ function renderChart(t) {
   );
   const regOpenDate = dayToDate(0);
 
-  // Actual data
-  const actualData = series.map(d => ({ x: dayToDate(d[0]), y: d[1] }));
+  // Every point carries its date as a timestamp: the chart is built with
+  // parsing off, so Chart.js takes the points as they are instead of
+  // running each of the thousand or so through the date adapter on every
+  // update (and normalized: each dataset is sorted by x with no repeats).
+  const actualData = series.map(d => ({ x: dayToDate(d[0]).getTime(), y: d[1] }));
 
   // Visible x-window (range control) + right headroom; remember the inputs so
   // setChartRange can recompute without a full re-render.
   const cw = _chartWindow(t, series, dayToDate);
   _chartWindowState = { t, series, dayToDate };
 
-  // Only show point for first, last, and every 7th day to avoid clutter
-  const pointRadii = actualData.map((_, i) => {
-    if (i === actualData.length-1 && !isDone(t)) return 6; // today - prominent
-    if (i === actualData.length-1 && isDone(t)) return 4;  // final point
-    if (i === 0) return 3;  // first point
-    return 0;  // hide intermediate points
-  });
-
   // The actual series is the blue pen with one flat tint under it, the way
-  // a line is coloured in on the sheet: no gradient, no glow.
+  // a line is coloured in on the sheet: no gradient, no glow. Its point
+  // options are scalars on purpose: a per-point array makes Chart.js resolve
+  // every point's options through its proxy chain on each update, and that
+  // was a third of the chart's build. The two points that show, the first
+  // and the last, are the small dataset that follows.
   datasets.push({
     label: 'Actual Entries',
     data: actualData,
@@ -81,17 +80,34 @@ function renderChart(t) {
     backgroundColor: themeRgba(PALETTE.actual, 0.08),
     fill: true,
     borderWidth: 2.5,
-    pointRadius: pointRadii,
-    pointHoverRadius: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? 8 : 6),
+    pointRadius: 0,
+    pointHoverRadius: 6,
     pointHoverBackgroundColor: PALETTE.actual,
     pointHoverBorderColor: PALETTE.text,
     pointHoverBorderWidth: 2,
-    pointBackgroundColor: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? PALETTE.text : PALETTE.actual),
-    pointBorderColor: PALETTE.actual,
-    pointBorderWidth: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? 3 : 0),
     tension: 0.3,
     order: 2
   });
+  // The first point, and today's (prominent: ink on the pen) or the final one.
+  if (actualData.length) {
+    const live = !isDone(t);
+    const pts = actualData.length > 1 ? [actualData[0], actualData[actualData.length - 1]] : [actualData[0]];
+    const last = i => i === pts.length - 1;
+    datasets.push({
+      label: 'Actual Points',
+      data: pts,
+      showLine: false,
+      pointRadius: pts.map((_, i) => last(i) ? (live ? 6 : 4) : 3),
+      pointHoverRadius: pts.map((_, i) => last(i) && live ? 8 : 6),
+      pointBackgroundColor: pts.map((_, i) => last(i) && live ? PALETTE.text : PALETTE.actual),
+      pointBorderColor: PALETTE.actual,
+      pointBorderWidth: pts.map((_, i) => last(i) && live ? 3 : 0),
+      pointHoverBackgroundColor: PALETTE.actual,
+      pointHoverBorderColor: PALETTE.text,
+      pointHoverBorderWidth: 2,
+      order: 1
+    });
+  }
 
   // Build (year -> historical edition with daily_data) lookup once for the
   // historical-line overlay block below. Only years with multi-point daily
@@ -126,7 +142,7 @@ function renderChart(t) {
       const projDate = addDays(eventStart, -db);
       // Skip points at or before the last actual data point
       if (lastActual && projDate <= lastActual.x) continue;
-      projData.push({ x: projDate, y: Math.round(scaleFactor * pct) });
+      projData.push({ x: projDate.getTime(), y: Math.round(scaleFactor * pct) });
     }
 
     datasets.push({
@@ -152,8 +168,8 @@ function renderChart(t) {
     for (let db = todayDB; db >= 0; db--) {
       const date = addDays(eventStart, -db);
       const pctAtDb = interpCurve(t.registration_curve, db);
-      ciUp.push({ x: date, y: Math.round(ciUpperScale * pctAtDb) });
-      ciLo.push({ x: date, y: Math.max(0, Math.round(ciLowerScale * pctAtDb)) });
+      ciUp.push({ x: date.getTime(), y: Math.round(ciUpperScale * pctAtDb) });
+      ciLo.push({ x: date.getTime(), y: Math.max(0, Math.round(ciLowerScale * pctAtDb)) });
     }
     // Band paint comes from CI Upper's fill('+1') alone: the likely range is
     // one flat tint of the blue pen with a hairline edge, the bracket drawn
@@ -219,7 +235,7 @@ function renderChart(t) {
         // Distance of this point from its own year's event, in whole days.
         const T = canAnchor ? spanToEvent - p[0] : maxDay - p[0];
         if (T >= 0 && T <= 120) {
-          hData.push({ x: addDays(eventStart, -T), y: p[1] });
+          hData.push({ x: addDays(eventStart, -T).getTime(), y: p[1] });
         }
       });
       // Don't connect scrape-end to final with a line — the few remaining
@@ -248,7 +264,7 @@ function renderChart(t) {
       const markerColor = histColors[colorIdx] || histColors[histColors.length - 1];
       datasets.push({
         label: `${h.year} final`,
-        data: [{ x: addDays(eventStart, 0), y: h.count }],
+        data: [{ x: addDays(eventStart, 0).getTime(), y: h.count }],
         showLine: false,
         backgroundColor: markerColor,
         borderColor: markerColor,
@@ -493,6 +509,7 @@ function renderChart(t) {
     plugins: [vertLinePlugin, crosshairPlugin, endpointLabelPlugin],
     options: {
       responsive: true, maintainAspectRatio: false,
+      parsing: false, normalized: true,
       animation: drawInAnimation,
       interaction: { mode: 'xAligned', intersect: false },
       hover: { mode: 'xAligned', intersect: false },
@@ -526,7 +543,7 @@ function renderChart(t) {
                            || items.find(i => i.dataset.label === 'Actual Entries')
                            || items[0];
               const d = primary.raw.x;
-              const dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+              const dateStr = DATE_FMT.full.format(d);
               // Calculate days before event
               if (t.event_start) {
                 const evDate = new Date(t.event_start + 'T00:00:00');
@@ -539,6 +556,8 @@ function renderChart(t) {
             },
             label(item) {
               if (item.dataset.label === 'CI Upper' || item.dataset.label === 'CI Lower') return null;
+              // The endpoint dots duplicate the actual line's first and last rows.
+              if (item.dataset.label === 'Actual Points') return null;
               const val = fmt(item.raw.y);
               const hoveredDate = item.raw.x;
               const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');

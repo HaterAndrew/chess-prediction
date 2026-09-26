@@ -63,12 +63,22 @@ def test_chart_library_tags_precede_every_app_script():
     chart = next(i for i, s in enumerate(srcs) if "chart.umd" in s)
     adapter = next(i for i, s in enumerate(srcs) if "chartjs-adapter" in s)
     first_app = next(i for i, s in enumerate(srcs)
-                     if _is_same_origin(s) and not s.startswith("boot.js"))
+                     if _is_same_origin(s) and not s.startswith(("boot.js", "vendor/")))
     assert chart < first_app and adapter < first_app, (
         "Chart.js and its adapter must come before the first app script so "
         "defer order makes Chart available to init()")
     for i in (chart, adapter):
         assert re.search(r"\bdefer\b", tags[i][0]), f"{srcs[i]} must be deferred"
+
+
+def test_every_script_is_served_from_this_origin():
+    """The chart library is vendored (docs/vendor/, hashes pinned in
+    pipeline/bundling.py): a first paint that waited on a second connection
+    to a CDN cost more than the bytes did. ExcelJS stays on demand."""
+    srcs = [s for _, s in _script_tags(_read(INDEX))]
+    assert all(_is_same_origin(s) for s in srcs), [s for s in srcs if not _is_same_origin(s)]
+    html = _read(INDEX)
+    assert 'rel="preconnect"' not in html, "no first-paint request leaves this origin; drop the preconnect"
 
 
 def test_exceljs_is_not_loaded_on_every_page_view():

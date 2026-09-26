@@ -331,8 +331,8 @@ function fillAssistantFallback(bubble, query, append) {
     const bits = [];
     if (t.status) bits.push(esc(t.status));
     if (t.event_start) bits.push(esc(t.event_start));
-    if (typeof t.current_count === 'number') bits.push(t.current_count.toLocaleString() + ' entries');
-    else if (typeof t.point_estimate === 'number') bits.push('predicted ' + t.point_estimate.toLocaleString());
+    if (typeof t.current_count === 'number') bits.push(fmt(t.current_count) + ' entries');
+    else if (typeof t.point_estimate === 'number') bits.push('predicted ' + fmt(t.point_estimate));
     meta.textContent = bits.join(' · ');
     row.appendChild(name);
     row.appendChild(meta);

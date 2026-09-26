@@ -73,7 +73,9 @@ function renderAllTournaments() {
     switch (tableSortCol) {
       case 'name': return dir * ta.family.localeCompare(tb.family);
       case 'status': return dir * (ta.status === 'live' ? -1 : 1);
-      case 'date': return dir * ((ta.event_start || '').localeCompare(tb.event_start || ''));
+      // ISO dates order as plain strings; localeCompare would load the
+      // collator (30 ms at 4x CPU throttle) on the default sort.
+      case 'date': return dir * ((ta.event_start || '') < (tb.event_start || '') ? -1 : (ta.event_start || '') > (tb.event_start || '') ? 1 : 0);
       case 'current': return dir * (ta.current_count - tb.current_count);
       case 'predicted': return dir * (ta.point_estimate - tb.point_estimate);
       case 'progress': {
@@ -207,7 +209,7 @@ function renderFestivalCluster(t) {
     const current = isDone(tt) ? tt.current_count : tt.current_count;
     const pred = tt.point_estimate;
     const eventDate = tt.event_start
-      ? new Date(tt.event_start + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      ? fmtDate(tt.event_start)
       : '—';
     html += `<button class="fc-card ${isActive ? 'fc-card-active' : ''}"
       data-act="select-tournament" data-idx="${idx}"

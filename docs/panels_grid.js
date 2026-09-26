@@ -29,7 +29,7 @@ function filterTourneyTable(status) {
   if (status) {
     _ttStatusFilter = status;
     document.querySelectorAll('.tt-filter').forEach(b =>
-      b.classList.toggle('tt-filter-active', b.dataset.filter === status));
+      b.classList.toggle('active', b.dataset.filter === status));
   }
   renderAllTournaments();
 }

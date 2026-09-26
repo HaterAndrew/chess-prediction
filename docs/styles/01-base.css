@@ -19,17 +19,13 @@ body {
   scroll-behavior: smooth;
   overflow-x: clip;
   overscroll-behavior-y: contain;
-  background-image: radial-gradient(ellipse at 50% 0%, rgba(240,192,64,.02) 0%, transparent 60%);
-  background-attachment: fixed;
 }
 img, canvas, svg, video { max-width: 100%; height: auto; display: block; }
-::selection { background: rgba(240,192,64,.25); color: var(--text); }
+::selection { background: var(--signal-tint); }
 a { color: var(--blue); text-decoration: none; }
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-  border-radius: 4px;
-  box-shadow: 0 0 0 4px rgba(240,192,64,.18);
 }
 /* Don't double-paint the ring on inputs that already light their border on
    focus (data-entry tables, email inputs, compare dropdown). */
@@ -44,32 +40,4 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
-/* ══════════════════════════════════════════════════════
-   LAYOUT
-   ══════════════════════════════════════════════════════ */
-.container {
-  width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 var(--gutter);
-}
-
-/* First-run hint: one-time pointer for new visitors (splash replacement) */
-.first-run-hint {
-  display: flex; align-items: center; gap: 12px;
-  margin: 14px 0 2px; padding: 10px 14px;
-  background: rgba(240,192,64,.06);
-  border: 1px solid rgba(240,192,64,.25);
-  border-radius: 8px;
-  font-size: var(--fs-2); color: var(--text2); line-height: 1.5;
-}
-.first-run-hint[hidden] { display: none; }
-.first-run-hint-dismiss {
-  margin-left: auto; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  min-width: 44px; min-height: 44px; margin-top: -6px; margin-bottom: -6px;
-  background: none; border: none; color: var(--muted);
-  font-size: var(--fs-5); line-height: 1; cursor: pointer;
-}
-.first-run-hint-dismiss:hover { color: var(--text); }
 

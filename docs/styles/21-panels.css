@@ -111,27 +111,7 @@
 .stat-chip-num { font-size: 1rem; font-weight: 800; }
 .stat-chip-sub { font-size: var(--fs-1); color: var(--muted); }
 
-.override-banner {
-  margin: 8px 0 12px; padding: 10px 14px;
-  border-radius: 8px;
-  background: rgba(240,192,64,0.08);
-  border: 1px solid rgba(240,192,64,0.35);
-  color: var(--gold);
-  font-size: var(--fs-3); line-height: 1.45;
-}
-.ob-row { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
-.ob-icon { font-size: var(--fs-5); flex-shrink: 0; }
-.ob-body { flex: 1; min-width: 200px; }
-.ob-title { font-weight: 700; margin-bottom: 2px; }
-.ob-detail { color: var(--text2); font-size: var(--fs-2); }
-.ob-clear {
-  background: rgba(240,192,64,0.15);
-  border: 1px solid rgba(240,192,64,0.5);
-  color: var(--gold);
-  padding: 5px 12px; border-radius: 6px;
-  font-size: var(--fs-2); font-weight: 600;
-  cursor: pointer; flex-shrink: 0;
-}
+/* The manual-override message is a note (controls.css .note). */
 
 .perf-year-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin: 18px 0 14px; }
 .perf-view-label { font-size: var(--fs-1); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: 6px; }

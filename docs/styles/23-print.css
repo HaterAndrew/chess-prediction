@@ -26,13 +26,14 @@
     padding-bottom: 0 !important;
   }
   /* Suppress chrome that doesn't translate to print. */
-  header,
-  .page-tabs,
-  .page-tab-drop,
+  .topbar,
+  .rail,
+  .sheet,
+  #toast,
   .tab-bar,
   .cmdk,
   .search-btn,
-  .stale-banner,
+  #staleBanner,
   #overrideBanner,
   .compare-add-btn,
   .calendar-strip,
@@ -45,7 +46,9 @@
   .chart-card .vert-lines {
     display: none !important;
   }
-  /* Only show the active tab panel. */
+  /* The main column takes the page; only the active view prints. */
+  .app-shell { display: block !important; }
+  main { padding: 0 !important; }
   .page-tab-panel:not(.active) { display: none !important; }
   /* No glow, no blur, no shadows on print. */
   *, *::before, *::after {

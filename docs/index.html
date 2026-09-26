@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="Predict chess tournament entries using historical registration patterns from 192K CCA records. Point estimates and 80% confidence intervals for tournament directors.">
 <title>CCA Entry Predictor: Chess Tournament Registration Forecasting</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♔</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239A7010' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 21h14'/><path d='M7 21c0-3.5 1.2-6.4 3.5-8.5'/><path d='M10.5 12.5 8 14l-1.5-2.5L9 8l1-3 1.5 1.5L14 4l1 2.5c2.3 1.1 4 3.6 4 7V21'/><path d='M11 9.5h.01'/></svg>">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#F7F4EC">
@@ -24,98 +24,119 @@
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/inter/inter-latin.woff2">
 <link rel="stylesheet" href="styles/fonts.css?v=2bc8c06a4c">
-<link rel="stylesheet" href="styles/tokens.css?v=3077da881d">
-<link rel="stylesheet" href="styles/01-base.css?v=73b0c0c377">
-<link rel="stylesheet" href="styles/02-header.css?v=b5bce10024">
-<link rel="stylesheet" href="styles/03-cmdk.css?v=3495a63afb">
-<link rel="stylesheet" href="styles/04-tab-bar.css?v=207983e2a3">
+<link rel="stylesheet" href="styles/tokens.css?v=df0de6ab34">
+<link rel="stylesheet" href="styles/01-base.css?v=e114cc5e06">
+<link rel="stylesheet" href="styles/shell.css?v=3902a7ede2">
+<link rel="stylesheet" href="styles/controls.css?v=f6ff12fc44">
+<link rel="stylesheet" href="styles/overlays.css?v=5428ace7b0">
+<link rel="stylesheet" href="styles/03-cmdk.css?v=8be0b8a479">
+<link rel="stylesheet" href="styles/04-tab-bar.css?v=bbb8f369e4">
 <link rel="stylesheet" href="styles/05-delta-banner.css?v=c417adc28d">
-<link rel="stylesheet" href="styles/06-mobile-predictions.css?v=f4343ee607">
+<link rel="stylesheet" href="styles/06-mobile-predictions.css?v=14bb543666">
 <link rel="stylesheet" href="styles/07-hero.css?v=30b8537fa1">
-<link rel="stylesheet" href="styles/08-chart.css?v=5db35ae41c">
+<link rel="stylesheet" href="styles/08-chart.css?v=c0add30020">
 <link rel="stylesheet" href="styles/09-timeline.css?v=10d9c06e16">
 <link rel="stylesheet" href="styles/10-comparison.css?v=95f4408fbe">
-<link rel="stylesheet" href="styles/11-tables.css?v=f202f61be5">
+<link rel="stylesheet" href="styles/11-tables.css?v=8b40d4c21c">
 <link rel="stylesheet" href="styles/12-calendar.css?v=72c2b03dd8">
-<link rel="stylesheet" href="styles/13-page-tabs.css?v=fe452df7e7">
+<link rel="stylesheet" href="styles/cards.css?v=72fbc82335">
 <link rel="stylesheet" href="styles/14-puzzles.css?v=aa45d7e583">
-<link rel="stylesheet" href="styles/15-data-entry.css?v=320069fa4b">
+<link rel="stylesheet" href="styles/15-data-entry.css?v=c68b8317e2">
 <link rel="stylesheet" href="styles/16-email.css?v=774e6cca13">
-<link rel="stylesheet" href="styles/17-compare.css?v=fcf1e5b883">
-<link rel="stylesheet" href="styles/18-performance.css?v=3021f4f852">
-<link rel="stylesheet" href="styles/19-motion.css?v=c03cb6462f">
-<link rel="stylesheet" href="styles/20-mobile.css?v=4f98c62cf1">
-<link rel="stylesheet" href="styles/21-panels.css?v=ff65e05713">
-<link rel="stylesheet" href="styles/22-panels-shared.css?v=f9c76fe03a">
-<link rel="stylesheet" href="styles/23-print.css?v=8eacb65c69">
+<link rel="stylesheet" href="styles/17-compare.css?v=33bdbebd97">
+<link rel="stylesheet" href="styles/18-performance.css?v=854b88f78f">
+<link rel="stylesheet" href="styles/19-motion.css?v=272bb138e5">
+<link rel="stylesheet" href="styles/20-mobile.css?v=45f7fe85f8">
+<link rel="stylesheet" href="styles/21-panels.css?v=8d1d4e15e7">
+<link rel="stylesheet" href="styles/22-panels-shared.css?v=a528748887">
+<link rel="stylesheet" href="styles/23-print.css?v=1758c3bf60">
 <link rel="stylesheet" href="styles/24-ask-audit.css?v=62b5d908cd">
-<link rel="stylesheet" href="styles/theme.css?v=0279f37cbc">
+<link rel="stylesheet" href="styles/theme.css?v=86ed0bd11f">
 </head>
 <body>
 
 <!-- Mobile unified tournament picker (modal bottom sheet, MD3 + iOS HIG) -->
 <div id="dropMenu_tourney" class="drop-menu drop-menu-tourney" role="dialog" aria-label="Tournament picker" aria-modal="true" style="display:none"></div>
 
-<!-- ══════════════════ STALE DATA BANNER ══════════════════ -->
-<div id="staleBanner" class="stale-banner" style="display:none">
-  <span id="staleBannerText"></span>
-  <button data-act="dismiss-stale"
-    class="stale-banner-dismiss" aria-label="Dismiss">&times;</button>
+<!-- More: the views the phone's bottom bar has no room for. shell.js fills
+     the list from the rail's own buttons; sheet.js opens and closes it. It
+     sits outside #mainContent, which goes inert while it is open. -->
+<div id="moreSheet" class="sheet" hidden>
+  <div class="sheet-scrim" data-act="close-sheet"></div>
+  <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="moreSheetTitle" tabindex="-1">
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <h2 class="sheet-title" id="moreSheetTitle">More</h2>
+    <div class="sheet-list" id="moreSheetList"></div>
+    <div class="sheet-actions"><button type="button" class="secondary" data-act="close-sheet">Cancel</button></div>
+  </div>
 </div>
 
-<!-- ══════════════════ HEADER ══════════════════ -->
-<a href="#mainContent" class="skip-link" data-reveal-on-focus="-100%">Skip to content</a>
-<div class="main-content" id="mainContent" tabindex="-1">
-<header role="banner">
-  <div class="container header-inner">
-    <div class="logo">
-      <div class="logo-icon">&#9822;</div>
-      CCA Entry <span>Predictor</span>
-    </div>
-    <div class="header-right">
-      <button class="search-btn" data-act="open-cmdk" aria-label="Search tournaments">
-        <svg class="search-btn-icon" width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.2" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.6 3.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <span class="search-btn-text">Search</span><span class="search-btn-kbd">Ctrl K</span>
-      </button>
-      <div class="header-tourn-label" id="headerTournLabel" data-act="open-tourney-picker">
-        <span class="live-dot" id="tournDot" style="display:none"></span>
-        <span id="tournLabel" class="tourn-label-text">Loading...</span>
-        <button class="compare-add-btn" id="compareAddBtn" data-act="add-to-compare" title="Add to Compare" aria-label="Add tournament to compare">&#9878;</button>
-      </div>
-      <button class="theme-toggle" id="themeToggle" data-act="toggle-theme" aria-pressed="false" aria-label="Switch to the Dark Theme" title="Switch to the Dark Theme">
-        <svg class="theme-icon theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-        <svg class="theme-icon theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-      </button>
-      <div class="header-meta">Updated: <span id="lastUpdated"></span></div>
-    </div>
-  </div>
+<a href="#main" class="skip-link">Skip to Content</a>
+<div class="main-content" id="mainContent">
+<!-- ══════════════════ TOP BAR ══════════════════ -->
+<header class="topbar" role="banner">
+  <button type="button" class="brand" data-act="page-tab" data-tab="predictions" aria-label="CCA Entry Predictor: open the Forecast">
+    <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21h14"/><path d="M7 21c0-3.5 1.2-6.4 3.5-8.5"/><path d="M10.5 12.5 8 14l-1.5-2.5L9 8l1-3 1.5 1.5L14 4l1 2.5c2.3 1.1 4 3.6 4 7V21"/><path d="M11 9.5h.01"/></svg>
+    <strong>CCA Entry Predictor</strong>
+  </button>
+  <button type="button" class="tourn-trigger" id="headerTournLabel" data-act="open-tourney-picker" aria-haspopup="dialog" title="Change the Tournament">
+    <span class="live-dot" id="tournDot" style="display:none"></span>
+    <span id="tournLabel" class="tourn-label-text">Loading...</span>
+    <svg class="tourn-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
+  <button type="button" class="icon-button compare-add-btn" id="compareAddBtn" data-act="add-to-compare" title="Add to Compare" aria-label="Add tournament to compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></button>
+  <button type="button" class="search-btn" data-act="open-cmdk" aria-label="Search Tournaments">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <span class="search-btn-text">Search</span><kbd class="search-btn-kbd">Ctrl K</kbd>
+  </button>
+  <button type="button" class="icon-button theme-toggle" id="themeToggle" data-act="toggle-theme" aria-pressed="false" aria-label="Switch to the Dark Theme" title="Switch to the Dark Theme">
+    <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
+  <div class="topbar-meta">Updated <span id="lastUpdated"></span></div>
 </header>
 
-<main class="container">
+<!-- ══════════════════ SHELL: RAIL + MAIN ══════════════════ -->
+<!-- The rail is the side rail from 1024 px and the bottom bar under it
+     (shell.css). The bar shows the four pinned views and More; the sheet
+     above lists the rest. Every view button dispatches page-tab. -->
+<div class="app-shell">
+  <aside id="rail" class="rail">
+    <button id="railToggle" class="rail-toggle" type="button" data-act="toggle-rail" aria-expanded="true" aria-controls="primaryNav railFoot" aria-label="Collapse the Rail" title="Collapse the Rail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></svg></button>
+    <nav id="primaryNav" aria-label="Primary Views">
+      <button type="button" class="active" id="ptab-predictions" data-act="page-tab" data-tab="predictions" data-bar="pinned" aria-current="page"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></svg><b>Forecast</b></button>
+      <button type="button" id="ptab-season" data-act="page-tab" data-tab="season" data-bar="pinned"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg><b>Season</b></button>
+      <button type="button" id="ptab-performance" data-act="page-tab" data-tab="performance" data-bar="pinned"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><b>Performance</b></button>
+      <button type="button" id="ptab-compare" data-act="page-tab" data-tab="compare"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></svg><b>Compare</b></button>
+      <button type="button" id="ptab-ask" data-act="page-tab" data-tab="ask" data-bar="pinned"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><b>Ask</b></button>
+    </nav>
+    <nav id="railFoot" class="rail-foot" aria-label="Secondary Views">
+      <button type="button" id="ptab-email" data-act="page-tab" data-tab="email"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><b>Email</b></button>
+      <button type="button" id="ptab-audit" data-act="page-tab" data-tab="audit"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg><b>Audit</b></button>
+      <button type="button" id="ptab-about" data-act="page-tab" data-tab="about"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><b>About the Model</b></button>
+      <button type="button" id="ptab-puzzles" data-act="page-tab" data-tab="puzzles"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg><b>Puzzles</b></button>
+      <button type="button" id="moreNav" data-act="open-more-sheet" aria-haspopup="dialog" aria-controls="moreSheet"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg><b>More</b></button>
+    </nav>
+  </aside>
+  <main id="main" tabindex="-1">
 
-  <!-- ── Page-Level Tabs ── -->
-  <div class="page-tabs" role="tablist">
-    <button class="page-tab active" data-act="page-tab" data-tab="predictions" role="tab" aria-selected="true" aria-controls="panel-predictions" id="ptab-predictions">Predictions</button>
-    <button class="page-tab" data-act="page-tab" data-tab="ask" role="tab" aria-selected="false" aria-controls="panel-ask" id="ptab-ask">&#128172; Ask</button>
-    <button class="page-tab" data-act="page-tab" data-tab="performance" role="tab" aria-selected="false" aria-controls="panel-performance" id="ptab-performance">&#9733; Performance</button>
-    <button class="page-tab" data-act="page-tab" data-tab="audit" role="tab" aria-selected="false" aria-controls="panel-audit" id="ptab-audit">&#10003; Audit</button>
-    <div class="drop-wrap page-tab-more-wrap" id="moreMenuWrap">
-      <button class="page-tab page-tab-more" id="ptab-more" data-act="toggle-more-menu" aria-expanded="false" aria-controls="moreMenuDrop">Other <span class="menu-caret" aria-hidden="true">&#9662;</span></button>
-      <div class="drop-menu page-tab-drop" id="moreMenuDrop" aria-label="More views">
-        <button class="cat-item" role="tab" aria-selected="false" id="ptab-compare" aria-controls="panel-compare" data-act="more-tab" data-tab="compare">&#9878; Compare</button>
-        <button class="cat-item" role="tab" aria-selected="false" id="ptab-email" aria-controls="panel-email" data-act="more-tab" data-tab="email">&#9993; Email</button>
-        <button class="cat-item" role="tab" aria-selected="false" id="ptab-about" aria-controls="panel-about" data-act="more-tab" data-tab="about">&#9881; About the Model</button>
-        <button class="cat-item" role="tab" aria-selected="false" id="ptab-puzzles" aria-controls="panel-puzzles" data-act="more-tab" data-tab="puzzles">&#9822; Puzzles</button>
-      </div>
+  <!-- ── Stale data note (app.js init shows it; dismiss-stale hides it) ── -->
+  <div id="staleBanner" class="note note-amber" role="status" hidden>
+    <div class="note-row">
+      <span class="note-body" id="staleBannerText"></span>
+      <button type="button" class="icon-button note-dismiss" data-act="dismiss-stale" aria-label="Dismiss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
     </div>
   </div>
 
-  <!-- ── Search dialog (opens from the header Search button) ── -->
+  <!-- ── View header: the open view's name (shell.js reflectNav) ── -->
+  <section class="view-header"><h1 id="viewTitle">Forecast</h1></section>
+
+  <!-- ── Search dialog (opens from the top bar's Search button) ── -->
   <div class="cmdk" id="cmdkRoot" role="dialog" aria-modal="true" aria-label="Search tournaments" hidden>
     <div class="cmdk-backdrop" data-act="close-cmdk"></div>
     <div class="cmdk-panel">
       <div class="cmdk-input-wrap">
-        <span class="cmdk-input-icon" aria-hidden="true">&#128269;</span>
+        <span class="cmdk-input-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
         <input type="search" class="cmdk-input" id="cmdkInput" placeholder="Search tournaments..." autocomplete="off" aria-controls="cmdkResults">
         <button class="cmdk-close" data-act="close-cmdk" aria-label="Close search">&times;</button>
       </div>
@@ -123,17 +144,16 @@
     </div>
   </div>
 
-  <!-- ══════ PREDICTIONS TAB ══════ -->
-  <div class="page-tab-panel active" id="panel-predictions" role="tabpanel" aria-labelledby="ptab-predictions">
+  <!-- ══════ FORECAST ══════ -->
+  <div class="page-tab-panel active" id="panel-predictions" role="region" aria-labelledby="ptab-predictions">
 
-  <!-- ── First-run hint (new visitors only; replaces the old splash gate) ── -->
-  <div id="firstRunHint" class="first-run-hint" hidden>
-    <span>Pick a tournament in the header. Predictions update daily.</span>
-    <button class="first-run-hint-dismiss" data-act="dismiss-hint" aria-label="Dismiss">&times;</button>
+  <!-- ── First-run note (new visitors only; replaces the old splash gate) ── -->
+  <div id="firstRunHint" class="note note-signal" hidden>
+    <div class="note-row">
+      <span class="note-body">Pick a tournament in the top bar. Predictions update daily.</span>
+      <button type="button" class="icon-button note-dismiss" data-act="dismiss-hint" aria-label="Dismiss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
   </div>
-
-  <!-- ── Summary Stats Bar ── -->
-  <div id="summaryBar" class="summary-bar"></div>
 
   <!-- ── Tournament Tabs ── -->
   <div class="tab-bar" id="tabBar"></div>
@@ -149,15 +169,14 @@
     <div class="delta-value" id="deltaValue"></div>
   </div>
 
-  <!-- ── Manual Override Banner ── -->
-  <div id="overrideBanner" class="override-banner" style="display:none">
-    <div class="ob-row">
-      <div class="ob-icon">&#9888;</div>
-      <div class="ob-body">
-        <div class="ob-title">Manual override active</div>
-        <div id="overrideBannerDetail" class="ob-detail"></div>
+  <!-- ── Manual override note ── -->
+  <div id="overrideBanner" class="note note-amber" style="display:none">
+    <div class="note-row">
+      <div class="note-body">
+        <div class="note-title">Manual Override Active</div>
+        <div id="overrideBannerDetail" class="note-detail"></div>
       </div>
-      <button data-act="clear-data-entry" class="ob-clear">Clear all overrides</button>
+      <button type="button" data-act="clear-data-entry" class="secondary">Clear All Overrides</button>
     </div>
   </div>
 
@@ -205,7 +224,7 @@
       </div>
       <div class="chart-top-right">
         <div class="chart-legend" id="chartLegend"></div>
-        <div class="chart-seg" id="chartRangeSeg" role="group" aria-label="Chart time range">
+        <div class="segmented" id="chartRangeSeg" role="group" aria-label="Chart time range">
           <button data-act="chart-range" data-range="all" class="active">All</button>
           <button data-act="chart-range" data-range="90">90d</button>
           <button data-act="chart-range" data-range="30">30d</button>
@@ -220,16 +239,9 @@
     <div id="chartMobileDates" class="chart-mobile-dates" aria-hidden="true"></div>
   </div>
 
-  <!-- ── Upcoming-events calendar timeline ── -->
-  <div id="calendarStrip" class="calendar-strip" aria-label="Upcoming tournaments timeline"></div>
-
   <!-- Inline model accuracy strip removed — that summary lives on the
        Performance tab now to keep the Predictions home page focused. -->
   <div id="accuracyStrip" class="accuracy-strip" aria-label="Model accuracy summary" hidden></div>
-
-
-  <!-- ── Upcoming Mini Cards ── -->
-  <div class="mini-grid mt16" id="miniGrid" ></div>
 
   <!-- ── KPI Row ── -->
   <div class="kpi-row" id="kpiRow" hidden></div>
@@ -314,7 +326,25 @@
 
   </details>
 
-  <!-- ── All Tournaments Table ── -->
+  </div><!-- /panel-predictions -->
+
+  <!-- ══════ SEASON ══════ -->
+  <!-- The portfolio view: the counts, the upcoming-events timeline, the
+       cards for every open tournament and the sortable overview table.
+       renderSummaryBar, renderCalendar, renderMiniCards and
+       renderAllTournaments find their elements here by id. -->
+  <div class="page-tab-panel" id="panel-season" role="region" aria-labelledby="ptab-season">
+
+  <!-- ── Summary line ── -->
+  <div id="summaryBar" class="summary-bar"></div>
+
+  <!-- ── Upcoming-events calendar timeline ── -->
+  <div id="calendarStrip" class="calendar-strip" aria-label="Upcoming tournaments timeline"></div>
+
+  <!-- ── Upcoming cards: Next Up over Later ── -->
+  <div class="mini-grid mt16" id="miniGrid"></div>
+
+  <!-- ── Tournament Overview table ── -->
   <details class="sect" id="sect-table" open>
   <summary class="sect-summary"><h3 class="sect-summary-h" data-season-title>Tournament Overview</h3></summary>
   <div class="all-tournaments">
@@ -322,13 +352,13 @@
       <div class="tt-head">
         <h3 class="panel-title mb0" data-season-title>Tournament Overview</h3>
         <div class="tt-controls">
-          <div class="tt-filters" role="tablist" aria-label="Filter by status">
-            <button class="tt-filter tt-filter-active" data-act="filter-tourney-table" data-filter="all" type="button">All</button>
-            <button class="tt-filter" data-act="filter-tourney-table" data-filter="live" type="button">Live</button>
+          <div class="segmented" role="group" aria-label="Filter by status">
+            <button class="tt-filter active" data-act="filter-tourney-table" data-filter="all" type="button">All</button>
+            <button class="tt-filter" data-act="filter-tourney-table" data-filter="live" type="button">Upcoming</button>
             <button class="tt-filter" data-act="filter-tourney-table" data-filter="complete" type="button">Complete</button>
           </div>
           <div class="tt-search">
-            <span class="tt-search-icon" aria-hidden="true">&#128269;</span>
+            <span class="tt-search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
             <input id="tourneyFilter" type="search" placeholder="Filter tournaments..." data-inputact="filter-tourney-table-input" autocomplete="off" aria-label="Filter tournament rows">
           </div>
         </div>
@@ -353,12 +383,10 @@
   </div>
   </details>
 
-</div>
-
-  </div><!-- /panel-predictions -->
+  </div><!-- /panel-season -->
 
   <!-- ══════ PUZZLES TAB ══════ -->
-  <div class="page-tab-panel" id="panel-puzzles" role="tabpanel" aria-labelledby="ptab-puzzles">
+  <div class="page-tab-panel" id="panel-puzzles" role="region" aria-labelledby="ptab-puzzles">
     <div class="puzzle-layout">
       <div>
         <div class="puzzle-head">
@@ -401,7 +429,7 @@
 
 
   <!-- ══════ EMAIL TAB ══════ -->
-  <div class="page-tab-panel" id="panel-email" role="tabpanel" aria-labelledby="ptab-email">
+  <div class="page-tab-panel" id="panel-email" role="region" aria-labelledby="ptab-email">
     <div class="email-hint">
       Generate prediction update emails for CCA staff. Auto-fills subject, highlights, and per-tournament summaries.
     </div>
@@ -464,7 +492,7 @@
   </div><!-- /panel-email -->
 
   <!-- ══════ PERFORMANCE TAB ══════ -->
-  <div class="page-tab-panel" id="panel-performance" role="tabpanel" aria-labelledby="ptab-performance">
+  <div class="page-tab-panel" id="panel-performance" role="region" aria-labelledby="ptab-performance">
 
     <!-- Year selector -->
     <div id="perfYearSelector" class="perf-year-row">
@@ -521,7 +549,7 @@
     </details>
   </div><!-- /panel-performance -->
 
-  <div class="page-tab-panel" id="panel-about" role="tabpanel" aria-labelledby="ptab-about">
+  <div class="page-tab-panel" id="panel-about" role="region" aria-labelledby="ptab-about">
 
     <!-- Title -->
     <div class="tab-head">
@@ -880,12 +908,12 @@
   </div><!-- /panel-about -->
 
   <!-- ══════ COMPARE TAB ══════ -->
-  <div class="page-tab-panel" id="panel-compare" role="tabpanel" aria-labelledby="ptab-compare">
+  <div class="page-tab-panel" id="panel-compare" role="region" aria-labelledby="ptab-compare">
     <div id="compareContent"></div>
   </div>
 
   <!-- ══════ ASK TAB ══════ -->
-  <div class="page-tab-panel" id="panel-ask" role="tabpanel" aria-labelledby="ptab-ask">
+  <div class="page-tab-panel" id="panel-ask" role="region" aria-labelledby="ptab-ask">
     <div class="ask-wrap">
       <div class="ask-header">
         <h2 class="ask-title">Ask a question about the tournaments</h2>
@@ -903,7 +931,7 @@
   </div>
 
   <!-- ══════ AUDIT TAB ══════ -->
-  <div class="page-tab-panel" id="panel-audit" role="tabpanel" aria-labelledby="ptab-audit">
+  <div class="page-tab-panel" id="panel-audit" role="region" aria-labelledby="ptab-audit">
     <div class="audit-wrap">
       <div class="ask-header">
         <h2 class="ask-title">Hotel room-block audit list</h2>
@@ -925,20 +953,20 @@
     </div>
   </div>
 
-</main>
-
-<footer role="contentinfo">
-  <div class="container">
+  <footer class="site-foot" role="contentinfo">
     <div class="footer-line">CCA Entry Predictor &middot; Built on <span id="footerEntryRecords">&mdash;</span> entry records across <span id="footerTournamentCount">&mdash;</span> tournaments &middot; <span id="footerYears">&mdash;</span> years of data</div>
     <div>Ensemble Model (N5v4) &middot; <span id="mc-ci-cover-footer">75%</span> CI coverage at 2 wks &middot; Blind-tested on 2023–2026 data &middot; Data from <a href="https://www.chessaction.com" target="_blank" rel="noopener">chessaction.com</a></div>
     <div class="footer-hints">
-      <span class="kbd-hint">&larr;</span> <span class="kbd-hint">&rarr;</span> navigate tournaments &middot;
-      <span class="kbd-hint">Esc</span> close dropdowns
+      <kbd>&larr;</kbd> <kbd>&rarr;</kbd> navigate tournaments &middot;
+      <kbd>Esc</kbd> close dropdowns
     </div>
-  </div>
-</footer>
-<button class="back-to-top" id="backToTop" data-act="scroll-top" title="Back to top" aria-label="Back to top">&#9650;</button>
-</div>
+  </footer>
+
+  </main>
+</div><!-- /app-shell -->
+<button class="back-to-top" id="backToTop" data-act="scroll-top" title="Back to Top" aria-label="Back to Top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg></button>
+</div><!-- /mainContent -->
+<div id="toast" role="status" aria-live="polite"></div>
 
 <!-- Every same-origin script below is `defer`. Deferred scripts execute in
      document order after parsing, and the Chart.js + date adapter tags in
@@ -976,25 +1004,31 @@
 <!-- theme.js reads PALETTE/rebuildPalette from foundation.js at load and
      sets the Chart.js defaults before any chart is built. -->
 <script defer src="theme.js?v=33c380c35b"></script>
+<!-- The shell: icons.js serves the generated markup, sheet.js owns the
+     modal sheet, shell.js the rail, the view title, More and the toast.
+     app.js's switchPageTab calls into shell.js, so these precede it. -->
+<script defer src="icons.js?v=eeee8884c1"></script>
+<script defer src="sheet.js?v=a5bc2ee6a2"></script>
+<script defer src="shell.js?v=6d1cdfb086"></script>
 <script defer src="cmdk.js?v=c497999f1f"></script>
 <script defer src="tab_email.js?v=09dda48c3a"></script>
 <script defer src="tab_performance.js?v=63e8c55dc2"></script>
 <script defer src="tab_puzzles.js?v=d37fdbb7f7"></script>
-<script defer src="pickers.js?v=00fe32ddb5"></script>
+<script defer src="pickers.js?v=92ce5b6257"></script>
 <script defer src="panels_info.js?v=85cb77359f"></script>
 <script defer src="hero_kpi.js?v=9347620d65"></script>
 <script defer src="chart_main.js?v=209e0a59c4"></script>
 <script defer src="chart_hist.js?v=6bdf6c4896"></script>
-<script defer src="panels_grid.js?v=7ffbfc4f1e"></script>
+<script defer src="panels_grid.js?v=dc54324367"></script>
 <script defer src="panels_cal.js?v=28d15e5f60"></script>
 <script defer src="tab_about.js?v=e7497b7332"></script>
 <script defer src="tab_compare.js?v=c14237e866"></script>
 <script defer src="tab_ask.js?v=dfb91b0a1f"></script>
-<script defer src="app.js?v=d59f01425c"></script>
+<script defer src="app.js?v=b5713b12d3"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,
      so it is load-bearing: without it nothing on the page responds. It comes
      last because it dispatches into the globals the files above define. -->
-<script defer src="actions.js?v=a953337851"></script>
+<script defer src="actions.js?v=f725d0ab5c"></script>
 </body>
 </html>

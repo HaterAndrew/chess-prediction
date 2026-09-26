@@ -1,29 +1,13 @@
 /* ══════════════════════════════════════════════════════
    THEME TOGGLE + SWITCH CROSS-FADE
    ══════════════════════════════════════════════════════ */
-.theme-toggle {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: var(--control-h); height: var(--control-h);
-  padding: 0;
-  background: var(--raised);
-  color: var(--ink);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease-out),
-              border-color var(--dur-fast) var(--ease-out),
-              transform 80ms var(--ease-out);
-}
-.theme-toggle:hover { background: var(--hover); border-color: var(--line-input); }
+/* The toggle is a top-bar icon button (shell.css .icon-button); one icon
+   at a time shows what pressing it will give you. */
 .theme-toggle:active { transform: scale(.96); }
-.theme-toggle:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .theme-toggle .theme-icon { display: none; }
 :root[data-theme="light"] .theme-toggle .theme-icon-moon,
 :root:not([data-theme="dark"]) .theme-toggle .theme-icon-moon { display: block; }
 :root[data-theme="dark"] .theme-toggle .theme-icon-sun { display: block; }
-@media (pointer: coarse) {
-  .theme-toggle { width: var(--touch); height: var(--touch); }
-}
 
 /* Applied by theme.js for the duration of a switch only, so a theme change
    reads as a cross-fade rather than a brightness jump. Removed again after

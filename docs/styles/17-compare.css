@@ -63,16 +63,6 @@
 /* ══════════════════════════════════════════════════════
    COMPARE
    ══════════════════════════════════════════════════════ */
-.compare-add-btn {
-  background: none; border: none; cursor: pointer;
-  font-size: var(--fs-5); line-height: 1;
-  padding: 6px 8px; min-width: var(--touch); min-height: var(--touch);
-  color: var(--muted); transition: color .15s, transform .15s;
-  display: inline-flex; align-items: center; justify-content: center;
-  border-radius: 6px;
-}
-.compare-add-btn:hover { color: var(--blue); transform: scale(1.1); }
-.compare-add-btn.compare-active { color: var(--blue); text-shadow: 0 0 8px rgba(56,139,253,.5); }
 .compare-selectors {
   display: grid; grid-template-columns: 1fr;
   gap: var(--s-2); margin: var(--s-4) 0;

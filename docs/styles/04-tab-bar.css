@@ -46,8 +46,9 @@
   min-height: var(--touch);
 }
 .tab-search-input::placeholder { color: var(--muted); }
+.tab-search-glyph { color: var(--muted); display: inline-flex; }
 .tab-search-results { max-height: 50vh; overflow-y: auto; }
-.cat-arrow { font-size: var(--fs-1); color: var(--muted); transition: transform .15s; }
+.cat-arrow { color: var(--muted); display: inline-flex; transition: transform .15s; }
 .cat-btn.open .cat-arrow { transform: rotate(180deg); }
 .drop-wrap { position: relative; }
 .drop-menu {

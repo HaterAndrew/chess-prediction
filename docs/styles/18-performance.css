@@ -1,14 +1,4 @@
 /* ══════════════════════════════════════════════════════
-   FOOTER
-   ══════════════════════════════════════════════════════ */
-footer {
-  border-top: 1px solid var(--border);
-  padding: var(--s-5) 0 max(var(--s-5), env(safe-area-inset-bottom));
-  text-align: center; font-size: var(--fs-2); color: var(--muted);
-}
-footer a { color: var(--muted); }
-
-/* ══════════════════════════════════════════════════════
    ABOUT TAB — sub-model grid (collapses on mobile)
    ══════════════════════════════════════════════════════ */
 .about-submodels {

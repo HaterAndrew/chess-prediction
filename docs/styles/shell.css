@@ -1,0 +1,138 @@
+/* shell.css — the application shell: the skip link, the top bar, the rail
+   (the side rail from 1024 px, the bottom bar under it), the main column,
+   the view header, the footer and the back-to-top control. Flat 1 px
+   panels, one accent, no blur: the registry design language. Breakpoints:
+   1280 (the rail may expand), 1024 (the rail becomes the bottom bar), 640
+   (the phone top bar), 480 (the brand folds its name). */
+
+/* The first tab stop: invisible until focused, then pinned over the top bar. */
+.skip-link { background: var(--ink); border-radius: var(--radius-lg); color: var(--void); font: 600 13px var(--display); left: 12px; padding: 10px 14px; position: fixed; text-decoration: none; top: 12px; transform: translateY(-200%); z-index: var(--layer-skip); }
+.skip-link:focus { transform: none; }
+main:focus { outline: 0; }
+/* A heading or anchor scrolled into view lands below the sticky top bar. */
+main :is(h1, h2, h3, [id]) { scroll-margin-top: calc(var(--topbar-height) + 12px); }
+
+/* ── Top bar ── */
+.topbar { align-items: center; background: var(--panel); border-bottom: 1px solid var(--line); display: flex; gap: var(--s-4); height: var(--topbar-height); padding: env(safe-area-inset-top, 0px) var(--s-5) 0; position: sticky; top: 0; z-index: var(--layer-topbar); }
+.brand { align-items: center; color: var(--ink); display: flex; flex: none; gap: 10px; text-decoration: none; }
+.brand-mark { color: var(--signal); display: block; flex: none; height: 28px; width: 28px; }
+.brand strong { font-size: 15px; font-weight: 700; letter-spacing: -.01em; line-height: 1.1; white-space: nowrap; }
+/* The selected tournament, the top bar's subject. On a phone it opens the picker. */
+.tourn-trigger { align-items: center; background: transparent; border: 1px solid transparent; border-radius: var(--radius-lg); color: var(--ink); cursor: pointer; display: flex; font: inherit; gap: 8px; height: var(--control-h); margin-left: auto; min-width: 0; padding: 0 8px; text-align: left; transition: background var(--dur-fast), border-color var(--dur-fast); }
+.tourn-trigger:hover { background: var(--signal-tint); border-color: var(--line); }
+.tourn-label-text { font: 600 14px/1.2 var(--display); max-width: 36ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tourn-caret { color: var(--muted); display: none; flex: none; height: 14px; width: 14px; }
+.search-btn { align-items: center; background: var(--raised); border: 1px solid var(--line); border-radius: var(--radius-lg); color: var(--muted); cursor: pointer; display: inline-flex; flex: none; font: 500 13px var(--display); gap: 8px; height: var(--control-h); padding: 0 10px; transition: border-color var(--dur-fast), color var(--dur-fast); }
+.search-btn:hover { border-color: var(--signal); color: var(--ink); }
+.search-btn svg { flex: none; height: 15px; width: 15px; }
+.topbar-meta { color: var(--dim); flex: none; font: 12px var(--mono); white-space: nowrap; }
+.icon-button { align-items: center; background: transparent; border: 1px solid transparent; border-radius: var(--radius-lg); color: var(--muted); cursor: pointer; display: inline-flex; flex: none; height: var(--control-h); justify-content: center; padding: 0; transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast); width: var(--control-h); }
+.icon-button:hover, .icon-button[aria-expanded="true"] { background: var(--signal-tint); border-color: var(--line); color: var(--ink); }
+.icon-button svg { height: 18px; width: 18px; }
+/* tab_compare.js marks the button while the selected tournament is in Compare. */
+.compare-add-btn.compare-active { color: var(--signal); }
+
+/* ── Shell grid and the rail ── */
+.app-shell { display: grid; grid-template-columns: var(--rail-width) minmax(0, 1fr); min-height: calc(100vh - var(--topbar-height)); min-height: calc(100svh - var(--topbar-height)); }
+.app-shell.rail-collapsed { grid-template-columns: var(--rail-collapsed) minmax(0, 1fr); }
+/* The rail stays put while the page scrolls; it scrolls on its own only
+   when it is taller than the viewport. */
+.rail { align-self: start; background: var(--panel); border-right: 1px solid var(--line-soft); display: flex; flex-direction: column; height: calc(100vh - var(--topbar-height)); height: calc(100svh - var(--topbar-height)); overflow-y: auto; padding: var(--s-5) var(--s-3); position: sticky; top: var(--topbar-height); z-index: var(--layer-rail); }
+.rail-foot { margin-top: auto; }
+.rail-toggle { align-self: flex-end; background: transparent; border: 1px solid transparent; border-radius: var(--radius); color: var(--dim); cursor: pointer; display: inline-flex; height: 32px; justify-content: center; margin: -8px 0 8px; padding: 0; width: 32px; }
+.rail-toggle:hover { background: var(--signal-tint); border-color: var(--line); color: var(--ink); }
+.rail-toggle svg { height: 16px; transition: transform var(--dur-fast); width: 16px; }
+.rail nav { display: grid; gap: 6px; }
+.rail nav button { align-items: center; background: var(--raised); border: 1px solid var(--line); border-radius: var(--radius-lg); color: var(--muted); cursor: pointer; display: flex; font: 500 14px var(--display); gap: 12px; justify-content: space-between; min-height: 40px; padding: 0 14px; text-align: left; transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast); width: 100%; }
+.rail nav button b { flex: 1; font-weight: 500; }
+.nav-icon { flex: none; height: 16px; width: 16px; }
+/* A chevron on every item says "this goes somewhere"; it steps right on hover. */
+.rail nav button::after { border: solid currentColor; border-width: 0 1.5px 1.5px 0; content: ""; height: 7px; opacity: .55; transform: rotate(-45deg); transition: opacity var(--dur-fast), transform var(--dur-fast); width: 7px; }
+.rail nav button:hover { background: var(--signal-tint); border-color: var(--signal); color: var(--ink); }
+.rail nav button:hover::after { opacity: 1; transform: translateX(3px) rotate(-45deg); }
+.rail nav button.active { background: var(--signal-tint); border-color: var(--signal); box-shadow: inset 3px 0 0 var(--signal); color: var(--ink); }
+.rail nav button.active b { font-weight: 600; }
+.rail nav button.active::after { opacity: 1; }
+/* More stands in for the views the bottom bar has no room for; the rail shows every view. */
+#moreNav { display: none; }
+/* The icon rail: 64 px, icons only, every item titled (shell.js sets the titles). */
+.rail.collapsed { overflow: visible; padding-left: 10px; padding-right: 10px; }
+.rail.collapsed .rail-toggle { align-self: center; }
+.rail.collapsed .rail-toggle svg { transform: rotate(180deg); }
+.rail.collapsed nav button { justify-content: center; padding: 0; position: relative; }
+.rail.collapsed nav button b, .rail.collapsed nav button::after { display: none; }
+/* A keyboard user gets no native tooltip, so a focused rail item names itself beside the icon. */
+.rail.collapsed nav button:focus-visible::after { background: var(--ink); border: 0; border-radius: var(--radius-lg); box-shadow: var(--elevation); color: var(--void); content: attr(title); display: block; font: 500 12px/1.4 var(--display); height: auto; left: calc(100% + 10px); opacity: 1; padding: 6px 10px; position: absolute; top: 50%; transform: translateY(-50%); white-space: nowrap; width: auto; z-index: var(--layer-popover); }
+
+/* ── Main column ── */
+main { min-width: 0; padding: var(--s-6) var(--s-6) 96px; }
+.view-header { margin-bottom: var(--s-5); max-width: 1320px; }
+.view-header h1 { color: var(--ink); font-size: var(--fs-h1); font-weight: 700; letter-spacing: -.02em; line-height: 1.1; margin: 0; }
+.page-tab-panel { display: none; max-width: 1320px; }
+.page-tab-panel.active { display: block; }
+.site-foot { border-top: 1px solid var(--line-soft); color: var(--dim); font: 12px/1.7 var(--display); margin-top: var(--s-7); max-width: 1320px; padding-top: var(--s-5); }
+.site-foot a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+.site-foot a:hover { color: var(--ink); }
+.footer-line { margin-bottom: 4px; }
+.footer-hints { margin-top: 6px; }
+
+/* ── Back to top ── */
+.back-to-top { align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 50%; bottom: max(20px, env(safe-area-inset-bottom)); box-shadow: var(--elevation); color: var(--muted); cursor: pointer; display: flex; height: var(--touch); justify-content: center; opacity: 0; position: fixed; right: 20px; transform: translateY(10px); transition: opacity var(--dur), transform var(--dur), visibility var(--dur), border-color var(--dur-fast), color var(--dur-fast); visibility: hidden; width: var(--touch); z-index: var(--layer-popover); }
+.back-to-top svg { height: 18px; width: 18px; }
+.back-to-top.visible { opacity: 1; transform: none; visibility: visible; }
+.back-to-top:hover { border-color: var(--signal); color: var(--ink); }
+
+/* ── Between the rail's breakpoint and the wide layout: the rail is the
+   icon rail (shell.js adds the class) and the toggle has nothing to do. ── */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .rail-toggle { display: none; }
+  main { padding-left: var(--s-5); padding-right: var(--s-5); }
+}
+
+/* ── Under 1024 px: the rail is the bottom bar. Four pinned views and More,
+   one equal slot each, the icon over its name. ── */
+@media (max-width: 1023px) {
+  .app-shell { display: block; }
+  .rail { border-right: 0; border-top: 1px solid var(--line); bottom: 0; flex-direction: row; gap: 0; height: var(--bottom-nav); left: 0; overflow: visible; padding: 0 max(4px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(4px, env(safe-area-inset-left, 0px)); position: fixed; right: 0; top: auto; z-index: var(--layer-nav); }
+  .rail-toggle { display: none; }
+  .rail nav { display: flex; gap: 0; }
+  .rail nav#primaryNav { flex: 4 1 0; }
+  .rail-foot { flex: 1 1 0; margin: 0; }
+  .rail nav [data-tab]:not([data-bar="pinned"]) { display: none; }
+  .rail nav #moreNav { display: flex; }
+  .rail nav button { background: transparent; border: 0; border-radius: var(--radius); box-shadow: none; color: var(--muted); flex: 1 1 0; flex-direction: column; font: 500 11px/1.2 var(--display); gap: 4px; justify-content: center; min-height: 100%; min-width: 44px; padding: 6px 2px 4px; text-align: center; }
+  .rail nav button::after { display: none; }
+  .rail nav button b { flex: none; font-weight: 500; white-space: nowrap; }
+  .rail nav button:hover { background: transparent; }
+  .rail nav button.active { background: var(--signal-tint); box-shadow: none; color: var(--ink); }
+  .nav-icon { height: 20px; width: 20px; }
+  main { padding: var(--s-5) var(--s-4) calc(var(--bottom-nav) + var(--s-6)); }
+  .topbar-meta { display: none; }
+  .back-to-top { bottom: calc(var(--bottom-nav) + 12px); }
+}
+
+/* ── Phones: the top bar compacts and the tournament becomes the picker trigger. ── */
+@media (max-width: 639px) {
+  .topbar { gap: 8px; padding-left: max(12px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px)); }
+  .brand { gap: 8px; }
+  .tourn-trigger { background: var(--raised); border-color: var(--line); flex: 1 1 auto; margin-left: 0; padding: 0 10px 0 12px; }
+  .tourn-trigger:active { background: var(--signal-tint); border-color: var(--signal); }
+  .tourn-label-text { flex: 1; max-width: none; }
+  .tourn-caret { display: block; }
+  .search-btn { background: transparent; border-color: transparent; justify-content: center; padding: 0; width: var(--control-h); }
+  .search-btn-text, .search-btn-kbd { display: none; }
+  main { padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); }
+}
+@media (max-width: 479px) {
+  .brand { position: relative; }
+  .brand strong { clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
+}
+
+/* A finger gets 44 px targets in the chrome; a mouse keeps the 36 px ones. */
+@media (pointer: coarse) {
+  .icon-button, .search-btn { height: var(--touch); min-width: var(--touch); }
+  .tourn-trigger { height: var(--touch); }
+  .rail nav button { min-height: 44px; }
+  .brand { position: relative; }
+  .brand::before { content: ""; inset: -6px; position: absolute; }
+}

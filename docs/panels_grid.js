@@ -236,14 +236,14 @@ function renderFestivalCluster(t) {
 // INLINE MODEL ACCURACY STRIP (Predictions tab)
 // ══════════════════════════════════════════════════════════
 // Compact "the model has been right X% of the time at T-14" strip that
-// pulls from PERFORMANCE_DATA. Surfaces trustworthiness inline without
+// pulls from PERFORMANCE_SUMMARY. Surfaces trustworthiness inline without
 // making the user click into the Performance tab. Three cells: grade,
 // T-14 MAE, T-14 CI coverage. Click the strip to jump to the full
 // Performance tab.
 function renderAccuracyStrip() {
   const el = document.getElementById('accuracyStrip');
   if (!el) return;
-  const data = (typeof PERFORMANCE_DATA !== 'undefined') ? PERFORMANCE_DATA : null;
+  const data = (typeof PERFORMANCE_SUMMARY !== 'undefined') ? PERFORMANCE_SUMMARY : null;
   if (!data) { el.innerHTML = ''; return; }
   const cumulative = data.cumulative || data;
   if (!cumulative || !cumulative.aggregate) { el.innerHTML = ''; return; }

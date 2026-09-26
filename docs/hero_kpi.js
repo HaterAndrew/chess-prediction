@@ -5,15 +5,15 @@
 // HERO + KPI
 // ══════════════════════════════════════════════════════════
 
-// Build the prediction-tile tooltip from live PERFORMANCE_DATA so every
+// Build the prediction-tile tooltip from live PERFORMANCE_SUMMARY so every
 // pipeline run (daily auto_update + monthly recalibration) refreshes the
 // numbers automatically. No hardcoded counts/biases.
 function _calibrationTooltip() {
   const fallback = 'Ensemble of pace-ratio extrapolation + family regression. At T > 7 the regression dominates so early ahead-of-pace leads are discounted.';
-  if (typeof PERFORMANCE_DATA === 'undefined' || !PERFORMANCE_DATA) return fallback;
+  if (typeof PERFORMANCE_SUMMARY === 'undefined' || !PERFORMANCE_SUMMARY) return fallback;
   const yr = String(new Date().getFullYear());
-  const yearData = (PERFORMANCE_DATA.years || {})[yr] || PERFORMANCE_DATA;
-  const agg = yearData.aggregate || PERFORMANCE_DATA.aggregate || [];
+  const yearData = (PERFORMANCE_SUMMARY.years || {})[yr] || PERFORMANCE_SUMMARY;
+  const agg = yearData.aggregate || PERFORMANCE_SUMMARY.aggregate || [];
   if (!agg.length) return fallback;
   // n-weighted mean of |bias_pct| across T-points: how much the model
   // typically over- or under-shoots in the current year.
@@ -25,8 +25,8 @@ function _calibrationTooltip() {
     }
   }
   const meanBias = nSum > 0 ? biasNum / nSum : null;
-  const nEvents = yearData.n_tournaments ?? PERFORMANCE_DATA.n_tournaments ?? null;
-  const asof = PERFORMANCE_DATA.generated || '';
+  const nEvents = yearData.n_tournaments ?? PERFORMANCE_SUMMARY.n_tournaments ?? null;
+  const asof = PERFORMANCE_SUMMARY.generated || '';
   if (meanBias == null || nEvents == null) return fallback;
   const dir = meanBias > 0 ? 'over-predicting' : 'under-predicting';
   const absBias = Math.abs(meanBias).toFixed(1);

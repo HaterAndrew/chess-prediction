@@ -18,9 +18,9 @@ WEBSITE_JSON = os.path.join(OUTPUT_DIR, "website_data.json")
 # own targets from SITE_DIR at write time (see _stamp_targets) so redirecting
 # SITE_DIR redirects the write too.
 INDEX_HTML = os.path.join(SITE_DIR, "index.html")
-# The large data consts were externalized out of index.html (L15); the daily
-# build now splices them into this file, so index.html itself stays static.
-SITE_DATA_JS = os.path.join(SITE_DIR, "data", "site_data.js")
+# The large data consts were externalized out of index.html (L15) into the
+# generated files under docs/data/; pipeline/site_html.py derives their paths
+# from SITE_DIR at call time, so index.html itself stays static.
 # Raw JSON served by Pages for the Ask Worker (v3 S1). Kept for callers that
 # want the default location; step_update_html derives its own from SITE_DIR at
 # write time so redirecting SITE_DIR redirects the write too. A module constant

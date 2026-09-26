@@ -947,8 +947,11 @@
      scripts that ran while Chart.js was still downloading: on a cold visit
      renderChart threw, hideSkeletons() never ran, and the page sat on the
      skeleton until a refresh found Chart.js in cache. ExcelJS is no longer
-     loaded here; audit.js fetches it on demand (loadExcelJS). -->
-<script defer src="data/site_data.js?v=8d6b725c62"></script>
+     loaded here; audit.js fetches it on demand (loadExcelJS).
+     The data tag carries what the page needs at first paint; its two data-*
+     attributes name the files the Performance and Puzzles tabs fetch on
+     demand (loadDataFile), stamped by the pipeline like every other asset. -->
+<script defer id="dataScript" src="data/tournaments.js?v=df96ebdf60" data-performance="data/performance_data.js?v=b0a449b4be" data-history="data/chess_history.js?v=4e76f35655"></script>
 <!-- audit.js defines initAuditTab and must precede app.js: app.js runs its
      init() (and any #audit deep link) synchronously at evaluation time. -->
 <script defer src="audit.js?v=c8288fbf68"></script>
@@ -969,22 +972,22 @@
      OFFLINE_FALLBACKS (test_global_uniqueness pins name collisions and
      suffix clashes; test_script_loading pins the defer attribute). -->
 <script defer src="util_core.js?v=2824d286fc"></script>
-<script defer src="foundation.js?v=8702a837a3"></script>
+<script defer src="foundation.js?v=f6f635ecc7"></script>
 <!-- theme.js reads PALETTE/rebuildPalette from foundation.js at load and
      sets the Chart.js defaults before any chart is built. -->
 <script defer src="theme.js?v=33c380c35b"></script>
 <script defer src="cmdk.js?v=c497999f1f"></script>
 <script defer src="tab_email.js?v=09dda48c3a"></script>
-<script defer src="tab_performance.js?v=f7b2bf4982"></script>
-<script defer src="tab_puzzles.js?v=c0b01b5c3e"></script>
+<script defer src="tab_performance.js?v=63e8c55dc2"></script>
+<script defer src="tab_puzzles.js?v=d37fdbb7f7"></script>
 <script defer src="pickers.js?v=00fe32ddb5"></script>
 <script defer src="panels_info.js?v=85cb77359f"></script>
-<script defer src="hero_kpi.js?v=c32d542fd4"></script>
+<script defer src="hero_kpi.js?v=9347620d65"></script>
 <script defer src="chart_main.js?v=209e0a59c4"></script>
 <script defer src="chart_hist.js?v=6bdf6c4896"></script>
-<script defer src="panels_grid.js?v=328099e6c3"></script>
+<script defer src="panels_grid.js?v=7ffbfc4f1e"></script>
 <script defer src="panels_cal.js?v=28d15e5f60"></script>
-<script defer src="tab_about.js?v=93bd7709b3"></script>
+<script defer src="tab_about.js?v=e7497b7332"></script>
 <script defer src="tab_compare.js?v=c14237e866"></script>
 <script defer src="tab_ask.js?v=07df7455b0"></script>
 <script defer src="app.js?v=612241529c"></script>

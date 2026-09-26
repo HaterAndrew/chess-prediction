@@ -45,20 +45,20 @@ def test_every_calendar_day_is_covered(source):
 
 
 def test_output_matches_the_const_already_shipped(source):
-    """The generator must reproduce site_data.js byte for byte.
+    """The generator must reproduce docs/data/chess_history.js byte for byte.
 
     This is the proof the extraction was lossless. If it ever fails, either the
     source drifted from the deployed content or the serializer changed shape —
     both are real, and both would otherwise show up as a 146KB reflow in a diff
     nobody reads.
     """
-    site_data = os.path.join(PROJECT_ROOT, "docs", "data", "site_data.js")
-    with open(site_data) as f:
+    data_file = os.path.join(PROJECT_ROOT, "docs", "data", "chess_history.js")
+    with open(data_file) as f:
         text = f.read()
 
     marker = "const CHESS_HISTORY = "
     start = text.find(marker)
-    assert start != -1, "CHESS_HISTORY is missing from site_data.js"
+    assert start != -1, "CHESS_HISTORY is missing from chess_history.js"
     i = start + len(marker)
     depth = 0
     end = None
@@ -73,7 +73,7 @@ def test_output_matches_the_const_already_shipped(source):
     assert end, "could not find the end of the CHESS_HISTORY object"
 
     assert gch.serialize(source) == text[i:end], (
-        "generated CHESS_HISTORY differs from what is deployed in site_data.js")
+        "generated CHESS_HISTORY differs from what is deployed in chess_history.js")
 
 
 def test_a_bad_day_key_is_rejected():

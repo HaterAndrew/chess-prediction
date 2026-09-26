@@ -7,7 +7,8 @@ Steps:
   3. Run 04c_final_model.py + 04d_website_data_v2.py to regenerate predictions
      (includes walk-in multiplier from output/walk_in_family_stats.csv)
   4. Regenerate output/website_data.json
-  5. Update the TOURNAMENT_DATA block in docs/data/site_data.js
+  5. Splice the data consts into docs/data/tournaments.js,
+     performance_data.js and chess_history.js
   6. Log the run to output/update_log.csv
 
 Note: Walk-in multiplier data (06_walk_in_multipliers.py) is regenerated every
@@ -40,7 +41,6 @@ from pipeline.config import (  # noqa: F401
     PROJECT_DIR,
     RUN_TS,
     SCRAPE_CSV,
-    SITE_DATA_JS,
     SITE_DATA_JSON,
     SITE_DIR,
     UPDATE_LOG,
@@ -75,10 +75,10 @@ from pipeline.steps import (  # noqa: F401
 from pipeline.site_html import step_update_html  # noqa: F401
 from pipeline.run_log import prune_update_log, step_log_run  # noqa: F401
 from pipeline.stamping import (  # noqa: F401
+    STAMPED_DATA,
     STAMPED_SCRIPTS,
     _atomic_write_json,
     _stamp_script_versions,
-    _stamp_site_data_version,
     _stamp_stale_flag,
     _stamp_targets,
 )

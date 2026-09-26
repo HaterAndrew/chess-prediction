@@ -67,11 +67,11 @@ jobs:
         run: |
           git config user.name "CCA Bot"
           git config user.email "bot@users.noreply.github.com"
-          # docs/data/site_data.js carries the embedded data since the L15
-          # externalization — the build writes it, so it MUST be committed or the
-          # deployed data goes stale. output/data_health.json + audit/data-health
+          # docs/data/*.js carry the embedded data since the L15 externalization
+          # (three files since 2026-09) — the build writes them, so they MUST be
+          # committed or the deployed data goes stale. output/data_health.json + audit/data-health
           # persist the freshness scan (H1) instead of expiring with the run log.
-          git add output/daily_scrape.csv output/website_data.json output/daily_puzzles.json output/performance_data.json docs/index.html docs/sw.js docs/data/site_data.js docs/data/website_data.json docs/audit_warnings.json output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv output/tournament_metadata.csv output/walk_in_family_stats.csv output/walk_in_multipliers.csv output/tournament_summary.csv output/daily_registration_counts.csv output/update_log.csv output/checksums.json output/audit_warnings.json output/data_health.json output/scrape_health.json
+          git add output/daily_scrape.csv output/website_data.json output/daily_puzzles.json output/performance_data.json docs/index.html docs/sw.js docs/data/tournaments.js docs/data/performance_data.js docs/data/chess_history.js docs/data/website_data.json docs/audit_warnings.json output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv output/tournament_metadata.csv output/walk_in_family_stats.csv output/walk_in_multipliers.csv output/tournament_summary.csv output/daily_registration_counts.csv output/update_log.csv output/checksums.json output/audit_warnings.json output/data_health.json output/scrape_health.json
           git add audit/data-health/ 2>/dev/null || true
           git diff --cached --quiet || git commit -m "Daily update: $(date +%Y-%m-%d)"
           git pull --rebase || git pull --no-rebase
@@ -114,10 +114,10 @@ jobs:
           python3 -c "import auto_update; auto_update.step_update_html()"
           # Stage everything step_update_html just rewrote. On 2026-08-23 this
           # line stopped at index.html: sw.js kept precaching the previous
-          # site_data.js hash and docs/data/website_data.json (the Ask Worker
+          # tournaments.js hash and docs/data/website_data.json (the Ask Worker
           # endpoint) still said is_stale false while the page banner said
           # stale. The unstaged leftovers also broke the git pull --rebase below.
-          git add output/website_data.json docs/data/site_data.js docs/data/website_data.json docs/index.html docs/sw.js
+          git add output/website_data.json docs/data/tournaments.js docs/data/performance_data.js docs/data/chess_history.js docs/data/website_data.json docs/index.html docs/sw.js
           git diff --cached --quiet || git commit -m "Pipeline degraded: mark data stale ($(date +%Y-%m-%d))"
           git pull --rebase || git pull --no-rebase
           git push

@@ -16,13 +16,12 @@ const VIEW_TITLES = {
   email: 'Email',
   audit: 'Audit',
   about: 'About the Model',
-  puzzles: 'Puzzles',
 };
 // The views each nav group holds; the group reads as open while one of its
 // views is. The sheets in index.html list the same views in the same order.
 const NAV_GROUPS = {
   model: ['performance', 'about'],
-  tools: ['compare', 'ask', 'email', 'audit', 'puzzles'],
+  tools: ['compare', 'ask', 'email', 'audit'],
 };
 const TOAST_MS = 2500;
 let _toastTimer = null;

@@ -44,7 +44,6 @@ STAMPED_SCRIPTS = (
 STAMPED_DATA = (
     "data/tournaments.js",
     "data/performance_data.js",
-    "data/chess_history.js",
 )
 
 

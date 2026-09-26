@@ -56,28 +56,6 @@ def step_scrape():
     print(f"  Scrape complete: {count} tournaments for {today}")
 
 
-def step_update_puzzles():
-    """Generate daily chess puzzles."""
-    puzzle_script = os.path.join(config.PROJECT_DIR, "scrape_puzzles.py")
-    if os.path.exists(puzzle_script):
-        run_step("Generate daily puzzles", [sys.executable, "scrape_puzzles.py"])
-    else:
-        print("  Skipping puzzles (scrape_puzzles.py not found)")
-
-
-def step_chess_history():
-    """Emit output/chess_history.json so the CHESS_HISTORY splice has a source.
-
-    v3 O5: the splice below was guarded on a file nothing wrote, so it had
-    never fired and the 146KB const lived only inside the generated data
-    file (docs/data/chess_history.js since the 2026-09 split).
-    content/chess_history.json is now the tracked source and this step renders it, which makes the const reviewable and the splice real.
-    A malformed source fails the run rather than shipping a blank panel.
-    """
-    run_step("Render chess history (scripts/gen_chess_history.py)",
-             [sys.executable, os.path.join("scripts", "gen_chess_history.py")])
-
-
 # A present-but-old all_registrations.csv freezes the TRAINING side of the
 # roster. Since v5 Cat R, live prediction no longer depends on it — scraped
 # events get roster-pending skeleton rows (reconcile_final_counts) and ride the

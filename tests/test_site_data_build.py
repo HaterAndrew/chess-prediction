@@ -1,8 +1,8 @@
 """Regression tests for step_update_html after the data-file split.
 
-The daily build splices the data consts into three generated files under
-docs/data/: tournaments.js (what the page needs at first paint),
-performance_data.js and chess_history.js (fetched by their tabs on demand).
+The daily build splices the data consts into two generated files under
+docs/data/: tournaments.js (what the page needs at first paint) and
+performance_data.js (fetched by the Performance tab on demand).
 These tests confirm it rewrites TOURNAMENT_DATA, compacts every payload it
 writes, derives PERFORMANCE_SUMMARY without the per-tournament records, leaves
 consts with no source untouched, stamps every data file's ?v= into the page,
@@ -21,21 +21,18 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 import auto_update  # noqa: E402
 import pipeline.config  # noqa: E402
 
-DATA_FILES = ("tournaments.js", "performance_data.js", "chess_history.js")
+DATA_FILES = ("tournaments.js", "performance_data.js")
 
 # Minimal generated files carrying every const the splicer touches.
 STUB_TOURNAMENTS = (
     'const TOURNAMENT_DATA = {"generated": "2020-01-01", "tournaments": []};\n'
     'const PERFORMANCE_SUMMARY = {"keep": 1};\n'
-    'const PUZZLE_DATA = {"keep": 2};\n'
 )
 STUB_PERFORMANCE = 'const PERFORMANCE_DATA = {"keep": 3};\n'
-STUB_HISTORY = 'const CHESS_HISTORY = {"keep": 4};\n'
-# The page's data tag: the on-load file plus the two lazy ones as data-*.
+# The page's data tag: the on-load file plus the lazy one as data-*.
 STUB_INDEX = (
     '<script defer id="dataScript" src="data/tournaments.js?v=0000000000"'
-    ' data-performance="data/performance_data.js?v=0000000000"'
-    ' data-history="data/chess_history.js?v=0000000000"></script>\n'
+    ' data-performance="data/performance_data.js?v=0000000000"></script>\n'
 )
 PAYLOAD = {"generated": "2026-07-07", "tournaments": [{"family": "X", "year": 2026}]}
 COMPACT_PAYLOAD = '{"generated":"2026-07-07","tournaments":[{"family":"X","year":2026}]}'
@@ -51,7 +48,6 @@ def build_env(tmp_path, monkeypatch):
     files = {name: data_dir / name for name in DATA_FILES}
     files["tournaments.js"].write_text(STUB_TOURNAMENTS)
     files["performance_data.js"].write_text(STUB_PERFORMANCE)
-    files["chess_history.js"].write_text(STUB_HISTORY)
     # An index.html inside the isolated docs/, so the cache-buster stamp has
     # somewhere to land here instead of reaching for the repo's real one.
     index_html = docs_dir / "index.html"
@@ -80,18 +76,14 @@ def test_splices_tournament_data_compact(build_env):
     assert '"generated": "2020-01-01"' not in written                # old data gone
     # sibling consts (no fixture source in this tmp OUTPUT_DIR) stay untouched
     assert 'const PERFORMANCE_SUMMARY = {"keep": 1};' in written
-    assert 'const PUZZLE_DATA = {"keep": 2};' in written
     assert build_env["files"]["performance_data.js"].read_text() == STUB_PERFORMANCE
-    assert build_env["files"]["chess_history.js"].read_text() == STUB_HISTORY
 
 
 def test_optional_consts_follow_their_sources(build_env):
-    """Each optional const is spliced only when its source exists, compacted
-    except CHESS_HISTORY (whose generator's bytes are pinned elsewhere), and
-    PERFORMANCE_SUMMARY is the performance payload minus every per-tournament
+    """Each optional const is spliced only when its source exists, compacted,
+    and PERFORMANCE_SUMMARY is the performance payload minus every per-tournament
     list, at any depth."""
     out = build_env["out"]
-    (out / "daily_puzzles.json").write_text(json.dumps({"puzzles": [{"id": 1}]}, indent=2))
     perf = {
         "generated": "2026-07-07", "aggregate": [{"T": 14, "mae_pct": 5.0}],
         "tournaments": [{"family": "X"}],
@@ -99,13 +91,10 @@ def test_optional_consts_follow_their_sources(build_env):
         "cumulative": {"n_tournaments": 1, "tournaments": [{"family": "X"}]},
     }
     (out / "performance_data.json").write_text(json.dumps(perf, indent=2))
-    history = '{\n  "01-01": [\n    {"year": 1990, "event": "x", "category": "match"}\n  ]\n}'
-    (out / "chess_history.json").write_text(history + "\n")
 
     auto_update.step_update_html()
 
     tournaments = build_env["files"]["tournaments.js"].read_text()
-    assert 'const PUZZLE_DATA = {"puzzles":[{"id":1}]};' in tournaments
     summary = re.search(r"const PERFORMANCE_SUMMARY = (.*?);\n", tournaments).group(1)
     assert "\n" not in summary and ": " not in summary, "summary was not compacted"
     summary_obj = json.loads(summary)
@@ -127,8 +116,6 @@ def test_optional_consts_follow_their_sources(build_env):
 
     performance = build_env["files"]["performance_data.js"].read_text()
     assert performance == f"const PERFORMANCE_DATA = {json.dumps(perf, separators=(',', ':'))};\n"
-
-    assert build_env["files"]["chess_history.js"].read_text() == f"const CHESS_HISTORY = {history};\n"
 
 
 @pytest.mark.parametrize("missing", DATA_FILES)

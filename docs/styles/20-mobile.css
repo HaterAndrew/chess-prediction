@@ -38,19 +38,9 @@
   .hero-label { letter-spacing: .05em; }
 }
 
-/* ── Phones (< 640px): 16px fields (iOS zooms a smaller focused input), the
-   puzzle buttons as a two-column grid with Next across the bottom ── */
+/* ── Phones (< 640px): 16px fields (iOS zooms a smaller focused input) ── */
 @media (max-width: 639px) {
   .field { font-size: 16px; }
-  .puzzle-layout { gap: var(--s-3); }
-  .puzzle-nav { display: grid; gap: var(--s-2); grid-template-columns: 1fr 1fr; margin-top: var(--s-3); }
-  .puzzle-nav .btn, .puzzle-nav .button { margin: 0; width: 100%; }
-  .puzzle-nav .button { grid-column: 1 / -1; }
-  .puzzle-info { padding: var(--s-3); }
-  .puzzle-status { font-size: 14px; margin: var(--s-2) 0; min-height: 24px; }
-  .puzzle-themes { gap: 4px; margin-top: 6px; }
-  .puzzle-progress { gap: 6px; margin: var(--s-2) 0; }
-  .chess-board-wrap { max-width: 100%; }
 }
 
 /* ══════════════════════════════════════════════════════

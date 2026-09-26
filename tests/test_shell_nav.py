@@ -27,10 +27,10 @@ PICKERS_JS = DOCS / "pickers.js"
 SW_JS = DOCS / "sw.js"
 FONTS_CSS = DOCS / "styles" / "fonts.css"
 SHELL_STYLESHEETS = ("shell.css", "controls.css", "overlays.css", "picker.css", "forecast.css", "sections.css", "season.css",
-                     "about.css", "performance.css", "compare.css", "ask.css", "email.css", "puzzles.css", "03-cmdk.css")
+                     "about.css", "performance.css", "compare.css", "ask.css", "email.css", "03-cmdk.css")
 
 NAV_ITEMS = ["Forecast", "Season", "Model", "Tools"]
-GROUPS = {"model": ["performance", "about"], "tools": ["compare", "ask", "email", "audit", "puzzles"]}
+GROUPS = {"model": ["performance", "about"], "tools": ["compare", "ask", "email", "audit"]}
 
 # AP style keeps these lowercase inside a title.
 SMALL_WORDS = {"a", "an", "and", "as", "at", "but", "by", "for", "in", "nor",
@@ -163,8 +163,7 @@ def test_the_shell_markup_carries_no_glyph_entities():
 
 
 # Every view is in the Wallchart vocabulary now: an icon is an inline SVG or
-# a word, never a font glyph. The chess pieces on the puzzle board are the
-# one exception, listed by name so a new glyph cannot hide behind them.
+# a word, never a font glyph.
 GLYPH_ENTITY = re.compile(r"&#x?(?:2[0-9a-fA-F]{3}|1[0-9a-fA-F]{4}|9[0-9]{3}|1[0-9]{4});|[\u2190-\u23ff\u25a0-\u27bf\u2b00-\u2bff]")
 GLYPH_ALLOWED = {"\u2013", "\u2014", "\u2026", "\u2190", "\u2192", "\u2265", "\u2264", "\u00d7"}
 
@@ -174,8 +173,6 @@ def test_no_view_carries_a_glyph_icon():
                                                           DOCS / "panels_info.js", DOCS / "season_cards.js", DOCS / "audit.js"]
     for path in sources:
         text = re.sub(r"<!--.*?-->", "", _read(path), flags=re.S)
-        if path.name == "tab_puzzles.js":
-            text = re.sub(r"PIECE_UNICODE = \{.*?\};", "", text, flags=re.S)
         found = [m for m in GLYPH_ENTITY.findall(text) if m not in GLYPH_ALLOWED and not m.startswith("&#")]
         found += [m for m in GLYPH_ENTITY.findall(text) if m.startswith("&#")]
         assert not found, f"{path.name} carries glyph icons {sorted(set(found))}; use inline SVG or a word"
@@ -198,7 +195,7 @@ def test_the_markup_nests():
     assert len(re.findall(r"<div\b", html)) == len(re.findall(r"</div>", html)), "unbalanced <div>"
     assert html.count("<main") == 1 and html.count("</main>") == 1
     main_start, main_end = html.index("<main"), html.index("</main>")
-    for panel in ("panel-predictions", "panel-season", "panel-ask", "panel-audit", "panel-puzzles"):
+    for panel in ("panel-predictions", "panel-season", "panel-ask", "panel-audit"):
         pos = html.index(f'id="{panel}"')
         assert main_start < pos < main_end, f"{panel} sits outside <main>"
     assert html.count('id="primaryNav"') == 1, "the nav appears more than once"
@@ -242,5 +239,5 @@ def test_the_removed_stylesheets_stay_removed():
     for name in ("02-header.css", "04-tab-bar.css", "05-delta-banner.css", "06-mobile-predictions.css", "07-hero.css",
                  "08-chart.css", "09-timeline.css", "10-comparison.css", "11-tables.css", "12-calendar.css",
                  "13-page-tabs.css", "14-puzzles.css", "15-data-entry.css", "16-email.css", "17-compare.css",
-                 "18-performance.css", "21-panels.css", "22-panels-shared.css", "24-ask-audit.css", "cards.css"):
+                 "18-performance.css", "21-panels.css", "22-panels-shared.css", "24-ask-audit.css", "cards.css", "puzzles.css"):
         assert not os.path.exists(DOCS / "styles" / name), f"styles/{name} is back"

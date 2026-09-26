@@ -101,10 +101,10 @@ def test_the_delegation_layer_is_actually_loaded():
 
 
 def _registered_action_names():
-    """Names defined in the three dispatch tables in actions.js."""
+    """Names defined in the dispatch tables in actions.js."""
     src = _read(ACTIONS_JS)
     names = set()
-    for table in ("ACTIONS", "INPUT_ACTIONS", "KEY_ACTIONS"):
+    for table in ("ACTIONS", "INPUT_ACTIONS"):
         m = re.search(rf'const {table} = \{{(.*?)\n  \}};', src, re.S)
         assert m, f"could not find the {table} table in actions.js"
         names |= set(re.findall(r"^\s*'([a-z0-9-]+)':", m.group(1), re.M))
@@ -116,7 +116,7 @@ def _referenced_action_names():
     refs = set()
     for path in MARKUP_FILES:
         refs |= set(re.findall(
-            r'data-(?:act|inputact|keyact)="([a-z0-9-]+)"', _read(path)))
+            r'data-(?:act|inputact)="([a-z0-9-]+)"', _read(path)))
     return refs
 
 

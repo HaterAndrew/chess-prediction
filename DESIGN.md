@@ -22,7 +22,6 @@ colors:
   stock-yellow: "#FFF1A8"
   stock-blue: "#DCE8F8"
   stock-pink: "#FBDCE2"
-  stock-green: "#D9F0DE"
   stock-grey: "#EDEDEA"
   charcoal: "#151517"
   charcoal-sheet: "#151517"
@@ -43,7 +42,6 @@ colors:
   charcoal-stock-yellow: "#3A3418"
   charcoal-stock-blue: "#1C2A44"
   charcoal-stock-pink: "#3A1F27"
-  charcoal-stock-green: "#1B3324"
   charcoal-stock-grey: "#26262A"
 typography:
   display:
@@ -232,7 +230,7 @@ Two inks and two pens on paper; every other colour is a sheet of stock or the hi
 - **Paper** (`{colors.paper}`) and **Charcoal** (`{colors.charcoal}`): the page and every sheet on it. Raised controls sit on `{colors.paper-raised}` (hover `{colors.paper-hover}`); the chart grid on `{colors.paper-grid}`.
 - **Ink** (`{colors.ink}` / `{colors.charcoal-ink}`): headings, figures, body. **Ink 2** (`{colors.ink-2}`) for secondary text and nav items at rest; **Muted** (`{colors.ink-muted}`) for labels and captions; **Dim** (`{colors.ink-dim}`, the lightest grey that still clears 4.5:1 on paper) for placeholders, small metadata and the historical chart traces.
 - **Rule** (`{colors.rule}` / `{colors.charcoal-rule}`): the black rule between sections, round panels, under the top bar. **Rule Soft** (`{colors.rule-soft}`) between table rows and inside a panel; **Rule Faint** (`{colors.rule-faint}`) for the chart grid.
-- **Stocks**: `{colors.stock-yellow}` for on-pace and warnings, `{colors.stock-blue}` for good news and live status, `{colors.stock-pink}` for behind and danger, `{colors.stock-green}` for a puzzle solved, `{colors.stock-grey}` for historical. Each has a charcoal twin (`{colors.charcoal-stock-yellow}` and so on). Type on a stock is ink, or the matching pen when the stock is the pen's own tint (a live pill is pen blue on blue stock).
+- **Stocks**: `{colors.stock-yellow}` for on-pace and warnings, `{colors.stock-blue}` for good news and live status, `{colors.stock-pink}` for behind and danger, `{colors.stock-grey}` for historical. Each has a charcoal twin (`{colors.charcoal-stock-yellow}` and so on). Type on a stock is ink, or the matching pen when the stock is the pen's own tint (a live pill is pen blue on blue stock).
 
 ### Named Rules
 **The Two Pens Rule.** Blue means ahead, good, or the actual series. Red means behind, a miss, or the event. Ink means fair. Any other colour on the page is a stock or the highlighter, never a third state colour; green and amber resolve to blue and ink respectively.

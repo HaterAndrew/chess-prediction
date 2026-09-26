@@ -69,5 +69,5 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
   .cmdk-row-active, .fc-card-active, .mini-card-active, .compare-add-btn.compare-active,
   .comp-table .current-year td, .perf-grade-letter.grade-good, .result-card-num,
   .hero-number, .chess-sq.selected { outline: 2px solid CanvasText; outline-offset: -2px; }
-  .timeline-dot.now, .ms-node.ms-now .ms-dot, .cal-axis-now, .puzzle-dot.current { background: Highlight; forced-color-adjust: none; }
+  .timeline-dot.now, .ms-node.ms-now .ms-dot, .cal-axis-now { background: Highlight; forced-color-adjust: none; }
 }

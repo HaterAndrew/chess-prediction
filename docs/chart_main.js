@@ -11,14 +11,14 @@ function renderChart(t) {
     // card instead of throwing; the rest of the page still renders.
     document.getElementById('chartLegend').innerHTML = '';
     document.getElementById('chartSubtitle').textContent =
-      `${t.family} ${t.year}: chart unavailable (the charting library did not load)`;
+      'Chart unavailable: the charting library did not load.';
     return;
   }
 
   if (!t.daily_data || t.daily_data.length === 0 || !t.event_start) {
     // No registration timeline data or missing event date — show placeholder
     document.getElementById('chartLegend').innerHTML = '';
-    document.getElementById('chartSubtitle').textContent = `${t.family} ${t.year}: No registration timeline available`;
+    document.getElementById('chartSubtitle').textContent = 'No registration timeline yet.';
     return;
   }
 
@@ -34,7 +34,7 @@ function renderChart(t) {
     : t.daily_data;
   if (!series.length) {
     document.getElementById('chartLegend').innerHTML = '';
-    document.getElementById('chartSubtitle').textContent = `${t.family} ${t.year}: No registration timeline available`;
+    document.getElementById('chartSubtitle').textContent = 'No registration timeline yet.';
     return;
   }
 
@@ -714,17 +714,18 @@ function renderChart(t) {
   }
   document.getElementById('chartLegend').innerHTML = legendHtml;
 
-  // Subtitle
-  let sub = `${t.family} ${t.year} · Registration Trajectory`;
+  // Subtitle: the early-bird state, the one thing the chart title and the
+  // page title do not already say. A non-breaking space holds the line when
+  // there is none, so the card does not shift between tournaments.
+  let sub = '';
   if (!isDone(t) && hasValidEarlyBird(t)) {
     const ebD = new Date(t.early_bird_deadline + 'T00:00:00');
     const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
-    if (ebD < today) {
-      sub += ` · Early bird ended ${fmtDate(t.early_bird_deadline)}`;
-    } else {
-      sub += ` · Early bird in ${Math.ceil((ebD - today) / 86400000)}d`;
-    }
+    sub = ebD < today
+      ? `Early bird ended ${fmtDate(t.early_bird_deadline)}`
+      : `Early bird ends in ${Math.ceil((ebD - today) / 86400000)}d`;
   }
+  sub = sub || '\u00a0';
   const subEl = document.getElementById('chartSubtitle');
   subEl.textContent = sub;
   // Mobile truncates the subtitle with ellipsis (long family names eat

@@ -48,7 +48,7 @@ function perfInitFromData() {
     years.forEach(y => buttons.push({key: String(y), label: y === nowYear ? `${y} YTD` : String(y)}));
     if (hasCumulative) buttons.push({key: 'cumulative', label: 'Cumulative'});
 
-    selector.innerHTML = '<span class="perf-view-label">View</span><div class="segmented" role="group" aria-label="Performance view">' +
+    selector.innerHTML = '<div class="segmented" role="group" aria-label="Performance view">' +
       buttons.map(b => `<button data-act="perf-year" data-year="${b.key}" id="perfYearBtn_${b.key}">${b.label}</button>`).join('') + '</div>';
 
     const defaultKey = years.includes(nowYear) ? String(nowYear) : (years.length ? String(years[years.length - 1]) : 'cumulative');
@@ -121,7 +121,7 @@ function perfPaint(view) {
   else if (/^[DF]/.test(grade)) letter.classList.add('grade-bad');
   document.getElementById('perfGradeLabel').textContent = 'Model Grade';
   document.getElementById('perfGradeDetail').textContent = view.detail;
-  document.getElementById('perfGradeMeta').textContent = `N5v4_Final Ensemble \u00b7 Rolling retrain + auto-recalibration \u00b7 Updated ${view.generated || ''}`;
+  document.getElementById('perfGradeMeta').textContent = view.generated ? `Updated ${view.generated}` : '';
 
   // v3 T7: the grade above describes predict_nowcast. The online-window engine
   // handles live multi-schedule events and is graded separately by 04e. Shown
@@ -231,8 +231,7 @@ function perfDrawScoring(data) {
           <div class="perf-bar-val${mod}">${r.mae.toFixed(1)}%</div>
         </div>`;
       }).join('')}
-      <div class="perf-scoring-note">Lower is better. A baseline that matches or beats
-        the model at any horizon is a finding, not a rounding artifact.</div>
+      <div class="perf-scoring-note">Lower is better.</div>
     </div>`);
   }
 

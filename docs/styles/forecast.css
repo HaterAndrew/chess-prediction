@@ -27,15 +27,14 @@
    the fold has rendered) the markup carries placeholders shaped like what a
    live event renders: the note's lines, the range and its tags, seven week
    rows, the three cards with their folds, the chart's legend. They are laid
-   out but invisible, the figure and the card values pulse, and the two-line
-   note and title on a phone hold their height, so nothing moves when the
-   figures land. */
+   out but invisible, the figure and the card values pulse, and the title on
+   a phone holds its two lines, so nothing moves when the figures land. The
+   pace note's two lines are one line each on every width now, which their
+   placeholders already are. */
 html[data-loading] :is(#deltaSub, #deltaContext, #deltaValue, #heroCi, #weekBars, .kpi-card, #chartLegend, #chartSubtitle, #chartMobileDates) { visibility: hidden; }
 html[data-loading] .hero-number:empty, html[data-loading] .kpi-value { animation: skeleton-pulse 1.5s ease-in-out infinite; background: var(--hover); color: transparent; visibility: visible; }
 html[data-loading] .hero-number:empty { min-height: 1em; min-width: 3ch; }
 html[data-loading] .hero-tags .tag { min-width: 18em; }
-/* beside the figure, the verdict runs to three lines and its context to two */
-@media (max-width: 639px) { html[data-loading] #deltaSub { min-height: 4.5em; } html[data-loading] #deltaContext { min-height: 3em; } }
 .hero { border-bottom: 1px solid var(--line); border-top: 2px solid var(--line); display: grid; gap: var(--s-4); grid-template-columns: 1fr; padding: var(--s-4) 0; }
 .hero-primary, .hero-week { min-width: 0; }
 .hero-label { align-items: center; color: var(--muted); display: flex; font: 700 var(--fs-label) var(--display); font-stretch: var(--stretch-label); gap: 6px; letter-spacing: var(--track-label); margin-bottom: 8px; text-transform: uppercase; }
@@ -54,7 +53,6 @@ html[data-loading] .hero-tags .tag { min-width: 18em; }
 .range-mark { background: var(--signal); cursor: help; height: 24px; position: absolute; top: -4px; transform: translateX(-50%); transition: left var(--dur-slow) var(--ease-out); width: 4px; }
 .range-caption { color: var(--muted); font-size: 12px; margin-top: 6px; }
 .hero-tags { align-items: center; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.ci-final { font: 700 20px var(--mono); }
 
 /* The week: one bar per day, typed figures. */
 .hero-week-label { color: var(--muted); font: 700 var(--fs-label) var(--display); font-stretch: var(--stretch-label); letter-spacing: var(--track-label); margin-bottom: 6px; text-transform: uppercase; }

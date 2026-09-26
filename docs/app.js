@@ -262,8 +262,6 @@ function init() {
   _idle(ensureModelHealth);
   _idle(renderAllTournaments);
   document.getElementById('lastUpdated').textContent = fmtDateTimeLong(TOURNAMENT_DATA.generated_time || TOURNAMENT_DATA.generated);
-  // The first-run note is in the markup; boot.js hides it before paint for a
-  // returning visitor (cep:splash:seen or cep:hint:seen), so nothing here.
 
   renderSummaryBar();
 

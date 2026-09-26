@@ -134,17 +134,13 @@ function renderSummaryBar() {
   // events open while this season's are still finishing.
   const seasons = [...new Set(complete.map(t => t.year))].sort();
   const seasonLabel = seasons.map(y => "'" + String(y).slice(-2)).join('–');
-  const historical = ts.filter(t => t.status === 'historical');
   const totalRegs = ts.filter(t => t.status !== 'historical').reduce((s, t) => s + t.current_count, 0);
-  const nextEvent = [...live].sort((a, b) => a.days_remaining - b.days_remaining)[0];
 
   const el = document.getElementById('summaryBar');
   el.innerHTML = `
     <span><strong class="num">${live.length}</strong> upcoming</span>
     <span><strong class="num">${complete.length}</strong> complete ${seasonLabel}</span>
-    <span><strong class="num">${historical.length}</strong> historical</span>
     <span><strong class="num">${fmt(totalRegs)}</strong> YTD entries</span>
-    ${nextEvent ? `<button type="button" class="link" data-act="select-tournament-forecast" data-idx="${TOURNAMENT_DATA.tournaments.indexOf(nextEvent)}">Next: <strong>${esc(nextEvent.family)}</strong> in <span class="num">${nextEvent.days_remaining}</span>d</button>` : ''}
   `;
 }
 

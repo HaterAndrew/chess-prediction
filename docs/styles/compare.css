@@ -5,7 +5,6 @@
    highlighter, the change in the pens. */
 
 /* ── Slots ── */
-.compare-caption { color: var(--muted); font-size: var(--fs-body); margin: 0 0 10px; }
 .compare-selectors { display: grid; gap: var(--s-2); grid-template-columns: 1fr; margin: 0 0 var(--s-4); }
 .compare-selector { align-items: center; display: flex; gap: var(--s-3); }
 .compare-color-dot { border-radius: 50%; flex-shrink: 0; height: 12px; width: 12px; }

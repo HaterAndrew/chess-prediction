@@ -1,26 +1,30 @@
-/* about.css — About the Model: the explainer's ruled panels, the prose,
-   the formula boxes typed in the mono face, the reference tables, the
-   worked example's result cell under the highlighter, the Model Health
-   tiles (tab_about.js renderModelHealth) and the jump strip. Figures are
-   typed; the blue pen marks the figure that matters; the Limitations panel
-   is printed on pink stock. */
+/* about.css — About the Model: the explainer's ruled panels (the technical
+   ones closed until opened), the prose, the formula boxes typed in the mono
+   face, the reference tables, the worked example's result cell under the
+   highlighter and the Pipeline Health tiles (tab_about.js
+   renderModelHealth). Figures are typed; the blue pen marks the figure that
+   matters; the Limitations panel is printed on pink stock. */
 
 /* ── The view's lead ── */
 .tab-head { margin: 0 0 var(--s-4); }
 .tab-head h2 { font: 700 var(--fs-h2-lg) var(--display); margin: 0 0 4px; }
 .tab-head p { color: var(--muted); font-size: var(--fs-body); margin: 0; }
-.about-jump { color: var(--muted); display: block; font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin: 0 0 var(--s-5); text-transform: uppercase; }
-.about-jump a { border-bottom: 1px solid var(--line-soft); color: var(--ink-2); text-decoration: none; transition: color var(--dur-fast), border-color var(--dur-fast); }
-.about-jump a:hover, .about-jump a:focus-visible { border-bottom-color: var(--signal); color: var(--signal); }
 
 /* ── Panels: a ruled box, the title in condensed capitals ── */
 .info-panel { background: var(--panel); border: 1px solid var(--line); margin-bottom: var(--s-4); padding: var(--s-4); scroll-margin-top: calc(var(--topbar-height) + 16px); }
 .info-panel.danger { background: var(--stock-pink); }
-.about-submodels { display: grid; gap: var(--s-4); grid-template-columns: 1fr; margin-bottom: var(--s-4); }
+.about-submodels { align-items: start; display: grid; gap: var(--s-4); grid-template-columns: 1fr; margin-bottom: var(--s-4); }
 .about-submodels .info-panel { margin-bottom: 0; }
-.info-panel > h3 { border-bottom: 1px solid var(--line-soft); font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; margin: 0 0 var(--s-3); padding-bottom: 8px; text-transform: uppercase; }
-.info-panel > h3.accent-blue { color: var(--signal); }
+.info-panel > h3, .about-more-summary > h3 { border-bottom: 1px solid var(--line-soft); font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; margin: 0 0 var(--s-3); padding-bottom: 8px; text-transform: uppercase; }
+.info-panel > h3.accent-blue, .about-more-summary > h3.accent-blue { color: var(--signal); }
 .info-panel > h3.accent-red { color: var(--ember); }
+/* A technical section opens on demand: its heading is the control. */
+.about-more-summary { align-items: center; cursor: pointer; display: flex; gap: 10px; list-style: none; min-height: var(--touch); }
+.about-more-summary::-webkit-details-marker { display: none; }
+.about-more-summary > h3 { border-bottom: 0; flex: 1 1 auto; margin: 0; padding-bottom: 0; }
+.about-more-summary:hover > h3 { color: var(--signal); }
+details.about-more[open] > .about-more-summary { border-bottom: 1px solid var(--line-soft); margin-bottom: var(--s-3); padding-bottom: 8px; }
+details.about-more[open] > .about-more-summary .sect-caret { transform: rotate(180deg); }
 .info-panel h4 { color: var(--ink); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin: var(--s-4) 0 8px; text-transform: uppercase; }
 @media (min-width: 640px) { .about-submodels { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1024px) { .info-panel { padding: var(--s-5) var(--s-6); } }
@@ -61,9 +65,7 @@
 .result-card-ci { color: var(--ink-2); font: 13px var(--mono); margin-top: 8px; }
 .about-footer { color: var(--muted); font: 12px var(--mono); padding: var(--s-3) 0; text-align: center; }
 
-/* ── Model Health: the pipeline's own figures as ruled cells ── */
-.mh-head { align-items: baseline; display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; margin-bottom: var(--s-3); }
-.mh-head h3 { border-bottom: 0; flex: 1 1 auto; margin: 0; padding-bottom: 0; }
+/* ── Pipeline Health: the pipeline's own figures as ruled cells ── */
 .mh-updated { color: var(--muted); font: 12px var(--mono); }
 .mh-grid { display: grid; gap: var(--s-3); grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: var(--s-3); }
 .mh-tile { border-top: 2px solid var(--line); cursor: help; padding-top: 8px; }

@@ -1,4 +1,6 @@
 // tab_performance.js — model performance tab, split verbatim from app.js (C5).
+// Its two charts, Predicted vs Actual and Error by Lead Time, are in
+// perf_charts.js.
 
 // ══════════════════════════════════════════════════════════
 // MODEL PERFORMANCE TAB
@@ -123,25 +125,8 @@ function perfPaint(view) {
   document.getElementById('perfGradeDetail').textContent = view.detail;
   document.getElementById('perfGradeMeta').textContent = view.generated ? `Updated ${view.generated}` : '';
 
-  // v3 T7: the grade above describes predict_nowcast. The online-window engine
-  // handles live multi-schedule events and is graded separately by 04e. Shown
-  // as its own line, never folded into the letter above: it is scored 0-2 days
-  // from registration close against the headline's T-14/7/3, so a better letter
-  // here means an easier question, not a better model.
-  const secondEl = document.getElementById('perfSecondEngine');
-  if (secondEl) {
-    const we = PERFORMANCE_DATA.window_engine;
-    secondEl.textContent = (we && we.grade && we.grade !== 'N/A')
-      ? `Second engine (live registration window): ${we.grade} \u00b7 `
-        + `${we.n} predictions across ${we.n_events} events \u00b7 `
-        + `MAE ${we.mae_pct}%, CI coverage ${we.ci_coverage}% \u00b7 `
-        + `shorter horizon than the grade above, not comparable to it`
-      : '';
-  }
-
   if (!agg.length) {
     document.getElementById('perfKPIs').innerHTML = '';
-    document.getElementById('perfHorizonStrip').innerHTML = '';
     const sc = document.getElementById('perfScoring');
     if (sc) sc.innerHTML = '';
     document.getElementById('perfTable').innerHTML = '<div class="empty">No completed tournaments for this selection.</div>';
@@ -173,19 +158,6 @@ function perfPaint(view) {
     perfDrawScatter(view);
     perfDrawTimeline(view);
   });
-
-  const strip = document.getElementById('perfHorizonStrip');
-  strip.innerHTML = agg.map(a => {
-    // One encoding: the MAE value alone carries the pen.
-    const tc = _perfTone(a.mae_pct <= 8, a.mae_pct <= 12);
-    const isTip = a.interval_score_pct != null
-      ? `, interval score ${a.interval_score_pct}% of final (lower is better)` : '';
-    return `<div class="horizon-tile" title="n=${a.n}, bias ${a.bias_pct > 0 ? '+' : ''}${a.bias_pct}%${isTip}">
-      <div class="horizon-t">T-${a.T}</div>
-      <div class="horizon-val ${tc}">${a.mae_pct.toFixed(1)}%</div>
-      <div class="horizon-ci">CI ${a.ci_coverage}%</div>
-    </div>`;
-  }).join('');
 
   perfDrawScoring(view);
   perfDrawTable(view);
@@ -262,232 +234,6 @@ function perfDrawScoring(data) {
   }
 
   el.innerHTML = parts.join('');
-}
-
-function perfDrawScatter(data) {
-  const canvas = document.getElementById('perfScatterCanvas');
-  if (!canvas) return;
-  // perfSelectYear re-runs perfPaint on every view click; Chart.js throws
-  // "Canvas is already in use" without an explicit destroy.
-  if (perfScatterChart) { perfScatterChart.destroy(); perfScatterChart = null; }
-
-  const pts = [];
-  data.tournaments.forEach(t => {
-    const p = t.predictions.find(p => p.T === 14) || t.predictions.find(p => p.T === 28) || t.predictions[0];
-    if (p) pts.push({f: t.family, a: t.final_count, p: p.predicted, lo: p.ci_lower, hi: p.ci_upper, ok: p.in_ci});
-  });
-  if (!pts.length) return;
-
-  const maxV = Math.round(Math.max(...pts.map(p => Math.max(p.a, p.p, p.hi))) * 1.12);
-  const toXY = arr => arr.map(p => ({ x: p.a, y: p.p, f: p.f, lo: p.lo, hi: p.hi, ok: p.ok }));
-
-  // CI whiskers (vertical lo..hi at each point's actual-x, with 3px caps) +
-  // the "Perfect prediction" caption. Both lived in the hand-rolled renderer.
-  const ciWhiskers = {
-    id: 'ciWhiskers',
-    afterDatasetsDraw(c) {
-      const xS = c.scales.x, yS = c.scales.y, ctx2 = c.ctx;
-      ctx2.save();
-      pts.forEach(p => {
-        const px = xS.getPixelForValue(p.a);
-        if (px < xS.left || px > xS.right) return;
-        const col = p.ok ? PALETTE.blue : PALETTE.red;
-        const yLo = yS.getPixelForValue(p.lo), yHi = yS.getPixelForValue(p.hi);
-        ctx2.strokeStyle = col; ctx2.globalAlpha = 0.25; ctx2.lineWidth = 2;
-        ctx2.beginPath();
-        ctx2.moveTo(px, yLo); ctx2.lineTo(px, yHi);
-        ctx2.moveTo(px - 3, yLo); ctx2.lineTo(px + 3, yLo);
-        ctx2.moveTo(px - 3, yHi); ctx2.lineTo(px + 3, yHi);
-        ctx2.stroke();
-        ctx2.globalAlpha = 1;
-      });
-      ctx2.fillStyle = PALETTE.muted;
-      ctx2.font = `${_mobileVP() ? 9 : 8}px system-ui`;
-      ctx2.textAlign = 'right';
-      ctx2.fillText('Perfect prediction', xS.right - 2, yS.top + 10);
-      ctx2.restore();
-    }
-  };
-
-  const dotCfg = (color) => ({
-    pointRadius: 4.5, pointHoverRadius: 7, pointHitRadius: 8,
-    pointBackgroundColor: color, pointBorderColor: PALETTE.surface,
-    pointBorderWidth: 1.2, pointHoverBorderColor: PALETTE.text, pointHoverBorderWidth: 1.5,
-    showLine: false
-  });
-
-  perfScatterChart = new Chart(canvas, {
-    type: 'scatter',
-    data: {
-      datasets: [
-        { label: 'Within CI', data: toXY(pts.filter(p => p.ok)), ...dotCfg(PALETTE.blue) },
-        { label: 'Outside CI', data: toXY(pts.filter(p => !p.ok)), ...dotCfg(PALETTE.red) },
-        { label: 'perfect', type: 'line', data: [{ x: 0, y: 0 }, { x: maxV, y: maxV }],
-          borderColor: themeRgba(PALETTE.text, 0.35), borderDash: [8, 5], borderWidth: 1.5,
-          pointRadius: 0, pointHitRadius: 0, pointHoverRadius: 0 }
-      ]
-    },
-    plugins: [ciWhiskers],
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'nearest', intersect: false },
-      scales: {
-        x: {
-          type: 'linear', min: 0, max: maxV,
-          title: { display: !_mobileVP(), text: 'Actual Entries', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 10 : 9 }, maxTicksLimit: 6, maxRotation: 0,
-            callback(v) { return fmt(v); } },
-          grid: { color: themeRgba(PALETTE.border, 0.4) }
-        },
-        y: {
-          type: 'linear', min: 0, max: maxV,
-          title: { display: !_mobileVP(), text: 'Predicted', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 10 : 9 }, maxTicksLimit: 5,
-            callback(v) { return fmt(v); } },
-          grid: { color: themeRgba(PALETTE.border, 0.4) }
-        }
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
-          titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
-          padding: 12, cornerRadius: 0,
-          titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' }, bodyFont: { size: 12 },
-          footerFont: { size: 11, style: 'italic' },
-          usePointStyle: true, pointStyleWidth: _mobileVP() ? 6 : 8,
-          filter(item) { return item.dataset.label !== 'perfect'; },
-          callbacks: {
-            title(items) { return items.length ? items[0].raw.f : ''; },
-            label(item) { return ` Predicted: ${fmt(item.raw.y)}`; },
-            afterLabel(item) {
-              return [` Actual: ${fmt(item.raw.x)}`, ` CI: ${fmt(item.raw.lo)} – ${fmt(item.raw.hi)}`];
-            },
-            footer(items) {
-              if (!items.length) return '';
-              return items[0].raw.ok ? 'Within CI' : 'Outside CI';
-            }
-          }
-        }
-      }
-    }
-  });
-}
-
-function perfDrawTimeline(data) {
-  const canvas = document.getElementById('perfTimelineCanvas');
-  if (!canvas) return;
-  if (perfTimelineChart) { perfTimelineChart.destroy(); perfTimelineChart = null; }
-
-  const agg = [...data.aggregate].sort((a, b) => b.T - a.T);
-  if (!agg.length) return;
-
-  const maxMAE = Math.max(15, ...agg.map(a => a.mae_pct)) * 1.2;
-  // The pens as on the tiles: blue for good, ink for fair, red for a miss.
-  const threshold = v => v <= 8 ? PALETTE.blue : v <= 12 ? PALETTE.text : PALETTE.red;
-  const dotColors = agg.map(a => threshold(a.mae_pct));
-
-  // The good zone under the 10% MAE line, one wash of the blue pen.
-  const goodZone = {
-    id: 'goodZone',
-    beforeDraw(c) {
-      const area = c.chartArea;
-      const y10 = c.scales.y.getPixelForValue(10);
-      if (y10 >= area.bottom) return;
-      c.ctx.save();
-      c.ctx.fillStyle = themeRgba(PALETTE.blue, 0.06);
-      c.ctx.fillRect(area.left, y10, area.right - area.left, area.bottom - y10);
-      c.ctx.restore();
-    }
-  };
-
-  // Threshold-coloured dots and always-on value labels (redrawn over the
-  // dataset's own points so each dot keeps its own pen).
-  const dotsAndLabels = {
-    id: 'tlDotsLabels',
-    afterDatasetsDraw(c) {
-      const meta = c.getDatasetMeta(0);
-      const ctx2 = c.ctx;
-      ctx2.save();
-      meta.data.forEach((el, i) => {
-        const col = dotColors[i];
-        ctx2.fillStyle = col;
-        ctx2.beginPath(); ctx2.arc(el.x, el.y, 4, 0, Math.PI * 2); ctx2.fill();
-        ctx2.strokeStyle = PALETTE.surface2; ctx2.lineWidth = 1.5; ctx2.stroke();
-        ctx2.fillStyle = PALETTE.text;
-        ctx2.font = `bold ${_mobileVP() ? 10 : 9}px system-ui`;
-        ctx2.textAlign = 'center';
-        ctx2.fillText(agg[i].mae_pct.toFixed(1) + '%', el.x, el.y - 10);
-      });
-      ctx2.restore();
-    }
-  };
-
-  perfTimelineChart = new Chart(canvas, {
-    type: 'line',
-    data: {
-      labels: agg.map(a => 'T-' + a.T),
-      datasets: [{
-        data: agg.map(a => a.mae_pct),
-        borderColor: PALETTE.projected,
-        borderWidth: 2.5,
-        borderCapStyle: 'round',
-        backgroundColor: themeRgba(PALETTE.text, 0.04),
-        fill: 'origin',
-        pointRadius: 4,
-        pointHoverRadius: 7,
-        pointHitRadius: 10,
-        pointBackgroundColor: dotColors,
-        pointBorderColor: PALETTE.surface2,
-        pointBorderWidth: 1.5,
-        tension: 0.3
-      }]
-    },
-    plugins: [goodZone, dotsAndLabels],
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      // Headroom so value labels above the highest dot never clip.
-      layout: { padding: { top: 16 } },
-      interaction: { mode: 'nearest', intersect: false },
-      scales: {
-        x: {
-          title: { display: !_mobileVP(), text: 'Days Before Event', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 10 : 9 }, maxRotation: 0 },
-          grid: { display: false }
-        },
-        y: {
-          min: 0, max: Math.round(maxMAE * 10) / 10,
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 9 : 8 }, maxTicksLimit: 4,
-            callback(v) { return v + '%'; } },
-          grid: { color: themeRgba(PALETTE.border, 0.4) }
-        }
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
-          titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
-          padding: 12, cornerRadius: 0,
-          titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' }, bodyFont: { size: 12 },
-          displayColors: false,
-          callbacks: {
-            title(items) {
-              if (!items.length) return '';
-              const a = agg[items[0].dataIndex];
-              return `T-${a.T} (${a.T} days before event)`;
-            },
-            label(item) { return ` MAE: ${item.parsed.y.toFixed(1)}%`; },
-            afterBody(items) {
-              if (!items.length) return [];
-              const a = agg[items[0].dataIndex];
-              const bias = a.bias_pct > 0 ? `+${a.bias_pct}` : `${a.bias_pct}`;
-              return [`  n=${a.n}`, `  Bias: ${bias}%`, `  CI coverage: ${a.ci_coverage}%`];
-            }
-          }
-        }
-      }
-    }
-  });
 }
 
 function perfDrawTable(data) {

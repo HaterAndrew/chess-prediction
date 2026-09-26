@@ -1,6 +1,6 @@
 /* performance.css — the Performance view (tab_performance.js): the view
    switch, the grade cell, the four headline figures, the two chart cards,
-   the horizon strip, the scoring blocks and the results table. Figures
+   the scoring blocks and the results table. Figures
    typed; the blue pen for a figure that meets its mark, ink for one that
    is fair, the red pen for a miss; a miss in the table is boxed in red. */
 
@@ -31,13 +31,6 @@
 .chart-tile-body { height: 220px; position: relative; }
 .chart-tile-canvas { width: 100%; }
 @media (min-width: 640px) { .perf-charts-grid { grid-template-columns: 1fr 1fr; } }
-
-/* ── The horizons: one cell per lead time on a shared rule ── */
-.perf-horizon-strip { border-top: 2px solid var(--line); display: grid; gap: var(--s-3); grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); margin-bottom: var(--s-5); padding-top: 10px; }
-.horizon-tile { min-width: 0; text-align: center; }
-.horizon-t { color: var(--muted); font: 700 var(--fs-label) var(--mono); letter-spacing: .04em; }
-.horizon-val { font: 700 22px/1.1 var(--mono); font-variant-numeric: tabular-nums; margin: 4px 0 2px; }
-.horizon-ci { color: var(--muted); font: 12px var(--mono); }
 
 /* ── Scoring: the model against doing nothing, and the calibration strip ── */
 .perf-scoring { display: grid; gap: var(--s-4); grid-template-columns: 1fr; margin-bottom: var(--s-5); }

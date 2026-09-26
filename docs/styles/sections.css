@@ -1,6 +1,6 @@
 /* sections.css — the Forecast's evidence around the chart and the panel
    vocabulary the views share: the disclosure sections (a ruled header you
-   open and close on every width; panels_cal.js syncSectionDisclosure sets
+   open and close on every width; disclosure.js syncSectionDisclosure sets
    the default from data-open), the panel and the two-column grid, the
    milestone strip under the chart, the History panel, the fee panel, and
    the Up Next strip (season.css draws its cards). */
@@ -22,8 +22,6 @@ details.sect[open] > .sect-summary { margin-bottom: var(--s-3); }
 .sect-summary-h { font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; margin: 0; text-transform: uppercase; }
 .sect-caret { flex: none; height: 18px; transition: transform var(--dur) var(--ease-out); width: 18px; }
 details.sect[open] > .sect-summary .sect-caret { transform: rotate(180deg); }
-/* the summary names these sections; the inner title would say it twice */
-#sect-table .tt-head > .panel-title { display: none; }
 
 /* ── Milestone strip (panels_info.js renderMilestones): the stops on one
    rule under the chart, today under the highlighter; a phone sets them in

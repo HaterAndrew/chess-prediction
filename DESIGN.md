@@ -269,7 +269,7 @@ One column of ruled sheet, at most 1400px wide, centred, with 28px side padding 
 
 Breakpoints, in order of weight: 640px splits phone from desktop (the compact top bar, sheets from the foot, swipe between views, single-column hero); 768px brings the nav into the top bar and opens two columns (panels side by side, the hero splits forecast from the week); 1024px opens three (the hero becomes forecast, last seven days, and KPIs with soft rules between, panels get 20px by 28px padding) and folds the brand name; 1280px shows the Updated meta. The Forecast stacks as top bar, notes, hero, chart with the milestone strip under it, disclosures (History open on desktop, Registration Curve and Fees closed), Up Next as a three-card strip of the next events after the one on screen that scroll-snaps on phones, See the Full Season, footer.
 
-Spacing is a seven-step scale (4, 8, 12, 16, 20, 28, 40px); panels pad 16px, sections sit 12px apart on a 2px rule, the hero pads 16px vertically. Controls are 36px tall; under a coarse pointer every control, field and segment grows to 44px. Tables are full-rule: a 2px rule under the head, a soft rule between rows, a minimum width of 640px with horizontal scroll and a sticky first column on phones rather than a stack of cards.
+Spacing is a seven-step scale (4, 8, 12, 16, 20, 28, 40px); panels pad 16px, sections sit 12px apart on a 2px rule, the hero pads 16px vertically. Controls are 36px tall; under a coarse pointer every control, field and segment grows to 44px. Tables are full-rule: a 2px rule under the head, a soft rule between rows, on a phone a table either keeps only the columns that matter (the Season keeps the name and the forecast, with the date, countdown and count in a muted line under the name) or keeps a 640px minimum and scrolls sideways with the first column held, never a stack of cards.
 
 ## Elevation & Depth
 
@@ -311,7 +311,7 @@ Square. Every radius token is 0: panels, buttons, fields, pills, tags, sheets, c
 ### Panels and Sections
 - **Panel:** 1px rule, 16px padding (20px by 28px from 1024px); a muted title in capitals on a soft rule. Cards are panels.
 - **Section** (`details.sect`): a 2px rule with the name in condensed capitals and a caret; open by default on desktop where the plan says so (`data-open="wide"`), closed on phones; print opens all.
-- **Tables:** full rules, muted capital heads, typed figures right-aligned, deltas in the pens, the current year's row on the highlighter.
+- **Tables:** full rules, muted capital heads, typed figures right-aligned, deltas in the pens.
 
 ### Fields
 - **Style:** a ruled box on the sheet: 1px rule, sheet background, 14px Archivo, 36px tall, 6px by 10px padding; placeholders dim; the select draws its own caret from two 5px gradients.
@@ -355,5 +355,5 @@ The forecast is a wallchart cell: the label in muted capitals, the figure typed 
 - **Don't** put coloured type on a stock that is not its own tint, and never stack one stock on another.
 - **Don't** draw an icon with a glyph or an emoji; icons are inline SVG from `docs/icons.js`, and chess pieces are content.
 - **Don't** add an eyebrow above the view title, a status banner, a version line or a "coming soon" label; the dateline sits under the title in meta type.
-- **Don't** replace a phone table with a stack of cards; scroll it sideways with the first column held.
+- **Don't** replace a phone table with a stack of cards; drop to the columns that matter, or scroll it sideways with the first column held.
 - **Don't** animate anything gesture-driven with a CSS transition; use the house spring in `docs/motion.js` and let reduced motion jump to the end.

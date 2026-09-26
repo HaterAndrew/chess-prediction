@@ -2,7 +2,7 @@
 // split verbatim from app.js (C14).
 
 // AUDIT.md follow-up #3 — Model Health panel populates audit telemetry on the
-// About-the-Model tab. Pulls cumulative CI coverage from PERFORMANCE_DATA,
+// About-the-Model tab. Pulls cumulative CI coverage from PERFORMANCE_SUMMARY,
 // walkin/tier/low_confidence counts from TOURNAMENT_DATA, and fetches
 // audit_warnings.json for the latest pipeline-run warnings.
 function renderModelHealth() {
@@ -40,8 +40,8 @@ function renderModelHealth() {
         `Grade scope: the headline grade is measured on the main model, which `
         + `currently produces ${graded.length} of ${live.length} live predictions.`,
       ];
-      const we = (typeof PERFORMANCE_DATA !== 'undefined')
-        ? PERFORMANCE_DATA.window_engine : null;
+      const we = (typeof PERFORMANCE_SUMMARY !== 'undefined')
+        ? PERFORMANCE_SUMMARY.window_engine : null;
       if (windowed.length && we && we.grade && we.grade !== 'N/A') {
         parts.push(
           `${windowed.length} come from the online-registration-window model, `
@@ -65,27 +65,27 @@ function renderModelHealth() {
   // v3 T10: the footer corpus size comes from the data too. It was hardcoded as
   // "192K entry records across 778 tournaments" and had drifted from the real
   // 781 / 194.5K.
-  if (typeof PERFORMANCE_DATA !== 'undefined' && PERFORMANCE_DATA) {
+  if (typeof PERFORMANCE_SUMMARY !== 'undefined' && PERFORMANCE_SUMMARY) {
     const tc = document.getElementById('footerTournamentCount');
-    if (tc && PERFORMANCE_DATA.n_corpus_tournaments) {
-      tc.textContent = PERFORMANCE_DATA.n_corpus_tournaments.toLocaleString();
+    if (tc && PERFORMANCE_SUMMARY.n_corpus_tournaments) {
+      tc.textContent = PERFORMANCE_SUMMARY.n_corpus_tournaments.toLocaleString();
     }
     const er = document.getElementById('footerEntryRecords');
-    if (er && PERFORMANCE_DATA.n_entry_records) {
-      const n = PERFORMANCE_DATA.n_entry_records;
+    if (er && PERFORMANCE_SUMMARY.n_entry_records) {
+      const n = PERFORMANCE_SUMMARY.n_entry_records;
       er.textContent = n >= 1000 ? Math.round(n / 1000) + 'K' : String(n);
     }
     const fy = document.getElementById('footerYears');
-    if (fy && PERFORMANCE_DATA.corpus_year_span) {
-      fy.textContent = PERFORMANCE_DATA.corpus_year_span;
+    if (fy && PERFORMANCE_SUMMARY.corpus_year_span) {
+      fy.textContent = PERFORMANCE_SUMMARY.corpus_year_span;
     }
   }
 
   // K1/L2: single-source the "How We Tested It" prose numbers from
-  // PERFORMANCE_DATA so they can never drift from the graded truth. Cumulative
+  // PERFORMANCE_SUMMARY so they can never drift from the graded truth. Cumulative
   // T-14 drives the headline; cumulative T-3 the close-in coverage caveat.
-  if (typeof PERFORMANCE_DATA !== 'undefined' && PERFORMANCE_DATA) {
-    const cum = PERFORMANCE_DATA.cumulative || {};
+  if (typeof PERFORMANCE_SUMMARY !== 'undefined' && PERFORMANCE_SUMMARY) {
+    const cum = PERFORMANCE_SUMMARY.cumulative || {};
     const cagg = cum.aggregate || [];
     const at = (T) => cagg.find(a => a.T === T);
     const t14 = at(14), t3 = at(3);
@@ -137,8 +137,8 @@ function renderModelHealth() {
       }
       setTxt('mc-convergence-sub', `${improved}/${steps} steps`);
     }
-    const yrs = Object.keys(PERFORMANCE_DATA.years || {})
-      .filter(y => (PERFORMANCE_DATA.years[y].n_tournaments || 0) > 0).sort();
+    const yrs = Object.keys(PERFORMANCE_SUMMARY.years || {})
+      .filter(y => (PERFORMANCE_SUMMARY.years[y].n_tournaments || 0) > 0).sort();
     if (cum.n_tournaments && yrs.length) {
       setTxt('about-span-note', `${cum.n_tournaments} tournaments across ${yrs[0]}–${yrs[yrs.length - 1]}.`);
     }
@@ -148,8 +148,8 @@ function renderModelHealth() {
 
   // Tile 1: cumulative T-14 CI coverage vs nominal 80%
   let covPct = null;
-  if (typeof PERFORMANCE_DATA !== 'undefined' && PERFORMANCE_DATA) {
-    const cum = PERFORMANCE_DATA.cumulative || {};
+  if (typeof PERFORMANCE_SUMMARY !== 'undefined' && PERFORMANCE_SUMMARY) {
+    const cum = PERFORMANCE_SUMMARY.cumulative || {};
     const cumT14 = (cum.aggregate || []).find(a => a.T === 14);
     if (cumT14) covPct = cumT14.ci_coverage;
   }
@@ -223,8 +223,8 @@ function renderModelHealth() {
   }
 
   // Tile 5: 2026 backtest grade
-  if (typeof PERFORMANCE_DATA !== 'undefined' && PERFORMANCE_DATA && PERFORMANCE_DATA.years && PERFORMANCE_DATA.years['2026']) {
-    const yr = PERFORMANCE_DATA.years['2026'];
+  if (typeof PERFORMANCE_SUMMARY !== 'undefined' && PERFORMANCE_SUMMARY && PERFORMANCE_SUMMARY.years && PERFORMANCE_SUMMARY.years['2026']) {
+    const yr = PERFORMANCE_SUMMARY.years['2026'];
     const grade = yr.grade || 'N/A';
     const color = grade.startsWith('A') ? 'var(--green)' : grade.startsWith('B') ? 'var(--gold)' : 'var(--red)';
     tiles.push({

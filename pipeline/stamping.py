@@ -23,36 +23,9 @@ def _stamp_targets():
             os.path.join(config.SITE_DIR, "sw.js"))
 
 
-def _stamp_site_data_version(json_data):
-    """Point index.html + sw.js at a data-derived site_data.js query string.
-
-    v3 P5. A hand-maintained `?v=40` only changes when someone edits the code,
-    but this file's CONTENT changes every night. A returning visitor — and any
-    installed PWA — could therefore keep serving yesterday's numbers from cache
-    long after a corrected build shipped, which is exactly the population that
-    saw the bad Bradley Open figures first. Deriving the query string from a
-    hash of the data means every rebuild is a new URL and the cache cannot
-    outlive its contents.
-    """
-    digest = hashlib.sha256(json_data.encode('utf-8')).hexdigest()[:10]
-    pattern = re.compile(r'(site_data\.js\?v=)([A-Za-z0-9]+)')
-    for path in _stamp_targets():
-        if not os.path.exists(path):
-            continue
-        with open(path) as f:
-            text = f.read()
-        new_text, n = pattern.subn(rf'\g<1>{digest}', text)
-        if n and new_text != text:
-            with open(path, 'w') as f:
-                f.write(new_text)
-            print(f"  Stamped site_data.js?v={digest} in {os.path.basename(path)}")
-    _stamp_script_versions()
-    return digest
-
-
-# Local assets referenced with a `?v=` cache-buster. styles.css and app.js also
-# appear in sw.js, and the G5 invariant is that the two files never disagree —
-# see scripts/bump_assets.py.
+# Local assets referenced with a `?v=` cache-buster. Each also appears in
+# sw.js's precache list, and the G5 invariant is that the two files never
+# disagree — see scripts/bump_assets.py.
 STAMPED_SCRIPTS = (
     "app.js",
     "actions.js",
@@ -105,29 +78,40 @@ STAMPED_SCRIPTS = (
     "styles/theme.css",
 )
 
+# The generated data files, stamped the same way but listed apart: sw.js does
+# not precache them (its fetch handler caches them on first use), and
+# scripts/bump_assets.py --check demands a matching sw.js entry for every
+# STAMPED_SCRIPTS name. Referenced from the page's data tag and its data-*
+# attributes (see pipeline/site_html.py).
+STAMPED_DATA = (
+    "data/tournaments.js",
+    "data/performance_data.js",
+    "data/chess_history.js",
+)
+
 
 def _stamp_script_versions():
-    """Derive each local script's `?v=` from its own content hash.
+    """Derive each local script's and data file's `?v=` from its content hash.
 
-    P5 fixed this for the data file and left the scripts on hand-numbers, which
-    fails the same way in the other direction: the data file's content changes
-    nightly and its version did not, while a script's version only changes if
-    someone remembers to bump it. Two app.js fixes shipped in this session
-    behind `?v=40`, so every returning visitor and every installed PWA would
-    have kept running the old file and never seen either one.
+    v3 P5 introduced the data-derived hash for the data file: its CONTENT
+    changes every night, so a hand-maintained `?v=40` let a returning visitor
+    (and any installed PWA) keep serving yesterday's numbers long after a
+    corrected build shipped. Scripts failed the same way in the other
+    direction: a script's version only changed if someone remembered to bump
+    it, and two app.js fixes once shipped behind the same `?v=40`.
 
     Hashing the file means the URL changes exactly when the content does —
     no bump to forget, and no cache-buster churn on nights when the code is
     untouched.
 
-    Both index.html AND sw.js get rewritten. styles.css and app.js are
-    referenced in each, and G5 (scripts/bump_assets.py --check) fails the build
-    if they disagree. Stamping only index.html is a real drift, not a cosmetic
-    one: the service worker would keep precaching the old URL.
+    Both index.html AND sw.js get rewritten. The scripts and stylesheets are
+    referenced in each, and G5 (scripts/bump_assets.py --check) fails the
+    build if they disagree. Stamping only index.html is a real drift, not a
+    cosmetic one: the service worker would keep precaching the old URL.
     """
     targets = _stamp_targets()
     digests = {}
-    for name in STAMPED_SCRIPTS:
+    for name in STAMPED_SCRIPTS + STAMPED_DATA:
         asset_path = os.path.join(config.SITE_DIR, name)
         if not os.path.exists(asset_path):
             continue

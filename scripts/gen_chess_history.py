@@ -14,7 +14,7 @@ source, this script validates and emits it, and the existing splice now fires.
 
 The emitted formatting deliberately reproduces what was already embedded — one
 line per entry, two-space indent — so wiring this up produces a zero-byte diff
-in site_data.js. That is the proof the extraction was lossless, and it keeps
+in the data file. That is the proof the extraction was lossless, and it keeps
 future diffs to the lines that actually changed instead of reflowing 146KB.
 
 Usage:
@@ -94,7 +94,7 @@ def validate(data):
 
 
 def serialize(data):
-    """Render in the shape already embedded in site_data.js: one entry per line.
+    """Render in the shape embedded in docs/data/chess_history.js: one entry per line.
 
     json.dumps(indent=2) would explode every entry across four lines and reflow
     the whole 146KB on first write. Matching the existing shape means wiring

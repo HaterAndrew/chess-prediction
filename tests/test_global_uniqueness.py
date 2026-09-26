@@ -18,7 +18,7 @@ Two hazards come with it:
 import re
 from pathlib import Path
 
-from pipeline.stamping import STAMPED_SCRIPTS
+from pipeline.stamping import STAMPED_DATA, STAMPED_SCRIPTS
 
 DOCS = Path(__file__).resolve().parent.parent / "docs"
 
@@ -46,8 +46,9 @@ def test_no_duplicate_top_level_declarations():
 
 
 def test_no_stamped_name_is_a_suffix_of_another():
-    for a in STAMPED_SCRIPTS:
-        for b in STAMPED_SCRIPTS:
+    names = STAMPED_SCRIPTS + STAMPED_DATA
+    for a in names:
+        for b in names:
             if a != b:
                 assert not b.endswith(a), (
                     f"{a!r} is a suffix of {b!r}: the stamp regex has no left "

@@ -22,8 +22,8 @@ def mark_pipeline_degraded(reason, website_json=None):
       * last_updated is NOT advanced — the data genuinely is not from this run,
         and moving the timestamp would relabel stale numbers as fresh.
 
-    Then re-splices site_data.js so the flag actually reaches the browser (the
-    page reads site_data.js, not website_data.json).
+    Then re-splices the data files so the flag actually reaches the browser
+    (the page reads docs/data/tournaments.js, not website_data.json).
 
     Returns True if the flag was written. Never raises on a missing file: this
     runs from an exception handler and must not mask the original failure.
@@ -47,9 +47,9 @@ def mark_pipeline_degraded(reason, website_json=None):
     # Push the flag through to the file the browser actually loads.
     try:
         step_update_html()
-        print("  Re-spliced site_data.js with the degraded flag")
+        print("  Re-spliced the data files with the degraded flag")
     except Exception as e:
-        print(f"  WARNING: could not re-splice site_data.js: {e}")
+        print(f"  WARNING: could not re-splice the data files: {e}")
 
     # Persist the warning trail even though the run is aborting.
     warns._PIPELINE_WARNINGS.append({

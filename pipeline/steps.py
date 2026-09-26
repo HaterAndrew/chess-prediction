@@ -69,9 +69,9 @@ def step_chess_history():
     """Emit output/chess_history.json so the CHESS_HISTORY splice has a source.
 
     v3 O5: the splice below was guarded on a file nothing wrote, so it had
-    never fired and the 146KB const lived only inside the generated
-    site_data.js. content/chess_history.json is now the tracked source and this
-    step renders it, which makes the const reviewable and the splice real.
+    never fired and the 146KB const lived only inside the generated data
+    file (docs/data/chess_history.js since the 2026-09 split).
+    content/chess_history.json is now the tracked source and this step renders it, which makes the const reviewable and the splice real.
     A malformed source fails the run rather than shipping a blank panel.
     """
     run_step("Render chess history (scripts/gen_chess_history.py)",

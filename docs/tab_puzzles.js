@@ -312,7 +312,18 @@ function renderPuzzleProgress() {
   document.getElementById('puzzleScore').textContent = `${solved}/${ps.puzzles.length} solved`;
 }
 
+// CHESS_HISTORY (146 KB, one entry set per calendar day) is fetched the
+// first time this tab opens rather than shipped with the page.
 function loadHistoryEvents() {
+  const el = document.getElementById('historyEvents');
+  if (!el) return;
+  loadDataFile('history').then(renderHistoryEvents, err => {
+    console.error(err);
+    el.innerHTML = '<div class="history-event" style="color:var(--muted)">Could not load the history file. Check your connection and reopen this tab.</div>';
+  });
+}
+
+function renderHistoryEvents() {
   const el = document.getElementById('historyEvents');
   if (!el) return;
   const today = new Date();

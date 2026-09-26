@@ -46,7 +46,9 @@ output/scrape_health.html
 data/
 # ...but the externalized site data (L15) is a real tracked deploy asset.
 !docs/data/
-!docs/data/site_data.js
+!docs/data/tournaments.js
+!docs/data/performance_data.js
+!docs/data/chess_history.js
 *.sqlite3
 
 # Environment

@@ -186,6 +186,31 @@ function esc(s) {
   return d.innerHTML;
 }
 
+// Data files the page does not need at first paint (performance_data.js,
+// chess_history.js) ride the data tag as data-* attributes, so the pipeline
+// stamps their ?v= alongside the page's own. Each is inserted once, on
+// demand, as a same-origin classic script (CSP 'self'); the promise is cached
+// so repeat callers share one request, and dropped on failure so the next
+// visit to the tab retries instead of failing forever.
+const _dataFileLoads = {};
+function loadDataFile(key) {
+  if (_dataFileLoads[key]) return _dataFileLoads[key];
+  const tag = document.getElementById('dataScript');
+  const src = tag && tag.dataset[key];
+  if (!src) return Promise.reject(new Error(`no data file registered for "${key}"`));
+  _dataFileLoads[key] = new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = () => resolve(src);
+    s.onerror = () => {
+      delete _dataFileLoads[key];
+      reject(new Error(`failed to load ${src}`));
+    };
+    document.head.appendChild(s);
+  });
+  return _dataFileLoads[key];
+}
+
 // Chart range preference: one global choice, per-tournament validity decides
 // whether it can apply (see _chartWindow).
 const CHART_RANGE_KEY = 'cca_chartRange';

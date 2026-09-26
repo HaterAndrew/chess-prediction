@@ -9,16 +9,32 @@ let perfSelectedKey = null;
 function initPerformanceTab() {
   if (perfInited) return;
   perfInited = true;
+  // The per-tournament records (400 KB) are fetched when this tab first
+  // opens; the page itself carries only PERFORMANCE_SUMMARY.
+  perfShowStatus('--', 'LOADING', 'Loading the performance data…');
+  loadDataFile('performance').then(perfInitFromData, err => {
+    // Let the next visit to the tab retry rather than sit on a blank panel.
+    perfInited = false;
+    console.error(err);
+    perfShowStatus('--', 'UNAVAILABLE',
+      'Could not load the performance data. Check your connection and reopen this tab.');
+  });
+}
 
+function perfShowStatus(letter, label, detail) {
+  document.getElementById('perfGradeLetter').textContent = letter;
+  document.getElementById('perfGradeLabel').textContent = label;
+  document.getElementById('perfGradeDetail').textContent = detail;
+}
+
+function perfInitFromData() {
   const data = typeof PERFORMANCE_DATA !== 'undefined' ? PERFORMANCE_DATA : {};
   const hasYears = data.years && Object.values(data.years).some(y => y && y.n_tournaments > 0);
   const hasCumulative = data.cumulative && data.cumulative.n_tournaments > 0;
   const hasFlat = data.aggregate && data.aggregate.length > 0;
 
   if (!hasYears && !hasCumulative && !hasFlat) {
-    document.getElementById('perfGradeLetter').textContent = '--';
-    document.getElementById('perfGradeLabel').textContent = 'NO DATA';
-    document.getElementById('perfGradeDetail').textContent = 'Performance data will appear once tournaments complete.';
+    perfShowStatus('--', 'NO DATA', 'Performance data will appear once tournaments complete.');
     return;
   }
 
@@ -52,6 +68,9 @@ function perfSelectYear(key) {
 }
 
 function perfRender() {
+  // A theme switch re-renders the active tab; before the lazy file has
+  // landed there is nothing to draw yet.
+  if (typeof PERFORMANCE_DATA === 'undefined') return;
   const data = PERFORMANCE_DATA;
   const key = perfSelectedKey;
   const baseData = key === 'cumulative' ? data.cumulative : (data.years && data.years[key]);

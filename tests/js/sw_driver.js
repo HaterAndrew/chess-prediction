@@ -13,8 +13,8 @@ const path = require('path');
 const vm = require('vm');
 
 const SW = path.join(__dirname, '..', '..', 'docs', 'sw.js');
-const ORIGIN = 'https://haterandrew.github.io';
-const SCOPE = `${ORIGIN}/chess-prediction/`;
+const ORIGIN = 'https://chessentries.com';
+const SCOPE = `${ORIGIN}/`;
 const CDN_CHART = 'https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js';
 
 class Response {
@@ -133,7 +133,10 @@ async function main() {
   results.unhashed_first = await online.dispatch({ url: warnings });
   results.unhashed_second = await online.dispatch({ url: warnings });
   results.unhashed_second.cached_after = online.cached();
-  results.cross_origin = await online.dispatch({ url: 'https://chess-ask.workers.dev/ask' });
+  results.cross_origin = await online.dispatch({ url: 'https://api.example/ask' });
+  // The API routes live on the page's own origin and must bypass the cache.
+  results.api_health = await online.dispatch({ url: `${SCOPE}health` });
+  results.api_entrylist = await online.dispatch({ url: `${SCOPE}cca-entrylist?code=ABC` });
   results.post = await online.dispatch({ url: SCOPE, method: 'POST', mode: 'navigate' });
   results.cdn_miss = await online.dispatch({ url: CDN_CHART });
   results.cdn_hit = await online.dispatch({ url: CDN_CHART });

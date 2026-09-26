@@ -1,16 +1,35 @@
-name = "chess-ask"
+name = "chessentries"
 main = "src/index.ts"
 compatibility_date = "2026-05-01"
 compatibility_flags = ["nodejs_compat"]
+# The workers.dev host stays on through the cutover as the fallback origin;
+# preview URLs give every branch build its own hostname (no secrets, shared KV).
+workers_dev = true
+preview_urls = true
 
-# CORS allowlist origin (set this to the deployed site).
-# The Worker uses this to set Access-Control-Allow-Origin.
+# One Worker serves the site and the API on one origin. Every path not listed
+# in run_worker_first is answered by the asset layer directly: no Worker
+# invocation, no request quota. docs/_headers sets the cache and security
+# headers on those responses.
+[assets]
+directory = "../docs"
+binding = "ASSETS"
+run_worker_first = ["/ask", "/health", "/cca-tourlist", "/cca-entrylist"]
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+
+# Apex only. www is a zone Redirect Rule (_redirects cannot match hostnames).
+[[routes]]
+pattern = "chessentries.com"
+custom_domain = true
+
+[observability]
+enabled = true
+
+# CORS allowlist. Same-origin requests are admitted on any hostname the Worker
+# answers on (see src/http.ts); this list covers the static dev server.
 [vars]
-ALLOWED_ORIGIN = "https://haterandrew.github.io,http://localhost:8080,http://127.0.0.1:8080"
-# v3 S1: must point at a path GitHub Pages actually serves. Pages publishes
-# docs/, so the repo-root output/website_data.json was never reachable and every
-# /ask request 502'd. auto_update.step_update_html writes this file.
-DATA_URL = "https://haterandrew.github.io/chess-prediction/data/website_data.json"
+ALLOWED_ORIGIN = "https://chessentries.com,http://localhost:8080,http://127.0.0.1:8080"
 MODEL = "claude-sonnet-5"
 DAILY_BUDGET_USD = "1.00"
 RATE_LIMIT_PER_MIN = "20"
@@ -23,5 +42,6 @@ GLOBAL_RATE_LIMIT_PER_MIN = "60"
 binding = "KV"
 id = "3a7c98e0906c4d9eb355647a5a77feb7"
 
-# Secret (set via `wrangler secret put ANTHROPIC_API_KEY`):
-#   ANTHROPIC_API_KEY
+# Secrets (set via `wrangler secret put <NAME>`):
+#   ANTHROPIC_API_KEY   the Ask tab's model key
+#   CCA_PROXY_KEY       shared secret gating /cca-tourlist for the nightly scrape

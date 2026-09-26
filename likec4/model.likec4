@@ -52,7 +52,7 @@ model {
     }
 
     pipeline = container 'pipeline/' {
-      description 'auto_update orchestration: steps, runner, warning harvest, site_data.js splice, cache stamping, degraded-mode banner'
+      description 'auto_update orchestration: steps, runner, warning harvest, data-file splice, cache stamping, degraded-mode banner'
     }
 
     output = datastore 'output/ CSV + JSON corpus' {
@@ -60,15 +60,15 @@ model {
     }
 
     site = container 'docs/ static site (PWA)' {
-      description 'GitHub Pages; classic scripts in one shared global scope, service worker precache'
-      component sitedata 'data/site_data.js' { description 'Spliced data consts (TOURNAMENT_DATA, PERFORMANCE_DATA, ...)' }
+      description 'Cloudflare Workers Static Assets, served by the worker on one origin; classic scripts in one shared global scope, service worker precache'
+      component sitedata 'data/*.js' { description 'Spliced data consts: tournaments.js on the page (TOURNAMENT_DATA, PERFORMANCE_SUMMARY, PUZZLE_DATA); performance_data.js and chess_history.js on demand' }
       component appjs 'app.js + split scripts' { description 'Tab router + 16 extracted scripts (charts, tabs, panels, pickers)' }
       component actions 'actions.js' { description 'CSP-safe event delegation over data-act attributes' }
       component sw 'sw.js' { description 'Service worker: precache, offline fallbacks, cache-busted URLs' }
     }
 
     worker = container 'worker/ (Cloudflare)' {
-      description 'Ask-tab agent loop + CCA fetch proxies'
+      description 'Serves docs/ as static assets; Ask-tab agent loop + CCA fetch proxies'
       component routing 'index.ts' { description 'Routing only (W1)' }
       component agent 'agent.ts' { description 'Data cache + model agent loop' }
       component limits 'limits.ts' { description 'Rate limit, daily budget, price table (fail closed without KV)' }
@@ -93,6 +93,7 @@ model {
   pipeline -> perf 'step: grade'
   pipeline -> healthcheck 'step: data health (--strict)'
   pipeline -> site 'splice consts + stamp cache-busters'
+  worker -> site 'serves docs/ (ASSETS binding); reads data/website_data.json through it'
   site.sw -> site.sitedata 'precache (hash-stamped URLs)'
   visitor -> site 'browse / install PWA'
   site.appjs -> worker 'Ask tab POST /ask'

@@ -9,6 +9,7 @@ import { describe, expect, it } from "vitest";
 // W1 split: import from the defining modules, not the routing entry.
 import { timingSafeEqual } from "./cca-proxy";
 import type { Env } from "./env";
+import { loadData } from "./agent";
 import { isOriginAllowed, pickAllowedOrigin } from "./http";
 import {
   checkDailyBudget,
@@ -54,8 +55,8 @@ function fakeKV(pageSize = 1000) {
 function envWith(overrides: Partial<Env> = {}): Env {
   return {
     ANTHROPIC_API_KEY: "test",
-    ALLOWED_ORIGIN: "https://haterandrew.github.io,http://localhost:8080",
-    DATA_URL: "https://example.invalid/data.json",
+    ALLOWED_ORIGIN: "https://chessentries.com,http://localhost:8080",
+    ASSETS: undefined as never,
     MODEL: "claude-sonnet-5",
     DAILY_BUDGET_USD: "1.00",
     RATE_LIMIT_PER_MIN: "20",
@@ -118,14 +119,14 @@ describe("pickAllowedOrigin", () => {
     });
 
   it("echoes an allowlisted origin", () => {
-    expect(pickAllowedOrigin(env, req("https://haterandrew.github.io"))).toBe(
-      "https://haterandrew.github.io",
+    expect(pickAllowedOrigin(env, req("https://chessentries.com"))).toBe(
+      "https://chessentries.com",
     );
   });
 
   it("falls back to the first allowlisted origin for a foreign one", () => {
     expect(pickAllowedOrigin(env, req("https://evil.example"))).toBe(
-      "https://haterandrew.github.io",
+      "https://chessentries.com",
     );
   });
 
@@ -134,7 +135,7 @@ describe("pickAllowedOrigin", () => {
   });
 
   it("defaults when no Origin header is present", () => {
-    expect(pickAllowedOrigin(env, req())).toBe("https://haterandrew.github.io");
+    expect(pickAllowedOrigin(env, req())).toBe("https://chessentries.com");
   });
 });
 
@@ -289,7 +290,7 @@ describe("isOriginAllowed", () => {
     new Request("https://w.example/ask", { headers: o ? { Origin: o } : {} });
 
   it("admits an allowlisted origin", () => {
-    expect(isOriginAllowed(env, withOrigin("https://haterandrew.github.io"))).toBe(true);
+    expect(isOriginAllowed(env, withOrigin("https://chessentries.com"))).toBe(true);
   });
 
   // The cross-site POST path: a foreign page's Origin is set by the browser and
@@ -320,5 +321,61 @@ describe("timingSafeEqual", () => {
     expect(timingSafeEqual("secret", "secret2")).toBe(false);
     expect(timingSafeEqual("", "")).toBe(true);
     expect(timingSafeEqual("", "x")).toBe(false);
+  });
+});
+
+// ── same-origin requests ─────────────────────────────────────────────────────
+// One Worker serves the page and the API, so a request whose Origin equals the
+// origin it arrived on is trusted on any hostname the Worker answers on: the
+// custom domain, the workers.dev fallback, and every preview URL.
+
+describe("same-origin requests", () => {
+  const env = envWith({ ALLOWED_ORIGIN: "https://chessentries.com" });
+  const preview = "https://feat-x-chessentries.example.workers.dev";
+  const at = (origin: string, from?: string) =>
+    new Request(`${origin}/ask`, { headers: from ? { Origin: from } : {} });
+
+  it("admits and echoes the origin the request arrived on", () => {
+    const req = at(preview, preview);
+    expect(isOriginAllowed(env, req)).toBe(true);
+    expect(pickAllowedOrigin(env, req)).toBe(preview);
+  });
+
+  it("still refuses a foreign origin on a preview host", () => {
+    const req = at(preview, "https://evil.example");
+    expect(isOriginAllowed(env, req)).toBe(false);
+    expect(pickAllowedOrigin(env, req)).toBe("https://chessentries.com");
+  });
+
+  it("falls back to the first allowlisted origin when Origin is absent", () => {
+    expect(pickAllowedOrigin(env, at(preview))).toBe("https://chessentries.com");
+  });
+});
+
+// ── loadData through the ASSETS binding ──────────────────────────────────────
+// The data endpoint is one of the Worker's own static assets. It is read
+// through the binding (no public round trip), by path only.
+
+describe("loadData", () => {
+  const client = {
+    beta: { files: { upload: async () => { throw new Error("files api unavailable"); } } },
+  } as never;
+
+  it("reads data/website_data.json through the ASSETS binding", async () => {
+    const seen: string[] = [];
+    const env = envWith({
+      ASSETS: {
+        fetch: async (input: URL | Request | string) => {
+          seen.push(new URL(typeof input === "string" ? input : input instanceof URL ? input.href : input.url).pathname);
+          return new Response(JSON.stringify({ generated: "2026-09-26", tournaments: [] }), {
+            headers: { "Content-Type": "application/json" },
+          });
+        },
+      } as never,
+    });
+    const cd = await loadData(env, client);
+    expect(seen).toEqual(["/data/website_data.json"]);
+    expect(cd.data.generated).toBe("2026-09-26");
+    expect(cd.fileId).toBeNull();
   });
 });

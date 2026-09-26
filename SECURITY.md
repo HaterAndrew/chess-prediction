@@ -12,6 +12,6 @@ Use GitHub's private vulnerability reporting on this repository
 issue titled "security" without exploit details and a maintainer will follow
 up privately.
 
-Please include the affected component: the GitHub Pages site (`docs/`), the
-Python pipeline, or the Cloudflare Worker (`worker/` — the Ask tab proxy is
-the only component that handles user input server-side).
+Please include the affected component: the static site (`docs/`), the Python
+pipeline, or the Cloudflare Worker (`worker/`, which serves the site and the
+Ask tab proxy, the only component that handles user input server-side).

@@ -9,10 +9,19 @@
 //  navigateToHash if the URL contains #ask, which would TDZ-throw on these
 //  consts/lets if they're declared after init().)
 // ══════════════════════════════════════════════════════════
+// The API is served by the same Worker as the page, so the endpoint is
+// origin-relative. The one exception is the plain static dev server
+// (python -m http.server on 8000), which has no /ask: that case points at
+// `wrangler dev` on 8787, which serves the whole site itself.
 const ASK_ENDPOINT = (function() {
-  const h = (typeof location !== 'undefined') ? location.hostname : '';
-  if (h === 'localhost' || h === '127.0.0.1' || h === '') return 'http://localhost:8787/ask';
-  return 'https://chess-ask.hater-andrewd.workers.dev/ask';
+  const l = (typeof location !== 'undefined') ? location : { hostname: '', port: '' };
+  const localStatic = (l.hostname === 'localhost' || l.hostname === '127.0.0.1' || l.hostname === '')
+    && l.port !== '8787';
+  if (localStatic) return 'http://localhost:8787/ask';
+  // The GitHub Pages copy has no /ask of its own: until the cutover it keeps
+  // using the Worker it always used.
+  if (/\.github\.io$/.test(l.hostname)) return 'https://chess-ask.hater-andrewd.workers.dev/ask';
+  return '/ask';
 })();
 const ASK_SUGGESTIONS = [
   'When does Liberty Bell start?',

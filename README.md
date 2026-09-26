@@ -4,7 +4,7 @@ Forecasts final entry counts for Continental Chess Association (CCA) tournaments
 A nightly pipeline scrapes live registration counts, re-runs the model, and
 publishes point estimates with 80% confidence intervals to a static site.
 
-Live site: https://haterandrew.github.io/chess-prediction/
+Live site: https://chessentries.com
 
 ## How it works
 
@@ -17,8 +17,9 @@ A GitHub Actions workflow (`.github/workflows/daily_update.yml`) runs every nigh
    regenerates walk-in adjustments from historical standings.
 4. `04d_website_data_v2.py` rebuilds the site payload, and `04e_performance_data.py`
    re-grades past prediction windows against actual final counts.
-5. The workflow commits the refreshed `docs/` tree, which GitHub Pages serves as
-   an installable PWA.
+5. The workflow commits the refreshed `docs/` tree; Cloudflare Workers Builds
+   deploys it as the static assets of the Worker in `worker/`, which serves the
+   site (an installable PWA) and its Ask API on one origin.
 
 ## Model
 
@@ -39,8 +40,8 @@ renders them, single-sourced from the graded output, and
 
 ## Ask tab
 
-`worker/` holds a Cloudflare Worker that proxies the site's Ask tab to the
-Anthropic API: a function-calling loop over the live site data, rate-limited per
+`worker/` holds the Cloudflare Worker that serves the site and proxies its Ask
+tab to the Anthropic API: a function-calling loop over the live site data, rate-limited per
 IP, CORS-locked, and capped at a fixed daily spend. Setup instructions live in
 `worker/README.md`.
 
@@ -66,9 +67,9 @@ sites keep working. Edit the packages, not the shims.
 
 | Path | Contents |
 |---|---|
-| `docs/` | The published site (GitHub Pages root): PWA shell, charts, service worker |
+| `docs/` | The published site (Workers Static Assets): PWA shell, charts, service worker, `_headers` |
 | `output/` | Tracked CSV corpus the model runs from; large generated artifacts stay ignored |
-| `worker/` | Cloudflare Worker behind the Ask tab |
+| `worker/` | Cloudflare Worker serving the site and the Ask API |
 | `tests/` | Pytest suite covering the pipeline, grading, site data build, and Python/JS parity |
 | `scripts/` | Standalone tools, including `golden_check.py` (see below) |
 | `audit/` | Ledgers from code-audit passes and the fixes they produced |

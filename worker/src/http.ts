@@ -7,13 +7,22 @@ function allowlist(env: Env): string[] {
   return env.ALLOWED_ORIGIN.split(",").map((s) => s.trim()).filter(Boolean);
 }
 
+// One Worker serves the page and the API, so the origin a request arrived on
+// is the page's own origin on every hostname the Worker answers on: the custom
+// domain, the workers.dev fallback, and each preview URL. A browser sets
+// Origin itself, so a foreign page cannot claim it.
+function requestOrigin(request: Request): string {
+  return new URL(request.url).origin;
+}
+
 export function pickAllowedOrigin(env: Env, request: Request): string {
   const allow = allowlist(env);
   const origin = request.headers.get("Origin");
-  if (!origin) return allow[0] ?? "https://haterandrew.github.io";
+  if (!origin) return allow[0] ?? requestOrigin(request);
+  if (origin === requestOrigin(request)) return origin;
   if (allow.includes(origin)) return origin;
   if (LOCAL_ORIGIN_RE.test(origin)) return origin;
-  return allow[0] ?? "https://haterandrew.github.io";
+  return allow[0] ?? requestOrigin(request);
 }
 
 // Authorization, as opposed to pickAllowedOrigin's choice of response header.
@@ -31,7 +40,7 @@ export function pickAllowedOrigin(env: Env, request: Request): string {
 export function isOriginAllowed(env: Env, request: Request): boolean {
   const origin = request.headers.get("Origin");
   if (!origin) return true;
-  return allowlist(env).includes(origin) || LOCAL_ORIGIN_RE.test(origin);
+  return origin === requestOrigin(request) || allowlist(env).includes(origin) || LOCAL_ORIGIN_RE.test(origin);
 }
 
 export function jsonResponse(body: unknown, init: ResponseInit, env: Env, request: Request): Response {

@@ -128,8 +128,8 @@ function renderModelHealth() {
       if (el) {
         const clean = improved === steps;
         el.textContent = clean ? 'Pass' : 'Mixed';
-        el.classList.remove('green', 'gold');
-        el.classList.add(clean ? 'green' : 'gold');
+        el.classList.remove('v-blue', 'v-ink', 'gold');
+        el.classList.add(clean ? 'v-blue' : 'v-ink');
         el.title = clean
           ? `Error shrank at every one of the ${steps} horizon steps.`
           : `Error shrank at ${improved} of ${steps} horizon steps; it rises again `
@@ -155,7 +155,7 @@ function renderModelHealth() {
   }
   if (covPct !== null) {
     const drift = Math.abs(covPct - 80);
-    const color = drift <= 3 ? 'var(--green)' : drift <= 7 ? 'var(--gold)' : 'var(--red)';
+    const color = drift <= 3 ? 'v-blue' : drift <= 7 ? 'v-ink' : 'v-red';
     tiles.push({
       label: 'CI coverage (cumulative T-14)',
       value: covPct + '%',
@@ -175,7 +175,7 @@ function renderModelHealth() {
     const fam = walkinSrc.family || 0;
     const est = walkinSrc.estimate || 0;
     const famPct = Math.round(100 * fam / walkinTotal);
-    const color = famPct >= 80 ? 'var(--green)' : famPct >= 50 ? 'var(--gold)' : 'var(--red)';
+    const color = famPct >= 80 ? 'v-blue' : famPct >= 50 ? 'v-ink' : 'v-red';
     tiles.push({
       label: 'Walk-in family-level coverage',
       value: famPct + '%',
@@ -197,7 +197,7 @@ function renderModelHealth() {
     const direct = tierCounts['family-direct'] || 0;
     const fallback = liveTotal - direct;
     const directPct = Math.round(100 * direct / liveTotal);
-    const color = directPct >= 90 ? 'var(--green)' : directPct >= 70 ? 'var(--gold)' : 'var(--red)';
+    const color = directPct >= 90 ? 'v-blue' : directPct >= 70 ? 'v-ink' : 'v-red';
     tiles.push({
       label: 'Live cohort direct family ratio',
       value: directPct + '%',
@@ -212,7 +212,7 @@ function renderModelHealth() {
   const totalTournaments = (TOURNAMENT_DATA.tournaments || []).length;
   if (totalTournaments > 0) {
     const pct = Math.round(100 * lowConf / totalTournaments);
-    const color = pct <= 5 ? 'var(--green)' : pct <= 15 ? 'var(--gold)' : 'var(--red)';
+    const color = pct <= 5 ? 'v-blue' : pct <= 15 ? 'v-ink' : 'v-red';
     tiles.push({
       label: 'Low-confidence predictions',
       value: String(lowConf),
@@ -226,7 +226,7 @@ function renderModelHealth() {
   if (typeof PERFORMANCE_SUMMARY !== 'undefined' && PERFORMANCE_SUMMARY && PERFORMANCE_SUMMARY.years && PERFORMANCE_SUMMARY.years['2026']) {
     const yr = PERFORMANCE_SUMMARY.years['2026'];
     const grade = yr.grade || 'N/A';
-    const color = grade.startsWith('A') ? 'var(--green)' : grade.startsWith('B') ? 'var(--gold)' : 'var(--red)';
+    const color = grade.startsWith('A') ? 'v-blue' : grade.startsWith('B') ? 'v-ink' : 'v-red';
     tiles.push({
       label: '2026 backtest grade',
       value: grade,
@@ -236,11 +236,13 @@ function renderModelHealth() {
     });
   }
 
+  // The pens: blue when the figure meets its mark, ink when it is fair, red
+  // when it misses (t.color is the class).
   grid.innerHTML = tiles.map(t =>
-    '<div title="' + t.help.replace(/"/g, '&quot;') + '" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;cursor:help">' +
-    '<div style="font-size:var(--fs-1);color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">' + t.label + '</div>' +
-    '<div style="font-size:1.6rem;font-weight:800;color:' + t.color + ';line-height:1">' + t.value + '</div>' +
-    '<div style="font-size:var(--fs-1);color:var(--text2);margin-top:6px">' + t.sub + '</div>' +
+    '<div class="mh-tile" title="' + t.help.replace(/"/g, '&quot;') + '">' +
+    '<div class="mh-tile-label">' + t.label + '</div>' +
+    '<div class="mh-tile-value ' + t.color + '">' + t.value + '</div>' +
+    '<div class="mh-tile-sub">' + t.sub + '</div>' +
     '</div>'
   ).join('');
 
@@ -253,21 +255,21 @@ function renderModelHealth() {
       if (!data || !data.warnings) { warnEl.innerHTML = ''; return; }
       const c = data.count || 0;
       if (c === 0) {
-        warnEl.innerHTML = '<div style="font-size:var(--fs-2);color:var(--green);padding:10px 12px;background:var(--green-tint);border:1px solid var(--green);border-radius:8px">Latest pipeline run: 0 warnings (clean).</div>';
+        warnEl.innerHTML = '<div class="note note-signal">Latest pipeline run: 0 warnings (clean).</div>';
         return;
       }
       // v5 Cat V: warnings are deduped upstream and carry a per-entry count;
       // step/text pass through esc() — pipeline-controlled or not, nothing
       // lands in innerHTML unescaped.
       const rows = data.warnings.map(w =>
-        '<tr><td style="padding:4px 8px;color:var(--muted);font-size:var(--fs-2);white-space:nowrap">' +
-        esc(w.step.split('(')[0].trim()) + '</td><td style="padding:4px 8px;color:var(--text2);font-size:var(--fs-2)">' +
-        esc(w.text) + (w.count > 1 ? ' <span style="color:var(--muted)">×' + w.count + '</span>' : '') + '</td></tr>'
+        '<tr><td class="mh-warn-step">' +
+        esc(w.step.split('(')[0].trim()) + '</td><td>' +
+        esc(w.text) + (w.count > 1 ? ' <span class="muted">\u00d7' + w.count + '</span>' : '') + '</td></tr>'
       ).join('');
       warnEl.innerHTML =
-        '<details style="background:var(--amber-tint);border:1px solid var(--amber);border-radius:8px;padding:10px 12px">' +
-        '<summary style="cursor:pointer;font-size:var(--fs-2);color:var(--gold);font-weight:600">Latest pipeline run: ' + c + ' distinct warning' + (c === 1 ? '' : 's') + ' (click to expand)</summary>' +
-        '<table style="width:100%;margin-top:10px;border-collapse:collapse">' + rows + '</table></details>';
+        '<details class="note note-amber mh-warnings">' +
+        '<summary>Latest pipeline run: ' + c + ' distinct warning' + (c === 1 ? '' : 's') + '</summary>' +
+        '<table class="mh-warn-table">' + rows + '</table></details>';
     })
     .catch(() => { warnEl.innerHTML = ''; });
 }

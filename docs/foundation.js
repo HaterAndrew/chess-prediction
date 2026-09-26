@@ -397,7 +397,7 @@ function makeVertMarkersPlugin(id, getMarkers) {
         drawn.push({ x: pillX, x2: pillX + pillW, row });
         ctx2.fillStyle = themeRgba(PALETTE.surface, 0.85);
         ctx2.beginPath();
-        ctx2.roundRect(pillX, pillY, pillW, pillH, 4);
+        ctx2.rect(pillX, pillY, pillW, pillH);
         ctx2.fill();
         ctx2.strokeStyle = line.color;
         ctx2.lineWidth = 1;

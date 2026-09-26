@@ -67,6 +67,7 @@
 .v-blue { color: var(--blue); }
 .v-red { color: var(--ember); }
 .v-green { color: var(--green); }
+.v-ink { color: var(--ink); }
 .v-gold, .v-orange, .v-purple { color: var(--ink); }
 .kpi-fold { margin-top: 10px; }
 .kpi-fold:empty { display: none; }

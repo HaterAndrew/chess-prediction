@@ -1,0 +1,71 @@
+/* compare.css — the Compare view (tab_compare.js): three slots, each with
+   its pen (the series colours), the side-by-side table, the finding on blue
+   stock, the empty state and the chart card; and the Forecast's
+   year-over-year table (chart_hist.js), the current year under the
+   highlighter, the change in the pens. */
+
+/* ── Slots ── */
+.compare-caption { color: var(--muted); font-size: var(--fs-body); margin: 0 0 10px; }
+.compare-selectors { display: grid; gap: var(--s-2); grid-template-columns: 1fr; margin: 0 0 var(--s-4); }
+.compare-selector { align-items: center; display: flex; gap: var(--s-3); }
+.compare-color-dot { border-radius: 50%; flex-shrink: 0; height: 12px; width: 12px; }
+.compare-color-dot.series-1 { background: var(--series-1); }
+.compare-color-dot.series-2 { background: var(--series-2); }
+.compare-color-dot.series-3 { background: var(--series-3); }
+.compare-dropdown { flex: 1; min-width: 0; }
+.compare-remove-btn { border-color: var(--line); }
+.compare-remove-btn:hover { border-color: var(--ember); color: var(--ember); }
+@media (min-width: 768px) { .compare-selectors { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ── The finding and the empty state ── */
+.compare-insights { display: flex; flex-direction: column; gap: var(--s-2); margin: 0 0 var(--s-4); }
+.compare-insight { background: var(--stock-blue); border: 1px solid var(--line); font-size: var(--fs-body-lg); line-height: 1.5; padding: 10px 14px; }
+.compare-empty { margin-top: var(--s-2); }
+.compare-empty-sub { color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+/* ── The table: the stat down the side, one column per tournament in its pen ── */
+.compare-table-wrap { margin: 0 calc(-1 * var(--gutter)) var(--s-4); overflow-x: auto; padding: 0 var(--gutter); -webkit-overflow-scrolling: touch; }
+.compare-table { border-collapse: collapse; min-width: 480px; width: 100%; }
+.compare-table th, .compare-table td { border-bottom: 1px solid var(--line-soft); font-size: var(--fs-body-lg); padding: 10px var(--s-3); text-align: left; }
+.compare-table th { border-bottom: 2px solid var(--line); font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; text-transform: uppercase; }
+.compare-table th.series-1 { color: var(--series-1); }
+.compare-table th.series-2 { color: var(--series-2); }
+.compare-table th.series-3 { color: var(--series-3); }
+.compare-table tr:last-child td { border-bottom: 0; }
+.compare-table td { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.compare-table td.compare-stat-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+.compare-chart-wrap { border: 1px solid var(--line); height: min(300px, 55vh); padding: var(--s-4); position: relative; }
+@media (max-width: 639px) {
+  .compare-table-wrap { margin: 0 0 var(--s-4); overflow-x: visible; padding: 0; }
+  .compare-table, .compare-table tbody, .compare-table tr { display: block; min-width: 0; }
+  .compare-table thead { display: none; }
+  .compare-table tr { border: 1px solid var(--line); margin-bottom: var(--s-3); padding: var(--s-3) var(--s-4); }
+  .compare-table td { align-items: center; border-bottom: 1px solid var(--line-soft); display: flex; gap: var(--s-3); justify-content: space-between; padding: 6px 0; }
+  .compare-table td.compare-stat-label { border-bottom: 1px solid var(--line); margin-bottom: var(--s-2); padding-bottom: var(--s-2); }
+  .compare-table td:not(.compare-stat-label)::before { color: var(--muted); content: attr(data-label); flex-shrink: 0; font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+  .compare-table tr td:last-child { border-bottom: 0; }
+}
+
+/* ── Year over year (the Forecast's History panel) ── */
+.comp-table-wrap { margin: 0 calc(-1 * var(--gutter)); overflow-x: auto; padding: 0 var(--gutter); -webkit-overflow-scrolling: touch; }
+.comp-table { border-collapse: collapse; min-width: 420px; width: 100%; }
+.comp-table th { border-bottom: 2px solid var(--line); color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); padding: 8px 10px; text-align: left; text-transform: uppercase; }
+.comp-table td { border-bottom: 1px solid var(--line-soft); font: 13px var(--mono); font-variant-numeric: tabular-nums; padding: 8px 10px; }
+.comp-table tr:last-child td { border-bottom: 0; }
+.comp-table .current-year td { background: var(--mark); color: var(--mark-ink); font-weight: 700; }
+.comp-was { color: var(--muted); font-size: 12px; }
+.comp-footnote { color: var(--muted); font-size: 12px; line-height: 1.45; margin-top: 8px; }
+.delta-pos { color: var(--signal); }
+.delta-neg { color: var(--ember); }
+@media (max-width: 639px) {
+  .comp-table-wrap { margin: 0; overflow-x: visible; padding: 0; }
+  .comp-table, .comp-table tbody, .comp-table tr { display: block; min-width: 0; }
+  .comp-table thead { display: none; }
+  .comp-table tr { border: 1px solid var(--line-soft); margin-bottom: var(--s-2); padding: var(--s-2) var(--s-3); }
+  .comp-table tr.current-year { background: var(--mark); border-color: var(--line); }
+  .comp-table .current-year td { background: transparent; color: var(--mark-ink); }
+  .comp-table td { align-items: center; border-bottom: 1px solid var(--line-soft); display: flex; gap: var(--s-3); justify-content: space-between; padding: 4px 0; }
+  .comp-table td::before { color: var(--muted); content: attr(data-label); flex-shrink: 0; font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+  .comp-table tr.current-year td::before { color: var(--mark-ink); }
+  .comp-table tr td:last-child { border-bottom: 0; }
+}

@@ -84,6 +84,8 @@ function applyEmailViewState() {
   if (!out || !pv) return;
   const tab = (split && split.dataset.tab) || 'source';
   const isMobile = window.matchMedia('(max-width: 639px)').matches;
+  // Two columns only when the source and the preview both show (email.css).
+  if (split) split.classList.toggle('email-split-both', emailFormat === 'html' && !isMobile);
 
   if (emailFormat === 'html') {
     out.classList.add('mode-html');

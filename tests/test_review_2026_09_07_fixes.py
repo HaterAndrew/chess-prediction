@@ -310,7 +310,7 @@ def test_likely_range_tooltip_is_not_a_hardcoded_claim():
 def test_coverage_tile_turns_green_only_at_the_advertised_target():
     """Green used to start at 75, below the 80% the site advertises."""
     src = open(PERF_JS).read()
-    m = re.search(r"l: 'CI Coverage'.*?c: avgCov >= (\d+)", src, re.S)
+    m = re.search(r"l: 'CI Coverage'.*?_perfTone\(avgCov >= (\d+)", src, re.S)
     assert m, "could not find the CI Coverage tile threshold"
     assert int(m.group(1)) >= 80, (
         f"coverage tile reads green at {m.group(1)}%, under the 80% target")

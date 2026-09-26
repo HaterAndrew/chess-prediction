@@ -40,6 +40,7 @@
       try { localStorage.setItem('cep:hint:seen', '1'); } catch (_) {}
     },
     'scroll-top': function () { window.scrollTo({ top: 0, behavior: 'smooth' }); },
+    'toggle-theme': function () { toggleTheme(); },
     'open-cmdk': function () { openCmdK(); },
     'chart-range': function (el) { setChartRange(el.dataset.range); },
     'page-tab': function (el) { switchPageTab(el.dataset.tab); },

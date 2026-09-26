@@ -3,25 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light dark">
 <meta name="description" content="Predict chess tournament entries using historical registration patterns from 192K CCA records. Point estimates and 80% confidence intervals for tournament directors.">
 <title>CCA Entry Predictor: Chess Tournament Registration Forecasting</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♔</text></svg>">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#f0c040">
-<!-- Render-blocking on purpose so the service worker registers before any
-     other request. See docs/boot.js. -->
-<script src="boot.js?v=ccde1eb234"></script>
+<meta name="theme-color" content="#F7F4EC">
+<!-- Render-blocking on purpose: it sets the theme attribute before first
+     paint and registers the service worker before any other request. See
+     docs/boot.js. -->
+<script src="boot.js?v=495fc9422f"></script>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="CCA Predictor">
 <meta name="format-detection" content="telephone=no">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://chess-ask.hater-andrewd.workers.dev">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="styles.css?v=84be1b82d4">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/inter/inter-latin.woff2">
+<link rel="stylesheet" href="styles/fonts.css?v=2bc8c06a4c">
+<link rel="stylesheet" href="styles/tokens.css?v=3077da881d">
+<link rel="stylesheet" href="styles/01-base.css?v=73b0c0c377">
+<link rel="stylesheet" href="styles/02-header.css?v=b5bce10024">
+<link rel="stylesheet" href="styles/03-cmdk.css?v=3495a63afb">
+<link rel="stylesheet" href="styles/04-tab-bar.css?v=207983e2a3">
+<link rel="stylesheet" href="styles/05-delta-banner.css?v=c417adc28d">
+<link rel="stylesheet" href="styles/06-mobile-predictions.css?v=f4343ee607">
+<link rel="stylesheet" href="styles/07-hero.css?v=30b8537fa1">
+<link rel="stylesheet" href="styles/08-chart.css?v=5db35ae41c">
+<link rel="stylesheet" href="styles/09-timeline.css?v=10d9c06e16">
+<link rel="stylesheet" href="styles/10-comparison.css?v=95f4408fbe">
+<link rel="stylesheet" href="styles/11-tables.css?v=f202f61be5">
+<link rel="stylesheet" href="styles/12-calendar.css?v=72c2b03dd8">
+<link rel="stylesheet" href="styles/13-page-tabs.css?v=fe452df7e7">
+<link rel="stylesheet" href="styles/14-puzzles.css?v=aa45d7e583">
+<link rel="stylesheet" href="styles/15-data-entry.css?v=320069fa4b">
+<link rel="stylesheet" href="styles/16-email.css?v=774e6cca13">
+<link rel="stylesheet" href="styles/17-compare.css?v=fcf1e5b883">
+<link rel="stylesheet" href="styles/18-performance.css?v=3021f4f852">
+<link rel="stylesheet" href="styles/19-motion.css?v=c03cb6462f">
+<link rel="stylesheet" href="styles/20-mobile.css?v=4f98c62cf1">
+<link rel="stylesheet" href="styles/21-panels.css?v=ff65e05713">
+<link rel="stylesheet" href="styles/22-panels-shared.css?v=f9c76fe03a">
+<link rel="stylesheet" href="styles/23-print.css?v=8eacb65c69">
+<link rel="stylesheet" href="styles/24-ask-audit.css?v=62b5d908cd">
+<link rel="stylesheet" href="styles/theme.css?v=0279f37cbc">
 </head>
 <body>
 
@@ -54,6 +82,10 @@
         <span id="tournLabel" class="tourn-label-text">Loading...</span>
         <button class="compare-add-btn" id="compareAddBtn" data-act="add-to-compare" title="Add to Compare" aria-label="Add tournament to compare">&#9878;</button>
       </div>
+      <button class="theme-toggle" id="themeToggle" data-act="toggle-theme" aria-pressed="false" aria-label="Switch to the Dark Theme" title="Switch to the Dark Theme">
+        <svg class="theme-icon theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="theme-icon theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
       <div class="header-meta">Updated: <span id="lastUpdated"></span></div>
     </div>
   </div>
@@ -937,26 +969,29 @@
      OFFLINE_FALLBACKS (test_global_uniqueness pins name collisions and
      suffix clashes; test_script_loading pins the defer attribute). -->
 <script defer src="util_core.js?v=2824d286fc"></script>
-<script defer src="foundation.js?v=8398186499"></script>
+<script defer src="foundation.js?v=8702a837a3"></script>
+<!-- theme.js reads PALETTE/rebuildPalette from foundation.js at load and
+     sets the Chart.js defaults before any chart is built. -->
+<script defer src="theme.js?v=33c380c35b"></script>
 <script defer src="cmdk.js?v=c497999f1f"></script>
 <script defer src="tab_email.js?v=09dda48c3a"></script>
-<script defer src="tab_performance.js?v=21b7653569"></script>
+<script defer src="tab_performance.js?v=f7b2bf4982"></script>
 <script defer src="tab_puzzles.js?v=c0b01b5c3e"></script>
 <script defer src="pickers.js?v=00fe32ddb5"></script>
 <script defer src="panels_info.js?v=85cb77359f"></script>
-<script defer src="hero_kpi.js?v=6c9bbd7c11"></script>
-<script defer src="chart_main.js?v=378d7a2e9e"></script>
-<script defer src="chart_hist.js?v=0a9bdde27f"></script>
+<script defer src="hero_kpi.js?v=c32d542fd4"></script>
+<script defer src="chart_main.js?v=209e0a59c4"></script>
+<script defer src="chart_hist.js?v=6bdf6c4896"></script>
 <script defer src="panels_grid.js?v=328099e6c3"></script>
 <script defer src="panels_cal.js?v=28d15e5f60"></script>
-<script defer src="tab_about.js?v=565544d1dc"></script>
-<script defer src="tab_compare.js?v=2bf04e3339"></script>
+<script defer src="tab_about.js?v=93bd7709b3"></script>
+<script defer src="tab_compare.js?v=c14237e866"></script>
 <script defer src="tab_ask.js?v=07df7455b0"></script>
 <script defer src="app.js?v=612241529c"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,
      so it is load-bearing: without it nothing on the page responds. It comes
      last because it dispatches into the globals the files above define. -->
-<script defer src="actions.js?v=886915259e"></script>
+<script defer src="actions.js?v=a953337851"></script>
 </body>
 </html>

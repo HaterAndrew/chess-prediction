@@ -1,0 +1,71 @@
+/* ══════════════════════════════════════════════════════
+   COMPARISON TABLE (historical)
+   ══════════════════════════════════════════════════════ */
+.comp-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter); }
+.comp-table { width: 100%; border-collapse: collapse; min-width: 420px; }
+.comp-table th {
+  text-align: left; font-size: var(--fs-2); color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px; font-weight: 600;
+  padding: 8px 10px; border-bottom: 1px solid var(--border);
+}
+.comp-table td {
+  padding: 9px 10px; font-size: var(--fs-3);
+  border-bottom: 1px solid var(--border-light);
+}
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table .current-year td { color: var(--gold); font-weight: 700; background: var(--gold-dim); }
+.delta-pos { color: var(--green); }
+.delta-neg { color: var(--red); }
+
+/* ── Mobile card layout for comp-table (year-over-year, < 640px) ── */
+@media (max-width: 639px) {
+  .comp-table-wrap { overflow-x: visible; margin: 0; padding: 0; }
+  .comp-table { display: block; min-width: 0; }
+  .comp-table thead { display: none; }
+  .comp-table tbody { display: block; }
+  .comp-table tr {
+    display: block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+  }
+  .comp-table tr.current-year {
+    border-color: var(--gold);
+    background: var(--gold-dim);
+  }
+  .comp-table tr.current-year td { background: transparent; }
+  .comp-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-3);
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .comp-table td::before {
+    content: attr(data-label);
+    font-size: var(--fs-1);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .comp-table tr td:last-child { border-bottom: none; }
+}
+
+/* ══════════════════════════════════════════════════════
+   MODEL INFO
+   ══════════════════════════════════════════════════════ */
+.model-info p {
+  font-size: var(--fs-2); color: var(--muted); line-height: 1.6; margin-bottom: 8px;
+}
+.tag {
+  display: inline-block; padding: 3px 10px;
+  background: var(--surface3); border: 1px solid var(--border);
+  border-radius: 100px; font-size: var(--fs-1); color: var(--text2);
+  margin-right: 6px; margin-bottom: 6px;
+}
+

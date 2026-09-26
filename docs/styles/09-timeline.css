@@ -1,0 +1,166 @@
+/* ══════════════════════════════════════════════════════
+   TWO-COL GRID
+   ══════════════════════════════════════════════════════ */
+.grid-2 {
+  display: grid; grid-template-columns: 1fr;
+  gap: var(--s-4); margin-bottom: var(--s-5);
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--s-4);
+  transition: border-color .2s, box-shadow .2s;
+}
+.panel:hover { border-color: rgba(88,166,255,.15); box-shadow: 0 2px 12px rgba(0,0,0,.15); }
+.panel-title {
+  margin-top: 0;
+  font-size: var(--fs-1); font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 1.5px;
+  margin-bottom: var(--s-3);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+/* ══════════════════════════════════════════════════════
+   TIMELINE
+   ══════════════════════════════════════════════════════ */
+.timeline {
+  position: relative;
+  display: grid; grid-template-columns: 1fr;
+  gap: var(--s-3);
+  padding: var(--s-4) 0 var(--s-2);
+}
+.timeline-node {
+  display: flex; flex-direction: column; align-items: center;
+  position: relative; z-index: 1;
+}
+.timeline-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--surface3); border: 2px solid var(--border);
+  margin-bottom: 8px;
+}
+.timeline-dot.past { background: var(--green); border-color: var(--green); }
+.timeline-dot.now { background: var(--blue); border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-dim); }
+.timeline-dot.future { background: var(--surface3); border-color: var(--muted); }
+.timeline-label { font-size: var(--fs-1); color: var(--muted); text-align: center; }
+.timeline-date { font-size: var(--fs-2); font-weight: 600; color: var(--text2); text-align: center; }
+.timeline-count { font-size: var(--fs-1); color: var(--text2); margin-top: 2px; text-align: center; }
+
+/* ── Milestone horizontal timeline strip ──
+   Replaces the prior table layout. Each node is a stacked dot + label +
+   date + count column. A horizontal background line runs behind the
+   dots; .ms-line-past fills the line gold up to the first non-past node
+   so the user sees visually where "now" sits on the journey. */
+.ms-strip {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 4px;
+  padding: 20px 0 8px;
+  margin-top: 4px;
+}
+.ms-line {
+  position: absolute; left: 8%; right: 8%; top: 28px;
+  height: 2px; background: var(--border); border-radius: 100px;
+  z-index: 0;
+}
+.ms-line-past {
+  height: 100%; background: var(--text3, var(--muted)); border-radius: 100px;
+  transition: width .5s cubic-bezier(.22,1,.36,1);
+}
+.ms-node {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 4px;
+  text-align: center;
+  min-width: 0;
+}
+.ms-dot {
+  width: 14px; height: 14px; border-radius: 100px;
+  background: var(--surface3);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--border);
+  transition: background .25s, box-shadow .25s, transform .25s;
+}
+.ms-node.ms-past .ms-dot {
+  background: var(--text3, var(--muted));
+  box-shadow: 0 0 0 1px var(--text3, var(--muted));
+}
+.ms-node.ms-now .ms-dot {
+  background: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue), 0 0 16px rgba(56,139,253,.5);
+  transform: scale(1.15);
+}
+.ms-node.ms-future .ms-dot {
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--border-light);
+}
+.ms-node-label {
+  font-size: var(--fs-1); font-weight: 700;
+  color: var(--text2);
+  margin-top: 6px;
+  line-height: 1.25;
+  text-transform: uppercase; letter-spacing: .3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 100%;
+}
+.ms-node.ms-past .ms-node-label { color: var(--muted); }
+.ms-node.ms-now .ms-node-label { color: var(--blue); }
+.ms-node-date {
+  font-size: var(--fs-1); color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.ms-node-count {
+  font-size: var(--fs-3); font-weight: 800;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+.ms-node.ms-past .ms-node-count {
+  color: var(--text2); font-weight: 600;
+}
+@media (max-width: 639px) {
+  /* Mobile: 3-up rows. Beyond 3 nodes the labels overlap. Split the
+     strip onto two rows by changing grid columns. */
+  .ms-strip {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-columns: auto;
+    gap: var(--s-3) 4px;
+    padding-top: 16px;
+  }
+  .ms-line { display: none; }
+  .ms-node-label { font-size: var(--fs-1); }
+  .ms-node-count { font-size: var(--fs-2); }
+  /* When the strip has 6+ nodes, drop dot size and column gap so labels stay readable. */
+  .ms-strip:has(.ms-node:nth-child(7)) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--s-2) 2px;
+  }
+  .ms-strip:has(.ms-node:nth-child(7)) .ms-dot { width: 10px; height: 10px; }
+  .ms-strip:has(.ms-node:nth-child(7)) .ms-node-label { font-size: var(--fs-1); }
+}
+
+/* Legacy milestone table CSS retained but unused (rendering now uses
+   .ms-strip). Kept for any external surfaces that still reference it. */
+.milestone-table { width: 100%; border-collapse: collapse; }
+.milestone-table th {
+  text-align: left; font-size: var(--fs-2); color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px; font-weight: 600;
+  padding: 8px; border-bottom: 1px solid var(--border);
+}
+.milestone-table td {
+  padding: 8px; font-size: var(--fs-2);
+  border-bottom: 1px solid var(--border-light);
+}
+.milestone-table tr:last-child td { border-bottom: none; }
+.ms-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 100px;
+  font-size: var(--fs-1); font-weight: 700;
+}
+.ms-past { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+.ms-now { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(56,139,253,.3); }
+.ms-future { background: var(--surface3); color: var(--muted); border: 1px solid var(--border); }
+

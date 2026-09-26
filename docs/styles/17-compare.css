@@ -1,0 +1,180 @@
+/* ══════════════════════════════════════════════════════
+   FAVORITES (My Tournaments)
+   ══════════════════════════════════════════════════════ */
+.fav-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: var(--fs-5); line-height: 1;
+  padding: 6px 8px; min-width: var(--touch); min-height: var(--touch);
+  color: var(--muted); transition: color .15s, transform .15s;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 6px;
+}
+.fav-btn:hover { color: var(--gold); transform: scale(1.1); }
+.fav-btn.fav-active { color: var(--gold); text-shadow: 0 0 8px rgba(240,192,64,.5); }
+.fav-remove:hover { color: var(--red); }
+.fav-empty {
+  text-align: center; padding: var(--s-7) var(--s-4); color: var(--muted);
+  background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius);
+  margin-top: var(--s-4);
+}
+.fav-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+}
+.fav-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: var(--s-4);
+  cursor: pointer; transition: border-color .2s, transform .15s, box-shadow .2s;
+}
+.fav-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: var(--glow-gold); }
+.fav-card:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
+.fav-card-header {
+  display: flex; justify-content: space-between; align-items: start;
+  margin-bottom: var(--s-3); gap: var(--s-2);
+}
+.fav-card-name { font-weight: 700; font-size: var(--fs-4); flex: 1; min-width: 0; }
+.fav-card-status {
+  display: flex; gap: var(--s-2); align-items: center; flex-wrap: wrap;
+  margin-bottom: var(--s-3);
+}
+.fav-card-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2);
+}
+.fav-stat {
+  padding: var(--s-2); background: var(--surface2); border-radius: var(--radius-sm); text-align: center;
+}
+.fav-stat-label {
+  font-size: var(--fs-1); color: var(--muted); text-transform: uppercase; letter-spacing: .5px;
+  display: block; margin-bottom: 4px;
+}
+.fav-stat-value { font-size: 1rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.fav-pace-row {
+  display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap;
+  margin-top: var(--s-3); padding-top: var(--s-3); border-top: 1px solid var(--border-light);
+  font-size: var(--fs-2);
+}
+.fav-pace-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.fav-pace-dot.above { background: var(--green); box-shadow: 0 0 6px rgba(63,185,80,.4); }
+.fav-pace-dot.below { background: var(--red); box-shadow: 0 0 6px rgba(248,81,73,.4); }
+.fav-pace-dot.on    { background: var(--blue); box-shadow: 0 0 6px rgba(56,139,253,.3); }
+
+/* ══════════════════════════════════════════════════════
+   COMPARE
+   ══════════════════════════════════════════════════════ */
+.compare-add-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: var(--fs-5); line-height: 1;
+  padding: 6px 8px; min-width: var(--touch); min-height: var(--touch);
+  color: var(--muted); transition: color .15s, transform .15s;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 6px;
+}
+.compare-add-btn:hover { color: var(--blue); transform: scale(1.1); }
+.compare-add-btn.compare-active { color: var(--blue); text-shadow: 0 0 8px rgba(56,139,253,.5); }
+.compare-selectors {
+  display: grid; grid-template-columns: 1fr;
+  gap: var(--s-2); margin: var(--s-4) 0;
+}
+.compare-selector {
+  display: flex; align-items: center; gap: var(--s-2);
+  padding: var(--s-2); background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.compare-color-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 8px currentColor; }
+.compare-dropdown {
+  flex: 1; min-width: 0; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text);
+  padding: 10px; min-height: var(--touch);
+  font-size: var(--fs-3); font-family: inherit; cursor: pointer;
+}
+.compare-dropdown:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 2px var(--blue-dim); }
+.compare-remove-btn {
+  background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+  padding: 0; min-width: var(--touch); min-height: var(--touch); border-radius: var(--radius-sm);
+  font-size: var(--fs-3); cursor: pointer; transition: all .15s;
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.compare-remove-btn:hover { border-color: var(--red); color: var(--red); }
+.compare-empty {
+  text-align: center; padding: var(--s-7) var(--s-4); color: var(--muted);
+  background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius);
+}
+.compare-insights {
+  margin: var(--s-4) 0;
+  display: flex; flex-direction: column; gap: var(--s-2);
+}
+.compare-insight {
+  padding: var(--s-3); background: var(--blue-dim);
+  border: 1px solid rgba(56,139,253,.25);
+  border-radius: var(--radius-sm); font-size: var(--fs-3); line-height: 1.5;
+}
+.compare-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter) var(--s-4); }
+.compare-table {
+  width: 100%; border-collapse: collapse; min-width: 480px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+}
+.compare-table th,
+.compare-table td {
+  padding: 10px var(--s-3); text-align: left; border-bottom: 1px solid var(--border-light);
+  font-size: var(--fs-3);
+}
+.compare-table th {
+  font-weight: 700; font-size: var(--fs-2); background: var(--surface2);
+  text-transform: uppercase; letter-spacing: .5px;
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table td { font-variant-numeric: tabular-nums; }
+.compare-stat-label { font-weight: 600; color: var(--muted); font-size: var(--fs-2); text-transform: none; letter-spacing: 0; }
+
+/* ── Mobile card layout for compare-table (transposed stats, < 640px) ── */
+@media (max-width: 639px) {
+  .compare-table-wrap { overflow-x: visible; margin: 0; padding: 0 0 var(--s-4); }
+  .compare-table { display: block; min-width: 0; }
+  .compare-table thead { display: none; }
+  .compare-table tbody { display: block; }
+  .compare-table tr {
+    display: block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+  }
+  .compare-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-3);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: var(--fs-3);
+  }
+  .compare-table td.compare-stat-label {
+    font-size: var(--fs-4);
+    font-weight: 700;
+    color: var(--text);
+    padding-bottom: var(--s-2);
+    margin-bottom: var(--s-2);
+    border-bottom: 1px solid var(--border);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .compare-table td:not(.compare-stat-label)::before {
+    content: attr(data-label);
+    font-size: var(--fs-1);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .compare-table tr td:last-child { border-bottom: none; }
+}
+.compare-chart-wrap {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: var(--s-4);
+  height: min(300px, 55vh); position: relative;
+}
+

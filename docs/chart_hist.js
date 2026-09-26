@@ -56,7 +56,7 @@ function renderHistorical(t) {
       ctx2.save();
       ctx2.beginPath();
       ctx2.setLineDash([6, 4]);
-      ctx2.strokeStyle = 'rgba(188,140,255,0.5)';
+      ctx2.strokeStyle = themeRgba(PALETTE.muted, 0.6);
       ctx2.lineWidth = 1;
       // Span the plot area, not the y-axis bounding box. yScale.left sits
       // behind the tick labels, so the line started well left of the first bar
@@ -64,7 +64,7 @@ function renderHistorical(t) {
       ctx2.moveTo(chartInstance.scales.x.left, y);
       ctx2.lineTo(chartInstance.scales.x.right, y);
       ctx2.stroke();
-      ctx2.fillStyle = 'rgba(188,140,255,0.7)';
+      ctx2.fillStyle = themeRgba(PALETTE.muted, 0.8);
       ctx2.font = '9px -apple-system, system-ui, sans-serif';
       ctx2.textAlign = 'right';
       ctx2.fillText(`avg ${fmt(histAvg)}`, chartInstance.scales.x.right, y - 4);
@@ -210,8 +210,8 @@ function renderRegCurve(t) {
   // Mark where "today" is
   const todayIdx = labels.findIndex(db => db <= t.days_remaining);
   const pointColors = labels.map((db, i) => {
-    if (isDone(t)) return 'rgba(88,166,255,0.6)';
-    return db >= t.days_remaining ? 'rgba(88,166,255,0.6)' : 'rgba(240,192,64,0.6)';
+    if (isDone(t)) return themeRgba(PALETTE.blue, 0.6);
+    return db >= t.days_remaining ? themeRgba(PALETTE.blue, 0.6) : themeRgba(PALETTE.gold, 0.6);
   });
 
   const _regGrad = {};
@@ -236,7 +236,7 @@ function renderRegCurve(t) {
       labels: labels.map(db => db === 0 ? 'Event' : db >= 7 ? `${db}d` : `${db}d`),
       datasets: [{
         data,
-        borderColor: 'rgba(240,192,64,0.6)',
+        borderColor: themeRgba(PALETTE.gold, 0.6),
         backgroundColor: (context) => areaGradient(context.chart, _regGrad, [
           [0, themeRgba(PALETTE.gold, 0.16)],
           [1, themeRgba(PALETTE.gold, 0.02)]

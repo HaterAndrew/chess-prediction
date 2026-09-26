@@ -167,13 +167,13 @@ function renderHistorical(t) {
     const yearLabel = h.isCurrent ? `${h.year} ${isDone(t) ? '(final)' : '(est)'}` : `${h.year}${star}`;
     const rowClass = h.isCurrent ? ' class="current-year"' : '';
     const countCell = h.adjusted
-      ? `${fmt(h.count)} <span style="color:var(--muted);font-size:var(--fs-2)">(was ${fmt(h.count_raw)})</span>`
+      ? `${fmt(h.count)} <span class="comp-was">(was ${fmt(h.count_raw)})</span>`
       : fmt(h.count);
     return `<tr${rowClass}><td data-label="Year">${yearLabel}</td><td data-label="Count">${countCell}</td><td data-label="YoY" class="${cls}">${diff != null ? (diff > 0 ? '+' : '') + fmt(diff) : '–'}</td><td data-label="Change" class="${cls}">${pct != null ? (diff > 0 ? '+' : '') + pct + '%' : '–'}</td></tr>`;
   }).join('');
 
   const footnote = hasAdjusted
-    ? `<div style="margin-top:8px;color:var(--muted);font-size:var(--fs-2);line-height:1.45">* 2019 and 2022 World Open were a single combined registration page (9 sections). Counts adjusted to top-6 only for apples-to-apples vs the 2023+ split. Estimates use chessevents.com final-standings ratios.</div>`
+    ? `<div class="comp-footnote">* 2019 and 2022 World Open were a single combined registration page (9 sections). Counts adjusted to top-6 only for apples-to-apples vs the 2023+ split. Estimates use chessevents.com final-standings ratios.</div>`
     : '';
 
   wrap.innerHTML = `

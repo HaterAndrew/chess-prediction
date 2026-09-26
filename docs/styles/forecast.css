@@ -1,0 +1,140 @@
+/* forecast.css — the Forecast page (index.html #panel-predictions): the
+   view's dateline under its title, the pace note, the hero cell (the
+   forecast figure typed and highlighted, its range as a bracket, the week's
+   bars, the three figures with their progress lines folded under), the
+   festival cluster and the chart on ruled paper. The evidence sections
+   below the chart are in sections.css; the Up Next cards in season.css. */
+
+/* ── The dateline under the view title (shell.js reflectSubject) ── */
+.view-title-block { min-width: 0; }
+.view-dateline { color: var(--muted); font: 400 13px var(--display); margin: 4px 0 0; }
+.view-dateline[hidden] { display: none; }
+.view-dateline .num { font-size: 12px; }
+
+/* ── Pace note: the verdict against last year, on the stock its state
+   calls for (panels_info.js renderDelta). ── */
+.pace-note { align-items: center; display: grid; gap: 4px 20px; grid-template-columns: minmax(0, 1fr) auto; }
+.pace-figure { font: 700 26px/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.pace-figure:empty { display: none; }
+.pace-ahead { color: var(--signal); }
+.pace-behind { color: var(--ember); }
+.pace-even { color: var(--ink); }
+.note-context { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.note-context:empty { display: none; }
+
+/* ── Hero: a wallchart cell. ── */
+.hero { border-bottom: 1px solid var(--line); border-top: 2px solid var(--line); display: grid; gap: var(--s-4); grid-template-columns: 1fr; padding: var(--s-4) 0; }
+.hero-primary, .hero-week { min-width: 0; }
+.hero-label { align-items: center; color: var(--muted); display: flex; font: 700 var(--fs-label) var(--display); font-stretch: var(--stretch-label); gap: 6px; letter-spacing: var(--track-label); margin-bottom: 8px; text-transform: uppercase; }
+.hero-help { color: var(--muted); cursor: help; display: inline-flex; }
+.hero-help svg { height: 14px; width: 14px; }
+/* The figure is typed, and the highlighter marks it: it is the thing you came for. */
+.hero-number { background: var(--mark); color: var(--mark-ink); display: inline-block; font: 700 clamp(52px, 6vw, 80px)/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.03em; padding: 0 .06em; }
+.hero-number-final { background: transparent; color: var(--ink); padding: 0; }
+.hero-ci { margin-top: 14px; max-width: 380px; }
+.hero-narrative:empty { display: none; }
+/* The 80% range as a bracket; the estimate is the blue pen's tick. */
+.range { align-items: center; display: grid; gap: 10px; grid-template-columns: auto 1fr auto; }
+.range-bound { font: 700 14px var(--mono); font-variant-numeric: tabular-nums; }
+.range-track { border-left: 2px solid var(--ink); border-right: 2px solid var(--ink); height: 16px; position: relative; }
+.range-track::before { background: var(--ink); content: ""; height: 1px; left: 0; position: absolute; right: 0; top: 50%; }
+.range-mark { background: var(--signal); cursor: help; height: 24px; position: absolute; top: -4px; transform: translateX(-50%); transition: left var(--dur-slow) var(--ease-out); width: 4px; }
+.range-caption { color: var(--muted); font-size: 12px; margin-top: 6px; }
+.hero-tags { align-items: center; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.ci-final { font: 700 20px var(--mono); }
+
+/* The week: one bar per day, typed figures. */
+.hero-week-label { color: var(--muted); font: 700 var(--fs-label) var(--display); font-stretch: var(--stretch-label); letter-spacing: var(--track-label); margin-bottom: 6px; text-transform: uppercase; }
+.hero-week-bars { display: grid; gap: 3px; }
+.week-row { align-items: center; display: grid; gap: 8px; grid-template-columns: 62px 1fr 34px; }
+.week-est { opacity: .55; }
+.week-date { color: var(--muted); font: 12px var(--mono); text-align: right; white-space: nowrap; }
+.week-track { background: var(--raised); height: 10px; overflow: hidden; }
+.week-fill { background: var(--signal); height: 100%; transition: width var(--dur-slow) var(--ease-out); }
+.week-n { color: var(--ink-2); font: 12px var(--mono); font-variant-numeric: tabular-nums; }
+.week-peak { color: var(--ink); font-weight: 700; }
+.week-note { color: var(--muted); font-size: 12px; margin-top: 4px; }
+.hero-week-empty { border: 1px dashed var(--line-soft); color: var(--muted); font-size: 12px; padding: 12px 8px; text-align: center; }
+
+/* The three figures, ruled apart; the progress lines fold under the first two. */
+.hero-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.kpi-card { border-left: 1px solid var(--line-soft); display: flex; flex-direction: column; min-width: 0; padding: 0 var(--s-3); }
+.kpi-card:first-child { border-left: 0; padding-left: 0; }
+.kpi-label { color: var(--muted); font: 700 var(--fs-label) var(--display); font-stretch: var(--stretch-label); letter-spacing: var(--track-label); margin-bottom: 6px; text-transform: uppercase; }
+.kpi-value { font: 700 28px/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.kpi-value.kpi-value-text { font-size: 16px; line-height: 1.2; }
+.kpi-sub { color: var(--muted); font-size: 12px; margin-top: 6px; }
+.v-blue { color: var(--blue); }
+.v-red { color: var(--ember); }
+.v-green { color: var(--green); }
+.v-gold, .v-orange, .v-purple { color: var(--ink); }
+.kpi-fold { margin-top: 10px; }
+.kpi-fold:empty { display: none; }
+.fold-head { color: var(--muted); display: flex; font-size: 11px; gap: 8px; justify-content: space-between; margin-bottom: 4px; }
+.fold-head .num { color: var(--ink); font-weight: 700; }
+.fold-track { background: var(--raised); height: 6px; overflow: hidden; }
+.fold-fill { background: var(--ink); height: 100%; transition: width var(--dur-slow) var(--ease-out); }
+.fold-sub { color: var(--muted); font: 11px var(--mono); margin-top: 4px; }
+
+@media (min-width: 640px) {
+  .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .hero-kpis { border-top: 1px solid var(--line-soft); grid-column: 1 / -1; padding-top: var(--s-4); }
+  .kpi-card { padding: 0 var(--s-4); }
+}
+@media (min-width: 1024px) {
+  .hero { align-items: start; gap: var(--s-5); grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1.3fr); padding: var(--s-5) 0; }
+  .hero-week, .hero-kpis { border-left: 1px solid var(--line-soft); padding-left: var(--s-5); }
+  .hero-kpis { border-top: 0; grid-column: auto; padding-top: 0; }
+}
+/* A phone pairs Registered with Days to Event, so their folded lines have
+   room, and sets the pace on its own row under a rule. */
+@media (max-width: 639px) {
+  .hero-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--s-4); }
+  .kpi-value { font-size: 24px; }
+  .kpi-card:nth-child(3) { border-left: 0; border-top: 1px solid var(--line-soft); grid-column: 1 / -1; padding-left: 0; padding-top: var(--s-3); }
+}
+
+/* ── Festival cluster: the sub-events of one festival, switchable in place ── */
+.festival-cluster:empty { display: none; }
+.festival-cluster { margin-top: 14px; max-width: 560px; }
+.fc-head { align-items: baseline; display: flex; gap: var(--s-2); margin-bottom: 8px; }
+.fc-title { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+.fc-sub { color: var(--muted); font-size: 12px; }
+.fc-rows { display: grid; gap: 6px; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
+.fc-card { background: transparent; border: 1px solid var(--line); color: var(--ink); cursor: pointer; font: inherit; min-width: 0; padding: 8px 10px; text-align: left; transition: background var(--dur-fast); }
+.fc-card:hover { background: var(--raised); }
+.fc-card-active, .fc-card-active:hover { background: var(--mark); color: var(--mark-ink); }
+.fc-card-label { font: 700 var(--fs-label) var(--display); letter-spacing: .04em; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.fc-card-num { font: 700 18px var(--mono); margin: 2px 0; }
+.fc-card-sub { color: var(--muted); font: 12px var(--mono); }
+.fc-card-active .fc-card-sub { color: var(--mark-ink); }
+
+/* ── The chart on ruled paper (chart_main.js) ── */
+.chart-card { border: 1px solid var(--line); margin-bottom: var(--s-5); padding: var(--s-4); position: relative; }
+.chart-top { align-items: flex-start; display: flex; flex-wrap: wrap; gap: var(--s-3); justify-content: space-between; margin-bottom: var(--s-3); }
+.chart-title { font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; margin: 0; text-transform: uppercase; }
+.chart-subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.chart-top-right { align-items: flex-end; display: flex; flex-direction: column; gap: 8px; }
+.chart-legend { align-items: center; display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.legend-item { align-items: center; color: var(--muted); display: flex; font-size: 12px; gap: 6px; }
+.legend-swatch { height: 3px; width: 16px; }
+.legend-swatch.dashed { background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 10px); }
+.legend-swatch.band { height: 10px; opacity: .4; }
+.chart-wrap { height: 320px; position: relative; }
+.chart-mobile-dates { display: none; }
+@media (min-width: 768px) { .chart-wrap { height: 360px; } }
+@media (min-width: 1024px) {
+  .chart-card { padding: var(--s-5); }
+  .chart-wrap { height: 380px; }
+}
+@media (max-width: 639px) {
+  .chart-card { padding: var(--s-3); }
+  .chart-wrap { height: 340px; }
+  .chart-subtitle { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chart-top { flex-direction: column; }
+  .chart-top-right { align-items: flex-start; }
+  /* The date pills the chart hides on a phone, typed under it instead. */
+  .chart-mobile-dates { border-top: 1px dashed var(--line-soft); color: var(--muted); display: flex; flex-wrap: wrap; font: 12px var(--mono); gap: 14px; margin-top: 8px; padding: 6px 2px 0; }
+  .chart-mobile-dates .cmd-eb { color: var(--signal); font-weight: 700; }
+  .chart-mobile-dates .cmd-event { color: var(--ember); font-weight: 700; }
+}

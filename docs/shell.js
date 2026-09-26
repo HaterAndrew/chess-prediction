@@ -49,9 +49,12 @@ function reflectNav(tab) {
     if (on) b.setAttribute('aria-current', 'true');
     else b.removeAttribute('aria-current');
   });
+  // The Forecast is titled by its subject; every other view by its name. The
+  // dateline and the action row (Add to Compare) belong to the Forecast alone.
   const title = document.getElementById('viewTitle');
-  if (title) title.textContent = VIEW_TITLES[tab] || '';
-  // The action row (Add to Compare) belongs to the Forecast alone.
+  if (title) title.textContent = (tab === 'predictions' && _subjectTitle) ? _subjectTitle : (VIEW_TITLES[tab] || '');
+  const dateline = document.getElementById('viewDateline');
+  if (dateline) dateline.hidden = tab !== 'predictions' || !_subjectTitle;
   const actions = document.getElementById('viewActions');
   if (actions) actions.hidden = tab !== 'predictions';
 }
@@ -65,12 +68,36 @@ function openGroupSheet(group, anchor) {
 
 // ── The subject ──
 // The top bar names the selected tournament with its status pill and, for
-// an upcoming one, its T-minus. selectTournament calls this on every change.
+// an upcoming one, its T-minus; the Forecast's title and dateline follow it.
+// selectTournament calls this on every change.
+let _subjectTitle = '';
+
+function _subjectDateline(t) {
+  const parts = [t.status === 'live' ? 'Upcoming' : t.status === 'complete' ? 'Complete' : 'Historical'];
+  if (t.status === 'live' && t.days_remaining != null) parts.push(`<span class="num">T-${t.days_remaining}</span>`);
+  if (t.event_start) {
+    const span = (t.event_end && t.event_end !== t.event_start) ? `${fmtDate(t.event_start)} to ${fmtDate(t.event_end)}` : fmtDate(t.event_start);
+    parts.push(`<span class="num">${span}</span>`);
+  }
+  const venue = [t.venue_city, t.venue_state].filter(Boolean).join(', ');
+  if (venue) parts.push(esc(venue));
+  return parts.join(' · ');
+}
+
 function reflectSubject(t) {
+  _subjectTitle = `${t.family} ${t.year}`;
   const label = document.getElementById('tournLabel');
   if (label) {
-    label.textContent = `${t.family} ${t.year}`;
-    label.title = `${t.family} ${t.year}`;
+    label.textContent = _subjectTitle;
+    label.title = _subjectTitle;
+  }
+  const onForecast = typeof _currentTab === 'undefined' || _currentTab === 'predictions';
+  const title = document.getElementById('viewTitle');
+  if (title && onForecast) title.textContent = _subjectTitle;
+  const dateline = document.getElementById('viewDateline');
+  if (dateline) {
+    dateline.innerHTML = _subjectDateline(t);
+    dateline.hidden = !onForecast;
   }
   const pill = document.getElementById('tournStatus');
   if (pill) {

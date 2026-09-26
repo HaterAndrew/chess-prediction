@@ -1,0 +1,135 @@
+/* season.css — the Season page (index.html #panel-season): the summary
+   line, the Upcoming Events timeline (a strip that scrolls on a phone), the
+   tournament card (Next Up, then Later; the Forecast's Up Next strip reuses
+   it), and the Tournament Overview table. panels_grid.js, panels_cal.js and
+   season_cards.js render into it. */
+
+/* ── Summary line ── */
+.summary-bar { border-bottom: 1px solid var(--line-soft); color: var(--muted); display: flex; flex-wrap: wrap; font-size: 12px; gap: 6px 20px; padding: 10px 0; }
+.summary-bar .num { color: var(--ink); font: 700 14px var(--mono); }
+.summary-bar button.link { color: var(--ink); font-size: 12px; }
+.summary-bar button.link .num { color: var(--signal); }
+
+/* ── Upcoming Events: every open tournament on one rule by date, the dot
+   sized by its forecast and inked by its pace; today is the highlighter tick ── */
+.calendar-strip:empty { display: none; }
+.calendar-strip { border: 1px solid var(--line); margin: var(--s-4) 0; padding: var(--s-3) var(--s-4) var(--s-4); }
+.cal-head { align-items: center; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); justify-content: space-between; margin-bottom: 10px; }
+.cal-title { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+.cal-legend { color: var(--muted); display: flex; flex-wrap: wrap; font-size: 12px; gap: var(--s-3); }
+.cal-legend-item { align-items: center; display: inline-flex; gap: 5px; }
+.cal-dot-mini { border: 1px solid var(--ink); border-radius: 50%; display: inline-block; height: 9px; width: 9px; }
+.cal-dot-mini.cal-pace-pos { background: var(--signal); border-color: var(--signal); }
+.cal-dot-mini.cal-pace-neg { background: var(--ember); border-color: var(--ember); }
+.cal-track-wrap { padding: 14px 14px 26px; position: relative; }
+.cal-track { background: linear-gradient(180deg, transparent 14px, var(--ink) 14px, var(--ink) 16px, transparent 16px); height: 30px; position: relative; }
+.cal-axis-now { background: var(--mark); border: 1px solid var(--ink); bottom: -6px; left: 0; pointer-events: none; position: absolute; top: -6px; transform: translateX(-50%); width: 6px; }
+.cal-dot { background: var(--void); border: 2px solid var(--ink); border-radius: 50%; cursor: pointer; padding: 0; position: absolute; top: 50%; transform: translate(-50%, -50%); transition: transform var(--dur-fast) var(--ease-out); }
+.cal-dot::before { content: ""; inset: -12px; position: absolute; }
+.cal-dot.cal-pace-pos { background: var(--signal); border-color: var(--signal); }
+.cal-dot.cal-pace-neg { background: var(--ember); border-color: var(--ember); }
+.cal-dot:hover, .cal-dot:focus-visible { transform: translate(-50%, -50%) scale(1.25); z-index: 2; }
+.cal-axis { height: 14px; margin-top: 6px; position: relative; }
+.cal-axis-tick { color: var(--muted); font: 11px var(--mono); letter-spacing: .04em; position: absolute; text-transform: uppercase; transform: translateX(-50%); white-space: nowrap; }
+.cal-tooltip { background: var(--panel); border: 1px solid var(--line); box-shadow: var(--elevation); max-width: 320px; min-width: 220px; opacity: 0; padding: 12px 14px; pointer-events: none; position: absolute; transform: translateY(4px); transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); z-index: var(--layer-popover); }
+.cal-tooltip[hidden] { display: none; }
+.cal-tooltip.cal-tooltip-show { opacity: 1; transform: translateY(0); }
+.cal-tooltip::after { background: var(--panel); border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); bottom: -6px; content: ""; height: 10px; left: 50%; position: absolute; transform: translateX(-50%) rotate(45deg); width: 10px; }
+.cal-tip-name { font: 800 14px var(--display); line-height: 1.25; margin-bottom: 4px; }
+.cal-tip-meta { align-items: center; border-bottom: 1px solid var(--line-soft); color: var(--muted); display: flex; font: 12px var(--mono); gap: 6px; margin-bottom: 8px; padding-bottom: 8px; }
+.cal-tip-row { align-items: baseline; display: flex; font-size: 12px; justify-content: space-between; margin-top: 4px; }
+.cal-tip-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+.cal-tip-value { font: 700 13px var(--mono); }
+.cal-tip-pace-pos { color: var(--signal); }
+.cal-tip-pace-neg { color: var(--ember); }
+@media (max-width: 639px) {
+  .calendar-strip { padding: var(--s-3) 0; }
+  .cal-head { padding: 0 var(--s-3); }
+  .cal-track-wrap { overflow-x: auto; overscroll-behavior-x: contain; padding: 14px var(--s-4) 22px; }
+  .cal-track, .cal-axis { min-width: 640px; }
+}
+
+/* ── The card (season_cards.js): the selected one under the highlighter ── */
+.mini-grid { display: grid; gap: var(--s-3); grid-template-columns: 1fr; }
+.mini-grid.mini-grid-tiered { display: block; }
+.mini-section-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin: var(--s-4) 0 8px; text-transform: uppercase; }
+.mini-grid-featured { display: grid; gap: var(--s-3); grid-template-columns: 1fr; margin-bottom: var(--s-4); }
+.mini-grid-rest { display: grid; gap: var(--s-3); grid-template-columns: 1fr; }
+.mini-card { background: var(--panel); border: 1px solid var(--line); color: var(--ink); cursor: pointer; display: grid; gap: 8px; min-height: var(--touch); min-width: 0; padding: var(--s-4); transition: background var(--dur-fast); }
+.mini-card:hover { background: var(--raised); }
+.mini-card:focus-visible { outline-offset: -2px; }
+.mini-card-active, .mini-card-active:hover { background: var(--mark); color: var(--mark-ink); }
+.mini-card-active .mini-card-details, .mini-card-active .card-delta, .mini-card-active .tag { border-color: var(--mark-ink); color: var(--mark-ink); }
+.mini-card-active .tag { background: transparent; }
+.mini-card-active .live-dot { background: var(--mark-ink); }
+.mini-card-header { align-items: center; display: flex; gap: 8px; justify-content: space-between; }
+.mini-card-name { flex: 1 1 auto; font: 700 14px var(--display); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini-card-chips { align-items: center; display: flex; flex: none; gap: 6px; }
+.card-delta { font: 700 12px var(--mono); }
+.card-delta.pos { color: var(--signal); }
+.card-delta.neg { color: var(--ember); }
+.mini-card-figure { align-items: baseline; display: flex; flex-wrap: wrap; gap: 10px; }
+.mini-card-number { font: 700 26px/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.mini-grid-featured .mini-card-number { font-size: 32px; }
+.mini-card-details { color: var(--muted); font-size: 12px; }
+.rule-bar { background: var(--raised); height: 5px; overflow: hidden; }
+.rule-bar-fill { background: var(--ink); height: 100%; transition: width var(--dur-slow) var(--ease-out); }
+.mini-card-active .rule-bar { background: color-mix(in srgb, var(--mark-ink) 15%, transparent); }
+@media (min-width: 640px) {
+  .mini-grid-featured { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mini-grid-rest { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) { .mini-grid-rest { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { .mini-grid-rest { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* ── Tournament Overview (panels_grid.js renderAllTournaments) ── */
+.all-tournaments { margin-bottom: var(--s-7); }
+.tt-head { align-items: center; display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-4); justify-content: space-between; margin-bottom: var(--s-4); }
+.tt-controls { align-items: center; display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.tt-search { align-items: center; border: 1px solid var(--line); display: flex; min-width: 220px; padding: 0 10px; }
+.tt-search:focus-within { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.tt-search-icon { color: var(--muted); display: inline-flex; margin-right: 6px; }
+.tt-search-icon svg { height: 15px; width: 15px; }
+.tt-search input { background: none; border: 0; color: var(--ink); flex: 1; font: 13px var(--display); min-height: 34px; min-width: 0; outline: none; }
+.tt-search input::placeholder { color: var(--muted); }
+.tourney-table { border-collapse: collapse; min-width: 640px; width: 100%; }
+.tourney-table th { border-bottom: 2px solid var(--line); color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); padding: 8px 10px; text-align: left; text-transform: uppercase; white-space: nowrap; }
+.tourney-table th.sortable { cursor: pointer; user-select: none; }
+.tourney-table th.sortable:hover { color: var(--ink); }
+/* the sort caret is drawn, not a glyph */
+.tourney-table th.sortable::after { border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; content: ""; display: inline-block; margin-left: 6px; opacity: .35; vertical-align: middle; }
+.tourney-table th.sortable.asc::after, .tourney-table th.sortable.desc::after { color: var(--signal); opacity: 1; }
+.tourney-table th.sortable.asc::after { transform: rotate(180deg); }
+.tourney-table td { border-bottom: 1px solid var(--line-soft); font-size: 13px; padding: 10px; vertical-align: middle; }
+.tourney-table tr { cursor: pointer; }
+.tourney-table tbody tr:hover td { background: var(--raised); }
+.tourney-table tbody tr:focus-visible { outline-offset: -2px; }
+.tourney-table tbody tr.chart-highlight td, .comp-table tbody tr.chart-highlight td { background: var(--stock-yellow); }
+.tourney-table tr:last-child td { border-bottom: 0; }
+.t-name { font-weight: 700; }
+.t-sub { color: var(--muted); font: 12px var(--mono); margin-top: 2px; }
+.td-current { color: var(--signal); font: 700 13px var(--mono); }
+.td-predicted { font: 700 13px var(--mono); }
+.td-range { color: var(--muted); font: 12px var(--mono); }
+.td-pace { color: var(--muted); font: 12px var(--mono); margin-left: 6px; }
+.td-progress { align-items: center; display: flex; gap: 8px; }
+.pace-bar-wrap { background: var(--raised); display: inline-block; height: 5px; overflow: hidden; vertical-align: middle; width: 60px; }
+.pace-bar-fill { background: var(--ink); display: block; height: 100%; }
+.td-pct { color: var(--muted); font: 12px var(--mono); }
+.tt-empty { color: var(--muted); padding: 32px 0; text-align: center; }
+@media (max-width: 639px) {
+  .tt-controls { width: 100%; }
+  .tt-search { flex: 1; min-width: 0; }
+  .tt-search input { font-size: 16px; }
+  /* each row becomes a ruled card */
+  .tourney-table { display: block; min-width: 0; }
+  .tourney-table thead { display: none; }
+  .tourney-table tbody { display: block; }
+  .tourney-table tr { border: 1px solid var(--line); display: block; margin-bottom: var(--s-3); padding: var(--s-3) var(--s-4); }
+  .tourney-table tbody tr:hover td { background: transparent; }
+  .tourney-table td { align-items: center; display: flex; gap: var(--s-3); justify-content: space-between; padding: 6px 0; }
+  .tourney-table td::before { color: var(--muted); content: attr(data-label); flex-shrink: 0; font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+  .tourney-table td:first-child { align-items: flex-start; border-bottom: 1px solid var(--line); flex-direction: column; gap: 2px; margin-bottom: var(--s-2); padding-bottom: var(--s-2); padding-top: 0; }
+  .tourney-table td:first-child::before { display: none; }
+  .tourney-table td:last-child { border-bottom: 0; padding-bottom: 0; }
+}

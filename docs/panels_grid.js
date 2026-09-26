@@ -92,11 +92,9 @@ function renderAllTournaments() {
       : '<span class="status-pill pill-complete">Complete</span>';
 
     const pct = t.point_estimate > 0 ? Math.min(100, (t.current_count / t.point_estimate * 100)).toFixed(0) : 100;
-    const paceColor = isLive ? (pct > 30 ? 'var(--green)' : pct > 15 ? 'var(--gold)' : 'var(--blue)') : 'var(--muted)';
-
     const ci = t.ci_lower === t.ci_upper ? '–' : `${fmt(t.ci_lower)} – ${fmt(t.ci_upper)}`;
 
-    // Compute daily pace for live tournaments
+    // The recent daily pace, for live tournaments
     let paceStr = '';
     if (isLive && t.daily_data && t.daily_data.length >= 3) {
       const recent = t.daily_data.slice(-7);
@@ -104,25 +102,22 @@ function renderAllTournaments() {
         const daySpan = recent[recent.length-1][0] - recent[0][0];
         const regSpan = recent[recent.length-1][1] - recent[0][1];
         const rate = daySpan > 0 ? (regSpan / daySpan).toFixed(1) : '0';
-        paceStr = `<span style="font-size:var(--fs-2);color:var(--green)">${rate}/day</span>`;
+        paceStr = `<span class="td-pace">${rate}/day</span>`;
       }
     }
 
-    return `<tr data-act="select-tournament-top" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" style="cursor:pointer">
-      <td data-label="Tournament"><div class="t-name" title="${esc(t.family)} ${t.year}">${esc(t.family)}</div><div class="t-sub">${t.year}${isLive ? ' · ' + t.days_remaining + 'd out' : ''}</div></td>
+    return `<tr data-act="select-tournament-forecast" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0">
+      <td data-label="Tournament"><div class="t-name" title="${esc(t.family)} ${t.year}">${esc(t.family)}</div><div class="t-sub">${t.year}${isLive ? ' · T-' + t.days_remaining : ''}</div></td>
       <td data-label="Status">${pill}</td>
-      <td data-label="Event Date">${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
-      <td data-label="Current" style="font-weight:600;color:var(--blue)">${fmt(t.current_count)} ${paceStr}</td>
-      <td data-label="Predicted" style="font-weight:700;color:var(--gold)">${fmt(t.point_estimate)}</td>
-      <td data-label="Likely Range" style="font-size:var(--fs-3);color:var(--muted)">${ci}</td>
-      <td data-label="Progress">
-        <span class="pace-bar-wrap"><span class="pace-bar-fill" style="width:${pct}%;background:${paceColor}"></span></span>
-        <span style="font-size:var(--fs-2);color:var(--muted)">${pct}%</span>
-      </td>
+      <td data-label="Event Date" class="num">${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
+      <td data-label="Current"><span class="td-current">${fmt(t.current_count)}</span>${paceStr}</td>
+      <td data-label="Predicted" class="td-predicted">${fmt(t.point_estimate)}</td>
+      <td data-label="Likely Range" class="td-range">${ci}</td>
+      <td data-label="Progress"><span class="td-progress"><span class="pace-bar-wrap" aria-hidden="true"><span class="pace-bar-fill" style="width:${pct}%"></span></span><span class="td-pct">${pct}%</span></span></td>
     </tr>`;
   }).join('');
   if (active.length === 0) {
-    body.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:32px 0;color:var(--muted);font-size:var(--fs-3)">No tournaments match the current filter.</td></tr>`;
+    body.innerHTML = '<tr><td colspan="7" class="tt-empty">No tournaments match the current filter.</td></tr>';
   }
 }
 
@@ -143,11 +138,11 @@ function renderSummaryBar() {
 
   const el = document.getElementById('summaryBar');
   el.innerHTML = `
-    <span><strong style="color:var(--green)">${live.length}</strong> upcoming</span>
-    <span><strong style="color:var(--muted)">${complete.length}</strong> complete ${seasonLabel}</span>
-    <span><strong style="color:var(--purple)">${historical.length}</strong> historical</span>
-    <span><strong style="color:var(--blue)">${fmt(totalRegs)}</strong> YTD entries</span>
-    ${nextEvent ? `<span style="cursor:pointer" data-act="select-tournament" data-idx="${TOURNAMENT_DATA.tournaments.indexOf(nextEvent)}">Next: <strong style="color:var(--gold)">${nextEvent.family}</strong> in ${nextEvent.days_remaining}d</span>` : ''}
+    <span><strong class="num">${live.length}</strong> upcoming</span>
+    <span><strong class="num">${complete.length}</strong> complete ${seasonLabel}</span>
+    <span><strong class="num">${historical.length}</strong> historical</span>
+    <span><strong class="num">${fmt(totalRegs)}</strong> YTD entries</span>
+    ${nextEvent ? `<button type="button" class="link" data-act="select-tournament-forecast" data-idx="${TOURNAMENT_DATA.tournaments.indexOf(nextEvent)}">Next: <strong>${esc(nextEvent.family)}</strong> in <span class="num">${nextEvent.days_remaining}</span>d</button>` : ''}
   `;
 }
 

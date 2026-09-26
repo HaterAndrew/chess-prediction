@@ -1,85 +1,84 @@
-// panels_info.js — delta banner, progress bars, timeline, milestones and
-// fee panel renderers, split verbatim from app.js (C8).
+// panels_info.js — the pace note, the progress lines folded under the hero's
+// figures, the key milestones, the milestone strip and the fee panel.
 
 // ══════════════════════════════════════════════════════════
-// DELTA BANNER
+// PACE NOTE
 // ══════════════════════════════════════════════════════════
-function renderDelta(t) {
+// The verdict against last year at the top of the Forecast, printed on the
+// stock its state calls for: blue for ahead, pink for behind, yellow for on
+// pace or no comparison (controls.css .note, forecast.css .pace-note).
+function _paceNote(kind, main, sub, figure) {
   const banner = document.getElementById('deltaBanner');
-  const icon = document.getElementById('deltaIcon');
-  const main = document.getElementById('deltaMain');
-  const sub = document.getElementById('deltaSub');
-  const ctx = document.getElementById('deltaContext');
+  const stock = { ahead: 'note-blue', behind: 'note-ember', even: 'note-amber', plain: '' }[kind] || '';
+  banner.className = `note pace-note ${stock}`.trim();
+  document.getElementById('deltaMain').textContent = main;
+  document.getElementById('deltaSub').textContent = sub;
   const val = document.getElementById('deltaValue');
+  val.textContent = figure;
+  val.className = `pace-figure num pace-${kind === 'plain' ? 'even' : kind}`;
+}
 
-  // Multi-year at-T context — stakeholder-requested sub-line under the YoY
-  // headline. Verdict-first phrasing ("Tracking [ahead/behind/on pace] with
-  // N-year pace") so the eye lands on the direction before parsing the %.
-  if (ctx) {
-    const alert = getPaceAlert(t);
-    if (alert && alert.status) {
-      const verdict = alert.status === 'above_pace' ? 'ahead of'
-                    : alert.status === 'below_pace' ? 'behind'
-                    : 'on pace with';
-      // Prefer the explicit n_years field (pipeline 2026-05-17+); fall back
-      // to regex on the older message string for any stale website_data.json.
-      const n = alert.n_years || ((alert.message || '').match(/(\d+)-year/) || [])[1];
-      const yrs = n ? `${n}-year aggregate` : 'multi-year aggregate';
-      const dev = alert.deviation_pct;
-      const devStr = (dev > 0 ? `+${dev}` : `${dev}`) + '%';
-      ctx.textContent = `Tracking ${verdict} ${yrs} pace (${devStr})`;
-    } else {
-      ctx.textContent = '';
-    }
-  }
+// The multi-year line under the verdict. Verdict-first phrasing ("Tracking
+// ahead of 4-year aggregate pace") so the eye lands on the direction first.
+function _paceContext(t) {
+  const ctx = document.getElementById('deltaContext');
+  if (!ctx) return;
+  const alert = getPaceAlert(t);
+  if (!alert || !alert.status) { ctx.textContent = ''; return; }
+  const verdict = alert.status === 'above_pace' ? 'ahead of'
+                : alert.status === 'below_pace' ? 'behind'
+                : 'on pace with';
+  // Prefer the explicit n_years field (pipeline 2026-05-17+); fall back to
+  // the older message string for a stale website_data.json.
+  const n = alert.n_years || ((alert.message || '').match(/(\d+)-year/) || [])[1];
+  const yrs = n ? `${n}-year aggregate` : 'multi-year aggregate';
+  const dev = alert.deviation_pct;
+  ctx.textContent = `Tracking ${verdict} ${yrs} pace (${dev > 0 ? '+' : ''}${dev}%)`;
+}
 
-  if (isDone(t)) {
-    // Compare to historical average
-    if (t.historical && t.historical.length > 0) {
-      const avg = t.historical.reduce((s, h) => s + h.count, 0) / t.historical.length;
-      const diff = ((t.current_count - avg) / avg * 100);
-      const absDiff = Math.abs(diff).toFixed(1);
-      if (diff > 5) {
-        banner.className = 'delta-banner green';
-        icon.innerHTML = '&#9650;';
-        main.textContent = `${t.family} ${t.year}: Above Average`;
-        sub.textContent = `${fmt(t.current_count)} entries · ${absDiff}% above historical average of ${fmt(Math.round(avg))}`;
-        val.textContent = `+${absDiff}%`;
-        val.className = 'delta-value green';
-      } else if (diff < -5) {
-        banner.className = 'delta-banner red';
-        icon.innerHTML = '&#9660;';
-        main.textContent = `${t.family} ${t.year}: Below Average`;
-        sub.textContent = `${fmt(t.current_count)} entries · ${absDiff}% below historical average of ${fmt(Math.round(avg))}`;
-        val.textContent = `-${absDiff}%`;
-        val.className = 'delta-value red';
-      } else {
-        banner.className = 'delta-banner gold';
-        icon.innerHTML = '&#9654;';
-        main.textContent = `${t.family} ${t.year}: On Par`;
-        sub.textContent = `${fmt(t.current_count)} entries · In line with historical average of ${fmt(Math.round(avg))}`;
-        val.textContent = `${diff >= 0 ? '+' : ''}${diff.toFixed(1)}%`;
-        val.className = 'delta-value gold';
-      }
-    } else {
-      banner.className = 'delta-banner muted';
-      icon.innerHTML = '&#10003;';
-      main.textContent = `${t.family} ${t.year}: Complete`;
-      sub.textContent = `Final count: ${fmt(t.current_count)} entries`;
-      val.textContent = '';
-      val.className = 'delta-value';
-    }
+// The recent daily pace, for the verdict's second line.
+function _recentPaceSuffix(t) {
+  if (!t.daily_data || t.daily_data.length < 3) return '';
+  const recent = t.daily_data.slice(-7);
+  if (recent.length < 2) return '';
+  const daySpan = recent[recent.length - 1][0] - recent[0][0];
+  const regSpan = recent[recent.length - 1][1] - recent[0][1];
+  return daySpan > 0 ? ` · ${(regSpan / daySpan).toFixed(1)}/day recent pace` : '';
+}
+
+function _renderDeltaDone(t) {
+  if (!t.historical || t.historical.length === 0) {
+    _paceNote('plain', `${t.family} ${t.year}: Complete`, `Final count: ${fmt(t.current_count)} entries`, '');
     return;
   }
+  const avg = t.historical.reduce((s, h) => s + h.count, 0) / t.historical.length;
+  const diff = (t.current_count - avg) / avg * 100;
+  const absDiff = Math.abs(diff).toFixed(1);
+  if (diff > 5) {
+    _paceNote('ahead', `${t.family} ${t.year}: Above Average`,
+      `${fmt(t.current_count)} entries · ${absDiff}% above historical average of ${fmt(Math.round(avg))}`, `+${absDiff}%`);
+  } else if (diff < -5) {
+    _paceNote('behind', `${t.family} ${t.year}: Below Average`,
+      `${fmt(t.current_count)} entries · ${absDiff}% below historical average of ${fmt(Math.round(avg))}`, `-${absDiff}%`);
+  } else {
+    _paceNote('even', `${t.family} ${t.year}: On Par`,
+      `${fmt(t.current_count)} entries · In line with historical average of ${fmt(Math.round(avg))}`,
+      `${diff >= 0 ? '+' : ''}${diff.toFixed(1)}%`);
+  }
+}
 
-  // Live tournament — compare to historical pace
+function renderDelta(t) {
+  _paceContext(t);
+  if (isDone(t)) { _renderDeltaDone(t); return; }
+
+  // Live: compare to last year's count at the same days-to-event mark. Prefer
+  // the explicit prior_year_pace.count_at_same_point, derived from last
+  // year's actual daily registrations on this calendar day; fall back to the
+  // family-average curve only when that field is missing (no prior daily
+  // data for this family), since a curve estimate can drift when the prior
+  // year's curve was unusual.
   if (t.historical && t.historical.length > 0) {
     const lastYr = t.historical[t.historical.length - 1];
-    // Prefer the explicit prior_year_pace.count_at_same_point — it's derived
-    // from last year's actual daily registrations on this calendar day.
-    // Fall back to the family-average curve only when the explicit field is
-    // missing (no 2025 daily data for this family). Curve-derived estimates
-    // can drift wildly from reality when the prior year's curve was unusual.
     const priorPace = t.prior_year_pace;
     const lastYrAtT = (priorPace && priorPace.count_at_same_point != null)
       ? priorPace.count_at_same_point
@@ -87,78 +86,48 @@ function renderDelta(t) {
           ? Math.round(lastYr.count * interpCurve(t.registration_curve, t.days_remaining))
           : null);
     const lastYrLabel = priorPace?.year ?? lastYr.year;
-
     if (lastYrAtT && lastYrAtT > 0) {
       const diff = t.current_count - lastYrAtT;
-      const pctVal = ((diff / lastYrAtT) * 100);
-      const pct = pctVal.toFixed(1);
-      const absPct = Math.abs(pctVal).toFixed(1);
-
-      // Compute recent daily pace
-      let paceSuffix = '';
-      if (t.daily_data && t.daily_data.length >= 3) {
-        const recent = t.daily_data.slice(-7);
-        if (recent.length >= 2) {
-          const daySpan = recent[recent.length-1][0] - recent[0][0];
-          const regSpan = recent[recent.length-1][1] - recent[0][1];
-          if (daySpan > 0) {
-            paceSuffix = ` · ${(regSpan / daySpan).toFixed(1)}/day recent pace`;
-          }
-        }
-      }
-
-      if (diff > 0) {
-        banner.className = 'delta-banner green';
-        icon.innerHTML = '&#9650;';
-        main.textContent = `Tracking ahead of ${lastYrLabel} pace`;
-        sub.textContent = `${fmt(t.current_count)} registered now vs ${fmt(lastYrAtT)} at the same days-to-event mark in ${lastYrLabel}${paceSuffix}`;
-        val.textContent = `+${absPct}%`;
-        val.className = 'delta-value green';
-      } else if (diff < 0) {
-        banner.className = 'delta-banner red';
-        icon.innerHTML = '&#9660;';
-        main.textContent = `Tracking behind ${lastYrLabel} pace`;
-        sub.textContent = `${fmt(t.current_count)} registered now vs ${fmt(lastYrAtT)} at the same days-to-event mark in ${lastYrLabel}${paceSuffix}`;
-        val.textContent = `-${absPct}%`;
-        val.className = 'delta-value red';
-      } else {
-        banner.className = 'delta-banner gold';
-        icon.innerHTML = '&#9654;';
-        main.textContent = `Tracking on pace with ${lastYrLabel}`;
-        sub.textContent = `${fmt(t.current_count)} registered${paceSuffix}`;
-        val.textContent = '0%';
-        val.className = 'delta-value gold';
-      }
+      const absPct = Math.abs(diff / lastYrAtT * 100).toFixed(1);
+      const compared = `${fmt(t.current_count)} registered now vs ${fmt(lastYrAtT)} at the same days-to-event mark in ${lastYrLabel}${_recentPaceSuffix(t)}`;
+      if (diff > 0) _paceNote('ahead', `Tracking ahead of ${lastYrLabel} pace`, compared, `+${absPct}%`);
+      else if (diff < 0) _paceNote('behind', `Tracking behind ${lastYrLabel} pace`, compared, `-${absPct}%`);
+      else _paceNote('even', `Tracking on pace with ${lastYrLabel}`, `${fmt(t.current_count)} registered${_recentPaceSuffix(t)}`, '0%');
       return;
     }
   }
 
-  // Fallback — no historical comparison available
-  banner.className = 'delta-banner gold';
-  icon.innerHTML = '&#9654;';
-  main.textContent = `${t.family}: Registration in progress`;
-  const _evStarted = t.event_start &&
+  // No historical comparison available
+  const evStarted = t.event_start &&
     new Date(t.event_start + 'T00:00:00') <= new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
-  const _countdown = _evStarted
+  const countdown = evStarted
     ? `${t.days_remaining} days of online registration left`
     : `${t.days_remaining} days until event`;
-  sub.textContent = `${fmt(t.current_count)} entries registered · ${_countdown} · predicted final: ${fmt(t.point_estimate)}`;
-  val.textContent = `T-${t.days_remaining}`;
-  val.className = 'delta-value gold';
+  _paceNote('even', `${t.family}: Registration in progress`,
+    `${fmt(t.current_count)} entries registered · ${countdown} · predicted final: ${fmt(t.point_estimate)}`,
+    `T-${t.days_remaining}`);
 }
 
 // ══════════════════════════════════════════════════════════
-// PROGRESS BARS
+// PROGRESS LINES (folded under Registered and Days to Event)
 // ══════════════════════════════════════════════════════════
+function _foldHTML(label, pct, sub) {
+  return `<div class="fold-head"><span>${label}</span><span class="num">${pct}%</span></div>
+    <div class="fold-track" aria-hidden="true"><div class="fold-fill" style="width:${pct}%"></div></div>
+    <div class="fold-sub">${sub}</div>`;
+}
+
 function renderProgress(t) {
-  const el = document.getElementById('progressRow');
-  if (isDone(t) || !t.daily_data || t.daily_data.length === 0) { el.innerHTML = ''; return; }
+  const cur = document.getElementById('kpiCurrentFold');
+  const days = document.getElementById('kpiDaysFold');
+  if (!cur || !days) return;
+  if (isDone(t) || !t.daily_data || t.daily_data.length === 0) { cur.innerHTML = ''; days.innerHTML = ''; return; }
 
   // v3 P3: span the registration window from its real start date to the event,
   // not from the tail of the data array. The old form (last point's day index
   // plus days_remaining) silently assumed the last scrape happened today, so a
-  // stale or gappy tail shortened the window and this bar contradicted the pace
-  // banner rendered from the same card.
+  // stale or gappy tail shortened the window and this line contradicted the
+  // pace note rendered from the same card.
   let totalDays;
   if (t.daily_start_date && t.event_start) {
     totalDays = daysBetween(t.daily_start_date, t.event_start);
@@ -169,17 +138,8 @@ function renderProgress(t) {
   const elapsed = Math.max(0, totalDays - t.days_remaining);
   const timePct = Math.min(100, (elapsed / totalDays * 100)).toFixed(0);
   const regPct = Math.min(100, (t.current_count / t.point_estimate * 100)).toFixed(0);
-
-  el.innerHTML = `
-    <div class="progress-block">
-      <div class="progress-header"><span>Time Elapsed <span style="opacity:.5">(${elapsed} of ${totalDays} days)</span></span><span>${timePct}%</span></div>
-      <div class="progress-bar"><div class="progress-fill pf-blue" style="width:${timePct}%"></div></div>
-    </div>
-    <div class="progress-block">
-      <div class="progress-header"><span>Entries Received <span style="opacity:.5">(${fmt(t.current_count)} of ~${fmt(t.point_estimate)})</span></span><span>${regPct}%</span></div>
-      <div class="progress-bar"><div class="progress-fill pf-gold" style="width:${regPct}%"></div></div>
-    </div>
-  `;
+  cur.innerHTML = _foldHTML('Entries Received', regPct, `${fmt(t.current_count)} of ~${fmt(t.point_estimate)}`);
+  days.innerHTML = _foldHTML('Time Elapsed', timePct, `${elapsed} of ${totalDays} days`);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -193,7 +153,7 @@ function renderTimeline(t) {
       ? Math.round(t.historical.reduce((s,h) => s+h.count, 0) / t.historical.length) : null;
     el.innerHTML = `
       <div class="timeline-node"><div class="timeline-dot past"></div><div class="timeline-label">Event Date</div><div class="timeline-date">${fmtDate(t.event_start)}</div></div>
-      <div class="timeline-node"><div class="timeline-dot past"></div><div class="timeline-label">Final Count</div><div class="timeline-date" style="color:var(--gold);font-size:var(--fs-4)">${fmt(t.current_count)}</div></div>
+      <div class="timeline-node"><div class="timeline-dot past"></div><div class="timeline-label">Final Count</div><div class="timeline-date timeline-figure">${fmt(t.current_count)}</div></div>
       ${avg ? `<div class="timeline-node"><div class="timeline-dot future"></div><div class="timeline-label">Past Average</div><div class="timeline-date">${fmt(avg)}</div></div>` : ''}
     `;
     return;
@@ -323,9 +283,7 @@ function renderMilestones(t) {
 function renderFees(t) {
   const el = document.getElementById('feeContent');
   if (!t.early_bird_fee && !t.regular_fee && !t.onsite_fee) {
-    el.innerHTML = `<div style="text-align:center;padding:24px 0">
-      <p style="color:var(--muted);font-size:var(--fs-2);opacity:.6">Fee data not available for this tournament.</p>
-    </div>`;
+    el.innerHTML = '<div class="fee-empty">Fee data not available for this tournament.</div>';
     return;
   }
 
@@ -348,33 +306,17 @@ function renderFees(t) {
 
   let html = '';
   if (currentFee && !isDone(t)) {
-    html += `<div style="text-align:center;padding:16px 0 20px;border-bottom:1px solid var(--border);margin-bottom:16px">
-      <div style="font-size:var(--fs-2);color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Current Rate</div>
-      <div style="font-size:2.2rem;font-weight:900;color:var(--gold)">$${currentFee}</div>
-      <div style="font-size:var(--fs-2);color:var(--muted);margin-top:4px">${feeStatus}</div>
+    html += `<div class="fee-current">
+      <div class="fee-current-label">Current Rate</div>
+      <div class="fee-current-amount">$${currentFee}</div>
+      <div class="fee-current-status">${feeStatus}</div>
     </div>`;
   }
-
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center">';
-  if (t.early_bird_fee && t.regular_fee && t.early_bird_fee < t.regular_fee) {
-    html += `<div style="padding:10px;background:var(--surface3);border-radius:8px">
-      <div style="font-size:var(--fs-1);color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Early Bird</div>
-      <div style="font-size:var(--fs-5);font-weight:700;color:var(--green)">$${t.early_bird_fee}</div>
-    </div>`;
-  }
-  if (t.regular_fee) {
-    html += `<div style="padding:10px;background:var(--surface3);border-radius:8px">
-      <div style="font-size:var(--fs-1);color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Regular</div>
-      <div style="font-size:var(--fs-5);font-weight:700;color:var(--text2)">$${t.regular_fee}</div>
-    </div>`;
-  }
-  if (t.onsite_fee) {
-    html += `<div style="padding:10px;background:var(--surface3);border-radius:8px">
-      <div style="font-size:var(--fs-1);color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">On-site</div>
-      <div style="font-size:var(--fs-5);font-weight:700;color:var(--orange)">$${t.onsite_fee}</div>
-    </div>`;
-  }
+  const cell = (cls, label, fee) => `<div class="fee-cell ${cls}"><div class="fee-cell-label">${label}</div><div class="fee-cell-amount">$${fee}</div></div>`;
+  html += '<div class="fee-grid">';
+  if (t.early_bird_fee && t.regular_fee && t.early_bird_fee < t.regular_fee) html += cell('fee-cell-early', 'Early Bird', t.early_bird_fee);
+  if (t.regular_fee) html += cell('fee-cell-regular', 'Regular', t.regular_fee);
+  if (t.onsite_fee) html += cell('fee-cell-onsite', 'On-Site', t.onsite_fee);
   html += '</div>';
-
   el.innerHTML = html;
 }

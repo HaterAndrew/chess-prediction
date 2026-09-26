@@ -1,0 +1,93 @@
+/* performance.css — the Performance view (tab_performance.js): the view
+   switch, the grade cell, the four headline figures, the two chart cards,
+   the horizon strip, the scoring blocks and the results table. Figures
+   typed; the blue pen for a figure that meets its mark, ink for one that
+   is fair, the red pen for a miss; a miss in the table is boxed in red. */
+
+/* ── The view switch and the grade ── */
+.perf-year-row { align-items: center; display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 var(--s-4); }
+.perf-view-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+.perf-hero-row { align-items: stretch; border-bottom: 1px solid var(--line-soft); border-top: 2px solid var(--line); display: flex; flex-wrap: wrap; gap: var(--s-5); margin: 0 0 var(--s-5); padding: var(--s-4) 0; }
+.perf-grade-card { align-items: center; display: flex; flex: 0 0 auto; flex-direction: column; justify-content: center; min-width: 120px; padding: 0 var(--s-4) 0 0; }
+.perf-grade-letter { font: 700 64px/1 var(--mono); padding: 0 .12em; }
+.perf-grade-letter.grade-good { background: var(--mark); color: var(--mark-ink); }
+.perf-grade-letter.grade-warn { color: var(--ink); }
+.perf-grade-letter.grade-bad { color: var(--ember); }
+.perf-grade-caption { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin-top: 10px; text-transform: uppercase; }
+.perf-hero-col { display: flex; flex: 1; flex-direction: column; gap: 8px; min-width: 240px; }
+.perf-grade-detail { font: 700 var(--fs-body-lg) var(--display); }
+.perf-meta { color: var(--muted); font-size: var(--fs-meta); }
+.perf-meta:empty { display: none; }
+.perf-kpi-grid { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); margin-top: 6px; }
+.perf-kpi { border-top: 1px solid var(--line-soft); min-width: 0; padding-top: 8px; }
+.perf-kpi .kpi-value { font-size: 24px; }
+
+/* ── Chart cards, as on the Forecast ── */
+.perf-charts-grid { display: grid; gap: var(--s-4); grid-template-columns: 1fr; margin-bottom: var(--s-5); }
+.chart-tile { border: 1px solid var(--line); padding: var(--s-4); }
+.chart-tile-head { align-items: baseline; display: flex; gap: 10px; justify-content: space-between; margin-bottom: 10px; }
+.chart-tile-title { font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; text-transform: uppercase; }
+.chart-tile-sub { color: var(--muted); font: 12px var(--mono); }
+/* Chart.js sizes the canvas from its parent, so the height lives on the body. */
+.chart-tile-body { height: 220px; position: relative; }
+.chart-tile-canvas { width: 100%; }
+@media (min-width: 640px) { .perf-charts-grid { grid-template-columns: 1fr 1fr; } }
+
+/* ── The horizons: one cell per lead time on a shared rule ── */
+.perf-horizon-strip { border-top: 2px solid var(--line); display: grid; gap: var(--s-3); grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); margin-bottom: var(--s-5); padding-top: 10px; }
+.horizon-tile { min-width: 0; text-align: center; }
+.horizon-t { color: var(--muted); font: 700 var(--fs-label) var(--mono); letter-spacing: .04em; }
+.horizon-val { font: 700 22px/1.1 var(--mono); font-variant-numeric: tabular-nums; margin: 4px 0 2px; }
+.horizon-ci { color: var(--muted); font: 12px var(--mono); }
+
+/* ── Scoring: the model against doing nothing, and the calibration strip ── */
+.perf-scoring { display: grid; gap: var(--s-4); grid-template-columns: 1fr; margin-bottom: var(--s-5); }
+.perf-scoring-block { border: 1px solid var(--line); padding: var(--s-4); }
+.perf-scoring-title { font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; margin-bottom: 10px; text-transform: uppercase; }
+.perf-scoring-sub { color: var(--muted); display: block; font: 400 12px var(--display); font-stretch: 100%; letter-spacing: 0; margin-top: 2px; text-transform: none; }
+.perf-scoring-note { color: var(--muted); font-size: 12px; line-height: 1.45; margin-top: 10px; }
+.perf-bar-row { align-items: center; display: grid; gap: 8px; grid-template-columns: minmax(0, 11em) 1fr 3.4em; margin-bottom: 6px; }
+.perf-bar-label { color: var(--ink-2); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.perf-bar-track { background: var(--line-faint); height: 8px; overflow: hidden; }
+.perf-bar-fill { background: var(--line-soft); height: 100%; }
+.perf-bar-fill.is-model { background: var(--signal); }
+.perf-bar-val { color: var(--muted); font: 12px var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
+.perf-bar-val.is-model { color: var(--signal); font-weight: 700; }
+.perf-pit { align-items: flex-end; border-bottom: 1px solid var(--line); display: flex; gap: 3px; height: 48px; padding-top: 2px; }
+.perf-pit-col { align-items: flex-end; display: flex; flex: 1; height: 100%; justify-content: center; }
+.perf-pit-bar { background: var(--ink); width: 100%; }
+.perf-pit-bar.is-over { background: var(--ember); }
+.perf-pit-axis { color: var(--muted); display: flex; font: 11px var(--mono); justify-content: space-between; margin-top: 5px; }
+@media (min-width: 720px) { .perf-scoring { grid-template-columns: 1fr 1fr; } }
+/* Colour is not the only cue: an over-weighted bucket keeps its mark in
+   forced-colour modes too. */
+@media (forced-colors: active) {
+  .perf-bar-fill { background: Highlight; forced-color-adjust: none; }
+  .perf-pit-bar { background: CanvasText; forced-color-adjust: none; }
+  .perf-pit-bar.is-over { background: Highlight; }
+}
+
+/* ── The results table: one row per tournament, one column per horizon ── */
+.perf-table { border-collapse: collapse; font-size: var(--fs-body); width: 100%; }
+.perf-table th { border-bottom: 2px solid var(--line); color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); padding: 8px 6px; text-align: left; text-transform: uppercase; white-space: nowrap; }
+.perf-table th.num, .perf-table td.num { text-align: right; }
+.perf-table th.perf-th-t, .perf-table td.perf-cell { font-family: var(--mono); text-align: center; }
+.perf-table td { border-bottom: 1px solid var(--line-soft); padding: 5px 6px; white-space: nowrap; }
+.perf-table td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 700; }
+.perf-table .perf-name { font-weight: 700; }
+.perf-table .perf-cell { font-size: 12px; font-variant-numeric: tabular-nums; }
+.perf-table .perf-cell.perf-miss-big { color: var(--ember); font-weight: 700; }
+.perf-table .perf-cell .perf-miss { border: 1px solid var(--ember); padding: 0 3px; }
+.perf-table .perf-cell.perf-none { color: var(--muted); }
+.perf-table .perf-agg td { background: var(--stock-grey); border-bottom: 0; border-top: 2px solid var(--line); font-weight: 700; padding: 8px 6px; }
+.perf-table .perf-agg .perf-cell-ci { color: var(--muted); font-size: 11px; font-weight: 400; }
+.perf-table-key { color: var(--muted); font-size: 12px; margin-top: 8px; }
+/* A phone scans the sheet sideways: the table keeps its columns, the
+   tournament's name stays put while the horizons scroll under it. */
+@media (max-width: 639px) {
+  #perfTable { margin: 0 calc(-1 * var(--gutter)); overflow-x: auto; padding: 0 var(--gutter); -webkit-overflow-scrolling: touch; }
+  .perf-table { font-size: 12px; min-width: 640px; }
+  .perf-table th:first-child, .perf-table td:first-child { background: var(--void); left: 0; max-width: 150px; overflow: hidden; position: sticky; text-overflow: ellipsis; z-index: 1; }
+  .perf-table .perf-agg td:first-child { background: var(--stock-grey); }
+  .perf-table-key { margin-top: 10px; }
+}

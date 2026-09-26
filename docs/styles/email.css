@@ -1,0 +1,46 @@
+/* email.css — the Email view (tab_email.js): the header fields, the
+   tournament checklist, the length and format switches, the action row
+   pinned under the top bar, the draft on a ruled sheet and the preview. */
+
+.email-hint { color: var(--muted); font-size: var(--fs-body); margin: 0 0 var(--s-4); }
+.email-meta { display: grid; gap: var(--s-3); grid-template-columns: 1fr; margin-bottom: var(--s-4); }
+.email-meta-row { display: flex; flex-direction: column; gap: 4px; }
+.email-meta-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+@media (min-width: 768px) { .email-meta { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ── Which tournaments, how long, which format ── */
+.email-toolbar { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 14px; margin-bottom: var(--s-3); }
+.email-toolbar-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+.email-link-btn { color: var(--ink); font-size: var(--fs-body); min-height: var(--control-h); padding: 0 2px; text-decoration: underline; text-underline-offset: 3px; }
+.email-link-btn:hover { color: var(--signal); }
+.email-grid { display: grid; gap: 0; grid-template-columns: 1fr; margin-bottom: var(--s-4); }
+.email-grid label { align-items: center; border-top: 1px solid var(--line-soft); cursor: pointer; display: flex; font-size: var(--fs-body-lg); gap: var(--s-3); min-height: var(--touch); padding: 6px 4px; user-select: none; }
+.email-grid label:last-child { border-bottom: 1px solid var(--line-soft); }
+.email-grid label:hover { background: var(--raised); }
+.email-grid input[type="checkbox"] { accent-color: var(--ink); cursor: pointer; height: 16px; width: 16px; }
+.email-grid .email-tourn-days { color: var(--muted); font: 12px var(--mono); margin-left: auto; }
+@media (min-width: 640px) {
+  .email-grid { column-gap: var(--s-5); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .email-grid label:nth-last-child(2):nth-child(odd) { border-bottom: 1px solid var(--line-soft); }
+}
+@media (min-width: 1024px) { .email-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ── Generate, copy, and the source or preview switch ── */
+.email-action-bar { align-items: center; background: var(--void); border-bottom: 1px solid var(--line-soft); display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0 0 var(--s-3); padding: var(--s-3) 0; position: sticky; top: var(--topbar-height); z-index: 5; }
+.email-copy-btn.copied { background: var(--stock-blue); border-color: var(--signal); color: var(--signal); }
+.email-split-tabs { border-bottom: 0; display: flex; margin-left: auto; }
+.email-split-tab { border-bottom: 2px solid transparent; color: var(--muted); font: 700 12px var(--display); letter-spacing: .04em; min-height: var(--control-h); padding: 0 12px; text-transform: uppercase; transition: color var(--dur-fast), border-color var(--dur-fast); }
+.email-split-tab:hover { color: var(--ink); }
+.email-split-tab.active { border-bottom-color: var(--ink); color: var(--ink); }
+.email-split { display: grid; gap: var(--s-3); grid-template-columns: 1fr; }
+.email-output { background: var(--panel); border: 1px solid var(--line); color: var(--ink-2); font: 14px/1.6 var(--display); min-height: 180px; overflow-x: auto; padding: var(--s-4); tab-size: 16; -moz-tab-size: 16; white-space: pre-wrap; }
+.email-output.mode-html { color: var(--muted); font: 12px/1.5 var(--mono); }
+.email-preview { background: var(--panel); border: 1px solid var(--line); min-height: 320px; width: 100%; }
+@media (max-width: 639px) {
+  .email-toolbar-label { margin-bottom: 2px; width: 100%; }
+  .email-toolbar .email-link-btn { border: 1px solid var(--line); min-height: var(--control-h); padding: 0 12px; text-decoration: none; }
+  .email-toolbar .email-link-btn:hover { background: var(--ink); color: var(--void); }
+  .email-toolbar .segmented { display: flex; width: 100%; }
+  .email-toolbar .segmented button { flex: 1 1 0; }
+  .email-action-bar .button, .email-action-bar .btn { width: 100%; }
+}

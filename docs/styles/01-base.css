@@ -37,6 +37,24 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
    typewriter face and tabular digits, so the columns on the sheet line up. */
 .num, .fig, td.num, .tabular, kbd { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
+/* Programmatic focus lands on the active view for screen-reader context;
+   the ring must not frame the whole view. */
+.page-tab-panel:focus, .page-tab-panel:focus-visible { box-shadow: none; outline: none; }
+
+/* Utilities the views' markup carries: the blue pen on a figure, the mono
+   face, weights and the spacing steps. */
+.gold, .green { color: var(--signal); }
+.muted { color: var(--muted); }
+.mono { font-family: var(--mono); }
+.w600 { font-weight: 600; }
+.w700 { font-weight: 700; }
+.mb0 { margin-bottom: 0; }
+.mt4 { margin-top: 4px; }
+.mt8 { margin-top: 8px; }
+.mt16 { margin-top: 16px; }
+.mb16 { margin-bottom: 16px; }
+.mb24 { margin-bottom: 24px; }
+
 /* Scrollbar: a rule-grey thumb, square, on the paper. */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--void); }

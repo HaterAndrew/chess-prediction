@@ -1,0 +1,78 @@
+/* about.css — About the Model: the explainer's ruled panels, the prose,
+   the formula boxes typed in the mono face, the reference tables, the
+   worked example's result cell under the highlighter, the Model Health
+   tiles (tab_about.js renderModelHealth) and the jump strip. Figures are
+   typed; the blue pen marks the figure that matters; the Limitations panel
+   is printed on pink stock. */
+
+/* ── The view's lead ── */
+.tab-head { margin: 0 0 var(--s-4); }
+.tab-head h2 { font: 700 var(--fs-h2-lg) var(--display); margin: 0 0 4px; }
+.tab-head p { color: var(--muted); font-size: var(--fs-body); margin: 0; }
+.about-jump { color: var(--muted); display: block; font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin: 0 0 var(--s-5); text-transform: uppercase; }
+.about-jump a { border-bottom: 1px solid var(--line-soft); color: var(--ink-2); text-decoration: none; transition: color var(--dur-fast), border-color var(--dur-fast); }
+.about-jump a:hover, .about-jump a:focus-visible { border-bottom-color: var(--signal); color: var(--signal); }
+
+/* ── Panels: a ruled box, the title in condensed capitals ── */
+.info-panel { background: var(--panel); border: 1px solid var(--line); margin-bottom: var(--s-4); padding: var(--s-4); scroll-margin-top: calc(var(--topbar-height) + 16px); }
+.info-panel.danger { background: var(--stock-pink); }
+.about-submodels { display: grid; gap: var(--s-4); grid-template-columns: 1fr; margin-bottom: var(--s-4); }
+.about-submodels .info-panel { margin-bottom: 0; }
+.info-panel > h3 { border-bottom: 1px solid var(--line-soft); font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; margin: 0 0 var(--s-3); padding-bottom: 8px; text-transform: uppercase; }
+.info-panel > h3.accent-blue { color: var(--signal); }
+.info-panel > h3.accent-red { color: var(--ember); }
+.info-panel h4 { color: var(--ink); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin: var(--s-4) 0 8px; text-transform: uppercase; }
+.h3-sub { color: var(--muted); font: 400 var(--fs-meta) var(--display); font-stretch: 100%; letter-spacing: 0; text-transform: none; }
+@media (min-width: 640px) { .about-submodels { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .info-panel { padding: var(--s-5) var(--s-6); } }
+
+/* ── Prose and notes ── */
+.prose { color: var(--ink-2); font-size: var(--fs-body-lg); line-height: 1.7; }
+.prose.muted { color: var(--muted); }
+.prose strong { color: var(--ink); }
+.sp { margin-bottom: 14px; }
+.info-note { color: var(--muted); font-size: var(--fs-body); line-height: 1.6; margin-top: 10px; }
+.info-note.down { margin-bottom: 14px; margin-top: 0; }
+.gold-link { color: var(--signal); text-decoration: underline; }
+.code-chip { background: var(--raised); border: 1px solid var(--line-soft); color: var(--ink-2); font: 12px var(--mono); padding: 1px 4px; }
+
+/* ── Formulas: typed on the raised sheet ── */
+.formula-box { background: var(--raised); border: 1px solid var(--line-soft); color: var(--ink); font: 13px/1.6 var(--mono); overflow-x: auto; padding: 10px 14px; }
+.formula-box.center { margin-bottom: 14px; padding: 14px 18px; text-align: center; }
+.formula-box.plain { color: var(--ink-2); }
+.formula-lg { color: var(--signal); font: 700 15px var(--mono); }
+
+/* ── Reference tables: a heavy rule under the head, light rules between rows ── */
+.table-scroll { overflow-x: auto; }
+.info-table { border-collapse: collapse; font-size: var(--fs-body); width: 100%; }
+.info-table.narrow { max-width: 420px; }
+.info-table th { border-bottom: 2px solid var(--line); color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); padding: 8px 10px; text-align: left; text-transform: uppercase; }
+.info-table td { border-bottom: 1px solid var(--line-soft); color: var(--ink-2); padding: 8px 10px; vertical-align: top; }
+.info-table tbody tr:last-child td { border-bottom: 0; }
+.info-table .tc { text-align: center; }
+.info-table td.gold { color: var(--signal); font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 700; }
+.info-table td.lbl { color: var(--ink); font-weight: 700; }
+.info-table td.mut { color: var(--muted); }
+.info-table tr.highlight td { background: var(--stock-yellow); color: var(--ink); }
+
+/* ── The worked example's result: the figure under the highlighter ── */
+.result-card { border-top: 2px solid var(--line); margin-top: var(--s-4); padding: var(--s-4) 0 0; text-align: center; }
+.result-card-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin-bottom: 8px; text-transform: uppercase; }
+.result-card-num { background: var(--mark); color: var(--mark-ink); display: inline-block; font: 700 44px/1 var(--mono); font-variant-numeric: tabular-nums; padding: 0 .1em; }
+.result-card-ci { color: var(--ink-2); font: 13px var(--mono); margin-top: 8px; }
+.about-footer { color: var(--muted); font: 12px var(--mono); padding: var(--s-3) 0; text-align: center; }
+
+/* ── Model Health: the pipeline's own figures as ruled cells ── */
+.mh-head { align-items: baseline; display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; margin-bottom: var(--s-3); }
+.mh-head h3 { border-bottom: 0; flex: 1 1 auto; margin: 0; padding-bottom: 0; }
+.mh-updated { color: var(--muted); font: 12px var(--mono); }
+.mh-grid { display: grid; gap: var(--s-3); grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: var(--s-3); }
+.mh-tile { border-top: 2px solid var(--line); cursor: help; padding-top: 8px; }
+.mh-tile-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin-bottom: 6px; text-transform: uppercase; }
+.mh-tile-value { font: 700 28px/1 var(--mono); font-variant-numeric: tabular-nums; }
+.mh-tile-sub { color: var(--ink-2); font-size: 12px; margin-top: 6px; }
+.mh-warnings .note { margin-bottom: var(--s-3); }
+.mh-warnings summary { cursor: pointer; font-weight: 700; }
+.mh-warn-table { border-collapse: collapse; margin-top: 10px; width: 100%; }
+.mh-warn-table td { border-top: 1px solid var(--line-soft); font-size: var(--fs-body); padding: 6px 8px 6px 0; vertical-align: top; }
+.mh-warn-step { color: var(--muted); font-family: var(--mono); white-space: nowrap; }

@@ -1,0 +1,77 @@
+/* ask.css — the Ask view (tab_ask.js) and the Audit view (audit.js). Both
+   are a form on the sheet: a lead, ruled fields, the blue-pen button. The
+   conversation is a column of ruled sheets, the visitor's on blue stock;
+   a warning is a note on the stock its state calls for. */
+
+/* ── Shared lead ── */
+.ask-wrap, .audit-wrap { margin: 0 auto 80px; max-width: 760px; }
+.ask-header { margin-bottom: var(--s-4); }
+.ask-title { font: 700 var(--fs-h2-lg) var(--display); margin: 0 0 4px; }
+.ask-sub { color: var(--muted); font-size: var(--fs-body); line-height: 1.5; }
+
+/* ── The question ── */
+.ask-input-row { align-items: stretch; display: flex; gap: 10px; margin-bottom: var(--s-3); }
+.ask-input { flex: 1; font-size: 15px; line-height: 1.4; min-height: 56px; min-width: 0; padding: 12px 14px; resize: vertical; }
+.ask-submit { flex-shrink: 0; min-height: 56px; padding: 0 26px; }
+.ask-submit:disabled { cursor: progress; }
+.ask-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: var(--s-4); }
+.ask-chip { border: 1px solid var(--line-soft); color: var(--ink-2); cursor: pointer; font-size: var(--fs-body); padding: 6px 12px; transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast); }
+.ask-chip:hover { background: var(--ink); border-color: var(--ink); color: var(--void); }
+
+/* ── Notes ── */
+.ask-banner, .audit-banner { border: 1px solid var(--line); font-size: var(--fs-body); line-height: 1.4; margin-bottom: var(--s-3); padding: 12px 14px; }
+.ask-banner.is-error, .audit-banner.error { background: var(--stock-pink); }
+.ask-banner.is-warn { background: var(--stock-yellow); }
+.audit-banner.ok { background: var(--stock-blue); }
+
+/* ── The conversation ── */
+.ask-answer { display: flex; flex-direction: column; font-size: var(--fs-body-lg); gap: 14px; }
+.ask-answer:empty { display: none; }
+.ask-turn { display: flex; }
+.ask-turn-user { justify-content: flex-end; }
+.ask-turn-assistant { justify-content: flex-start; }
+.ask-bubble { border: 1px solid var(--line); line-height: 1.55; max-width: 88%; padding: 12px 16px; white-space: pre-wrap; word-wrap: break-word; }
+.ask-turn-user .ask-bubble { background: var(--stock-blue); }
+.ask-turn-assistant .ask-bubble { background: var(--panel); }
+.ask-pending { align-items: center; color: var(--muted); display: flex; flex-wrap: wrap; gap: 10px; }
+.ask-spinner { animation: ask-spin .8s linear infinite; border: 2px solid var(--line-soft); border-radius: 50%; border-top-color: var(--ink); flex: none; height: 14px; width: 14px; }
+@keyframes ask-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ask-spinner { animation: none; } }
+.ask-pending-label { color: var(--ink-2); font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.ask-cancel { border: 1px solid var(--line); color: var(--ink-2); font: 700 12px var(--display); margin-left: auto; padding: 4px 11px; text-transform: uppercase; }
+.ask-cancel:hover { border-color: var(--ember); color: var(--ember); }
+.ask-answer-meta { border-top: 1px solid var(--line-soft); color: var(--muted); display: flex; flex-wrap: wrap; font: 12px var(--mono); gap: 14px; margin-top: 14px; padding-top: 10px; }
+.ask-recent { margin-top: var(--s-5); }
+.ask-recent:empty { display: none; }
+.ask-recent-title { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); margin-bottom: 8px; text-transform: uppercase; }
+.ask-recent-list { display: flex; flex-direction: column; }
+.ask-recent-item { border-top: 1px solid var(--line-soft); color: var(--ink-2); cursor: pointer; font-size: var(--fs-body); padding: 9px 4px; text-align: left; transition: color var(--dur-fast); }
+.ask-recent-item:last-child { border-bottom: 1px solid var(--line-soft); }
+.ask-recent-item:hover { color: var(--signal); }
+.ask-fallback-results { display: flex; flex-direction: column; margin-top: 14px; }
+.ask-fallback-item { border-top: 1px solid var(--line-soft); color: var(--ink-2); display: flex; font-size: var(--fs-body); gap: 12px; justify-content: space-between; padding: 8px 0; }
+.ask-fallback-item:last-child { border-bottom: 1px solid var(--line-soft); }
+.ask-fallback-item strong { color: var(--ink); }
+.ask-fallback-item .meta { color: var(--muted); font: 12px var(--mono); white-space: nowrap; }
+@media (max-width: 639px) {
+  .ask-input-row { flex-direction: column; }
+  .ask-submit { width: 100%; }
+}
+
+/* ── Audit ── */
+.audit-controls { border: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; margin-bottom: var(--s-4); padding: var(--s-4); }
+.audit-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
+.audit-select { max-width: 420px; }
+.audit-file-row { align-items: center; display: flex; flex-wrap: wrap; gap: 10px; }
+.audit-file-row input[type="file"] { font: 13px var(--display); max-width: 100%; }
+.audit-hint { color: var(--muted); font-size: var(--fs-body); }
+.audit-controls .ask-submit { align-self: flex-start; margin-top: 4px; min-height: var(--control-h); padding: 0 18px; }
+.audit-summary { border: 1px solid var(--line); margin-bottom: var(--s-4); padding: 14px 16px; }
+.audit-summary-table { border-collapse: collapse; font-size: var(--fs-body-lg); width: 100%; }
+.audit-summary-table th { color: var(--ink-2); font-weight: 400; padding: 4px 14px 4px 0; text-align: left; white-space: nowrap; }
+.audit-summary-table td { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; }
+.audit-download { margin-bottom: var(--s-4); }
+@media (max-width: 639px) {
+  .audit-select { max-width: none; }
+  .audit-controls .ask-submit, .audit-download { width: 100%; }
+}

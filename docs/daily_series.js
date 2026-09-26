@@ -64,7 +64,10 @@
     }
 
     clean.sort(function (a, b) { return a[0] - b[0]; });
-    for (var d in seenDays) clean.forEach(function (p) { if (p[0] === Number(d)) p[1] = seenDays[d]; });
+    // Every kept day carries the highest reading seen for it (one lookup per
+    // point; the old scan of every point per seen day was quadratic and
+    // showed in the chart's build).
+    clean.forEach(function (p) { p[1] = seenDays[p[0]]; });
 
     // A live card's curve cannot exceed the entries actually scraped. This is
     // the client-side mirror of the incident invariant: rather than drawing a
@@ -100,12 +103,19 @@
    * Returns null when the card carries no daily_start_date anchor, so callers
    * can fall back rather than invent a date.
    */
+  // The anchor is parsed once per card: every point of every series on the
+  // page asks for its date, and building the same Date per point was a
+  // visible share of the chart's build. UTC midnight plus whole days is
+  // plain arithmetic (no daylight-saving step in UTC).
+  var _anchorCard = null, _anchorMs = NaN;
   function pointDate(card, dayFromStart) {
     if (!card || !card.daily_start_date) return null;
-    var base = new Date(card.daily_start_date + 'T00:00:00Z');
-    if (isNaN(base.getTime())) return null;
-    base.setUTCDate(base.getUTCDate() + Number(dayFromStart || 0));
-    return base;
+    if (card !== _anchorCard) {
+      _anchorCard = card;
+      _anchorMs = new Date(card.daily_start_date + 'T00:00:00Z').getTime();
+    }
+    if (isNaN(_anchorMs)) return null;
+    return new Date(_anchorMs + Number(dayFromStart || 0) * 86400000);
   }
 
   var DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

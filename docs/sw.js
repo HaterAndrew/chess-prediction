@@ -7,88 +7,43 @@
 // hash evicts the old entry for the same path. Unhashed same-origin files
 // (audit_warnings.json, manifest.json, icons) stay network-first with the
 // cache as the offline fallback. Cross-origin requests bypass the worker,
-// except the pinned, SRI-locked CDN scripts, which are cache-first too.
+// except the pinned, SRI-locked CDN script, which is cache-first too.
 //
 // CACHE_NAME is bumped on every deploy that reshapes caching behaviour so
 // caches from prior worker versions are purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v84';
+const CACHE_NAME = 'cca-predictor-v85';
 
 // The API routes the same Worker serves next to the site. Their responses are
 // dynamic and must never enter the cache or be answered from it.
 const API_ROUTE_RE = /^\/(ask|health|cca-tourlist|cca-entrylist)$/;
 
 // Version-pinned, SRI-locked CDN scripts. Immutable, so cache-first. This is
-// also the runtime allowlist for the on-demand ExcelJS load in audit.js.
+// the runtime allowlist for the on-demand ExcelJS load in audit.js; the
+// chart library is served from this origin (vendor/) and precached below.
 const CDN_ASSETS = [
-  'https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js',
-  'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js',
   'https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js'
 ];
 
-// The app shell, precached at install so an offline return visit still boots.
-// The data file is not listed: it is a `?v=` URL, cached on first use by the
-// fetch handler, and precaching 2.4 MB during the first visit competed with
-// the page's own requests. The CDN scripts are cached the same way.
+// The app shell, precached at install so an offline return visit still boots:
+// the document, the stylesheet and script bundles, the chart library, the
+// fonts. The data file is not listed: it is a `?v=` URL, cached on first use
+// by the fetch handler, and precaching 2.4 MB during the first visit competed
+// with the page's own requests. The CDN script is cached the same way.
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
-  'styles/fonts.css?v=d265109c48',
-  'styles/tokens.css?v=d14269065f',
-  'styles/01-base.css?v=647a4463bf',
-  'styles/shell.css?v=8088d74144',
-  'styles/controls.css?v=4b8c767ae8',
-  'styles/overlays.css?v=f0a8a3dd08',
-  'styles/picker.css?v=d1ecc80b37',
-  'styles/forecast.css?v=a60560696b',
-  'styles/sections.css?v=db3956d491',
-  'styles/season.css?v=77f370a3df',
-  'styles/03-cmdk.css?v=f9f7e3814f',
-  'styles/about.css?v=f6920659d1',
-  'styles/performance.css?v=a5c5f99f96',
-  'styles/compare.css?v=7b35d9ec29',
-  'styles/ask.css?v=1cb84e630e',
-  'styles/email.css?v=b8b6cdb598',
-  'styles/puzzles.css?v=5e60f4666f',
-  'styles/19-motion.css?v=aa3292cefe',
-  'styles/20-mobile.css?v=8ac4a673d3',
-  'styles/23-print.css?v=3a2b1a2374',
-  'styles/theme.css?v=86ed0bd11f',
+  'styles/site.css?v=1b71359a89',
   'fonts/archivo/archivo-latin.woff2',
   'fonts/archivo/archivo-latin-ext.woff2',
   'fonts/courier-prime/courier-prime-400-latin.woff2',
   'fonts/courier-prime/courier-prime-400-latin-ext.woff2',
   'fonts/courier-prime/courier-prime-700-latin.woff2',
   'fonts/courier-prime/courier-prime-700-latin-ext.woff2',
-  'theme.js?v=33c380c35b',
-  'icons.js?v=eeee8884c1',
-  'motion.js?v=3b98a2f111',
-  'gestures.js?v=22c4411a24',
-  'sheet.js?v=0839b7ca9d',
-  'shell.js?v=cc24bf74ec',
   'boot.js?v=ef8436b139',
-  'app.js?v=62346f8dcd',
-  'actions.js?v=32a75b22e8',
-  'audit.js?v=3da328f6fc',
-  'daily_series.js?v=e326e2b1fc',
-  'util_core.js?v=2824d286fc',
-  'foundation.js?v=b261d0c154',
-  'cmdk.js?v=c497999f1f',
-  'tab_email.js?v=cdc29ce20b',
-  'tab_performance.js?v=8ca89293dc',
-  'tab_puzzles.js?v=7d25085766',
-  'pickers.js?v=fbcaedd103',
-  'panels_info.js?v=e948552625',
-  'hero_kpi.js?v=f476409077',
-  'hero_figures.js?v=120548b340',
-  'chart_main.js?v=45f5be5edc',
-  'chart_hist.js?v=c32cd4cf68',
-  'panels_grid.js?v=586d1d446a',
-  'panels_cal.js?v=ab545ee2e4',
-  'season_cards.js?v=c15ab193dd',
-  'tab_about.js?v=edbf709211',
-  'tab_compare.js?v=1da9e23795',
-  'tab_ask.js?v=ac0057506c',
+  'vendor/chart.umd.min.js?v=48444a82d4',
+  'vendor/chartjs-adapter-date-fns.bundle.min.js?v=ea7ab30d26',
+  'site.js?v=6796467504',
   'manifest.json',
   'icons/icon-192.png'
 ];

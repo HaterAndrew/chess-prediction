@@ -207,7 +207,7 @@ def test_the_markup_nests():
 def test_index_and_the_service_worker_agree_on_the_stamped_registry():
     html = _read(INDEX)
     sw = _read(SW_JS)
-    refs = set(re.findall(r'(?:href|src)="((?:styles/)?[a-z0-9_-]+\.(?:css|js))\?v=', html))
+    refs = set(re.findall(r'(?:href|src)="((?:styles/|vendor/)?[a-z0-9_.-]+\.(?:css|js))\?v=', html))
     refs -= set(STAMPED_DATA)
     assert refs == set(STAMPED_SCRIPTS), (
         f"index.html references but the registry lacks: {sorted(refs - set(STAMPED_SCRIPTS))}; "

@@ -29,7 +29,9 @@ U1_EXEMPT = {"audit.js", "actions.js", "sw.js"}
 
 
 def _chart_scripts():
-    return sorted(p for p in DOCS.glob("*.js") if p.name not in U1_EXEMPT)
+    """The sources; the generated bundle (pipeline/bundling.py) is those over again."""
+    from pipeline.bundling import BUNDLES
+    return sorted(p for p in DOCS.glob("*.js") if p.name not in U1_EXEMPT | set(BUNDLES))
 
 
 def test_no_utc_reprojection_in_chart_scripts():

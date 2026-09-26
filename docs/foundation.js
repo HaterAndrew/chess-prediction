@@ -119,7 +119,10 @@ let perfTimelineChart = null;
 // ══════════════════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════════════════
-function _mobileVP() { return window.matchMedia('(max-width: 639px)').matches; }
+// One MediaQueryList, read on every call: matchMedia builds a new list each
+// time, and the chart's hit-testing and plugins ask per point and per frame.
+const _MOBILE_MQ = window.matchMedia('(max-width: 639px)');
+function _mobileVP() { return _MOBILE_MQ.matches; }
 function _reduceMotion() {
   return typeof window !== 'undefined' && window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -320,6 +323,22 @@ function setChartRange(key) {
 // [{ value, label, color }] where value is whatever the chart's x scale
 // resolves — a Date on time scales (main chart), an index on category scales
 // (registration curve).
+//
+// A label's width is measured once per font: measureText shapes the text
+// through the web font on every call, and the plugin draws on every
+// animation frame. The cache empties when the fonts finish loading, since
+// a width measured against the fallback face is wrong afterwards.
+const _labelWidths = new Map();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => _labelWidths.clear());
+function _labelWidth(ctx2, label) {
+  const key = ctx2.font + '|' + label;
+  let w = _labelWidths.get(key);
+  if (w === undefined) {
+    w = ctx2.measureText(label).width;
+    _labelWidths.set(key, w);
+  }
+  return w;
+}
 function makeVertMarkersPlugin(id, getMarkers) {
   return {
     id,
@@ -356,7 +375,7 @@ function makeVertMarkersPlugin(id, getMarkers) {
         ctx2.globalAlpha = 1;
         ctx2.font = `${annoFont} ${PALETTE.fontMono}`;
         ctx2.textAlign = 'center';
-        const textW = ctx2.measureText(line.label).width;
+        const textW = _labelWidth(ctx2, line.label);
         const pillW = textW + 10;
         // Clamp pill horizontally so it never spills past the chart area.
         // Right-edge clipping was visible on tournaments where the Event

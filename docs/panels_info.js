@@ -241,7 +241,7 @@ function renderMilestones(t) {
   // Fix dates
   milestones.forEach(m => {
     if (m.dateObj) {
-      m.date = m.dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      m.date = DATE_FMT.short.format(m.dateObj);
     }
   });
 

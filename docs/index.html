@@ -18,32 +18,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="CCA Predictor">
 <meta name="format-detection" content="telephone=no">
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787">
-<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
+<!-- Chart.js and its date adapter, served from this origin (docs/vendor/,
+     hashes pinned in pipeline/bundling.py) so the first paint needs no
+     second connection. Deferred, and ahead of site.js in document order. -->
+<script defer src="vendor/chart.umd.min.js?v=48444a82d4"></script>
+<script defer src="vendor/chartjs-adapter-date-fns.bundle.min.js?v=ea7ab30d26"></script>
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/archivo/archivo-latin.woff2">
-<link rel="stylesheet" href="styles/fonts.css?v=d265109c48">
-<link rel="stylesheet" href="styles/tokens.css?v=d14269065f">
-<link rel="stylesheet" href="styles/01-base.css?v=647a4463bf">
-<link rel="stylesheet" href="styles/shell.css?v=8088d74144">
-<link rel="stylesheet" href="styles/controls.css?v=4b8c767ae8">
-<link rel="stylesheet" href="styles/overlays.css?v=f0a8a3dd08">
-<link rel="stylesheet" href="styles/picker.css?v=d1ecc80b37">
-<link rel="stylesheet" href="styles/03-cmdk.css?v=f9f7e3814f">
-<link rel="stylesheet" href="styles/forecast.css?v=a60560696b">
-<link rel="stylesheet" href="styles/sections.css?v=db3956d491">
-<link rel="stylesheet" href="styles/season.css?v=77f370a3df">
-<link rel="stylesheet" href="styles/about.css?v=f6920659d1">
-<link rel="stylesheet" href="styles/performance.css?v=a5c5f99f96">
-<link rel="stylesheet" href="styles/compare.css?v=7b35d9ec29">
-<link rel="stylesheet" href="styles/ask.css?v=1cb84e630e">
-<link rel="stylesheet" href="styles/email.css?v=b8b6cdb598">
-<link rel="stylesheet" href="styles/puzzles.css?v=5e60f4666f">
-<link rel="stylesheet" href="styles/19-motion.css?v=aa3292cefe">
-<link rel="stylesheet" href="styles/20-mobile.css?v=8ac4a673d3">
-<link rel="stylesheet" href="styles/23-print.css?v=3a2b1a2374">
-<link rel="stylesheet" href="styles/theme.css?v=86ed0bd11f">
+<!-- One stylesheet: the bundle pipeline/bundling.py builds from
+     docs/styles/*.css in cascade order (STYLE_SOURCES). Edit the sources,
+     then `python3 -m pipeline.bundling`. -->
+<link rel="stylesheet" href="styles/site.css?v=1b71359a89">
 </head>
 <body>
 
@@ -999,63 +984,12 @@
      attributes name the files the Performance and Puzzles tabs fetch on
      demand (loadDataFile), stamped by the pipeline like every other asset. -->
 <script defer id="dataScript" src="data/tournaments.js?v=8b2c086d6a" data-performance="data/performance_data.js?v=b0a449b4be" data-history="data/chess_history.js?v=4e76f35655"></script>
-<!-- audit.js defines initAuditTab and must precede app.js: app.js runs its
-     init() (and any #audit deep link) synchronously at evaluation time. -->
-<script defer src="audit.js?v=3da328f6fc"></script>
-<script defer src="daily_series.js?v=e326e2b1fc"></script>
-<!-- Load-order contract (C-track split of app.js, 2026-07). These are classic
-     scripts sharing ONE global scope — that is the compatibility mechanism:
-     actions.js dispatches bare globals, so no wrappers, no modules. `defer`
-     preserves document order, so the order below stays load-bearing:
-       - util_core/foundation first: later files read their globals at load
-         time (e.g. tab_compare's COMPARE_COLORS reads foundation's PALETTE).
-       - tab_ask before app: the ASK_* consts must exist before app.js runs
-         init() at its tail (a #ask deep link reaches initAskTab from init).
-       - app.js LAST of the split set; its tail runs the override purge,
-         applyOverrides(), then init().
-       - actions.js stays after app.js (see its own comment below).
-     Adding a file? Insert its tag here in dependency order with `defer`,
-     append the name to pipeline/stamping.py STAMPED_SCRIPTS and to sw.js
-     OFFLINE_FALLBACKS (test_global_uniqueness pins name collisions and
-     suffix clashes; test_script_loading pins the defer attribute). -->
-<script defer src="util_core.js?v=2824d286fc"></script>
-<script defer src="foundation.js?v=b261d0c154"></script>
-<!-- theme.js reads PALETTE/rebuildPalette from foundation.js at load and
-     sets the Chart.js defaults before any chart is built. -->
-<script defer src="theme.js?v=33c380c35b"></script>
-<!-- The shell: icons.js serves the generated markup, sheet.js owns the
-     sheet, shell.js the nav, the subject, the group sheets, the view title
-     and the toast. app.js's switchPageTab calls into shell.js, so these
-     precede it. -->
-<!-- motion.js is the house motion (springs, projection, rubber-banding);
-     gestures.js, after the shell, binds the phone's sheet drag and view
-     swipe to it. -->
-<script defer src="motion.js?v=3b98a2f111"></script>
-<script defer src="icons.js?v=eeee8884c1"></script>
-<script defer src="sheet.js?v=0839b7ca9d"></script>
-<script defer src="shell.js?v=cc24bf74ec"></script>
-<script defer src="gestures.js?v=22c4411a24"></script>
-<script defer src="cmdk.js?v=c497999f1f"></script>
-<script defer src="tab_email.js?v=cdc29ce20b"></script>
-<script defer src="tab_performance.js?v=8ca89293dc"></script>
-<script defer src="tab_puzzles.js?v=7d25085766"></script>
-<script defer src="pickers.js?v=fbcaedd103"></script>
-<script defer src="panels_info.js?v=e948552625"></script>
-<script defer src="hero_kpi.js?v=f476409077"></script>
-<script defer src="hero_figures.js?v=120548b340"></script>
-<script defer src="chart_main.js?v=45f5be5edc"></script>
-<script defer src="chart_hist.js?v=c32cd4cf68"></script>
-<script defer src="panels_grid.js?v=586d1d446a"></script>
-<script defer src="panels_cal.js?v=ab545ee2e4"></script>
-<script defer src="season_cards.js?v=c15ab193dd"></script>
-<script defer src="tab_about.js?v=edbf709211"></script>
-<script defer src="tab_compare.js?v=1da9e23795"></script>
-<script defer src="tab_ask.js?v=ac0057506c"></script>
-<script defer src="app.js?v=62346f8dcd"></script>
-<!-- actions.js wires every control via delegation (v3 S5). It replaced the
-     inline onclick/onkeydown attributes that the CSP below no longer permits,
-     so it is load-bearing: without it nothing on the page responds. It comes
-     last because it dispatches into the globals the files above define. -->
-<script defer src="actions.js?v=32a75b22e8"></script>
+<!-- One script: the bundle pipeline/bundling.py builds from the page
+     scripts in load order (SCRIPT_SOURCES, where the order and its reasons
+     live). Classic scripts sharing one global scope: actions.js, last in
+     the bundle, dispatches bare globals, so there are no wrappers and no
+     modules. Deferred, so it runs after the data tag above and after the
+     chart library in <head>. Edit a source, then `python3 -m pipeline.bundling`. -->
+<script defer src="site.js?v=6796467504"></script>
 </body>
 </html>

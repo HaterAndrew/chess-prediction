@@ -2,7 +2,40 @@
 // from app.js (C1). Classic script: every top-level name is a page global
 // by design. Load order is defined in index.html.
 
-function fmt(n) { return n == null ? '–' : n.toLocaleString(); }
+// The sheet is set in en-US, so its dates and figures are formatted by hand.
+// toLocaleDateString with an options object built a new Intl formatter per
+// call (the first render made hundreds: 130 ms of the fold's task at 4x CPU
+// throttle), and even one Intl.DateTimeFormat costs the ICU load, 60 ms at
+// 4x, on the first-paint path. These tables cost nothing.
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+  'September', 'October', 'November', 'December'];
+const WEEKDAYS_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+function _asDate(d) { return d instanceof Date ? d : new Date(d); }
+function _clock(d) {
+  const h = d.getHours(), m = d.getMinutes();
+  return `${h % 12 || 12}:${m < 10 ? '0' : ''}${m} ${h < 12 ? 'AM' : 'PM'}`;
+}
+// Each entry formats like the Intl.DateTimeFormat of the same name did:
+// short "Sep 26", long "September 26, 2026", weekdayLong "Sat, September 26",
+// month "Sep", full "Sat, Sep 26, 2026", dateTime "Sep 26, 2026, 8:05 PM".
+const DATE_FMT = {
+  short: { format: d => { d = _asDate(d); return `${MONTHS_SHORT[d.getMonth()]} ${d.getDate()}`; } },
+  long: { format: d => { d = _asDate(d); return `${MONTHS_LONG[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`; } },
+  weekdayLong: { format: d => { d = _asDate(d); return `${WEEKDAYS_SHORT[d.getDay()]}, ${MONTHS_LONG[d.getMonth()]} ${d.getDate()}`; } },
+  month: { format: d => MONTHS_SHORT[_asDate(d).getMonth()] },
+  full: { format: d => { d = _asDate(d); return `${WEEKDAYS_SHORT[d.getDay()]}, ${MONTHS_SHORT[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`; } },
+  dateTime: { format: d => { d = _asDate(d); return `${MONTHS_SHORT[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}, ${_clock(d)}`; } }
+};
+// Thousands separators on the integer part, the way en-US toLocaleString
+// grouped them; decimals stay as given.
+function fmt(n) {
+  if (n == null) return '–';
+  if (typeof n !== 'number') return String(n);
+  const neg = n < 0 ? '-' : '';
+  const [whole, frac] = String(Math.abs(n)).split('.');
+  return neg + whole.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (frac ? '.' + frac : '');
+}
 function isDone(t) { return t.status === 'complete' || t.status === 'historical'; }
 
 // An "early bird" only exists when there's an actual price hike BETWEEN an
@@ -23,21 +56,18 @@ function hasValidEarlyBird(t) {
 function fmtDate(s) {
   if (!s) return '–';
   const d = new Date(s + 'T00:00:00');
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return DATE_FMT.short.format(d);
 }
 function fmtDateLong(s) {
   if (!s) return '–';
   const d = new Date(s + 'T00:00:00');
-  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  return DATE_FMT.long.format(d);
 }
 function fmtDateTimeLong(iso) {
   if (!iso) return '–';
   const d = new Date(iso);
   if (isNaN(d.getTime())) return '–';
-  return d.toLocaleString('en-US', {
-    month: 'short', day: 'numeric', year: 'numeric',
-    hour: 'numeric', minute: '2-digit'
-  });
+  return DATE_FMT.dateTime.format(d);
 }
 function addDays(dateStr, days) {
   const d = new Date(dateStr + 'T00:00:00');

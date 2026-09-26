@@ -337,14 +337,14 @@ function perfDrawScatter(data) {
           type: 'linear', min: 0, max: maxV,
           title: { display: !_mobileVP(), text: 'Actual Entries', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
           ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 10 : 9 }, maxTicksLimit: 6, maxRotation: 0,
-            callback(v) { return v.toLocaleString(); } },
+            callback(v) { return fmt(v); } },
           grid: { color: themeRgba(PALETTE.border, 0.4) }
         },
         y: {
           type: 'linear', min: 0, max: maxV,
           title: { display: !_mobileVP(), text: 'Predicted', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
           ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 10 : 9 }, maxTicksLimit: 5,
-            callback(v) { return v.toLocaleString(); } },
+            callback(v) { return fmt(v); } },
           grid: { color: themeRgba(PALETTE.border, 0.4) }
         }
       },
@@ -506,7 +506,7 @@ function perfDrawTable(data) {
   data.tournaments.forEach(t => {
     html += `<tr>
       <td data-label="Tournament" class="perf-name">${esc(t.family)}</td>
-      <td data-label="Final" class="num">${t.final_count.toLocaleString()}</td>`;
+      <td data-label="Final" class="num">${fmt(t.final_count)}</td>`;
     tPoints.forEach(T => {
       const p = t.predictions.find(p => p.T === T);
       if (p) {

@@ -68,7 +68,7 @@ function renderModelHealth() {
   if (typeof PERFORMANCE_SUMMARY !== 'undefined' && PERFORMANCE_SUMMARY) {
     const tc = document.getElementById('footerTournamentCount');
     if (tc && PERFORMANCE_SUMMARY.n_corpus_tournaments) {
-      tc.textContent = PERFORMANCE_SUMMARY.n_corpus_tournaments.toLocaleString();
+      tc.textContent = fmt(PERFORMANCE_SUMMARY.n_corpus_tournaments);
     }
     const er = document.getElementById('footerEntryRecords');
     if (er && PERFORMANCE_SUMMARY.n_entry_records) {

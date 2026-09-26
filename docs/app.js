@@ -31,7 +31,7 @@ const PAGE_TAB_ORDER = ['predictions', 'season', 'performance', 'compare', 'ask'
   if (typeof window === 'undefined' || !('ontouchstart' in window)) return;
   let startX = 0, startY = 0, startT = 0;
   const SWIPE_THRESHOLD = 60, VERTICAL_LIMIT = 50, TIME_LIMIT = 500, EDGE_GUARD = 28;
-  const ignoreIn = el => !!(el && el.closest && el.closest('canvas, .tourney-table-wrap, .compare-chart-wrap, .drop-menu, .tab-search-panel, .email-output, .email-preview, iframe, .chess-board, .de-table input'));
+  const ignoreIn = el => !!(el && el.closest && el.closest('canvas, .tourney-table-wrap, .compare-chart-wrap, .sheet, .email-output, .email-preview, iframe, .chess-board, .de-table input'));
   document.addEventListener('touchstart', e => {
     if (!_mobileVP() || e.touches.length !== 1) return;
     const t = e.touches[0];
@@ -128,9 +128,9 @@ function _runRenderPhases(gen, phases) {
 // was still loading, the callback aborted before hideSkeletons(), and the
 // sections stayed at opacity 0 until a reload. The error still surfaces in
 // the console.
+let _aboveTheFoldRendered = false;
 function _renderAboveTheFold(t, sections) {
   try {
-    renderTabs();
     renderDelta(t);
     renderHero(t);
     // KPI row removed: % Registered duplicates the CI bar, Early Bird is in
@@ -138,8 +138,14 @@ function _renderAboveTheFold(t, sections) {
     // Comparison, CI Width is the CI bar itself, Regular Fee has its own panel.
     renderProgress(t);
     renderChart(t);
-    // Scroll to delta banner smoothly when switching tournaments
-    document.getElementById('deltaBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Scroll to the delta banner when the visitor switches tournaments. The
+    // first render leaves the page at the top: on a phone the banner sits
+    // under the hero, and a landing that opens half a screen down reads as
+    // a jump.
+    if (_aboveTheFoldRendered) {
+      document.getElementById('deltaBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    _aboveTheFoldRendered = true;
   } finally {
     // Hide skeleton loaders and reveal the sections whether or not every
     // render succeeded; a half-rendered page beats a blank one.
@@ -180,12 +186,8 @@ function selectTournament(index, skipHash) {
   const gen = ++_renderGen;
   if (!skipHash) updateHash();
 
-  // Update header label and page title
-  const dot = document.getElementById('tournDot');
-  dot.style.display = t.status === 'live' ? '' : 'none';
-  const tournLabel = document.getElementById('tournLabel');
-  tournLabel.textContent = `${t.family} ${t.year}`;
-  tournLabel.title = `${t.family} ${t.year}`;
+  // The top bar's subject (shell.js) and the page title
+  reflectSubject(t);
   document.title = `${t.family} ${t.year} · CCA Entry Predictor`;
 
   updateFavButton(t.family);
@@ -293,7 +295,7 @@ window.addEventListener('scroll', () => {
 
 // Keyboard navigation
 document.addEventListener('keydown', (e) => {
-  if (openDrop) return;
+  if (sheetIsOpen()) return;
   // L5: never hijack arrows while typing (INPUT/TEXTAREA/contenteditable) or on
   // any tab other than Predictions — otherwise arrows in the Ask box or on the
   // puzzle board silently switch tournaments and rewrite the hash.

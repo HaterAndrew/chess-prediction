@@ -1,10 +1,18 @@
 /* ══════════════════════════════════════════════════════
-   DESIGN TOKENS
+   DESIGN TOKENS: THE WALLCHART
    ──────────────────────────────────────────────────────
+   The pairing sheet taped to the ballroom wall. White paper, black rules,
+   two pens (blue for the actual series and "ahead", red for the event
+   line and "behind"), figures typed. The colour is the material's own:
+   each sheet is printed on its own coloured stock, and the director's
+   highlighter marks the thing you are looking at (the open view, the
+   selected card, the forecast figure). Dark is the charcoal sheet: the
+   same pens lifted, the stocks deepened, the highlighter unchanged with
+   dark type on it.
    Four layers, resolved top to bottom:
      1. raw palette per theme, on :root[data-theme=...]
      2. semantic roles every component uses (--panel, --ink, --signal ...)
-     3. per-theme AA corrections (light needs darker accents as text)
+     3. per-theme corrections
      4. compatibility aliases for the pre-2026-09 token names, kept until
         every rule is rewritten on the semantic layer (then deleted)
    Light is the default: a page with no data-theme attribute (no JS, print)
@@ -16,108 +24,129 @@
 :root,
 :root[data-theme="light"] {
   color-scheme: light;
-  --surface-bg: #F7F4EC;
-  --surface-1: #F3EEE2;
-  --surface-2: #EFEADA;
-  --surface-3: #E9E1CC;
-  --surface-4: #E3D9BD;
-  --border: #E3DCC8;
-  --text: #28241B;
-  --text-muted: #6E6344;
-  --text-dim: #A3987B;
-  --accent: #9A7010;
-  --accent-bright: #8F670A;
-  --success: #15803D;
-  --warning: #A16207;
-  --danger: #B91C1C;
-  --info: #1D4ED8;
-  --focus-ring: #9A7010;
-  --shadow-lg: 0 6px 20px rgba(40, 36, 27, .16);
+  --surface-bg: #FFFFFF;
+  --surface-1: #FFFFFF;
+  --surface-2: #F4F4F2;
+  --surface-3: #EDEDEA;
+  --surface-4: #E6E6E6;
+  --border: #111111;
+  --border-soft: #C9C9C9;
+  --border-faint: #E6E6E6;
+  --text: #111111;
+  --text-2: #3D3D3D;
+  --text-muted: #5A5A5A;
+  --text-dim: #7A7A7A;
+  --accent: #1F4E9C;
+  --accent-bright: #173C7A;
+  --pen-red: #C8102E;
+  --highlighter: #FFE94D;
+  --on-highlighter: #111111;
+  --stock-yellow: #FFF1A8;
+  --stock-blue: #DCE8F8;
+  --stock-pink: #FBDCE2;
+  --stock-green: #D9F0DE;
+  --stock-grey: #EDEDEA;
+  --shadow-lg: 0 8px 24px rgba(17, 17, 17, .14);
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --surface-bg: #0a0907;
-  --surface-1: #12100d;
-  --surface-2: #1d1a17;
-  --surface-3: #282521;
-  --surface-4: #2f2b26;
-  --border: #383530;
-  --text: #eeece8;
-  --text-muted: #96928c;
-  --text-dim: #8a857d;
-  --accent: #f0c040;
-  --accent-bright: #f7d970;
-  --success: #3fb950;
-  --warning: #d29922;
-  --danger: #f85149;
-  --info: #58a6ff;
-  --focus-ring: #f0c040;
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, .45);
+  --surface-bg: #151517;
+  --surface-1: #151517;
+  --surface-2: #1F1F23;
+  --surface-3: #26262A;
+  --surface-4: #2E2E32;
+  --border: #8F8F8E;
+  --border-soft: #4A4A4E;
+  --border-faint: #2E2E32;
+  --text: #F2F2EF;
+  --text-2: #D4D4CF;
+  --text-muted: #A7A7A3;
+  --text-dim: #8A8A86;
+  --accent: #8FB4F0;
+  --accent-bright: #B3CCF5;
+  --pen-red: #FF7A8A;
+  --highlighter: #FFE94D;
+  --on-highlighter: #151517;
+  --stock-yellow: #3A3418;
+  --stock-blue: #1C2A44;
+  --stock-pink: #3A1F27;
+  --stock-green: #1B3324;
+  --stock-grey: #26262A;
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, .5);
 }
 
 /* ── 2. Semantic roles ──────────────────────────────── */
 :root {
-  /* surfaces */
+  /* surfaces: the paper, a sheet on it, the raised control, the hover */
   --void: var(--surface-bg);
   --panel: var(--surface-1);
   --raised: var(--surface-2);
   --hover: var(--surface-3);
-  /* text */
+  /* ink */
   --ink: var(--text);
+  --ink-2: var(--text-2);
   --muted: var(--text-muted);
-  --dim: color-mix(in srgb, var(--text-dim) 50%, var(--text));
-  /* lines */
+  --dim: var(--text-dim);
+  /* rules: the black rule, the light rule between rows, the grid */
   --line: var(--border);
-  --line-soft: color-mix(in srgb, var(--border) 55%, var(--surface-bg));
-  --line-input: color-mix(in srgb, var(--border) 40%, var(--text));
-  /* the one accent */
+  --line-soft: var(--border-soft);
+  --line-faint: var(--border-faint);
+  --line-input: var(--border);
+  /* the blue pen is the one accent; the highlighter marks the current thing */
   --signal: var(--accent);
   --signal-soft: var(--accent-bright);
   --signal-ink: var(--surface-bg);
-  --signal-tint: color-mix(in srgb, var(--accent) 14%, transparent);
-  /* state colours: only for state, never decoration */
-  --green: var(--success);
-  --amber: var(--warning);
-  --ember: var(--danger);
-  --blue: var(--info);
-  --green-tint: color-mix(in srgb, var(--success) 12%, transparent);
-  --amber-tint: color-mix(in srgb, var(--warning) 12%, transparent);
-  --ember-tint: color-mix(in srgb, var(--danger) 12%, transparent);
-  --blue-tint: color-mix(in srgb, var(--info) 12%, transparent);
+  --signal-tint: color-mix(in srgb, var(--accent) 12%, transparent);
+  --mark: var(--highlighter);
+  --mark-ink: var(--on-highlighter);
+  /* state colours, only for state: blue ahead, red behind, ink on yellow
+     stock for on pace and warnings; the pens stay two */
+  --green: var(--accent);
+  --amber: var(--text);
+  --ember: var(--pen-red);
+  --blue: var(--accent);
+  --green-tint: var(--stock-blue);
+  --amber-tint: var(--stock-yellow);
+  --ember-tint: var(--stock-pink);
+  --blue-tint: var(--stock-blue);
   /* chart roles: data colours read through foundation.js PALETTE */
-  --chart-actual: var(--ink);
-  --chart-projected: var(--signal);
-  --chart-band: color-mix(in srgb, var(--signal) 18%, transparent);
-  --chart-hist: var(--dim);
-  --chart-grid: color-mix(in srgb, var(--line-input) 35%, transparent);
-  --chart-tick: var(--muted);
-  --marker-today: var(--blue);
-  --marker-early: var(--green);
-  --marker-event: var(--ember);
-  --series-1: var(--signal);
-  --series-2: var(--blue);
-  --series-3: var(--green);
-  /* type */
-  --display: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --chart-actual: var(--accent);
+  --chart-projected: var(--text);
+  --chart-band: color-mix(in srgb, var(--accent) 14%, transparent);
+  --chart-hist: var(--text-dim);
+  --chart-grid: var(--border-faint);
+  --chart-tick: var(--text-muted);
+  --marker-today: var(--text);
+  --marker-early: var(--accent);
+  --marker-event: var(--pen-red);
+  --series-1: var(--accent);
+  --series-2: var(--pen-red);
+  --series-3: var(--text);
+  /* type: Archivo for the sheet's lettering (its width axis draws the
+     condensed display), Courier Prime for every figure */
+  --display: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'Courier Prime', 'Courier New', Courier, monospace;
+  --stretch-display: 75%;
+  --stretch-label: 85%;
   --fs-label: 11px;
   --fs-meta: 12px;
   --fs-body: 13px;
   --fs-body-lg: 14px;
-  --fs-h2: 18px;
-  --fs-h2-lg: 22px;
-  --fs-h1: clamp(26px, 2.6vw, 34px);
+  --fs-h2: 15px;
+  --fs-h2-lg: 18px;
+  --fs-h1: clamp(28px, 2.6vw, 34px);
   --track-label: .08em;
-  /* shape and motion */
-  --radius: 4px;
-  --radius-lg: 8px;
-  --radius-pill: 999px;
-  --radius-sheet: 16px;
+  /* shape and motion: the sheet is square */
+  --radius: 0;
+  --radius-lg: 0;
+  --radius-pill: 0;
+  --radius-sheet: 0;
   --control-h: 36px;
   --touch: 44px;
   --elevation: var(--shadow-lg);
   --scrim: color-mix(in srgb, var(--text) 45%, transparent);
+  --focus-ring: var(--accent);
   --dur-fast: 150ms;
   --dur: 200ms;
   --dur-slow: 250ms;
@@ -132,10 +161,7 @@
   --s-7: 40px;
   --gutter: 12px;
   --topbar-height: calc(56px + env(safe-area-inset-top, 0px));
-  --rail-width: 232px;
-  --rail-collapsed: 64px;
-  --bottom-nav: calc(60px + env(safe-area-inset-bottom, 0px));
-  --layer-rail: 20;
+  --bottom-nav: calc(58px + env(safe-area-inset-bottom, 0px));
   --layer-topbar: 30;
   --layer-nav: 35;
   --layer-popover: 100;
@@ -144,26 +170,12 @@
   --layer-skip: 300;
 }
 
-/* ── 3. Per-theme AA corrections ────────────────────── */
-/* On cream the raw gold (4.1:1), green (4.3) and amber (4.3) fail AA as
-   text; mixing them toward the ink brings each past 4.5 while the chart's
-   2 px projected line keeps the raw accent (3:1 is enough for a line). */
-:root,
-:root[data-theme="light"] {
-  --signal: color-mix(in srgb, var(--accent) 80%, var(--text));
-  --signal-soft: color-mix(in srgb, var(--accent-bright) 80%, #000);
-  --green: color-mix(in srgb, var(--success) 85%, var(--text));
-  --amber: color-mix(in srgb, var(--warning) 85%, var(--text));
-  --chart-projected: var(--accent);
-}
+/* ── 3. Per-theme corrections ───────────────────────── */
+/* The charcoal sheet needs a heavier scrim and a stronger tint for the
+   lifted pen to read at all; the highlighter keeps dark type on it. */
 :root[data-theme="dark"] {
-  --signal: var(--accent);
-  --signal-soft: var(--accent-bright);
-  --green: var(--success);
-  --amber: var(--warning);
-  --chart-projected: var(--signal);
-  --dim: var(--text-dim);
-  --scrim: rgba(0, 0, 0, .55);
+  --signal-tint: color-mix(in srgb, var(--accent) 18%, transparent);
+  --scrim: rgba(0, 0, 0, .6);
 }
 
 /* ── 4. Compatibility aliases (delete when no rule uses them) ── */
@@ -173,7 +185,7 @@
   --surface2: var(--raised);
   --surface3: var(--hover);
   --border-light: var(--line-soft);
-  --text2: color-mix(in srgb, var(--ink) 88%, var(--void));
+  --text2: var(--ink-2);
   --text3: var(--dim);
   --blue-bright: var(--blue);
   --blue-dim: var(--blue-tint);
@@ -204,27 +216,33 @@
   --fs-6: var(--fs-h2-lg);
 }
 
-/* ── Print is always light ──────────────────────────── */
+/* ── Print is always the white sheet ────────────────── */
 @media print {
   :root,
   :root[data-theme="dark"] {
     color-scheme: light;
-    --surface-bg: #ffffff;
-    --surface-1: #ffffff;
-    --surface-2: #f5f5f5;
-    --surface-3: #ebebeb;
-    --surface-4: #e3e3e3;
-    --border: #c8c8c8;
+    --surface-bg: #FFFFFF;
+    --surface-1: #FFFFFF;
+    --surface-2: #F4F4F2;
+    --surface-3: #EDEDEA;
+    --surface-4: #E6E6E6;
+    --border: #111111;
+    --border-soft: #C9C9C9;
+    --border-faint: #E6E6E6;
     --text: #111111;
-    --text-muted: #555555;
-    --text-dim: #8a8a8a;
-    --accent: #7a5a0c;
-    --accent-bright: #6b4f0a;
-    --success: #1a6f30;
-    --warning: #8a6b00;
-    --danger: #a32a23;
-    --info: #1a4f9c;
+    --text-2: #3D3D3D;
+    --text-muted: #5A5A5A;
+    --text-dim: #7A7A7A;
+    --accent: #1F4E9C;
+    --accent-bright: #173C7A;
+    --pen-red: #C8102E;
+    --highlighter: #FFE94D;
+    --on-highlighter: #111111;
+    --stock-yellow: #FFF1A8;
+    --stock-blue: #DCE8F8;
+    --stock-pink: #FBDCE2;
+    --stock-green: #D9F0DE;
+    --stock-grey: #EDEDEA;
     --shadow-lg: none;
-    --dim: var(--text-dim);
   }
 }

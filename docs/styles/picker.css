@@ -1,0 +1,42 @@
+/* picker.css — the tournament picker (pickers.js): the sheet the top bar's
+   subject opens, from the foot on a phone and as a popover under the
+   subject above it (overlays.css draws the sheet; this file draws what is
+   in it). Three segments, a search field on Historical, and the pairing
+   list itself: ruled rows you scan with the arrow keys, the selected
+   tournament under the highlighter. */
+
+.picker-panel { padding: 0; }
+.picker-head { border-bottom: 1px solid var(--line); padding: var(--s-3) var(--s-4); }
+.picker-head .segmented { display: flex; width: 100%; }
+.picker-head .segmented button { flex: 1 1 0; }
+.seg-count { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 400; margin-left: 6px; }
+.picker-search { align-items: center; border-bottom: 1px solid var(--line); display: flex; gap: 8px; padding: 0 var(--s-4); }
+.picker-search svg { color: var(--muted); flex: none; height: 15px; width: 15px; }
+.picker-search input { background: transparent; border: 0; color: var(--ink); flex: 1; font: 400 14px var(--display); min-height: var(--touch); min-width: 0; outline: 0; }
+.picker-search input::placeholder { color: var(--muted); }
+.picker-list { max-height: min(60vh, 520px); overflow-y: auto; overscroll-behavior: contain; }
+/* A family's editions sit under its name, the way the wallchart groups a section. */
+.picker-group { align-items: baseline; background: var(--raised); border-bottom: 1px solid var(--line-soft); color: var(--muted); display: flex; font: 700 11px var(--display); font-stretch: var(--stretch-label); gap: 6px; letter-spacing: .08em; padding: 6px var(--s-4); position: sticky; text-transform: uppercase; top: 0; z-index: 1; }
+.picker-group i { font: 400 11px var(--mono); font-style: normal; }
+.pick-row { align-items: center; background: transparent; border: 0; border-bottom: 1px solid var(--line-soft); color: var(--ink); cursor: pointer; display: flex; font: inherit; gap: var(--s-3); justify-content: space-between; min-height: var(--touch); padding: 8px var(--s-4); text-align: left; transition: background var(--dur-fast); width: 100%; }
+.pick-row:last-child { border-bottom: 0; }
+.pick-row:hover { background: var(--raised); }
+.pick-row:focus-visible { outline-offset: -2px; }
+.pick-row.active { background: var(--mark); color: var(--mark-ink); }
+.pick-name { align-items: center; display: flex; flex: 1 1 auto; font-weight: 700; gap: 8px; min-width: 0; }
+.pick-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pick-meta { color: var(--muted); flex: none; font: 12px var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pick-row.active .pick-meta { color: var(--mark-ink); }
+.picker-foot { border-top: 1px solid var(--line); color: var(--muted); font: 12px var(--mono); padding: 8px var(--s-4); }
+.picker-empty { color: var(--muted); padding: var(--s-6) var(--s-4); text-align: center; }
+
+@media (max-width: 639px) {
+  .picker-list { max-height: calc(92svh - 160px); }
+  /* A phone stacks the date line under the name so neither one is cut;
+     a year row (Historical) stays on one line. */
+  .pick-row-live, .pick-row-complete { align-items: stretch; flex-direction: column; gap: 2px; padding: 10px var(--s-4); }
+  .pick-row-live .pick-meta, .pick-row-complete .pick-meta { font-size: 11px; }
+  /* iOS zooms into a focused input under 16 px. */
+  .picker-search input { font-size: 16px; }
+}
+.picker-search[hidden] { display: none; }

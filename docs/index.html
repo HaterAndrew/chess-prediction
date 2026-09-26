@@ -33,7 +33,7 @@
 <!-- One stylesheet: the bundle pipeline/bundling.py builds from
      docs/styles/*.css in cascade order (STYLE_SOURCES). Edit the sources,
      then `python3 -m pipeline.bundling`. -->
-<link rel="stylesheet" href="styles/site.css?v=cae15dd4c3">
+<link rel="stylesheet" href="styles/site.css?v=61e8995433">
 </head>
 <body>
 
@@ -141,7 +141,7 @@
     <div class="note-body">
       <div class="note-title" id="deltaMain">Loading...</div>
       <div class="note-detail" id="deltaSub">&nbsp;</div>
-      <div class="note-context" id="deltaContext">&nbsp;</div>
+      <div class="note-context" id="deltaContext"></div>
     </div>
     <div class="pace-figure num" id="deltaValue">&nbsp;</div>
   </div>
@@ -167,8 +167,7 @@
       <div class="hero-label" id="heroLabel">Predicted Final Entries</div>
       <div class="hero-number" id="heroNumber" aria-hidden="true"></div>
       <span class="sr-only" id="heroAnnounce" aria-live="polite" aria-atomic="true"></span>
-      <div class="hero-ci" id="heroCi"><div class="range" aria-hidden="true"><span class="range-bound">&nbsp;</span><div class="range-track"></div><span class="range-bound">&nbsp;</span></div><div class="range-caption">&nbsp;</div><div class="hero-tags"><span class="tag">&nbsp;</span></div></div>
-      <div class="hero-narrative" id="heroNarrative" aria-live="polite"></div>
+      <div class="hero-ci" id="heroCi"><div class="range" aria-hidden="true"><span class="range-bound">&nbsp;</span><div class="range-track"></div><span class="range-bound">&nbsp;</span></div><div class="range-caption">&nbsp;</div></div>
       <div class="festival-cluster" id="festivalCluster" aria-label="Festival sub-events"></div>
     </div>
     <div id="weekBreakdown" class="hero-week">
@@ -176,8 +175,8 @@
       <div id="weekBars" class="hero-week-bars"><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div></div>
     </div>
     <div class="hero-kpis">
-      <div class="kpi-card" id="kpiCurrent"><div class="kpi-label">&nbsp;</div><div class="kpi-value">&nbsp;</div><div class="kpi-sub">&nbsp;</div><div class="kpi-fold"><div class="fold-head"><span>&nbsp;</span><span class="num">&nbsp;</span></div><div class="fold-track"></div><div class="fold-sub">&nbsp;</div></div></div>
-      <div class="kpi-card" id="kpiDays"><div class="kpi-label">&nbsp;</div><div class="kpi-value">&nbsp;</div><div class="kpi-sub">&nbsp;</div><div class="kpi-fold"><div class="fold-head"><span>&nbsp;</span><span class="num">&nbsp;</span></div><div class="fold-track"></div><div class="fold-sub">&nbsp;</div></div></div>
+      <div class="kpi-card" id="kpiCurrent"><div class="kpi-label">&nbsp;</div><div class="kpi-value">&nbsp;</div><div class="kpi-sub">&nbsp;</div><div class="kpi-fold"><div class="fold-track"></div><div class="fold-sub">&nbsp;</div></div></div>
+      <div class="kpi-card" id="kpiDays"><div class="kpi-label">&nbsp;</div><div class="kpi-value">&nbsp;</div><div class="kpi-sub">&nbsp;</div><div class="kpi-fold"><div class="fold-track"></div><div class="fold-sub">&nbsp;</div></div></div>
       <div class="kpi-card" id="kpiPace"><div class="kpi-label">&nbsp;</div><div class="kpi-value">&nbsp;</div><div class="kpi-sub">&nbsp;</div></div>
     </div>
   </div>
@@ -201,36 +200,22 @@
     <div class="chart-wrap">
       <canvas id="mainChart" aria-label="Cumulative entries chart showing predicted and actual registration counts over time" role="img"></canvas>
     </div>
-    <!-- Mobile-only inline date strip: replaces the EB/Event pill annotations
-         hidden on phones so the user can still see those dates at a glance. -->
-    <div id="chartMobileDates" class="chart-mobile-dates" aria-hidden="true">&nbsp;</div>
+    <!-- The milestones on one rule under the chart (panels_info.js
+         renderMilestones): today, the early bird while it is ahead, the next
+         checkpoints and the event day. The placeholder holds its height. -->
+    <div id="milestoneStrip" class="ms-strip-wrap"><div class="ms-strip" aria-hidden="true"><div class="ms-node"><div class="ms-dot"></div><div class="ms-node-label">&nbsp;</div><div class="ms-node-date">&nbsp;</div><div class="ms-node-count">&nbsp;</div></div><div class="ms-node"><div class="ms-dot"></div><div class="ms-node-label">&nbsp;</div><div class="ms-node-date">&nbsp;</div><div class="ms-node-count">&nbsp;</div></div><div class="ms-node"><div class="ms-dot"></div><div class="ms-node-label">&nbsp;</div><div class="ms-node-date">&nbsp;</div><div class="ms-node-count">&nbsp;</div></div><div class="ms-node"><div class="ms-dot"></div><div class="ms-node-label">&nbsp;</div><div class="ms-node-date">&nbsp;</div><div class="ms-node-count">&nbsp;</div></div><div class="ms-node"><div class="ms-dot"></div><div class="ms-node-label">&nbsp;</div><div class="ms-node-date">&nbsp;</div><div class="ms-node-count">&nbsp;</div></div><div class="ms-node"><div class="ms-dot"></div><div class="ms-node-label">&nbsp;</div><div class="ms-node-date">&nbsp;</div><div class="ms-node-count">&nbsp;</div></div></div></div>
   </div>
 
-  <!-- Inline model accuracy strip removed — that summary lives on the
-       Performance tab now to keep the Predictions home page focused. -->
-  <div id="accuracyStrip" class="accuracy-strip" aria-label="Model accuracy summary" hidden></div>
-
-  <!-- ── KPI Row ── -->
-  <div class="kpi-row" id="kpiRow" hidden></div>
-
   <!-- ── The evidence, in disclosure sections. data-open sets the default
-       (panels_cal.js syncSectionDisclosure): Milestones and History open from
-       640 px up, the rest closed until opened; print opens them all. The
-       `open` on the first keeps it visible if the script never runs. The
-       summary text is an h3 for screen-reader heading navigation. ── -->
-  <details class="sect" id="sect-milestones" data-open="wide" open>
-  <summary class="sect-summary"><h3 class="sect-summary-h">Milestones and History</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
-  <div class="grid-2 mt4">
-    <div class="panel">
-      <h3 class="panel-title">Milestones</h3>
-      <div class="timeline" id="timeline"></div>
-      <div id="milestoneTable" class="mt16"></div>
-    </div>
-    <div class="panel">
-      <h3 class="panel-title">History</h3>
-      <div class="chart-box h180"><canvas id="histChart" aria-label="Historical comparison chart showing past tournament entry counts" role="img"></canvas></div>
-      <div id="compTableWrap"></div>
-    </div>
+       (panels_cal.js syncSectionDisclosure): History opens from 640 px up,
+       the rest stay closed until opened; print opens them all. The `open` on
+       the first keeps it visible if the script never runs. The summary text
+       is an h3 for screen-reader heading navigation. ── -->
+  <details class="sect" id="sect-history" data-open="wide" open>
+  <summary class="sect-summary"><h3 class="sect-summary-h">History</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+  <div class="panel hist-panel">
+    <div class="chart-box h200"><canvas id="histChart" aria-label="Historical comparison chart showing past tournament entry counts" role="img"></canvas></div>
+    <div id="histNote"></div>
   </div>
   </details>
 
@@ -250,47 +235,8 @@
   </div>
   </details>
 
-  <!-- ── Model Info (compact; the Performance view has the whole story) ── -->
-  <details class="sect" id="sect-model" data-open="closed">
-  <summary class="sect-summary"><h3 class="sect-summary-h">About This Model</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
-  <div class="panel model-info mb24">
-    <div class="model-info-row">
-      <p class="model-info-blurb">Ensemble model: historical ratio + per-family Huber regression, predicting final count from current entries at each lead time. 80% confidence intervals (CIs) from lognormal fits with IQR outlier removal. Leave-one-out blind-tested on held-out 2023–2026 data.</p>
-      <div class="stat-chip-row">
-        <!-- Every figure here is set from PERFORMANCE_DATA in tab_about.js.
-             Until 2026-09-07 three of these four were static markup that no JS
-             touched, so they drifted from the nightly regrade unnoticed: the
-             "Overall MAPE" chip read 33.6% against a graded 10.3%. Do not
-             hardcode a value into a stat-chip-num; give it an id and source it. -->
-        <div class="stat-chip">
-          <div class="stat-chip-label">Day Before</div>
-          <div class="stat-chip-num pen" id="mc-mae-t1">–</div>
-          <div class="stat-chip-sub" title="Mean Absolute Percentage Error at T-1">MAPE</div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-label">CI Cover</div>
-          <div class="stat-chip-num pen" id="mc-ci-cover">–</div>
-          <div class="stat-chip-sub">target 80% (T-14)</div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-label">Overall</div>
-          <div class="stat-chip-num" id="mc-mae-t14">–</div>
-          <div class="stat-chip-sub" title="Mean Absolute Percentage Error at T-14">MAPE</div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-label">Conv.</div>
-          <div class="stat-chip-num" id="mc-convergence">–</div>
-          <div class="stat-chip-sub" id="mc-convergence-sub">monotonic</div>
-        </div>
-      </div>
-    </div>
-    <p class="sect-link"><button type="button" class="btn" data-act="page-tab" data-tab="performance">See the Performance View</button></p>
-  </div>
-
-  </details>
-
-  <!-- ── Up Next: the next three events, then the whole season
-       (season_cards.js renderUpNext) ── -->
+  <!-- ── Up Next: the next three events after this one, then the whole
+       season (season_cards.js renderUpNext) ── -->
   <section class="up-next" id="upNext" aria-labelledby="upNextTitle">
     <div class="up-next-head">
       <h2 id="upNextTitle">Up Next</h2>
@@ -912,6 +858,6 @@
      the bundle, dispatches bare globals, so there are no wrappers and no
      modules. Deferred, so it runs after the data tag above and after the
      chart library in <head>. Edit a source, then `python3 -m pipeline.bundling`. -->
-<script defer src="site.js?v=656462b6ed"></script>
+<script defer src="site.js?v=657a3e00ee"></script>
 </body>
 </html>

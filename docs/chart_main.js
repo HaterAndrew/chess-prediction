@@ -2,6 +2,10 @@
 // split verbatim from app.js (C10). One 750-line function: documented
 // exception to the module size ceiling; do not split further.
 
+// The draw-in plays on the first chart only; a tournament switch, a theme
+// change or a resize lands on the finished line.
+let _mainChartDrawn = false;
+
 function renderChart(t) {
   const ctx = document.getElementById('mainChart');
   if (chart) { chart.destroy(); chart = null; }
@@ -439,14 +443,14 @@ function renderChart(t) {
     };
   }
 
-  // Progressive left-to-right draw-in on first render. Per-chart animation
-  // config OVERRIDES the global Chart.defaults.animation kill, so reduced
-  // motion must be handled explicitly here. The xStarted/yStarted flags live
+  // Progressive left-to-right draw-in on the first chart of the visit. Per-chart
+  // animation config OVERRIDES the global Chart.defaults.animation kill, so
+  // reduced motion must be handled explicitly here. The xStarted/yStarted flags live
   // on each element's $context and stop the stagger from replaying on later
   // updates; range clicks additionally use update('none').
   const _drawN = actualData.length || 1;
   const _drawPer = Math.min(700 / _drawN, 12);
-  const drawInAnimation = _reduceMotion() ? false : {
+  const drawInAnimation = (_reduceMotion() || _mainChartDrawn) ? false : {
     x: {
       type: 'number', easing: 'linear', duration: _drawPer, from: NaN,
       delay(c) {
@@ -469,6 +473,7 @@ function renderChart(t) {
       }
     }
   };
+  _mainChartDrawn = true;
 
   // Hover emphasis for historical year traces. xAligned returns the nearest
   // point of EVERY dataset regardless of pointer y, so proximity to the trace
@@ -656,23 +661,6 @@ function renderChart(t) {
           filter(item) { return item.dataset.label !== 'CI Upper' && item.dataset.label !== 'CI Lower'; }
         }
       },
-      onClick(evt, elements) {
-        // Click a chart point to scroll to the tournament row in the data table
-        if (!elements.length) return;
-        const rows = document.querySelectorAll('.tourney-table tbody tr');
-        const idx = TOURNAMENT_DATA.tournaments.indexOf(t);
-        if (idx < 0) return;
-        for (const row of rows) {
-          row.classList.remove('chart-highlight');
-          if (row.dataset.idx === String(idx)) {
-            row.classList.add('chart-highlight');
-            const wrap = row.closest('details.sect');
-            if (wrap && !wrap.open) wrap.open = true;
-            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => row.classList.remove('chart-highlight'), 2500);
-          }
-        }
-      },
       scales: {
         x: {
           type: 'time',
@@ -733,18 +721,9 @@ function renderChart(t) {
   // / hover reveals it.
   subEl.setAttribute('title', sub);
 
-  // Mobile date strip: shows the EB + Event dates inline below the chart since
-  // the pill annotations for those are hidden on phones. Desktop CSS hides
-  // this element so it does not duplicate the pills.
+  // The early bird and event dates the pills leave out on a phone are on the
+  // milestone strip under the chart (panels_info.js renderMilestones).
   _syncChartRangeSeg(cw);
-
-  const datesEl = document.getElementById('chartMobileDates');
-  if (datesEl) {
-    const parts = [];
-    if (hasValidEarlyBird(t)) parts.push(`<span class="cmd-eb">EB · ${fmtDate(t.early_bird_deadline)}</span>`);
-    if (t.event_start) parts.push(`<span class="cmd-event">Event · ${fmtDate(t.event_start)}</span>`);
-    datesEl.innerHTML = parts.join(' &middot; ');
-  }
 }
 
 // (What-If panel removed)

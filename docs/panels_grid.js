@@ -48,6 +48,7 @@ function overviewSeasonLabel(tournaments) {
 }
 
 function renderAllTournaments() {
+  _syncLikelyRangeTitle();
   const body = document.getElementById('tourneyBody');
   const seasonTitle = `${overviewSeasonLabel(TOURNAMENT_DATA.tournaments)} Tournament Overview`.trim();
   document.querySelectorAll('[data-season-title]').forEach(el => { el.textContent = seasonTitle; });
@@ -220,72 +221,25 @@ function renderFestivalCluster(t) {
   el.innerHTML = html;
 }
 
-// Recent-finishes feed removed in iter 26 — the all-tournaments table
-// at the bottom already lists completed tournaments and is sortable +
-// filterable. Model accuracy summary lives in the strip just below the
-// calendar; the per-tournament drilldown lives in the Performance tab.
-
 // ══════════════════════════════════════════════════════════
-// INLINE MODEL ACCURACY STRIP (Predictions tab)
+// LIKELY RANGE HEADER
 // ══════════════════════════════════════════════════════════
-// Compact "the model has been right X% of the time at T-14" strip that
-// pulls from PERFORMANCE_SUMMARY. Surfaces trustworthiness inline without
-// making the user click into the Performance tab. Three cells: grade,
-// T-14 MAE, T-14 CI coverage. Click the strip to jump to the full
-// Performance tab.
-function renderAccuracyStrip() {
-  const el = document.getElementById('accuracyStrip');
-  if (!el) return;
-  const data = (typeof PERFORMANCE_SUMMARY !== 'undefined') ? PERFORMANCE_SUMMARY : null;
-  if (!data) { el.innerHTML = ''; return; }
-  const cumulative = data.cumulative || data;
-  if (!cumulative || !cumulative.aggregate) { el.innerHTML = ''; return; }
-  const agg = cumulative.aggregate;
-  // Find the T-14 bucket if it exists; fall back to nearest under-21d.
-  let t14 = agg.find(a => a.T === 14);
-  if (!t14) t14 = agg.find(a => a.T >= 7 && a.T <= 21);
-  const grade = cumulative.grade || data.grade || '–';
-  const nEvents = cumulative.n_tournaments ?? data.n_tournaments ?? null;
-  const mae = t14 ? t14.mae_pct : null;
-  const cov = t14 ? t14.ci_coverage : null;
-
-  // The "Likely Range" column header used to assert "8 times out of 10" as a
-  // flat fact. Measured cumulative coverage is below the 80% target at most
-  // horizons, and the About tab already renders the real figure from this same
-  // payload — the tooltip a director actually hovers should not disagree with
-  // it. Single-source it here (2026-09-07 review).
+// The "Likely Range" column header used to assert "8 times out of 10" as a
+// flat fact. Measured cumulative coverage is below the 80% target at most
+// horizons, and the About view renders the real figure from this same
+// payload, so the tooltip states the measured rate at two weeks out
+// (2026-09-07 review). renderAllTournaments calls it with the table.
+function _syncLikelyRangeTitle() {
   const th = document.getElementById('thLikelyRange');
-  if (th && cov != null) {
-    const rounded = Math.round(cov);
-    th.title = `Targets an 80% range. Measured: actual entries landed inside `
-      + `it ${rounded}% of the time at two weeks out`
-      + (nEvents ? `, across ${nEvents} blind-tested tournaments.` : '.');
-  }
-
-  // Grade-color mapping (matches the Performance tab letter conventions).
-  function gradeCls(g) {
-    if (!g) return 'flat';
-    const first = g[0];
-    if (first === 'A') return 'pos';
-    if (first === 'B') return 'flat';
-    return 'neg';
-  }
-
-  el.innerHTML = `
-    <button class="acc-row" data-act="page-tab" data-tab="performance" aria-label="Open full model performance tab">
-      <span class="acc-cell acc-grade">
-        <span class="acc-grade-letter acc-${gradeCls(grade)}">${grade}</span>
-        <span class="acc-grade-label">Model grade${nEvents ? ` · ${nEvents} tests` : ''}</span>
-      </span>
-      ${mae != null ? `<span class="acc-cell">
-        <span class="acc-num">${mae.toFixed(1)}%</span>
-        <span class="acc-lab">Avg miss at 2 weeks out</span>
-      </span>` : ''}
-      ${cov != null ? `<span class="acc-cell">
-        <span class="acc-num">${Math.round(cov)}%</span>
-        <span class="acc-lab">In range at 2 weeks out</span>
-      </span>` : ''}
-      <span class="acc-cta">View details &rarr;</span>
-    </button>
-  `;
+  const data = (typeof PERFORMANCE_SUMMARY !== 'undefined') ? PERFORMANCE_SUMMARY : null;
+  const cumulative = data && (data.cumulative || data);
+  if (!th || !cumulative || !cumulative.aggregate) return;
+  const agg = cumulative.aggregate;
+  // The T-14 bucket if it exists; else the nearest one inside 7 to 21 days.
+  const t14 = agg.find(a => a.T === 14) || agg.find(a => a.T >= 7 && a.T <= 21);
+  if (!t14 || t14.ci_coverage == null) return;
+  const nEvents = cumulative.n_tournaments ?? data.n_tournaments ?? null;
+  th.title = `Targets an 80% range. Measured: actual entries landed inside `
+    + `it ${Math.round(t14.ci_coverage)}% of the time at two weeks out`
+    + (nEvents ? `, across ${nEvents} blind-tested tournaments.` : '.');
 }

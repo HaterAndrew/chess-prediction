@@ -316,26 +316,6 @@ def test_coverage_tile_turns_green_only_at_the_advertised_target():
         f"coverage tile reads green at {m.group(1)}%, under the 80% target")
 
 
-def test_about_stat_chips_are_all_pipeline_sourced():
-    """Three of the four were static markup; one had drifted 3x."""
-    html = open(INDEX_HTML).read()
-    about = re.search(r'<div class="stat-chip-row">(.*?)</div>\s*</div>\s*</div>',
-                      html, re.S)
-    assert about, "could not locate the About-panel stat-chip row"
-    chips = re.findall(r'<div class="stat-chip-num[^"]*"([^>]*)>([^<]*)<', about.group(1))
-    assert chips, "no stat chips found"
-
-    about_js = open(ABOUT_JS).read()
-    for attrs, value in chips:
-        idm = re.search(r'id="([^"]+)"', attrs)
-        assert idm, f"stat chip with value {value!r} has no id, so nothing can set it"
-        chip_id = idm.group(1)
-        assert chip_id in about_js, f"chip {chip_id} is never written by tab_about.js"
-        # The markup value must be an inert placeholder, not a claim.
-        assert not re.search(r"\d", value), (
-            f"chip {chip_id} hardcodes {value!r}; it will drift from the regrade")
-
-
 def test_hero_number_is_not_inside_a_live_region():
     """A live region around a 600ms rAF tween announces every frame."""
     html = open(INDEX_HTML).read()

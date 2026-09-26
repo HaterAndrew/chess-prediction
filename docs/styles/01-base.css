@@ -66,7 +66,7 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
 @media (forced-colors: active) {
   .nav-item.active, .segmented button.active, .sheet-row.active, .pick-row.active,
   .fc-card-active, .mini-card-active,
-  .comp-table .current-year td, .perf-grade-letter.grade-good, .result-card-num,
+  .perf-grade-letter.grade-good, .result-card-num,
   .hero-number { outline: 2px solid CanvasText; outline-offset: -2px; }
-  .timeline-dot.now, .ms-node.ms-now .ms-dot, .cal-axis-now { background: Highlight; forced-color-adjust: none; }
+  .ms-node.ms-now .ms-dot, .cal-axis-now { background: Highlight; forced-color-adjust: none; }
 }

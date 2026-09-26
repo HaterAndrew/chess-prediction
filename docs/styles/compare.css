@@ -1,8 +1,6 @@
 /* compare.css — the Compare view (tab_compare.js): three slots, each with
    its pen (the series colours), the side-by-side table, the finding on blue
-   stock, the empty state and the chart card; and the Forecast's
-   year-over-year table (chart_hist.js), the current year under the
-   highlighter, the change in the pens. */
+   stock, the empty state and the chart card. */
 
 /* ── Slots ── */
 .compare-selectors { display: grid; gap: var(--s-2); grid-template-columns: 1fr; margin: 0 0 var(--s-4); }
@@ -42,28 +40,4 @@
   .compare-table td.compare-stat-label { border-bottom: 1px solid var(--line); margin-bottom: var(--s-2); padding-bottom: var(--s-2); }
   .compare-table td:not(.compare-stat-label)::before { color: var(--muted); content: attr(data-label); flex-shrink: 0; font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
   .compare-table tr td:last-child { border-bottom: 0; }
-}
-
-/* ── Year over year (the Forecast's History panel) ── */
-.comp-table-wrap { margin: 0 calc(-1 * var(--gutter)); overflow-x: auto; padding: 0 var(--gutter); -webkit-overflow-scrolling: touch; }
-.comp-table { border-collapse: collapse; min-width: 420px; width: 100%; }
-.comp-table th { border-bottom: 2px solid var(--line); color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); padding: 8px 10px; text-align: left; text-transform: uppercase; }
-.comp-table td { border-bottom: 1px solid var(--line-soft); font: 13px var(--mono); font-variant-numeric: tabular-nums; padding: 8px 10px; }
-.comp-table tr:last-child td { border-bottom: 0; }
-.comp-table .current-year td { background: var(--mark); color: var(--mark-ink); font-weight: 700; }
-.comp-was { color: var(--muted); font-size: 12px; }
-.comp-footnote { color: var(--muted); font-size: 12px; line-height: 1.45; margin-top: 8px; }
-.delta-pos { color: var(--signal); }
-.delta-neg { color: var(--ember); }
-@media (max-width: 639px) {
-  .comp-table-wrap { margin: 0; overflow-x: visible; padding: 0; }
-  .comp-table, .comp-table tbody, .comp-table tr { display: block; min-width: 0; }
-  .comp-table thead { display: none; }
-  .comp-table tr { border: 1px solid var(--line-soft); margin-bottom: var(--s-2); padding: var(--s-2) var(--s-3); }
-  .comp-table tr.current-year { background: var(--mark); border-color: var(--line); }
-  .comp-table .current-year td { background: transparent; color: var(--mark-ink); }
-  .comp-table td { align-items: center; border-bottom: 1px solid var(--line-soft); display: flex; gap: var(--s-3); justify-content: space-between; padding: 4px 0; }
-  .comp-table td::before { color: var(--muted); content: attr(data-label); flex-shrink: 0; font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
-  .comp-table tr.current-year td::before { color: var(--mark-ink); }
-  .comp-table tr td:last-child { border-bottom: 0; }
 }

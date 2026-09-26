@@ -124,10 +124,10 @@ function _renderAboveTheFold(t, sections) {
   try {
     renderDelta(t);
     renderHero(t);
-    // KPI row removed: % Registered duplicates the CI bar, Early Bird is in
-    // the chart annotations + subtitle, Past Average shows in Historical
-    // Comparison, CI Width is the CI bar itself, Regular Fee has its own panel.
     renderProgress(t);
+    // The milestone strip is plain markup under the chart; drawing it here,
+    // before the placeholders go, keeps the chart card from growing later.
+    renderMilestones(t);
     // Scroll to the delta banner when the visitor switches tournaments. The
     // first render leaves the page at the top: on a phone the banner sits
     // under the hero, and a landing that opens half a screen down reads as
@@ -138,16 +138,10 @@ function _renderAboveTheFold(t, sections) {
     _aboveTheFoldRendered = true;
   } finally {
     // Hide skeleton loaders and reveal the sections whether or not every
-    // render succeeded; a half-rendered page beats a blank one.
+    // render succeeded; a half-rendered page beats a blank one. One opacity
+    // fade (19-motion.css), all sections together.
     hideSkeletons();
-    sections.forEach((s, i) => {
-      setTimeout(() => {
-        s.style.opacity = '';
-        s.style.transform = 'translateY(0)';
-        s.classList.add('fade-enter');
-        setTimeout(() => s.classList.remove('fade-enter'), 400);
-      }, i * 60);
-    });
+    sections.forEach(s => { s.style.opacity = ''; });
   }
 }
 
@@ -169,12 +163,8 @@ function _renderCards() {
   renderUpNext();
 }
 
-// Everything below the chart, one chart or table per task so none of them
-// holds the main thread past a frame.
-function _renderTimelineAndMilestones(t) {
-  renderTimeline(t);
-  renderMilestones(t);
-}
+// Everything below the chart, one chart per task so none of them holds the
+// main thread past a frame.
 function _renderHistoricalChart(t) {
   renderHistorical(t);
 }
@@ -185,6 +175,9 @@ function _renderCurveAndFees(t) {
   const feePanel = document.getElementById('feePanel');
   if (feePanel) feePanel.style.display = (!t.early_bird_fee && !t.regular_fee && !t.onsite_fee) ? 'none' : '';
 }
+
+// The Forecast's sections a tournament switch fades (19-motion.css).
+const FORECAST_FADE_SECTIONS = '#panel-predictions :is(.pace-note, .chart-card, .sect, .up-next)';
 
 function selectTournament(index, skipHash) {
   selectedIndex = index;
@@ -197,10 +190,8 @@ function selectTournament(index, skipHash) {
   reflectSubject(t);
   document.title = `${t.family} ${t.year} · CCA Entry Predictor`;
 
-  updateFavButton(t.family);
-
-  // Staggered fade-in for visual polish
-  const sections = document.querySelectorAll('.pace-note, .chart-card, .kpi-row, .grid-2, .up-next');
+  // The sections fade out here and back in once the fold has rendered.
+  const sections = document.querySelectorAll(FORECAST_FADE_SECTIONS);
   sections.forEach(s => s.style.opacity = '0');
 
   _runRenderPhases(gen, [
@@ -208,7 +199,6 @@ function selectTournament(index, skipHash) {
     () => _renderMainChart(t),
     () => _renderCalendar(),
     () => _renderCards(),
-    () => _renderTimelineAndMilestones(t),
     () => _renderHistoricalChart(t),
     () => _renderCurveAndFees(t),
   ]);
@@ -299,8 +289,8 @@ window.addEventListener('scroll', () => {
 document.addEventListener('keydown', (e) => {
   if (sheetIsOpen()) return;
   // L5: never hijack arrows while typing (INPUT/TEXTAREA/contenteditable) or on
-  // any tab other than Predictions — otherwise arrows in the Ask box or on the
-  // puzzle board silently switch tournaments and rewrite the hash.
+  // any tab other than Predictions — otherwise arrows in the Ask box silently
+  // switch tournaments and rewrite the hash.
   const tag = e.target.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
   if (typeof _currentTab !== 'undefined' && _currentTab !== 'predictions') return;
@@ -313,151 +303,6 @@ document.addEventListener('keydown', (e) => {
     selectTournament((selectedIndex - 1 + n) % n);
   }
 });
-
-function saveDataEntry() {
-  const inputs = document.querySelectorAll('#deBody input');
-  const overrides = JSON.parse(localStorage.getItem('cca_overrides') || '{}');
-
-  // Pre-flight validation: type="date" / type="number" + min="0" enforce format
-  // at the browser level. Collect any input that fails checkValidity() and
-  // abort the save with a visible banner before touching localStorage.
-  const invalid = [];
-  inputs.forEach(inp => {
-    inp.classList.remove('de-input-invalid');
-    if (inp.value !== '' && !inp.checkValidity()) {
-      inp.classList.add('de-input-invalid');
-      invalid.push(`${inp.dataset.family} · ${inp.dataset.field}`);
-    }
-  });
-  if (invalid.length > 0) {
-    showToast(`${invalid.length} field${invalid.length === 1 ? '' : 's'} need fixing; see highlighted rows.`, 'error');
-    return;
-  }
-
-  inputs.forEach(inp => {
-    const family = inp.dataset.family;
-    const field = inp.dataset.field;
-    const val = inp.value;
-    const pristine = inp.dataset.pristine || '';
-    const saved = inp.dataset.saved || '';
-    // Skip fields the user didn't touch: if the input still matches the pipeline
-    // value AND no override was previously saved for this field, do nothing.
-    // If an override WAS saved and the user reverted to the pipeline value, drop it.
-    const isPipelineValue = val === pristine;
-    const hadSavedOverride = saved !== '';
-    if (isPipelineValue && !hadSavedOverride) return;
-    if (isPipelineValue && hadSavedOverride) {
-      if (overrides[family]) {
-        delete overrides[family][field];
-        if (Object.keys(overrides[family]).length === 0) delete overrides[family];
-      }
-      return;
-    }
-    if (!overrides[family]) overrides[family] = {};
-    if (field === 'current_count' || field.includes('fee')) {
-      overrides[family][field] = val !== '' ? Number(val) : undefined;
-    } else {
-      overrides[family][field] = val || undefined;
-    }
-  });
-
-  localStorage.setItem('cca_overrides', JSON.stringify(overrides));
-
-  // Apply overrides to TOURNAMENT_DATA in memory
-  applyOverrides();
-
-  // Re-render the current tournament view
-  selectTournament(selectedIndex);
-
-  // Show saved message (legacy inline + the toast)
-  const msg = document.getElementById('deSavedMsg');
-  msg.classList.add('show');
-  setTimeout(() => msg.classList.remove('show'), 2000);
-  showToast('Saved.', 'success');
-}
-
-function clearDataEntry() {
-  if (!confirm('Reset all manual overrides to default values?')) return;
-  localStorage.removeItem('cca_overrides');
-  // Reload page to reset TOURNAMENT_DATA
-  location.reload();
-}
-
-function applyOverrides() {
-  let overrides;
-  try {
-    overrides = JSON.parse(localStorage.getItem('cca_overrides') || '{}');
-    if (typeof overrides !== 'object' || overrides === null || Array.isArray(overrides)) {
-      overrides = {};
-    }
-  } catch (e) {
-    console.warn('Invalid overrides in localStorage, ignoring');
-    return;
-  }
-  if (Object.keys(overrides).length === 0) {
-    _renderOverrideBanner([]);
-    return;
-  }
-
-  const applied = [];
-  TOURNAMENT_DATA.tournaments.forEach(t => {
-    const o = overrides[t.family];
-    if (!o || typeof o !== 'object' || t.status !== 'live') return;
-    const before = { current_count: t.current_count };
-    if (typeof o.current_count === 'number' && o.current_count >= 0 && o.current_count < 100000) t.current_count = o.current_count;
-    if (typeof o.event_start === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(o.event_start)) {
-      t.event_start = o.event_start;
-      const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
-      const evt = new Date(o.event_start + 'T00:00:00');
-      t.days_remaining = Math.max(0, Math.ceil((evt - today) / 86400000));
-    }
-    if (typeof o.early_bird_deadline === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(o.early_bird_deadline)) t.early_bird_deadline = o.early_bird_deadline;
-    if (typeof o.early_bird_fee === 'number' && o.early_bird_fee >= 0) t.early_bird_fee = o.early_bird_fee;
-    if (typeof o.regular_fee === 'number' && o.regular_fee >= 0) t.regular_fee = o.regular_fee;
-    if (typeof o.onsite_fee === 'number' && o.onsite_fee >= 0) t.onsite_fee = o.onsite_fee;
-    // Track families where the override actually changed current_count vs the
-    // pipeline-generated value (other overrides like fee/date are less likely
-    // to mislead the dashboard's pace banners).
-    if (t.current_count !== before.current_count) {
-      applied.push({ family: t.family, was: before.current_count, now: t.current_count });
-    }
-  });
-  _renderOverrideBanner(applied);
-}
-
-function _renderOverrideBanner(applied) {
-  const banner = document.getElementById('overrideBanner');
-  if (!banner) return;
-  if (!applied || applied.length === 0) {
-    banner.style.display = 'none';
-    return;
-  }
-  const detail = document.getElementById('overrideBannerDetail');
-  if (detail) {
-    const lines = applied.map(a =>
-      `${a.family}: showing <strong>${fmt(a.now)}</strong> instead of pipeline value <strong>${fmt(a.was)}</strong>`
-    );
-    detail.innerHTML = lines.join('<br>') + '<br><span style="opacity:.75">Pace + KPIs reflect the override, not live registrations.</span>';
-  }
-  banner.style.display = 'block';
-}
-
-// One-shot migration: the previous saveDataEntry() iterated every input and
-// persisted every visible field as an override, freezing pipeline values for
-// tournaments the user never intended to override. Wipe legacy overrides once
-// per client (flagged in localStorage so it runs exactly once).
-(function purgeLegacyOverrides() {
-  const FLAG = 'cca_overrides_purged_v35';
-  if (localStorage.getItem(FLAG)) return;
-  try {
-    const existing = JSON.parse(localStorage.getItem('cca_overrides') || '{}');
-    if (existing && typeof existing === 'object' && Object.keys(existing).length > 0) {
-      localStorage.removeItem('cca_overrides');
-      console.info('[CCA] Cleared stale overrides on upgrade. Re-set any deliberate overrides in Data Entry.');
-    }
-  } catch (e) {}
-  localStorage.setItem(FLAG, '1');
-})();
 
 applyOverrides();
 

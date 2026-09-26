@@ -107,7 +107,6 @@
 .tourney-table tr { cursor: pointer; }
 .tourney-table tbody tr:hover td { background: var(--raised); }
 .tourney-table tbody tr:focus-visible { outline-offset: -2px; }
-.tourney-table tbody tr.chart-highlight td, .comp-table tbody tr.chart-highlight td { background: var(--stock-yellow); }
 .tourney-table tr:last-child td { border-bottom: 0; }
 .t-name { font-weight: 700; }
 .t-sub { color: var(--muted); font: 12px var(--mono); margin-top: 2px; }

@@ -1,0 +1,93 @@
+/* ══════════════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: var(--s-5) 0 max(var(--s-5), env(safe-area-inset-bottom));
+  text-align: center; font-size: var(--fs-2); color: var(--muted);
+}
+footer a { color: var(--muted); }
+
+/* ══════════════════════════════════════════════════════
+   ABOUT TAB — sub-model grid (collapses on mobile)
+   ══════════════════════════════════════════════════════ */
+.about-submodels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+@media (max-width: 639px) {
+  .about-submodels { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* ══════════════════════════════════════════════════════
+   PERFORMANCE TAB — tournament-results table (mobile cards)
+   Direct port of round-4 .tourney-table flip pattern.
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 639px) {
+  #perfTable { overflow-x: visible !important; }
+  #perfTable table { display: block; min-width: 0; }
+  #perfTable thead { display: none; }
+  #perfTable tbody { display: block; }
+  #perfTable tr {
+    display: block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+  }
+  #perfTable td {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: var(--s-3); padding: 4px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: var(--fs-3); text-align: left !important;
+    white-space: normal !important;
+  }
+  #perfTable td::before {
+    content: attr(data-label);
+    font-size: var(--fs-1); color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  #perfTable td:first-child {
+    flex-direction: column; align-items: flex-start; gap: 2px;
+    padding-top: 0; padding-bottom: var(--s-2); margin-bottom: var(--s-2);
+    border-bottom: 1px solid var(--border);
+    font-weight: 700; font-size: 1rem;
+  }
+  #perfTable td:first-child::before { display: none; }
+  #perfTable td:last-child { border-bottom: none; }
+}
+
+/* ══════════════════════════════════════════════════════
+   PERFORMANCE TAB
+   ══════════════════════════════════════════════════════ */
+.perf-grade-card {
+  flex: 0 0 auto;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 28px 36px;
+  background: rgba(240,192,64,.06);
+  border: 1px solid rgba(240,192,64,.2);
+  border-radius: 16px;
+  min-width: 140px;
+}
+.perf-charts-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-bottom: 22px;
+}
+@media (max-width: 639px) {
+  .perf-charts-grid { grid-template-columns: 1fr; }
+  .perf-grade-card { padding: 20px 24px; }
+}
+
+/* ── Narrow-phone card padding tightening (< 420px) ── */
+@media (max-width: 419px) {
+  .chart-card, .panel { padding: var(--s-3); }
+  .mini-card { padding: var(--s-3); }
+  .kpi-card { padding: var(--s-2) var(--s-3); }
+  .hero-label { letter-spacing: 1.2px; }
+}
+

@@ -11,35 +11,105 @@
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
 // Theme bridge: Chart.js configs and raw canvas code cannot resolve var(--x),
-// so resolve the styles.css :root tokens once at startup. Fallbacks mirror
-// the :root values; update both together (Phase 3 retint, 2026-07).
-const PALETTE = (() => {
-  const cs = getComputedStyle(document.documentElement);
-  const t = (name, fb) => (cs.getPropertyValue(name) || '').trim() || fb;
-  return {
-    bg: t('--bg', '#0a0907'),
-    surface: t('--surface', '#12100d'),
-    surface2: t('--surface2', '#1d1a17'),
-    surface3: t('--surface3', '#282521'),
-    border: t('--border', '#383530'),
-    text: t('--text', '#eeece8'),
+// so the tokens.css values are resolved into PALETTE. It is one mutable
+// object, refilled by rebuildPalette() on a theme switch, so every file that
+// captured the reference sees the new colours. Fallbacks mirror the dark
+// palette in tokens.css; update both together.
+//
+// Tokens like --dim are color-mix() expressions, which getComputedStyle
+// returns unresolved on a custom property. A probe element resolves each
+// one to a real rgb() through its `color` property.
+const PALETTE = {};
+
+// Normalise a computed colour to '#rrggbb' (or 'rgba(r,g,b,a)' when it has
+// alpha). Chromium serialises a color-mix() result as 'color(srgb r g b)',
+// which Chart.js's own colour parser does not read; canvas gradients and
+// themeRgba() both want plain rgb.
+function normalizeColor(c) {
+  if (!c) return c;
+  let m = /^color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\)$/.exec(c);
+  if (m) {
+    const [r, g, b] = [m[1], m[2], m[3]].map(v => Math.round(parseFloat(v) * 255));
+    const a = m[4] === undefined ? 1 : parseFloat(m[4]);
+    return a >= 1 ? '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('')
+                  : `rgba(${r},${g},${b},${a})`;
+  }
+  m = /^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:\s*[,/]\s*([\d.]+%?))?\s*\)$/.exec(c);
+  if (m) {
+    const [r, g, b] = [m[1], m[2], m[3]].map(v => Math.round(parseFloat(v)));
+    let a = m[4] === undefined ? 1 : parseFloat(m[4]);
+    if (m[4] && m[4].endsWith('%')) a = a / 100;
+    return a >= 1 ? '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('')
+                  : `rgba(${r},${g},${b},${a})`;
+  }
+  return c;
+}
+
+function readPalette() {
+  const root = document.documentElement;
+  const cs = getComputedStyle(root);
+  const probe = document.createElement('span');
+  probe.style.display = 'none';
+  root.appendChild(probe);
+  const t = (name, fb) => {
+    const raw = (cs.getPropertyValue(name) || '').trim();
+    if (!raw) return fb;
+    probe.style.color = '';
+    probe.style.color = raw;
+    const resolved = getComputedStyle(probe).color;
+    return normalizeColor(resolved && resolved !== 'rgba(0, 0, 0, 0)' ? resolved : raw);
+  };
+  const font = (name, fb) => (cs.getPropertyValue(name) || '').trim() || fb;
+  const p = {
+    bg: t('--void', '#0a0907'),
+    surface: t('--panel', '#12100d'),
+    surface2: t('--raised', '#1d1a17'),
+    surface3: t('--hover', '#282521'),
+    border: t('--line', '#383530'),
+    text: t('--ink', '#eeece8'),
     text2: t('--text2', '#d2cfcb'),
     muted: t('--muted', '#96928c'),
+    dim: t('--dim', '#8a857d'),
     blue: t('--blue', '#58a6ff'),
-    blueBright: t('--blue-bright', '#79c0ff'),
-    gold: t('--gold', '#f0c040'),
-    goldBright: t('--gold-bright', '#f7d970'),
+    blueBright: t('--blue', '#79c0ff'),
+    gold: t('--signal', '#f0c040'),
+    goldBright: t('--signal-soft', '#f7d970'),
     green: t('--green', '#3fb950'),
-    greenBright: t('--green-bright', '#56d364'),
-    red: t('--red', '#f85149'),
-    orange: t('--orange', '#d29922'),
-    orangeBright: t('--orange-bright', '#f59e0b')
+    greenBright: t('--green', '#56d364'),
+    red: t('--ember', '#f85149'),
+    orange: t('--amber', '#d29922'),
+    orangeBright: t('--amber', '#f59e0b'),
+    // chart roles (tokens.css "chart roles")
+    actual: t('--chart-actual', '#eeece8'),
+    projected: t('--chart-projected', '#f0c040'),
+    band: t('--chart-band', 'rgba(240,192,64,.18)'),
+    hist: t('--chart-hist', '#8a857d'),
+    grid: t('--chart-grid', 'rgba(56,53,48,.35)'),
+    tick: t('--chart-tick', '#96928c'),
+    markerToday: t('--marker-today', '#58a6ff'),
+    markerEarly: t('--marker-early', '#3fb950'),
+    markerEvent: t('--marker-event', '#f85149'),
+    series: [t('--series-1', '#f0c040'), t('--series-2', '#58a6ff'), t('--series-3', '#3fb950')],
+    fontDisplay: font('--display', 'system-ui, sans-serif'),
+    fontMono: font('--mono', 'ui-monospace, monospace')
   };
-})();
+  probe.remove();
+  return p;
+}
+function rebuildPalette() {
+  Object.assign(PALETTE, readPalette());
+}
+rebuildPalette();
 
-// rgba() string from a resolved token hex, for chart grids and tooltips.
-function themeRgba(hex, alpha) {
-  const n = hex.replace('#', '');
+// rgba() string from a resolved token colour (hex or rgb()/rgba()), for chart
+// grids and tooltips.
+function themeRgba(color, alpha) {
+  const m = /^rgba?\(([^)]+)\)$/.exec(color);
+  if (m) {
+    const [r, g, b] = m[1].split(',').map(s => parseFloat(s));
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+  const n = color.replace('#', '');
   const h = n.length === 3 ? n.split('').map(c => c + c).join('') : n;
   return `rgba(${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)},${alpha})`;
 }
@@ -316,12 +386,12 @@ function makeVertMarkersPlugin(id, getMarkers) {
   const style = document.createElement('style');
   style.textContent = `
     @keyframes chartHighlightPulse {
-      0% { background-color: rgba(240,192,64,0.25); }
+      0% { background-color: var(--signal-tint); }
       100% { background-color: transparent; }
     }
     .chart-highlight {
       animation: chartHighlightPulse 2.5s ease-out forwards;
-      outline: 1px solid rgba(240,192,64,0.4);
+      outline: 1px solid var(--signal);
       outline-offset: -1px;
     }
   `;

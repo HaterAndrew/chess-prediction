@@ -93,7 +93,7 @@ function renderHero(t) {
     ? (nHist >= 2 ? 'var(--orange)' : 'var(--red)')
     : (nHist >= 8 ? 'var(--green)' : 'var(--gold)');
   const confBadge = !isDone(t) && t.ci_lower !== t.ci_upper
-    ? ` <span title="${nHist} qualifying historical edition${nHist===1?'':'s'} for this family. Below 4 editions, the model marks the prediction low-confidence." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:var(--fs-1);font-weight:700;background:rgba(0,0,0,.3);border:1px solid ${confColor};color:${confColor};margin-left:6px;vertical-align:middle;cursor:help">${confLabel} · ${nHist} edition${nHist===1?'':'s'}</span>`
+    ? ` <span title="${nHist} qualifying historical edition${nHist===1?'':'s'} for this family. Below 4 editions, the model marks the prediction low-confidence." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:var(--fs-1);font-weight:700;background:var(--raised);border:1px solid ${confColor};color:${confColor};margin-left:6px;vertical-align:middle;cursor:help">${confLabel} · ${nHist} edition${nHist===1?'':'s'}</span>`
     : '';
 
   // Audit telemetry: surface fallback tier when prediction didn't use direct family ratios.
@@ -105,7 +105,7 @@ function renderHero(t) {
     'roster-pending': 'interim · not in roster yet',
   };
   const tierBadge = (!isDone(t) && t.prediction_tier && t.prediction_tier !== 'family-direct')
-    ? ` <span title="Prediction used the '${t.prediction_tier}' fallback path. 'family-alias' pools history from related families; 'size-matched' uses families with comparable historical size when this family has no direct history." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:var(--fs-1);font-weight:700;background:rgba(0,0,0,.3);border:1px solid var(--blue);color:var(--blue);margin-left:6px;vertical-align:middle;cursor:help">${tierLabelMap[t.prediction_tier] || t.prediction_tier.replace('-',' ')}</span>`
+    ? ` <span title="Prediction used the '${t.prediction_tier}' fallback path. 'family-alias' pools history from related families; 'size-matched' uses families with comparable historical size when this family has no direct history." style="display:inline-block;padding:2px 8px;border-radius:100px;font-size:var(--fs-1);font-weight:700;background:var(--raised);border:1px solid var(--blue);color:var(--blue);margin-left:6px;vertical-align:middle;cursor:help">${tierLabelMap[t.prediction_tier] || t.prediction_tier.replace('-',' ')}</span>`
     : '';
 
   // Confidence interval visualization. For completed tournaments we still

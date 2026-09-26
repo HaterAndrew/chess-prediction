@@ -1,0 +1,146 @@
+/* Proper scoring rules + naive baselines (2026-09-07 review). Two blocks:
+   a bar comparison of the model against doing nothing, and a PIT strip
+   showing whether the published range is honest. */
+.perf-scoring { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .perf-scoring { grid-template-columns: 1fr 1fr; } }
+.perf-scoring-block {
+  padding: 12px 14px; background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 10px;
+}
+.perf-scoring-title {
+  font-size: var(--fs-2); font-weight: 600; color: var(--text);
+  margin-bottom: 10px; letter-spacing: .01em;
+}
+.perf-scoring-sub { display: block; font-weight: 400; color: var(--muted); font-size: var(--fs-1); margin-top: 2px; }
+.perf-scoring-note { font-size: var(--fs-1); color: var(--muted); margin-top: 9px; line-height: 1.45; }
+
+.perf-bar-row { display: grid; grid-template-columns: minmax(0, 11em) 1fr 3.2em; align-items: center; gap: 8px; margin-bottom: 6px; }
+.perf-bar-label { font-size: var(--fs-1); color: var(--text2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.perf-bar-track { height: 8px; background: var(--surface); border-radius: 4px; overflow: hidden; }
+.perf-bar-fill { height: 100%; border-radius: 4px; }
+.perf-bar-val { font-size: var(--fs-1); text-align: right; font-variant-numeric: tabular-nums; }
+
+.perf-pit { display: flex; align-items: flex-end; gap: 3px; height: 48px; padding-top: 2px; }
+.perf-pit-col { flex: 1; display: flex; align-items: flex-end; justify-content: center; height: 100%; }
+.perf-pit-bar { width: 100%; border-radius: 2px 2px 0 0; }
+.perf-pit-axis { display: flex; justify-content: space-between; font-size: var(--fs-1); color: var(--muted); margin-top: 5px; }
+
+/* Colour is not the only cue: an over-weighted PIT bucket also gets a top rule,
+   so the "range is too narrow" signal survives Windows High Contrast Mode and
+   colour-vision differences. */
+@media (forced-colors: active) {
+  .perf-bar-fill { forced-color-adjust: none; background: Highlight !important; }
+  .perf-pit-bar { forced-color-adjust: none; background: CanvasText !important; }
+}
+.perf-summary {
+  font-size: var(--fs-2); font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); cursor: pointer; padding: 10px 0; user-select: none;
+  border-top: 1px solid var(--border);
+}
+
+.puzzle-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.puzzle-head h2 { font-size: var(--fs-5); font-weight: 700; margin: 0; }
+.puzzle-count { font-size: var(--fs-1); color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.puzzle-diff { font-size: var(--fs-2); color: var(--muted); margin-top: 2px; }
+.puzzle-moves { font-size: var(--fs-2); color: var(--muted); margin-top: 8px; }
+.puzzle-lichess { display: inline-block; margin-top: 12px; font-size: var(--fs-2); color: var(--blue); }
+
+.email-split-tabs { margin-left: auto; }
+.skip-link {
+  position: absolute; top: -100%; left: 0;
+  padding: 8px 16px;
+  background: var(--gold); color: var(--signal-ink);
+  z-index: 10000; font-weight: 700; text-decoration: none;
+  border-radius: 0 0 6px 0;
+}
+.footer-line { margin-bottom: 6px; }
+.footer-hints { margin-top: 8px; font-size: var(--fs-1); opacity: .5; }
+
+/* Programmatic focus lands on the active tab panel for screen-reader context;
+   the global :focus-visible ring must not paint a frame around the whole tab. */
+.page-tab-panel:focus, .page-tab-panel:focus-visible { outline: none; box-shadow: none; }
+
+
+/* Touch targets (phase 4): on touch devices every small control clears 44px;
+   the bottom-sheet segment buttons use the full 48px --touch token. */
+.cmdk-close { min-width: 36px; min-height: 36px; }
+@media (pointer: coarse) {
+  .cmdk-close, .cmdk-recent-chip, .search-btn { min-height: 44px; }
+  .cmdk-close { min-width: 44px; }
+  .tt-search input, .de-table input[type="text"], .de-table input[type="number"], .de-table input[type="date"] { min-height: 44px; }
+  .seg-btn { min-height: var(--touch); }
+}
+
+
+/* ── Progressive disclosure (phase 5): the four lower Predictions sections
+   collapse behind native <details> on phones; desktop and print always render
+   them open (JS syncSectionDisclosure + beforeprint force open). ── */
+details.sect > .sect-summary { display: none; }
+details.sect > .sect-summary::-webkit-details-marker { display: none; }
+/* v4 W5: the summary text is a real h3 so screen-reader heading navigation
+   lands on section boundaries on phones; inherit flattens the h3 defaults so
+   the summary renders exactly as before. */
+.sect-summary-h { font: inherit; margin: 0; display: inline; }
+@media (max-width: 639px) {
+  details.sect > .sect-summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    min-height: var(--touch);
+    padding: 10px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-3); font-weight: 700; color: var(--text);
+    cursor: pointer; user-select: none;
+    list-style: none;
+  }
+  details.sect > .sect-summary::after {
+    content: '\25BE';
+    color: var(--muted);
+    transition: transform .2s;
+  }
+  details.sect[open] > .sect-summary::after { transform: rotate(180deg); }
+  details.sect[open] > .sect-summary { margin-bottom: var(--s-3); }
+  /* the summary already names these sections; drop the duplicated inner titles */
+  #sect-model .model-info > .panel-title { display: none; }
+  #sect-table .tt-head > .panel-title { display: none; }
+}
+
+/* ── Mini-grid hierarchy (phase 5): "Next up" featured row above a compact
+   "Later" grid; renderMiniCards adds .mini-grid-tiered to the container. ── */
+.mini-grid.mini-grid-tiered { display: block; }
+.mini-section-label {
+  font-size: var(--fs-1); font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted);
+  margin: 2px 0 8px;
+}
+.mini-grid-featured {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--s-3);
+  margin-bottom: var(--s-4);
+}
+.mini-grid-featured .mini-card { padding: var(--s-5); }
+.mini-grid-featured .mini-card-number { font-size: 1.75rem; }
+.mini-grid-rest {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--s-2);
+}
+.mini-grid-rest .mini-card { padding: var(--s-3); }
+
+
+/* Horizon strip (phase 6): neutral tiles, the MAE value is the one colored
+   encoding; backgrounds no longer compete with the results table below. */
+.horizon-tile {
+  flex: 1; min-width: 80px;
+  padding: 10px 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+}
+.horizon-t { font-size: var(--fs-1); font-weight: 700; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+.horizon-val { font-size: var(--fs-5); font-weight: 800; margin: 3px 0 2px; }
+.horizon-ci { font-size: var(--fs-1); color: var(--muted); }
+

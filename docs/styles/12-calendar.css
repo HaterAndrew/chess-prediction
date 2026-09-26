@@ -1,0 +1,222 @@
+/* ══════════════════════════════════════════════════════
+   INLINE MODEL ACCURACY STRIP
+   ══════════════════════════════════════════════════════ */
+.accuracy-strip:empty { display: none; }
+.acc-row {
+  display: grid;
+  grid-template-columns: minmax(0,1.4fr) repeat(2, minmax(0,1fr)) auto;
+  align-items: center;
+  gap: var(--s-4);
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--s-3) var(--s-4);
+  margin: var(--s-3) 0;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .2s, background .2s, transform .2s;
+}
+.acc-row:hover {
+  border-color: var(--blue);
+  background: var(--surface2);
+  transform: translateY(-1px);
+}
+.acc-cell { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.acc-grade { flex-direction: row; align-items: center; gap: var(--s-3); }
+.acc-grade-letter {
+  font-size: 1.6rem; font-weight: 900;
+  font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+  line-height: 1;
+  min-width: 1.4em; text-align: center;
+}
+.acc-pos { color: var(--green); }
+.acc-flat { color: var(--gold); }
+.acc-neg { color: var(--red); }
+.acc-grade-label {
+  font-size: var(--fs-1); color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px; font-weight: 700;
+}
+.acc-num {
+  font-size: var(--fs-5); font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums; letter-spacing: -.01em;
+}
+.acc-lab {
+  font-size: var(--fs-1); color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px; font-weight: 600;
+}
+.acc-cta {
+  font-size: var(--fs-2); color: var(--blue);
+  font-weight: 600;
+  white-space: nowrap;
+}
+@media (max-width: 639px) {
+  .acc-row {
+    grid-template-columns: auto 1fr 1fr;
+    gap: var(--s-3);
+    padding: var(--s-3);
+  }
+  .acc-cta { display: none; }
+  .acc-grade-letter { font-size: 1.35rem; }
+  .acc-num { font-size: 1rem; }
+  .acc-grade { flex-direction: column; align-items: flex-start; gap: 0; }
+  .acc-grade-label { white-space: nowrap; }
+}
+
+/* ══════════════════════════════════════════════════════
+   UPCOMING-EVENTS CALENDAR STRIP
+   ══════════════════════════════════════════════════════ */
+.calendar-strip:empty { display: none; }
+.calendar-strip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--s-3) var(--s-4) var(--s-4);
+  margin: var(--s-3) 0;
+}
+.cal-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 10px; gap: var(--s-3);
+}
+.cal-title {
+  font-size: var(--fs-1); color: var(--muted);
+  text-transform: uppercase; letter-spacing: .6px; font-weight: 700;
+}
+.cal-legend {
+  display: flex; gap: var(--s-3);
+  font-size: var(--fs-1); color: var(--muted);
+  flex-wrap: wrap;
+}
+.cal-legend-item { display: inline-flex; align-items: center; gap: 5px; }
+.cal-dot-mini {
+  display: inline-block; width: 8px; height: 8px; border-radius: 100px;
+}
+.cal-pace-pos { background: var(--green); }
+.cal-pace-flat { background: var(--gold); }
+.cal-pace-neg { background: var(--red); }
+.cal-track-wrap {
+  position: relative;
+  padding: 14px 14px 26px;
+}
+.cal-track {
+  position: relative;
+  height: 30px;
+  background: linear-gradient(180deg, transparent 13px, var(--border) 13px,
+    var(--border) 17px, transparent 17px);
+  border-radius: 2px;
+}
+/* "Today" marker — gold vertical line at x=0 (leftmost). */
+.cal-axis-now {
+  position: absolute; left: 0; top: -4px; bottom: -4px;
+  width: 2px;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(240,192,64,.5);
+  border-radius: 100px;
+  pointer-events: none;
+}
+.cal-dot {
+  position: absolute; top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--gold);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--border-light);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: transform .2s cubic-bezier(.22,1,.36,1), box-shadow .2s;
+  padding: 0;
+}
+.cal-dot.cal-pace-pos { background: var(--green); box-shadow: 0 0 0 1px rgba(63,185,80,.4), 0 0 12px rgba(63,185,80,.3); }
+.cal-dot.cal-pace-flat { background: var(--gold); box-shadow: 0 0 0 1px rgba(240,192,64,.4), 0 0 12px rgba(240,192,64,.2); }
+.cal-dot.cal-pace-neg { background: var(--red); box-shadow: 0 0 0 1px rgba(248,81,73,.4), 0 0 12px rgba(248,81,73,.3); }
+.cal-dot:hover, .cal-dot:focus-visible {
+  transform: translate(-50%, -50%) scale(1.25);
+  z-index: 2;
+  box-shadow: 0 0 0 2px var(--text), 0 4px 16px rgba(0,0,0,.4);
+}
+
+/* Premium hover tooltip for upcoming-events dots. One floating element
+   repositioned per dot; fades in, pace-tinted accent border, generous
+   typography hierarchy so the tournament name reads first. */
+.cal-tooltip {
+  position: absolute;
+  z-index: 9999;
+  min-width: 220px; max-width: 320px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .16s ease-out, transform .16s ease-out;
+  font-family: inherit;
+}
+.cal-tooltip[hidden] { display: none; }
+.cal-tooltip.cal-tooltip-show { opacity: 1; transform: translateY(0); }
+.cal-tooltip::after {
+  content: ''; position: absolute;
+  left: 50%; bottom: -6px; transform: translateX(-50%) rotate(45deg);
+  width: 10px; height: 10px;
+  background: var(--surface2);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.cal-tip-name {
+  font-size: var(--fs-4); font-weight: 800; color: var(--text);
+  letter-spacing: -.01em; line-height: 1.25;
+  margin-bottom: 4px;
+}
+.cal-tip-meta {
+  display: flex; align-items: center; gap: 6px;
+  font-size: var(--fs-2); color: var(--muted);
+  margin-bottom: 10px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-light);
+}
+.cal-tip-date { font-weight: 600; color: var(--text2); }
+.cal-tip-days { font-variant-numeric: tabular-nums; }
+.cal-tip-sep { opacity: .6; }
+.cal-tip-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: var(--fs-2);
+  margin-top: 4px;
+}
+.cal-tip-label {
+  color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px;
+  font-size: var(--fs-1); font-weight: 700;
+}
+.cal-tip-value {
+  font-weight: 700; color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.cal-tip-pace-pos { color: var(--green); }
+.cal-tip-pace-flat { color: var(--text2); }
+.cal-tip-pace-neg { color: var(--red); }
+/* Pace tint: full border + faint wash matching the dot color (the border+tint
+   pattern from .cat-btn; side-stripe ribbons are banned). */
+.cal-tooltip-pos  { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3); border-color: rgba(63,185,80,.4); background-color: rgba(63,185,80,.05); }
+.cal-tooltip-flat { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3); border-color: rgba(240,192,64,.4); background-color: rgba(240,192,64,.05); }
+.cal-tooltip-neg  { box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3); border-color: rgba(248,81,73,.4); background-color: rgba(248,81,73,.05); }
+.cal-axis {
+  position: relative; height: 14px;
+  margin-top: 6px;
+}
+.cal-axis-tick {
+  position: absolute; transform: translateX(-50%);
+  font-size: var(--fs-1); color: var(--muted);
+  text-transform: uppercase; letter-spacing: .5px;
+  white-space: nowrap;
+}
+@media (max-width: 639px) {
+  /* Calendar-strip is hover-driven and the dots are <14px each — they tap
+     poorly on phones, the custom tooltip can't fit, and 26 events cluster
+     unreadably on a 375px viewport. The mini-cards grid below already
+     covers the "what's upcoming" job on mobile, so hide the strip outright. */
+  .calendar-strip { display: none; }
+}
+
+/* Portfolio movements strip removed in iter 24 — duplicated the
+   mini-card delta chips (iter 9). */
+

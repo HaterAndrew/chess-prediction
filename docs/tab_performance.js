@@ -520,7 +520,7 @@ function perfDrawTable(data) {
   });
 
   // Aggregate
-  html += `<tr style="border-top:2px solid var(--border);font-weight:700;background:rgba(240,192,64,.04)">
+  html += `<tr style="border-top:2px solid var(--border);font-weight:700;background:var(--signal-tint)">
     <td data-label="Average" style="padding:8px 10px" colspan="2">Average (${data.n_tournaments})</td>`;
   tPoints.forEach(T => {
     const a = agg.find(x => x.T === T);

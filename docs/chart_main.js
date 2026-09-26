@@ -718,10 +718,10 @@ function renderChart(t) {
   document.getElementById('chartCard').classList.toggle('live-glow', t.status === 'live');
 
   // Legend
-  let legendHtml = '<div class="legend-item"><div class="legend-swatch" style="background:#58a6ff"></div>Actual</div>';
+  let legendHtml = `<div class="legend-item"><div class="legend-swatch" style="background:${PALETTE.blue}"></div>Actual</div>`;
   if (!isDone(t)) {
     legendHtml += '<div class="legend-item"><div class="legend-swatch dashed"></div>Projected</div>';
-    legendHtml += '<div class="legend-item"><div class="legend-swatch band" style="background:#f0c040"></div>Likely range</div>';
+    legendHtml += `<div class="legend-item"><div class="legend-swatch band" style="background:${PALETTE.gold}"></div>Likely range</div>`;
   }
   if (t.historical) {
     legendHtml += `<div class="legend-item"><div class="legend-swatch dashed" style="background:repeating-linear-gradient(90deg,${themeRgba(PALETTE.muted,0.5)} 0 4px,transparent 4px 8px)"></div>Historical</div>`;

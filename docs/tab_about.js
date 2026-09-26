@@ -253,7 +253,7 @@ function renderModelHealth() {
       if (!data || !data.warnings) { warnEl.innerHTML = ''; return; }
       const c = data.count || 0;
       if (c === 0) {
-        warnEl.innerHTML = '<div style="font-size:var(--fs-2);color:var(--green);padding:10px 12px;background:rgba(72,187,120,.08);border:1px solid rgba(72,187,120,.3);border-radius:8px">Latest pipeline run: 0 warnings (clean).</div>';
+        warnEl.innerHTML = '<div style="font-size:var(--fs-2);color:var(--green);padding:10px 12px;background:var(--green-tint);border:1px solid var(--green);border-radius:8px">Latest pipeline run: 0 warnings (clean).</div>';
         return;
       }
       // v5 Cat V: warnings are deduped upstream and carry a per-entry count;
@@ -265,7 +265,7 @@ function renderModelHealth() {
         esc(w.text) + (w.count > 1 ? ' <span style="color:var(--muted)">×' + w.count + '</span>' : '') + '</td></tr>'
       ).join('');
       warnEl.innerHTML =
-        '<details style="background:rgba(214,158,46,.08);border:1px solid rgba(214,158,46,.3);border-radius:8px;padding:10px 12px">' +
+        '<details style="background:var(--amber-tint);border:1px solid var(--amber);border-radius:8px;padding:10px 12px">' +
         '<summary style="cursor:pointer;font-size:var(--fs-2);color:var(--gold);font-weight:600">Latest pipeline run: ' + c + ' distinct warning' + (c === 1 ? '' : 's') + ' (click to expand)</summary>' +
         '<table style="width:100%;margin-top:10px;border-collapse:collapse">' + rows + '</table></details>';
     })

@@ -1,13 +1,14 @@
 // tab_compare.js — side-by-side comparison tab, split verbatim from
-// app.js (C15). COMPARE_COLORS reads PALETTE at load time, so this file
-// must load after foundation.js.
+// app.js (C15). Slot colours come from PALETTE at render time (not load
+// time) so a theme switch recolours the next render; this file still loads
+// after foundation.js because it calls into it.
 
 // ══════════════════════════════════════════════════════════
 // COMPARE (side-by-side tournament comparison)
 // ══════════════════════════════════════════════════════════
 const COMPARE_KEY = 'cca_compare';
-const COMPARE_COLORS = [PALETTE.blue, PALETTE.gold, PALETTE.green];
-const COMPARE_COLORS_DIM = ['rgba(88,166,255,0.15)', 'rgba(240,192,64,0.15)', 'rgba(63,185,80,0.15)'];
+function compareColors() { return PALETTE.series.slice(); }
+function compareColorsDim() { return PALETTE.series.map(c => themeRgba(c, 0.15)); }
 let _compareSlots = [];
 let _compareChart = null;
 
@@ -88,7 +89,7 @@ function renderCompareTab() {
   let selectorHTML = captionHTML + '<div class="compare-selectors">';
   for (let s = 0; s < 3; s++) {
     const currentIdx = _compareSlots[s];
-    const colorDot = `<span class="compare-color-dot" style="background:${COMPARE_COLORS[s]}"></span>`;
+    const colorDot = `<span class="compare-color-dot" style="background:${compareColors()[s]}"></span>`;
     selectorHTML += `<div class="compare-selector">
       ${colorDot}
       <select class="compare-dropdown" data-inputact="compare-slot-changed" data-slot="${s}">
@@ -113,7 +114,7 @@ function renderCompareTab() {
   if (selected.length >= 2) {
     statsHTML = '<div class="compare-table-wrap"><table class="compare-table"><thead><tr><th>Stat</th>';
     selected.forEach((s, ci) => {
-      statsHTML += `<th style="color:${COMPARE_COLORS[ci]}">${esc(s.t.family)} ${s.t.year}</th>`;
+      statsHTML += `<th style="color:${compareColors()[ci]}">${esc(s.t.family)} ${s.t.year}</th>`;
     });
     statsHTML += '</tr></thead><tbody>';
 
@@ -214,8 +215,8 @@ function renderCompareChart(selected) {
   const datasets = [];
   selected.forEach((s, ci) => {
     const t = s.t;
-    const color = COMPARE_COLORS[ci];
-    const dimColor = COMPARE_COLORS_DIM[ci];
+    const color = compareColors()[ci];
+    const dimColor = compareColorsDim()[ci];
     // The y scaling target — predicted for live, actual final for completed.
     const target = (t.status === 'live')
       ? (t.point_estimate || 1)

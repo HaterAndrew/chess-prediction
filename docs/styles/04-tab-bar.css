@@ -1,0 +1,88 @@
+/* ══════════════════════════════════════════════════════
+   TOURNAMENT SELECTOR
+   ══════════════════════════════════════════════════════ */
+.tab-bar {
+  display: flex; gap: var(--s-2); padding: var(--s-4) 0 0;
+  flex-wrap: wrap; align-items: center;
+}
+.cat-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 14px;
+  min-height: var(--touch);
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text2); font-size: var(--fs-2); font-weight: 600;
+  cursor: pointer; transition: all .15s; white-space: nowrap; user-select: none;
+}
+.cat-btn:hover { border-color: var(--blue); color: var(--text); background: var(--surface3); }
+.cat-btn.open { border-color: var(--blue); background: var(--blue-dim); color: var(--text); }
+/* Category tint replaces the prior `border-left: 3px solid <color>`
+   side-stripe inline style (banned side-stripe anti-pattern). The full
+   1px border picks up the category color at low opacity; background
+   sits at the matching -dim token. */
+.cat-btn--live      { border-color: rgba(63,185,80,.45);  background: rgba(63,185,80,.06); }
+.cat-btn--complete  { border-color: rgba(56,139,253,.45); background: rgba(56,139,253,.06); }
+.cat-btn--hist      { border-color: rgba(188,140,255,.45); background: rgba(188,140,255,.06); }
+.cat-btn--live:hover,
+.cat-btn--complete:hover,
+.cat-btn--hist:hover { color: var(--text); background: var(--surface3); }
+.cat-btn .cat-count {
+  background: var(--surface3); padding: 1px 7px; border-radius: 100px;
+  font-size: var(--fs-1); color: var(--muted);
+}
+.tab-search-panel {
+  position: absolute; top: calc(100% + 4px);
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow); z-index: 200; overflow: hidden;
+  max-width: calc(100vw - 24px);
+}
+.tab-search-bar {
+  display: flex; align-items: center; gap: var(--s-2);
+  padding: 10px 14px; border-bottom: 1px solid var(--border);
+}
+.tab-search-input {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: var(--text); font-size: var(--fs-4); font-family: inherit;
+  min-height: var(--touch);
+}
+.tab-search-input::placeholder { color: var(--muted); }
+.tab-search-results { max-height: 50vh; overflow-y: auto; }
+.cat-arrow { font-size: var(--fs-1); color: var(--muted); transition: transform .15s; }
+.cat-btn.open .cat-arrow { transform: rotate(180deg); }
+.drop-wrap { position: relative; }
+.drop-menu {
+  display: none; position: absolute; top: calc(100% + 6px); left: 0;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  width: min(320px, calc(100vw - 24px));
+  max-height: 60vh; overflow-y: auto;
+  box-shadow: var(--shadow), 0 0 0 1px rgba(0,0,0,.15); z-index: 200;
+  animation: dropSlide .15s ease;
+}
+@keyframes dropSlide { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.drop-menu-search { overflow: hidden; }
+.drop-menu-search .tab-search-results { max-height: 50vh; overflow-y: auto; }
+.cat-item {
+  padding: 10px 14px;
+  min-height: var(--touch);
+  font-size: var(--fs-3); cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-2);
+  border-bottom: 1px solid rgba(56,53,48,.2); transition: background .1s; color: var(--text2);
+}
+.cat-item:hover { background: var(--surface2); color: var(--text); }
+.cat-item.highlighted { background: var(--surface2); color: var(--text); outline: 2px solid var(--blue); outline-offset: -2px; }
+.cat-item.active { color: var(--blue); background: var(--blue-dim); font-weight: 600; }
+.cat-item:last-child { border-bottom: none; }
+.cat-item-name { flex: 1; display: flex; align-items: center; gap: 6px; min-width: 0; }
+.cat-item-meta { font-size: var(--fs-1); color: var(--muted); white-space: nowrap; }
+.tab-sep {
+  width: 1px; height: 24px; background: var(--border); margin: 0 4px; align-self: center;
+}
+.live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+

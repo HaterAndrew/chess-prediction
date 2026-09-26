@@ -1,0 +1,101 @@
+/* ══════════════════════════════════════════════════════
+   UPCOMING MINI CARDS
+   ══════════════════════════════════════════════════════ */
+.mini-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-3);
+}
+.mini-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--s-4);
+  cursor: pointer;
+  min-height: var(--touch);
+  transition: border-color .2s, box-shadow .2s, transform .15s;
+}
+.mini-card:hover { border-color: var(--blue); box-shadow: var(--glow-blue); transform: translateY(-2px); }
+.mini-card-active { border-color: var(--gold); box-shadow: var(--glow-gold); background: linear-gradient(135deg, var(--surface), rgba(240,192,64,.04)); }
+.mini-card-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.mini-card-name { font-weight: 700; font-size: var(--fs-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1 1 auto; min-width: 0; padding-right: var(--s-2); }
+.mini-badge {
+  font-size: var(--fs-1); font-weight: 700;
+  padding: 2px 8px; border-radius: 100px;
+}
+.badge-live { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+.badge-complete { background: var(--surface3); color: var(--muted); border: 1px solid var(--border); }
+.badge-upcoming { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(56,139,253,.3); }
+.mini-card-number { font-size: 1.4rem; font-weight: 800; color: var(--gold); line-height: 1; }
+.mini-card-chips { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.mini-card-delta {
+  font-size: var(--fs-1); font-weight: 800;
+  padding: 2px 7px; border-radius: 100px;
+  font-variant-numeric: tabular-nums;
+}
+.mini-card-delta.pos { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+.mini-card-delta.neg { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,81,73,.3); }
+.mini-card-details { font-size: var(--fs-2); color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+/* ══════════════════════════════════════════════════════
+   PAGE TABS
+   ══════════════════════════════════════════════════════ */
+.page-tabs {
+  display: flex; gap: 0; border-bottom: 2px solid var(--border);
+  margin-bottom: var(--s-4); padding-top: var(--s-2);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.page-tabs::-webkit-scrollbar { display: none; }
+.page-tab {
+  padding: 12px 16px;
+  min-height: var(--touch);
+  font-size: var(--fs-2); font-weight: 600;
+  color: var(--muted); cursor: pointer; border: none; background: none;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+  transition: color .2s, border-color .2s; white-space: nowrap;
+  flex-shrink: 0;
+}
+.page-tab:hover { color: var(--text); }
+.page-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+.page-tab-panel { display: none; }
+.page-tab-panel.active { display: block; }
+
+/* ── "Menu" page-tab dropdown ── */
+.page-tab-more-wrap { display: inline-flex; flex-shrink: 0; }
+.page-tab-more { display: inline-flex; align-items: center; gap: 6px; }
+.page-tab-more .menu-caret { font-size: var(--fs-1); opacity: .85; transition: transform .15s ease; }
+.page-tab-more[aria-expanded="true"] .menu-caret { transform: rotate(180deg); }
+.page-tab-drop {
+  position: fixed; top: 0; left: 0;
+  display: none;
+  min-width: 220px; max-width: min(320px, calc(100vw - 24px));
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(0,0,0,.15);
+  z-index: 300;
+  animation: dropSlide .15s ease;
+  padding: 4px 0;
+}
+.page-tab-drop.open { display: block; }
+.page-tab-drop .cat-item {
+  width: 100%; text-align: left;
+  background: none; border: none; cursor: pointer;
+  font: inherit; font-size: var(--fs-3); font-weight: 600;
+  color: var(--text2);
+}
+.page-tab-drop .cat-item.active { color: var(--blue); background: var(--blue-dim); }
+
+/* ── Edge fade hint for scrollable tab strip on mobile ── */
+@media (max-width: 639px) {
+  .page-tabs {
+    /* Widened fade region (was 16px) so tab labels with emoji/icons
+       don't clip visibly before content wraps. */
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    scroll-behavior: smooth;
+  }
+}
+

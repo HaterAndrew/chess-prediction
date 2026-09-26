@@ -153,11 +153,8 @@ function _renderMainChart(t) {
   renderChart(t);
 }
 
-// The Season view's calendar and cards, which mark the selected tournament
-// and so follow every selection.
-function _renderCalendar() {
-  renderCalendar();
-}
+// The Season's cards and the Forecast's Up Next, which follow every
+// selection.
 function _renderCards() {
   renderMiniCards();
   renderUpNext();
@@ -197,7 +194,6 @@ function selectTournament(index, skipHash) {
   _runRenderPhases(gen, [
     () => _renderAboveTheFold(t, sections),
     () => _renderMainChart(t),
-    () => _renderCalendar(),
     () => _renderCards(),
     () => _renderHistoricalChart(t),
     () => _renderCurveAndFees(t),

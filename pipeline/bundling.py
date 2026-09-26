@@ -81,7 +81,7 @@ SCRIPT_SOURCES = (
     "chart_hist.js",
     "chart_curve.js",
     "panels_grid.js",
-    "panels_cal.js",
+    "disclosure.js",
     "season_cards.js",
     "tab_about.js",
     "tab_compare.js",

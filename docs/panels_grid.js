@@ -1,5 +1,6 @@
-// panels_grid.js — all-tournaments table, summary bar, festival cluster
-// and accuracy strip, split verbatim from app.js (C12).
+// panels_grid.js — the Season's tournament table and summary line, the
+// festival cluster and the Likely Range header's measured tooltip, split
+// from app.js (C12).
 
 // ══════════════════════════════════════════════════════════
 // ALL TOURNAMENTS TABLE
@@ -22,9 +23,10 @@ function sortTable(col, ev) {
 }
 
 // Filter state for the all-tournaments table. status filter is one of
-// 'all' | 'live' | 'complete'; query is a free-text substring match against
-// family/year/state/city. Both apply on top of the existing sort.
-let _ttStatusFilter = 'all';
+// 'all' | 'live' | 'complete', opening on the upcoming events; query is a
+// free-text substring match against family/year/state/city. Both apply on
+// top of the existing sort.
+let _ttStatusFilter = 'live';
 function filterTourneyTable(status) {
   if (status) {
     _ttStatusFilter = status;
@@ -109,8 +111,11 @@ function renderAllTournaments() {
       }
     }
 
+    // A phone shows the name and the forecast; this line under the name
+    // carries the date, the countdown or state, and the count (season.css).
+    const phoneSub = `${fmtDate(t.event_start)} · ${isLive ? 'T-' + t.days_remaining : 'Complete'} · ${fmt(t.current_count)} ${isLive ? 'registered' : 'entries'}`;
     return `<tr data-act="select-tournament-forecast" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0">
-      <td data-label="Tournament"><div class="t-name" title="${esc(t.family)} ${t.year}">${esc(t.family)}</div><div class="t-sub">${t.year}${isLive ? ' · T-' + t.days_remaining : ''}</div></td>
+      <td data-label="Tournament"><div class="t-name" title="${esc(t.family)} ${t.year}">${esc(t.family)}</div><div class="t-sub">${t.year}${isLive ? ' · T-' + t.days_remaining : ''}</div><div class="t-sub-m">${phoneSub}</div></td>
       <td data-label="Status">${pill}</td>
       <td data-label="Event Date" class="num">${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
       <td data-label="Current"><span class="td-current">${fmt(t.current_count)}</span>${paceStr}</td>
@@ -145,9 +150,6 @@ function renderSummaryBar() {
   `;
 }
 
-// Movements widget removed in iter 24 — today's delta is already on each
-// mini-card via the delta chip (iter 9). Calendar timeline still surfaces
-// the portfolio view by event date.
 
 // Confidence breakdown panel removed in iter 25 — the hero narrative +
 // confidence badge already say "tracking on pace" or "low confidence

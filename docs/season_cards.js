@@ -64,19 +64,16 @@ function _liveByDate() {
     .sort((a, b) => a.t.days_remaining - b.t.days_remaining);
 }
 
-// The Season: the next three events get the featured row; the rest stay
-// compact. Everything remains clickable and information-identical.
+// The Season: the next three events as cards; the table below lists every
+// one of them.
 function renderMiniCards() {
   const el = document.getElementById('miniGrid');
   if (!el) return;
-  const live = _liveByDate();
-  const featured = live.slice(0, 3);
-  const later = live.slice(3);
+  const featured = _liveByDate().slice(0, 3);
   const card = x => seasonCard(x, 'select-tournament-forecast');
-  el.classList.add('mini-grid-tiered');
-  el.innerHTML =
-    (featured.length ? `<div class="mini-section-label">Next Up</div><div class="mini-grid-featured">${featured.map(card).join('')}</div>` : '') +
-    (later.length ? `<div class="mini-section-label">Later</div><div class="mini-grid-rest">${later.map(card).join('')}</div>` : '');
+  el.innerHTML = featured.length
+    ? `<div class="mini-section-label">Next Up</div><div class="mini-grid-featured">${featured.map(card).join('')}</div>`
+    : '';
 }
 
 // The Forecast's Up Next strip: the next three after the one on screen.

@@ -33,7 +33,7 @@
 <!-- One stylesheet: the bundle pipeline/bundling.py builds from
      docs/styles/*.css in cascade order (STYLE_SOURCES). Edit the sources,
      then `python3 -m pipeline.bundling`. -->
-<link rel="stylesheet" href="styles/site.css?v=61e8995433">
+<link rel="stylesheet" href="styles/site.css?v=db71017de8">
 </head>
 <body>
 
@@ -207,7 +207,7 @@
   </div>
 
   <!-- ── The evidence, in disclosure sections. data-open sets the default
-       (panels_cal.js syncSectionDisclosure): History opens from 640 px up,
+       (disclosure.js syncSectionDisclosure): History opens from 640 px up,
        the rest stay closed until opened; print opens them all. The `open` on
        the first keeps it visible if the script never runs. The summary text
        is an h3 for screen-reader heading navigation. ── -->
@@ -248,59 +248,51 @@
   </div><!-- /panel-predictions -->
 
   <!-- ══════ SEASON ══════ -->
-  <!-- The portfolio view: the counts, the upcoming-events timeline, the
-       cards for every open tournament and the sortable overview table.
-       renderSummaryBar, renderCalendar, renderMiniCards and
-       renderAllTournaments find their elements here by id. -->
+  <!-- The portfolio view: the counts, the next three events as cards and
+       the tournament table, which opens on the upcoming events.
+       renderSummaryBar, renderMiniCards and renderAllTournaments find their
+       elements here by id. -->
   <div class="page-tab-panel" id="panel-season" role="region" aria-labelledby="ptab-season">
 
   <!-- ── Summary line ── -->
   <div id="summaryBar" class="summary-bar"></div>
 
-  <!-- ── Upcoming-events calendar timeline ── -->
-  <div id="calendarStrip" class="calendar-strip" aria-label="Upcoming tournaments timeline"></div>
-
-  <!-- ── Upcoming cards: Next Up over Later ── -->
+  <!-- ── Next Up: the next three events ── -->
   <div class="mini-grid mt16" id="miniGrid"></div>
 
   <!-- ── Tournament Overview table ── -->
-  <details class="sect" id="sect-table" data-open="always" open>
-  <summary class="sect-summary"><h3 class="sect-summary-h" data-season-title>Tournament Overview</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
-  <div class="all-tournaments">
-    <div class="panel roomy" >
-      <div class="tt-head">
-        <h3 class="panel-title mb0" data-season-title>Tournament Overview</h3>
-        <div class="tt-controls">
-          <div class="segmented" role="group" aria-label="Filter by status">
-            <button class="tt-filter active" data-act="filter-tourney-table" data-filter="all" type="button">All</button>
-            <button class="tt-filter" data-act="filter-tourney-table" data-filter="live" type="button">Upcoming</button>
-            <button class="tt-filter" data-act="filter-tourney-table" data-filter="complete" type="button">Complete</button>
-          </div>
-          <div class="tt-search">
-            <span class="tt-search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
-            <input id="tourneyFilter" type="search" placeholder="Filter tournaments..." data-inputact="filter-tourney-table-input" autocomplete="off" aria-label="Filter tournament rows">
-          </div>
+  <section class="all-tournaments" id="sect-table" aria-labelledby="ttTitle">
+    <div class="tt-head">
+      <h2 id="ttTitle" data-season-title>Tournament Overview</h2>
+      <div class="tt-controls">
+        <div class="segmented" role="group" aria-label="Filter by status">
+          <button class="tt-filter" data-act="filter-tourney-table" data-filter="all" type="button">All</button>
+          <button class="tt-filter active" data-act="filter-tourney-table" data-filter="live" type="button">Upcoming</button>
+          <button class="tt-filter" data-act="filter-tourney-table" data-filter="complete" type="button">Complete</button>
+        </div>
+        <div class="tt-search">
+          <span class="tt-search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+          <input id="tourneyFilter" type="search" placeholder="Filter" data-inputact="filter-tourney-table-input" autocomplete="off" aria-label="Filter tournament rows">
         </div>
       </div>
-      <div class="table-scroll">
-        <table class="tourney-table" id="tourneyTable">
-          <thead>
-            <tr>
-              <th class="sortable" data-act="sort-table" data-col="name">Tournament</th>
-              <th class="sortable" data-act="sort-table" data-col="status">Status</th>
-              <th class="sortable" data-act="sort-table" data-col="date">Event Date</th>
-              <th class="sortable" data-act="sort-table" data-col="current">Current</th>
-              <th class="sortable" data-act="sort-table" data-col="predicted">Predicted</th>
-              <th id="thLikelyRange" title="The interval targets 80% coverage. Measured rate loads with the performance data.">Likely Range</th>
-              <th class="sortable" data-act="sort-table" data-col="progress">Progress</th>
-            </tr>
-          </thead>
-          <tbody id="tourneyBody"></tbody>
-        </table>
-      </div>
     </div>
-  </div>
-  </details>
+    <div class="table-scroll">
+      <table class="tourney-table" id="tourneyTable">
+        <thead>
+          <tr>
+            <th class="sortable" data-act="sort-table" data-col="name">Tournament</th>
+            <th class="sortable" data-act="sort-table" data-col="status">Status</th>
+            <th class="sortable" data-act="sort-table" data-col="date">Event Date</th>
+            <th class="sortable" data-act="sort-table" data-col="current">Current</th>
+            <th class="sortable" data-act="sort-table" data-col="predicted">Predicted</th>
+            <th id="thLikelyRange" title="The interval targets 80% coverage. Measured rate loads with the performance data.">Likely Range</th>
+            <th class="sortable" data-act="sort-table" data-col="progress">Progress</th>
+          </tr>
+        </thead>
+        <tbody id="tourneyBody"></tbody>
+      </table>
+    </div>
+  </section>
 
   </div><!-- /panel-season -->
 
@@ -858,6 +850,6 @@
      the bundle, dispatches bare globals, so there are no wrappers and no
      modules. Deferred, so it runs after the data tag above and after the
      chart library in <head>. Edit a source, then `python3 -m pipeline.bundling`. -->
-<script defer src="site.js?v=657a3e00ee"></script>
+<script defer src="site.js?v=54c2181b17"></script>
 </body>
 </html>

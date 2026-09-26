@@ -9,7 +9,7 @@
 
 const GESTURE_LOCK = 10;          // px before a drag commits to a direction
 const SWIPE_EDGE_GUARD = 28;      // px kept clear for the browser's own back swipe
-const SWIPE_IGNORE = 'canvas, .tourney-table-wrap, .compare-chart-wrap, .sheet, .email-output, .email-preview, iframe, .cal-track-wrap, .up-next-strip, #perfTable, .compare-table-wrap, input, textarea, select';
+const SWIPE_IGNORE = 'canvas, .tourney-table-wrap, .compare-chart-wrap, .sheet, .email-output, .email-preview, iframe, .up-next-strip, #perfTable, .compare-table-wrap, input, textarea, select';
 
 // One drag session from either input, with a velocity tracker per axis.
 // handlers: start(p) → false to decline; move(p, ev); end(p).

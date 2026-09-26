@@ -198,7 +198,7 @@ def test_the_season_view_holds_the_portfolio_blocks():
     start = html.index('id="panel-season"')
     end = html.index('id="panel-', start + 1)
     season = html[start:end]
-    for block in ('id="summaryBar"', 'id="calendarStrip"', 'id="miniGrid"', 'id="sect-table"', 'id="tourneyTable"'):
+    for block in ('id="summaryBar"', 'id="miniGrid"', 'id="sect-table"', 'id="tourneyTable"'):
         assert block in season, f"{block} is not inside the Season view"
     forecast = html[html.index('id="panel-predictions"'):start]
     assert 'id="heroSection"' in forecast and 'id="mainChart"' in forecast

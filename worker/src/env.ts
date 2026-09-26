@@ -4,7 +4,9 @@
 export interface Env {
   ANTHROPIC_API_KEY: string;
   ALLOWED_ORIGIN: string;
-  DATA_URL: string;
+  // The site under docs/, served by this same Worker as static assets. The
+  // data endpoint is read through it (see agent.loadData).
+  ASSETS: Fetcher;
   MODEL: string;
   DAILY_BUDGET_USD: string;
   RATE_LIMIT_PER_MIN: string;

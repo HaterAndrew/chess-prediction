@@ -13,13 +13,13 @@
 <!-- Render-blocking on purpose: it sets the theme attribute before first
      paint and registers the service worker before any other request. See
      docs/boot.js. -->
-<script src="boot.js?v=b9c1bc6557"></script>
+<script src="boot.js?v=4c283c0b8c"></script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="CCA Predictor">
 <meta name="format-detection" content="telephone=no">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787 https://chess-ask.hater-andrewd.workers.dev">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://chess-ask.hater-andrewd.workers.dev http://localhost:8787 http://127.0.0.1:8787">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/inter/inter-latin.woff2">
@@ -954,7 +954,7 @@
 <script defer id="dataScript" src="data/tournaments.js?v=df96ebdf60" data-performance="data/performance_data.js?v=b0a449b4be" data-history="data/chess_history.js?v=4e76f35655"></script>
 <!-- audit.js defines initAuditTab and must precede app.js: app.js runs its
      init() (and any #audit deep link) synchronously at evaluation time. -->
-<script defer src="audit.js?v=c8288fbf68"></script>
+<script defer src="audit.js?v=1f255a778d"></script>
 <script defer src="daily_series.js?v=e326e2b1fc"></script>
 <!-- Load-order contract (C-track split of app.js, 2026-07). These are classic
      scripts sharing ONE global scope — that is the compatibility mechanism:
@@ -989,7 +989,7 @@
 <script defer src="panels_cal.js?v=28d15e5f60"></script>
 <script defer src="tab_about.js?v=e7497b7332"></script>
 <script defer src="tab_compare.js?v=c14237e866"></script>
-<script defer src="tab_ask.js?v=07df7455b0"></script>
+<script defer src="tab_ask.js?v=dfb91b0a1f"></script>
 <script defer src="app.js?v=d59f01425c"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,

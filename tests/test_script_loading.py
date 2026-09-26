@@ -103,3 +103,25 @@ def test_boot_registers_the_service_worker_after_load():
     assert re.search(
         r"addEventListener\('load',[\s\S]*?serviceWorker\.register\('sw\.js'\)", boot), (
         "boot.js must register sw.js inside a window 'load' listener")
+
+
+def test_the_github_io_redirect_waits_for_the_cutover():
+    """boot.js sends github.io visits to chessentries.com only once the domain
+    answers; until the cutover PR flips the flag, the Pages copy keeps serving."""
+    boot = _read(BOOT_JS)
+    assert "var CUTOVER = false;" in boot, "the github.io redirect must stay off until the cutover"
+    assert re.search(r"if \(CUTOVER && ", boot), "the redirect must be gated on CUTOVER"
+
+
+def test_the_pages_copy_keeps_its_worker_until_the_cutover():
+    """Pages serves no /ask or /cca-entrylist, so the github.io copy keeps
+    calling the Worker it always used, and the CSP still admits that host."""
+    legacy = "https://chess-ask.hater-andrewd.workers.dev"
+    for name in ("tab_ask.js", "audit.js"):
+        src = _read(os.path.join(DOCS, name))
+        assert re.search(r"github\\.io\$/\.test\(l\.hostname\)\) return '" + re.escape(legacy), src), (
+            f"{name} must fall back to the legacy Worker on github.io")
+    html = _read(os.path.join(DOCS, "index.html"))
+    csp = re.search(r'Content-Security-Policy["\']\s+content="([^"]+)"', html).group(1)
+    connect = [d for d in csp.split(";") if d.strip().startswith("connect-src")][0]
+    assert legacy in connect, "the CSP connect-src must keep the legacy Worker until the cutover"

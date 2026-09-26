@@ -34,3 +34,6 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+      # Validates wrangler.toml and the asset manifest under ../docs without
+      # credentials or an upload; Workers Builds runs the real deploy on main.
+      - run: npx wrangler deploy --dry-run

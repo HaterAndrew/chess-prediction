@@ -34,7 +34,12 @@ export async function loadData(env: Env, client: Anthropic): Promise<CachedData>
   if (!dataStale && !fileStale) return cached!;
 
   if (dataStale) {
-    const resp = await fetch(env.DATA_URL, { cf: { cacheTtl: 300 } as RequestInitCfProperties });
+    // The site data is one of this Worker's own static assets
+    // (docs/data/website_data.json). Reading it through the binding means no
+    // public round trip, no stale edge-cache window after the nightly deploy,
+    // and the same code path under `wrangler dev` and on preview URLs. The
+    // binding ignores the hostname; only the path matters.
+    const resp = await env.ASSETS.fetch(new URL("/data/website_data.json", "https://assets.local"));
     if (!resp.ok) throw new Error(`Data fetch failed: ${resp.status}`);
     const data = (await resp.json()) as WebsiteData;
     cached = {

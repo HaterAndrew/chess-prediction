@@ -25,6 +25,23 @@
   } catch (_) {}
   document.documentElement.setAttribute('data-theme', theme);
 
+  // The site is moving to https://chessentries.com. Once the domain answers
+  // (the cutover PR flips this flag), a visit to the old GitHub Pages address
+  // goes there with its path, query and hash intact, and the old service
+  // worker is unregistered first so it cannot resurrect this copy. Until then
+  // the Pages copy keeps serving as it always has.
+  var CUTOVER = false;
+  if (CUTOVER && typeof location !== 'undefined' && /\.github\.io$/.test(location.hostname)) {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        regs.forEach(function (r) { r.unregister(); });
+      });
+    }
+    var path = location.pathname.replace(/^\/chess-prediction\/?/, '/');
+    location.replace('https://chessentries.com' + path + location.search + location.hash);
+    return;
+  }
+
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('sw.js');

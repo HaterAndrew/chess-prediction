@@ -1,0 +1,33 @@
+# Cloudflare Workers Static Assets: response headers for docs/.
+#
+# Every browser-fetched .js and .css is `?v=`-stamped by the pipeline
+# (pipeline/stamping.py), and the fonts are fixed subsets, so those files are
+# immutable: a new build is a new URL. sw.js is fetched by the browser at its
+# bare path and must never be cached, or an old worker keeps serving its old
+# precache. HTML, manifest.json and the JSON endpoints keep the platform
+# default (public, max-age=0, must-revalidate, with an ETag).
+#
+# Any new browser-fetched .js or .css must be stamped (STAMPED_SCRIPTS or
+# STAMPED_DATA) or get its own no-cache rule like sw.js.
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/sw.js
+  ! Cache-Control
+  Cache-Control: no-cache
+
+/icons/*
+  Cache-Control: public, max-age=86400
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

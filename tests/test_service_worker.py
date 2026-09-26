@@ -139,8 +139,16 @@ def test_pinned_cdn_scripts_are_served_cache_first(res):
 
 
 def test_cross_origin_requests_bypass_the_worker(res):
-    """The Ask Worker is a different origin and must not be intercepted."""
     assert res["cross_origin"]["intercepted"] is False
+
+
+def test_same_origin_api_routes_bypass_the_worker(res):
+    """One Worker serves the page and /ask, /health, /cca-tourlist and
+    /cca-entrylist on the same origin. Those responses are dynamic (rate
+    limits, budgets, live scrapes) and must never be cached or served from
+    cache, so the worker leaves them to the network entirely."""
+    assert res["api_health"]["intercepted"] is False
+    assert res["api_entrylist"]["intercepted"] is False
 
 
 def test_non_get_requests_bypass_the_worker(res):

@@ -448,12 +448,16 @@
 
   // ── Browser UI ─────────────────────────────────────────────────────────
 
+  // Same origin as the page (one Worker serves both); the plain static dev
+  // server on 8000 has no proxy, so that case points at `wrangler dev`.
   const AUDIT_ENDPOINT = (function () {
-    const h = (typeof location !== 'undefined') ? location.hostname : '';
-    if (h === 'localhost' || h === '127.0.0.1' || h === '') {
-      return 'http://localhost:8787/cca-entrylist';
-    }
-    return 'https://chess-ask.hater-andrewd.workers.dev/cca-entrylist';
+    const l = (typeof location !== 'undefined') ? location : { hostname: '', port: '' };
+    const localStatic = (l.hostname === 'localhost' || l.hostname === '127.0.0.1' || l.hostname === '')
+      && l.port !== '8787';
+    if (localStatic) return 'http://localhost:8787/cca-entrylist';
+    // The GitHub Pages copy keeps its old Worker until the cutover.
+    if (/\.github\.io$/.test(l.hostname)) return 'https://chess-ask.hater-andrewd.workers.dev/cca-entrylist';
+    return '/cca-entrylist';
   })();
 
   const AUDIT_FETCH_TIMEOUT_MS = 60000;

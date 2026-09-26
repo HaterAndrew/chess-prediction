@@ -12,7 +12,11 @@
 // CACHE_NAME is bumped on every deploy that reshapes caching behaviour so
 // caches from prior worker versions are purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v80';
+const CACHE_NAME = 'cca-predictor-v81';
+
+// The API routes the same Worker serves next to the site. Their responses are
+// dynamic and must never enter the cache or be answered from it.
+const API_ROUTE_RE = /^\/(ask|health|cca-tourlist|cca-entrylist)$/;
 
 // Version-pinned, SRI-locked CDN scripts. Immutable, so cache-first. This is
 // also the runtime allowlist for the on-demand ExcelJS load in audit.js.
@@ -65,10 +69,10 @@ const OFFLINE_FALLBACKS = [
   'fonts/inter/inter-latin-ext.woff2',
   'fonts/inter/inter-latin.woff2',
   'theme.js?v=33c380c35b',
-  'boot.js?v=b9c1bc6557',
+  'boot.js?v=4c283c0b8c',
   'app.js?v=d59f01425c',
   'actions.js?v=a953337851',
-  'audit.js?v=c8288fbf68',
+  'audit.js?v=1f255a778d',
   'daily_series.js?v=e326e2b1fc',
   'util_core.js?v=2824d286fc',
   'foundation.js?v=9e59b7038a',
@@ -85,7 +89,7 @@ const OFFLINE_FALLBACKS = [
   'panels_cal.js?v=28d15e5f60',
   'tab_about.js?v=e7497b7332',
   'tab_compare.js?v=c14237e866',
-  'tab_ask.js?v=07df7455b0',
+  'tab_ask.js?v=dfb91b0a1f',
   'manifest.json',
   'icons/icon-192.png'
 ];
@@ -194,8 +198,10 @@ self.addEventListener('fetch', event => {
     event.respondWith(cacheFirst(request));
     return;
   }
-  // Everything else cross-origin (the Ask Worker) bypasses the worker.
+  // Everything else cross-origin bypasses the worker, and so do the
+  // same-origin API routes.
   if (url.origin !== self.location.origin) return;
+  if (API_ROUTE_RE.test(url.pathname)) return;
 
   if (request.mode === 'navigate') {
     event.respondWith(navigation(request));

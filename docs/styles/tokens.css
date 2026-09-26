@@ -43,7 +43,6 @@
   --stock-yellow: #FFF1A8;
   --stock-blue: #DCE8F8;
   --stock-pink: #FBDCE2;
-  --stock-green: #D9F0DE;
   --stock-grey: #EDEDEA;
   --shadow-lg: 0 8px 24px rgba(17, 17, 17, .14);
 }
@@ -70,7 +69,6 @@
   --stock-yellow: #3A3418;
   --stock-blue: #1C2A44;
   --stock-pink: #3A1F27;
-  --stock-green: #1B3324;
   --stock-grey: #26262A;
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, .5);
 }
@@ -202,7 +200,6 @@
     --stock-yellow: #FFF1A8;
     --stock-blue: #DCE8F8;
     --stock-pink: #FBDCE2;
-    --stock-green: #D9F0DE;
     --stock-grey: #EDEDEA;
     --shadow-lg: none;
   }

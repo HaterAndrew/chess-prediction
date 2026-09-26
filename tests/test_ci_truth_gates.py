@@ -148,5 +148,5 @@ def test_degraded_banner_stages_every_file_the_rebuild_touches():
                     if ln.strip().startswith("git add "))
     for target in ("output/website_data.json", "docs/index.html", "docs/sw.js",
                    "docs/data/tournaments.js", "docs/data/performance_data.js",
-                   "docs/data/chess_history.js", "docs/data/website_data.json"):
+                   "docs/data/website_data.json"):
         assert target in add_line, f"degraded step must stage {target}"

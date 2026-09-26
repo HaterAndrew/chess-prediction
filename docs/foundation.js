@@ -177,8 +177,8 @@ function esc(s) {
   return d.innerHTML;
 }
 
-// Data files the page does not need at first paint (performance_data.js,
-// chess_history.js) ride the data tag as data-* attributes, so the pipeline
+// Data files the page does not need at first paint (performance_data.js)
+// ride the data tag as data-* attributes, so the pipeline
 // stamps their ?v= alongside the page's own. Each is inserted once, on
 // demand, as a same-origin classic script (CSP 'self'); the promise is cached
 // so repeat callers share one request, and dropped on failure so the next

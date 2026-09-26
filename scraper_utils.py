@@ -1,6 +1,6 @@
 """Compatibility shim -- implementation lives in scrapers/http.py
 (2026-07-30 decomposition). Kept so the many `from scraper_utils import`
-sites (scrapers, hotel_audit, structure_monitor, scrape_puzzles,
+sites (scrapers, hotel_audit, structure_monitor,
 backfill_missing_data) keep working; the host-failure state stays
 single-homed in scrapers.http.
 """

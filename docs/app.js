@@ -12,7 +12,6 @@ function switchPageTab(tab, skipHash) {
   document.querySelectorAll('.page-tab-panel').forEach(p => p.classList.remove('active'));
   const panel = document.getElementById('panel-' + tab);
   panel.classList.add('active');
-  if (tab === 'puzzles') initPuzzles();
   if (tab === 'email') initEmailTab();
   if (tab === 'performance') initPerformanceTab();
   if (tab === 'compare') renderCompareTab();
@@ -26,12 +25,12 @@ function switchPageTab(tab, skipHash) {
 }
 
 // The order a phone swipes through the views (gestures.js).
-const PAGE_TAB_ORDER = ['predictions', 'season', 'performance', 'compare', 'ask', 'email', 'audit', 'about', 'puzzles'];
+const PAGE_TAB_ORDER = ['predictions', 'season', 'performance', 'compare', 'ask', 'email', 'audit', 'about'];
 
 // ══════════════════════════════════════════════════════════
 // DEEP LINKING (hash routing)
 // ══════════════════════════════════════════════════════════
-const VALID_TABS = ['predictions', 'season', 'performance', 'compare', 'ask', 'email', 'audit', 'about', 'puzzles'];
+const VALID_TABS = ['predictions', 'season', 'performance', 'compare', 'ask', 'email', 'audit', 'about'];
 
 function updateHash() {
   const tab = _currentTab || 'predictions';

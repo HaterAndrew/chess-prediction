@@ -9,4 +9,3 @@ scikit-learn==1.9.1
 requests==2.34.2
 urllib3==2.7.0
 beautifulsoup4==4.15.0
-zstandard==0.25.0

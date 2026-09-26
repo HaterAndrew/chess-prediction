@@ -1,18 +1,15 @@
 """Data-file splicing (auto_update.step_update_html).
 
-The browser reads three generated files under docs/data/, split by when the
+The browser reads two generated files under docs/data/, split by when the
 page needs them:
 
-  tournaments.js       TOURNAMENT_DATA, PERFORMANCE_SUMMARY, PUZZLE_DATA;
-                       loaded with the page.
+  tournaments.js       TOURNAMENT_DATA, PERFORMANCE_SUMMARY; loaded with the page.
   performance_data.js  PERFORMANCE_DATA; fetched when the Performance tab opens.
-  chess_history.js     CHESS_HISTORY; fetched when the Puzzles tab opens.
 
 Until 2026-09 all four consts lived in one 2.4 MB site_data.js, 55% of it
 pretty-print whitespace and a third of it read only by two secondary tabs.
 Payloads are compacted here, at the docs/ boundary; the output/*.json files
-stay pretty so the nightly diffs remain reviewable. CHESS_HISTORY is spliced
-verbatim because tests/test_chess_history.py pins the generator's bytes.
+stay pretty so the nightly diffs remain reviewable.
 
 _splice_const is the single brace-scanning implementation the four consts
 used to have copies of (P5). tests/test_site_data_build.py pins the behavior.
@@ -28,9 +25,8 @@ from pipeline import config, stamping
 # step_update_html also runs on the degraded path, where the generators have
 # not run and last-known-good content must survive untouched.
 DATA_FILES = {
-    "tournaments.js": ("TOURNAMENT_DATA", "PERFORMANCE_SUMMARY", "PUZZLE_DATA"),
+    "tournaments.js": ("TOURNAMENT_DATA", "PERFORMANCE_SUMMARY"),
     "performance_data.js": ("PERFORMANCE_DATA",),
-    "chess_history.js": ("CHESS_HISTORY",),
 }
 
 
@@ -112,22 +108,11 @@ def _data_path(name):
 def _payloads(json_data):
     """const name -> payload text, for every source that exists."""
     payloads = {"TOURNAMENT_DATA": _compact(json_data)}
-    puzzles = os.path.join(config.OUTPUT_DIR, "daily_puzzles.json")
-    if os.path.exists(puzzles):
-        payloads["PUZZLE_DATA"] = _compact(_read(puzzles))
     performance = os.path.join(config.OUTPUT_DIR, "performance_data.json")
     if os.path.exists(performance):
         text = _read(performance)
         payloads["PERFORMANCE_DATA"] = _compact(text)
         payloads["PERFORMANCE_SUMMARY"] = _performance_summary(text)
-    # CHESS_HISTORY, v3 O5 (audit/AUDIT_2026-07-25.md): this splice was
-    # guarded on a file no script in the repo wrote, so it had never fired.
-    # step_chess_history now renders output/chess_history.json from the
-    # tracked content/chess_history.json, so the guard describes a real
-    # input. Spliced verbatim: tests/test_chess_history.py pins the bytes.
-    history = os.path.join(config.OUTPUT_DIR, "chess_history.json")
-    if os.path.exists(history):
-        payloads["CHESS_HISTORY"] = _read(history)
     return payloads
 
 

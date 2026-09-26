@@ -9,7 +9,7 @@
 // and this file is where they went.
 //
 // How it works: markup declares intent with `data-act="name"` and reads its
-// arguments from `data-*` attributes. Three delegated listeners on the document
+// arguments from `data-*` attributes. Delegated listeners on the document
 // dispatch into the ACTIONS table below. Because dispatch is by name at click
 // time, generated markup (app.js builds most of the tournament UI as HTML
 // strings) needs no wiring of its own — it just sets the attribute.
@@ -72,13 +72,6 @@
     // ---- performance ----------------------------------------------------
     'perf-year': function (el) { perfSelectYear(el.dataset.year); },
 
-    // ---- puzzles --------------------------------------------------------
-    'puzzle-nav': function (el) { puzzleNav(num(el, 'delta')); },
-    'puzzle-hint': function () { puzzleGiveHint(); },
-    'puzzle-retry': function () { puzzleRetry(); },
-    'puzzle-square': function (el) { puzzleSquareClick(num(el, 'r'), num(el, 'c')); },
-    'load-puzzle': function (el) { loadPuzzle(num(el, 'idx')); },
-
     // ---- email ----------------------------------------------------------
     'email-select-all': function () { emailSelectAll(); },
     'email-select-none': function () { emailSelectNone(); },
@@ -101,14 +94,6 @@
     'filter-tourney-table-input': function () { filterTourneyTable(); },
     'filter-tourney-hist': function (el) { filterTourneyHistResults(el.value); },
     'compare-slot-changed': function (el) { compareSlotChanged(num(el, 'slot'), el.value); },
-  };
-
-  // Keydown actions that are NOT plain activation — they interpret the key
-  // themselves (arrow navigation on the puzzle board).
-  const KEY_ACTIONS = {
-    'puzzle-board': function (el, ev) {
-      puzzleBoardKeydown(ev, num(el, 'r'), num(el, 'c'), num(el, 'ri'), num(el, 'ci'));
-    },
   };
 
   // `ev.target` is not always an Element. A keydown with nothing focused can
@@ -139,15 +124,6 @@
   // unreachable without a mouse. `data-keys="enter"` reproduces the handlers
   // that deliberately took Enter alone.
   document.addEventListener('keydown', function (ev) {
-    const custom = closestFrom(ev, '[data-keyact]');
-    if (custom) {
-      const fn = KEY_ACTIONS[custom.dataset.keyact];
-      if (typeof fn === 'function') {
-        fn(custom, ev);
-        return;
-      }
-    }
-
     if (ev.key !== 'Enter' && ev.key !== ' ') return;
     const el = closestFrom(ev, '[data-act]');
     if (!el || !el.dataset.keyable) return;
@@ -189,6 +165,5 @@
   window.__ACTION_NAMES = {
     click: Object.keys(ACTIONS),
     input: Object.keys(INPUT_ACTIONS),
-    key: Object.keys(KEY_ACTIONS),
   };
 })();

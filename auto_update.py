@@ -7,8 +7,8 @@ Steps:
   3. Run 04c_final_model.py + 04d_website_data_v2.py to regenerate predictions
      (includes walk-in multiplier from output/walk_in_family_stats.csv)
   4. Regenerate output/website_data.json
-  5. Splice the data consts into docs/data/tournaments.js,
-     performance_data.js and chess_history.js
+  5. Splice the data consts into docs/data/tournaments.js and
+     performance_data.js
   6. Log the run to output/update_log.csv
 
 Note: Walk-in multiplier data (06_walk_in_multipliers.py) is regenerated every
@@ -61,14 +61,12 @@ from pipeline.runner import (  # noqa: F401
 )
 from pipeline.steps import (  # noqa: F401
     EXPORT_STALE_WARN_DAYS,
-    step_chess_history,
     step_data_health,
     step_data_prep,
     step_performance,
     step_scrape,
     step_structure_check,
     step_update_model,
-    step_update_puzzles,
     step_verify_dates,
     step_walkin_multipliers,
 )
@@ -167,20 +165,6 @@ def main():
             step_verify_dates()
             step_update_model()
             step_performance()
-
-            # Renders from a tracked source with no network call, so unlike the
-            # puzzle step a failure here means the committed JSON is malformed,
-            # not that a third party is down. Fatal: the degraded path then
-            # publishes last-known-good behind an honest banner, which beats
-            # shipping a blank panel on a page that claims to be current.
-            step_chess_history()
-
-            # Puzzles are non-critical — don't let a Lichess outage block the pipeline
-            try:
-                step_update_puzzles()
-            except Exception as e:
-                print(f"\n  Warning: Puzzle step failed (non-fatal): {e}")
-                print("  Continuing with existing puzzle data...")
 
             _stamp_stale_flag(is_stale=False)
         else:

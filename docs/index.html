@@ -33,7 +33,7 @@
 <!-- One stylesheet: the bundle pipeline/bundling.py builds from
      docs/styles/*.css in cascade order (STYLE_SOURCES). Edit the sources,
      then `python3 -m pipeline.bundling`. -->
-<link rel="stylesheet" href="styles/site.css?v=df95681741">
+<link rel="stylesheet" href="styles/site.css?v=e6d095c5b0">
 </head>
 <body>
 
@@ -80,7 +80,6 @@
       <button type="button" class="sheet-row" id="ptab-ask" data-act="page-tab" data-tab="ask"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><b>Ask</b></button>
       <button type="button" class="sheet-row" id="ptab-email" data-act="page-tab" data-tab="email"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><b>Email</b></button>
       <button type="button" class="sheet-row" id="ptab-audit" data-act="page-tab" data-tab="audit"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg><b>Audit</b></button>
-      <button type="button" class="sheet-row" id="ptab-puzzles" data-act="page-tab" data-tab="puzzles"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg><b>Puzzles</b></button>
     </div>
     <div class="sheet-actions"><button type="button" class="secondary" data-act="close-sheet">Cancel</button></div>
   </div>
@@ -383,45 +382,6 @@
   </details>
 
   </div><!-- /panel-season -->
-
-  <!-- ══════ PUZZLES TAB ══════ -->
-  <div class="page-tab-panel" id="panel-puzzles" role="region" aria-labelledby="ptab-puzzles">
-    <div class="puzzle-layout">
-      <div>
-        <div class="puzzle-head">
-          <h2>Daily Chess Puzzles</h2>
-          <div class="puzzle-score" id="puzzleScore"></div>
-        </div>
-        <div class="puzzle-progress" id="puzzleProgress"></div>
-        <div class="chess-board-wrap">
-          <div class="chess-board" id="chessBoard"></div>
-        </div>
-        <div class="puzzle-nav">
-          <button class="btn" id="puzzlePrev" data-act="puzzle-nav" data-delta="-1" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Prev</button>
-          <button class="btn" id="puzzleHint" data-act="puzzle-hint">Hint</button>
-          <button class="btn" id="puzzleRetry" data-act="puzzle-retry" style="display:none">Retry</button>
-          <button class="button" id="puzzleNext" data-act="puzzle-nav" data-delta="1">Next<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-        </div>
-      </div>
-      <div>
-        <div class="puzzle-info" id="puzzleInfo">
-          <div class="puzzle-count">Puzzle <span id="puzzleNum">1</span> of <span id="puzzleTotal">10</span></div>
-          <div class="puzzle-rating" id="puzzleRating">–</div>
-          <div class="puzzle-diff" id="puzzleDifficulty"></div>
-          <div class="puzzle-themes" id="puzzleThemes"></div>
-          <div class="puzzle-status" id="puzzleStatus">
-            <span class="muted">Find the best move for <span id="puzzleTurn" class="w700"></span></span>
-          </div>
-          <div class="puzzle-moves" id="puzzleMoveList"></div>
-          <a id="puzzleLink" href="#" target="_blank" rel="noopener" class="puzzle-lichess">View on Lichess &rarr;</a>
-        </div>
-        <div class="history-card" id="historyCard">
-          <h3>This Day in Chess History</h3>
-          <div id="historyEvents">Loading...</div>
-        </div>
-      </div>
-    </div>
-  </div><!-- /panel-puzzles -->
 
   <!-- Data Entry tab removed — overrides flow through the maintainer; users
        just report bad data and it gets fixed at the source. -->
@@ -967,16 +927,16 @@
      renderChart threw, hideSkeletons() never ran, and the page sat on the
      skeleton until a refresh found Chart.js in cache. ExcelJS is no longer
      loaded here; audit.js fetches it on demand (loadExcelJS).
-     The data tag carries what the page needs at first paint; its two data-*
-     attributes name the files the Performance and Puzzles tabs fetch on
-     demand (loadDataFile), stamped by the pipeline like every other asset. -->
-<script defer id="dataScript" src="data/tournaments.js?v=8b2c086d6a" data-performance="data/performance_data.js?v=b0a449b4be" data-history="data/chess_history.js?v=4e76f35655"></script>
+     The data tag carries what the page needs at first paint; its data-*
+     attribute names the file the Performance tab fetches on demand
+     (loadDataFile), stamped by the pipeline like every other asset. -->
+<script defer id="dataScript" src="data/tournaments.js?v=755c38760c" data-performance="data/performance_data.js?v=b0a449b4be"></script>
 <!-- One script: the bundle pipeline/bundling.py builds from the page
      scripts in load order (SCRIPT_SOURCES, where the order and its reasons
      live). Classic scripts sharing one global scope: actions.js, last in
      the bundle, dispatches bare globals, so there are no wrappers and no
      modules. Deferred, so it runs after the data tag above and after the
      chart library in <head>. Edit a source, then `python3 -m pipeline.bundling`. -->
-<script defer src="site.js?v=4baa410689"></script>
+<script defer src="site.js?v=f8e12d0c57"></script>
 </body>
 </html>

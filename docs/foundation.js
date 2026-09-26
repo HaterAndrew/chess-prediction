@@ -1,6 +1,6 @@
 // foundation.js — theme palette, shared chart state, viewport/haptic/esc
-// helpers, chart-range window machinery, marker-pill plugin factory and
-// the injected chart-highlight style, split verbatim from app.js (C2).
+// helpers, chart-range window machinery and the marker-pill plugin factory,
+// split verbatim from app.js (C2).
 
 // ══════════════════════════════════════════════════════════
 // STATE
@@ -410,22 +410,3 @@ function makeVertMarkersPlugin(id, getMarkers) {
     }
   };
 }
-
-// ══════════════════════════════════════════════════════════
-// CHART-HIGHLIGHT STYLE (injected for click-to-table feature)
-// ══════════════════════════════════════════════════════════
-(function() {
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes chartHighlightPulse {
-      0% { background-color: var(--signal-tint); }
-      100% { background-color: transparent; }
-    }
-    .chart-highlight {
-      animation: chartHighlightPulse 2.5s ease-out forwards;
-      outline: 1px solid var(--signal);
-      outline-offset: -1px;
-    }
-  `;
-  document.head.appendChild(style);
-})();

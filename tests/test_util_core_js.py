@@ -83,4 +83,3 @@ def test_freshness_flag_and_degraded_paths(res):
 def test_pace_alert_accessors(res):
     assert res["pace_alert"] == {"status": "above_pace"}
     assert res["pace_alert_none"] is None
-    assert res["pace_badge_empty"] == ""

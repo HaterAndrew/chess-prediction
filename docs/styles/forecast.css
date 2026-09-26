@@ -25,52 +25,52 @@
 /* ── Hero: a wallchart cell. ── */
 /* While the data loads (html[data-loading], cleared by hideSkeletons once
    the fold has rendered) the markup carries placeholders shaped like what a
-   live event renders: the note's lines, the range and its tags, seven week
-   rows, the three cards with their folds, the chart's legend. They are laid
+   live event renders: the note's lines, the range and its caption, seven
+   week rows, the three cards with their folds, the chart's legend and the
+   milestone strip. They are laid
    out but invisible, the figure and the card values pulse, and the title on
    a phone holds its two lines, so nothing moves when the figures land. The
    pace note's two lines are one line each on every width now, which their
    placeholders already are. */
-html[data-loading] :is(#deltaSub, #deltaContext, #deltaValue, #heroCi, #weekBars, .kpi-card, #chartLegend, #chartSubtitle, #chartMobileDates) { visibility: hidden; }
+html[data-loading] :is(#deltaSub, #deltaContext, #deltaValue, #heroCi, #weekBars, .kpi-card, #chartLegend, #chartSubtitle, #milestoneStrip) { visibility: hidden; }
 html[data-loading] .hero-number:empty, html[data-loading] .kpi-value { animation: skeleton-pulse 1.5s ease-in-out infinite; background: var(--hover); color: transparent; visibility: visible; }
 html[data-loading] .hero-number:empty { min-height: 1em; min-width: 3ch; }
-html[data-loading] .hero-tags .tag { min-width: 18em; }
 .hero { border-bottom: 1px solid var(--line); border-top: 2px solid var(--line); display: grid; gap: var(--s-4); grid-template-columns: 1fr; padding: var(--s-4) 0; }
 .hero-primary, .hero-week { min-width: 0; }
 .hero-label { align-items: center; color: var(--muted); display: flex; font: 700 var(--fs-label) var(--display); font-stretch: var(--stretch-label); gap: 6px; letter-spacing: var(--track-label); margin-bottom: 8px; text-transform: uppercase; }
-.hero-help { color: var(--muted); cursor: help; display: inline-flex; }
-.hero-help svg { height: 14px; width: 14px; }
 /* The figure is typed, and the highlighter marks it: it is the thing you came for. */
 .hero-number { background: var(--mark); color: var(--mark-ink); display: inline-block; font: 700 clamp(52px, 6vw, 80px)/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.03em; padding: 0 .06em; }
 .hero-number-final { background: transparent; color: var(--ink); padding: 0; }
 .hero-ci { margin-top: 14px; max-width: 380px; }
-.hero-narrative:empty { display: none; }
 /* The 80% range as a bracket; the estimate is the blue pen's tick. */
 .range { align-items: center; display: grid; gap: 10px; grid-template-columns: auto 1fr auto; }
 .range-bound { font: 700 14px var(--mono); font-variant-numeric: tabular-nums; }
 .range-track { border-left: 2px solid var(--ink); border-right: 2px solid var(--ink); height: 16px; position: relative; }
 .range-track::before { background: var(--ink); content: ""; height: 1px; left: 0; position: absolute; right: 0; top: 50%; }
-.range-mark { background: var(--signal); cursor: help; height: 24px; position: absolute; top: -4px; transform: translateX(-50%); transition: left var(--dur-slow) var(--ease-out); width: 4px; }
+.range-mark { background: var(--signal); height: 24px; position: absolute; top: -4px; transform: translateX(-50%); width: 4px; }
 .range-caption { color: var(--muted); font-size: 12px; margin-top: 6px; }
-.hero-tags { align-items: center; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.range-caption .conf-low { color: var(--ember); }
 
-/* The week: one bar per day, typed figures. */
+/* The week: one bar per day, typed figures, scaled against the busiest day
+   of the whole registration (hero_figures.js _renderWeekBars). */
 .hero-week-label { color: var(--muted); font: 700 var(--fs-label) var(--display); font-stretch: var(--stretch-label); letter-spacing: var(--track-label); margin-bottom: 6px; text-transform: uppercase; }
 .hero-week-bars { display: grid; gap: 3px; }
-.week-row { align-items: center; display: grid; gap: 8px; grid-template-columns: 62px 1fr 34px; }
+.week-row { align-items: center; display: grid; gap: 8px; grid-template-columns: 76px 1fr 34px; }
 .week-est { opacity: .55; }
 .week-date { color: var(--muted); font: 12px var(--mono); text-align: right; white-space: nowrap; }
-.week-track { background: var(--raised); height: 10px; overflow: hidden; }
-.week-fill { background: var(--signal); height: 100%; transition: width var(--dur-slow) var(--ease-out); }
+.week-track { background: var(--raised); height: 6px; overflow: hidden; }
+.week-fill { background: var(--signal); height: 100%; }
 .week-n { color: var(--ink-2); font: 12px var(--mono); font-variant-numeric: tabular-nums; }
 .week-peak { color: var(--ink); font-weight: 700; }
 .week-note { color: var(--muted); font-size: 12px; margin-top: 4px; }
 .hero-week-empty { border: 1px dashed var(--line-soft); color: var(--muted); font-size: 12px; padding: 12px 8px; text-align: center; }
 
-/* The three figures, ruled apart; the progress lines fold under the first two. */
+/* The three figures, ruled apart; the progress lines fold under the first
+   two. A finished event keeps only the Event Date (hero_figures.js). */
 .hero-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .kpi-card { border-left: 1px solid var(--line-soft); display: flex; flex-direction: column; min-width: 0; padding: 0 var(--s-3); }
-.kpi-card:first-child { border-left: 0; padding-left: 0; }
+.kpi-card:first-child, .kpi-card[hidden] + .kpi-card { border-left: 0; padding-left: 0; }
+.kpi-card[hidden] { display: none; }
 .kpi-label { color: var(--muted); font: 700 var(--fs-label) var(--display); font-stretch: var(--stretch-label); letter-spacing: var(--track-label); margin-bottom: 6px; text-transform: uppercase; }
 .kpi-value { font: 700 28px/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 .kpi-value.kpi-value-text { font-size: 16px; line-height: 1.2; }
@@ -80,11 +80,10 @@ html[data-loading] .hero-tags .tag { min-width: 18em; }
 .v-ink { color: var(--ink); }
 .kpi-fold { margin-top: 10px; }
 .kpi-fold:empty { display: none; }
-.fold-head { color: var(--muted); display: flex; font-size: 11px; gap: 8px; justify-content: space-between; margin-bottom: 4px; }
-.fold-head .num { color: var(--ink); font-weight: 700; }
 .fold-track { background: var(--raised); height: 6px; overflow: hidden; }
-.fold-fill { background: var(--ink); height: 100%; transition: width var(--dur-slow) var(--ease-out); }
-.fold-sub { color: var(--muted); font: 11px var(--mono); margin-top: 4px; }
+.fold-fill { background: var(--ink); height: 100%; }
+.fold-sub { color: var(--muted); font-size: 12px; margin-top: 6px; }
+.fold-sub .num { color: var(--ink); font-weight: 700; }
 
 @media (min-width: 640px) {
   .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
@@ -132,7 +131,6 @@ html[data-loading] .hero-tags .tag { min-width: 18em; }
 .legend-swatch.dashed { background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 10px); }
 .legend-swatch.band { height: 10px; opacity: .4; }
 .chart-wrap { height: 320px; position: relative; }
-.chart-mobile-dates { display: none; }
 @media (min-width: 768px) { .chart-wrap { height: 360px; } }
 @media (min-width: 1024px) {
   .chart-card { padding: var(--s-5); }
@@ -144,8 +142,4 @@ html[data-loading] .hero-tags .tag { min-width: 18em; }
   .chart-subtitle { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .chart-top { flex-direction: column; }
   .chart-top-right { align-items: flex-start; }
-  /* The date pills the chart hides on a phone, typed under it instead. */
-  .chart-mobile-dates { border-top: 1px dashed var(--line-soft); color: var(--muted); display: flex; flex-wrap: wrap; font: 12px var(--mono); gap: 14px; margin-top: 8px; padding: 6px 2px 0; }
-  .chart-mobile-dates .cmd-eb { color: var(--signal); font-weight: 700; }
-  .chart-mobile-dates .cmd-event { color: var(--ember); font-weight: 700; }
 }

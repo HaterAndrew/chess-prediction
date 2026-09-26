@@ -251,7 +251,7 @@ Two inks and two pens on paper; every other colour is a sheet of stock or the hi
 
 ### Hierarchy
 - **Display** (800, `clamp(28px, 2.6vw, 34px)`, line 1, tracking .01em, width 75%, uppercase): the view title (the tournament on the Forecast, the view name elsewhere), one per view, on a rule.
-- **Headline** (800, 15px, tracking .04em, width 85%, uppercase): section heads on the 2px rule (Milestones and History, Up Next), sheet titles, the top-bar subject.
+- **Headline** (800, 15px, tracking .04em, width 85%, uppercase): section heads on the 2px rule (History, Up Next), sheet titles, the top-bar subject.
 - **Title** (700, 11px, tracking .08em, uppercase, muted): panel titles on a soft rule, KPI labels, table heads, field labels, tags.
 - **Body** (400, 14px/1.45): prose, notes, table cells at 13px. The Ask and Audit columns are capped at 760px.
 - **Label** (700, 13px, tracking .04em, width 85%, uppercase): buttons, nav items, segmented controls.
@@ -267,7 +267,7 @@ Two inks and two pens on paper; every other colour is a sheet of stock or the hi
 
 One column of ruled sheet, at most 1400px wide, centred, with 28px side padding on desktop and 96px of room at the foot; phones use a 12px gutter. The top bar is sticky at 56px plus the safe-area inset, with a 2px rule under it; the subject (the selected tournament with its status pill and T-minus) sits in a ruled box in the bar and opens the picker. Desktop shows the four-item nav in the bar (Forecast, Season, Model, Tools); under 768px the same four move to a bottom bar of 58px plus the safe-area inset, and under 640px grouped views open a sheet from the foot.
 
-Breakpoints, in order of weight: 640px splits phone from desktop (the compact top bar, sheets from the foot, swipe between views, single-column hero); 768px brings the nav into the top bar and opens two columns (panels side by side, the hero splits forecast from the week); 1024px opens three (the hero becomes forecast, last seven days, and KPIs with soft rules between, panels get 20px by 28px padding) and folds the brand name; 1280px shows the Updated meta. The Forecast stacks as top bar, notes, hero, chart, disclosures (Milestones and History open on desktop, Registration Curve and Fees and About This Model closed), Up Next as a three-card strip that scroll-snaps on phones, See the Full Season, footer.
+Breakpoints, in order of weight: 640px splits phone from desktop (the compact top bar, sheets from the foot, swipe between views, single-column hero); 768px brings the nav into the top bar and opens two columns (panels side by side, the hero splits forecast from the week); 1024px opens three (the hero becomes forecast, last seven days, and KPIs with soft rules between, panels get 20px by 28px padding) and folds the brand name; 1280px shows the Updated meta. The Forecast stacks as top bar, notes, hero, chart with the milestone strip under it, disclosures (History open on desktop, Registration Curve and Fees closed), Up Next as a three-card strip of the next events after the one on screen that scroll-snaps on phones, See the Full Season, footer.
 
 Spacing is a seven-step scale (4, 8, 12, 16, 20, 28, 40px); panels pad 16px, sections sit 12px apart on a 2px rule, the hero pads 16px vertically. Controls are 36px tall; under a coarse pointer every control, field and segment grows to 44px. Tables are full-rule: a 2px rule under the head, a soft rule between rows, a minimum width of 640px with horizontal scroll and a sticky first column on phones rather than a stack of cards.
 
@@ -284,7 +284,7 @@ Flat. The sheet is one plane and depth is drawn with rules, not shadows: a 2px r
 
 ## Shapes
 
-Square. Every radius token is 0: panels, buttons, fields, pills, tags, sheets, chart bars and chart tooltips all have sharp corners, because the sheet is cut, not moulded. The only circles are things that are circles on a wallchart: the live dot (7px, pulsing), the milestone nodes, the compare series dots and the points on a line. Borders are 1px in the rule colour; the section head, the table head and the top bar carry 2px; a puzzle board carries a 2px ink border. Empty states are a 1px dashed rule. Disabled controls drop to 45% opacity rather than changing colour. Focus is a 2px outline in pen blue, offset 2px, and a field in focus doubles its rule to the pen with an inset 1px ring.
+Square. Every radius token is 0: panels, buttons, fields, pills, tags, sheets, chart bars and chart tooltips all have sharp corners, because the sheet is cut, not moulded. The only circles are things that are circles on a wallchart: the live dot (7px, pulsing), the milestone nodes, the compare series dots and the points on a line. Borders are 1px in the rule colour; the section head, the table head and the top bar carry 2px. Empty states are a 1px dashed rule. Disabled controls drop to 45% opacity rather than changing colour. Focus is a 2px outline in pen blue, offset 2px, and a field in focus doubles its rule to the pen with an inset 1px ring.
 
 ## Components
 
@@ -301,7 +301,7 @@ Square. Every radius token is 0: panels, buttons, fields, pills, tags, sheets, c
 - **State:** the chosen segment is inked (ink fill, paper type). Used for the picker's status filters, the chart range (All, 90d, 30d) and the Performance year.
 
 ### Tags and Pills
-- **Tag:** 1px rule, title typography, muted; `tag-signal` and `tag-ember` switch rule and type to the pen; `tag-ink` inks the type. Confidence, interim, adjusted.
+- **Tag:** 1px rule, title typography, muted; `tag-signal` and `tag-ember` switch rule and type to the pen; `tag-ink` inks the type. Pace and the countdown on the season cards; the hero states its confidence in the plain caption under the range, not in tags.
 - **Pill:** the status pill. Upcoming and live sit pen blue on blue stock with the pulsing dot; complete keeps a soft rule and muted type; historical sits muted on grey stock.
 
 ### Notes

@@ -1,9 +1,9 @@
-/* sections.css — the Forecast's evidence below the chart and the panel
+/* sections.css — the Forecast's evidence around the chart and the panel
    vocabulary the views share: the disclosure sections (a ruled header you
    open and close on every width; panels_cal.js syncSectionDisclosure sets
-   the default from data-open), the panel and the two-column grid, the key
-   milestones, the milestone strip, the fee panel, the compact About This
-   Model section, and the Up Next strip (season.css draws its cards). */
+   the default from data-open), the panel and the two-column grid, the
+   milestone strip under the chart, the History panel, the fee panel, and
+   the Up Next strip (season.css draws its cards). */
 
 /* ── Panels ── */
 .grid-2 { display: grid; gap: var(--s-4); grid-template-columns: 1fr; margin-bottom: var(--s-4); }
@@ -23,44 +23,25 @@ details.sect[open] > .sect-summary { margin-bottom: var(--s-3); }
 .sect-caret { flex: none; height: 18px; transition: transform var(--dur) var(--ease-out); width: 18px; }
 details.sect[open] > .sect-summary .sect-caret { transform: rotate(180deg); }
 /* the summary names these sections; the inner title would say it twice */
-#sect-model .model-info > .panel-title, #sect-table .tt-head > .panel-title { display: none; }
-#sect-model .model-info { margin-bottom: 0; }
-.sect-link { margin-top: var(--s-3); }
+#sect-table .tt-head > .panel-title { display: none; }
 
-/* ── Key milestones: the nodes (panels_info.js renderTimeline) ── */
-.timeline { display: grid; gap: var(--s-3); grid-template-columns: repeat(2, 1fr); padding: var(--s-3) 0 var(--s-2); }
-.timeline-node { align-items: center; display: flex; flex-direction: column; }
-.timeline-dot { border: 2px solid var(--ink); border-radius: 50%; height: 12px; margin-bottom: 8px; width: 12px; }
-.timeline-dot.past { background: var(--ink); }
-.timeline-dot.now { background: var(--mark); }
-.timeline-dot.future { background: var(--void); border-color: var(--line-soft); }
-.timeline-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-align: center; text-transform: uppercase; }
-.timeline-date { font: 700 13px var(--mono); text-align: center; }
-.timeline-figure { color: var(--signal); font-size: 16px; }
-.timeline-count { color: var(--ink-2); font: 12px var(--mono); margin-top: 2px; text-align: center; }
-@media (min-width: 640px) { .timeline { grid-template-columns: repeat(4, 1fr); } }
-
-/* ── Milestone strip (panels_info.js renderMilestones): the checkpoints on
-   one rule, inked up to today, the current one under the highlighter ── */
-.ms-strip { display: grid; gap: 4px; grid-auto-columns: 1fr; grid-auto-flow: column; margin-top: 4px; padding: 20px 0 8px; position: relative; }
-.ms-line { background: var(--line-soft); height: 2px; left: 8%; position: absolute; right: 8%; top: 28px; z-index: 0; }
-.ms-line-past { background: var(--ink); height: 100%; transition: width var(--dur-slow) var(--ease-out); }
+/* ── Milestone strip (panels_info.js renderMilestones): the stops on one
+   rule under the chart, today under the highlighter; a phone sets them in
+   rows of three ── */
+.ms-strip-wrap { border-top: 1px dashed var(--line-soft); margin-top: var(--s-3); }
+.ms-strip-wrap:empty { display: none; }
+.ms-strip { --stops: 6; display: grid; gap: 4px; grid-auto-columns: 1fr; grid-auto-flow: column; padding-top: 14px; position: relative; }
+.ms-line { background: var(--line-soft); height: 2px; left: calc(50% / var(--stops)); position: absolute; right: calc(50% / var(--stops)); top: 20px; z-index: 0; }
 .ms-node { align-items: center; display: flex; flex-direction: column; gap: 4px; min-width: 0; position: relative; text-align: center; z-index: 1; }
-.ms-dot { background: var(--void); border: 2px solid var(--ink); border-radius: 50%; height: 14px; width: 14px; }
-.ms-node.ms-past .ms-dot { background: var(--ink); }
-.ms-node.ms-now .ms-dot { background: var(--mark); transform: scale(1.15); }
-.ms-node.ms-future .ms-dot { border-color: var(--line-soft); }
+.ms-dot { background: var(--void); border: 2px solid var(--line); border-radius: 50%; height: 14px; width: 14px; }
+.ms-node.ms-now .ms-dot { background: var(--mark); }
 .ms-node-label { color: var(--ink-2); font: 700 var(--fs-label) var(--display); letter-spacing: .04em; line-height: 1.25; margin-top: 6px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
-.ms-node.ms-past .ms-node-label { color: var(--muted); }
 .ms-node.ms-now .ms-node-label { color: var(--ink); }
 .ms-node-date { color: var(--muted); font: 12px var(--mono); }
 .ms-node-count { font: 700 14px var(--mono); margin-top: 2px; }
-.ms-node.ms-past .ms-node-count { color: var(--ink-2); font-weight: 400; }
 @media (max-width: 639px) {
-  .ms-strip { gap: var(--s-3) 4px; grid-auto-columns: auto; grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); padding-top: 16px; }
+  .ms-strip { gap: var(--s-3) 4px; grid-auto-columns: auto; grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); }
   .ms-line { display: none; }
-  .ms-strip:has(.ms-node:nth-child(7)) { gap: var(--s-2) 2px; grid-template-columns: repeat(4, 1fr); }
-  .ms-strip:has(.ms-node:nth-child(7)) .ms-dot { height: 10px; width: 10px; }
 }
 
 /* ── Fees (panels_info.js renderFees) ── */
@@ -75,22 +56,14 @@ details.sect[open] > .sect-summary .sect-caret { transform: rotate(180deg); }
 .fee-empty { color: var(--muted); font-size: 13px; padding: var(--s-5) 0; text-align: center; }
 
 /* ── The small charts inside a panel (chart_hist.js, chart_curve.js) ── */
+.hist-panel { margin-bottom: var(--s-4); }
+.comp-footnote { color: var(--muted); font-size: 12px; line-height: 1.45; margin-top: 8px; }
 .chart-box { margin-bottom: 12px; }
 .chart-box.h180 { height: 180px; }
 .chart-box.h200 { height: 200px; }
 .chart-caption { color: var(--muted); font-size: 12px; }
 
-/* ── About This Model, the compact section (tab_about.js fills the chips) ── */
-.model-info p { color: var(--ink-2); font-size: var(--fs-body); line-height: 1.6; margin-bottom: 8px; }
-.model-info-row { align-items: flex-start; display: flex; flex-wrap: wrap; gap: 20px; }
-.model-info-blurb { flex: 1; margin: 0; min-width: 240px; }
-.stat-chip-row { align-self: center; display: flex; flex-wrap: wrap; gap: 8px; }
-.stat-chip { border: 1px solid var(--line-soft); min-width: 80px; padding: 8px 14px; text-align: center; }
-.stat-chip-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
-.stat-chip-num { font: 700 16px var(--mono); font-variant-numeric: tabular-nums; }
-.stat-chip-sub { color: var(--muted); font-size: 11px; }
-
-/* ── Up Next: the next three events, then the whole season ── */
+/* ── Up Next: the next three events after this one, then the whole season ── */
 .up-next { border-top: 2px solid var(--line); margin-top: var(--s-5); padding-top: var(--s-3); }
 .up-next-head { align-items: center; display: flex; flex-wrap: wrap; gap: 10px 16px; justify-content: space-between; margin-bottom: var(--s-3); }
 .up-next-head h2 { font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; margin: 0; text-transform: uppercase; }
@@ -104,6 +77,3 @@ details.sect[open] > .sect-summary .sect-caret { transform: rotate(180deg); }
 @media (max-width: 639px) {
   .up-next-strip { margin: 0 -14px; padding: 0 14px 6px; scroll-padding: 0 14px; }
 }
-
-/* ── The accuracy strip: hidden, kept for the owner's call ── */
-.accuracy-strip:empty, .accuracy-strip[hidden] { display: none; }

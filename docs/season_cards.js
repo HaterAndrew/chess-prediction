@@ -79,11 +79,11 @@ function renderMiniCards() {
     (later.length ? `<div class="mini-section-label">Later</div><div class="mini-grid-rest">${later.map(card).join('')}</div>` : '');
 }
 
-// The Forecast's Up Next strip: the next three, whichever is selected.
+// The Forecast's Up Next strip: the next three after the one on screen.
 function renderUpNext() {
   const el = document.getElementById('upNextStrip');
   if (!el) return;
-  const next = _liveByDate().slice(0, 3);
+  const next = _liveByDate().filter(x => x.i !== selectedIndex).slice(0, 3);
   el.innerHTML = next.length
     ? next.map(x => seasonCard(x, 'select-tournament')).join('')
     : '<div class="empty">No upcoming tournaments</div>';

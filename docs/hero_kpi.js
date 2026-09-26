@@ -1,68 +1,34 @@
 // hero_kpi.js — the hero cell: the label, the figure under the highlighter,
-// the range bracket and its tags. hero_figures.js draws the three figures and
-// the week's bars; the favorites live at the foot of this file.
+// and the range bracket with its caption. hero_figures.js draws the three
+// figures and the week's bars.
 
 // ══════════════════════════════════════════════════════════
 // HERO + KPI
 // ══════════════════════════════════════════════════════════
 
-// Build the prediction-tile tooltip from live PERFORMANCE_SUMMARY so every
-// pipeline run (daily auto_update + monthly recalibration) refreshes the
-// numbers automatically. No hardcoded counts/biases.
-function _calibrationTooltip() {
-  const fallback = 'Ensemble of pace-ratio extrapolation + family regression. At T > 7 the regression dominates so early ahead-of-pace leads are discounted.';
-  if (typeof PERFORMANCE_SUMMARY === 'undefined' || !PERFORMANCE_SUMMARY) return fallback;
-  const yr = String(new Date().getFullYear());
-  const yearData = (PERFORMANCE_SUMMARY.years || {})[yr] || PERFORMANCE_SUMMARY;
-  const agg = yearData.aggregate || PERFORMANCE_SUMMARY.aggregate || [];
-  if (!agg.length) return fallback;
-  // n-weighted mean of |bias_pct| across T-points: how much the model
-  // typically over- or under-shoots in the current year.
-  let nSum = 0, biasNum = 0;
-  for (const a of agg) {
-    if (typeof a.bias_pct === 'number' && typeof a.n === 'number') {
-      biasNum += a.bias_pct * a.n;
-      nSum += a.n;
-    }
-  }
-  const meanBias = nSum > 0 ? biasNum / nSum : null;
-  const nEvents = yearData.n_tournaments ?? PERFORMANCE_SUMMARY.n_tournaments ?? null;
-  const asof = PERFORMANCE_SUMMARY.generated || '';
-  if (meanBias == null || nEvents == null) return fallback;
-  const dir = meanBias > 0 ? 'over-predicting' : 'under-predicting';
-  const absBias = Math.abs(meanBias).toFixed(1);
-  return `Ensemble of pace-ratio extrapolation + family regression. At T > 7 the regression dominates so early ahead-of-pace leads are discounted. ${yr} backtest (${nEvents} events, asof ${asof}) shows the model has been ${dir} by ${absBias}% on avg; kept conservative on purpose. See Performance tab for full breakdown.`;
-}
-
 // The hero cell (forecast.css): the label, the figure under the highlighter,
-// the range bracket with its tags, the festival cluster, the week's bars and
-// the three figures. renderProgress (panels_info.js) folds the progress
+// the range bracket with its caption, the festival cluster, the week's bars
+// and the three figures. renderProgress (panels_info.js) folds the progress
 // lines into the first two figures after this runs.
 function renderHero(t) {
   const done = isDone(t);
   _renderHeroFigure(t, done);
   document.getElementById('heroCi').innerHTML = _heroRangeHTML(t, done);
-  // The pace verdict is the note above and the 7-day pace is a figure below;
-  // the narrative would say it a third time.
-  document.getElementById('heroNarrative').innerHTML = '';
   // Festival cluster — renders inline if this tournament is part of a
   // multi-sub-event festival (e.g. World Open). No-op otherwise.
   renderFestivalCluster(t);
   _renderHeroFigures(t, done);
-  _renderKpiProgress(t, done);
   _renderWeekBars(t, done);
 }
 
-const HERO_HELP_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>';
+// The figure counts up on the first load only; a later switch lands on the
+// value, so moving between tournaments reads as a change, not a replay.
+let _heroCounted = false;
 
 function _renderHeroFigure(t, done) {
   const statusPrefix = t.status === 'historical' ? `${t.year} ` : '';
   const heroLabel = document.getElementById('heroLabel');
-  if (done) {
-    heroLabel.textContent = `${statusPrefix}Final Entries`;
-  } else {
-    heroLabel.innerHTML = `Predicted Final Entries <span class="hero-help" title="${esc(_calibrationTooltip())}">${HERO_HELP_ICON}</span>`;
-  }
+  heroLabel.textContent = done ? `${statusPrefix}Final Entries` : 'Predicted Final Entries';
   const heroNum = document.getElementById('heroNumber');
   // A forecast sits under the highlighter; a final count is a fact in ink.
   heroNum.classList.toggle('hero-number-final', done);
@@ -72,8 +38,8 @@ function _renderHeroFigure(t, done) {
   // label included so the number is not announced bare (2026-09-07 review).
   const announce = document.getElementById('heroAnnounce');
   if (announce) announce.textContent = `${heroLabel.textContent.trim()}: ${fmt(Math.round(target))}`;
-  // Animate the count-up (skip the tween under prefers-reduced-motion)
-  if (_reduceMotion()) { heroNum.textContent = fmt(Math.round(target)); return; }
+  if (_heroCounted || _reduceMotion()) { heroNum.textContent = fmt(Math.round(target)); return; }
+  _heroCounted = true;
   const duration = 600;
   const start = performance.now();
   (function animHero(now) {
@@ -84,8 +50,16 @@ function _renderHeroFigure(t, done) {
   })(performance.now());
 }
 
-// The confidence and the prediction tier, printed as tags.
-function _heroTags(t, done) {
+// The fallback tier, when the prediction did not use direct family ratios.
+const HERO_TIER_LABELS = {
+  'family-alias': 'Pooled history',
+  'size-matched': 'No family history',
+  'roster-pending': 'Interim estimate',
+};
+
+// The caption under the range, one plain line: "80% range · Medium
+// confidence, 4 editions · Interim estimate". Low confidence is in ember.
+function _heroCaption(t, ciLevel) {
   // Audit telemetry: prefer the explicit low_confidence flag over the derived
   // nHist count. n_historical_editions is the audit-canonical count (excludes
   // COVID/online); the historical array length is the fallback.
@@ -94,23 +68,13 @@ function _heroTags(t, done) {
     : (t.historical ? t.historical.length : 0);
   const isLow = (typeof t.low_confidence === 'boolean') ? t.low_confidence : (nHist < 4);
   const confLabel = isLow
-    ? (nHist >= 2 ? 'Low Confidence' : 'Very Low Confidence')
-    : (nHist >= 8 ? 'High Confidence' : 'Medium Confidence');
-  const confClass = isLow ? 'tag-ember' : (nHist >= 8 ? 'tag-signal' : 'tag-ink');
-  const conf = !done && t.ci_lower !== t.ci_upper
-    ? `<span class="tag ${confClass}" title="${nHist} qualifying historical edition${nHist === 1 ? '' : 's'} for this family. Below 4 editions, the model marks the prediction low-confidence.">${confLabel} · ${nHist} Edition${nHist === 1 ? '' : 's'}</span>`
-    : '';
-  // The fallback tier, when the prediction did not use direct family ratios.
-  const tierLabelMap = {
-    'family-direct': 'Direct · 5+ Yr History',
-    'family-alias': 'Pooled History',
-    'size-matched': 'No Family History',
-    'roster-pending': 'Interim Estimate',
-  };
-  const tier = (!done && t.prediction_tier && t.prediction_tier !== 'family-direct')
-    ? `<span class="tag" title="Prediction used the '${t.prediction_tier}' fallback path. 'family-alias' pools history from related families; 'size-matched' uses families with comparable historical size when this family has no direct history.">${tierLabelMap[t.prediction_tier] || t.prediction_tier.replace('-', ' ')}</span>`
-    : '';
-  return conf + tier;
+    ? (nHist >= 2 ? 'Low confidence' : 'Very low confidence')
+    : (nHist >= 8 ? 'High confidence' : 'Medium confidence');
+  const conf = `${confLabel}, ${nHist} edition${nHist === 1 ? '' : 's'}`;
+  const parts = [`${ciLevel}% range`, isLow ? `<span class="conf-low">${conf}</span>` : conf];
+  const tier = t.prediction_tier;
+  if (tier && tier !== 'family-direct') parts.push(HERO_TIER_LABELS[tier] || tier.replace('-', ' '));
+  return parts.join(' · ');
 }
 
 // Why the model is as confident as it is, in one sentence.
@@ -126,14 +90,11 @@ function _confidenceReason(t) {
   return `${t.confidence_label || 'Confidence'} based on ${tier.replace('-', ' ')} history.`;
 }
 
-// The 80% range as a bracket, the estimate's pen tick placed inside it. A
-// completed tournament shows its final count instead.
+// The 80% range as a bracket, the estimate's pen tick placed inside it, and
+// its caption. A completed tournament's figure is its final count, with
+// nothing to bracket.
 function _heroRangeHTML(t, done) {
-  const tags = _heroTags(t, done);
-  if (t.ci_lower === t.ci_upper) {
-    // The figure above is the final count; nothing to repeat under it.
-    return tags ? `<div class="hero-tags">${tags}</div>` : '';
-  }
+  if (t.ci_lower === t.ci_upper) return '';
   const ciLevel = Math.round((t.ci_level || .8) * 100);
   const lo = t.ci_lower, hi = t.ci_upper, pe = t.point_estimate;
   // Clamp so an off-band point estimate (a rare model edge case) still lands inside the bracket.
@@ -142,53 +103,8 @@ function _heroRangeHTML(t, done) {
   return `
       <div class="range" role="img" aria-label="${ciLevel}% confidence interval from ${fmt(lo)} to ${fmt(hi)}, point estimate ${fmt(pe)}. ${reason}" title="${reason}">
         <span class="range-bound">${fmt(lo)}</span>
-        <div class="range-track"><div class="range-mark" style="left:${pct.toFixed(2)}%" title="Point estimate: ${fmt(pe)}. ${reason}"></div></div>
+        <div class="range-track"><div class="range-mark" style="left:${pct.toFixed(2)}%"></div></div>
         <span class="range-bound">${fmt(hi)}</span>
       </div>
-      <div class="range-caption">${ciLevel}% range</div>
-      <div class="hero-tags">${tags}</div>`;
-}
-
-// Apply any saved overrides on load
-// ══════════════════════════════════════════════════════════
-// FAVORITES (My Tournaments)
-// ══════════════════════════════════════════════════════════
-const FAV_KEY = 'cca_favorites';
-
-function getFavorites() {
-  try {
-    const raw = localStorage.getItem(FAV_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) { return []; }
-}
-
-function saveFavorites(favs) {
-  localStorage.setItem(FAV_KEY, JSON.stringify(favs));
-}
-
-function isFavorite(family) {
-  return getFavorites().includes(family);
-}
-
-function toggleFavorite(family) {
-  const favs = getFavorites();
-  const idx = favs.indexOf(family);
-  if (idx >= 0) favs.splice(idx, 1);
-  else favs.push(family);
-  saveFavorites(favs);
-  updateFavButton(family);
-}
-
-function toggleFavoriteSelected() {
-  const t = TOURNAMENT_DATA.tournaments[selectedIndex];
-  if (t) toggleFavorite(t.family);
-}
-
-function updateFavButton(family) {
-  const btn = document.getElementById('favToggle');
-  if (!btn) return;
-  const fav = isFavorite(family);
-  btn.innerHTML = `<svg viewBox="0 0 24 24" fill="${fav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.5 3.6a.6.6 0 0 1 1 0l2.3 4.8 5.2.8a.6.6 0 0 1 .3 1l-3.8 3.7.9 5.2a.6.6 0 0 1-.9.6L12 17.3l-4.6 2.5a.6.6 0 0 1-.9-.6l.9-5.2-3.8-3.7a.6.6 0 0 1 .3-1l5.2-.8Z"/></svg>`;
-  btn.classList.toggle('fav-active', fav);
-  btn.title = fav ? 'Remove from My Tournaments' : 'Add to My Tournaments';
+      <div class="range-caption">${done ? `${ciLevel}% range` : _heroCaption(t, ciLevel)}</div>`;
 }

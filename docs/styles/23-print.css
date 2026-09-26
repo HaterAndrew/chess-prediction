@@ -20,9 +20,7 @@
   #overrideBanner,
   .view-actions,
   .calendar-strip,
-  .accuracy-strip,
   .all-tournaments,
-  .panel.model-info,
   .mini-grid,
   .up-next,
   .back-to-top,
@@ -42,7 +40,6 @@
   }
   .chart-card, .panel, .note { page-break-inside: avoid; }
   .hero-number { background: transparent !important; color: var(--ink) !important; font-size: 36pt !important; padding: 0 !important; }
-  .hero-narrative strong { color: var(--ink) !important; }
   /* Chart canvas: ensure it stays at a reasonable height. */
   .chart-wrap { height: 280px !important; }
   /* Page break opportunities */

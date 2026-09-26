@@ -61,6 +61,5 @@ const out = {
 
   pace_alert: U.getPaceAlert({ pace_alert: { status: 'above_pace' } }),
   pace_alert_none: U.getPaceAlert({}),
-  pace_badge_empty: U.paceBadgeHTML(null),
 };
 process.stdout.write(JSON.stringify(out));

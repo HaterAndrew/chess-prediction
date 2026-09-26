@@ -99,88 +99,6 @@ function getPaceAlert(t) {
   return t && t.pace_alert ? t.pace_alert : null;
 }
 
-// Builds the hero narrative — a 1-2 sentence plain-English summary that ties
-// the headline numbers together. Returns HTML (not text) so we can highlight
-// the specific phrase that's load-bearing (the comparison verdict) with
-// color. Handles three states: completed (compare to historical avg),
-// live with pace_alert (compare to N-yr at-T avg + name the next milestone),
-// and live without pace_alert (still-loading or insufficient history).
-function buildHeroNarrative(t) {
-  if (!t) return '';
-  // Completed: name what happened vs history.
-  if (isDone(t)) {
-    if (!t.historical || t.historical.length === 0) {
-      return `<p>Final count: <strong>${fmt(t.current_count)}</strong> entries.</p>`;
-    }
-    const avg = Math.round(t.historical.reduce((s, h) => s + h.count, 0) / t.historical.length);
-    const diff = t.current_count - avg;
-    const pct = avg > 0 ? Math.round((diff / avg) * 100) : 0;
-    let verdict, cls;
-    if (pct >= 5) { verdict = `${Math.abs(pct)}% above`; cls = 'pos'; }
-    else if (pct <= -5) { verdict = `${Math.abs(pct)}% below`; cls = 'neg'; }
-    else { verdict = 'in line with'; cls = 'flat'; }
-    return `<p><strong>${fmt(t.current_count)}</strong> entries: <span class="hn-verdict hn-${cls}">${verdict}</span> the ${t.historical.length}-year average of ${fmt(avg)}.</p>`;
-  }
-
-  // Live state — combine pace verdict + countdown + next milestone.
-  const parts = [];
-  const pa = t.pace_alert;
-  if (pa && pa.expected != null) {
-    const cls = pa.status === 'above_pace' ? 'pos'
-              : pa.status === 'below_pace' ? 'neg' : 'flat';
-    const dev = Math.round(pa.deviation_pct || 0);
-    const devText = dev > 0 ? `+${dev}%` : `${dev}%`;
-    const phrase = pa.status === 'on_pace'
-      ? 'tracking on pace'
-      : pa.status === 'above_pace'
-        ? 'tracking ahead of pace'
-        : 'tracking behind pace';
-    parts.push(`<strong>${fmt(t.current_count)}</strong> of a predicted <strong>${fmt(t.point_estimate)}</strong>: <span class="hn-verdict hn-${cls}">${phrase} (${devText} vs prior years at the same days-to-event mark)</span>.`);
-  } else {
-    // No pace_alert (typically: not enough historical daily data).
-    parts.push(`<strong>${fmt(t.current_count)}</strong> registered so far of a predicted <strong>${fmt(t.point_estimate)}</strong>.`);
-  }
-
-  // Daily pace + needed pace context.
-  if (t.daily_data && t.daily_data.length >= 3 && t.days_remaining > 0) {
-    const recent = t.daily_data.slice(-7);
-    const daySpan = recent[recent.length-1][0] - recent[0][0];
-    const regSpan = recent[recent.length-1][1] - recent[0][1];
-    const rate = daySpan > 0 ? regSpan / daySpan : 0;
-    const remaining = t.point_estimate - t.current_count;
-    const needed = remaining / t.days_remaining;
-    if (rate >= 0.5 && needed >= 0.5) {
-      const verdict = rate >= needed * 0.95
-        ? 'on track to land in the predicted range'
-        : `needs ${needed.toFixed(1)}/day to hit the prediction (currently ${rate.toFixed(1)}/day)`;
-      parts.push(verdict.charAt(0).toUpperCase() + verdict.slice(1) + '.');
-    }
-  }
-
-  // Next milestone — the closest upcoming reference point.
-  if (hasValidEarlyBird(t)) {
-    const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
-    const ebDate = new Date(t.early_bird_deadline + 'T00:00:00');
-    const ebDays = Math.ceil((ebDate - today) / 86400000);
-    if (ebDays > 0 && ebDays <= 21) {
-      parts.push(`Early bird closes in ${ebDays} day${ebDays === 1 ? '' : 's'}.`);
-    }
-  } else if (t.days_remaining != null && t.days_remaining <= 14 && t.days_remaining > 0) {
-    const evStarted = t.event_start &&
-      new Date(t.event_start + 'T00:00:00') <= new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
-    parts.push(evStarted
-      ? `Online registration closes in ${t.days_remaining} day${t.days_remaining === 1 ? '' : 's'}.`
-      : `Event opens in ${t.days_remaining} day${t.days_remaining === 1 ? '' : 's'}.`);
-  }
-
-  return `<p>${parts.join(' ')}</p>`;
-}
-function paceBadgeHTML(alert) {
-  if (!alert) return '';
-  const cls = alert.status === 'above_pace' ? 'above' : alert.status === 'below_pace' ? 'below' : 'on';
-  const icon = alert.status === 'above_pace' ? '\uD83D\uDFE2' : alert.status === 'below_pace' ? '\uD83D\uDD34' : '\uD83D\uDFE1';
-  return `<span class="pace-badge ${cls}">${icon}</span>`;
-}
 // The multi-year at-T context (alert.message from alerts.py) used to render
 // as its own separate banner below the YoY delta banner. Two stacked
 // indicators competing for attention; the lightning-bolt one duplicated
@@ -248,8 +166,6 @@ if (typeof globalThis !== 'undefined') {
   globalThis.daysBetween = daysBetween;
   globalThis.interpCurve = interpCurve;
   globalThis.getPaceAlert = getPaceAlert;
-  globalThis.buildHeroNarrative = buildHeroNarrative;
-  globalThis.paceBadgeHTML = paceBadgeHTML;
   globalThis.STALE_AFTER_HOURS = STALE_AFTER_HOURS;
   globalThis.assessDataFreshness = assessDataFreshness;
 }
@@ -257,7 +173,7 @@ if (typeof module !== 'undefined') {
   module.exports = {
     fmt, isDone, EARLY_BIRD_MIN_GAP_DAYS, hasValidEarlyBird,
     fmtDate, fmtDateLong, fmtDateTimeLong, addDays, daysBetween,
-    interpCurve, getPaceAlert, buildHeroNarrative, paceBadgeHTML,
+    interpCurve, getPaceAlert,
     STALE_AFTER_HOURS, assessDataFreshness,
   };
 }

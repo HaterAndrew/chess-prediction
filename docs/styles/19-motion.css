@@ -1,20 +1,11 @@
 /* ══════════════════════════════════════════════════════
    TRANSITIONS
    ══════════════════════════════════════════════════════ */
-.fade-enter { animation: fadeSlideIn var(--dur-slow) var(--ease-out) forwards; }
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.hero, .chart-card, .pace-note, .kpi-row, .grid-2, .up-next,
-.all-tournaments {
-  transition: opacity var(--dur-slow) var(--ease-out),
-              transform var(--dur-slow) var(--ease-out);
-}
+/* A tournament switch fades the Forecast's sections out and back in once,
+   together (app.js FORECAST_FADE_SECTIONS); nothing slides or staggers. */
+#panel-predictions :is(.pace-note, .chart-card, .sect, .up-next) { transition: opacity var(--dur-fast) linear; }
 @media (prefers-reduced-motion: reduce) {
-  .fade-enter { animation: none; }
-  .hero, .chart-card, .pace-note, .kpi-row, .grid-2, .up-next,
-  .all-tournaments { transition: none; }
+  #panel-predictions :is(.pace-note, .chart-card, .sect, .up-next) { transition: none; }
 }
 
 /* The back-to-top control and the keyboard hints live in shell.css and

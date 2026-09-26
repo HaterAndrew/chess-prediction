@@ -1,5 +1,5 @@
 // panels_info.js — the pace note, the progress lines folded under the hero's
-// figures, the key milestones, the milestone strip and the fee panel.
+// figures, the milestone strip under the chart and the fee panel.
 
 // ══════════════════════════════════════════════════════════
 // PACE NOTE
@@ -7,6 +7,7 @@
 // The verdict against last year at the top of the Forecast, printed on the
 // stock its state calls for: blue for ahead, pink for behind, yellow for on
 // pace or no comparison (controls.css .note, forecast.css .pace-note).
+// Returns the kind, so the multi-year line can tell whether it adds anything.
 function _paceNote(kind, main, sub, figure) {
   const banner = document.getElementById('deltaBanner');
   const stock = { ahead: 'note-blue', behind: 'note-ember', even: 'note-amber', plain: '' }[kind] || '';
@@ -16,18 +17,22 @@ function _paceNote(kind, main, sub, figure) {
   const val = document.getElementById('deltaValue');
   val.textContent = figure;
   val.className = `pace-figure num pace-${kind === 'plain' ? 'even' : kind}`;
+  return kind;
 }
 
-// The multi-year line under the verdict. Verdict-first phrasing ("Behind
-// the 4-year pace") so the eye lands on the direction first.
-function _paceContext(t) {
+// The multi-year line under the verdict, printed only when it disagrees with
+// it: "Behind 2025 Pace" over "Behind the 4-year pace" says one thing twice.
+// Verdict-first phrasing ("Ahead of the 4-year pace") so the eye lands on the
+// direction first.
+const PACE_ALERT_KIND = { above_pace: 'ahead', below_pace: 'behind', on_pace: 'even' };
+function _paceContext(t, kind) {
   const ctx = document.getElementById('deltaContext');
   if (!ctx) return;
   const alert = getPaceAlert(t);
-  if (!alert || !alert.status) { ctx.textContent = ''; return; }
+  if (!alert || !alert.status || PACE_ALERT_KIND[alert.status] === kind) { ctx.textContent = ''; return; }
   const verdict = alert.status === 'above_pace' ? 'Ahead of'
                 : alert.status === 'below_pace' ? 'Behind'
-                : 'On'
+                : 'On';
   // Prefer the explicit n_years field (pipeline 2026-05-17+); fall back to
   // the older message string for a stale website_data.json.
   const n = alert.n_years || ((alert.message || '').match(/(\d+)-year/) || [])[1];
@@ -36,37 +41,29 @@ function _paceContext(t) {
   ctx.textContent = `${verdict} the ${yrs} pace (${dev > 0 ? '+' : ''}${dev}%)`;
 }
 
+// A finished event against its past editions. The figure above already says
+// the final count, so the note does not repeat it.
 function _renderDeltaDone(t) {
   if (!t.historical || t.historical.length === 0) {
-    _paceNote('plain', 'Complete', `${fmt(t.current_count)} entries`, '');
-    return;
+    return _paceNote('plain', 'Complete', 'No prior editions on record', '');
   }
-  const avg = t.historical.reduce((s, h) => s + h.count, 0) / t.historical.length;
+  const n = t.historical.length;
+  const avg = t.historical.reduce((s, h) => s + h.count, 0) / n;
   const diff = (t.current_count - avg) / avg * 100;
   const absDiff = Math.abs(diff).toFixed(1);
-  if (diff > 5) {
-    _paceNote('ahead', 'Above Average',
-      `${fmt(t.current_count)} entries vs a ${fmt(Math.round(avg))} average`, `+${absDiff}%`);
-  } else if (diff < -5) {
-    _paceNote('behind', 'Below Average',
-      `${fmt(t.current_count)} entries vs a ${fmt(Math.round(avg))} average`, `-${absDiff}%`);
-  } else {
-    _paceNote('even', 'On Par',
-      `${fmt(t.current_count)} entries vs a ${fmt(Math.round(avg))} average`,
-      `${diff >= 0 ? '+' : ''}${diff.toFixed(1)}%`);
-  }
+  const sub = `vs a ${fmt(Math.round(avg))} average over ${n} edition${n === 1 ? '' : 's'}`;
+  if (diff > 5) return _paceNote('ahead', 'Above Average', sub, `+${absDiff}%`);
+  if (diff < -5) return _paceNote('behind', 'Below Average', sub, `-${absDiff}%`);
+  return _paceNote('even', 'On Par', sub, `${diff >= 0 ? '+' : ''}${diff.toFixed(1)}%`);
 }
 
-function renderDelta(t) {
-  _paceContext(t);
-  if (isDone(t)) { _renderDeltaDone(t); return; }
-
-  // Live: compare to last year's count at the same days-to-event mark. Prefer
-  // the explicit prior_year_pace.count_at_same_point, derived from last
-  // year's actual daily registrations on this calendar day; fall back to the
-  // family-average curve only when that field is missing (no prior daily
-  // data for this family), since a curve estimate can drift when the prior
-  // year's curve was unusual.
+// Live: compare to last year's count at the same days-to-event mark. Prefer
+// the explicit prior_year_pace.count_at_same_point, derived from last year's
+// actual daily registrations on this calendar day; fall back to the
+// family-average curve only when that field is missing (no prior daily data
+// for this family), since a curve estimate can drift when the prior year's
+// curve was unusual.
+function _renderDeltaLive(t) {
   if (t.historical && t.historical.length > 0) {
     const lastYr = t.historical[t.historical.length - 1];
     const priorPace = t.prior_year_pace;
@@ -80,28 +77,36 @@ function renderDelta(t) {
       const diff = t.current_count - lastYrAtT;
       const absPct = Math.abs(diff / lastYrAtT * 100).toFixed(1);
       const compared = `${fmt(t.current_count)} now vs ${fmt(lastYrAtT)} at T-${t.days_remaining} in ${lastYrLabel}`;
-      if (diff > 0) _paceNote('ahead', `Ahead of ${lastYrLabel} Pace`, compared, `+${absPct}%`);
-      else if (diff < 0) _paceNote('behind', `Behind ${lastYrLabel} Pace`, compared, `-${absPct}%`);
-      else _paceNote('even', `On ${lastYrLabel} Pace`, compared, '0%');
-      return;
+      if (diff > 0) return _paceNote('ahead', `Ahead of ${lastYrLabel} Pace`, compared, `+${absPct}%`);
+      if (diff < 0) return _paceNote('behind', `Behind ${lastYrLabel} Pace`, compared, `-${absPct}%`);
+      return _paceNote('even', `On ${lastYrLabel} Pace`, compared, '0%');
     }
   }
 
   // No historical comparison available
-  const evStarted = t.event_start &&
-    new Date(t.event_start + 'T00:00:00') <= new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
-  _paceNote('even', 'No Prior Edition',
-    evStarted ? `${fmt(t.current_count)} entries · online registration open` : `${fmt(t.current_count)} entries so far`,
+  return _paceNote('even', 'No Prior Edition',
+    _eventStarted(t) ? `${fmt(t.current_count)} entries · online registration open` : `${fmt(t.current_count)} entries so far`,
     `T-${t.days_remaining}`);
+}
+
+function renderDelta(t) {
+  _paceContext(t, isDone(t) ? _renderDeltaDone(t) : _renderDeltaLive(t));
+}
+
+// Has a live event's first day passed? Its countdown then runs to the close
+// of online registration, not to the event.
+function _eventStarted(t) {
+  return !!t.event_start &&
+    new Date(t.event_start + 'T00:00:00') <= new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
 }
 
 // ══════════════════════════════════════════════════════════
 // PROGRESS LINES (folded under Registered and Days to Event)
 // ══════════════════════════════════════════════════════════
-function _foldHTML(label, pct, sub) {
-  return `<div class="fold-head"><span>${label}</span><span class="num">${pct}%</span></div>
-    <div class="fold-track" aria-hidden="true"><div class="fold-fill" style="width:${pct}%"></div></div>
-    <div class="fold-sub">${sub}</div>`;
+// The bar and one label: "21% of forecast".
+function _foldHTML(pct, of) {
+  return `<div class="fold-track" aria-hidden="true"><div class="fold-fill" style="width:${pct}%"></div></div>
+    <div class="fold-sub"><span class="num">${pct}%</span> of ${of}</div>`;
 }
 
 function renderProgress(t) {
@@ -125,134 +130,65 @@ function renderProgress(t) {
   const elapsed = Math.max(0, totalDays - t.days_remaining);
   const timePct = Math.min(100, (elapsed / totalDays * 100)).toFixed(0);
   const regPct = Math.min(100, (t.current_count / t.point_estimate * 100)).toFixed(0);
-  cur.innerHTML = _foldHTML('Entries Received', regPct, `${fmt(t.current_count)} of ~${fmt(t.point_estimate)}`);
-  days.innerHTML = _foldHTML('Time Elapsed', timePct, `${elapsed} of ${totalDays} days`);
+  cur.innerHTML = _foldHTML(regPct, 'forecast');
+  days.innerHTML = _foldHTML(timePct, 'registration window');
 }
 
 // ══════════════════════════════════════════════════════════
-// TIMELINE
+// MILESTONE STRIP (under the chart)
 // ══════════════════════════════════════════════════════════
-function renderTimeline(t) {
-  const el = document.getElementById('timeline');
-  if (isDone(t)) {
-    // Show historical context — how this edition compared
-    const avg = t.historical && t.historical.length > 0
-      ? Math.round(t.historical.reduce((s,h) => s+h.count, 0) / t.historical.length) : null;
-    el.innerHTML = `
-      <div class="timeline-node"><div class="timeline-dot past"></div><div class="timeline-label">Event Date</div><div class="timeline-date">${fmtDate(t.event_start)}</div></div>
-      <div class="timeline-node"><div class="timeline-dot past"></div><div class="timeline-label">Final Count</div><div class="timeline-date timeline-figure">${fmt(t.current_count)}</div></div>
-      ${avg ? `<div class="timeline-node"><div class="timeline-dot future"></div><div class="timeline-label">Past Average</div><div class="timeline-date">${fmt(avg)}</div></div>` : ''}
-    `;
-    return;
-  }
+// Today, then the early bird while it is ahead and the nearest checkpoints,
+// then the event day: at most six stops on one rule, each with its date and
+// the entries expected by then. A finished or started event has none.
+const MILESTONE_CHECKPOINTS = [
+  [60, '60 Days Out'], [42, '6 Weeks Out'], [28, '4 Weeks Out'], [14, '2 Weeks Out'],
+  [7, '1 Week Out'], [3, '3 Days Out'], [1, 'Day Before'],
+];
+const MILESTONE_MIDDLE_STOPS = 4;
 
-  // Today only: the early bird and the event day are on the milestone strip
-  // right below, with the same dates and counts.
-  const nodes = [
-    { label: 'Today', date: fmtDate(TOURNAMENT_DATA.generated), status: 'now', count: fmt(t.current_count) },
-  ];
-
-  el.innerHTML = nodes.map(n => `
-    <div class="timeline-node">
-      <div class="timeline-dot ${n.status}"></div>
-      <div class="timeline-label">${n.label}</div>
-      <div class="timeline-date">${n.date}</div>
-      ${n.count ? `<div class="timeline-count">${n.count}</div>` : ''}
-    </div>
-  `).join('');
-}
-
-// ══════════════════════════════════════════════════════════
-// MILESTONE TABLE
-// ══════════════════════════════════════════════════════════
-function renderMilestones(t) {
-  const el = document.getElementById('milestoneTable');
-  if (isDone(t)) { el.innerHTML = ''; return; }
-
-  const today = new Date(TOURNAMENT_DATA.generated + 'T00:00:00');
-  const milestones = [];
-
-  // Predicted counts at key dates
-  const checkpoints = [
-    { db: 60, label: 'T-60 days' },
-    { db: 42, label: 'T-42 days' },
-    { db: 28, label: '1 month out' },
-    { db: 14, label: '2 weeks out' },
-    { db: 7, label: '1 week out' },
-    { db: 3, label: '3 days out' },
-    { db: 1, label: 'Day before' },
-    { db: 0, label: 'Event day' },
-  ];
-
-  // Add early bird if present
+// The stops between today and the event day, soonest first: the early bird
+// when it is still ahead, then the checkpoints nearest to today.
+function _milestoneMiddle(t) {
+  const early = [];
+  let ebDB = null;
   if (hasValidEarlyBird(t)) {
-    const ebDB = daysBetween(t.early_bird_deadline, t.event_start);
-    const ebD = new Date(t.early_bird_deadline + 'T00:00:00');
-    const status = ebD < today ? 'past' : 'future';
-    const estPct = interpCurve(t.registration_curve, ebDB);
-    const est = Math.round(t.point_estimate * estPct);
-    milestones.push({
-      date: fmtDate(t.early_bird_deadline),
-      label: 'Early Bird Deadline',
-      est: status === 'past' ? null : est,
-      actual: status === 'past' ? '(passed)' : null,
-      status
-    });
+    ebDB = daysBetween(t.early_bird_deadline, t.event_start);
+    if (ebDB <= t.days_remaining) early.push({ db: ebDB, label: 'Early Bird' });
   }
+  const checkpoints = MILESTONE_CHECKPOINTS
+    .filter(([db]) => db < t.days_remaining && db !== ebDB)
+    .map(([db, label]) => ({ db, label }))
+    .slice(0, MILESTONE_MIDDLE_STOPS - early.length);
+  return early.concat(checkpoints).sort((a, b) => b.db - a.db);
+}
 
-  checkpoints.forEach(cp => {
-    if (cp.db >= t.days_remaining) return; // Skip past checkpoints
-    if (cp.db < 0) return;
-    const cpDate = addDays(t.event_start, -cp.db);
-    const status = cpDate <= today ? 'past' : cp.db === t.days_remaining ? 'now' : 'future';
-    const pct = interpCurve(t.registration_curve, cp.db);
-    const est = Math.round(t.point_estimate * pct);
-    milestones.push({
-      date: fmtDate(t.event_start.substring(0, 10)),
-      dateObj: cpDate,
-      label: cp.label,
-      est,
-      status
-    });
-  });
+function _milestoneStops(t) {
+  // The curve's share at a lead time, floored at today's count: a checkpoint
+  // cannot expect fewer entries than are already in.
+  const expected = db => Math.max(t.current_count,
+    Math.round(t.point_estimate * interpCurve(t.registration_curve, db)));
+  return [
+    { label: 'Today', date: fmtDate(TOURNAMENT_DATA.generated), count: fmt(t.current_count), now: true },
+    ..._milestoneMiddle(t).map(m => ({
+      label: m.label, date: DATE_FMT.short.format(addDays(t.event_start, -m.db)), count: `~${fmt(expected(m.db))}`,
+    })),
+    { label: 'Event Day', date: fmtDate(t.event_start), count: `~${fmt(t.point_estimate)}` },
+  ];
+}
 
-  // Fix dates
-  milestones.forEach(m => {
-    if (m.dateObj) {
-      m.date = DATE_FMT.short.format(m.dateObj);
-    }
-  });
-
-  if (milestones.length === 0) { el.innerHTML = ''; return; }
-
-  // Show the most relevant milestones — keep early bird (if any) + 5 nearest
-  // upcoming checkpoints. The full table view (replaced by this strip) used
-  // .slice(0, 6) which was already the same shape, so no change in density.
-  const shown = milestones.slice(0, 6);
-
-  // Horizontal timeline. Each milestone is a node with a status-colored dot,
-  // a label, the date, and the predicted entry count at that point. A
-  // continuous gradient line runs behind the nodes; the gradient stop matches
-  // the boundary between "past" and "now/future" nodes so the user sees
-  // visually where the present is on the journey.
-  const firstNonPast = shown.findIndex(m => m.status !== 'past');
-  const pastPct = firstNonPast === -1
-    ? 100
-    : Math.max(0, Math.min(100, (firstNonPast / (shown.length - 1)) * 100));
-
-  let html = `<div class="ms-strip" role="list" aria-label="Tournament milestones">
-    <div class="ms-line"><div class="ms-line-past" style="width:${pastPct}%"></div></div>`;
-  shown.forEach(m => {
-    const count = m.actual || (m.est ? `~${fmt(m.est)}` : '');
-    html += `<div class="ms-node ms-${m.status}" role="listitem">
+function renderMilestones(t) {
+  const el = document.getElementById('milestoneStrip');
+  if (!el) return;
+  if (isDone(t) || !t.event_start || _eventStarted(t)) { el.innerHTML = ''; return; }
+  const stops = _milestoneStops(t);
+  el.innerHTML = `<div class="ms-strip" role="list" aria-label="Milestones" style="--stops:${stops.length}">
+    <div class="ms-line" aria-hidden="true"></div>` +
+    stops.map(s => `<div class="ms-node${s.now ? ' ms-now' : ''}" role="listitem">
       <div class="ms-dot" aria-hidden="true"></div>
-      <div class="ms-node-label">${m.label}</div>
-      <div class="ms-node-date">${m.date}</div>
-      ${count ? `<div class="ms-node-count">${count}</div>` : ''}
-    </div>`;
-  });
-  html += '</div>';
-  el.innerHTML = html;
+      <div class="ms-node-label">${s.label}</div>
+      <div class="ms-node-date">${s.date}</div>
+      <div class="ms-node-count">${s.count}</div>
+    </div>`).join('') + '</div>';
 }
 
 // ══════════════════════════════════════════════════════════

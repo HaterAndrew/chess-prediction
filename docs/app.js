@@ -198,7 +198,6 @@ function selectTournament(index, skipHash) {
   document.title = `${t.family} ${t.year} · CCA Entry Predictor`;
 
   updateFavButton(t.family);
-  updateCompareBtn();
 
   // Staggered fade-in for visual polish
   const sections = document.querySelectorAll('.pace-note, .chart-card, .kpi-row, .grid-2, .up-next');
@@ -306,10 +305,10 @@ document.addEventListener('keydown', (e) => {
   if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
   if (typeof _currentTab !== 'undefined' && _currentTab !== 'predictions') return;
   const n = TOURNAMENT_DATA.tournaments.length;
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+  if (e.key === 'ArrowRight') {
     e.preventDefault();
     selectTournament((selectedIndex + 1) % n);
-  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+  } else if (e.key === 'ArrowLeft') {
     e.preventDefault();
     selectTournament((selectedIndex - 1 + n) % n);
   }

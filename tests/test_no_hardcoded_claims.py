@@ -42,7 +42,7 @@ def test_claim_spans_present():
     html = _html()
     for span_id in ("about-n", "about-median", "about-cov", "about-cov-close",
                     "about-prior-n", "about-prior-cov", "about-prior-median",
-                    "mc-ci-cover", "mc-ci-cover-inline", "mc-ci-cover-footer"):
+                    "mc-ci-cover", "mc-ci-cover-inline"):
         assert f'id="{span_id}"' in html, f"claim span removed: {span_id}"
 
 

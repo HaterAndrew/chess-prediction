@@ -36,7 +36,6 @@ select.field option { background: var(--panel); color: var(--ink); }
 
 /* ── Keyboard hint ── */
 kbd, .kbd-hint { background: transparent; border: 1px solid var(--line-soft); color: var(--ink-2); display: inline-block; font: 400 12px/1.4 var(--mono); padding: 0 5px; vertical-align: middle; }
-.search-btn-kbd { margin-left: 2px; }
 
 /* ── Note: a message in the flow, printed on the stock its state calls
    for. Replaces the stale, override and first-run banners. ── */

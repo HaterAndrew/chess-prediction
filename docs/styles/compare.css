@@ -20,7 +20,6 @@
 .compare-insights { display: flex; flex-direction: column; gap: var(--s-2); margin: 0 0 var(--s-4); }
 .compare-insight { background: var(--stock-blue); border: 1px solid var(--line); font-size: var(--fs-body-lg); line-height: 1.5; padding: 10px 14px; }
 .compare-empty { margin-top: var(--s-2); }
-.compare-empty-sub { color: var(--muted); font-size: 12px; margin-top: 4px; }
 
 /* ── The table: the stat down the side, one column per tournament in its pen ── */
 .compare-table-wrap { margin: 0 calc(-1 * var(--gutter)) var(--s-4); overflow-x: auto; padding: 0 var(--gutter); -webkit-overflow-scrolling: touch; }

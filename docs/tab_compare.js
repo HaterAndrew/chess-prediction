@@ -12,70 +12,29 @@ function compareColorsDim() { return PALETTE.series.map(c => themeRgba(c, 0.15))
 let _compareSlots = [];
 let _compareChart = null;
 
+// The saved picks, or null when the visitor has never picked: the tab then
+// opens on the selected tournament and its prior edition (renderCompareTab).
 function getCompareSlots() {
   try {
     const raw = localStorage.getItem(COMPARE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) { return []; }
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
 }
 function saveCompareSlots(slots) {
   localStorage.setItem(COMPARE_KEY, JSON.stringify(slots));
 }
 
-function addToCompare(idx) {
-  _compareSlots = getCompareSlots();
-  if (_compareSlots.includes(idx)) return;
-  if (_compareSlots.length >= 3) {
-    alert('Compare supports up to 3 tournaments. Remove one first.');
-    return;
-  }
-  _compareSlots.push(idx);
-  saveCompareSlots(_compareSlots);
-  updateCompareBtn();
-  if (_compareSlots.length >= 2) {
-    switchPageTab('compare');
-  }
-}
-
-function removeFromCompare(idx) {
-  _compareSlots = getCompareSlots();
-  const pos = _compareSlots.indexOf(idx);
-  if (pos >= 0) _compareSlots.splice(pos, 1);
-  saveCompareSlots(_compareSlots);
-  updateCompareBtn();
-  if (_currentTab === 'compare') renderCompareTab();
-}
-
-function addToCompareSelected() {
-  if (selectedIndex != null) addToCompare(selectedIndex);
-}
-
-function updateCompareBtn() {
-  const btn = document.getElementById('compareAddBtn');
-  if (!btn) return;
-  _compareSlots = getCompareSlots();
-  const inCompare = selectedIndex != null && _compareSlots.includes(selectedIndex);
-  btn.classList.toggle('compare-active', inCompare);
-  btn.title = inCompare ? 'Remove from Compare' : 'Add to Compare';
-  const label = btn.querySelector('.btn-label');
-  if (label) label.textContent = inCompare ? 'In Compare' : 'Add to Compare';
-  if (inCompare) {
-    btn.onclick = function() { removeFromCompare(selectedIndex); };
-  } else {
-    btn.onclick = function() { addToCompareSelected(); };
-  }
-}
-
 function renderCompareTab() {
   const el = document.getElementById('compareContent');
   if (!el) return;
-  _compareSlots = getCompareSlots();
+  const saved = getCompareSlots();
+  _compareSlots = saved || [];
   const tournaments = TOURNAMENT_DATA.tournaments;
 
-  // Empty state: pre-fill with active tournament + same family last year so
-  // the panel opens with a useful default view. User can still pick others;
-  // we only seed in-memory, don't persist to localStorage until user adds.
-  if (_compareSlots.length === 0 && typeof selectedIndex === 'number' && tournaments[selectedIndex]) {
+  // Never picked: open on the selected tournament and the same family's
+  // prior edition. The seed lives in memory only; the first change to a slot
+  // saves what is on screen, so removing a seeded pick sticks.
+  if (saved === null && typeof selectedIndex === 'number' && tournaments[selectedIndex]) {
     const active = tournaments[selectedIndex];
     _compareSlots = [selectedIndex];
     const priorIdx = tournaments.findIndex((t, i) =>
@@ -160,7 +119,6 @@ function renderCompareTab() {
   } else if (selected.length < 2) {
     statsHTML = `<div class="empty compare-empty">
       <div>Pick at least two tournaments to compare.</div>
-      <div class="compare-empty-sub">Use the selectors above, or Add to Compare on the Forecast.</div>
     </div>`;
   }
 
@@ -175,7 +133,7 @@ function renderCompareTab() {
 }
 
 function compareSlotChanged(slotIdx, val) {
-  _compareSlots = getCompareSlots();
+  _compareSlots = getCompareSlots() || _compareSlots.slice();
   const idx = val !== '' ? parseInt(val, 10) : null;
   // Remove if already in another slot
   if (idx != null) _compareSlots = _compareSlots.filter(i => i !== idx);
@@ -185,15 +143,13 @@ function compareSlotChanged(slotIdx, val) {
   // Compact: remove trailing nulls
   _compareSlots = _compareSlots.filter(i => i != null);
   saveCompareSlots(_compareSlots);
-  updateCompareBtn();
   renderCompareTab();
 }
 
 function compareSlotRemove(slotIdx) {
-  _compareSlots = getCompareSlots();
+  _compareSlots = getCompareSlots() || _compareSlots.slice();
   if (slotIdx < _compareSlots.length) _compareSlots.splice(slotIdx, 1);
   saveCompareSlots(_compareSlots);
-  updateCompareBtn();
   renderCompareTab();
 }
 

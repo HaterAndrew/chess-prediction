@@ -98,10 +98,9 @@ function renderModelHealth() {
       setTxt('about-prior-median', t14.median_ape_pct + '%');
       setTxt('about-cov', cov14 + '%');
       setTxt('about-prior-cov', cov14 + '%');
-      // Methodology callout / sanity-check / footer coverage stats (same source).
+      // Methodology callout and sanity-check coverage stats (same source).
       setTxt('mc-ci-cover', cov14 + '%');
       setTxt('mc-ci-cover-inline', cov14 + '%');
-      setTxt('mc-ci-cover-footer', cov14 + '%');
     }
     if (t3) setTxt('about-cov-close', Math.round(t3.ci_coverage) + '%');
 

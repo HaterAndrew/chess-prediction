@@ -16,7 +16,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  scroll-behavior: smooth;
   overflow-x: clip;
   overscroll-behavior-y: contain;
 }
@@ -66,8 +65,8 @@ button { font: inherit; cursor: pointer; border: none; background: none; color: 
    mark in the system highlight. */
 @media (forced-colors: active) {
   .nav-item.active, .segmented button.active, .sheet-row.active, .pick-row.active,
-  .cmdk-row-active, .fc-card-active, .mini-card-active, .compare-add-btn.compare-active,
+  .fc-card-active, .mini-card-active,
   .comp-table .current-year td, .perf-grade-letter.grade-good, .result-card-num,
-  .hero-number, .chess-sq.selected { outline: 2px solid CanvasText; outline-offset: -2px; }
+  .hero-number { outline: 2px solid CanvasText; outline-offset: -2px; }
   .timeline-dot.now, .ms-node.ms-now .ms-dot, .cal-axis-now { background: Highlight; forced-color-adjust: none; }
 }

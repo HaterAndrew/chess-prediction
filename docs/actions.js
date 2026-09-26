@@ -36,18 +36,11 @@
     },
     'scroll-top': function () { window.scrollTo({ top: 0, behavior: 'smooth' }); },
     'toggle-theme': function () { toggleTheme(); },
-    'open-cmdk': function () { openCmdK(); },
     'chart-range': function (el) { setChartRange(el.dataset.range); },
     'page-tab': function (el) { switchPageTab(el.dataset.tab); },
     'open-group-sheet': function (el) { openGroupSheet(el.dataset.group, el); },
     'close-sheet': function () { closeSheet(); },
     'open-tourney-picker': function () { openTourneyPicker(); },
-    'add-to-compare': function (el, ev) {
-      addToCompareSelected();
-      ev.stopPropagation();
-    },
-    'close-cmdk': function () { closeCmdK(); },
-    'cmdk-select': function (el) { _cmdkSelect(num(el, 'idx')); },
     'clear-data-entry': function () { clearDataEntry(); },
 
     // ---- tournament selection ------------------------------------------
@@ -92,7 +85,7 @@
   // click on a text field cannot fire one.
   const INPUT_ACTIONS = {
     'filter-tourney-table-input': function () { filterTourneyTable(); },
-    'filter-tourney-hist': function (el) { filterTourneyHistResults(el.value); },
+    'filter-tourney-picker': function (el) { filterTourneyPicker(el.value); },
     'compare-slot-changed': function (el) { compareSlotChanged(num(el, 'slot'), el.value); },
   };
 

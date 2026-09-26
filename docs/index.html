@@ -26,9 +26,9 @@
 <link rel="stylesheet" href="styles/fonts.css?v=d265109c48">
 <link rel="stylesheet" href="styles/tokens.css?v=56b8c4ba24">
 <link rel="stylesheet" href="styles/01-base.css?v=01aea6dc00">
-<link rel="stylesheet" href="styles/shell.css?v=963c55f4d6">
+<link rel="stylesheet" href="styles/shell.css?v=5a85ffa0db">
 <link rel="stylesheet" href="styles/controls.css?v=058c81536b">
-<link rel="stylesheet" href="styles/overlays.css?v=f86784d8b1">
+<link rel="stylesheet" href="styles/overlays.css?v=f0a8a3dd08">
 <link rel="stylesheet" href="styles/picker.css?v=d1ecc80b37">
 <link rel="stylesheet" href="styles/03-cmdk.css?v=9823c33751">
 <link rel="stylesheet" href="styles/forecast.css?v=e9e5b33a7f">
@@ -40,7 +40,7 @@
 <link rel="stylesheet" href="styles/ask.css?v=592bb524aa">
 <link rel="stylesheet" href="styles/email.css?v=b8b6cdb598">
 <link rel="stylesheet" href="styles/puzzles.css?v=1598ab5d84">
-<link rel="stylesheet" href="styles/19-motion.css?v=72ee71ee5f">
+<link rel="stylesheet" href="styles/19-motion.css?v=62af187fbc">
 <link rel="stylesheet" href="styles/20-mobile.css?v=0e3623d111">
 <link rel="stylesheet" href="styles/23-print.css?v=b75fa9d7c0">
 <link rel="stylesheet" href="styles/theme.css?v=86ed0bd11f">
@@ -1037,9 +1037,14 @@
      sheet, shell.js the nav, the subject, the group sheets, the view title
      and the toast. app.js's switchPageTab calls into shell.js, so these
      precede it. -->
+<!-- motion.js is the house motion (springs, projection, rubber-banding);
+     gestures.js, after the shell, binds the phone's sheet drag and view
+     swipe to it. -->
+<script defer src="motion.js?v=3b98a2f111"></script>
 <script defer src="icons.js?v=eeee8884c1"></script>
-<script defer src="sheet.js?v=7c8a1ac5ef"></script>
+<script defer src="sheet.js?v=0839b7ca9d"></script>
 <script defer src="shell.js?v=cc24bf74ec"></script>
+<script defer src="gestures.js?v=22c4411a24"></script>
 <script defer src="cmdk.js?v=c497999f1f"></script>
 <script defer src="tab_email.js?v=cdc29ce20b"></script>
 <script defer src="tab_performance.js?v=25c7cb8779"></script>
@@ -1056,7 +1061,7 @@
 <script defer src="tab_about.js?v=edbf709211"></script>
 <script defer src="tab_compare.js?v=acc24bba98"></script>
 <script defer src="tab_ask.js?v=ac0057506c"></script>
-<script defer src="app.js?v=c10dabd0d5"></script>
+<script defer src="app.js?v=09d54935a1"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,
      so it is load-bearing: without it nothing on the page responds. It comes

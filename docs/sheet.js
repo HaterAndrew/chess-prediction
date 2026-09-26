@@ -44,6 +44,8 @@ function openSheet(id, anchor) {
   _sheetAnchor = anchor || null;
   _anchorSheet(sheet, _sheetAnchor);
   if (_sheetAnchor) _sheetAnchor.setAttribute('aria-expanded', 'true');
+  clearTimeout(_sheetExitTimer);
+  sheet.classList.remove('sheet-closing');
   sheet.hidden = false;
   // The scroll lock goes on the root: overflow hidden on the body turns the
   // body into the sticky top bar's scroll box, and the bar scrolls away.
@@ -59,10 +61,26 @@ function openSheet(id, anchor) {
   requestAnimationFrame(() => { (first || panel).focus({ preventScroll: true }); });
 }
 
-function closeSheet() {
+// A closing sheet leaves the way it came (overlays.css sheetOut); the
+// drag that already carried it off the screen passes instant so it is not
+// animated twice. A sheet reopened mid-exit cancels the exit.
+let _sheetExitTimer = 0;
+
+function _hideSheet(sheet, instant) {
+  clearTimeout(_sheetExitTimer);
+  sheet.classList.remove('sheet-closing');
+  if (instant || _reduceMotion()) { sheet.hidden = true; return; }
+  sheet.classList.add('sheet-closing');
+  _sheetExitTimer = setTimeout(() => {
+    sheet.classList.remove('sheet-closing');
+    if (_sheetOpenId !== sheet.id) sheet.hidden = true;
+  }, 160);
+}
+
+function closeSheet(opts) {
   if (!_sheetOpenId) return;
   const sheet = document.getElementById(_sheetOpenId);
-  if (sheet) sheet.hidden = true;
+  if (sheet) _hideSheet(sheet, !!(opts && opts.instant));
   document.documentElement.classList.remove('sheet-open');
   const mc = document.getElementById('mainContent');
   if (mc) mc.inert = false;

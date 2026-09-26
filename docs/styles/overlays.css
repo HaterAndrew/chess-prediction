@@ -1,8 +1,7 @@
 /* overlays.css — what rises over the page: the sheet (a bottom sheet on a
    phone; above it a centred dialog, or a popover anchored under the control
    that opened it; sheet.js opens, closes and anchors it), its scrim, and the
-   toast. The command palette keeps its own file (03-cmdk.css) and the
-   tournament picker its own (picker.css). Every sheet is a piece of paper:
+   toast. The tournament picker keeps its own file (picker.css). Every sheet is a piece of paper:
    a black rule around it, a soft shadow so it reads as lifted off the wall. */
 
 /* ── Sheet ── */

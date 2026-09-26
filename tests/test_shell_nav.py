@@ -27,10 +27,12 @@ PICKERS_JS = DOCS / "pickers.js"
 SW_JS = DOCS / "sw.js"
 FONTS_CSS = DOCS / "styles" / "fonts.css"
 SHELL_STYLESHEETS = ("shell.css", "controls.css", "overlays.css", "picker.css", "forecast.css", "sections.css", "season.css",
-                     "about.css", "performance.css", "compare.css", "ask.css", "email.css", "03-cmdk.css")
+                     "about.css", "performance.css", "compare.css", "ask.css", "email.css")
 
 NAV_ITEMS = ["Forecast", "Season", "Model", "Tools"]
-GROUPS = {"model": ["performance", "about"], "tools": ["compare", "ask", "email", "audit"]}
+# Model is Performance, and the About view its header links to; Tools is a sheet.
+NAV_GROUPS = {"model": ["performance", "about"], "tools": ["compare", "ask", "email", "audit"]}
+SHEETS = {"tools": NAV_GROUPS["tools"]}
 
 # AP style keeps these lowercase inside a title.
 SMALL_WORDS = {"a", "an", "and", "as", "at", "but", "by", "for", "in", "nor",
@@ -58,6 +60,10 @@ def _sheet(html, group):
     return _element(html, f'<div id="{group}Sheet"', "</div>\n</div>")
 
 
+def _view_header(html):
+    return _element(html, '<section class="view-header"', "</section>")
+
+
 def _js_list(src, name):
     m = re.search(rf"const {name} = \[(.*?)\];", src, re.S)
     assert m, f"{name} not found"
@@ -80,27 +86,31 @@ def test_the_nav_holds_four_items_in_order():
     labels = re.findall(r"<b>([^<]+)</b>", nav)
     assert labels == NAV_ITEMS, labels
     views = _view_buttons(nav)
-    assert list(views) == ["predictions", "season"], "Forecast and Season are the nav's two views"
-    for group in GROUPS:
+    assert list(views) == ["predictions", "season", "performance"], "Forecast, Season and Model open views"
+    assert views["performance"] == "Model", "the third item is Model, and it opens Performance"
+    assert re.search(r'<button[^>]*data-tab="performance"[^>]*data-group="model"', nav), "Model does not mark its group"
+    for group in SHEETS:
         assert re.search(rf'<button[^>]*data-act="open-group-sheet"[^>]*data-group="{group}"[^>]*aria-controls="{group}Sheet"', nav), \
             f"the {group} item does not open its sheet"
+    assert 'id="modelSheet"' not in _read(INDEX), "the Model sheet is back"
 
 
 def test_every_view_has_a_button_a_panel_and_a_home():
     html = _read(INDEX)
     views = _js_list(_read(APP_JS), "VALID_TABS")
     buttons = dict(_view_buttons(_nav(html)))
-    for group, members in GROUPS.items():
+    for group, members in SHEETS.items():
         sheet_views = _view_buttons(_sheet(html, group))
         assert list(sheet_views) == members, f"the {group} sheet lists {list(sheet_views)}"
         buttons.update(sheet_views)
+    buttons.update(_view_buttons(_view_header(html)))
     for tab in views:
         assert tab in buttons, f"no button for the {tab} view"
         assert f'id="ptab-{tab}"' in html, f"the {tab} button lost its id"
         assert f'id="panel-{tab}"' in html, f"no panel for the {tab} view"
     assert set(buttons) == set(views), "the shell lists a view the router does not know"
     groups = dict(re.findall(r"^\s*(model|tools): \[([^\]]+)\]", _read(SHELL_JS), re.M))
-    for group, members in GROUPS.items():
+    for group, members in NAV_GROUPS.items():
         assert re.findall(r"'([a-z]+)'", groups[group]) == members, f"shell.js NAV_GROUPS.{group} disagrees with the markup"
 
 
@@ -115,24 +125,26 @@ def test_the_subject_opens_the_one_picker():
     html = _read(INDEX)
     topbar = _topbar(html)
     assert re.search(r'<button[^>]*id="headerTournLabel"[^>]*data-act="open-tourney-picker"[^>]*aria-controls="tourneySheet"', topbar)
-    for part in ('id="tournLabel"', 'id="tournStatus"', 'id="tournTminus"'):
+    for part in ('id="tournLabel"', 'id="tournStatus"'):
         assert part in topbar, f"the subject lost {part}"
     picker = _element(html, '<div id="tourneySheet"', "</div>\n</div>")
-    for part in ('id="pickerSegments"', 'id="pickerSearchInput"', 'data-inputact="filter-tourney-hist"',
+    for part in ('id="pickerSegments"', 'id="pickerSearchInput"', 'data-inputact="filter-tourney-picker"',
                  'id="pickerList"', 'role="listbox"'):
         assert part in picker, f"the picker lost {part}"
     pickers = _read(PICKERS_JS)
     for fn in ("function openTourneyPicker(", "function renderTourneyPicker(", "function setTourneyTab(",
-               "function filterTourneyHistResults(", "function selectFromTourneyPicker("):
+               "function filterTourneyPicker(", "function selectFromTourneyPicker("):
         assert fn in pickers, f"pickers.js lost {fn}"
-    for key in ("'ArrowDown'", "'ArrowUp'", "'Home'", "'End'", "'Enter'"):
+    for key in ("'ArrowDown'", "'ArrowUp'", "'Home'", "'End'", "'Enter'", "e.key === 'k'"):
         assert key in pickers, f"the picker's keyboard navigation lost {key}"
+    assert 'id="pickerSearch" hidden' not in picker, "the search field is hidden again"
 
 
 def test_the_rail_the_more_sheet_and_the_dropdowns_are_gone():
     relics = ('id="rail"', "railToggle", "toggle-rail", "moreSheet", "open-more-sheet", "dropMenu_",
               'id="tabBar"', "renderTabs", "toggle-drop", "select-from-drop", "filter-hist\"", "openDrop",
-              "drawer-open", "tournDot")
+              "drawer-open", "tournDot", "cmdk", "openCmdK", "modelSheet", "tournTminus",
+              "compareAddBtn", "add-to-compare", "addToCompareSelected", "search-btn")
     for path in (INDEX, APP_JS, ACTIONS_JS, SHELL_JS, PICKERS_JS):
         text = _read(path)
         for relic in relics:
@@ -142,9 +154,12 @@ def test_the_rail_the_more_sheet_and_the_dropdowns_are_gone():
 def test_view_titles_match_the_button_labels_in_title_case():
     html = _read(INDEX)
     titles = dict(re.findall(r"^\s*([a-z]+): '([^']+)',", _read(SHELL_JS), re.M))
-    buttons = dict(_view_buttons(_nav(html)))
-    for group in GROUPS:
+    # A nav item that opens a group is named for the group (Model), not the view.
+    buttons = {tab: label for tab, label in _view_buttons(_nav(html)).items() if tab in ("predictions", "season")}
+    for group in SHEETS:
         buttons.update(_view_buttons(_sheet(html, group)))
+    buttons.update(_view_buttons(_view_header(html)))
+    assert "about" in buttons, "no button opens About"
     for tab, label in buttons.items():
         assert titles.get(tab) == label, f"{tab}: button says {label!r}, VIEW_TITLES says {titles.get(tab)!r}"
         assert _title_case(label), f"{label!r} is not in AP title case"
@@ -155,7 +170,7 @@ def test_view_titles_match_the_button_labels_in_title_case():
 def test_the_shell_markup_carries_no_glyph_entities():
     html = _read(INDEX)
     chunks = [("top bar", _topbar(html)), ("picker", _element(html, '<div id="tourneySheet"', "</div>\n</div>"))]
-    chunks += [(f"{g} sheet", _sheet(html, g)) for g in GROUPS]
+    chunks += [(f"{g} sheet", _sheet(html, g)) for g in SHEETS]
     for name, chunk in chunks:
         found = re.findall(r"&#x?[0-9a-fA-F]+;", chunk)
         assert not found, f"{name} uses glyph entities {found}; icons are inline SVG"
@@ -169,7 +184,7 @@ GLYPH_ALLOWED = {"\u2013", "\u2014", "\u2026", "\u2190", "\u2192", "\u2265", "\u
 
 
 def test_no_view_carries_a_glyph_icon():
-    sources = [INDEX] + sorted(DOCS.glob("tab_*.js")) + [DOCS / "hero_kpi.js", DOCS / "chart_hist.js", DOCS / "cmdk.js",
+    sources = [INDEX] + sorted(DOCS.glob("tab_*.js")) + [DOCS / "hero_kpi.js", DOCS / "chart_hist.js",
                                                           DOCS / "panels_info.js", DOCS / "season_cards.js", DOCS / "audit.js"]
     for path in sources:
         text = re.sub(r"<!--.*?-->", "", _read(path), flags=re.S)

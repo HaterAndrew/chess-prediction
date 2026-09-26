@@ -33,12 +33,13 @@
 <!-- One stylesheet: the bundle pipeline/bundling.py builds from
      docs/styles/*.css in cascade order (STYLE_SOURCES). Edit the sources,
      then `python3 -m pipeline.bundling`. -->
-<link rel="stylesheet" href="styles/site.css?v=e6d095c5b0">
+<link rel="stylesheet" href="styles/site.css?v=cae15dd4c3">
 </head>
 <body>
 
-<!-- The tournament picker: the sheet the top bar's subject opens on every
-     width (a popover under it on a desktop, a bottom sheet on a phone).
+<!-- The tournament picker: the sheet the top bar's subject (and Ctrl K)
+     opens on every width (a popover under it on a desktop, a bottom sheet
+     on a phone), with one search field over every status.
      pickers.js fills the segments and the list; sheet.js opens, closes and
      anchors it. The sheets sit outside #mainContent, which goes inert while
      one is open. -->
@@ -47,29 +48,16 @@
   <div class="sheet-panel picker-panel" role="dialog" aria-modal="true" aria-label="Choose a Tournament" tabindex="-1">
     <div class="sheet-handle" aria-hidden="true"></div>
     <div class="picker-head"><div class="segmented" role="tablist" aria-label="Tournament Status" id="pickerSegments"></div></div>
-    <div class="picker-search" id="pickerSearch" hidden>
+    <div class="picker-search" id="pickerSearch">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input type="search" id="pickerSearchInput" placeholder="Search tournaments" autocomplete="off" aria-label="Search Historical Tournaments" data-inputact="filter-tourney-hist">
+      <input type="search" id="pickerSearchInput" placeholder="Search tournaments" autocomplete="off" aria-label="Search Tournaments" data-inputact="filter-tourney-picker">
     </div>
     <div class="picker-list" id="pickerList" role="listbox" aria-label="Tournaments"></div>
   </div>
 </div>
 
-<!-- The nav's two groups. Model holds the views about the model, Tools the
-     working views; the rows are page-tab buttons like the nav's own, so
-     shell.js marks the open one the same way. -->
-<div id="modelSheet" class="sheet group-sheet" data-width="260" hidden>
-  <div class="sheet-scrim" data-act="close-sheet"></div>
-  <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="modelSheetTitle" tabindex="-1">
-    <div class="sheet-handle" aria-hidden="true"></div>
-    <h2 class="sheet-title" id="modelSheetTitle">Model</h2>
-    <div class="sheet-list">
-      <button type="button" class="sheet-row" id="ptab-performance" data-act="page-tab" data-tab="performance"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><b>Performance</b></button>
-      <button type="button" class="sheet-row" id="ptab-about" data-act="page-tab" data-tab="about"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><b>About the Model</b></button>
-    </div>
-    <div class="sheet-actions"><button type="button" class="secondary" data-act="close-sheet">Cancel</button></div>
-  </div>
-</div>
+<!-- The nav's Tools group: the working views, as page-tab buttons like
+     the nav's own, so shell.js marks the open one the same way. -->
 <div id="toolsSheet" class="sheet group-sheet" data-width="260" hidden>
   <div class="sheet-scrim" data-act="close-sheet"></div>
   <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="toolsSheetTitle" tabindex="-1">
@@ -93,26 +81,24 @@
     <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21h14"/><path d="M7 21c0-3.5 1.2-6.4 3.5-8.5"/><path d="M10.5 12.5 8 14l-1.5-2.5L9 8l1-3 1.5 1.5L14 4l1 2.5c2.3 1.1 4 3.6 4 7V21"/><path d="M11 9.5h.01"/></svg>
     <strong>CCA Entry Predictor</strong>
   </button>
-  <!-- The subject: the selected tournament, its status and its T-minus. It
-       opens the picker on every width (pickers.js). -->
+  <!-- The subject: the selected tournament and one tag for its state (the
+       T-minus while it is upcoming). It opens the picker on every width
+       (pickers.js). -->
   <button type="button" class="tourn-trigger" id="headerTournLabel" data-act="open-tourney-picker" aria-haspopup="dialog" aria-controls="tourneySheet" aria-expanded="false" title="Change the Tournament">
     <span id="tournLabel" class="tourn-label-text">Loading...</span>
-    <span class="tourn-meta"><span class="pill" id="tournStatus" hidden></span><span class="tourn-tminus" id="tournTminus" hidden></span></span>
+    <span class="tourn-meta"><span id="tournStatus" hidden></span></span>
     <svg class="tourn-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
   </button>
   <!-- The nav: four items, in the top bar on a desktop and pinned to the
-       foot of a phone (shell.css). Model and Tools open their group sheet;
-       every view button dispatches page-tab. -->
+       foot of a phone (shell.css). Model opens Performance, which links
+       to About; Tools opens its sheet; every view button dispatches
+       page-tab. -->
   <nav id="primaryNav" class="nav" aria-label="Primary Views">
     <button type="button" class="nav-item active" id="ptab-predictions" data-act="page-tab" data-tab="predictions" aria-current="page"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></svg><b>Forecast</b></button>
     <button type="button" class="nav-item" id="ptab-season" data-act="page-tab" data-tab="season"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg><b>Season</b></button>
-    <button type="button" class="nav-item" id="navModel" data-act="open-group-sheet" data-group="model" aria-haspopup="dialog" aria-controls="modelSheet" aria-expanded="false"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg><b>Model</b></button>
+    <button type="button" class="nav-item" id="ptab-performance" data-act="page-tab" data-tab="performance" data-group="model"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg><b>Model</b></button>
     <button type="button" class="nav-item" id="navTools" data-act="open-group-sheet" data-group="tools" aria-haspopup="dialog" aria-controls="toolsSheet" aria-expanded="false"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><b>Tools</b></button>
   </nav>
-  <button type="button" class="search-btn" data-act="open-cmdk" aria-label="Search Tournaments">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-    <span class="search-btn-text">Search</span><kbd class="search-btn-kbd">Ctrl K</kbd>
-  </button>
   <button type="button" class="icon-button theme-toggle" id="themeToggle" data-act="toggle-theme" aria-pressed="false" aria-label="Switch to the Dark Theme" title="Switch to the Dark Theme">
     <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
     <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -132,30 +118,19 @@
     </div>
   </div>
 
-  <!-- ── View header: the open view's name and, on the Forecast, its
-       actions (shell.js reflectNav) ── -->
+  <!-- ── View header: the open view's name, the Forecast's dateline and,
+       on Performance, the link to About (shell.js reflectNav) ── -->
   <section class="view-header">
     <div class="view-title-block">
       <h1 id="viewTitle">Forecast</h1>
       <p class="view-dateline" id="viewDateline" hidden></p>
     </div>
-    <div class="view-actions" id="viewActions">
-      <button type="button" class="btn compare-add-btn" id="compareAddBtn" data-act="add-to-compare" title="Add to Compare" aria-label="Add tournament to compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg><span class="btn-label">Add to Compare</span></button>
+    <div class="view-actions" id="viewActions" hidden>
+      <button type="button" class="btn" id="ptab-about" data-act="page-tab" data-tab="about"><b>About the Model</b></button>
     </div>
   </section>
 
   <!-- ── Search dialog (opens from the top bar's Search button) ── -->
-  <div class="cmdk" id="cmdkRoot" role="dialog" aria-modal="true" aria-label="Search tournaments" hidden>
-    <div class="cmdk-backdrop" data-act="close-cmdk"></div>
-    <div class="cmdk-panel">
-      <div class="cmdk-input-wrap">
-        <span class="cmdk-input-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
-        <input type="search" class="cmdk-input" id="cmdkInput" placeholder="Search tournaments..." autocomplete="off" aria-controls="cmdkResults">
-        <button class="cmdk-close" data-act="close-cmdk" aria-label="Close search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
-      </div>
-      <div class="cmdk-results" id="cmdkResults" role="listbox"></div>
-    </div>
-  </div>
 
   <!-- ══════ FORECAST ══════ -->
   <div class="page-tab-panel active" id="panel-predictions" role="region" aria-labelledby="ptab-predictions">
@@ -909,7 +884,7 @@
   </div>
 
   <footer class="site-foot" role="contentinfo">
-    <div class="footer-line"><span id="footerEntryRecords">&mdash;</span> entry records &middot; <span id="footerTournamentCount">&mdash;</span> tournaments &middot; <span id="footerYears">&mdash;</span> years &middot; <span id="mc-ci-cover-footer">75%</span> CI coverage at 2 weeks &middot; Data from <a href="https://www.chessaction.com" target="_blank" rel="noopener">chessaction.com</a></div>
+    <div class="footer-line"><span id="footerEntryRecords">&mdash;</span> entry records &middot; <span id="footerTournamentCount">&mdash;</span> tournaments &middot; <span id="footerYears">&mdash;</span> years &middot; Data from <a href="https://www.chessaction.com" target="_blank" rel="noopener">chessaction.com</a></div>
     <div class="footer-hints"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> switch tournaments</div>
   </footer>
 
@@ -937,6 +912,6 @@
      the bundle, dispatches bare globals, so there are no wrappers and no
      modules. Deferred, so it runs after the data tag above and after the
      chart library in <head>. Edit a source, then `python3 -m pipeline.bundling`. -->
-<script defer src="site.js?v=f8e12d0c57"></script>
+<script defer src="site.js?v=656462b6ed"></script>
 </body>
 </html>

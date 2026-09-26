@@ -1,6 +1,6 @@
 /* shell.css — the application shell: the skip link, the top bar (the brand,
-   the selected tournament as the subject, the four-item nav, Search, the
-   theme toggle), the main column, the view header, the footer and the
+   the selected tournament as the subject, the four-item nav, the theme
+   toggle), the main column, the view header, the footer and the
    back-to-top control. A strip of paper with a rule under it: black rules,
    no shadows, the highlighter on the open view. Breakpoints: 1280 (the
    "Updated" meta), 1024 (the brand folds its name), 768 (the nav becomes
@@ -19,14 +19,14 @@ main :is(h1, h2, h3, [id]) { scroll-margin-top: calc(var(--topbar-height) + 12px
 .brand-mark { color: var(--ink); display: block; flex: none; height: 28px; width: 28px; }
 .brand strong { font-size: 15px; font-stretch: var(--stretch-display); font-weight: 800; letter-spacing: .02em; line-height: 1.1; text-transform: uppercase; white-space: nowrap; }
 
-/* The subject: the selected tournament, its status and its T-minus, in a
-   ruled box. It opens the picker on every width. */
+/* The subject: the selected tournament and one state tag (the T-minus while
+   it is upcoming), in a ruled box. It opens the picker on every width. */
 .tourn-trigger { align-items: center; background: transparent; border: 1px solid var(--line); color: var(--ink); cursor: pointer; display: flex; font: inherit; gap: 10px; height: var(--control-h); min-width: 0; padding: 0 8px 0 12px; text-align: left; transition: background var(--dur-fast); }
 .tourn-trigger:hover, .tourn-trigger[aria-expanded="true"] { background: var(--raised); }
-.tourn-label-text { font: 700 15px/1.2 var(--display); font-stretch: var(--stretch-label); max-width: 32ch; min-width: 10ch; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.tourn-label-text { font: 700 15px/1.2 var(--display); font-stretch: var(--stretch-label); max-width: 40ch; min-width: 10ch; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
 .tourn-meta { align-items: center; display: flex; flex: none; gap: 8px; }
 .tourn-meta [hidden] { display: none; }
-.tourn-tminus { font: 700 13px var(--mono); font-variant-numeric: tabular-nums; }
+.tourn-tminus { align-items: center; display: inline-flex; font: 700 13px var(--mono); font-variant-numeric: tabular-nums; gap: 6px; }
 .tourn-caret { color: var(--muted); flex: none; height: 14px; width: 14px; }
 
 /* The nav: four items, the open one under the highlighter. */
@@ -36,9 +36,6 @@ main :is(h1, h2, h3, [id]) { scroll-margin-top: calc(var(--topbar-height) + 12px
 .nav-item.active { background: var(--mark); color: var(--mark-ink); }
 .nav-icon { flex: none; height: 16px; width: 16px; }
 
-.search-btn { align-items: center; background: transparent; border: 1px solid var(--line); color: var(--ink-2); cursor: pointer; display: inline-flex; flex: none; font: 500 13px var(--display); gap: 8px; height: var(--control-h); padding: 0 10px; transition: background var(--dur-fast), color var(--dur-fast); }
-.search-btn:hover { background: var(--raised); color: var(--ink); }
-.search-btn svg { flex: none; height: 15px; width: 15px; }
 .topbar-meta { color: var(--muted); flex: none; font: 12px var(--mono); white-space: nowrap; }
 .icon-button { align-items: center; background: transparent; border: 1px solid transparent; color: var(--ink-2); cursor: pointer; display: inline-flex; flex: none; height: var(--control-h); justify-content: center; padding: 0; transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast); width: var(--control-h); }
 .icon-button:hover, .icon-button[aria-expanded="true"] { background: var(--raised); color: var(--ink); }
@@ -56,8 +53,6 @@ html[data-loading] .view-dateline[hidden] { display: block; min-height: 15px; vi
 .view-header h1 { color: var(--ink); font-size: var(--fs-h1); font-stretch: var(--stretch-display); font-weight: 800; letter-spacing: .01em; line-height: 1; margin: 0; text-transform: uppercase; }
 .view-actions { display: flex; flex: none; gap: 8px; }
 .view-actions[hidden] { display: none; }
-/* tab_compare.js marks the button while the selected tournament is in Compare. */
-.compare-add-btn.compare-active { background: var(--mark); border-color: var(--line); color: var(--mark-ink); }
 .page-tab-panel { display: none; max-width: 1320px; }
 .page-tab-panel.active { animation: viewIn var(--dur) var(--ease-out); display: block; }
 @keyframes viewIn { from { opacity: 0; } to { opacity: 1; } }
@@ -75,16 +70,14 @@ html[data-loading] .view-dateline[hidden] { display: block; min-height: 15px; vi
 .back-to-top.visible { opacity: 1; transform: none; visibility: visible; }
 .back-to-top:hover { background: var(--ink); color: var(--void); }
 
-/* ── Under 1536 px the "Updated" meta goes; under 1280 the nav icons and the
-   search label go too, so the subject keeps its name and its status; under
-   1080 the brand folds its name. ── */
+/* ── Under 1536 px the "Updated" meta goes; under 1280 the nav icons go
+   too, so the subject keeps its name and its state; under 1080 the brand
+   folds its name. ── */
 @media (max-width: 1535px) {
   .topbar-meta { display: none; }
 }
 @media (max-width: 1279px) {
   .nav-item .nav-icon { display: none; }
-  .search-btn { justify-content: center; padding: 0; width: var(--control-h); }
-  .search-btn-text, .search-btn-kbd { display: none; }
 }
 @media (max-width: 1079px) {
   .topbar { gap: var(--s-3); }
@@ -118,7 +111,7 @@ html[data-loading] .view-dateline[hidden] { display: block; min-height: 15px; vi
 
 /* A finger gets 44 px targets in the chrome; a mouse keeps the 36 px ones. */
 @media (pointer: coarse) {
-  .icon-button, .search-btn { height: var(--touch); min-width: var(--touch); }
+  .icon-button { height: var(--touch); min-width: var(--touch); }
   .tourn-trigger { height: var(--touch); }
   .nav-item { min-height: 44px; }
   .brand { position: relative; }

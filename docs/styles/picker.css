@@ -1,7 +1,7 @@
 /* picker.css — the tournament picker (pickers.js): the sheet the top bar's
    subject opens, from the foot on a phone and as a popover under the
    subject above it (overlays.css draws the sheet; this file draws what is
-   in it). Three segments, a search field on Historical, and the pairing
+   in it). Three segments, a search field over all of them, and the pairing
    list itself: ruled rows you scan with the arrow keys, the selected
    tournament under the highlighter. */
 
@@ -39,4 +39,3 @@
   /* iOS zooms into a focused input under 16 px. */
   .picker-search input { font-size: 16px; }
 }
-.picker-search[hidden] { display: none; }

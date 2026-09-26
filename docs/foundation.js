@@ -61,37 +61,37 @@ function readPalette() {
   };
   const font = (name, fb) => (cs.getPropertyValue(name) || '').trim() || fb;
   const p = {
-    bg: t('--void', '#0a0907'),
-    surface: t('--panel', '#12100d'),
-    surface2: t('--raised', '#1d1a17'),
-    surface3: t('--hover', '#282521'),
-    border: t('--line', '#383530'),
-    text: t('--ink', '#eeece8'),
-    text2: t('--text2', '#d2cfcb'),
-    muted: t('--muted', '#96928c'),
-    dim: t('--dim', '#8a857d'),
-    blue: t('--blue', '#58a6ff'),
-    blueBright: t('--blue', '#79c0ff'),
-    gold: t('--signal', '#f0c040'),
-    goldBright: t('--signal-soft', '#f7d970'),
-    green: t('--green', '#3fb950'),
-    greenBright: t('--green', '#56d364'),
-    red: t('--ember', '#f85149'),
-    orange: t('--amber', '#d29922'),
-    orangeBright: t('--amber', '#f59e0b'),
+    bg: t('--void', '#151517'),
+    surface: t('--panel', '#151517'),
+    surface2: t('--raised', '#1F1F23'),
+    surface3: t('--hover', '#26262A'),
+    border: t('--line', '#8F8F8E'),
+    text: t('--ink', '#F2F2EF'),
+    text2: t('--text2', '#D4D4CF'),
+    muted: t('--muted', '#A7A7A3'),
+    dim: t('--dim', '#8A8A86'),
+    blue: t('--blue', '#8FB4F0'),
+    blueBright: t('--blue', '#B3CCF5'),
+    gold: t('--signal', '#8FB4F0'),
+    goldBright: t('--signal-soft', '#B3CCF5'),
+    green: t('--green', '#8FB4F0'),
+    greenBright: t('--green', '#B3CCF5'),
+    red: t('--ember', '#FF7A8A'),
+    orange: t('--amber', '#F2F2EF'),
+    orangeBright: t('--amber', '#F2F2EF'),
     // chart roles (tokens.css "chart roles")
-    actual: t('--chart-actual', '#eeece8'),
-    projected: t('--chart-projected', '#f0c040'),
-    band: t('--chart-band', 'rgba(240,192,64,.18)'),
-    hist: t('--chart-hist', '#8a857d'),
-    grid: t('--chart-grid', 'rgba(56,53,48,.35)'),
-    tick: t('--chart-tick', '#96928c'),
-    markerToday: t('--marker-today', '#58a6ff'),
-    markerEarly: t('--marker-early', '#3fb950'),
-    markerEvent: t('--marker-event', '#f85149'),
-    series: [t('--series-1', '#f0c040'), t('--series-2', '#58a6ff'), t('--series-3', '#3fb950')],
-    fontDisplay: font('--display', 'system-ui, sans-serif'),
-    fontMono: font('--mono', 'ui-monospace, monospace')
+    actual: t('--chart-actual', '#8FB4F0'),
+    projected: t('--chart-projected', '#F2F2EF'),
+    band: t('--chart-band', 'rgba(143,180,240,.14)'),
+    hist: t('--chart-hist', '#8A8A86'),
+    grid: t('--chart-grid', '#2E2E32'),
+    tick: t('--chart-tick', '#A7A7A3'),
+    markerToday: t('--marker-today', '#F2F2EF'),
+    markerEarly: t('--marker-early', '#8FB4F0'),
+    markerEvent: t('--marker-event', '#FF7A8A'),
+    series: [t('--series-1', '#8FB4F0'), t('--series-2', '#FF7A8A'), t('--series-3', '#F2F2EF')],
+    fontDisplay: font('--display', "'Archivo', system-ui, sans-serif"),
+    fontMono: font('--mono', "'Courier Prime', monospace")
   };
   probe.remove();
   return p;
@@ -376,7 +376,7 @@ function makeVertMarkersPlugin(id, getMarkers) {
         ctx2.stroke();
         ctx2.setLineDash([]);
         ctx2.globalAlpha = 1;
-        ctx2.font = `${annoFont} -apple-system, system-ui, sans-serif`;
+        ctx2.font = `${annoFont} ${PALETTE.fontMono}`;
         ctx2.textAlign = 'center';
         const textW = ctx2.measureText(line.label).width;
         const pillW = textW + 10;

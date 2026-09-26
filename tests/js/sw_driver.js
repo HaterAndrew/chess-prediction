@@ -111,7 +111,7 @@ function scenario({ offline = false, seed = [] } = {}) {
 
 const hashedApp = `${SCOPE}app.js?v=8dda437d9b`;
 const hashedData = `${SCOPE}data/site_data.js?v=abc1234567`;
-const font = `${SCOPE}fonts/inter/inter-latin.woff2`;
+const font = `${SCOPE}fonts/archivo/archivo-latin.woff2`;
 const warnings = `${SCOPE}audit_warnings.json`;
 
 async function main() {

@@ -74,68 +74,6 @@
 }
 
 /* ══════════════════════════════════════════════════════
-   LANDSCAPE PHONE
-   ══════════════════════════════════════════════════════ */
-@media (orientation: landscape) and (max-height: 500px) {
-  .drop-menu, .tab-search-results, .drop-menu-search .tab-search-results {
-    max-height: 40vh;
-  }
-}
-
-/* ══════════════════════════════════════════════════════
-   MOBILE BOTTOM-SHEET DROPDOWNS (< 640px)
-   ══════════════════════════════════════════════════════ */
-@media (max-width: 639px) {
-  .drop-menu {
-    position: fixed;
-    left: 0; right: 0; top: auto; bottom: 0;
-    width: 100%; max-width: 100%;
-    max-height: 82vh;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    box-shadow: 0 -8px 24px rgba(0,0,0,.4);
-    padding-bottom: env(safe-area-inset-bottom);
-    animation: dropSlideUp .2s ease;
-    z-index: 300;
-  }
-  .drop-menu::before {
-    content: '';
-    display: block;
-    width: 40px; height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    margin: 10px auto 6px;
-  }
-  .drop-menu-search .tab-search-results { max-height: 60vh; }
-  .tab-search-panel {
-    position: fixed;
-    left: 0; right: 0; top: auto; bottom: 0;
-    max-width: 100%;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    box-shadow: 0 -8px 24px rgba(0,0,0,.4);
-    padding-bottom: env(safe-area-inset-bottom);
-    z-index: 300;
-  }
-  .tab-search-results { max-height: 60vh; }
-}
-@keyframes dropSlideUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Mobile drawer backdrop scrim (< 640px) ── */
-@media (max-width: 639px) {
-  body.drawer-open::before {
-    content: '';
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.45);
-    z-index: 250;
-    animation: scrimFadeIn .2s ease;
-    pointer-events: none;
-  }
-}
-@keyframes scrimFadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-/* ══════════════════════════════════════════════════════
    MOBILE PERF — REDUCE EXPENSIVE EFFECTS
    ══════════════════════════════════════════════════════ */
 @media (max-width: 639px) {
@@ -165,7 +103,6 @@
 
 /* Prevent iOS auto-zoom on focused inputs (fires when computed font-size < 16px) */
 @media (max-width: 639px) {
-  .tab-search-input,
   .email-meta-input,
   .de-table input[type="text"],
   .de-table input[type="number"],

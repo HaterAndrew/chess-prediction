@@ -57,6 +57,8 @@ function updateCompareBtn() {
   const inCompare = selectedIndex != null && _compareSlots.includes(selectedIndex);
   btn.classList.toggle('compare-active', inCompare);
   btn.title = inCompare ? 'Remove from Compare' : 'Add to Compare';
+  const label = btn.querySelector('.btn-label');
+  if (label) label.textContent = inCompare ? 'In Compare' : 'Add to Compare';
   if (inCompare) {
     btn.onclick = function() { removeFromCompare(selectedIndex); };
   } else {

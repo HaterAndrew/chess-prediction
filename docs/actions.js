@@ -44,10 +44,9 @@
     'open-cmdk': function () { openCmdK(); },
     'chart-range': function (el) { setChartRange(el.dataset.range); },
     'page-tab': function (el) { switchPageTab(el.dataset.tab); },
-    'toggle-rail': function () { toggleRail(); },
-    'open-more-sheet': function () { openMoreSheet(); },
+    'open-group-sheet': function (el) { openGroupSheet(el.dataset.group, el); },
     'close-sheet': function () { closeSheet(); },
-    'open-tourney-picker': function (el, ev) { maybeOpenTourneyPicker(ev); },
+    'open-tourney-picker': function () { openTourneyPicker(); },
     'add-to-compare': function (el, ev) {
       addToCompareSelected();
       ev.stopPropagation();
@@ -62,9 +61,7 @@
       selectTournament(num(el, 'idx'));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
-    'select-from-drop': function (el) { selectFromDrop(num(el, 'idx')); },
     'select-tourney-picker': function (el) { selectFromTourneyPicker(num(el, 'idx')); },
-    'toggle-drop': function (el, ev) { toggleDrop(el.dataset.drop, ev); },
     'tourney-tab': function (el, ev) {
       ev.stopPropagation();
       setTourneyTab(el.dataset.tab);
@@ -105,7 +102,6 @@
   const INPUT_ACTIONS = {
     'filter-tourney-table-input': function () { filterTourneyTable(); },
     'filter-tourney-hist': function (el) { filterTourneyHistResults(el.value); },
-    'filter-hist': function (el) { filterHistResults(el.value); },
     'compare-slot-changed': function (el) { compareSlotChanged(num(el, 'slot'), el.value); },
   };
 

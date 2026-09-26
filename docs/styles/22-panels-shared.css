@@ -59,7 +59,6 @@
   .cmdk-close, .cmdk-recent-chip, .search-btn { min-height: 44px; }
   .cmdk-close { min-width: 44px; }
   .tt-search input, .de-table input[type="text"], .de-table input[type="number"], .de-table input[type="date"] { min-height: 44px; }
-  .seg-btn { min-height: var(--touch); }
 }
 
 

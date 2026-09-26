@@ -1,9 +1,11 @@
-// shell.js — the application shell around the views: the view title under
-// the top bar, the rail (the side rail on a desktop, the bottom bar on a
-// phone; one element, styled apart in shell.css), the rail's collapse
-// toggle, the More sheet that lists the views the bottom bar has no room
-// for, and the toast. app.js's switchPageTab calls reflectNav() after every
-// view change; the controls are wired through actions.js.
+// shell.js — the application shell around the views: the top bar's subject
+// (the selected tournament with its status and T-minus), the four-item nav
+// (in the top bar on a desktop, the bottom bar on a phone: one element,
+// styled apart in shell.css), the two group sheets behind Model and Tools,
+// the view title with the Forecast's action row, and the toast. app.js's
+// switchPageTab calls reflectNav() after every view change and
+// selectTournament calls reflectSubject(); the controls are wired through
+// actions.js.
 
 const VIEW_TITLES = {
   predictions: 'Forecast',
@@ -16,23 +18,21 @@ const VIEW_TITLES = {
   about: 'About the Model',
   puzzles: 'Puzzles',
 };
-const RAIL_KEY = 'cep:rail';
+// The views each nav group holds; the group reads as open while one of its
+// views is. The sheets in index.html list the same views in the same order.
+const NAV_GROUPS = {
+  model: ['performance', 'audit', 'about'],
+  tools: ['compare', 'ask', 'email', 'puzzles'],
+};
 const TOAST_MS = 2500;
 let _toastTimer = null;
-let _railCollapsed = false;
-// Between the rail's own breakpoint and the wide layout the rail is always
-// the 64 px icon rail; the stored choice applies from 1280 px up.
-const _railNarrow = window.matchMedia('(min-width: 1024px) and (max-width: 1279px)');
 
 function navButtons() {
-  return Array.from(document.querySelectorAll('#rail [data-act="page-tab"]'));
+  return Array.from(document.querySelectorAll('#primaryNav [data-act="page-tab"], .group-sheet [data-act="page-tab"]'));
 }
 
-// The bar pins four views; every other view sits behind More, which then
-// reads as the open one.
-function moreHolds(tab) {
-  const btn = document.querySelector(`#rail [data-act="page-tab"][data-tab="${tab}"]`);
-  return !!btn && btn.dataset.bar !== 'pinned';
+function navGroupOf(tab) {
+  return Object.keys(NAV_GROUPS).find(g => NAV_GROUPS[g].includes(tab)) || null;
 }
 
 function reflectNav(tab) {
@@ -42,61 +42,51 @@ function reflectNav(tab) {
     if (on) b.setAttribute('aria-current', 'page');
     else b.removeAttribute('aria-current');
   });
-  const more = document.getElementById('moreNav');
-  if (more) more.classList.toggle('active', moreHolds(tab));
+  const group = navGroupOf(tab);
+  document.querySelectorAll('#primaryNav [data-act="open-group-sheet"]').forEach(b => {
+    const on = b.dataset.group === group;
+    b.classList.toggle('active', on);
+    if (on) b.setAttribute('aria-current', 'true');
+    else b.removeAttribute('aria-current');
+  });
   const title = document.getElementById('viewTitle');
   if (title) title.textContent = VIEW_TITLES[tab] || '';
+  // The action row (Add to Compare) belongs to the Forecast alone.
+  const actions = document.getElementById('viewActions');
+  if (actions) actions.hidden = tab !== 'predictions';
 }
 
-// ── Rail collapse ──
-function applyRail() {
-  const rail = document.getElementById('rail');
-  const shell = document.querySelector('.app-shell');
-  const toggle = document.getElementById('railToggle');
-  if (!rail || !shell || !toggle) return;
-  const collapsed = _railCollapsed || _railNarrow.matches;
-  rail.classList.toggle('collapsed', collapsed);
-  shell.classList.toggle('rail-collapsed', collapsed);
-  toggle.setAttribute('aria-expanded', String(!_railCollapsed));
-  const label = _railCollapsed ? 'Expand the Rail' : 'Collapse the Rail';
-  toggle.setAttribute('aria-label', label);
-  toggle.title = label;
-  // An icon-only item names itself on hover and, for the keyboard, beside
-  // the icon on focus (shell.css reads the title).
-  rail.querySelectorAll('nav button').forEach(item => {
-    if (collapsed) item.title = item.textContent.trim();
-    else item.removeAttribute('title');
-  });
+// ── Group sheets ──
+// Model and Tools open their sheet under the nav item on a desktop and from
+// the foot on a phone; the rows are page-tab buttons like the nav's own.
+function openGroupSheet(group, anchor) {
+  openSheet(group + 'Sheet', anchor);
 }
 
-function toggleRail() {
-  _railCollapsed = !_railCollapsed;
-  applyRail();
-  try { localStorage.setItem(RAIL_KEY, _railCollapsed ? 'collapsed' : 'open'); } catch (_) {}
-}
-
-(function initRail() {
-  try { _railCollapsed = localStorage.getItem(RAIL_KEY) === 'collapsed'; } catch (_) { _railCollapsed = false; }
-  applyRail();
-  if (typeof _railNarrow.addEventListener === 'function') _railNarrow.addEventListener('change', applyRail);
-})();
-
-// ── More sheet ──
-// The rows are the nav's own buttons: the same icon markup, the same label,
-// the same page-tab action, so who opens what is decided in one place.
-function openMoreSheet() {
-  const list = document.getElementById('moreSheetList');
-  if (!list) return;
-  const current = typeof _currentTab !== 'undefined' ? _currentTab : 'predictions';
-  list.innerHTML = navButtons().filter(b => b.dataset.bar !== 'pinned').map(b => {
-    const iconEl = b.querySelector('.nav-icon');
-    const label = b.querySelector('b');
-    const on = b.dataset.tab === current;
-    return `<button type="button" class="sheet-row${on ? ' active' : ''}" data-act="page-tab" ` +
-      `data-tab="${b.dataset.tab}"${on ? ' aria-current="page"' : ''}>` +
-      `${iconEl ? iconEl.outerHTML : ''}<b>${esc(label ? label.textContent : b.dataset.tab)}</b></button>`;
-  }).join('');
-  openSheet('moreSheet');
+// ── The subject ──
+// The top bar names the selected tournament with its status pill and, for
+// an upcoming one, its T-minus. selectTournament calls this on every change.
+function reflectSubject(t) {
+  const label = document.getElementById('tournLabel');
+  if (label) {
+    label.textContent = `${t.family} ${t.year}`;
+    label.title = `${t.family} ${t.year}`;
+  }
+  const pill = document.getElementById('tournStatus');
+  if (pill) {
+    const live = t.status === 'live';
+    const kind = live ? 'live' : t.status === 'complete' ? 'complete' : 'hist';
+    pill.className = 'pill pill-' + kind;
+    pill.innerHTML = (live ? '<span class="live-dot"></span>' : '') +
+      (live ? 'Upcoming' : t.status === 'complete' ? 'Complete' : 'Historical');
+    pill.hidden = false;
+  }
+  const tminus = document.getElementById('tournTminus');
+  if (tminus) {
+    const show = t.status === 'live' && t.days_remaining != null;
+    if (show) tminus.textContent = 'T-' + t.days_remaining;
+    tminus.hidden = !show;
+  }
 }
 
 // ── Toast ──

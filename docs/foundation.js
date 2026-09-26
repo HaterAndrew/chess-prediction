@@ -79,8 +79,10 @@ function _reduceMotion() {
 }
 // Global animation kill under reduced motion, at top level so every chart is
 // covered regardless of which tab renders first (a #performance deep link
-// never runs renderChart). app.js is deferred after chart.umd.min.js, so
-// Chart exists here; the typeof guard keeps a CDN failure from cascading.
+// never runs renderChart). Every app script is `defer` and chart.umd.min.js
+// is deferred earlier in the document, so Chart exists here; the typeof
+// guard keeps a CDN failure from cascading. (Until 2026-09 the app scripts
+// were classic, Chart was undefined at this point, and this block was dead.)
 // v4 U4: also track mid-session OS toggles. Existing chart instances keep
 // their config until their next render (every tab switch re-renders), but the
 // default flips immediately for anything created after the change.

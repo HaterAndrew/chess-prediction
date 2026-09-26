@@ -458,6 +458,37 @@
 
   const AUDIT_FETCH_TIMEOUT_MS = 60000;
 
+  // ExcelJS is 240 KB and only this tab uses it, so it is fetched on demand
+  // rather than on every page view. The URL and SRI hash must match the
+  // sw.js CDN_ASSETS entry (tests/test_script_loading.py pins both); the CSP
+  // already allows cdn.jsdelivr.net for script-src.
+  const EXCELJS_SRC = 'https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js';
+  const EXCELJS_SRI = 'sha384-Pqp51FUN2/qzfxZxBCtF0stpc9ONI6MYZpVqmo8m20SoaQCzf+arZvACkLkirlPz';
+  let _excelJsLoad = null;
+
+  function loadExcelJS() {
+    if (typeof ExcelJS !== 'undefined') return Promise.resolve(ExcelJS);
+    if (_excelJsLoad) return _excelJsLoad;
+    _excelJsLoad = new Promise(function (resolve, reject) {
+      const s = document.createElement('script');
+      s.src = EXCELJS_SRC;
+      s.integrity = EXCELJS_SRI;
+      s.crossOrigin = 'anonymous';
+      s.onload = function () {
+        if (typeof ExcelJS !== 'undefined') resolve(ExcelJS);
+        else reject(new Error('The spreadsheet library loaded but did not define ExcelJS.'));
+      };
+      s.onerror = function () {
+        // Reset so the next attempt retries instead of replaying the failure.
+        _excelJsLoad = null;
+        s.remove();
+        reject(new Error('The spreadsheet library failed to load; check your connection and try again.'));
+      };
+      document.head.appendChild(s);
+    });
+    return _excelJsLoad;
+  }
+
   let auditInited = false;
   let auditInFlight = false;
   let auditDownload = null; // { blob, filename }
@@ -501,10 +532,8 @@
     // Returns export row objects from a .csv or .xlsx upload.
     const name = (file.name || '').toLowerCase();
     if (name.endsWith('.xlsx') || name.endsWith('.xls')) {
-      if (typeof ExcelJS === 'undefined') {
-        throw new Error('The spreadsheet library failed to load; reload the page and try again.');
-      }
-      const wb = new ExcelJS.Workbook();
+      const XL = await loadExcelJS();
+      const wb = new XL.Workbook();
       await wb.xlsx.load(await file.arrayBuffer());
       const ws = wb.worksheets[0];
       if (!ws) throw new Error('The workbook has no sheets.');
@@ -613,10 +642,8 @@
       };
       const lines = buildSummary(result.stats, meta);
 
-      if (typeof ExcelJS === 'undefined') {
-        throw new Error('The spreadsheet library failed to load; reload the page and try again.');
-      }
-      const wb = buildWorkbook(ExcelJS, result.people, result.stats, meta);
+      const XL = await loadExcelJS();
+      const wb = buildWorkbook(XL, result.people, result.stats, meta);
       const buffer = await wb.xlsx.writeBuffer();
       const blob = new Blob([buffer], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -654,6 +681,9 @@
     populateAuditEvents();
     auditEl('auditGenerate').addEventListener('click', runAudit);
     auditEl('auditDownload').addEventListener('click', downloadAudit);
+    // Warm the download now so the first export does not wait on it. A
+    // failure here is not an error yet; runAudit reports it if it recurs.
+    loadExcelJS().catch(function () {});
   }
 
   window.initAuditTab = initAuditTab;

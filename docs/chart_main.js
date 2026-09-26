@@ -6,6 +6,16 @@ function renderChart(t) {
   const ctx = document.getElementById('mainChart');
   if (chart) { chart.destroy(); chart = null; }
 
+  if (typeof Chart === 'undefined') {
+    // The CDN script failed (blocked, offline, SRI mismatch). Say so in the
+    // card instead of throwing; the rest of the page still renders.
+    document.getElementById('chartLegend').innerHTML = '';
+    document.getElementById('chartSubtitle').textContent =
+      `${t.family} ${t.year}: chart unavailable (the charting library did not load)`;
+    document.getElementById('chartCard').classList.remove('live-glow');
+    return;
+  }
+
   if (!t.daily_data || t.daily_data.length === 0 || !t.event_start) {
     // No registration timeline data or missing event date — show placeholder
     document.getElementById('chartLegend').innerHTML = '';

@@ -13,6 +13,12 @@ function renderHistorical(t) {
     wrap.innerHTML = `<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:var(--fs-2);opacity:.6">No historical editions on record</div>`;
     return;
   }
+  if (typeof Chart === 'undefined') {
+    // Charting library did not load (CDN blocked or offline): say so rather
+    // than throw, so the rest of the panel still renders.
+    wrap.innerHTML = `<div style="text-align:center;padding:20px 0;color:var(--muted);font-size:var(--fs-2);opacity:.6">Chart unavailable (the charting library did not load)</div>`;
+    return;
+  }
 
   const hist = t.historical.slice(-6);
   const histFlags = hist.map(h => h.adjusted ? { kind: h.adjusted, raw: h.count_raw } : null);
@@ -190,6 +196,10 @@ function renderRegCurve(t) {
   if (regCurveObj) { regCurveObj.destroy(); regCurveObj = null; }
   if (!t.registration_curve || t.registration_curve.length === 0) {
     document.getElementById('regCurveCaption').textContent = 'No curve data available';
+    return;
+  }
+  if (typeof Chart === 'undefined') {
+    document.getElementById('regCurveCaption').textContent = 'Chart unavailable (the charting library did not load)';
     return;
   }
 

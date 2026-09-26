@@ -217,46 +217,52 @@ function selectTournament(index, skipHash) {
   sections.forEach(s => s.style.opacity = '0');
 
   setTimeout(() => {
-    renderTabs();
-    renderCalendar();
-    // Model accuracy summary lives on the Performance tab; removed from home.
-    renderMiniCards();
-    renderDelta(t);
-    renderHero(t);
-    // KPI row removed: % Registered duplicates the CI bar, Early Bird is in
-    // the chart annotations + subtitle, Past Average shows in Historical
-    // Comparison, CI Width is the CI bar itself, Regular Fee has its own panel.
-    renderProgress(t);
-    renderChart(t);
-    renderTimeline(t);
-    renderMilestones(t);
-    renderHistorical(t);
-    renderRegCurve(t);
-    renderFees(t);
+    // The renders run inside try/finally so a throw in any one of them can
+    // never strand the page on the skeleton loader again. That was the
+    // refresh bug: renderChart threw while Chart.js was still loading, this
+    // callback aborted before hideSkeletons(), and the sections stayed at
+    // opacity 0 until a reload. The error still surfaces in the console.
+    try {
+      renderTabs();
+      renderCalendar();
+      // Model accuracy summary lives on the Performance tab; removed from home.
+      renderMiniCards();
+      renderDelta(t);
+      renderHero(t);
+      // KPI row removed: % Registered duplicates the CI bar, Early Bird is in
+      // the chart annotations + subtitle, Past Average shows in Historical
+      // Comparison, CI Width is the CI bar itself, Regular Fee has its own panel.
+      renderProgress(t);
+      renderChart(t);
+      renderTimeline(t);
+      renderMilestones(t);
+      renderHistorical(t);
+      renderRegCurve(t);
+      renderFees(t);
 
-    // Show/hide sections based on tournament type
-    const miniGrid = document.getElementById('miniGrid');
-    miniGrid.style.display = t.status === 'live' ? '' : 'none';
+      // Show/hide sections based on tournament type
+      const miniGrid = document.getElementById('miniGrid');
+      miniGrid.style.display = t.status === 'live' ? '' : 'none';
 
-    // Hide fee panel for historical tournaments (no fee data)
-    const feePanel = document.getElementById('feePanel');
-    if (feePanel) feePanel.style.display = (!t.early_bird_fee && !t.regular_fee && !t.onsite_fee) ? 'none' : '';
+      // Hide fee panel for historical tournaments (no fee data)
+      const feePanel = document.getElementById('feePanel');
+      if (feePanel) feePanel.style.display = (!t.early_bird_fee && !t.regular_fee && !t.onsite_fee) ? 'none' : '';
 
-    // Scroll to delta banner smoothly when switching tournaments
-    document.getElementById('deltaBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-    // Hide skeleton loaders now that content is rendered
-    hideSkeletons();
-
-    // Staggered reveal
-    sections.forEach((s, i) => {
-      setTimeout(() => {
-        s.style.opacity = '';
-        s.style.transform = 'translateY(0)';
-        s.classList.add('fade-enter');
-        setTimeout(() => s.classList.remove('fade-enter'), 400);
-      }, i * 60);
-    });
+      // Scroll to delta banner smoothly when switching tournaments
+      document.getElementById('deltaBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } finally {
+      // Hide skeleton loaders and reveal the sections whether or not every
+      // render succeeded; a half-rendered page beats a blank one.
+      hideSkeletons();
+      sections.forEach((s, i) => {
+        setTimeout(() => {
+          s.style.opacity = '';
+          s.style.transform = 'translateY(0)';
+          s.classList.add('fade-enter');
+          setTimeout(() => s.classList.remove('fade-enter'), 400);
+        }, i * 60);
+      });
+    }
   }, 120);
 }
 

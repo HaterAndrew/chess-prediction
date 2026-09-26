@@ -12,6 +12,11 @@ on:
       - 'requirements*.txt'
       - 'pyproject.toml'
       - '**/*.py'
+      # The Node-driven suites (service worker, util_core, puzzles, daily
+      # series) and the markup gates read docs/; a front-end-only PR must
+      # run them too.
+      - 'docs/**'
+      - 'tests/js/**'
   workflow_dispatch:
 
 permissions:

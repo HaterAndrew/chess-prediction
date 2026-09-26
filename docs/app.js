@@ -25,32 +25,8 @@ function switchPageTab(tab, skipHash) {
   if (!skipHash) updateHash();
 }
 
-// Mobile swipe-between-tabs navigation, in the rail's order.
+// The order a phone swipes through the views (gestures.js).
 const PAGE_TAB_ORDER = ['predictions', 'season', 'performance', 'compare', 'ask', 'email', 'audit', 'about', 'puzzles'];
-(function setupSwipeNav() {
-  if (typeof window === 'undefined' || !('ontouchstart' in window)) return;
-  let startX = 0, startY = 0, startT = 0;
-  const SWIPE_THRESHOLD = 60, VERTICAL_LIMIT = 50, TIME_LIMIT = 500, EDGE_GUARD = 28;
-  const ignoreIn = el => !!(el && el.closest && el.closest('canvas, .tourney-table-wrap, .compare-chart-wrap, .sheet, .email-output, .email-preview, iframe, .chess-board, .de-table input'));
-  document.addEventListener('touchstart', e => {
-    if (!_mobileVP() || e.touches.length !== 1) return;
-    const t = e.touches[0];
-    if (t.clientX < EDGE_GUARD || t.clientX > window.innerWidth - EDGE_GUARD) return;
-    if (ignoreIn(e.target)) { startX = 0; return; }
-    startX = t.clientX; startY = t.clientY; startT = Date.now();
-  }, { passive: true });
-  document.addEventListener('touchend', e => {
-    if (!startX) return;
-    const t = e.changedTouches[0];
-    const dx = t.clientX - startX, dy = t.clientY - startY, dt = Date.now() - startT;
-    startX = 0;
-    if (dt > TIME_LIMIT || Math.abs(dy) > VERTICAL_LIMIT || Math.abs(dx) < SWIPE_THRESHOLD) return;
-    const idx = PAGE_TAB_ORDER.indexOf(_currentTab);
-    if (idx < 0) return;
-    if (dx < 0 && idx < PAGE_TAB_ORDER.length - 1) switchPageTab(PAGE_TAB_ORDER[idx + 1]);
-    else if (dx > 0 && idx > 0) switchPageTab(PAGE_TAB_ORDER[idx - 1]);
-  }, { passive: true });
-})();
 
 // ══════════════════════════════════════════════════════════
 // DEEP LINKING (hash routing)

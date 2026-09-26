@@ -6,10 +6,10 @@
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="Predict chess tournament entries using historical registration patterns from 192K CCA records. Point estimates and 80% confidence intervals for tournament directors.">
 <title>CCA Entry Predictor: Chess Tournament Registration Forecasting</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239A7010' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 21h14'/><path d='M7 21c0-3.5 1.2-6.4 3.5-8.5'/><path d='M10.5 12.5 8 14l-1.5-2.5L9 8l1-3 1.5 1.5L14 4l1 2.5c2.3 1.1 4 3.6 4 7V21'/><path d='M11 9.5h.01'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 21h14'/><path d='M7 21c0-3.5 1.2-6.4 3.5-8.5'/><path d='M10.5 12.5 8 14l-1.5-2.5L9 8l1-3 1.5 1.5L14 4l1 2.5c2.3 1.1 4 3.6 4 7V21'/><path d='M11 9.5h.01'/></svg>">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#F7F4EC">
+<meta name="theme-color" content="#FFFFFF">
 <!-- Render-blocking on purpose: it sets the theme attribute before first
      paint and registers the service worker before any other request. See
      docs/boot.js. -->
@@ -22,22 +22,22 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' http://localhost:8787 http://127.0.0.1:8787">
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
-<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/inter/inter-latin.woff2">
-<link rel="stylesheet" href="styles/fonts.css?v=2bc8c06a4c">
-<link rel="stylesheet" href="styles/tokens.css?v=df0de6ab34">
-<link rel="stylesheet" href="styles/01-base.css?v=e114cc5e06">
-<link rel="stylesheet" href="styles/shell.css?v=3902a7ede2">
-<link rel="stylesheet" href="styles/controls.css?v=f6ff12fc44">
-<link rel="stylesheet" href="styles/overlays.css?v=5428ace7b0">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/archivo/archivo-latin.woff2">
+<link rel="stylesheet" href="styles/fonts.css?v=d265109c48">
+<link rel="stylesheet" href="styles/tokens.css?v=56b8c4ba24">
+<link rel="stylesheet" href="styles/01-base.css?v=03f7525f8c">
+<link rel="stylesheet" href="styles/shell.css?v=963c55f4d6">
+<link rel="stylesheet" href="styles/controls.css?v=b613b1aa7d">
+<link rel="stylesheet" href="styles/overlays.css?v=f86784d8b1">
+<link rel="stylesheet" href="styles/picker.css?v=d1ecc80b37">
 <link rel="stylesheet" href="styles/03-cmdk.css?v=8be0b8a479">
-<link rel="stylesheet" href="styles/04-tab-bar.css?v=bbb8f369e4">
 <link rel="stylesheet" href="styles/05-delta-banner.css?v=c417adc28d">
-<link rel="stylesheet" href="styles/06-mobile-predictions.css?v=14bb543666">
+<link rel="stylesheet" href="styles/06-mobile-predictions.css?v=2a44f6db76">
 <link rel="stylesheet" href="styles/07-hero.css?v=30b8537fa1">
 <link rel="stylesheet" href="styles/08-chart.css?v=c0add30020">
 <link rel="stylesheet" href="styles/09-timeline.css?v=10d9c06e16">
 <link rel="stylesheet" href="styles/10-comparison.css?v=95f4408fbe">
-<link rel="stylesheet" href="styles/11-tables.css?v=8b40d4c21c">
+<link rel="stylesheet" href="styles/11-tables.css?v=52afde408e">
 <link rel="stylesheet" href="styles/12-calendar.css?v=72c2b03dd8">
 <link rel="stylesheet" href="styles/cards.css?v=72fbc82335">
 <link rel="stylesheet" href="styles/14-puzzles.css?v=aa45d7e583">
@@ -46,27 +46,60 @@
 <link rel="stylesheet" href="styles/17-compare.css?v=33bdbebd97">
 <link rel="stylesheet" href="styles/18-performance.css?v=854b88f78f">
 <link rel="stylesheet" href="styles/19-motion.css?v=272bb138e5">
-<link rel="stylesheet" href="styles/20-mobile.css?v=45f7fe85f8">
+<link rel="stylesheet" href="styles/20-mobile.css?v=68d5a1d54c">
 <link rel="stylesheet" href="styles/21-panels.css?v=8d1d4e15e7">
-<link rel="stylesheet" href="styles/22-panels-shared.css?v=a528748887">
-<link rel="stylesheet" href="styles/23-print.css?v=1758c3bf60">
+<link rel="stylesheet" href="styles/22-panels-shared.css?v=e73fd9661f">
+<link rel="stylesheet" href="styles/23-print.css?v=ed72791308">
 <link rel="stylesheet" href="styles/24-ask-audit.css?v=62b5d908cd">
 <link rel="stylesheet" href="styles/theme.css?v=86ed0bd11f">
 </head>
 <body>
 
-<!-- Mobile unified tournament picker (modal bottom sheet, MD3 + iOS HIG) -->
-<div id="dropMenu_tourney" class="drop-menu drop-menu-tourney" role="dialog" aria-label="Tournament picker" aria-modal="true" style="display:none"></div>
-
-<!-- More: the views the phone's bottom bar has no room for. shell.js fills
-     the list from the rail's own buttons; sheet.js opens and closes it. It
-     sits outside #mainContent, which goes inert while it is open. -->
-<div id="moreSheet" class="sheet" hidden>
+<!-- The tournament picker: the sheet the top bar's subject opens on every
+     width (a popover under it on a desktop, a bottom sheet on a phone).
+     pickers.js fills the segments and the list; sheet.js opens, closes and
+     anchors it. The sheets sit outside #mainContent, which goes inert while
+     one is open. -->
+<div id="tourneySheet" class="sheet picker-sheet" data-width="440" hidden>
   <div class="sheet-scrim" data-act="close-sheet"></div>
-  <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="moreSheetTitle" tabindex="-1">
+  <div class="sheet-panel picker-panel" role="dialog" aria-modal="true" aria-label="Choose a Tournament" tabindex="-1">
     <div class="sheet-handle" aria-hidden="true"></div>
-    <h2 class="sheet-title" id="moreSheetTitle">More</h2>
-    <div class="sheet-list" id="moreSheetList"></div>
+    <div class="picker-head"><div class="segmented" role="tablist" aria-label="Tournament Status" id="pickerSegments"></div></div>
+    <div class="picker-search" id="pickerSearch" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="search" id="pickerSearchInput" placeholder="Search tournaments" autocomplete="off" aria-label="Search Historical Tournaments" data-inputact="filter-tourney-hist">
+    </div>
+    <div class="picker-list" id="pickerList" role="listbox" aria-label="Tournaments"></div>
+  </div>
+</div>
+
+<!-- The nav's two groups. Model holds the views about the model, Tools the
+     working views; the rows are page-tab buttons like the nav's own, so
+     shell.js marks the open one the same way. -->
+<div id="modelSheet" class="sheet group-sheet" data-width="260" hidden>
+  <div class="sheet-scrim" data-act="close-sheet"></div>
+  <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="modelSheetTitle" tabindex="-1">
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <h2 class="sheet-title" id="modelSheetTitle">Model</h2>
+    <div class="sheet-list">
+      <button type="button" class="sheet-row" id="ptab-performance" data-act="page-tab" data-tab="performance"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><b>Performance</b></button>
+      <button type="button" class="sheet-row" id="ptab-audit" data-act="page-tab" data-tab="audit"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg><b>Audit</b></button>
+      <button type="button" class="sheet-row" id="ptab-about" data-act="page-tab" data-tab="about"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><b>About the Model</b></button>
+    </div>
+    <div class="sheet-actions"><button type="button" class="secondary" data-act="close-sheet">Cancel</button></div>
+  </div>
+</div>
+<div id="toolsSheet" class="sheet group-sheet" data-width="260" hidden>
+  <div class="sheet-scrim" data-act="close-sheet"></div>
+  <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="toolsSheetTitle" tabindex="-1">
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <h2 class="sheet-title" id="toolsSheetTitle">Tools</h2>
+    <div class="sheet-list">
+      <button type="button" class="sheet-row" id="ptab-compare" data-act="page-tab" data-tab="compare"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg><b>Compare</b></button>
+      <button type="button" class="sheet-row" id="ptab-ask" data-act="page-tab" data-tab="ask"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><b>Ask</b></button>
+      <button type="button" class="sheet-row" id="ptab-email" data-act="page-tab" data-tab="email"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><b>Email</b></button>
+      <button type="button" class="sheet-row" id="ptab-puzzles" data-act="page-tab" data-tab="puzzles"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg><b>Puzzles</b></button>
+    </div>
     <div class="sheet-actions"><button type="button" class="secondary" data-act="close-sheet">Cancel</button></div>
   </div>
 </div>
@@ -79,12 +112,22 @@
     <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21h14"/><path d="M7 21c0-3.5 1.2-6.4 3.5-8.5"/><path d="M10.5 12.5 8 14l-1.5-2.5L9 8l1-3 1.5 1.5L14 4l1 2.5c2.3 1.1 4 3.6 4 7V21"/><path d="M11 9.5h.01"/></svg>
     <strong>CCA Entry Predictor</strong>
   </button>
-  <button type="button" class="tourn-trigger" id="headerTournLabel" data-act="open-tourney-picker" aria-haspopup="dialog" title="Change the Tournament">
-    <span class="live-dot" id="tournDot" style="display:none"></span>
+  <!-- The subject: the selected tournament, its status and its T-minus. It
+       opens the picker on every width (pickers.js). -->
+  <button type="button" class="tourn-trigger" id="headerTournLabel" data-act="open-tourney-picker" aria-haspopup="dialog" aria-controls="tourneySheet" aria-expanded="false" title="Change the Tournament">
     <span id="tournLabel" class="tourn-label-text">Loading...</span>
+    <span class="tourn-meta"><span class="pill" id="tournStatus" hidden></span><span class="tourn-tminus" id="tournTminus" hidden></span></span>
     <svg class="tourn-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
   </button>
-  <button type="button" class="icon-button compare-add-btn" id="compareAddBtn" data-act="add-to-compare" title="Add to Compare" aria-label="Add tournament to compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></button>
+  <!-- The nav: four items, in the top bar on a desktop and pinned to the
+       foot of a phone (shell.css). Model and Tools open their group sheet;
+       every view button dispatches page-tab. -->
+  <nav id="primaryNav" class="nav" aria-label="Primary Views">
+    <button type="button" class="nav-item active" id="ptab-predictions" data-act="page-tab" data-tab="predictions" aria-current="page"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></svg><b>Forecast</b></button>
+    <button type="button" class="nav-item" id="ptab-season" data-act="page-tab" data-tab="season"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg><b>Season</b></button>
+    <button type="button" class="nav-item" id="navModel" data-act="open-group-sheet" data-group="model" aria-haspopup="dialog" aria-controls="modelSheet" aria-expanded="false"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/></svg><b>Model</b></button>
+    <button type="button" class="nav-item" id="navTools" data-act="open-group-sheet" data-group="tools" aria-haspopup="dialog" aria-controls="toolsSheet" aria-expanded="false"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><b>Tools</b></button>
+  </nav>
   <button type="button" class="search-btn" data-act="open-cmdk" aria-label="Search Tournaments">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
     <span class="search-btn-text">Search</span><kbd class="search-btn-kbd">Ctrl K</kbd>
@@ -96,28 +139,8 @@
   <div class="topbar-meta">Updated <span id="lastUpdated"></span></div>
 </header>
 
-<!-- ══════════════════ SHELL: RAIL + MAIN ══════════════════ -->
-<!-- The rail is the side rail from 1024 px and the bottom bar under it
-     (shell.css). The bar shows the four pinned views and More; the sheet
-     above lists the rest. Every view button dispatches page-tab. -->
+<!-- ══════════════════ SHELL: MAIN ══════════════════ -->
 <div class="app-shell">
-  <aside id="rail" class="rail">
-    <button id="railToggle" class="rail-toggle" type="button" data-act="toggle-rail" aria-expanded="true" aria-controls="primaryNav railFoot" aria-label="Collapse the Rail" title="Collapse the Rail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></svg></button>
-    <nav id="primaryNav" aria-label="Primary Views">
-      <button type="button" class="active" id="ptab-predictions" data-act="page-tab" data-tab="predictions" data-bar="pinned" aria-current="page"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"/><path d="M16 7h6v6"/></svg><b>Forecast</b></button>
-      <button type="button" id="ptab-season" data-act="page-tab" data-tab="season" data-bar="pinned"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg><b>Season</b></button>
-      <button type="button" id="ptab-performance" data-act="page-tab" data-tab="performance" data-bar="pinned"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><b>Performance</b></button>
-      <button type="button" id="ptab-compare" data-act="page-tab" data-tab="compare"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></svg><b>Compare</b></button>
-      <button type="button" id="ptab-ask" data-act="page-tab" data-tab="ask" data-bar="pinned"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><b>Ask</b></button>
-    </nav>
-    <nav id="railFoot" class="rail-foot" aria-label="Secondary Views">
-      <button type="button" id="ptab-email" data-act="page-tab" data-tab="email"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><b>Email</b></button>
-      <button type="button" id="ptab-audit" data-act="page-tab" data-tab="audit"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg><b>Audit</b></button>
-      <button type="button" id="ptab-about" data-act="page-tab" data-tab="about"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><b>About the Model</b></button>
-      <button type="button" id="ptab-puzzles" data-act="page-tab" data-tab="puzzles"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg><b>Puzzles</b></button>
-      <button type="button" id="moreNav" data-act="open-more-sheet" aria-haspopup="dialog" aria-controls="moreSheet"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg><b>More</b></button>
-    </nav>
-  </aside>
   <main id="main" tabindex="-1">
 
   <!-- ── Stale data note (app.js init shows it; dismiss-stale hides it) ── -->
@@ -128,8 +151,14 @@
     </div>
   </div>
 
-  <!-- ── View header: the open view's name (shell.js reflectNav) ── -->
-  <section class="view-header"><h1 id="viewTitle">Forecast</h1></section>
+  <!-- ── View header: the open view's name and, on the Forecast, its
+       actions (shell.js reflectNav) ── -->
+  <section class="view-header">
+    <h1 id="viewTitle">Forecast</h1>
+    <div class="view-actions" id="viewActions">
+      <button type="button" class="btn compare-add-btn" id="compareAddBtn" data-act="add-to-compare" title="Add to Compare" aria-label="Add tournament to compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg><span class="btn-label">Add to Compare</span></button>
+    </div>
+  </section>
 
   <!-- ── Search dialog (opens from the top bar's Search button) ── -->
   <div class="cmdk" id="cmdkRoot" role="dialog" aria-modal="true" aria-label="Search tournaments" hidden>
@@ -154,9 +183,6 @@
       <button type="button" class="icon-button note-dismiss" data-act="dismiss-hint" aria-label="Dismiss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
     </div>
   </div>
-
-  <!-- ── Tournament Tabs ── -->
-  <div class="tab-bar" id="tabBar"></div>
 
   <!-- ── Delta Banner (YoY headline + multi-year pace context as sub-line) ── -->
   <div class="delta-banner muted" id="deltaBanner">
@@ -958,7 +984,8 @@
     <div>Ensemble Model (N5v4) &middot; <span id="mc-ci-cover-footer">75%</span> CI coverage at 2 wks &middot; Blind-tested on 2023–2026 data &middot; Data from <a href="https://www.chessaction.com" target="_blank" rel="noopener">chessaction.com</a></div>
     <div class="footer-hints">
       <kbd>&larr;</kbd> <kbd>&rarr;</kbd> navigate tournaments &middot;
-      <kbd>Esc</kbd> close dropdowns
+      <kbd>Ctrl K</kbd> search &middot;
+      <kbd>Esc</kbd> closes the picker
     </div>
   </footer>
 
@@ -1000,21 +1027,22 @@
      OFFLINE_FALLBACKS (test_global_uniqueness pins name collisions and
      suffix clashes; test_script_loading pins the defer attribute). -->
 <script defer src="util_core.js?v=2824d286fc"></script>
-<script defer src="foundation.js?v=9e59b7038a"></script>
+<script defer src="foundation.js?v=02d5d663f8"></script>
 <!-- theme.js reads PALETTE/rebuildPalette from foundation.js at load and
      sets the Chart.js defaults before any chart is built. -->
 <script defer src="theme.js?v=33c380c35b"></script>
 <!-- The shell: icons.js serves the generated markup, sheet.js owns the
-     modal sheet, shell.js the rail, the view title, More and the toast.
-     app.js's switchPageTab calls into shell.js, so these precede it. -->
+     sheet, shell.js the nav, the subject, the group sheets, the view title
+     and the toast. app.js's switchPageTab calls into shell.js, so these
+     precede it. -->
 <script defer src="icons.js?v=eeee8884c1"></script>
-<script defer src="sheet.js?v=a5bc2ee6a2"></script>
-<script defer src="shell.js?v=6d1cdfb086"></script>
+<script defer src="sheet.js?v=7c8a1ac5ef"></script>
+<script defer src="shell.js?v=75f177706e"></script>
 <script defer src="cmdk.js?v=c497999f1f"></script>
 <script defer src="tab_email.js?v=09dda48c3a"></script>
 <script defer src="tab_performance.js?v=63e8c55dc2"></script>
 <script defer src="tab_puzzles.js?v=d37fdbb7f7"></script>
-<script defer src="pickers.js?v=92ce5b6257"></script>
+<script defer src="pickers.js?v=fbcaedd103"></script>
 <script defer src="panels_info.js?v=85cb77359f"></script>
 <script defer src="hero_kpi.js?v=9347620d65"></script>
 <script defer src="chart_main.js?v=209e0a59c4"></script>
@@ -1022,13 +1050,13 @@
 <script defer src="panels_grid.js?v=dc54324367"></script>
 <script defer src="panels_cal.js?v=28d15e5f60"></script>
 <script defer src="tab_about.js?v=e7497b7332"></script>
-<script defer src="tab_compare.js?v=c14237e866"></script>
+<script defer src="tab_compare.js?v=f99dade8a4"></script>
 <script defer src="tab_ask.js?v=ac0057506c"></script>
-<script defer src="app.js?v=b5713b12d3"></script>
+<script defer src="app.js?v=41adebf7d3"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,
      so it is load-bearing: without it nothing on the page responds. It comes
      last because it dispatches into the globals the files above define. -->
-<script defer src="actions.js?v=f725d0ab5c"></script>
+<script defer src="actions.js?v=332edb1511"></script>
 </body>
 </html>

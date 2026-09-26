@@ -52,13 +52,13 @@ def test_unknown_or_unreadable_storage_falls_back_to_light(res):
 
 def test_the_toggle_flips_persists_and_reflects_its_state(res):
     t = res["toggle"]
-    assert t["before"] == {"theme": "light", "pressed": "false", "metaColor": "#F7F4EC"}
+    assert t["before"] == {"theme": "light", "pressed": "false", "metaColor": "#FFFFFF"}
     first = t["afterFirst"]
     assert first["theme"] == "dark"
     assert first["stored"] == "dark", "the choice must persist across visits"
     assert first["pressed"] == "true"
     assert first["label"] == "Switch to the Light Theme"
-    assert first["metaColor"] == "#0a0907", "meta theme-color must follow --void"
+    assert first["metaColor"] == "#151517", "meta theme-color must follow --void"
     assert first["switchingClassAdded"], "a switch cross-fades (theme-switching class)"
     assert t["afterSecond"] == {"theme": "light", "stored": "light"}
 

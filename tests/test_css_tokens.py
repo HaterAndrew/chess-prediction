@@ -19,7 +19,7 @@ TOKENS = os.path.join(STYLES, "tokens.css")
 LITERAL_EXEMPT = {"tokens.css", "fonts.css"}
 
 # Lower this as literals are retired; never raise it.
-LITERAL_CEILING = 97
+LITERAL_CEILING = 78
 
 DECL_RE = re.compile(r"(--[a-zA-Z0-9-]+)\s*:")
 VAR_RE = re.compile(r"var\(\s*(--[a-zA-Z0-9-]+)")

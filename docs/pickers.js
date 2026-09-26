@@ -1,322 +1,137 @@
-// pickers.js — tab-bar dropdowns (virtual-scroll historical list), mobile
-// tournament picker and renderTabs, split verbatim from app.js (C7).
+// pickers.js — the tournament picker: one sheet on every width (a bottom
+// sheet on a phone, a popover under the top bar's subject above it), with
+// the Upcoming, Complete and Historical segments, a search field on
+// Historical, and the keyboard navigation the old dropdowns had: the arrows
+// walk the rows, Home and End jump, Enter picks, and a letter jumps to the
+// first tournament that starts with it. openTourneyPicker(segment) is the
+// API; the subject in the top bar and the status chips call it. sheet.js
+// owns opening, closing, the focus trap and the anchoring; picker.css draws
+// what is inside.
 
-// ══════════════════════════════════════════════════════════
-// TABS — Virtual-scroll for historical dropdown (500+ items)
-// ══════════════════════════════════════════════════════════
-const _vs = {
-  flatItems: [],   // [{type:'header'|'item'|'footer', html:string, h:number}]
-  totalH: 0,
-  container: null,
-  spacer: null,
-  content: null,
-  ITEM_H: 35,
-  HDR_H: 28,
-  FOOTER_H: 30,
-  OVERSCAN: 5,
-  rafId: 0,
-};
+const PICKER_SHEET = 'tourneySheet';
+const PICKER_SEGMENTS = [['live', 'Upcoming'], ['complete', 'Complete'], ['hist', 'Historical']];
+let _pickerSeg = 'live';
+let _pickerQuery = '';
+let _pickerTypeBuffer = '';
+let _pickerTypeTimer = null;
 
-// ── Keyboard navigation state for dropdowns ──
-let _kbHighlightIdx = -1;      // index into current item list (-1 = nothing highlighted)
-let _kbTypeBuffer = '';         // type-ahead keystroke buffer (live/complete only)
-let _kbTypeTimer = null;        // reset timer for type-ahead
-
-function _vsBuildFlat(ql) {
-  const ts = TOURNAMENT_DATA.tournaments;
-  const hist = ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'historical');
-  const filtered = ql ? hist.filter(x => (x.t.family + ' ' + x.t.year).toLowerCase().includes(ql)) : hist;
-
-  const byFamily = {};
-  filtered.forEach(({t, i}) => {
-    const key = t.family;
-    if (!byFamily[key]) byFamily[key] = [];
-    byFamily[key].push({t, i});
-  });
-
-  const families = Object.keys(byFamily).sort((a, b) => {
-    if (ql) return a.localeCompare(b);
-    return byFamily[b].length - byFamily[a].length || a.localeCompare(b);
-  });
-
-  const flat = [];
-  families.forEach(fam => {
-    const editions = byFamily[fam].sort((a, b) => b.t.year - a.t.year);
-    flat.push({
-      type: 'header', h: _vs.HDR_H,
-      html: `<div style="height:${_vs.HDR_H}px;padding:5px 14px 3px;font-size:var(--fs-1);color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;background:var(--surface2);border-bottom:1px solid var(--border-light);box-sizing:border-box;display:flex;align-items:center">${esc(fam)} <span style="font-weight:400;opacity:.7;margin-left:4px">(${editions.length})</span></div>`
-    });
-    editions.forEach(({t, i}) => {
-      flat.push({
-        type: 'item', h: _vs.ITEM_H, idx: i,
-        html: `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" style="height:${_vs.ITEM_H}px;box-sizing:border-box" data-act="select-from-drop" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="option"><span class="cat-item-name" style="padding-left:6px">${t.year}</span><span class="cat-item-meta">${fmt(t.current_count)} entries</span></div>`
-      });
-    });
-  });
-
-  // Footer summary
-  const footerText = filtered.length === 0
-    ? 'No matches'
-    : `${filtered.length} editions across ${families.length} families`;
-  flat.push({
-    type: 'footer', h: _vs.FOOTER_H,
-    html: `<div style="height:${_vs.FOOTER_H}px;padding:6px 14px;font-size:var(--fs-1);color:var(--muted);border-top:1px solid var(--border-light);display:flex;align-items:center;box-sizing:border-box">${footerText}</div>`
-  });
-
-  return flat;
+function _pickerSegFor(status) {
+  return status === 'live' ? 'live' : status === 'complete' ? 'complete' : 'hist';
 }
 
-function _vsRenderVisible() {
-  const {flatItems, spacer, content, container, OVERSCAN} = _vs;
-  if (!container || !flatItems.length) return;
-
-  const scrollTop = container.scrollTop;
-  const viewH = container.clientHeight;
-
-  // Find visible range via cumulative heights
-  let cumH = 0, startIdx = -1, endIdx = flatItems.length - 1;
-  for (let i = 0; i < flatItems.length; i++) {
-    const top = cumH;
-    cumH += flatItems[i].h;
-    if (startIdx === -1 && cumH > scrollTop) startIdx = i;
-    if (top > scrollTop + viewH && endIdx === flatItems.length - 1) { endIdx = i; break; }
+// The tournaments a segment lists, as [{t, i}] in list order: upcoming
+// soonest first, complete most recent first, historical grouped by family
+// (the busiest family first, alphabetical under a search) with the newest
+// edition first inside each.
+function _pickerEntries(seg, query) {
+  const all = TOURNAMENT_DATA.tournaments.map((t, i) => ({ t, i }));
+  if (seg === 'live') {
+    return all.filter(x => x.t.status === 'live').sort((a, b) => a.t.days_remaining - b.t.days_remaining);
   }
-  if (startIdx === -1) startIdx = 0;
+  if (seg === 'complete') {
+    return all.filter(x => x.t.status === 'complete')
+      .sort((a, b) => String(b.t.event_start).localeCompare(String(a.t.event_start)));
+  }
+  const q = (query || '').toLowerCase().trim();
+  const byFamily = new Map();
+  all.filter(x => x.t.status === 'historical').forEach(x => {
+    if (q && !(x.t.family + ' ' + x.t.year).toLowerCase().includes(q)) return;
+    if (!byFamily.has(x.t.family)) byFamily.set(x.t.family, []);
+    byFamily.get(x.t.family).push(x);
+  });
+  const families = Array.from(byFamily.keys()).sort((a, b) =>
+    q ? a.localeCompare(b) : (byFamily.get(b).length - byFamily.get(a).length || a.localeCompare(b)));
+  return families.flatMap(f => byFamily.get(f)
+    .sort((a, b) => b.t.year - a.t.year)
+    .map(x => ({ t: x.t, i: x.i, family: f, editions: byFamily.get(f).length })));
+}
 
-  startIdx = Math.max(0, startIdx - OVERSCAN);
-  endIdx = Math.min(flatItems.length - 1, endIdx + OVERSCAN);
+function _pickerRow(x, seg) {
+  const t = x.t;
+  const active = x.i === selectedIndex;
+  const name = seg === 'hist' ? String(t.year) : esc(t.family);
+  const meta = seg === 'live'
+    ? `${fmtDate(t.event_start)} · ${fmt(t.current_count)} reg · T-${t.days_remaining}`
+    : seg === 'complete'
+      ? `${fmtDate(t.event_start)} · ${fmt(t.current_count)}`
+      : `${fmt(t.current_count)} entries`;
+  return `<button type="button" class="pick-row pick-row-${seg}${active ? ' active' : ''}" role="option" ` +
+    `aria-selected="${active}" data-act="select-tourney-picker" data-idx="${x.i}" ` +
+    `data-name="${esc(String(t.family).toLowerCase())}">` +
+    `<span class="pick-name">${seg === 'live' ? '<span class="live-dot"></span>' : ''}<span class="pick-title">${name}</span></span>` +
+    `<span class="pick-meta">${meta}</span></button>`;
+}
 
-  // Pixel offset to startIdx
-  let offsetY = 0;
-  for (let i = 0; i < startIdx; i++) offsetY += flatItems[i].h;
-
+function _pickerListHTML() {
+  const entries = _pickerEntries(_pickerSeg, _pickerQuery);
+  if (!entries.length) {
+    return `<div class="picker-empty">${_pickerSeg === 'hist' ? 'No tournament matches.' : 'Nothing listed yet.'}</div>`;
+  }
+  if (_pickerSeg !== 'hist') return entries.map(x => _pickerRow(x, _pickerSeg)).join('');
   let html = '';
-  for (let i = startIdx; i <= endIdx; i++) {
-    let itemHtml = flatItems[i].html;
-    // Inject highlighted class for keyboard-navigated item
-    if (openDrop === 'hist' && i === _kbHighlightIdx && flatItems[i].type === 'item') {
-      itemHtml = itemHtml.replace('class="cat-item', 'class="cat-item highlighted');
+  let last = null;
+  entries.forEach(x => {
+    if (x.family !== last) {
+      html += `<div class="picker-group">${esc(x.family)} <i>(${x.editions})</i></div>`;
+      last = x.family;
     }
-    html += itemHtml;
-  }
-  content.style.transform = `translateY(${offsetY}px)`;
-  content.innerHTML = html;
-}
-
-function filterHistResults(q) {
-  const list = document.getElementById('histSearchResults');
-  if (!list) return;
-  const ql = q.toLowerCase().trim();
-  _kbHighlightIdx = -1; // Reset highlight when search changes
-
-  // Build flat virtual-scroll item list
-  _vs.flatItems = _vsBuildFlat(ql);
-  _vs.totalH = _vs.flatItems.reduce((s, r) => s + r.h, 0);
-
-  // Bootstrap virtual-scroll DOM on first call
-  if (!list.querySelector('.vs-spacer')) {
-    list.innerHTML = '<div class="vs-spacer" style="position:relative;width:100%"></div>';
-    const spacer = list.querySelector('.vs-spacer');
-    const content = document.createElement('div');
-    content.className = 'vs-content';
-    content.style.cssText = 'position:absolute;top:0;left:0;right:0;will-change:transform';
-    spacer.appendChild(content);
-    _vs.spacer = spacer;
-    _vs.content = content;
-    _vs.container = list;
-    list.addEventListener('scroll', () => {
-      if (_vs.rafId) cancelAnimationFrame(_vs.rafId);
-      _vs.rafId = requestAnimationFrame(_vsRenderVisible);
-    }, {passive: true});
-  }
-
-  _vs.spacer.style.height = _vs.totalH + 'px';
-  list.scrollTop = 0;
-  _vsRenderVisible();
-}
-
-let openDrop = null; // which dropdown is open: 'live','complete','hist'
-
-function toggleDrop(which, e) {
-  e && e.stopPropagation();
-  if (openDrop === which) { closeDrop(); return; }
-  closeDrop();
-  if (_mobileVP()) _haptic(15);
-  openDrop = which;
-  _kbHighlightIdx = -1;
-  _kbTypeBuffer = '';
-  const btn = document.getElementById('dropBtn_' + which);
-  btn.classList.add('open');
-  btn.setAttribute('aria-expanded', 'true');
-  const menu = document.getElementById('dropMenu_' + which);
-  menu.style.display = 'block';
-  document.body.classList.add('drawer-open');
-  if (which === 'hist') {
-    const inp = document.getElementById('histSearchInput');
-    inp.value = '';
-    filterHistResults('');
-    setTimeout(() => inp.focus(), 30);
-  } else {
-    // Focus first item in live/complete dropdown
-    setTimeout(() => {
-      const first = menu.querySelector('.cat-item');
-      if (first) first.focus();
-    }, 30);
-  }
-}
-
-function closeDrop() {
-  if (!openDrop) return;
-  const btn = document.getElementById('dropBtn_' + openDrop);
-  const menu = document.getElementById('dropMenu_' + openDrop);
-  if (btn) { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
-  if (menu) menu.style.display = 'none';
-  document.body.classList.remove('drawer-open');
-  _kbHighlightIdx = -1;
-  _kbTypeBuffer = '';
-  openDrop = null;
-}
-
-function selectFromDrop(idx) {
-  if (_mobileVP()) _haptic(10);
-  closeDrop();
-  selectTournament(idx);
-}
-
-// ══════════════════════════════════════════════════════════
-// MOBILE UNIFIED TOURNAMENT PICKER (Material 3 modal bottom sheet
-// with iOS HIG segmented control). Replaces the 3 cat-btn pills on
-// phones; desktop still uses the original 3 dropdowns.
-// ══════════════════════════════════════════════════════════
-let _tourneyTab = 'live';
-let _tourneyPickerOpen = false;
-// Round 32: a11y. Save the trigger so we can restore focus on close per WAI-ARIA dialog pattern.
-let _pickerLastFocus = null;
-
-function maybeOpenTourneyPicker(e) {
-  if (!_mobileVP()) return;                                     // desktop: do nothing
-  if (e && e.target && e.target.closest('.compare-add-btn')) return; // compare button has its own handler
-  openTourneyPicker();
-}
-
-function openTourneyPicker(initialTab) {
-  const t = TOURNAMENT_DATA.tournaments[selectedIndex];
-  if (initialTab) _tourneyTab = initialTab;
-  else if (t) _tourneyTab = t.status === 'live' ? 'live' : t.status === 'complete' ? 'complete' : 'hist';
-  if (_mobileVP()) _haptic(15);
-  _pickerLastFocus = document.activeElement;
-  renderTourneyPicker();
-  const menu = document.getElementById('dropMenu_tourney');
-  if (!menu) return;
-  menu.style.display = 'block';
-  document.body.classList.add('drawer-open');
-  // Make the background inert so nothing behind the aria-modal sheet takes
-  // focus or taps (the drawer is a sibling of #mainContent, so it stays live).
-  const mc = document.getElementById('mainContent');
-  if (mc) mc.inert = true;
-  _tourneyPickerOpen = true;
-  // Move focus into drawer per WAI-ARIA dialog pattern.
-  setTimeout(() => {
-    if (_tourneyTab === 'hist') {
-      const inp = document.getElementById('tourneyHistSearch');
-      if (inp) { inp.focus(); return; }
-    }
-    const activeSeg = menu.querySelector('.seg-btn.active');
-    if (activeSeg) { activeSeg.focus(); return; }
-    const firstFocusable = menu.querySelector('button, [tabindex="0"], input');
-    if (firstFocusable) firstFocusable.focus();
-  }, 80);
-}
-
-function closeTourneyPicker() {
-  const menu = document.getElementById('dropMenu_tourney');
-  if (menu) menu.style.display = 'none';
-  document.body.classList.remove('drawer-open');
-  const mc = document.getElementById('mainContent');
-  if (mc) mc.inert = false;   // restore background interactivity before returning focus
-  _tourneyPickerOpen = false;
-  // Return focus to the element that opened the drawer (WAI-ARIA dialog pattern).
-  try {
-    if (_pickerLastFocus && typeof _pickerLastFocus.focus === 'function' && document.contains(_pickerLastFocus)) {
-      _pickerLastFocus.focus();
-    }
-  } catch (_) { /* element may have been re-rendered; ignore */ }
-  _pickerLastFocus = null;
-}
-
-function setTourneyTab(which) {
-  if (_tourneyTab !== which) _haptic(8);
-  _tourneyTab = which;
-  renderTourneyPicker();
-  if (which === 'hist') {
-    setTimeout(() => {
-      const inp = document.getElementById('tourneyHistSearch');
-      if (inp) inp.focus();
-    }, 30);
-  }
+    html += _pickerRow(x, 'hist');
+  });
+  const families = new Set(entries.map(x => x.family)).size;
+  return html + `<div class="picker-foot">${entries.length} editions across ${families} families</div>`;
 }
 
 function renderTourneyPicker() {
-  const menu = document.getElementById('dropMenu_tourney');
-  if (!menu) return;
-  const ts = TOURNAMENT_DATA.tournaments;
-  const live = ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'live').sort((a, b) => a.t.days_remaining - b.t.days_remaining);
-  const complete = ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'complete');
-  const hist = ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'historical');
+  const segments = document.getElementById('pickerSegments');
+  const list = document.getElementById('pickerList');
+  if (!segments || !list) return;
+  const counts = { live: 0, complete: 0, hist: 0 };
+  TOURNAMENT_DATA.tournaments.forEach(t => { counts[_pickerSegFor(t.status)]++; });
+  segments.innerHTML = PICKER_SEGMENTS.map(([k, label]) =>
+    `<button type="button" role="tab" aria-selected="${_pickerSeg === k}" class="${_pickerSeg === k ? 'active' : ''}" ` +
+    `data-act="tourney-tab" data-tab="${k}">${label}<span class="seg-count">${counts[k]}</span></button>`).join('');
+  const search = document.getElementById('pickerSearch');
+  const input = document.getElementById('pickerSearchInput');
+  if (search) search.hidden = _pickerSeg !== 'hist';
+  if (input) input.value = _pickerSeg === 'hist' ? _pickerQuery : '';
+  list.innerHTML = _pickerListHTML();
+}
 
-  const seg = (k, label, count) =>
-    `<button class="seg-btn ${_tourneyTab === k ? 'active' : ''}" role="tab" aria-selected="${_tourneyTab === k}" data-seg="${k}" data-act="tourney-tab" data-tab="${k}">${label}<span class="seg-count">${count}</span></button>`;
+function _pickerFocusInput() {
+  const input = document.getElementById('pickerSearchInput');
+  if (input && _pickerSeg === 'hist') input.focus();
+}
 
-  let html = '';
-  html += '<div class="tourney-picker-header">';
-  html += `<div class="seg-control" role="tablist" aria-label="Tournament category">${seg('live', 'Upcoming', live.length)}${seg('complete', 'Complete', complete.length)}${seg('hist', 'Historical', hist.length)}</div>`;
-  html += '</div>';
+// Open on the selected tournament's own segment, or the one asked for.
+function openTourneyPicker(initialSeg) {
+  const t = TOURNAMENT_DATA.tournaments[selectedIndex];
+  _pickerSeg = initialSeg || (t ? _pickerSegFor(t.status) : 'live');
+  _pickerQuery = '';
+  renderTourneyPicker();
+  openSheet(PICKER_SHEET, document.getElementById('headerTournLabel'));
+  // openSheet focuses the first segment on the next frame; on Historical the
+  // search field is where the visitor starts, so it takes over after that.
+  requestAnimationFrame(_pickerFocusInput);
+}
 
-  html += '<div class="tourney-picker-body">';
-  if (_tourneyTab === 'live') {
-    html += '<div class="tourney-list">';
-    live.forEach(({t, i}) => {
-      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-act="select-tourney-picker" data-idx="${i}" data-keyable="1" tabindex="0" role="option">`;
-      html += `<span class="cat-item-name"><span class="live-dot"></span>${esc(t.family)}</span>`;
-      html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)} reg · ${t.days_remaining}d</span>`;
-      html += '</div>';
-    });
-    html += '</div>';
-  } else if (_tourneyTab === 'complete') {
-    html += '<div class="tourney-list">';
-    complete.forEach(({t, i}) => {
-      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-act="select-tourney-picker" data-idx="${i}" data-keyable="1" tabindex="0" role="option">`;
-      html += `<span class="cat-item-name">${esc(t.family)}</span>`;
-      html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)}</span>`;
-      html += '</div>';
-    });
-    html += '</div>';
-  } else if (_tourneyTab === 'hist') {
-    html += '<div class="tab-search-bar">';
-    html += '<span class="tab-search-glyph">' + icon('search', 14) + '</span>';
-    html += '<input class="tab-search-input" id="tourneyHistSearch" type="text" placeholder="Search tournaments..." data-inputact="filter-tourney-hist" autocomplete="off">';
-    html += '</div>';
-    html += '<div class="tourney-list" id="tourneyHistList">';
-    hist.forEach(({t, i}) => {
-      const dataName = String(t.family || '').toLowerCase();
-      html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-name="${esc(dataName)}" data-act="select-tourney-picker" data-idx="${i}" data-keyable="1" tabindex="0" role="option">`;
-      html += `<span class="cat-item-name">${esc(t.family)} ${t.year}</span>`;
-      html += `<span class="cat-item-meta">${fmt(t.current_count)}</span>`;
-      html += '</div>';
-    });
-    html += '</div>';
-  }
-  html += '</div>';
+function closeTourneyPicker() {
+  if (openSheetId() === PICKER_SHEET) closeSheet();
+}
 
-  menu.innerHTML = html;
+function setTourneyTab(seg) {
+  if (_pickerSeg !== seg) _haptic(8);
+  _pickerSeg = seg;
+  _pickerQuery = '';
+  renderTourneyPicker();
+  const tab = document.querySelector(`#pickerSegments [data-tab="${seg}"]`);
+  if (seg === 'hist') _pickerFocusInput();
+  else if (tab) tab.focus();
 }
 
 function filterTourneyHistResults(query) {
-  const q = (query || '').toLowerCase().trim();
-  document.querySelectorAll('#tourneyHistList .cat-item').forEach(el => {
-    const name = el.dataset.name || '';
-    el.style.display = (q === '' || name.includes(q)) ? '' : 'none';
-  });
+  _pickerQuery = query || '';
+  const list = document.getElementById('pickerList');
+  if (list) list.innerHTML = _pickerListHTML();
 }
 
 function selectFromTourneyPicker(idx) {
@@ -325,224 +140,53 @@ function selectFromTourneyPicker(idx) {
   selectTournament(idx);
 }
 
-// Close picker on outside-click (the scrim has pointer-events:none, so clicks bubble to document)
-document.addEventListener('click', e => {
-  if (!_tourneyPickerOpen) return;
-  if (e.target.closest('.drop-menu-tourney')) return;          // click inside drawer — keep open
-  if (e.target.closest('#headerTournLabel')) return;           // re-tap on trigger handled separately
-  closeTourneyPicker();
-});
-// Esc to close + Tab focus trap inside the drawer (Round 32 a11y).
+// ── Keyboard: the rows are buttons, so Enter and Space pick natively; this
+// moves focus between them and jumps by letter. ──
+function _pickerRows() {
+  return Array.from(document.querySelectorAll('#pickerList .pick-row'));
+}
+
+function _pickerFocusRow(row) {
+  if (!row) return;
+  row.focus({ preventScroll: true });
+  row.scrollIntoView({ block: 'nearest' });
+}
+
+function _pickerTypeAhead(key, rows) {
+  clearTimeout(_pickerTypeTimer);
+  _pickerTypeBuffer += key.toLowerCase();
+  _pickerTypeTimer = setTimeout(() => { _pickerTypeBuffer = ''; }, 500);
+  const match = rows.find(r => (r.dataset.name || '').startsWith(_pickerTypeBuffer));
+  if (match) _pickerFocusRow(match);
+}
+
 document.addEventListener('keydown', e => {
-  if (!_tourneyPickerOpen) return;
-  if (e.key === 'Escape') { closeTourneyPicker(); return; }
-  if (e.key !== 'Tab') return;
-  const menu = document.getElementById('dropMenu_tourney');
-  if (!menu) return;
-  // Only trap over visible candidates — hidden ones (inactive segment tab,
-  // filtered-out search rows) have no offsetParent and must not receive focus.
-  const focusables = Array.from(menu.querySelectorAll(
-    'button:not([disabled]), input:not([disabled]), [tabindex="0"]'
-  )).filter(el => el.offsetParent !== null);
-  if (!focusables.length) return;
-  const first = focusables[0];
-  const last = focusables[focusables.length - 1];
+  if (openSheetId() !== PICKER_SHEET) return;
+  const rows = _pickerRows();
   const active = document.activeElement;
-  if (e.shiftKey) {
-    if (active === first || !menu.contains(active)) { e.preventDefault(); last.focus(); }
-  } else {
-    if (active === last) { e.preventDefault(); first.focus(); }
-  }
-});
-
-// ── Dropdown keyboard navigation helpers ──
-
-/** Get array of {idx, name} for simple (non-virtual) dropdown items */
-function _dropSimpleItems(which) {
-  const ts = TOURNAMENT_DATA.tournaments;
-  if (which === 'live') {
-    return ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'live')
-      .sort((a, b) => a.t.days_remaining - b.t.days_remaining)
-      .map(({t, i}) => ({idx: i, name: t.family}));
-  }
-  if (which === 'complete') {
-    return ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'complete')
-      .map(({t, i}) => ({idx: i, name: t.family}));
-  }
-  return [];
-}
-
-/** Apply highlight class to the Nth .cat-item in a simple dropdown menu */
-function _dropApplyHighlight(which) {
-  const menu = document.getElementById('dropMenu_' + which);
-  if (!menu) return;
-  const items = menu.querySelectorAll('.cat-item');
-  items.forEach((el, i) => {
-    el.classList.toggle('highlighted', i === _kbHighlightIdx);
-  });
-  if (_kbHighlightIdx >= 0 && _kbHighlightIdx < items.length) {
-    items[_kbHighlightIdx].scrollIntoView({block: 'nearest'});
-  }
-}
-
-/** Scroll hist virtual list so that flat index is visible, then re-render */
-function _vsScrollToIdx(flatIdx) {
-  if (!_vs.container || !_vs.flatItems.length) return;
-  let cumH = 0;
-  for (let i = 0; i < flatIdx; i++) cumH += _vs.flatItems[i].h;
-  const itemBot = cumH + _vs.flatItems[flatIdx].h;
-  const st = _vs.container.scrollTop;
-  const vh = _vs.container.clientHeight;
-  if (cumH < st) _vs.container.scrollTop = cumH;
-  else if (itemBot > st + vh) _vs.container.scrollTop = itemBot - vh;
-  _vsRenderVisible();
-}
-
-/** Find next/prev selectable item in hist flat list (skip headers/footers) */
-function _vsNextItem(from, dir) {
-  const flat = _vs.flatItems;
-  let i = from + dir;
-  while (i >= 0 && i < flat.length) {
-    if (flat[i].type === 'item') return i;
-    i += dir;
-  }
-  return from; // stay put if nothing found
-}
-
-/** Find first/last selectable item in hist flat list */
-function _vsFirstItem() {
-  for (let i = 0; i < _vs.flatItems.length; i++) {
-    if (_vs.flatItems[i].type === 'item') return i;
-  }
-  return -1;
-}
-function _vsLastItem() {
-  for (let i = _vs.flatItems.length - 1; i >= 0; i--) {
-    if (_vs.flatItems[i].type === 'item') return i;
-  }
-  return -1;
-}
-
-document.addEventListener('click', (e) => {
-  if (openDrop && !e.target.closest('.drop-wrap')) closeDrop();
-});
-document.addEventListener('keydown', (e) => {
-  if (!openDrop) return;
-  if (e.key === 'Escape') { closeDrop(); return; }
-
-  // ── Historical dropdown (virtual scroll) ──
-  if (openDrop === 'hist') {
-    const flat = _vs.flatItems;
-    if (!flat.length) return;
-
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      _kbHighlightIdx = _kbHighlightIdx < 0 ? _vsFirstItem() : _vsNextItem(_kbHighlightIdx, 1);
-      _vsScrollToIdx(_kbHighlightIdx);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      _kbHighlightIdx = _kbHighlightIdx < 0 ? _vsLastItem() : _vsNextItem(_kbHighlightIdx, -1);
-      _vsScrollToIdx(_kbHighlightIdx);
-    } else if (e.key === 'Home') {
-      e.preventDefault();
-      _kbHighlightIdx = _vsFirstItem();
-      _vsScrollToIdx(_kbHighlightIdx);
-    } else if (e.key === 'End') {
-      e.preventDefault();
-      _kbHighlightIdx = _vsLastItem();
-      _vsScrollToIdx(_kbHighlightIdx);
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (_kbHighlightIdx >= 0 && flat[_kbHighlightIdx] && flat[_kbHighlightIdx].type === 'item') {
-        selectFromDrop(flat[_kbHighlightIdx].idx);
-      }
-    }
-    return;
-  }
-
-  // ── Live / Complete dropdowns (simple list) ──
-  const items = _dropSimpleItems(openDrop);
-  if (!items.length) return;
-
+  const inInput = !!active && active.id === 'pickerSearchInput';
+  const at = rows.indexOf(active);
   if (e.key === 'ArrowDown') {
     e.preventDefault();
-    _kbHighlightIdx = _kbHighlightIdx < items.length - 1 ? _kbHighlightIdx + 1 : 0;
-    _dropApplyHighlight(openDrop);
+    _pickerFocusRow(rows[at < 0 ? 0 : Math.min(at + 1, rows.length - 1)]);
   } else if (e.key === 'ArrowUp') {
     e.preventDefault();
-    _kbHighlightIdx = _kbHighlightIdx > 0 ? _kbHighlightIdx - 1 : items.length - 1;
-    _dropApplyHighlight(openDrop);
-  } else if (e.key === 'Home') {
+    if (at <= 0 && _pickerSeg === 'hist' && !inInput) _pickerFocusInput();
+    else _pickerFocusRow(rows[at < 0 ? rows.length - 1 : Math.max(at - 1, 0)]);
+  } else if (e.key === 'Home' && !inInput) {
     e.preventDefault();
-    _kbHighlightIdx = 0;
-    _dropApplyHighlight(openDrop);
-  } else if (e.key === 'End') {
+    _pickerFocusRow(rows[0]);
+  } else if (e.key === 'End' && !inInput) {
     e.preventDefault();
-    _kbHighlightIdx = items.length - 1;
-    _dropApplyHighlight(openDrop);
-  } else if (e.key === 'Enter') {
+    _pickerFocusRow(rows[rows.length - 1]);
+  } else if (e.key === 'Enter' && inInput) {
+    // Enter in the search field picks the first match.
     e.preventDefault();
-    if (_kbHighlightIdx >= 0 && _kbHighlightIdx < items.length) {
-      selectFromDrop(items[_kbHighlightIdx].idx);
-    }
-  } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
-    // Type-ahead for live/complete dropdowns
-    clearTimeout(_kbTypeTimer);
-    _kbTypeBuffer += e.key.toLowerCase();
-    _kbTypeTimer = setTimeout(() => { _kbTypeBuffer = ''; }, 500);
-    const match = items.findIndex(it => it.name.toLowerCase().startsWith(_kbTypeBuffer));
-    if (match >= 0) {
-      _kbHighlightIdx = match;
-      _dropApplyHighlight(openDrop);
-    }
+    if (rows[0]) rows[0].click();
+  } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey && !inInput) {
+    // A letter typed over the Historical list belongs in its search field;
+    // over Upcoming and Complete it jumps to the matching tournament.
+    if (_pickerSeg === 'hist') _pickerFocusInput();
+    else _pickerTypeAhead(e.key, rows);
   }
 });
-
-function renderTabs() {
-  const el = document.getElementById('tabBar');
-  const ts = TOURNAMENT_DATA.tournaments;
-  const live = ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'live');
-  const complete = ts.map((t, i) => ({t, i})).filter(x => x.t.status === 'complete');
-  const nHist = ts.filter(t => t.status === 'historical').length;
-  const sel = ts[selectedIndex];
-
-  let html = '';
-
-  // ── Upcoming dropdown ──
-  html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn cat-btn--live" id="dropBtn_live" data-act="toggle-drop" data-drop="live" data-keyable="1" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
-  html += `<span class="live-dot"></span>Upcoming <span class="cat-count" style="background:var(--green-dim);color:var(--green)">${live.length}</span> <span class="cat-arrow">${icon('chevron-down', 12)}</span></div>`;
-  html += `<div class="drop-menu" id="dropMenu_live" role="listbox" aria-label="Upcoming tournaments">`;
-  live.sort((a, b) => a.t.days_remaining - b.t.days_remaining).forEach(({t, i}) => {
-    html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-act="select-from-drop" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="option">`;
-    html += `<span class="cat-item-name"><span class="live-dot"></span>${esc(t.family)}${paceBadgeHTML(getPaceAlert(t))}</span>`;
-    html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)} reg</span></div>`;
-  });
-  html += `</div></div>`;
-
-  // ── Complete dropdown ──
-  html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn cat-btn--complete" id="dropBtn_complete" data-act="toggle-drop" data-drop="complete" data-keyable="1" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
-  html += `Complete <span class="cat-count">${complete.length}</span> <span class="cat-arrow">${icon('chevron-down', 12)}</span></div>`;
-  html += `<div class="drop-menu" id="dropMenu_complete" role="listbox" aria-label="Completed tournaments">`;
-  complete.forEach(({t, i}) => {
-    html += `<div class="cat-item ${i === selectedIndex ? 'active' : ''}" data-act="select-from-drop" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="option">`;
-    html += `<span class="cat-item-name">${esc(t.family)}</span>`;
-    html += `<span class="cat-item-meta">${fmtDate(t.event_start)} · ${fmt(t.current_count)}</span></div>`;
-  });
-  html += `</div></div>`;
-
-  // ── Historical search dropdown ──
-  html += `<div class="drop-wrap">`;
-  html += `<div class="cat-btn cat-btn--hist" id="dropBtn_hist" data-act="toggle-drop" data-drop="hist" data-keyable="1" tabindex="0" role="button" aria-expanded="false" aria-haspopup="true">`;
-  html += `${icon('search', 12)} Historical <span class="cat-count" style="background:var(--purple-dim);color:var(--purple)">${nHist}</span> <span class="cat-arrow">${icon('chevron-down', 12)}</span></div>`;
-  html += `<div class="drop-menu drop-menu-search" id="dropMenu_hist" role="listbox" aria-label="Historical tournaments">`;
-  html += `<div class="tab-search-bar">`;
-  html += `<span class="tab-search-glyph">${icon('search', 14)}</span>`;
-  html += `<input class="tab-search-input" id="histSearchInput" type="text" placeholder="Search tournaments..." data-inputact="filter-hist" autocomplete="off">`;
-  html += `</div>`;
-  html += `<div class="tab-search-results" id="histSearchResults"></div>`;
-  html += `</div></div>`;
-
-  el.innerHTML = html;
-}

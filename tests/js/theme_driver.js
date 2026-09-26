@@ -43,7 +43,7 @@ function makeDom({ osDark = false } = {}) {
     getElementById(id) { return id === 'themeToggle' ? button : null; },
     createElement() { return { style: {}, remove() {} }; },
   };
-  const themes = { light: '#F7F4EC', dark: '#0a0907' };
+  const themes = { light: '#FFFFFF', dark: '#151517' };
   const sandbox = {
     document, meta, button,
     console,
@@ -64,7 +64,7 @@ function makeDom({ osDark = false } = {}) {
     setTimeout(fn) { return 0; },
     clearTimeout() {},
     // theme.js collaborators that live in other files
-    PALETTE: { tick: '#000', grid: '#000', fontDisplay: 'Inter' },
+    PALETTE: { tick: '#000', grid: '#000', fontDisplay: 'Archivo' },
     rebuildPalette() {},
     _reduceMotion: () => false,
     _classes: classes,

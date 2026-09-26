@@ -59,7 +59,7 @@ STAMPED_SCRIPTS = (
     "styles/controls.css",
     "styles/overlays.css",
     "styles/03-cmdk.css",
-    "styles/04-tab-bar.css",
+    "styles/picker.css",
     "styles/05-delta-banner.css",
     "styles/06-mobile-predictions.css",
     "styles/07-hero.css",

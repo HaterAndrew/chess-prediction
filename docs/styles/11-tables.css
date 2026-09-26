@@ -76,14 +76,6 @@
 .tourney-table tr:last-child td { border-bottom: none; }
 .t-name { font-weight: 600; }
 .t-sub { font-size: var(--fs-1); color: var(--muted); margin-top: 2px; }
-.status-pill {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 3px 10px; border-radius: 100px;
-  font-size: var(--fs-1); font-weight: 700;
-}
-.pill-live { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
-.pill-complete { background: var(--surface3); color: var(--muted); border: 1px solid var(--border); }
-.pill-hist { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(188,140,255,.3); }
 .pace-bar-wrap {
   width: 60px; height: 5px; background: var(--surface3);
   border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 6px;

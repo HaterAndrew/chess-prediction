@@ -2,7 +2,7 @@
    MOBILE PREDICTIONS REORIENTATION (< 640px)
    ──────────────────────────────────────────────────────
    Flips #panel-predictions into a flex-column on mobile so we can use
-   `order:` to put the hero (882) ABOVE the tournament-browser dropdowns,
+   `order:` to put the hero ABOVE the evidence,
    following the inverted-pyramid dashboard pattern. Source order in
    index.html stays the same so desktop (>=640px) is completely untouched.
    ══════════════════════════════════════════════════════ */
@@ -28,7 +28,6 @@
   #panel-predictions > .hero           { order: 1; }
   #panel-predictions > .delta-banner   { order: 2; }
   #panel-predictions > .chart-card     { order: 3; }
-  #panel-predictions > #tabBar         { order: 4; }   /* 3 category dropdowns, now below the hero+chart */
   #panel-predictions > .accuracy-strip { order: 6; }
   #panel-predictions > .kpi-row        { order: 8; }
   #panel-predictions > .progress-row   { order: 9; }
@@ -50,136 +49,6 @@
   /* --- Hero: a touch more vertical breathing as the hero card --- */
   .hero { padding-top: var(--s-3); padding-bottom: var(--s-3); }
 
-  /* --- Tournament browser: slim horizontal chip strip (compact, all 3 visible) --- */
-  #tabBar.tab-bar {
-    flex-direction: row;
-    align-items: stretch;
-    gap: 6px;
-    padding: var(--s-2) 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-mask-image: linear-gradient(to right, #000, #000 calc(100% - 24px), transparent);
-    mask-image: linear-gradient(to right, #000, #000 calc(100% - 24px), transparent);
-  }
-  #tabBar.tab-bar::-webkit-scrollbar { display: none; }
-  #tabBar.tab-bar .drop-wrap { width: auto; flex-shrink: 0; }
-  #tabBar.tab-bar .cat-btn {
-    width: auto;
-    justify-content: center;
-    gap: 6px;
-    padding: 10px 14px;
-    font-size: var(--fs-2);
-    border-left-width: 0 !important;        /* override the inline 3px colored border */
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    min-height: 44px;
-  }
-  #tabBar.tab-bar .cat-btn .cat-count { font-size: var(--fs-1); padding: 1px 6px; }
-  /* v4 W2: .5rem (8px) sat under the type ramp's 12px functional floor. */
-  #tabBar.tab-bar .cat-btn .cat-arrow { font-size: var(--fs-1); }
-}
-
-/* Lock body scroll while a bottom-sheet drawer is open (feels native, prevents
-   the page from scrolling behind the drawer). Round 16 added the scrim; this
-   completes the modal lock. */
-body.drawer-open { overflow: hidden; touch-action: none; }
-/* Keep the back-to-top FAB (z-index 900) from painting over the picker sheet
-   and dismissing it on tap while the drawer is open. */
-body.drawer-open .back-to-top { display: none !important; }
-
-/* ══════════════════════════════════════════════════════
-   MOBILE UNIFIED TOURNAMENT PICKER (< 640px only)
-   ──────────────────────────────────────────────────────
-   Modal bottom sheet with iOS HIG segmented control + filterable lists.
-   Replaces the 3 cat-btn pills (still used on desktop). Trigger is the
-   header tournament label (Spotify "Now Playing" pattern).
-   ══════════════════════════════════════════════════════ */
-@media (max-width: 639px) {
-  /* Hide the 3 cat-btn pills entirely on phones — picker covers all 3. The
-     trigger is the top bar's tournament chip (shell.css .tourn-trigger). */
-  #panel-predictions > #tabBar { display: none; }
-
-  /* Picker drawer base styles inherit from .drop-menu (round 12 bottom-sheet);
-     this overrides the layout for the unified picker shell. */
-  .drop-menu-tourney {
-    padding: 0;
-  }
-  .drop-menu-tourney::before {
-    /* drag handle inherited from .drop-menu, ensure it's visible */
-    margin: 10px auto 6px;
-  }
-  .tourney-picker-header {
-    padding: var(--s-2) var(--s-4) 0;
-    background: transparent;
-  }
-  .tourney-picker-body {
-    padding: var(--s-2) 0 var(--s-4);
-    overflow-y: auto;
-    max-height: calc(82vh - 72px);
-  }
-  .tourney-picker-body .tab-search-bar {
-    margin: 0 var(--s-4) var(--s-2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--surface2);
-  }
-
-  /* Segmented control (iOS HIG ≤5 segments — we have 3) */
-  .seg-control {
-    display: flex;
-    gap: 2px;
-    background: var(--surface3);
-    padding: 3px;
-    border-radius: 10px;
-    margin: 0 0 var(--s-2);
-  }
-  .seg-btn {
-    flex: 1 1 0;
-    padding: 8px 10px;
-    min-height: 36px;
-    background: transparent;
-    border: 0;
-    border-radius: 8px;
-    color: var(--muted);
-    font-size: var(--fs-3);
-    font-weight: 600;
-    cursor: pointer;
-    transition: background .15s, color .15s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-family: inherit;
-  }
-  .seg-btn .seg-count {
-    font-size: var(--fs-1);
-    background: rgba(255,255,255,.06);
-    padding: 1px 6px;
-    border-radius: 100px;
-    color: var(--muted);
-  }
-  .seg-btn.active {
-    background: var(--surface);
-    color: var(--text);
-    box-shadow: 0 1px 3px rgba(0,0,0,.25);
-  }
-  .seg-btn.active .seg-count { background: var(--gold-dim); color: var(--gold); }
-  .seg-btn:active { transform: scale(.97); }
-
-  /* List styles inside the picker — full-width tap targets */
-  .tourney-list { padding: 0 var(--s-2); }
-  .tourney-list .cat-item {
-    padding: 12px var(--s-3);
-    border-radius: 8px;
-  }
-  .tourney-list .cat-item.active {
-    background: var(--gold-dim);
-    color: var(--gold);
-  }
-}
-@media (min-width: 640px) {
-  /* Desktop safety: ensure the unified picker is fully suppressed. */
-  #dropMenu_tourney { display: none !important; }
 }
 
 /* ══════════════════════════════════════════════════════

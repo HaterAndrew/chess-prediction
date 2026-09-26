@@ -1,61 +1,67 @@
 /* controls.css — the control vocabulary the views share: buttons, the
-   segmented control, keyboard hints, notes, tags, pills and empty states.
-   Sizes: 36 px controls for a mouse, 44 px for a finger. */
+   segmented control, keyboard hints, notes, tags, pills, the live dot and
+   empty states. Ruled boxes, condensed capitals on the buttons, the pens
+   for state. Sizes: 36 px controls for a mouse, 44 px for a finger. */
 
-/* ── Buttons ── */
-.button, a.button { align-items: center; background: var(--signal); border: 1px solid var(--signal); border-radius: var(--radius-lg); color: var(--signal-ink); cursor: pointer; display: inline-flex; font: 600 13px var(--display); gap: 8px; justify-content: center; min-height: var(--control-h); padding: 0 14px; text-decoration: none; transition: background var(--dur-fast), border-color var(--dur-fast); }
+/* ── Buttons: the filled one is the blue pen; the outline one inverts to ink on hover. ── */
+.button, a.button { align-items: center; background: var(--signal); border: 1px solid var(--signal); color: var(--signal-ink); cursor: pointer; display: inline-flex; font: 700 13px var(--display); font-stretch: var(--stretch-label); gap: 8px; justify-content: center; letter-spacing: .04em; min-height: var(--control-h); padding: 0 14px; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast), border-color var(--dur-fast); }
 .button:hover, a.button:hover { background: var(--signal-soft); border-color: var(--signal-soft); }
-button.secondary { align-items: center; background: var(--raised); border: 1px solid var(--line); border-radius: var(--radius-lg); color: var(--ink); display: inline-flex; font: 600 13px var(--display); gap: 8px; justify-content: center; min-height: var(--control-h); padding: 0 14px; transition: border-color var(--dur-fast); }
-button.secondary:hover { border-color: var(--signal); }
-button.link { background: transparent; border: 0; color: var(--ink); font: inherit; min-height: 0; padding: 0; text-decoration: underline; text-underline-offset: 2px; }
+button.secondary, .btn { align-items: center; background: transparent; border: 1px solid var(--line); color: var(--ink); cursor: pointer; display: inline-flex; font: 700 13px var(--display); font-stretch: var(--stretch-label); gap: 8px; justify-content: center; letter-spacing: .04em; min-height: var(--control-h); padding: 0 14px; text-transform: uppercase; transition: background var(--dur-fast), color var(--dur-fast); }
+button.secondary:hover, .btn:hover { background: var(--ink); color: var(--void); }
+.btn svg { flex: none; height: 15px; width: 15px; }
+button.link { background: transparent; border: 0; color: var(--ink); font: inherit; min-height: 0; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
 button.link:hover { color: var(--signal); }
-.button:disabled, button.secondary:disabled { cursor: not-allowed; opacity: .45; }
+.button:disabled, button.secondary:disabled, .btn:disabled { cursor: not-allowed; opacity: .45; }
 
-/* ── Segmented control: one choice from a few, drawn as one box. ── */
-.segmented { border: 1px solid var(--line); border-radius: 6px; display: inline-flex; overflow: hidden; }
-.segmented button { background: var(--raised); border: 0; border-radius: 0; color: var(--muted); cursor: pointer; font: 600 12px var(--display); min-height: 30px; padding: 0 12px; transition: background var(--dur-fast), color var(--dur-fast); white-space: nowrap; }
+/* ── Segmented control: one choice from a few, drawn as one ruled box; the
+   chosen segment is inked. ── */
+.segmented { border: 1px solid var(--line); display: inline-flex; overflow: hidden; }
+.segmented button { background: transparent; border: 0; color: var(--ink-2); cursor: pointer; font: 700 12px var(--display); min-height: 30px; padding: 0 12px; transition: background var(--dur-fast), color var(--dur-fast); white-space: nowrap; }
 .segmented button + button { border-left: 1px solid var(--line); }
-.segmented button:hover { color: var(--ink); }
-.segmented button.active { background: var(--signal-tint); color: var(--ink); }
+.segmented button:hover { background: var(--raised); color: var(--ink); }
+.segmented button.active { background: var(--ink); color: var(--void); }
 .segmented button:disabled { cursor: default; opacity: .45; }
 .segmented button:focus-visible { outline-offset: -2px; }
 
 /* ── Keyboard hint ── */
-kbd, .kbd-hint { background: var(--raised); border: 1px solid var(--line); border-radius: var(--radius); color: var(--muted); display: inline-block; font: 600 11px/1.4 var(--mono); padding: 1px 6px; vertical-align: middle; }
+kbd, .kbd-hint { background: transparent; border: 1px solid var(--line-soft); color: var(--ink-2); display: inline-block; font: 400 12px/1.4 var(--mono); padding: 0 5px; vertical-align: middle; }
 .search-btn-kbd { margin-left: 2px; }
 
-/* ── Note: a message in the flow with a 3 px state-coloured edge. Replaces
-   the stale, override and first-run banners. ── */
-.note { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--muted); border-radius: var(--radius); color: var(--ink); font: 13px/1.5 var(--display); margin: 0 0 var(--s-4); padding: 10px 14px; }
+/* ── Note: a message in the flow, printed on the stock its state calls
+   for. Replaces the stale, override and first-run banners. ── */
+.note { background: var(--panel); border: 1px solid var(--line); color: var(--ink); font: 13px/1.5 var(--display); margin: 0 0 var(--s-4); padding: 12px 16px; }
 .note[hidden] { display: none; }
-.note-signal { border-left-color: var(--signal); }
-.note-green { border-left-color: var(--green); }
-.note-amber { border-left-color: var(--amber); }
-.note-ember { border-left-color: var(--ember); }
-.note-blue { border-left-color: var(--blue); }
+.note-signal, .note-blue, .note-green { background: var(--stock-blue); }
+.note-amber { background: var(--stock-yellow); }
+.note-ember { background: var(--stock-pink); }
 .note-row { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 14px; }
 .note-body { flex: 1 1 200px; min-width: 0; }
-.note-title { font-weight: 600; }
-.note-detail { color: var(--muted); font-size: 12px; margin-top: 2px; }
-.note-detail strong { color: var(--ink); font-weight: 600; }
+.note-title { font-stretch: var(--stretch-label); font-weight: 800; text-transform: uppercase; }
+.note-detail { color: var(--ink-2); font-size: 12px; margin-top: 2px; }
+.note-detail strong { color: var(--ink); font-weight: 700; }
 .note-dismiss { margin: -6px -8px -6px auto; }
 .note-row > button.secondary { flex: none; }
 
-/* ── Tags and pills ── */
-.tag { border: 1px solid var(--line); border-radius: var(--radius); color: var(--muted); display: inline-block; font: 500 11px var(--display); letter-spacing: .04em; padding: 3px 7px; text-transform: uppercase; }
-.pill { align-items: center; border: 1px solid var(--line); border-radius: var(--radius-pill); color: var(--muted); display: inline-flex; font: 600 11px var(--display); gap: 5px; padding: 3px 10px; white-space: nowrap; }
-.pill-green { background: var(--green-tint); border-color: color-mix(in srgb, var(--green) 30%, transparent); color: var(--green); }
-.pill-amber { background: var(--amber-tint); border-color: color-mix(in srgb, var(--amber) 30%, transparent); color: var(--amber); }
-.pill-ember { background: var(--ember-tint); border-color: color-mix(in srgb, var(--ember) 30%, transparent); color: var(--ember); }
-.pill-blue { background: var(--blue-tint); border-color: color-mix(in srgb, var(--blue) 30%, transparent); color: var(--blue); }
-.pill-signal { background: var(--signal-tint); border-color: color-mix(in srgb, var(--signal) 30%, transparent); color: var(--signal); }
+/* ── Tags and pills: printed labels in a ruled box. The status pill is
+   the tournament's: Upcoming on blue stock with the live dot, Complete
+   and Historical in a quieter rule. ── */
+.tag { border: 1px solid var(--line); color: var(--muted); display: inline-block; font: 700 11px var(--display); letter-spacing: .06em; padding: 3px 7px; text-transform: uppercase; }
+.pill, .status-pill { align-items: center; border: 1px solid var(--line); color: var(--ink-2); display: inline-flex; font: 700 11px var(--display); gap: 6px; letter-spacing: .06em; padding: 2px 8px; text-transform: uppercase; white-space: nowrap; }
+.pill-green, .pill-blue, .pill-live { background: var(--stock-blue); border-color: var(--blue); color: var(--blue); }
+.pill-amber { background: var(--stock-yellow); color: var(--ink); }
+.pill-ember { background: var(--stock-pink); border-color: var(--ember); color: var(--ember); }
+.pill-signal { background: var(--stock-blue); border-color: var(--signal); color: var(--signal); }
+.pill-complete { border-color: var(--line-soft); color: var(--muted); }
+.pill-hist { background: var(--stock-grey); border-color: var(--line-soft); color: var(--muted); }
+.live-dot { animation: pulse 1.4s ease-in-out infinite; background: var(--blue); border-radius: 50%; flex-shrink: 0; height: 7px; width: 7px; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
 
 /* ── Empty state ── */
-.empty { border: 1px dashed var(--line); border-radius: var(--radius-lg); color: var(--dim); font: 13px var(--display); padding: var(--s-7) var(--s-4); text-align: center; }
+.empty { border: 1px dashed var(--line); color: var(--muted); font: 13px var(--display); padding: var(--s-7) var(--s-4); text-align: center; }
 
 /* Small controls still meet the 24 px target; a finger gets 44 px. */
 @media (pointer: coarse) {
-  .button, button.secondary { min-height: var(--touch); }
+  .button, button.secondary, .btn { min-height: var(--touch); }
   .segmented button { min-height: var(--touch); min-width: var(--touch); }
   .note-dismiss { margin-top: -10px; margin-bottom: -10px; }
 }

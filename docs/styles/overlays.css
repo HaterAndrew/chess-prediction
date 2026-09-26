@@ -1,28 +1,40 @@
 /* overlays.css — what rises over the page: the sheet (a bottom sheet on a
-   phone, a centred dialog above it; sheet.js opens and closes it), its
-   scrim, and the toast. The command palette keeps its own file (03-cmdk.css)
-   and the tournament picker its own (06-mobile-predictions.css). */
+   phone; above it a centred dialog, or a popover anchored under the control
+   that opened it; sheet.js opens, closes and anchors it), its scrim, and the
+   toast. The command palette keeps its own file (03-cmdk.css) and the
+   tournament picker its own (picker.css). Every sheet is a piece of paper:
+   a black rule around it, a soft shadow so it reads as lifted off the wall. */
 
 /* ── Sheet ── */
-.sheet { inset: 0; position: fixed; z-index: var(--layer-sheet); }
+/* The anchor coordinates and the popover width are set by sheet.js when a
+   sheet opens under a control; these are the resting values. */
+.sheet { --anchor-x: 0px; --anchor-y: 0px; --anchor-right: 0px; --sheet-w: 320px; inset: 0; position: fixed; z-index: var(--layer-sheet); }
 .sheet[hidden] { display: none; }
 .sheet-scrim { animation: scrimIn var(--dur) var(--ease-out); background: var(--scrim); inset: 0; position: absolute; }
-.sheet-panel { animation: sheetIn var(--dur-slow) var(--ease-out); background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--elevation); color: var(--ink); left: 50%; max-height: 86vh; max-height: 86svh; overflow-y: auto; padding: var(--s-6); position: absolute; top: 50%; transform: translate(-50%, -50%); width: min(420px, calc(100vw - 32px)); }
+.sheet-panel { animation: sheetIn var(--dur-slow) var(--ease-out); background: var(--panel); border: 1px solid var(--line); box-shadow: var(--elevation); color: var(--ink); left: 50%; max-height: 86vh; max-height: 86svh; overflow-y: auto; padding: var(--s-5); position: absolute; top: 50%; transform: translate(-50%, -50%); width: min(420px, calc(100vw - 32px)); }
 .sheet-panel:focus { outline: 0; }
 .sheet-handle { display: none; }
-.sheet-title { font-size: var(--fs-h2-lg); font-weight: 700; letter-spacing: -.01em; margin: 0 0 var(--s-2); }
-.sheet-list { display: grid; gap: 8px; margin-top: var(--s-3); }
-.sheet-row { align-items: center; background: var(--raised); border: 1px solid var(--line); border-radius: var(--radius-lg); color: var(--ink); cursor: pointer; display: flex; font: 500 15px var(--display); gap: 12px; justify-content: flex-start; min-height: var(--touch); padding: 0 14px; text-align: left; transition: border-color var(--dur-fast), background var(--dur-fast); width: 100%; }
-.sheet-row:hover { border-color: var(--signal); }
-.sheet-row.active { background: var(--signal-tint); border-color: var(--signal); box-shadow: inset 3px 0 0 var(--signal); }
-.sheet-row .nav-icon { display: block; flex: none; height: 20px; width: 20px; }
-.sheet-row b { font-weight: 500; }
-.sheet-row.active b { font-weight: 600; }
+.sheet-title { font-size: var(--fs-h2); font-stretch: var(--stretch-label); font-weight: 800; letter-spacing: .04em; margin: 0 0 var(--s-2); text-transform: uppercase; }
+/* The rows are the views a group holds: ruled, the open one under the highlighter. */
+.sheet-list { border-top: 1px solid var(--line); display: grid; margin-top: var(--s-3); }
+.sheet-row { align-items: center; background: transparent; border: 0; border-bottom: 1px solid var(--line-soft); color: var(--ink); cursor: pointer; display: flex; font: 700 14px var(--display); gap: 12px; justify-content: flex-start; min-height: var(--touch); padding: 0 12px; text-align: left; transition: background var(--dur-fast); width: 100%; }
+.sheet-row:last-child { border-bottom: 1px solid var(--line); }
+.sheet-row:hover { background: var(--raised); }
+.sheet-row:focus-visible { outline-offset: -2px; }
+.sheet-row.active { background: var(--mark); color: var(--mark-ink); }
+.sheet-row .nav-icon { display: block; flex: none; height: 18px; width: 18px; }
+.sheet-row b { font-weight: 700; }
 .sheet-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: var(--s-4); }
-body.sheet-open { overflow: hidden; }
+/* On the root, not the body: overflow hidden on the body would make it the
+   sticky top bar's scroll box, and the bar would scroll away under the scrim. */
+html.sheet-open { overflow: hidden; }
 @keyframes sheetIn {
-  from { opacity: 0; transform: translate(-50%, -50%) scale(.96); }
+  from { opacity: 0; transform: translate(-50%, -50%) scale(.98); }
   to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes sheetDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
 }
 @keyframes sheetUp {
   from { opacity: 0; transform: translateY(24px); }
@@ -30,19 +42,36 @@ body.sheet-open { overflow: hidden; }
 }
 @keyframes scrimIn { from { opacity: 0; } to { opacity: 1; } }
 
+/* A popover: the sheet hangs under the control that opened it, the scrim
+   stays clear (it still catches the click outside). sheet.js sets the
+   anchor coordinates and the side it aligns to. Phones ignore this and
+   raise the sheet from the foot. */
+@media (min-width: 640px) {
+  .sheet.anchored .sheet-scrim { animation: none; background: transparent; }
+  .sheet.anchored .sheet-panel { animation: sheetDown var(--dur) var(--ease-out); left: var(--anchor-x); max-height: min(70vh, 640px); top: var(--anchor-y); transform: none; width: var(--sheet-w, 320px); }
+  .sheet.anchored[data-align="end"] .sheet-panel { left: auto; right: var(--anchor-right); }
+  .sheet.anchored .sheet-handle, .sheet.anchored .sheet-actions { display: none; }
+  .group-sheet.anchored .sheet-panel { padding: 0; }
+  .group-sheet.anchored .sheet-title { clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
+  .group-sheet.anchored .sheet-list { border-top: 0; margin: 0; }
+  .group-sheet.anchored .sheet-row:last-child { border-bottom: 0; }
+}
+
 /* Phones: the sheet rises from the foot, full width, with a handle. */
 @media (max-width: 639px) {
-  .sheet-panel { animation: sheetUp var(--dur-slow) var(--ease-out); border-bottom: 0; border-radius: var(--radius-sheet) var(--radius-sheet) 0 0; bottom: 0; left: 0; max-height: 92vh; max-height: 92svh; padding: 10px 16px calc(16px + env(safe-area-inset-bottom, 0px)); right: 0; top: auto; transform: none; width: 100%; }
-  .sheet-handle { background: var(--line-input); border-radius: 2px; display: block; height: 4px; margin: 0 auto var(--s-3); width: 40px; }
+  .sheet-panel { animation: sheetUp var(--dur-slow) var(--ease-out); border-bottom: 0; border-left: 0; border-right: 0; border-top-width: 2px; bottom: 0; left: 0; max-height: 92vh; max-height: 92svh; padding: 10px 16px calc(16px + env(safe-area-inset-bottom, 0px)); right: 0; top: auto; transform: none; width: 100%; }
+  .sheet-handle { background: var(--line-soft); display: block; height: 4px; margin: 0 auto var(--s-3); width: 40px; }
   .sheet-actions button { flex: 1; }
+  .picker-panel { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .picker-panel .sheet-handle { margin-top: 10px; }
 }
 
 /* ── Toast: one line, inverted, above the bottom bar on phones. ── */
-#toast { background: var(--ink); border-radius: var(--radius-lg); bottom: 22px; box-shadow: var(--elevation); color: var(--void); font: 600 13px var(--display); left: 50%; max-width: calc(100vw - 32px); opacity: 0; padding: 12px 18px; pointer-events: none; position: fixed; transform: translate(-50%, 10px); transition: opacity var(--dur), transform var(--dur); z-index: var(--layer-toast); }
+#toast { background: var(--ink); border: 1px solid var(--ink); bottom: 22px; box-shadow: var(--elevation); color: var(--void); font: 700 13px var(--display); left: 50%; max-width: calc(100vw - 32px); opacity: 0; padding: 12px 18px; pointer-events: none; position: fixed; transform: translate(-50%, 10px); transition: opacity var(--dur), transform var(--dur); z-index: var(--layer-toast); }
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
-#toast.toast-error { box-shadow: var(--elevation), inset 3px 0 0 var(--ember); }
-#toast.toast-success { box-shadow: var(--elevation), inset 3px 0 0 var(--green); }
-@media (max-width: 1023px) {
+#toast.toast-error { border-color: var(--ember); }
+#toast.toast-success { border-color: var(--green); }
+@media (max-width: 767px) {
   #toast { bottom: calc(var(--bottom-nav) + 12px); }
 }
 

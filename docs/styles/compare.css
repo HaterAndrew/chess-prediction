@@ -24,6 +24,7 @@
 .compare-table { border-collapse: collapse; min-width: 480px; width: 100%; }
 .compare-table th, .compare-table td { border-bottom: 1px solid var(--line-soft); font-size: var(--fs-body-lg); padding: 10px var(--s-3); text-align: left; }
 .compare-table th { border-bottom: 2px solid var(--line); font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; text-transform: uppercase; }
+.compare-table th .compare-color-dot { display: inline-block; margin-right: 8px; vertical-align: middle; }
 .compare-table th.series-1 { color: var(--series-1); }
 .compare-table th.series-2 { color: var(--series-2); }
 .compare-table th.series-3 { color: var(--series-3); }
@@ -31,13 +32,13 @@
 .compare-table td { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 .compare-table td.compare-stat-label { color: var(--muted); font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
 .compare-chart-wrap { border: 1px solid var(--line); height: min(300px, 55vh); padding: var(--s-4); position: relative; }
+/* A phone keeps the table: the stat column, then one narrow column per pick
+   headed by its colour dot (the pickers above name the picks). */
 @media (max-width: 639px) {
   .compare-table-wrap { margin: 0 0 var(--s-4); overflow-x: visible; padding: 0; }
-  .compare-table, .compare-table tbody, .compare-table tr { display: block; min-width: 0; }
-  .compare-table thead { display: none; }
-  .compare-table tr { border: 1px solid var(--line); margin-bottom: var(--s-3); padding: var(--s-3) var(--s-4); }
-  .compare-table td { align-items: center; border-bottom: 1px solid var(--line-soft); display: flex; gap: var(--s-3); justify-content: space-between; padding: 6px 0; }
-  .compare-table td.compare-stat-label { border-bottom: 1px solid var(--line); margin-bottom: var(--s-2); padding-bottom: var(--s-2); }
-  .compare-table td:not(.compare-stat-label)::before { color: var(--muted); content: attr(data-label); flex-shrink: 0; font: 700 var(--fs-label) var(--display); letter-spacing: var(--track-label); text-transform: uppercase; }
-  .compare-table tr td:last-child { border-bottom: 0; }
+  .compare-table { min-width: 0; table-layout: fixed; }
+  .compare-table th, .compare-table td { font-size: 13px; overflow-wrap: anywhere; padding: 8px 6px; }
+  .compare-table th:first-child, .compare-table td.compare-stat-label { width: 32%; }
+  .compare-th-name { display: none; }
+  .compare-table .pill { font-size: 10px; gap: 4px; letter-spacing: .02em; padding: 1px 4px; white-space: normal; }
 }

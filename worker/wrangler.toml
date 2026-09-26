@@ -2,8 +2,7 @@ name = "chessentries"
 main = "src/index.ts"
 compatibility_date = "2026-05-01"
 compatibility_flags = ["nodejs_compat"]
-# The workers.dev host stays on through the cutover as the fallback origin;
-# preview URLs give every branch build its own hostname (no secrets, shared KV).
+# The workers.dev host stays on through the cutover as the fallback origin.
 workers_dev = true
 preview_urls = true
 
@@ -45,3 +44,21 @@ id = "3a7c98e0906c4d9eb355647a5a77feb7"
 # Secrets (set via `wrangler secret put <NAME>`):
 #   ANTHROPIC_API_KEY   the Ask tab's model key
 #   CCA_PROXY_KEY       shared secret gating /cca-tourlist for the nightly scrape
+
+# Previews: Workers Builds runs `wrangler preview` for every push to a branch
+# other than main, and wrangler refuses a configuration without this block.
+# A Preview inherits nothing from the top level, so the vars and the KV
+# namespace are restated: the same list (a Preview's own hostname is admitted
+# as same-origin in src/http.ts) and the production namespace, which only
+# holds rate-limit buckets and the daily cost counter. Secrets are not set on
+# Previews, so /ask answers 503 there while the site itself is exercised.
+[previews.vars]
+ALLOWED_ORIGIN = "https://chessentries.com,http://localhost:8080,http://127.0.0.1:8080"
+MODEL = "claude-sonnet-5"
+DAILY_BUDGET_USD = "1.00"
+RATE_LIMIT_PER_MIN = "20"
+GLOBAL_RATE_LIMIT_PER_MIN = "60"
+
+[[previews.kv_namespaces]]
+binding = "KV"
+id = "3a7c98e0906c4d9eb355647a5a77feb7"

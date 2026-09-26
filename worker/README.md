@@ -67,8 +67,9 @@ npx wrangler secret put ANTHROPIC_API_KEY
 npx wrangler secret put CCA_PROXY_KEY
 ```
 
-Preview URLs (`preview_urls = true`) share the production KV namespace and
-have no secrets, so `/ask` answers 503 there.
+Every push to a branch other than `main` builds a Preview (`npx wrangler
+preview`, configured by the `[previews]` block) on its own hostname, with the
+production vars and KV namespace and no secrets, so `/ask` answers 503 there.
 
 ## Tail logs
 

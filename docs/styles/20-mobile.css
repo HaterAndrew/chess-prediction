@@ -1,25 +1,18 @@
 /* ══════════════════════════════════════════════════════
    BREAKPOINTS (mobile-first, min-width only)
    The views carry their own breakpoints; what is left here is the gutter
-   step, the skeleton heights, the touch feedback and the narrow-phone
+   step, the touch feedback and the narrow-phone
    tightening.
    ══════════════════════════════════════════════════════ */
 
 /* ── 640px: larger phones / small tablets ── */
 @media (min-width: 640px) {
   :root { --gutter: 20px; }
-  .skeleton-chart { height: 320px; }
   .compare-chart-wrap { height: 340px; }
-}
-
-/* ── 768px: tablets (iPad portrait, large phones landscape) ── */
-@media (min-width: 768px) {
-  .skeleton-chart { height: 360px; }
 }
 
 /* ── 1024px: small laptops ── */
 @media (min-width: 1024px) {
-  .skeleton-chart { height: 380px; }
   .compare-chart-wrap { height: 360px; }
   .email-split.email-split-both { grid-template-columns: 1fr 1fr; }
   .email-split .email-output, .email-split .email-preview { min-height: 420px; }

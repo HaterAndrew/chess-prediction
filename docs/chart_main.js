@@ -12,7 +12,6 @@ function renderChart(t) {
     document.getElementById('chartLegend').innerHTML = '';
     document.getElementById('chartSubtitle').textContent =
       `${t.family} ${t.year}: chart unavailable (the charting library did not load)`;
-    document.getElementById('chartCard').classList.remove('live-glow');
     return;
   }
 
@@ -20,7 +19,6 @@ function renderChart(t) {
     // No registration timeline data or missing event date — show placeholder
     document.getElementById('chartLegend').innerHTML = '';
     document.getElementById('chartSubtitle').textContent = `${t.family} ${t.year}: No registration timeline available`;
-    document.getElementById('chartCard').classList.remove('live-glow');
     return;
   }
 
@@ -37,7 +35,6 @@ function renderChart(t) {
   if (!series.length) {
     document.getElementById('chartLegend').innerHTML = '';
     document.getElementById('chartSubtitle').textContent = `${t.family} ${t.year}: No registration timeline available`;
-    document.getElementById('chartCard').classList.remove('live-glow');
     return;
   }
 
@@ -75,28 +72,22 @@ function renderChart(t) {
     return 0;  // hide intermediate points
   });
 
-  // Gradient fill under actual data. The old version hardcoded a 380px
-  // gradient height (wrong whenever CSS resizes the plot) and allocated a
-  // fresh CanvasGradient on every scriptable pass — areaGradient fixes both.
-  const _actualGrad = {};
-
+  // The actual series is the blue pen with one flat tint under it, the way
+  // a line is coloured in on the sheet: no gradient, no glow.
   datasets.push({
     label: 'Actual Entries',
     data: actualData,
-    borderColor: PALETTE.blue,
-    backgroundColor: (context) => areaGradient(context.chart, _actualGrad, [
-      [0, themeRgba(PALETTE.blue, 0.22)],
-      [1, themeRgba(PALETTE.blue, 0)]
-    ]),
+    borderColor: PALETTE.actual,
+    backgroundColor: themeRgba(PALETTE.actual, 0.08),
     fill: true,
     borderWidth: 2.5,
     pointRadius: pointRadii,
     pointHoverRadius: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? 8 : 6),
-    pointHoverBackgroundColor: PALETTE.blue,
+    pointHoverBackgroundColor: PALETTE.actual,
     pointHoverBorderColor: PALETTE.text,
     pointHoverBorderWidth: 2,
-    pointBackgroundColor: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? PALETTE.text : PALETTE.blue),
-    pointBorderColor: PALETTE.blue,
+    pointBackgroundColor: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? PALETTE.text : PALETTE.actual),
+    pointBorderColor: PALETTE.actual,
     pointBorderWidth: actualData.map((_, i) => i === actualData.length-1 && !isDone(t) ? 3 : 0),
     tension: 0.3,
     order: 2
@@ -141,12 +132,12 @@ function renderChart(t) {
     datasets.push({
       label: 'Projected',
       data: projData,
-      borderColor: PALETTE.gold,
+      borderColor: PALETTE.projected,
       borderWidth: 2,
       borderDash: [6, 4],
       pointRadius: 0,
       pointHoverRadius: 6,
-      pointHoverBackgroundColor: PALETTE.gold,
+      pointHoverBackgroundColor: PALETTE.projected,
       pointHoverBorderColor: PALETTE.text,
       pointHoverBorderWidth: 2,
       tension: 0.3,
@@ -164,22 +155,19 @@ function renderChart(t) {
       ciUp.push({ x: date, y: Math.round(ciUpperScale * pctAtDb) });
       ciLo.push({ x: date, y: Math.max(0, Math.round(ciLowerScale * pctAtDb)) });
     }
-    // Band paint comes from CI Upper's fill('+1') alone; a vertical fade keeps
-    // the band readable near the projection line without muddying the bottom.
-    const _ciGrad = {};
+    // Band paint comes from CI Upper's fill('+1') alone: the likely range is
+    // one flat tint of the blue pen with a hairline edge, the bracket drawn
+    // round the forecast figure.
     datasets.push({
       label: 'CI Upper', data: ciUp,
-      borderColor: themeRgba(PALETTE.gold, 0.22), borderWidth: 1,
-      backgroundColor: (context) => areaGradient(context.chart, _ciGrad, [
-        [0, themeRgba(PALETTE.gold, 0.16)],
-        [1, themeRgba(PALETTE.gold, 0.03)]
-      ]),
+      borderColor: themeRgba(PALETTE.actual, 0.3), borderWidth: 1,
+      backgroundColor: PALETTE.band,
       fill: '+1', pointRadius: 0, tension: 0.3, order: 5
     });
     datasets.push({
       label: 'CI Lower', data: ciLo,
-      borderColor: themeRgba(PALETTE.gold, 0.22), borderWidth: 1,
-      backgroundColor: themeRgba(PALETTE.gold, 0.12),
+      borderColor: themeRgba(PALETTE.actual, 0.3), borderWidth: 1,
+      backgroundColor: PALETTE.band,
       pointRadius: 0, tension: 0.3, order: 5
     });
   }
@@ -187,11 +175,11 @@ function renderChart(t) {
   // Historical traces — dashed lines, no points, for past year curves of this family
   if (t.historical && t.registration_curve) {
     const histColors = [
-      themeRgba(PALETTE.muted, 0.45),  // most recent — brightest
-      themeRgba(PALETTE.muted, 0.32),
-      themeRgba(PALETTE.muted, 0.22),
-      themeRgba(PALETTE.muted, 0.14),
-      themeRgba(PALETTE.muted, 0.10),
+      themeRgba(PALETTE.hist, 0.45),  // most recent — brightest
+      themeRgba(PALETTE.hist, 0.32),
+      themeRgba(PALETTE.hist, 0.22),
+      themeRgba(PALETTE.hist, 0.14),
+      themeRgba(PALETTE.hist, 0.10),
     ];
     // histLookup is built once at the top of renderChart (above the
     // projection block) so the scrape-ratio computation and the historical
@@ -280,9 +268,9 @@ function renderChart(t) {
     const _isM = _mobileVP();
     // On mobile, only the Today line — Early Bird and Event labels overlap on
     // narrow screens (the days-to-event KPI card tells the user already).
-    if (!_isM && hasValidEarlyBird(t)) lines.push({ value: new Date(t.early_bird_deadline + 'T00:00:00'), label: 'Early Bird', color: PALETTE.green });
-    if (!isDone(t)) lines.push({ value: new Date(TOURNAMENT_DATA.generated + 'T00:00:00'), label: 'Today', color: PALETTE.blue });
-    if (!_isM && t.event_start) lines.push({ value: new Date(t.event_start + 'T00:00:00'), label: 'Event', color: PALETTE.red });
+    if (!_isM && hasValidEarlyBird(t)) lines.push({ value: new Date(t.early_bird_deadline + 'T00:00:00'), label: 'Early Bird', color: PALETTE.markerEarly });
+    if (!isDone(t)) lines.push({ value: new Date(TOURNAMENT_DATA.generated + 'T00:00:00'), label: 'Today', color: PALETTE.markerToday });
+    if (!_isM && t.event_start) lines.push({ value: new Date(t.event_start + 'T00:00:00'), label: 'Event', color: PALETTE.markerEvent });
     return lines;
   });
 
@@ -324,25 +312,7 @@ function renderChart(t) {
     }
   };
 
-  // Soft glow under the Actual line (dataset 0). Desktop only: shadowed
-  // strokes cost a full extra raster pass per frame, and small screens get
-  // no benefit at their line weight. The built-in filler runs before inline
-  // plugins, so the area fill underneath stays un-shadowed.
-  const lineGlowPlugin = {
-    id: 'lineGlow',
-    beforeDatasetDraw(chartInstance, args) {
-      if (args.index !== 0 || _mobileVP()) return;
-      chartInstance.ctx.save();
-      chartInstance.ctx.shadowColor = themeRgba(PALETTE.blue, 0.55);
-      chartInstance.ctx.shadowBlur = 6;
-    },
-    afterDatasetDraw(chartInstance, args) {
-      if (args.index !== 0 || _mobileVP()) return;
-      chartInstance.ctx.restore();
-    }
-  };
-
-  // Projection endpoint: gold dot + "approx N" label at (event day, predicted
+  // Projection endpoint: ink dot + "approx N" label at (event day, predicted
   // final). Desktop + live only; mobile keeps the hero number as the source.
   const endpointLabelPlugin = {
     id: 'endpointLabel',
@@ -357,10 +327,10 @@ function renderChart(t) {
       // dot, visual twin of the year-final markers
       g.beginPath();
       g.arc(px, py, 4, 0, Math.PI * 2);
-      g.fillStyle = PALETTE.gold;
+      g.fillStyle = PALETTE.projected;
       g.fill();
       g.lineWidth = 1.5;
-      g.strokeStyle = PALETTE.text;
+      g.strokeStyle = PALETTE.surface;
       g.stroke();
       // label with a surface halo; right of the dot, flip left at the edge
       const txt = '\u2248 ' + fmt(t.point_estimate);
@@ -385,7 +355,7 @@ function renderChart(t) {
       g.beginPath();
       g.rect(bx, by, tw + padX * 2, boxH);
       g.fill();
-      g.fillStyle = PALETTE.gold;
+      g.fillStyle = PALETTE.text;
       g.textAlign = 'left';
       g.textBaseline = 'middle';
       g.fillText(txt, bx + padX, by + boxH / 2 + 0.5);
@@ -520,7 +490,7 @@ function renderChart(t) {
   chart = new Chart(ctx, {
     type: 'line',
     data: { datasets },
-    plugins: [vertLinePlugin, crosshairPlugin, endpointLabelPlugin, lineGlowPlugin],
+    plugins: [vertLinePlugin, crosshairPlugin, endpointLabelPlugin],
     options: {
       responsive: true, maintainAspectRatio: false,
       animation: drawInAnimation,
@@ -535,7 +505,7 @@ function renderChart(t) {
           caretSize: 0,
           backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
           titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
-          padding: _mobileVP() ? 9 : 12, cornerRadius: 8,
+          padding: _mobileVP() ? 9 : 12, cornerRadius: 0,
           // Mobile tooltip: tighter padding, smaller text, smaller point swatches,
           // capped width so a long historical comparison list can't overflow the
           // chart area or the viewport. Desktop unchanged.
@@ -714,17 +684,14 @@ function renderChart(t) {
     }
   });
 
-  // Chart glow for live tournaments
-  document.getElementById('chartCard').classList.toggle('live-glow', t.status === 'live');
-
   // Legend
-  let legendHtml = `<div class="legend-item"><div class="legend-swatch" style="background:${PALETTE.blue}"></div>Actual</div>`;
+  let legendHtml = `<div class="legend-item"><div class="legend-swatch" style="background:${PALETTE.actual}"></div>Actual</div>`;
   if (!isDone(t)) {
     legendHtml += '<div class="legend-item"><div class="legend-swatch dashed"></div>Projected</div>';
-    legendHtml += `<div class="legend-item"><div class="legend-swatch band" style="background:${PALETTE.gold}"></div>Likely Range</div>`;
+    legendHtml += `<div class="legend-item"><div class="legend-swatch band" style="background:${PALETTE.actual}"></div>Likely Range</div>`;
   }
   if (t.historical) {
-    legendHtml += `<div class="legend-item"><div class="legend-swatch dashed" style="background:repeating-linear-gradient(90deg,${themeRgba(PALETTE.muted,0.5)} 0 4px,transparent 4px 8px)"></div>Historical</div>`;
+    legendHtml += `<div class="legend-item"><div class="legend-swatch dashed" style="background:repeating-linear-gradient(90deg,${themeRgba(PALETTE.hist,0.6)} 0 4px,transparent 4px 8px)"></div>Historical</div>`;
   }
   document.getElementById('chartLegend').innerHTML = legendHtml;
 

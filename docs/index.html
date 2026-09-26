@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-loading>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -13,7 +13,7 @@
 <!-- Render-blocking on purpose: it sets the theme attribute before first
      paint and registers the service worker before any other request. See
      docs/boot.js. -->
-<script src="boot.js?v=cc39f2ee1b"></script>
+<script src="boot.js?v=ef8436b139"></script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="CCA Predictor">
@@ -24,25 +24,25 @@
 <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" integrity="sha384-cVMg8E3QFwTvGCDuK+ET4PD341jF3W8nO1auiXfuZNQkzbUUiBGLsIQUE+b1mxws" crossorigin="anonymous"></script>
 <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/archivo/archivo-latin.woff2">
 <link rel="stylesheet" href="styles/fonts.css?v=d265109c48">
-<link rel="stylesheet" href="styles/tokens.css?v=56b8c4ba24">
-<link rel="stylesheet" href="styles/01-base.css?v=01aea6dc00">
-<link rel="stylesheet" href="styles/shell.css?v=5a85ffa0db">
-<link rel="stylesheet" href="styles/controls.css?v=058c81536b">
+<link rel="stylesheet" href="styles/tokens.css?v=d14269065f">
+<link rel="stylesheet" href="styles/01-base.css?v=647a4463bf">
+<link rel="stylesheet" href="styles/shell.css?v=8088d74144">
+<link rel="stylesheet" href="styles/controls.css?v=4b8c767ae8">
 <link rel="stylesheet" href="styles/overlays.css?v=f0a8a3dd08">
 <link rel="stylesheet" href="styles/picker.css?v=d1ecc80b37">
-<link rel="stylesheet" href="styles/03-cmdk.css?v=9823c33751">
-<link rel="stylesheet" href="styles/forecast.css?v=e9e5b33a7f">
+<link rel="stylesheet" href="styles/03-cmdk.css?v=f9f7e3814f">
+<link rel="stylesheet" href="styles/forecast.css?v=a60560696b">
 <link rel="stylesheet" href="styles/sections.css?v=db3956d491">
-<link rel="stylesheet" href="styles/season.css?v=bbda8254df">
-<link rel="stylesheet" href="styles/about.css?v=78c8fc8acf">
+<link rel="stylesheet" href="styles/season.css?v=77f370a3df">
+<link rel="stylesheet" href="styles/about.css?v=f6920659d1">
 <link rel="stylesheet" href="styles/performance.css?v=a5c5f99f96">
 <link rel="stylesheet" href="styles/compare.css?v=7b35d9ec29">
-<link rel="stylesheet" href="styles/ask.css?v=592bb524aa">
+<link rel="stylesheet" href="styles/ask.css?v=1cb84e630e">
 <link rel="stylesheet" href="styles/email.css?v=b8b6cdb598">
-<link rel="stylesheet" href="styles/puzzles.css?v=1598ab5d84">
-<link rel="stylesheet" href="styles/19-motion.css?v=62af187fbc">
-<link rel="stylesheet" href="styles/20-mobile.css?v=0e3623d111">
-<link rel="stylesheet" href="styles/23-print.css?v=b75fa9d7c0">
+<link rel="stylesheet" href="styles/puzzles.css?v=5e60f4666f">
+<link rel="stylesheet" href="styles/19-motion.css?v=aa3292cefe">
+<link rel="stylesheet" href="styles/20-mobile.css?v=8ac4a673d3">
+<link rel="stylesheet" href="styles/23-print.css?v=3a2b1a2374">
 <link rel="stylesheet" href="styles/theme.css?v=86ed0bd11f">
 </head>
 <body>
@@ -172,7 +172,7 @@
   <div class="page-tab-panel active" id="panel-predictions" role="region" aria-labelledby="ptab-predictions">
 
   <!-- ── First-run note (new visitors only; replaces the old splash gate) ── -->
-  <div id="firstRunHint" class="note note-signal" hidden>
+  <div id="firstRunHint" class="note note-signal">
     <div class="note-row">
       <span class="note-body">Pick a tournament in the top bar. Predictions update daily.</span>
       <button type="button" class="icon-button note-dismiss" data-act="dismiss-hint" aria-label="Dismiss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
@@ -184,10 +184,10 @@
   <div class="note pace-note" id="deltaBanner" role="status">
     <div class="note-body">
       <div class="note-title" id="deltaMain">Loading...</div>
-      <div class="note-detail" id="deltaSub"></div>
-      <div class="note-context" id="deltaContext"></div>
+      <div class="note-detail" id="deltaSub">&nbsp;</div>
+      <div class="note-context" id="deltaContext">&nbsp;</div>
     </div>
-    <div class="pace-figure num" id="deltaValue"></div>
+    <div class="pace-figure num" id="deltaValue">&nbsp;</div>
   </div>
 
   <!-- ── Manual override note ── -->
@@ -201,16 +201,6 @@
     </div>
   </div>
 
-  <!-- ── Skeleton Loading State ── -->
-  <div id="skeletonLoader">
-    <div class="skeleton skeleton-card mb16" ></div>
-    <div class="skeleton skeleton-chart mb16" ></div>
-    <div class="skeleton skeleton-text"></div>
-    <div class="skeleton skeleton-text"></div>
-    <div class="skeleton skeleton-text"></div>
-    <div class="skeleton skeleton-text"></div>
-  </div>
-
   <!-- ── Hero KPI ── -->
   <!-- No aria-live on this container: #heroNumber is driven by a ~600ms
        requestAnimationFrame count-up, and a live region wrapping a tween
@@ -221,18 +211,18 @@
       <div class="hero-label" id="heroLabel">Predicted Final Entries</div>
       <div class="hero-number" id="heroNumber" aria-hidden="true"></div>
       <span class="sr-only" id="heroAnnounce" aria-live="polite" aria-atomic="true"></span>
-      <div class="hero-ci" id="heroCi"></div>
+      <div class="hero-ci" id="heroCi"><div class="range" aria-hidden="true"><span class="range-bound">&nbsp;</span><div class="range-track"></div><span class="range-bound">&nbsp;</span></div><div class="range-caption">&nbsp;</div><div class="hero-tags"><span class="tag">&nbsp;</span><span class="tag">&nbsp;</span></div></div>
       <div class="hero-narrative" id="heroNarrative" aria-live="polite"></div>
       <div class="festival-cluster" id="festivalCluster" aria-label="Festival sub-events"></div>
     </div>
-    <div id="weekBreakdown" class="hero-week" style="display:none">
+    <div id="weekBreakdown" class="hero-week">
       <div class="hero-week-label">Last 7 Days</div>
-      <div id="weekBars" class="hero-week-bars"></div>
+      <div id="weekBars" class="hero-week-bars"><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div><div class="week-row"><span class="week-date">&nbsp;</span><div class="week-track"></div><span class="week-n">&nbsp;</span></div></div>
     </div>
     <div class="hero-kpis">
-      <div class="kpi-card" id="kpiCurrent"></div>
-      <div class="kpi-card" id="kpiDays"></div>
-      <div class="kpi-card" id="kpiPace"></div>
+      <div class="kpi-card" id="kpiCurrent"><div class="kpi-label">&nbsp;</div><div class="kpi-value">&nbsp;</div><div class="kpi-sub">&nbsp;</div><div class="kpi-fold"><div class="fold-head"><span>&nbsp;</span><span class="num">&nbsp;</span></div><div class="fold-track"></div><div class="fold-sub">&nbsp;</div></div></div>
+      <div class="kpi-card" id="kpiDays"><div class="kpi-label">&nbsp;</div><div class="kpi-value">&nbsp;</div><div class="kpi-sub">&nbsp;</div><div class="kpi-fold"><div class="fold-head"><span>&nbsp;</span><span class="num">&nbsp;</span></div><div class="fold-track"></div><div class="fold-sub">&nbsp;</div></div></div>
+      <div class="kpi-card" id="kpiPace"><div class="kpi-label">&nbsp;</div><div class="kpi-value">&nbsp;</div><div class="kpi-sub">&nbsp;</div></div>
     </div>
   </div>
 
@@ -241,10 +231,10 @@
     <div class="chart-top">
       <div>
         <h2 class="chart-title" id="chartTitle">Cumulative Entries</h2>
-        <div class="chart-subtitle" id="chartSubtitle"></div>
+        <div class="chart-subtitle" id="chartSubtitle">&nbsp;</div>
       </div>
       <div class="chart-top-right">
-        <div class="chart-legend" id="chartLegend"></div>
+        <div class="chart-legend" id="chartLegend"><div class="legend-item"><div class="legend-swatch"></div>Actual</div><div class="legend-item"><div class="legend-swatch dashed"></div>Projected</div><div class="legend-item"><div class="legend-swatch band"></div>Likely Range</div><div class="legend-item"><div class="legend-swatch dashed"></div>Historical</div></div>
         <div class="segmented" id="chartRangeSeg" role="group" aria-label="Chart time range">
           <button data-act="chart-range" data-range="all" class="active">All</button>
           <button data-act="chart-range" data-range="90">90d</button>
@@ -257,7 +247,7 @@
     </div>
     <!-- Mobile-only inline date strip: replaces the EB/Event pill annotations
          hidden on phones so the user can still see those dates at a glance. -->
-    <div id="chartMobileDates" class="chart-mobile-dates" aria-hidden="true"></div>
+    <div id="chartMobileDates" class="chart-mobile-dates" aria-hidden="true">&nbsp;</div>
   </div>
 
   <!-- Inline model accuracy strip removed — that summary lives on the
@@ -319,12 +309,12 @@
              hardcode a value into a stat-chip-num; give it an id and source it. -->
         <div class="stat-chip">
           <div class="stat-chip-label">Day Before</div>
-          <div class="stat-chip-num gold" id="mc-mae-t1">–</div>
+          <div class="stat-chip-num pen" id="mc-mae-t1">–</div>
           <div class="stat-chip-sub" title="Mean Absolute Percentage Error at T-1">MAPE</div>
         </div>
         <div class="stat-chip">
           <div class="stat-chip-label">CI Cover</div>
-          <div class="stat-chip-num gold" id="mc-ci-cover">–</div>
+          <div class="stat-chip-num pen" id="mc-ci-cover">–</div>
           <div class="stat-chip-sub">target 80% (T-14)</div>
         </div>
         <div class="stat-chip">
@@ -604,7 +594,7 @@
       <div id="mh-grade-scope" class="info-note down"></div>
       <div id="mh-warnings"></div>
       <div class="info-note">
-        Source of truth: <a href="audit/AUDIT.md" class="gold-link" target="_blank" rel="noopener">audit/AUDIT.md</a> on the repo. Every metric below is computed by the daily pipeline; the underlying JSON lives at <code class="code-chip">output/audit_warnings.json</code>, <code class="code-chip">output/performance_data.json</code>, and <code class="code-chip">output/website_data.json</code>.
+        Source of truth: <a href="audit/AUDIT.md" class="pen-link" target="_blank" rel="noopener">audit/AUDIT.md</a> on the repo. Every metric below is computed by the daily pipeline; the underlying JSON lives at <code class="code-chip">output/audit_warnings.json</code>, <code class="code-chip">output/performance_data.json</code>, and <code class="code-chip">output/website_data.json</code>.
       </div>
     </div>
 
@@ -616,7 +606,7 @@
         The model exploits this pattern. If a tournament has 180 entries with 60 days to go, and the same tournament historically
         had ~170 at that point and finished with ~900, we expect roughly 900 again. We compute the <strong>ratio</strong> of
         final-to-current entries at the same lead time across all prior years, average them, and multiply:
-        <span class="gold w600">180 &times; 5 = 900</span>.
+        <span class="pen w600">180 &times; 5 = 900</span>.
       </p>
     </div>
 
@@ -651,10 +641,10 @@
           </tr></thead>
           <tbody><tr>
             <td>w(T): ratio weight</td>
-            <td class="tc gold">0.80</td>
-            <td class="tc gold">0.55</td>
-            <td class="tc gold">0.30</td>
-            <td class="tc gold">0.15</td>
+            <td class="tc pen">0.80</td>
+            <td class="tc pen">0.55</td>
+            <td class="tc pen">0.30</td>
+            <td class="tc pen">0.15</td>
           </tr></tbody>
         </table>
       </div>
@@ -694,7 +684,7 @@
       <h3>Confidence Intervals &amp; Sanity Checks</h3>
       <p class="prose sp">
         Every prediction includes a confidence interval: a range the actual result has fallen within about
-        <strong class="gold" id="mc-ci-cover-inline">75%</strong> of the time at two weeks out in backtesting.
+        <strong class="pen" id="mc-ci-cover-inline">75%</strong> of the time at two weeks out in backtesting.
         The interval targets 80%, so it runs slightly tight, and tighter still close to the event, where coverage
         drops further. Wider far from the event, narrower as it approaches.
       </p>
@@ -738,10 +728,10 @@
       <p class="prose sp">
         We never test on data the model has seen. We train through (say) 2023, then predict every 2024 tournament as if living
         in early 2024: no future information leaks in, and each tournament is held out of its own training set. Across
-        <strong class="gold" id="about-n">136</strong> blind-tested tournaments, at two weeks out the median miss was
-        <strong class="gold" id="about-median">7.4%</strong> and the 80% interval captured the true result
-        <strong class="gold" id="about-cov">78%</strong> of the time. Coverage three days out sits near
-        <strong class="gold" id="about-cov-close">76%</strong>. Earlier releases ran overconfident close to the
+        <strong class="pen" id="about-n">136</strong> blind-tested tournaments, at two weeks out the median miss was
+        <strong class="pen" id="about-median">7.4%</strong> and the 80% interval captured the true result
+        <strong class="pen" id="about-cov">78%</strong> of the time. Coverage three days out sits near
+        <strong class="pen" id="about-cov-close">76%</strong>. Earlier releases ran overconfident close to the
         event (three-day coverage as low as 67%) — exactly when people most want the number — and the 2026
         recalibration widened short-lead intervals to close most of that gap. The full lead-time breakdown is on the
         Performance tab.
@@ -772,7 +762,7 @@
           </tr></thead>
           <tbody>
             <tr><td>Harmonic-mean ratio only</td><td class="tc">8.2%</td><td class="tc">14.8%</td><td class="tc">89%</td><td class="mut">Good base, wide CIs</td></tr>
-            <tr class="highlight"><td class="gold">+ Huber regression ensemble</td><td class="tc gold">7.6%</td><td class="tc gold">13.0%</td><td class="tc gold">91%</td><td class="gold">Selected</td></tr>
+            <tr class="highlight"><td class="pen">+ Huber regression ensemble</td><td class="tc pen">7.6%</td><td class="tc pen">13.0%</td><td class="tc pen">91%</td><td class="pen">Selected</td></tr>
             <tr><td>+ YoY pacing (direct blend)</td><td class="tc">8.5%</td><td class="tc">15.0%</td><td class="tc">88%</td><td class="mut">Adds noise</td></tr>
             <tr><td>+ YoY pacing (dampened)</td><td class="tc">7.9%</td><td class="tc">14.1%</td><td class="tc">89%</td><td class="mut">Marginal harm</td></tr>
             <tr><td>+ Recency-weighted ratios</td><td class="tc">7.8%</td><td class="tc">13.4%</td><td class="tc">82%</td><td class="mut">CI coverage crash</td></tr>
@@ -856,29 +846,29 @@
             <th class="tc">Ratio</th>
           </tr></thead>
           <tbody>
-            <tr><td class="tc">2022</td><td class="tc">168</td><td class="tc">944</td><td class="tc gold">5.62</td></tr>
-            <tr><td class="tc">2023</td><td class="tc">161</td><td class="tc">960</td><td class="tc gold">5.96</td></tr>
-            <tr><td class="tc">2024</td><td class="tc">191</td><td class="tc">860</td><td class="tc gold">4.50</td></tr>
-            <tr><td class="tc">2025</td><td class="tc">188</td><td class="tc">899</td><td class="tc gold">4.78</td></tr>
+            <tr><td class="tc">2022</td><td class="tc">168</td><td class="tc">944</td><td class="tc pen">5.62</td></tr>
+            <tr><td class="tc">2023</td><td class="tc">161</td><td class="tc">960</td><td class="tc pen">5.96</td></tr>
+            <tr><td class="tc">2024</td><td class="tc">191</td><td class="tc">860</td><td class="tc pen">4.50</td></tr>
+            <tr><td class="tc">2025</td><td class="tc">188</td><td class="tc">899</td><td class="tc pen">4.78</td></tr>
           </tbody>
         </table>
       </div>
       <p class="prose sp">
-        Harmonic mean = 4 / (1/5.62 + 1/5.96 + 1/4.50 + 1/4.78) = <strong class="gold">5.15</strong>
-        &rarr; F<sub>ratio</sub> = 180 &times; 5.15 = <strong class="gold">927</strong>
+        Harmonic mean = 4 / (1/5.62 + 1/5.96 + 1/4.50 + 1/4.78) = <strong class="pen">5.15</strong>
+        &rarr; F<sub>ratio</sub> = 180 &times; 5.15 = <strong class="pen">927</strong>
       </p>
 
       <!-- Step 2 -->
       <h4>Step 2: Huber Regression</h4>
       <p class="prose sp mono">
-        F<sub>reg</sub> = &beta;<sub>0</sub> &middot; 180 + &beta;<sub>1</sub> &middot; 62 + &beta;<sub>2</sub> &asymp; <strong class="gold">907</strong>
+        F<sub>reg</sub> = &beta;<sub>0</sub> &middot; 180 + &beta;<sub>1</sub> &middot; 62 + &beta;<sub>2</sub> &asymp; <strong class="pen">907</strong>
       </p>
 
       <!-- Step 3 -->
       <h4>Step 3: Ensemble Blend</h4>
       <p class="prose sp">
         At T = 62 (&gt; 28), ratio weight w = 0.15:<br>
-        <span class="mono">F<sub>pred</sub> = 0.15 &times; 927 + 0.85 &times; 907 = <strong class="gold">910</strong></span>
+        <span class="mono">F<sub>pred</sub> = 0.15 &times; 927 + 0.85 &times; 907 = <strong class="pen">910</strong></span>
       </p>
 
       <!-- Step 4 -->
@@ -891,9 +881,9 @@
             <th class="tc">Result</th>
           </tr></thead>
           <tbody>
-            <tr><td>Growth trend (&minus;3.4%/yr)</td><td>910 &times; (1 + (&minus;0.034) &middot; 0.5)</td><td class="tc gold">894</td></tr>
-            <tr><td>Withdrawal corr. (1.2%)</td><td>894 &times; (1 &minus; 0.012)</td><td class="tc gold">883</td></tr>
-            <tr><td>Plausibility bounds</td><td>Below 70% of family median (916); blend</td><td class="tc gold">900</td></tr>
+            <tr><td>Growth trend (&minus;3.4%/yr)</td><td>910 &times; (1 + (&minus;0.034) &middot; 0.5)</td><td class="tc pen">894</td></tr>
+            <tr><td>Withdrawal corr. (1.2%)</td><td>894 &times; (1 &minus; 0.012)</td><td class="tc pen">883</td></tr>
+            <tr><td>Plausibility bounds</td><td>Below 70% of family median (916); blend</td><td class="tc pen">900</td></tr>
           </tbody>
         </table>
       </div>
@@ -1029,7 +1019,7 @@
      OFFLINE_FALLBACKS (test_global_uniqueness pins name collisions and
      suffix clashes; test_script_loading pins the defer attribute). -->
 <script defer src="util_core.js?v=2824d286fc"></script>
-<script defer src="foundation.js?v=c101b7a670"></script>
+<script defer src="foundation.js?v=b261d0c154"></script>
 <!-- theme.js reads PALETTE/rebuildPalette from foundation.js at load and
      sets the Chart.js defaults before any chart is built. -->
 <script defer src="theme.js?v=33c380c35b"></script>
@@ -1047,25 +1037,25 @@
 <script defer src="gestures.js?v=22c4411a24"></script>
 <script defer src="cmdk.js?v=c497999f1f"></script>
 <script defer src="tab_email.js?v=cdc29ce20b"></script>
-<script defer src="tab_performance.js?v=25c7cb8779"></script>
+<script defer src="tab_performance.js?v=8ca89293dc"></script>
 <script defer src="tab_puzzles.js?v=7d25085766"></script>
 <script defer src="pickers.js?v=fbcaedd103"></script>
 <script defer src="panels_info.js?v=e948552625"></script>
 <script defer src="hero_kpi.js?v=f476409077"></script>
-<script defer src="hero_figures.js?v=3c3f4c96ca"></script>
-<script defer src="chart_main.js?v=85ad025049"></script>
-<script defer src="chart_hist.js?v=4ad01878ac"></script>
+<script defer src="hero_figures.js?v=120548b340"></script>
+<script defer src="chart_main.js?v=45f5be5edc"></script>
+<script defer src="chart_hist.js?v=c32cd4cf68"></script>
 <script defer src="panels_grid.js?v=586d1d446a"></script>
 <script defer src="panels_cal.js?v=ab545ee2e4"></script>
 <script defer src="season_cards.js?v=c15ab193dd"></script>
 <script defer src="tab_about.js?v=edbf709211"></script>
-<script defer src="tab_compare.js?v=acc24bba98"></script>
+<script defer src="tab_compare.js?v=1da9e23795"></script>
 <script defer src="tab_ask.js?v=ac0057506c"></script>
-<script defer src="app.js?v=09d54935a1"></script>
+<script defer src="app.js?v=62346f8dcd"></script>
 <!-- actions.js wires every control via delegation (v3 S5). It replaced the
      inline onclick/onkeydown attributes that the CSP below no longer permits,
      so it is load-bearing: without it nothing on the page responds. It comes
      last because it dispatches into the globals the files above define. -->
-<script defer src="actions.js?v=74ce6eb830"></script>
+<script defer src="actions.js?v=32a75b22e8"></script>
 </body>
 </html>

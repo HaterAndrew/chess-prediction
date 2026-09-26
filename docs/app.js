@@ -38,6 +38,7 @@ function switchPageTab(tab, skipHash) {
   if (tab === 'compare') renderCompareTab();
   if (tab === 'ask') initAskTab();
   if (tab === 'audit') initAuditTab();
+  if (tab === 'about') ensureModelHealth();
   // Focus management: move focus to new panel for screen readers
   panel.setAttribute('tabindex', '-1');
   panel.focus({ preventScroll: true });
@@ -196,9 +197,86 @@ window.addEventListener('hashchange', () => navigateToHash());
 // ══════════════════════════════════════════════════════════
 // MAIN ORCHESTRATOR
 // ══════════════════════════════════════════════════════════
+// Bumped on every selectTournament call; a render phase that wakes up to find
+// a newer generation exits, so a quick run of arrow keys renders only the
+// tournament the visitor stopped on.
+let _renderGen = 0;
+
+// Run the phases in order, each in its own task with a paint in between, so
+// no single task holds the main thread for the whole render. Under 4x CPU
+// throttling the old one-shot render was a 250-320 ms task behind a 120 ms
+// timer; the phases are 60-130 ms each and the chart is on screen before the
+// rest starts. The chain is abandoned when a newer generation has begun.
+function _runRenderPhases(gen, phases) {
+  const step = i => {
+    if (gen !== _renderGen || i >= phases.length) return;
+    phases[i]();
+    requestAnimationFrame(() => setTimeout(() => step(i + 1), 0));
+  };
+  // The first phase gets its own task too, so it never extends the one that
+  // called us: the deferred-script evaluation on first load, a keydown
+  // handler on the arrow keys.
+  setTimeout(() => step(0), 0);
+}
+
+// Phase A: what the visitor is looking at. The renders run inside try/finally
+// so a throw in any one of them can never strand the page on the skeleton
+// loader again. That was the refresh bug: renderChart threw while Chart.js
+// was still loading, the callback aborted before hideSkeletons(), and the
+// sections stayed at opacity 0 until a reload. The error still surfaces in
+// the console.
+function _renderAboveTheFold(t, sections) {
+  try {
+    renderTabs();
+    renderDelta(t);
+    renderHero(t);
+    // KPI row removed: % Registered duplicates the CI bar, Early Bird is in
+    // the chart annotations + subtitle, Past Average shows in Historical
+    // Comparison, CI Width is the CI bar itself, Regular Fee has its own panel.
+    renderProgress(t);
+    renderChart(t);
+    // Scroll to delta banner smoothly when switching tournaments
+    document.getElementById('deltaBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } finally {
+    // Hide skeleton loaders and reveal the sections whether or not every
+    // render succeeded; a half-rendered page beats a blank one.
+    hideSkeletons();
+    sections.forEach((s, i) => {
+      setTimeout(() => {
+        s.style.opacity = '';
+        s.style.transform = 'translateY(0)';
+        s.classList.add('fade-enter');
+        setTimeout(() => s.classList.remove('fade-enter'), 400);
+      }, i * 60);
+    });
+  }
+}
+
+// Phase B: the season calendar and the live-event cards.
+function _renderCalendarAndCards(t) {
+  renderCalendar();
+  // Model accuracy summary lives on the Performance tab; removed from home.
+  renderMiniCards();
+  // Show/hide sections based on tournament type
+  document.getElementById('miniGrid').style.display = t.status === 'live' ? '' : 'none';
+}
+
+// Phase C: everything below the chart.
+function _renderBelowTheChart(t) {
+  renderTimeline(t);
+  renderMilestones(t);
+  renderHistorical(t);
+  renderRegCurve(t);
+  renderFees(t);
+  // Hide fee panel for historical tournaments (no fee data)
+  const feePanel = document.getElementById('feePanel');
+  if (feePanel) feePanel.style.display = (!t.early_bird_fee && !t.regular_fee && !t.onsite_fee) ? 'none' : '';
+}
+
 function selectTournament(index, skipHash) {
   selectedIndex = index;
   const t = TOURNAMENT_DATA.tournaments[index];
+  const gen = ++_renderGen;
   if (!skipHash) updateHash();
 
   // Update header label and page title
@@ -216,54 +294,21 @@ function selectTournament(index, skipHash) {
   const sections = document.querySelectorAll('.delta-banner, .chart-card, .kpi-row, .progress-row, .grid-2');
   sections.forEach(s => s.style.opacity = '0');
 
-  setTimeout(() => {
-    // The renders run inside try/finally so a throw in any one of them can
-    // never strand the page on the skeleton loader again. That was the
-    // refresh bug: renderChart threw while Chart.js was still loading, this
-    // callback aborted before hideSkeletons(), and the sections stayed at
-    // opacity 0 until a reload. The error still surfaces in the console.
-    try {
-      renderTabs();
-      renderCalendar();
-      // Model accuracy summary lives on the Performance tab; removed from home.
-      renderMiniCards();
-      renderDelta(t);
-      renderHero(t);
-      // KPI row removed: % Registered duplicates the CI bar, Early Bird is in
-      // the chart annotations + subtitle, Past Average shows in Historical
-      // Comparison, CI Width is the CI bar itself, Regular Fee has its own panel.
-      renderProgress(t);
-      renderChart(t);
-      renderTimeline(t);
-      renderMilestones(t);
-      renderHistorical(t);
-      renderRegCurve(t);
-      renderFees(t);
+  _runRenderPhases(gen, [
+    () => _renderAboveTheFold(t, sections),
+    () => _renderCalendarAndCards(t),
+    () => _renderBelowTheChart(t),
+  ]);
+}
 
-      // Show/hide sections based on tournament type
-      const miniGrid = document.getElementById('miniGrid');
-      miniGrid.style.display = t.status === 'live' ? '' : 'none';
-
-      // Hide fee panel for historical tournaments (no fee data)
-      const feePanel = document.getElementById('feePanel');
-      if (feePanel) feePanel.style.display = (!t.early_bird_fee && !t.regular_fee && !t.onsite_fee) ? 'none' : '';
-
-      // Scroll to delta banner smoothly when switching tournaments
-      document.getElementById('deltaBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    } finally {
-      // Hide skeleton loaders and reveal the sections whether or not every
-      // render succeeded; a half-rendered page beats a blank one.
-      hideSkeletons();
-      sections.forEach((s, i) => {
-        setTimeout(() => {
-          s.style.opacity = '';
-          s.style.transform = 'translateY(0)';
-          s.classList.add('fade-enter');
-          setTimeout(() => s.classList.remove('fade-enter'), 400);
-        }, i * 60);
-      });
-    }
-  }, 120);
+// renderModelHealth fills static spans from PERFORMANCE_SUMMARY; once is
+// enough, whether the idle pass or an early visit to the About tab gets there
+// first.
+let _modelHealthRendered = false;
+function ensureModelHealth() {
+  if (_modelHealthRendered) return;
+  _modelHealthRendered = true;
+  renderModelHealth();
 }
 
 function init() {
@@ -296,7 +341,12 @@ function init() {
     }
   }
 
-  renderModelHealth();
+  // The About tab's telemetry and the tournament table below the fold are
+  // not on the first-paint path: they render when the main thread is idle,
+  // or on demand if the visitor gets there first (switchPageTab, the table's
+  // own sort and filter handlers).
+  _idle(ensureModelHealth);
+  _idle(renderAllTournaments);
   document.getElementById('lastUpdated').textContent = fmtDateTimeLong(TOURNAMENT_DATA.generated_time || TOURNAMENT_DATA.generated);
   // First-run hint: shown once to genuinely new visitors. Anyone who already
   // saw the old splash gate (cep:splash:seen) counts as a returning user.
@@ -307,7 +357,6 @@ function init() {
     }
   } catch (_) {}
 
-  renderAllTournaments();
   renderSummaryBar();
 
   syncSectionDisclosure();

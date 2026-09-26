@@ -173,6 +173,16 @@ function _haptic(ms) {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   try { navigator.vibrate(ms || 12); } catch (_) {}
 }
+// Work that no visitor is waiting for (the tournament table below the fold,
+// the About tab's telemetry) runs when the main thread is free, with a
+// ceiling so it still lands on a busy phone. setTimeout is the fallback for
+// Safari, which has no requestIdleCallback.
+function _idle(fn, timeout) {
+  if (typeof requestIdleCallback === 'function') {
+    return requestIdleCallback(fn, { timeout: timeout || 1500 });
+  }
+  return setTimeout(fn, 0);
+}
 function hideSkeletons() {
   document.querySelectorAll('.skeleton').forEach(el => el.style.display = 'none');
   const loader = document.getElementById('skeletonLoader');

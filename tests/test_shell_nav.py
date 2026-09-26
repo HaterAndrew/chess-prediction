@@ -30,7 +30,7 @@ SHELL_STYLESHEETS = ("shell.css", "controls.css", "overlays.css", "picker.css", 
                      "about.css", "performance.css", "compare.css", "ask.css", "email.css", "puzzles.css", "03-cmdk.css")
 
 NAV_ITEMS = ["Forecast", "Season", "Model", "Tools"]
-GROUPS = {"model": ["performance", "audit", "about"], "tools": ["compare", "ask", "email", "puzzles"]}
+GROUPS = {"model": ["performance", "about"], "tools": ["compare", "ask", "email", "audit", "puzzles"]}
 
 # AP style keeps these lowercase inside a title.
 SMALL_WORDS = {"a", "an", "and", "as", "at", "but", "by", "for", "in", "nor",

@@ -12,7 +12,7 @@
 // CACHE_NAME is bumped on every deploy that reshapes caching behaviour so
 // caches from prior worker versions are purged on activate.
 
-const CACHE_NAME = 'cca-predictor-v82';
+const CACHE_NAME = 'cca-predictor-v83';
 
 // The API routes the same Worker serves next to the site. Their responses are
 // dynamic and must never enter the cache or be answered from it.
@@ -74,10 +74,10 @@ const OFFLINE_FALLBACKS = [
   'icons.js?v=eeee8884c1',
   'sheet.js?v=a5bc2ee6a2',
   'shell.js?v=6d1cdfb086',
-  'boot.js?v=4c283c0b8c',
+  'boot.js?v=cc39f2ee1b',
   'app.js?v=b5713b12d3',
   'actions.js?v=f725d0ab5c',
-  'audit.js?v=1f255a778d',
+  'audit.js?v=3da328f6fc',
   'daily_series.js?v=e326e2b1fc',
   'util_core.js?v=2824d286fc',
   'foundation.js?v=9e59b7038a',
@@ -94,7 +94,7 @@ const OFFLINE_FALLBACKS = [
   'panels_cal.js?v=28d15e5f60',
   'tab_about.js?v=e7497b7332',
   'tab_compare.js?v=c14237e866',
-  'tab_ask.js?v=dfb91b0a1f',
+  'tab_ask.js?v=ac0057506c',
   'manifest.json',
   'icons/icon-192.png'
 ];

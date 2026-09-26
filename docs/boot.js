@@ -11,7 +11,10 @@
  *   1. set the theme attribute from the stored preference so the page never
  *      flashes the wrong theme (light is the default for everyone; dark is
  *      opt-in through the header toggle, see theme.js);
- *   2. register the service worker.
+ *   2. register the service worker, once the page has loaded: registering
+ *      before that starts the worker's install precache while the page is
+ *      still fetching its own scripts, and the two compete for bandwidth
+ *      on exactly the cold visit that matters.
  */
 (function () {
   'use strict';
@@ -23,6 +26,8 @@
   document.documentElement.setAttribute('data-theme', theme);
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js');
+    });
   }
 })();

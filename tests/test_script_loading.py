@@ -92,7 +92,14 @@ def test_exceljs_lazy_loader_matches_the_service_worker_allowlist():
         "the injected script tag must carry the SRI hash and crossorigin, like the old tag did")
 
 
-def test_boot_registers_the_service_worker():
-    """boot.js is the only blocking script; its job is the SW bootstrap."""
+def test_boot_registers_the_service_worker_after_load():
+    """boot.js is the only blocking script; its job is the SW bootstrap.
+
+    Registration waits for the window `load` event: registering at parse time
+    started the worker's install precache while the page was still fetching
+    its own scripts, and the two competed for bandwidth on the cold visit.
+    """
     boot = _read(BOOT_JS)
-    assert "serviceWorker.register('sw.js')" in boot
+    assert re.search(
+        r"addEventListener\('load',[\s\S]*?serviceWorker\.register\('sw\.js'\)", boot), (
+        "boot.js must register sw.js inside a window 'load' listener")

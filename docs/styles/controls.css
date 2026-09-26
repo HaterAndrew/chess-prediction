@@ -46,6 +46,10 @@ kbd, .kbd-hint { background: transparent; border: 1px solid var(--line-soft); co
    the tournament's: Upcoming on blue stock with the live dot, Complete
    and Historical in a quieter rule. ── */
 .tag { border: 1px solid var(--line); color: var(--muted); display: inline-block; font: 700 11px var(--display); letter-spacing: .06em; padding: 3px 7px; text-transform: uppercase; }
+.tag-signal { border-color: var(--signal); color: var(--signal); }
+.tag-ember { border-color: var(--ember); color: var(--ember); }
+.tag-ink { color: var(--ink); }
+.tag-live { align-items: center; background: var(--stock-blue); border-color: var(--blue); color: var(--blue); display: inline-flex; font-family: var(--mono); gap: 5px; letter-spacing: 0; }
 .pill, .status-pill { align-items: center; border: 1px solid var(--line); color: var(--ink-2); display: inline-flex; font: 700 11px var(--display); gap: 6px; letter-spacing: .06em; padding: 2px 8px; text-transform: uppercase; white-space: nowrap; }
 .pill-green, .pill-blue, .pill-live { background: var(--stock-blue); border-color: var(--blue); color: var(--blue); }
 .pill-amber { background: var(--stock-yellow); color: var(--ink); }

@@ -57,8 +57,11 @@
 
     // ---- tournament selection ------------------------------------------
     'select-tournament': function (el) { selectTournament(num(el, 'idx')); },
-    'select-tournament-top': function (el) {
+    // A card, a row or the summary's Next on the Season: the Forecast opens
+    // on that tournament.
+    'select-tournament-forecast': function (el) {
       selectTournament(num(el, 'idx'));
+      switchPageTab('predictions');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     'select-tourney-picker': function (el) { selectFromTourneyPicker(num(el, 'idx')); },

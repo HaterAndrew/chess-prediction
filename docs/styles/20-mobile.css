@@ -4,41 +4,22 @@
 
 /* ── 480px: mid-size phones ── */
 @media (min-width: 480px) {
-  .timeline { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ── 640px: larger phones / small tablets ── */
 @media (min-width: 640px) {
   :root { --gutter: 20px; }
-  .hero { grid-template-columns: auto 1fr; }
-  .hero-kpis { grid-template-columns: repeat(3, 1fr); }
-  .kpi-row { grid-template-columns: repeat(3, 1fr); }
-  .kpi-value { font-size: 1.4rem; }
-  .chart-wrap { height: 320px; }
   .skeleton-chart { height: 320px; }
   .compare-chart-wrap { height: 340px; }
-  .mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .mini-grid-featured { grid-template-columns: 1fr; }
-  .mini-grid-rest { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .timeline { grid-template-columns: repeat(4, 1fr); }
   .fav-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .email-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .email-meta { grid-template-columns: 1fr 1fr; }
-  .chart-title { font-size: 1rem; }
-  .delta-value { font-size: 1.6rem; }
-  .mini-card-number { font-size: 1.6rem; }
 }
 
 /* ── 768px: tablet portrait ── */
 @media (min-width: 768px) {
-  .hero {
-    grid-template-columns: auto 1fr auto;
-    gap: var(--s-5); padding: var(--s-6) 0 var(--s-4);
-    align-items: center;
-  }
   .puzzle-layout { grid-template-columns: 1fr 1fr; }
   .compare-selectors { grid-template-columns: repeat(3, 1fr); }
-  .mini-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 }
 
 /* ── 768px: tablets (iPad portrait, large phones landscape) ──
@@ -46,41 +27,18 @@
    inherited mobile defaults at this range and wasted horizontal
    real estate. */
 @media (min-width: 768px) {
-  .grid-2 { grid-template-columns: 1fr 1fr; }
-  .progress-row { grid-template-columns: 1fr 1fr; }
-  .chart-wrap { height: 360px; }
   .skeleton-chart { height: 360px; }
 }
 
 /* ── 1024px: small laptops ── */
 @media (min-width: 1024px) {
-  .progress-row { grid-template-columns: 1fr 1fr; }
-  .grid-2 { grid-template-columns: 1fr 1fr; }
-  .chart-wrap { height: 380px; }
   .skeleton-chart { height: 380px; }
   .compare-chart-wrap { height: 360px; }
   .fav-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .email-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .email-split { grid-template-columns: 1fr 1fr; }
   .email-split .email-output, .email-split .email-preview { min-height: 420px; }
-  .chart-title { font-size: 1.05rem; }
-  .kpi-value { font-size: var(--fs-6); }
-  .delta-value { font-size: 1.8rem; }
-  .hero-ci { font-size: var(--fs-4); }
-  .mini-card-number { font-size: 1.7rem; }
   .puzzle-rating { font-size: 1.8rem; }
-  .chart-card { padding: var(--s-5); }
-  .panel { padding: var(--s-5) var(--s-6); }
-}
-
-/* ══════════════════════════════════════════════════════
-   MOBILE PERF — REDUCE EXPENSIVE EFFECTS
-   ══════════════════════════════════════════════════════ */
-@media (max-width: 639px) {
-  /* Hero number gradient text already costs; trim the 20px shadow blur */
-  .hero-number { filter: drop-shadow(0 0 10px rgba(240,192,64,.18)); }
-  /* Live-glow on chart-card uses two large box-shadows; tone down */
-  .chart-card.live-glow { box-shadow: 0 0 20px rgba(56,139,253,.05); }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -90,13 +48,13 @@
 * { -webkit-tap-highlight-color: transparent; }
 
 /* Subtle press feedback on interactive elements that mostly relied on :hover */
-.mini-card, .fav-card, .puzzle-btn, .de-save-btn,
+.fav-card, .puzzle-btn, .de-save-btn,
 .email-generate-btn, .email-copy-btn, .email-link-btn,
 .email-split-tab, .compare-add-btn, .fav-btn {
   transition: transform .12s ease, opacity .12s ease,
     color .15s, border-color .15s, background .15s, box-shadow .2s;
 }
-.mini-card:active, .fav-card:active { transform: scale(.985); }
+.fav-card:active { transform: scale(.985); }
 .puzzle-btn:active, .de-save-btn:active, .email-generate-btn:active,
 .email-copy-btn:active, .email-link-btn:active, .email-split-tab:active,
 .compare-add-btn:active, .fav-btn:active { transform: scale(.96); opacity: .85; }

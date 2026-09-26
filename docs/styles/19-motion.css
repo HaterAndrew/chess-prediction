@@ -44,8 +44,7 @@
      Bumping skeleton-card from 80px reduces CLS when real content lands. */
   .skeleton-card { height: 160px; }
   .skeleton-chart { height: 240px; }
-  /* Tighten empty-state vertical padding so they don't dominate mobile screens */
-  .fav-empty, .compare-empty { padding: var(--s-5) var(--s-4); }
+  .compare-empty { padding: var(--s-5) var(--s-4); }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -56,9 +55,3 @@
   padding: 0; margin: -1px; overflow: hidden;
   clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
-.chess-sq:focus {
-  outline: 2px solid var(--gold, #C8971A);
-  outline-offset: -2px;
-  z-index: 1;
-}
-

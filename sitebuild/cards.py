@@ -6,7 +6,7 @@ tournaments_out is mutated in place, as before.
 """
 import pandas as pd
 
-from forecast import Event, Observation, forecast_event
+from forecast import Event, Observation, forecast_event, shadow_forecasts
 from pipeline_utils import (build_chart_series, chart_series_start_date,
                             is_event_complete, roster_pending_model_ok)
 from prediction_window import registration_close_date
@@ -67,16 +67,16 @@ def build_model_cards(fitted, daily, determine_status, get_event_date, get_event
         # registration close once the event is underway (entries still arriving).
         days_remaining = days_to_start if days_to_start > 0 else days_to_close
 
-        # Registration curve (template) — also feeds the roster-pending gate below.
+        # Registration curve (template) for the card.
         curve = fitted.curve_for(family)
 
-        # v5 Cat R: roster-pending rows ride the model path only when the same
-        # pace gate the interim path uses says the live curve is trustworthy;
-        # otherwise fall through to the metadata loop (metadata_pace /
-        # metadata_historical_avg / settled), exactly as before admission.
+        # v5 Cat R: roster-pending rows ride the model path once they have
+        # entries, out to the longest graded horizon (roster_pending_model_ok);
+        # otherwise they fall through to the metadata loop (metadata_pace /
+        # metadata_historical_avg / settled).
         is_roster_pending = bool(row['roster_pending']) if 'roster_pending' in row.index else False
         if is_roster_pending and not roster_pending_model_ok(
-                current_count, days_to_start, status, event_date, curve):
+                current_count, days_to_start, status, event_date):
             continue
 
         # Exclude tournaments too far out — predictions are meaningless with 1-3 registrants
@@ -110,6 +110,7 @@ def build_model_cards(fitted, daily, determine_status, get_event_date, get_event
         hist_counts = [h['count'] for h in historical]
         prediction_source = 'model'
         tier_used = None
+        shadows = []
         if status == 'complete':
             point, ci_lo, ci_hi = current_count, current_count, current_count
             prediction_source = 'final'
@@ -123,13 +124,19 @@ def build_model_cards(fitted, daily, determine_status, get_event_date, get_event
             # The model, or the window route once the event has started and
             # online entries are still arriving; the plausibility clamp last,
             # which floors the result at current_count (v3 N2).
-            forecast = forecast_event(
-                Event(family, event_start=event_date, early_bird_deadline=eb_deadline,
-                      window_len=window_len),
-                Observation(current_count, days_to_start, days_into_window),
-                fitted, hist_counts, as_of=TODAY)
+            event = Event(family, event_start=event_date, early_bird_deadline=eb_deadline,
+                          window_len=window_len, canonical=canonicalize_family(family),
+                          names=tuple(families_to_search))
+            obs = Observation(current_count, days_to_start, days_into_window)
+            forecast = forecast_event(event, obs, fitted, hist_counts, as_of=TODAY)
             point, ci_lo, ci_hi = forecast.point, forecast.low, forecast.high
             prediction_source, tier_used = forecast.route, forecast.tier
+            # What the stand-in routes would have said, logged unpublished in
+            # the forecast ledger so the live record keeps grading them.
+            shadows = [{'route': route, 'point': int(f.point), 'ci_lower': int(f.low),
+                        'ci_upper': int(f.high)}
+                       for route, f in shadow_forecasts(event, obs, fitted, hist_counts,
+                                                        as_of=TODAY).items()]
         else:
             point, ci_lo, ci_hi = current_count, current_count, current_count
 
@@ -237,6 +244,7 @@ def build_model_cards(fitted, daily, determine_status, get_event_date, get_event
             # badge string app.js already maps — even though the estimate is now
             # model output rather than the old interim card.
             "prediction_tier": 'roster-pending' if is_roster_pending else tier_used,
+            "shadow_forecasts": shadows,
         }
 
         # Add event_end from metadata

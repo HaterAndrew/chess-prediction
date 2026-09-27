@@ -38,16 +38,17 @@ def _blank(value):
 
 
 def ledger_rows(website, *, run_ts, model_label, model_hash, code_commit, origin='nightly'):
-    """One row per live card in a website_data.json payload. The forecast date
-    is the payload's `generated` date (the pipeline's local day), falling back
-    to the run timestamp's date."""
+    """One published row per live card in a website_data.json payload, then an
+    unpublished row (published 0) for each stand-in route the card carries in
+    shadow_forecasts. The forecast date is the payload's `generated` date (the
+    pipeline's local day), falling back to the run timestamp's date."""
     as_of = website.get('generated') or str(run_ts)[:10]
     stale = int(bool(website.get('is_stale')))
     rows = []
     for card in website.get('tournaments', []):
         if card.get('status') != 'live':
             continue
-        rows.append({
+        row = {
             'as_of_date': as_of, 'run_ts': run_ts, 'origin': origin, 'published': 1,
             'family': card.get('family', ''), 'year': _blank(card.get('year')),
             'event_start': _blank(card.get('event_start')),
@@ -66,8 +67,17 @@ def ledger_rows(website, *, run_ts, model_label, model_hash, code_commit, origin
             'low_confidence': int(bool(card.get('low_confidence'))),
             'is_stale': stale,
             'model_label': model_label, 'model_hash': model_hash, 'code_commit': code_commit,
-        })
+        }
+        rows.append(row)
+        rows.extend(shadow_rows(row, card.get('shadow_forecasts') or []))
     return rows
+
+
+def shadow_rows(published, shadows):
+    """The published row restated as each stand-in route's unpublished forecast."""
+    return [{**published, 'published': 0, 'route': s['route'], 'tier': '',
+             'point': s['point'], 'ci_lower': s['ci_lower'], 'ci_upper': s['ci_upper']}
+            for s in shadows]
 
 
 def append_ledger(rows, path):
@@ -95,5 +105,7 @@ def step_record_forecasts():
     rows = ledger_rows(website, run_ts=config.RUN_TS, model_label=MODEL_LABEL,
                        model_hash=model_hash(), code_commit=code_commit())
     n = append_ledger(rows, config.FORECAST_LEDGER)
-    print(f"  Recorded {n} published forecasts in {config.FORECAST_LEDGER}")
+    shadows = sum(1 for r in rows if not r['published'])
+    print(f"  Recorded {n - shadows} published forecasts and {shadows} stand-in "
+          f"forecasts in {config.FORECAST_LEDGER}")
     return n

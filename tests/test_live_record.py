@@ -33,6 +33,13 @@ def test_the_forecast_on_the_day_is_graded_and_the_last_run_wins():
     assert recs[0]['forecast_date'] == '2026-06-16' and recs[0]['in_range'] == 1
 
 
+def test_a_stand_in_logged_beside_the_forecast_is_not_graded_as_published():
+    shadow = {**_row('2026-06-16', 700, '2026-06-16 13:00:00', route='metadata_historical_avg'),
+              'published': 0}
+    recs = _match([_row('2026-06-16', 950, '2026-06-16 13:00:00'), shadow])
+    assert [(r['route'], r['point']) for r in recs] == [('model', 950.0)]
+
+
 def test_a_missing_day_falls_back_up_to_three_days_never_forward():
     recs = _match([_row('2026-06-13', 900), _row('2026-06-17', 990)])
     assert [(r['as_of_date'], r['point']) for r in recs] == [('2026-06-13', 900.0)]

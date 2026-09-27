@@ -1,6 +1,6 @@
 {
-  "generated": "2026-09-26",
-  "scanned_at": "2026-09-26T14:23:44",
+  "generated": "2026-09-27",
+  "scanned_at": "2026-09-27T06:43:03",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -36,6 +36,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Midwest Class Championships",
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "North American Open",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
@@ -114,12 +120,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "New York State Championship",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "North American Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {

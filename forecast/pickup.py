@@ -10,7 +10,6 @@ scores in all three; at T-28 and beyond no weight helped, so those horizons
 keep the model alone.
 """
 import math
-from dataclasses import replace
 
 PICKUP_HORIZON = 14
 PICKUP_WEIGHT = 0.5
@@ -39,9 +38,5 @@ def blend_pickup(forecast, obs):
     if not (obs.pickup and obs.pickup > 0 and forecast.point > 0
             and 0 < obs.days_to_start <= PICKUP_HORIZON):
         return forecast
-    point = math.exp(PICKUP_WEIGHT * math.log(forecast.point)
-                     + (1 - PICKUP_WEIGHT) * math.log(obs.pickup))
-    scale = point / forecast.point
-    point = max(round(point), obs.count)
-    return replace(forecast, point=point, low=max(round(forecast.low * scale), obs.count),
-                   high=max(round(forecast.high * scale), point))
+    return forecast.moved_to(math.exp(PICKUP_WEIGHT * math.log(forecast.point)
+                                      + (1 - PICKUP_WEIGHT) * math.log(obs.pickup)), obs.count)

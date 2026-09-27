@@ -1,7 +1,7 @@
 """The sealed test: what the frozen model published for events after the freeze.
 
 The method froze on FROZEN_ON, when its last change was judged on the
-walk-forward (#185); FROZEN_HASH is shared.model_version.model_hash() of
+walk-forward (#187); FROZEN_HASH is shared.model_version.model_hash() of
 that code. Events starting after FROZEN_ON never informed a choice about the
 model, so the forecasts the frozen code published for them are graded apart
 from the rest of the live record. tests/test_holdout.py fails when a model
@@ -14,7 +14,7 @@ import pandas as pd
 from perf.live_record import summarize_live
 
 FROZEN_ON = '2026-09-27'
-FROZEN_HASH = '962f5cb3d35cb62d'
+FROZEN_HASH = '7e53afec0e55cccd'
 
 
 def sealed(records, frozen_on=FROZEN_ON, frozen_hash=FROZEN_HASH):

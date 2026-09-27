@@ -421,8 +421,8 @@ def build_pdf():
         "\u00b7 \u221a(1 + 1/n) \u00b7 s(T) \u00b7 shrink(T) )", eq_sm))
     story.append(Paragraph(
         "s(T) via binary search on LOO for 80% coverage; shrink(T) = 0.33 at T \u2265 60 "
-        "\u2192 0.75 at T &lt; 5. \u03c3 floored via variance regularization (blend with "
-        "global \u03c3) for families with \u2264 3 editions.", note))
+        "\u2192 0.75 at T &lt; 5; \u03c3 blended with the global \u03c3 for families "
+        "with \u2264 3 editions.", note))
 
     # 5. Adjustments
     story.append(Paragraph("5. Sequential Adjustments", h1))
@@ -440,7 +440,9 @@ def build_pdf():
           'Multiply by 1 + trend \u00b7 0.5 (capped \u00b115%)'],
          ['Pickup blend', 'T \u2264 14',
           'Geometric mean with the pickup forecast'],
-         ['Range cap', '2+ past finals',
+         ['Last final, no curve', 'Finals known, no curve',
+          'Move toward the last final (fully beyond T-28)'],
+         ['Range cap', '2+ past finals, or above',
           'Hold each side to the year-over-year spread'],
          ['Plausibility bounds', '< 30% of family min or > 3\u00d7 max',
           'Re-centre on the median, or cap at 1.5\u00d7 max'],
@@ -453,9 +455,10 @@ def build_pdf():
     # 6. Blind testing
     story.append(Paragraph("6. Model Selection &amp; Backtesting", h1))
     story.append(Paragraph(
-        "Validated via <b>walk-forward backtest</b> (refit monthly on the data as it stood; each "
-        f"forecast from the entries registered by its date): {n_tests} tournaments, {yr_range}. "
-        "The figures below predate it and rank configurations only.", body))
+        "Validated via <b>walk-forward backtest</b> (refit monthly on the data as it stood): "
+        f"{n_tests} tournaments, {yr_range}. "
+        "The figures below predate it and rank configurations only; a change was kept if it "
+        "improved Median APE without dropping 80% coverage below 88%.", body))
 
     cand_data = [
         ['Configuration', 'MedAPE', 'MAPE', '80% Cov', 'Verdict'],
@@ -479,10 +482,6 @@ def build_pdf():
         ('BOTTOMPADDING', (0, 0), (-1, -1), 1.5),
     ]))
     story.append(ct)
-    story.append(Spacer(1, 2))
-    story.append(Paragraph(
-        "<b>Earlier selection rule:</b> keep a change only if it improves Median APE without "
-        "dropping 80% coverage below 88%.", note))
     story.append(Spacer(1, 2))
     story.append(Paragraph(
         f"<b>Final (walk-forward, {n_tests} tournaments, grade {grade_cum}):</b> "

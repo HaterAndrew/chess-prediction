@@ -122,6 +122,17 @@ def pit_value(actual, point, lo, hi, alpha=DEFAULT_ALPHA):
     return float(stats.norm.cdf((log_actual - log_point) / sigma_hi))
 
 
+def record_pit(actual, point, lo, hi, alpha=DEFAULT_ALPHA):
+    """pit_value for one published forecast, or None when it has no valid
+    interval: the guard summarize applies, shared so the per-event values the
+    site draws are the ones the histogram bins."""
+    if actual is None or point is None or lo is None or hi is None:
+        return None
+    if actual <= 0 or point <= 0 or lo <= 0 or hi < lo or not lo <= point <= hi:
+        return None
+    return pit_value(actual, point, lo, hi, alpha)
+
+
 def pit_histogram(pit_values, bins=10):
     """Bin PIT values into equal-width buckets over [0, 1].
 
@@ -208,8 +219,9 @@ def summarize(records, alpha=DEFAULT_ALPHA):
         iscores.append(scaled_interval_score(actual, lo, hi, alpha))
         pinball_lo.append(pinball_loss(actual, lo, tau_lo))
         pinball_hi.append(pinball_loss(actual, hi, tau_hi))
-        if lo <= point <= hi:
-            pits.append(pit_value(actual, point, lo, hi, alpha))
+        pit = record_pit(actual, point, lo, hi, alpha)
+        if pit is not None:
+            pits.append(pit)
 
     if not apes:
         return None

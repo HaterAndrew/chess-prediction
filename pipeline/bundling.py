@@ -79,6 +79,7 @@ SCRIPT_SOURCES = (
     "tab_email.js",
     "tab_performance.js",
     "perf_charts.js",
+    "perf_calibration.js",
     "pickers.js",
     "panels_info.js",
     "hero_kpi.js",

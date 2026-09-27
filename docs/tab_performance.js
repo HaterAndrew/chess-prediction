@@ -130,6 +130,7 @@ function perfPaint(view) {
     const sc = document.getElementById('perfScoring');
     if (sc) sc.innerHTML = '';
     document.getElementById('perfTable').innerHTML = '<div class="empty">No completed tournaments for this selection.</div>';
+    perfClearCharts('No completed tournaments for this selection.');
     return;
   }
 
@@ -154,8 +155,9 @@ function perfPaint(view) {
       <div class="kpi-sub">${k.s}</div>
     </div>`).join('');
 
+  perfClearEmptyNotes();
   requestAnimationFrame(() => {
-    perfDrawScatter(view);
+    perfDrawScatter(view, t14.T);
     perfDrawTimeline(view);
   });
 
@@ -207,33 +209,11 @@ function perfDrawScoring(data) {
     </div>`);
   }
 
-  // ── Calibration (PIT) ──
-  // A well-calibrated forecaster spreads outcomes evenly across the interval.
-  // Mass piled at both ends means the intervals are too narrow; a lean to one
-  // side means the point estimate is biased.
-  const pit = t14.pit;
-  if (pit && pit.n && pit.counts) {
-    const maxC = Math.max(...pit.counts, 1);
-    const expected = pit.n / pit.bins;
-    parts.push(`<div class="perf-scoring-block">
-      <div class="perf-scoring-title">Calibration at T-${t14.T}
-        <span class="perf-scoring-sub">where the actual landed inside the predicted range (n=${pit.n})</span></div>
-      <div class="perf-pit">
-        ${pit.counts.map((c, i) => {
-          const h = Math.max(2, Math.round(c / maxC * 46));
-          const over = c > expected * 1.5;
-          return `<div class="perf-pit-col" title="${(i * 10)}\u2013${(i + 1) * 10}% of the range: ${c} tournament(s), even split would be ${expected.toFixed(1)}">
-            <div class="perf-pit-bar${over ? ' is-over' : ''}" style="height:${h}px"></div>
-          </div>`;
-        }).join('')}
-      </div>
-      <div class="perf-pit-axis"><span>low end of range</span><span>middle</span><span>high end</span></div>
-      <div class="perf-scoring-note">An even set of bars means the range is honest.
-        Tall bars at both ends mean it is too narrow.</div>
-    </div>`);
-  }
+  // ── Calibration: one dot per tournament (perf_calibration.js) ──
+  parts.push(perfCalibrationHTML(data, t14.T));
 
   el.innerHTML = parts.join('');
+  perfCalibrationFill(el, data);
 }
 
 function perfDrawTable(data) {

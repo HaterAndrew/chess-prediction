@@ -15,7 +15,7 @@ from shared.thresholds import FROZEN_CURVE_MIN_RATIO
 from shared.clock import today_ts
 
 from perf.grading import T_POINTS
-from perf.scoring import baseline_current_ratio, baseline_last_year
+from perf.scoring import baseline_current_ratio, baseline_last_year, record_pit
 
 TODAY = today_ts()
 
@@ -199,6 +199,13 @@ def evaluate_tournaments(model, test_tournaments, daily, frozen_skipped=None,
                 "abs_error_pct": abs(error_pct),
                 "in_ci": 1 if ci_lo <= final <= ci_hi else 0,
             }
+            # Where the final landed in the published interval, for the
+            # Performance view's one-dot-per-event calibration strip. Kept at
+            # full precision: a final on the range's end sits at 0.8999…, and
+            # rounding it to 0.9 would move it out of the histogram's bin.
+            pit = record_pit(final, point, ci_lo, ci_hi)
+            if pit is not None:
+                t_predictions[T]["pit"] = pit
 
             # Naive baselines, scored through the same path. Both are computed
             # from training-year data only, so they carry the same expanding

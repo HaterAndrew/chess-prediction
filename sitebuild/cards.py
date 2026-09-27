@@ -7,6 +7,7 @@ tournaments_out is mutated in place, as before.
 import pandas as pd
 
 from forecast import Event, Observation, forecast_event, shadow_forecasts
+from forecast.pickup import pickup_point
 from pipeline_utils import (build_chart_series, chart_series_start_date,
                             is_event_complete, roster_pending_model_ok)
 from prediction_window import registration_close_date
@@ -17,7 +18,7 @@ from sitebuild.helpers import (TODAY, _apply_wo_top6_adjustment,
                                _fam_eq, m04c, sanitize_early_bird)
 
 
-def build_model_cards(fitted, daily, determine_status, get_event_date, get_event_end_date, meta, summary, t2026, tournaments_out, withdrawal_lookup):
+def build_model_cards(fitted, daily, determine_status, get_event_date, get_event_end_date, meta, summary, t2026, tournaments_out, withdrawal_lookup, counts):
     def is_settled(fam, yr):
         return is_event_complete(get_event_end_date(fam, yr), TODAY)
 
@@ -127,7 +128,10 @@ def build_model_cards(fitted, daily, determine_status, get_event_date, get_event
             event = Event(family, event_start=event_date, early_bird_deadline=eb_deadline,
                           window_len=window_len, canonical=canonicalize_family(family),
                           names=tuple(families_to_search))
-            obs = Observation(current_count, days_to_start, days_into_window)
+            # The last finished edition at the same horizon, for the pickup blend.
+            pickup = pickup_point(current_count, days_to_start,
+                                  hist[hist['final_count'].notna()], counts.count)
+            obs = Observation(current_count, days_to_start, days_into_window, pickup=pickup)
             forecast = forecast_event(event, obs, fitted, hist_counts, as_of=TODAY)
             point, ci_lo, ci_hi = forecast.point, forecast.low, forecast.high
             prediction_source, tier_used = forecast.route, forecast.tier

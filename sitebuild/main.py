@@ -13,6 +13,7 @@ from shared.curves import has_curve
 from shared.season import CURRENT_SEASON, is_open_season
 
 from corpus import load_corpus
+from corpus.edition_counts import edition_counts
 from forecast import fit_models
 from sitebuild.assemble import finalize_cards
 from sitebuild.cards import build_model_cards
@@ -195,7 +196,7 @@ def main():
 
     build_model_cards(fitted, daily, determine_status, get_event_date,
                       get_event_end_date, meta, summary,
-                      t2026, tournaments_out, withdrawal_lookup)
+                      t2026, tournaments_out, withdrawal_lookup, edition_counts(corpus))
 
 
     # Add tournaments from metadata that have no registrations yet

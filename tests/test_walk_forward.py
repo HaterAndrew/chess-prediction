@@ -81,7 +81,9 @@ def test_a_january_forecast_is_fitted_for_the_new_season(monkeypatch):
                                      first_season=2027, horizons=[14])
     assert seasons == [(pd.Timestamp('2027-01-01'), 2027, set())]
     assert [(r['tid'], r['forecast_date'], r['count']) for r in records] == [(2, '2027-01-07', 130)]
-    assert records[0]['point'] == 260 and records[0]['in_range'] == 1
+    # The model's 260 averaged in log space with pickup, 130 + (200 - 120).
+    assert (records[0]['pickup'], records[0]['raw_point'], records[0]['point']) == (210, 260, 234)
+    assert records[0]['in_range'] == 1
 
 
 def _graded_fixture(output_dir):

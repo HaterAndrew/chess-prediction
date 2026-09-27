@@ -2,6 +2,7 @@
 import pandas as pd
 
 from corpus.calendar import event_calendar
+from corpus.edition_counts import snapshot_date
 from corpus.labels import FINAL, PROVISIONAL, final_labels, scrape_dates
 from shared.curves import has_curve
 from shared.side_events import SIDE_EVENT_PATTERN
@@ -13,12 +14,6 @@ from perf.evaluation import is_curve_gradeable
 # Graded apart from the site, which shows it: its history is the combined
 # World Open, ten times its size.
 WO_PERF_EXTRA = {'World Open lower sections', 'World Open, lower sections'}
-
-
-def snapshot_date(summary):
-    """When the registration export was taken: the latest registration it holds."""
-    col = 'snapshot_last_reg' if 'snapshot_last_reg' in summary.columns else 'last_reg'
-    return pd.to_datetime(summary[col], errors='coerce').max().normalize()
 
 
 def _flag(frame, col):

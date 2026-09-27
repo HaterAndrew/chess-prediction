@@ -26,10 +26,15 @@ class Event:
 
 @dataclass(frozen=True)
 class Observation:
-    """What had been counted on the forecast date."""
+    """What had been counted on the forecast date.
+
+    pickup is this count plus the entries the family's last edition took
+    after the same horizon (forecast.pickup), None without one.
+    """
     count: int
     days_to_start: int
     days_into_window: int = 0
+    pickup: Optional[int] = None
 
     def days_remaining(self, event):
         """Days to event start, then days to registration close once it has begun."""

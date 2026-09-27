@@ -22,6 +22,17 @@ const out = {
   // Weekly rows anchored on event day, oldest first, never before start.
   weekly: D.weeklyStops(new Date(2026, 9, 9).getTime(), new Date(2026, 8, 20).getTime())
     .map(ms => { const d = new Date(ms); return [d.getMonth() + 1, d.getDate()]; }),
+
+  // History slots: gaps between editions become one labelled empty slot.
+  slots: D.historySlots(
+    [{ year: 2018, count: 300 }, { year: 2019, count: 310, adjusted: 'top6', count_raw: 420 },
+     { year: 2022, count: 280 }, { year: 2023, count: 305 }],
+    { year: 2025, count: 330 }).map(x => [x.label, x.count, x.kind, x.flag ? x.flag.raw : null]),
+  slots_none: D.historySlots([], { year: 2026, count: 10 }).map(x => [x.label, x.kind]),
+
+  pace_behind: D.paceGap(32.4, 22.1),
+  pace_ahead_one: D.paceGap(40, 41.2),
+  pace_on: D.paceGap(50, 50.3),
 };
 
 process.stdout.write(JSON.stringify(out));

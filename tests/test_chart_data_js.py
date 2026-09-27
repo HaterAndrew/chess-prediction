@@ -59,3 +59,22 @@ def test_a_series_holds_its_last_value_until_the_next_point(res):
 
 def test_weekly_rows_count_back_from_event_day(res):
     assert res["weekly"] == [[9, 25], [10, 2], [10, 9]]
+
+
+def test_missing_years_between_editions_become_one_gap_slot(res):
+    assert res["slots"] == [
+        ["2018", 300, "past", None],
+        ["2019*", 310, "past", 420],
+        ["2020\u201321", None, "gap", None],
+        ["2022", 280, "past", None],
+        ["2023", 305, "past", None],
+        ["2024", None, "gap", None],
+        ["2025", 330, "current", None],
+    ]
+    assert res["slots_none"] == [["2026", "current"]]
+
+
+def test_the_pace_gap_reads_in_whole_points(res):
+    assert res["pace_behind"]["text"] == "10 pts behind"
+    assert res["pace_ahead_one"]["text"] == "1 pt ahead"
+    assert res["pace_on"]["text"] == "on pace"

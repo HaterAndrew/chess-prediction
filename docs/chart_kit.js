@@ -44,6 +44,20 @@ function chartLabelFont(size, weight) {
   const px = Math.max(11, size || 12);
   return `${weight ? weight + ' ' : ''}${px}px ${PALETTE.fontMono}`;
 }
+// Text on a sheet-coloured halo, so a line it crosses passes behind it.
+// Uses the context's font and fill; align is 'left', 'center' or 'right'
+// and y is the text's middle.
+function chartHaloText(g, text, x, y, align) {
+  const w = _labelWidth(g, text), h = 15, pad = 3;
+  const left = align === 'right' ? x - w : align === 'center' ? x - w / 2 : x;
+  const ink = g.fillStyle;
+  g.fillStyle = themeRgba(PALETTE.surface, 0.9);
+  g.fillRect(left - pad, y - h / 2, w + pad * 2, h);
+  g.fillStyle = ink;
+  g.textAlign = 'left';
+  g.textBaseline = 'middle';
+  g.fillText(text, left, y + 0.5);  // halo: the box filled just above
+}
 // The square sheet tooltip. extra merges over it (callbacks, filters).
 function chartTooltip(extra) {
   return Object.assign({
@@ -265,7 +279,7 @@ function makeVertMarkersPlugin(id, getMarkers) {
         // Draw label text centered on the pill (not on the line) so the
         // clamp + stack stay legible.
         ctx2.fillStyle = line.color;
-        ctx2.fillText(line.label, pillX + pillW / 2, pillY + pillH - textYOff);
+        ctx2.fillText(line.label, pillX + pillW / 2, pillY + pillH - textYOff);  // halo: the pill's own box
         ctx2.restore();
       });
     }

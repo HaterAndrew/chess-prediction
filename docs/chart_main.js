@@ -400,7 +400,7 @@ function renderChart(t) {
         g.fillStyle = l.color;
         g.textAlign = 'left';
         g.textBaseline = 'middle';
-        g.fillText(l.text, bx + padX, by + boxH / 2 + 0.5);
+        g.fillText(l.text, bx + padX, by + boxH / 2 + 0.5);  // halo: the box filled above
       });
       g.restore();
     }

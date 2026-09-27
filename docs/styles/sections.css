@@ -55,6 +55,7 @@ details.sect[open] > .sect-summary .sect-caret { transform: rotate(180deg); }
 
 /* ── The small charts inside a panel (chart_hist.js, chart_curve.js) ── */
 .hist-panel { margin-bottom: var(--s-4); }
+.hist-empty { color: var(--muted); font-size: var(--fs-body); padding: 20px 0; text-align: center; }
 .comp-footnote { color: var(--muted); font-size: 12px; line-height: 1.45; margin-top: 8px; }
 .chart-box { margin-bottom: 12px; }
 .chart-box.h180 { height: 180px; }

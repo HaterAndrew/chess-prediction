@@ -2,8 +2,8 @@
 
 Every number the site publishes or grades comes from forecast_event: the live
 cards (04d), the backtest (04e) and the window-engine grade. It picks the
-route, runs it, blends the model with pickup inside two weeks, and applies
-the plausibility clamp last. tests/
+route, runs it, blends the model with pickup inside two weeks, caps its range
+at the year-over-year spread, and applies the plausibility clamp last. tests/
 test_forecast_entry.py forbids calling the engines or the clamp from anywhere
 else, so what is graded is what is published.
 """

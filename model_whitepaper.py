@@ -440,6 +440,8 @@ def build_pdf():
           'Multiply by 1 + trend \u00b7 0.5 (capped \u00b115%)'],
          ['Pickup blend', 'T \u2264 14',
           'Geometric mean with the pickup forecast'],
+         ['Range cap', '2+ past finals',
+          'Hold each side to the year-over-year spread'],
          ['Plausibility bounds', '< 30% of family min or > 3\u00d7 max',
           'Re-centre on the median, or cap at 1.5\u00d7 max'],
          ['Edition widening', '0\u20131 prior editions',

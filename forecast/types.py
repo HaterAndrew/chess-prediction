@@ -51,6 +51,8 @@ class Fitted:
     curves: dict = field(default_factory=dict)
     # Recalibration cohort size and diagnostics, for the run log.
     recal: Optional[dict] = None
+    # The log arms of the year-over-year change in a final (forecast.yoy_range).
+    yoy_arms: Optional[tuple] = None
 
     def curve_for(self, family):
         return self.curves.get(family, self.curves.get('__global__', {}))

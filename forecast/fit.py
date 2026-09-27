@@ -6,6 +6,7 @@ from shared.curves import has_curve
 from shared.season import CURRENT_SEASON
 
 from forecast.types import Fitted
+from forecast.yoy_range import yoy_arms
 
 # Recalibration needs at least this many finished events in its cohort.
 MIN_RECAL_EVENTS = 5
@@ -29,9 +30,15 @@ def recal_cohort(summary, completed_tids, season):
     ].copy()
 
 
+def settled_editions(train, completed_tids, season):
+    """Editions whose final is final: earlier seasons, and this season's finished events."""
+    return train[(train['tournament_year'] < season) | train['tid'].isin(completed_tids)]
+
+
 def fit_models(summary, daily, enrichment_lookup, completed_tids, season=None,
                standings=None, verbose=True):
-    """Fit the nowcast model, recalibrate it, and build the ratio model and curves.
+    """Fit the nowcast model, recalibrate it, and build the ratio model, the curves
+    and the year-over-year spread.
 
     completed_tids are this season's finished events; they train alongside
     the earlier seasons. standings is the historical standings frame the fit
@@ -57,7 +64,8 @@ def fit_models(summary, daily, enrichment_lookup, completed_tids, season=None,
         # bias correction fits on them.
         recal['diag'] = model.recalibrate(cohort, daily, regime_year=season)
 
+    settled = settled_editions(train, completed_tids or set(), season)
     return Fitted(model=model,
                   ratios=build_ratio_model(train, daily, completed_tids=completed, season=season),
                   curves=build_template_curves(train, daily, season=season),
-                  recal=recal)
+                  recal=recal, yoy_arms=yoy_arms(settled))

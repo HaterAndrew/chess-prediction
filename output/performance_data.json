@@ -2617,60 +2617,60 @@
   "corpus_year_max": 2027,
   "corpus_year_span": 16,
   "window_engine": {
-    "n": 217,
-    "n_events": 133,
-    "mae_pct": 8.51,
-    "median_error_pct": 5.8,
-    "ci_coverage": 87.1,
+    "n": 219,
+    "n_events": 134,
+    "mae_pct": 4.19,
+    "median_error_pct": 2.24,
+    "ci_coverage": 97.7,
     "by_day": {
       "0": {
-        "n": 133,
-        "mae_pct": 9.2,
-        "ci_coverage": 91.0
+        "n": 134,
+        "mae_pct": 4.43,
+        "ci_coverage": 98.5
       },
       "1": {
-        "n": 75,
-        "mae_pct": 7.52,
-        "ci_coverage": 82.7
+        "n": 76,
+        "mae_pct": 4.06,
+        "ci_coverage": 96.1
       },
       "2": {
         "n": 9,
-        "mae_pct": 6.53,
-        "ci_coverage": 66.7
+        "mae_pct": 1.71,
+        "ci_coverage": 100.0
       }
     },
     "by_year": {
       "2023": {
         "n": 60,
-        "mae_pct": 9.14,
-        "ci_coverage": 90.0
+        "mae_pct": 3.55,
+        "ci_coverage": 100.0
       },
       "2024": {
-        "n": 57,
-        "mae_pct": 6.99,
-        "ci_coverage": 93.0
+        "n": 59,
+        "mae_pct": 6.38,
+        "ci_coverage": 96.6
       },
       "2025": {
         "n": 62,
-        "mae_pct": 8.22,
-        "ci_coverage": 95.2
+        "mae_pct": 3.32,
+        "ci_coverage": 100.0
       },
       "2026": {
         "n": 38,
-        "mae_pct": 10.25,
-        "ci_coverage": 60.5
+        "mae_pct": 3.21,
+        "ci_coverage": 92.1
       }
     },
     "clamp_activations": 0,
-    "frozen_curves_excluded": 2,
+    "frozen_curves_excluded": 1,
     "years_not_graded": [
       2022
     ],
     "engine": "model_online_window",
     "description": "T=0 lognormal ratio decayed toward the live count through the post-start online-registration window, then plausibility-clamped \u2014 the chain 04d uses once a multi-schedule event has begun.",
     "horizon_note": "Graded 0-2 days into the post-start registration window, a shorter and easier horizon than the T-14/7/3 the overall grade uses. Not comparable to it.",
-    "grade": "A-",
-    "grade_detail": "worst of window days 0-1 \u2192 day 0: MAE 9.2%, CI coverage 91.0% (n=133)"
+    "grade": "A+",
+    "grade_detail": "worst of window days 0-1 \u2192 day 0: MAE 4.43%, CI coverage 98.5% (n=134)"
   },
   "years": {
     "2022": {
@@ -3511,7 +3511,7 @@
               "T": 7,
               "count_at_T": 134,
               "predicted": 337,
-              "ci_lower": 250,
+              "ci_lower": 249,
               "ci_upper": 405,
               "error_pct": -2.6,
               "abs_error_pct": 2.6,
@@ -3571,7 +3571,7 @@
               "count_at_T": 113,
               "predicted": 944,
               "ci_lower": 901,
-              "ci_upper": 984,
+              "ci_upper": 985,
               "error_pct": -39.0,
               "abs_error_pct": 39.0,
               "in_ci": 0,
@@ -3917,11 +3917,11 @@
               "count_at_T": 128,
               "predicted": 293,
               "ci_lower": 219,
-              "ci_upper": 353,
+              "ci_upper": 352,
               "error_pct": -10.7,
               "abs_error_pct": 10.7,
               "in_ci": 1,
-              "pit": 0.7811988586151999,
+              "pit": 0.7847253048352463,
               "baseline_last_year": 288,
               "baseline_ratio": 300
             },
@@ -4250,7 +4250,7 @@
               "count_at_T": 577,
               "predicted": 991,
               "ci_lower": 787,
-              "ci_upper": 1160,
+              "ci_upper": 1159,
               "error_pct": 3.2,
               "abs_error_pct": 3.2,
               "in_ci": 1,
@@ -4530,7 +4530,7 @@
               "T": 60,
               "count_at_T": 137,
               "predicted": 425,
-              "ci_lower": 164,
+              "ci_lower": 165,
               "ci_upper": 641,
               "error_pct": -67.9,
               "abs_error_pct": 67.9,
@@ -5217,11 +5217,11 @@
               "count_at_T": 16,
               "predicted": 344,
               "ci_lower": 189,
-              "ci_upper": 450,
+              "ci_upper": 451,
               "error_pct": -14.6,
               "abs_error_pct": 14.6,
               "in_ci": 1,
-              "pit": 0.7749487810805838,
+              "pit": 0.773087695353436,
               "baseline_last_year": 344,
               "baseline_ratio": 489
             },
@@ -5426,11 +5426,11 @@
               "count_at_T": 15,
               "predicted": 269,
               "ci_lower": 147,
-              "ci_upper": 351,
+              "ci_upper": 352,
               "error_pct": -8.5,
               "abs_error_pct": 8.5,
               "in_ci": 1,
-              "pit": 0.665687284094882,
+              "pit": 0.6640373110925046,
               "baseline_last_year": 266,
               "baseline_ratio": 458
             },
@@ -6543,7 +6543,7 @@
               "count_at_T": 821,
               "predicted": 1197,
               "ci_lower": 1030,
-              "ci_upper": 1344,
+              "ci_upper": 1343,
               "error_pct": 7.4,
               "abs_error_pct": 7.4,
               "in_ci": 1,
@@ -18622,7 +18622,7 @@
             "T": 7,
             "count_at_T": 134,
             "predicted": 337,
-            "ci_lower": 250,
+            "ci_lower": 249,
             "ci_upper": 405,
             "error_pct": -2.6,
             "abs_error_pct": 2.6,
@@ -18682,7 +18682,7 @@
             "count_at_T": 113,
             "predicted": 944,
             "ci_lower": 901,
-            "ci_upper": 984,
+            "ci_upper": 985,
             "error_pct": -39.0,
             "abs_error_pct": 39.0,
             "in_ci": 0,
@@ -19028,11 +19028,11 @@
             "count_at_T": 128,
             "predicted": 293,
             "ci_lower": 219,
-            "ci_upper": 353,
+            "ci_upper": 352,
             "error_pct": -10.7,
             "abs_error_pct": 10.7,
             "in_ci": 1,
-            "pit": 0.7811988586151999,
+            "pit": 0.7847253048352463,
             "baseline_last_year": 288,
             "baseline_ratio": 300
           },
@@ -19361,7 +19361,7 @@
             "count_at_T": 577,
             "predicted": 991,
             "ci_lower": 787,
-            "ci_upper": 1160,
+            "ci_upper": 1159,
             "error_pct": 3.2,
             "abs_error_pct": 3.2,
             "in_ci": 1,
@@ -19641,7 +19641,7 @@
             "T": 60,
             "count_at_T": 137,
             "predicted": 425,
-            "ci_lower": 164,
+            "ci_lower": 165,
             "ci_upper": 641,
             "error_pct": -67.9,
             "abs_error_pct": 67.9,
@@ -20328,11 +20328,11 @@
             "count_at_T": 16,
             "predicted": 344,
             "ci_lower": 189,
-            "ci_upper": 450,
+            "ci_upper": 451,
             "error_pct": -14.6,
             "abs_error_pct": 14.6,
             "in_ci": 1,
-            "pit": 0.7749487810805838,
+            "pit": 0.773087695353436,
             "baseline_last_year": 344,
             "baseline_ratio": 489
           },
@@ -20537,11 +20537,11 @@
             "count_at_T": 15,
             "predicted": 269,
             "ci_lower": 147,
-            "ci_upper": 351,
+            "ci_upper": 352,
             "error_pct": -8.5,
             "abs_error_pct": 8.5,
             "in_ci": 1,
-            "pit": 0.665687284094882,
+            "pit": 0.6640373110925046,
             "baseline_last_year": 266,
             "baseline_ratio": 458
           },
@@ -21654,7 +21654,7 @@
             "count_at_T": 821,
             "predicted": 1197,
             "ci_lower": 1030,
-            "ci_upper": 1344,
+            "ci_upper": 1343,
             "error_pct": 7.4,
             "abs_error_pct": 7.4,
             "in_ci": 1,

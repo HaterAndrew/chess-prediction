@@ -18,6 +18,7 @@ from corpus.calendar import event_calendar
 from corpus.coverage import count_as_of
 from forecast import Event, Observation, fit_models, forecast_event
 from model.data_io import build_enrichment_lookup
+from shared.curves import has_curve
 from sitebuild.editions import prior_editions
 from sitebuild.helpers import _apply_wo_top6_adjustment, sanitize_early_bird
 from tournament_aliases import FAMILY_ALIASES
@@ -40,7 +41,7 @@ def completed_in(view, season):
     """This season's in-person events finished by the view's date: the rolling retrain set."""
     s = view.summary
     done = ((s['tournament_year'] == season) & s['final_count'].notna()
-            & s['has_timestamps'].fillna(False).astype(bool)
+            & has_curve(s)
             & ~s['is_online'].fillna(False).astype(bool))
     return set(s.loc[done, 'tid'])
 
@@ -54,16 +55,17 @@ def fit_as_of(view, season):
 
 @dataclass(frozen=True)
 class _Curves:
-    """Every event's curve, and the horizon through which its export is exact."""
+    """Every event's curve, the horizon through which its export is exact, and
+    which curves the scrape alone built (observations, never exact)."""
     by_tid: dict
     bounds: dict
+    scraped: frozenset
     empty: pd.DataFrame
 
-    def curve(self, tid):
-        return self.by_tid.get(tid, self.empty)
-
-    def bound(self, tid):
-        return self.bounds.get(tid)
+    def count(self, tid, T):
+        """The event's count T days out, read as count_as_of reads its kind of curve."""
+        return count_as_of(self.by_tid.get(tid, self.empty), T, exact=tid not in self.scraped,
+                           exact_until_T=self.bounds.get(tid))
 
 
 def curves_of(corpus):
@@ -73,7 +75,10 @@ def curves_of(corpus):
     bounds = {tid: int((start - snapshot).days)
               for tid, start, end in zip(cal['tid'], cal['start'], cal['end'])
               if pd.notna(start) and not end < snapshot}
-    return _Curves(dict(tuple(corpus.daily.groupby('tid'))), bounds, corpus.daily.iloc[0:0])
+    s = corpus.summary
+    scraped = frozenset(s.loc[has_curve(s) & ~s['has_timestamps'].fillna(False).astype(bool), 'tid'])
+    return _Curves(dict(tuple(corpus.daily.groupby('tid'))), bounds, scraped,
+                   corpus.daily.iloc[0:0])
 
 
 def prior_as_of(view, family, year):
@@ -109,7 +114,7 @@ def early_bird(meta, family, year, start):
 
 def forecast_record(ev, T, d, cutoff, view, fitted, eb_deadline, curves):
     """One graded forecast with its baselines, or None when there was no count or forecast."""
-    seen = count_as_of(curves.curve(ev['tid']), T, exact_until_T=curves.bound(ev['tid']))
+    seen = curves.count(ev['tid'], T)
     if not seen.count:
         return None
     family, year = ev['family'], int(ev['tournament_year'])
@@ -129,7 +134,7 @@ def forecast_record(ev, T, d, cutoff, view, fitted, eb_deadline, curves):
             'in_range': int(f.low <= final <= f.high),
             'route': f.route, 'tier': f.tier,
             'last_year': last_year_point(history),
-            'pickup': pickup_point(seen.count, T, prior, curves.curve, curves.bound)}
+            'pickup': pickup_point(seen.count, T, prior, curves.count)}
 
 
 def run_walk_forward(corpus, today, first_season=FIRST_SEASON, horizons=T_POINTS):

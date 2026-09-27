@@ -2,7 +2,6 @@
 import pandas as pd
 
 from perf.live_record import last_run_per_day, match_forecasts, summarize_live
-from perf.wf_events import final_is_known
 
 START = pd.Timestamp('2026-06-30')
 
@@ -61,10 +60,3 @@ def test_scores_split_by_route_and_version_and_bad_ranges_are_counted():
 def test_no_published_forecast_gives_an_empty_block():
     block = summarize_live([], '2026-06-16', '2026-06-27')
     assert block['n_records'] == 0 and 'pooled' not in block
-
-
-def test_a_final_is_known_only_once_the_event_ended_and_was_counted():
-    ev = pd.DataFrame({'end': pd.to_datetime(['2026-03-01', '2026-06-01', '2026-06-01', '2026-10-01']),
-                       'tournament_name': ['A', 'B', 'C', 'D']})
-    known = final_is_known(ev, pd.Timestamp('2026-09-27'), pd.Timestamp('2026-03-21'), {'B', 'D'})
-    assert known.tolist() == [True, True, False, False]

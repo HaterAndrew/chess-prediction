@@ -63,8 +63,10 @@ def _new_year_corpus():
                          'end_date': ['2026-01-24', '2027-01-23']})
     daily = pd.DataFrame({'tid': [1] * 3 + [2] * 3, 'T': [30, 14, 0] * 2,
                           'cum_regs': [60, 120, 190, 70, 130, 210]})
-    scrape = pd.DataFrame({'date': ['2027-01-20'], 'tournament_name': ['2027 Harbor Open'],
-                           'entry_count': [210]})
+    # Scraped daily through the close, so its final is labelled final.
+    days = pd.date_range('2027-01-09', '2027-01-23').strftime('%Y-%m-%d')
+    scrape = pd.DataFrame({'date': days, 'tournament_name': '2027 Harbor Open',
+                           'entry_count': 210})
     return Corpus(summary, daily, meta, None, pd.DataFrame(), scrape)
 
 

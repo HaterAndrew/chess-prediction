@@ -2,6 +2,7 @@
 from model.core import N5v4_Final
 from model.curves import build_template_curves
 from ratio_model import build_ratio_model
+from shared.curves import has_curve
 from shared.season import CURRENT_SEASON
 
 from forecast.types import Fitted
@@ -21,7 +22,7 @@ def recal_cohort(summary, completed_tids, season):
     """The two seasons before this one, plus this season's finished events."""
     rows = _in_person(summary)
     return rows[
-        (rows['has_timestamps']) &
+        has_curve(rows) &
         (rows['final_count'] >= MIN_RECAL_FINAL) &
         (rows['tournament_year'].isin([season - 2, season - 1]) |
          rows['tid'].isin(completed_tids))
@@ -43,7 +44,7 @@ def fit_models(summary, daily, enrichment_lookup, completed_tids, season=None,
     train = _in_person(summary)
 
     model = N5v4_Final()
-    model.fit(train[train['has_timestamps']], daily, enrichment_lookup=enrichment_lookup,
+    model.fit(train[has_curve(train)], daily, enrichment_lookup=enrichment_lookup,
               completed_tids=completed, season=season, standings=standings,
               verbose_standings_join=verbose,
               all_summary_families=set(summary['family'].dropna().unique()))

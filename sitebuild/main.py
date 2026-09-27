@@ -9,6 +9,7 @@ import pandas as pd
 
 from pipeline_utils import is_event_complete
 from tournament_aliases import canonicalize_family
+from shared.curves import has_curve
 from shared.season import CURRENT_SEASON, is_open_season
 
 from corpus import load_corpus
@@ -21,8 +22,7 @@ from sitebuild.history import add_historical_editions
 from sitebuild.metadata import build_metadata_cards
 from sitebuild.scrape_join import (consecutive_zero_scrape_days, counts_by_edition,
                                    latest_by_edition, scrape_daily_series)
-from sitebuild.scrape_merge import (inject_scrape_curves, merge_scrape_counts,
-                                    normalize_scrape)
+from sitebuild.scrape_merge import merge_scrape_counts, normalize_scrape
 
 
 def main():
@@ -43,7 +43,6 @@ def main():
         scrape = normalize_scrape(corpus.scrape, default_year=CURRENT_SEASON)
         latest_scrape = latest_by_edition(scrape)
         updated = merge_scrape_counts(summary, latest_scrape)
-        daily = inject_scrape_curves(scrape, summary, daily, meta, pd.Timestamp.now())
         print(f"  Merged scrape data: {updated} tournament counts updated, {len(latest_scrape)} tournaments in scrape")
 
     enrichment_lookup = m04c.build_enrichment_lookup(corpus.enrichment)
@@ -112,14 +111,15 @@ def main():
     completed_2026 = summary[
         (summary['tournament_year'] == CURRENT_SEASON) &
         (~summary['is_online'].fillna(False)) &
-        (summary['has_timestamps'])
+        has_curve(summary)
     ].copy()
     completed_2026['last_reg'] = pd.to_datetime(completed_2026['last_reg'])
     completed_tids = set()
     for _, row in completed_2026.iterrows():
         family = row['family']
         lr = row['last_reg']
-        if pd.isna(lr) or lr > TODAY:
+        # Editions the export never saw have no last_reg; their end date decides.
+        if pd.notna(lr) and lr > TODAY:
             continue
         # Require event end_date strictly in the past. A start_date-only check
         # admitted mid-event tournaments (Chicago Open, May 21–25) whose
@@ -167,7 +167,8 @@ def main():
     # H2 → v5 Cat R: roster-pending skeletons (reconcile_final_counts appended them
     # so the grade universe and freshness guard see the event) carry no registration
     # timestamps — but the model card path does not need them: the scrape merge above
-    # already wrote their live counts and injected a full daily curve, and the ratio
+    # already wrote their live counts, the loader built their curve from the scrape
+    # (corpus.scrape_curves), and the ratio
     # model trains only on pre-2026 editions. They now STAY in t2026 and are gated
     # per-row inside the loop by roster_pending_model_ok; rows that fail the gate
     # fall through to the metadata loop below exactly as before. Admitted cards keep

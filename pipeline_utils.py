@@ -274,15 +274,16 @@ def roster_pending_model_ok(current_count, days_to_start, status, event_date,
     """Should a roster-pending summary row ride the main model card path?
 
     Roster-pending skeletons (reconcile_final_counts H2) carry no registration
-    timestamps, but 04d injects their live scrape counts and a full daily curve
-    before prediction, and the ratio model trains only on pre-2026 editions —
+    timestamps, but 04d merges their live scrape counts and the corpus loader
+    builds their curve from the scrape (corpus.scrape_curves), and the ratio
+    model trains only on pre-2026 editions —
     so predict_nowcast needs nothing the missing export would provide
     (audit v5 Cat R). Admission requires:
 
       * status == 'live' with days_to_start > 0 — ended / reg-closed /
         post-start-window events keep their settled or in_progress cards from
         the metadata loop, exactly as before;
-      * event_date present — the injected curve's T values are anchored to the
+      * event_date present — the scrape curve's T values are anchored to the
         metadata start_date, so without it there is no usable curve;
       * pace_gate_ok — the same threshold the interim metadata_pace path uses,
         so the model path and the fallback flip at the same point and no card

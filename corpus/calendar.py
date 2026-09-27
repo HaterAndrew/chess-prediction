@@ -1,6 +1,8 @@
 """When each event starts and ends, as far as the corpus can say."""
 import pandas as pd
 
+from tournament_aliases import canonicalize_family
+
 
 def meta_dates(meta):
     """(family, year) -> (start, end) from the metadata; a later row wins, as in reanchoring."""
@@ -13,18 +15,23 @@ def meta_dates(meta):
 def event_calendar(summary, meta):
     """One row per summary event: tid, start and end.
 
-    Dates come from the metadata row for the (family, year). An event with no
-    metadata has no start; its end is the day of its last registration, which
-    the export stamps at the event itself, or failing that the last day of its
-    year. An event with none of these has no end and never counts as finished.
+    Dates come from the metadata row for the (family, year), or failing an
+    exact match, for its canonical family, as the site finds it: the metadata
+    names a relocated edition "Eastern Chess Congress (in New Jersey)". An
+    event with no metadata has no start; its end is the day of its last
+    registration, which the export stamps at the event itself, or failing that
+    the last day of its year. An event with none of these has no end and never
+    counts as finished.
     """
     dates = meta_dates(meta)
+    canonical = {(canonicalize_family(fam), yr): v for (fam, yr), v in dates.items()}
     last_reg = pd.to_datetime(summary['last_reg'], errors='coerce').dt.normalize()
     rows = []
     for tid, fam, yr, lr in zip(summary['tid'], summary['family'],
                                 summary['tournament_year'], last_reg):
         key = (fam, int(yr)) if pd.notna(yr) else None
-        start, end = dates.get(key, (pd.NaT, pd.NaT))
+        start, end = dates.get(key) or canonical.get(
+            (canonicalize_family(fam), key[1]) if key else None, (pd.NaT, pd.NaT))
         rows.append({'tid': tid, 'start': start, 'end': _first_known(end, lr, _year_end(yr))})
     return pd.DataFrame(rows, columns=['tid', 'start', 'end'])
 

@@ -11,6 +11,7 @@ from model.constants import CHOP_POINTS, OUTPUT_DIR
 from model.counts import counts_by_event
 from model.robust_reg import fit_huber, reset_unconverged, unconverged
 from model.stats import report_trim_stats, reset_trim_stats, trim_outliers
+from shared.curves import has_curve
 from shared.side_events import SIDE_EVENT_RE
 from shared.season import CURRENT_SEASON
 
@@ -72,7 +73,7 @@ class FitMixin:
                 self.BLITZ_FAMILIES.add(fam)
 
         valid = summary[
-            (summary['has_timestamps']) &
+            has_curve(summary) &
             (~summary.get('is_online', pd.Series(False)).fillna(False)) &
             (~summary.get('is_covid', pd.Series(False)).fillna(False))
         ].copy()

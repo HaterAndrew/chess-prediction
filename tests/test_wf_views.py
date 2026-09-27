@@ -51,8 +51,9 @@ def test_each_season_and_the_pool_carry_the_interval_figures():
     assert row['n'] == 12 and row['below_pct'] == round(2 / 12 * 100, 1)
     lo, hi = row['coverage_ci']
     assert lo < row['ci_coverage'] < hi
-    assert set(row['baselines']) == {'baseline_last_year', 'baseline_pickup'}
-    assert row['baselines']['baseline_pickup']['n'] == 10
+    assert set(row['baselines']) == {'model', 'baseline_last_year', 'baseline_pickup'}
+    assert {b['n'] for b in row['baselines'].values()} == {10}, "one set for all three"
+    assert row['baselines']['model']['mae_pct'] < row['baselines']['baseline_last_year']['mae_pct']
 
 
 def test_the_published_pits_bin_to_the_published_histogram():

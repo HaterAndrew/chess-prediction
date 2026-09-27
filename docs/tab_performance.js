@@ -128,7 +128,7 @@ function _perfCoverageKPI(a) {
             c: _perfTone(a.ci_coverage >= 80, a.ci_coverage >= 70)};
   }
   return {v: Math.round(a.ci_coverage) + '%', l: '2-Week Coverage',
-          s: `Target 80% \u00b7 95% CI ${Math.round(ci[0])}\u2013${Math.round(ci[1])}%`,
+          s: `Target 80% \u00b7 95%\u00a0CI\u00a0${Math.round(ci[0])}\u2013${Math.round(ci[1])}%`,
           c: _perfTone(ci[0] <= 80 && 80 <= ci[1], ci[1] >= 80)};
 }
 
@@ -141,7 +141,7 @@ function _perfBiasKPI(a) {
   }
   const lean = ci[0] > 0 ? 'Over-predicts' : ci[1] < 0 ? 'Under-predicts' : 'Well-centered';
   return {v: _perfSigned(a.median_error_pct) + '%', l: '2-Week Bias',
-          s: `${lean} \u00b7 95% CI ${_perfSigned(ci[0])} to ${_perfSigned(ci[1])}%`,
+          s: `${lean} \u00b7 95%\u00a0CI\u00a0${_perfSigned(ci[0])}\u00a0to\u00a0${_perfSigned(ci[1])}%`,
           c: _perfTone(lean === 'Well-centered', Math.abs(a.median_error_pct) <= 5)};
 }
 
@@ -211,9 +211,11 @@ function perfDrawScoring(data) {
   const parts = [];
 
   // ── Model vs. doing nothing, at the planning horizon ──
+  // The model on the forecasts where both baselines exist, when published.
   const bl = t14.baselines || {};
+  const same = bl.model;
   const rows = [
-    {k: 'model', label: 'This model', mae: t14.mae_pct, n: t14.n},
+    {k: 'model', label: 'This model', mae: same ? same.mae_pct : t14.mae_pct, n: same ? same.n : t14.n},
     {k: 'baseline_pickup', label: 'This year\u2019s count plus last year\u2019s late entries',
      mae: bl.baseline_pickup && bl.baseline_pickup.mae_pct, n: bl.baseline_pickup && bl.baseline_pickup.n},
     {k: 'baseline_last_year', label: 'Last year\u2019s final count',
@@ -233,7 +235,7 @@ function perfDrawScoring(data) {
           <div class="perf-bar-val${mod}">${r.mae.toFixed(1)}%</div>
         </div>`;
       }).join('')}
-      <div class="perf-scoring-note">Lower is better.</div>
+      <div class="perf-scoring-note">Lower is better.${same ? ` All three on the ${same.n} forecasts where both baselines exist.` : ''}</div>
     </div>`);
   }
 

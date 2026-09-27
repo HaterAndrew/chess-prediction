@@ -41,7 +41,7 @@ def compute_aggregate(tournament_results):
     """
     aggregate = []
     for T in T_POINTS:
-        baseline_scored = {name: [] for name in BASELINES}
+        baseline_scored = {name: [] for name in ("model",) + BASELINES}
         errors = []
         abs_errors = []
         ci_hits = []
@@ -58,9 +58,13 @@ def compute_aggregate(tournament_results):
                     "lo": pred.get('ci_lower'),
                     "hi": pred.get('ci_upper'),
                 })
-                for name in BASELINES:
-                    bp = pred.get(name)
-                    if bp:
+                # The model and the baselines on the same forecasts: those
+                # where every baseline exists. Scored on its own, a baseline
+                # skips the events it has no figure for, often the hard ones.
+                points = {"model": pred.get('predicted'),
+                          **{name: pred.get(name) for name in BASELINES}}
+                if all(points[name] for name in BASELINES):
+                    for name, bp in points.items():
                         baseline_scored[name].append(
                             {"actual": tr.get('final_count'), "point": bp})
 
@@ -79,9 +83,10 @@ def compute_aggregate(tournament_results):
         if scores:
             row["interval_score_pct"] = scores["interval_score_pct"]
             row["pit"] = scores["pit"]
-        # Naive baselines at the same horizon. Point forecasts only, so they
-        # report MAE and nothing that would let them look good by skipping the
-        # interval-width charge.
+        # Naive baselines at the same horizon, and the model under "model" on
+        # the same forecasts. Point forecasts only, so they report MAE and
+        # nothing that would let them look good by skipping the interval-width
+        # charge.
         bl = {}
         for name, recs in baseline_scored.items():
             bs = summarize(recs)

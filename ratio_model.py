@@ -15,6 +15,7 @@ declines to produce an estimate.
 import numpy as np
 from scipy.stats import lognorm
 from shared.season import CURRENT_SEASON
+from model.counts import counts_by_event
 
 # Lead times (days before event) at which count->final ratios are tabulated.
 # T=0 is the event-start bucket the window engine depends on: the full
@@ -44,25 +45,19 @@ def build_ratio_model(train_summary, train_daily, completed_tids=None):
 
     ratios = {}  # family -> {T -> [ratio, ...]}
     global_ratios = {}
+    counts = counts_by_event(train_daily, valid['tid'], CHOP_POINTS)
 
     for _, row in valid.iterrows():
         tid = row['tid']
         family = row['family']
         actual = row['final_count']
-        tid_daily = train_daily[train_daily['tid'] == tid].sort_values('T', ascending=False)
-        if len(tid_daily) < 5:
+        if tid not in counts:
             continue
 
         if family not in ratios:
             ratios[family] = {}
 
-        for T in CHOP_POINTS:
-            regs = tid_daily[tid_daily['T'] >= T]
-            if len(regs) == 0:
-                continue
-            count_at_T = int(regs['cum_regs'].max())
-            if count_at_T == 0:
-                continue
+        for T, count_at_T in counts[tid].items():
             ratio = actual / count_at_T
             ratios[family].setdefault(T, []).append(ratio)
             global_ratios.setdefault(T, []).append(ratio)

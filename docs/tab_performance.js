@@ -31,6 +31,7 @@ function perfShowStatus(letter, label, detail) {
 
 function perfInitFromData() {
   const data = typeof PERFORMANCE_DATA !== 'undefined' ? PERFORMANCE_DATA : {};
+  perfDrawLive(data);
   const hasYears = data.years && Object.values(data.years).some(y => y && y.n_tournaments > 0);
   const hasCumulative = data.cumulative && data.cumulative.n_tournaments > 0;
   const hasFlat = data.aggregate && data.aggregate.length > 0;

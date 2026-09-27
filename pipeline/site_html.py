@@ -84,7 +84,7 @@ def _without_tournaments(obj):
 
 
 # Top-level blocks only the Performance tab reads, from the full file.
-TAB_ONLY_KEYS = ("walk_forward",)
+TAB_ONLY_KEYS = ("walk_forward", "live_record")
 
 
 def _performance_summary(json_text):

@@ -88,6 +88,11 @@
 .perf-table .perf-cell.perf-none { color: var(--muted); }
 .perf-table .perf-agg td { background: var(--stock-grey); border-bottom: 0; border-top: 2px solid var(--line); font-weight: 700; padding: 8px 6px; }
 .perf-table .perf-agg .perf-cell-ci { color: var(--muted); font-size: 11px; font-weight: 400; }
+.perf-live-table .perf-cell-ci { color: var(--muted); font-size: 11px; }
+/* The live record: four columns that fit a phone; headers wrap, the lead
+   time reads from the left edge. */
+.perf-live-table th { text-align: center; white-space: normal; }
+.perf-live-table th:first-child, .perf-live-table td:first-child { text-align: left; }
 .perf-table-key { color: var(--muted); font-size: 12px; margin-top: 8px; }
 /* A phone scans the sheet sideways: the table keeps its columns, the
    tournament's name stays put while the horizons scroll under it. */
@@ -97,4 +102,6 @@
   .perf-table th:first-child, .perf-table td:first-child { background: var(--void); left: 0; max-width: 150px; overflow: hidden; position: sticky; text-overflow: ellipsis; z-index: 1; }
   .perf-table .perf-agg td:first-child { background: var(--stock-grey); }
   .perf-table-key { margin-top: 10px; }
+  /* Five columns fit a phone; the live record needs no sideways scroll. */
+  .perf-table.perf-live-table { min-width: 0; }
 }

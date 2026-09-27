@@ -35,8 +35,9 @@ def raw_frames():
     return summary, daily, meta
 
 
-def build_report(summary, records, walk_forward=None):
-    """Write performance_data.json from the walk-forward records and the window grade."""
+def build_report(summary, records, walk_forward=None, live_record=None):
+    """Write performance_data.json from the walk-forward records, the window grade
+    and the live record."""
     # ── Second engine: the post-start online-registration window (v3 T7) ──
     # Reloads the daily table from disk deliberately. The `daily` in scope has
     # already been reanchored with during-event rows dropped, and the window
@@ -108,6 +109,9 @@ def build_report(summary, records, walk_forward=None):
         # monthly refits on the corpus as it stood, counts read from rows dated
         # by the forecast date (perf.walkforward).
         "walk_forward": walk_forward,
+        # The forecasts the site published, graded against the finals
+        # (perf.live_record).
+        "live_record": live_record,
         # Each season's walk-forward forecasts, and all seasons pooled.
         "years": year_results,
         "cumulative": cumulative,

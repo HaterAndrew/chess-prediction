@@ -2,6 +2,8 @@
 
     python scripts/perf_diff.py BEFORE.csv AFTER.csv --band short
     python scripts/perf_diff.py BEFORE.csv AFTER.csv --kind removal
+    python scripts/perf_diff.py BEFORE.csv AFTER.csv --kind subset --subset thin_history
+    python scripts/perf_diff.py BEFORE.csv AFTER.csv --kind no_worse --subset thin_history
 
 Prints n, MAE %, ALE, LIS, coverage and median error for each file at each
 horizon (pooled and per season with --by-season), then the judge() verdict
@@ -16,7 +18,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from perf.acceptance import BANDS, judge  # noqa: E402
+from perf.acceptance import BANDS, KINDS, SUBSETS, judge  # noqa: E402
 from perf.log_scores import absolute_log_error, log_interval_score  # noqa: E402
 
 
@@ -40,15 +42,18 @@ def main(argv=None):
     parser.add_argument('before')
     parser.add_argument('after')
     parser.add_argument('--band', choices=sorted(BANDS), default='short')
-    parser.add_argument('--kind', choices=['improvement', 'removal'], default='improvement')
+    parser.add_argument('--kind', choices=sorted(KINDS), default='improvement')
+    parser.add_argument('--subset', choices=sorted(SUBSETS))
     parser.add_argument('--by-season', action='store_true')
     args = parser.parse_args(argv)
+    if args.kind == 'subset' and not args.subset:
+        parser.error('--kind subset needs --subset')
     before, after = pd.read_csv(args.before), pd.read_csv(args.after)
     table = horizon_table(before, args.by_season).join(
         horizon_table(after, args.by_season), lsuffix='_before', rsuffix='_after')
     print(table.to_string())
     verdict = judge(after.to_dict('records'), before.to_dict('records'),
-                    band=args.band, kind=args.kind)
+                    band=args.band, kind=args.kind, subset=args.subset)
     print(json.dumps(verdict, indent=1, default=str))
     return 0 if verdict['accept'] else 1
 

@@ -91,3 +91,14 @@ def test_the_script_bundle_parses():
     proc = subprocess.run(["node", "--check", os.path.join(DOCS, "site.js")],
                           capture_output=True, text=True, timeout=60)
     assert proc.returncode == 0, proc.stderr
+
+
+def test_every_template_literal_ships_byte_for_byte():
+    """rjsmin strips spaces in nested templates; the bundle must not."""
+    from pipeline import js_templates
+    bundle = _read("site.js")
+    for name in bundling.SCRIPT_SOURCES:
+        src = _read(name)
+        for start, end in js_templates.template_spans(src):
+            literal = src[start:end]
+            assert literal in bundle, f"{name}: a template literal changed in the bundle: {literal[:80]!r}"

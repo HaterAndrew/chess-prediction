@@ -3,7 +3,6 @@
 """
 import json
 import os
-from importlib import import_module
 
 import pandas as pd
 
@@ -18,9 +17,22 @@ from perf.folds import EVAL_YEARS
 from perf.grading import (_GRADE_ORDER, compute_aggregate,
                           compute_grade, grade_from_aggregate)
 
-m04c = import_module("04c_final_model")
-
 TODAY = today_ts()
+
+
+def raw_frames():
+    """Summary, daily curves and metadata as written, curves still anchored at last_reg.
+
+    The window grade shifts the curves to event start itself, keeping the
+    during-event rows. The model's load_data() hands back curves already shifted with
+    those rows dropped, so grading from it shifted them twice.
+    """
+    summary = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_summary.csv"))
+    daily = pd.read_csv(os.path.join(OUTPUT_DIR, "daily_registration_counts.csv"))
+    meta = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_metadata.csv"))
+    meta['start_date'] = pd.to_datetime(meta['start_date'], errors='coerce')
+    meta['end_date'] = pd.to_datetime(meta['end_date'], errors='coerce')
+    return summary, daily, meta
 
 
 def build_report(summary, year_results, all_tournament_results):
@@ -35,9 +47,7 @@ def build_report(summary, year_results, all_tournament_results):
     print(f"\n{'─'*60}")
     print("  Evaluating the online-window engine (second engine)")
     print(f"{'─'*60}")
-    raw_summary, raw_daily, raw_meta, _ = m04c.load_data()
-    raw_meta['start_date'] = pd.to_datetime(raw_meta['start_date'], errors='coerce')
-    raw_meta['end_date'] = pd.to_datetime(raw_meta['end_date'], errors='coerce')
+    raw_summary, raw_daily, raw_meta = raw_frames()
     # Train on the frame 04d actually uses (online/COVID filtered only), score
     # on the evaluation frame (blitz and World Open sub-events dropped). Passing
     # the evaluation frame for both trains a ratio model production never runs —

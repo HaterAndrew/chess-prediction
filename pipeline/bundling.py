@@ -80,6 +80,7 @@ SCRIPT_SOURCES = (
     "tab_performance.js",
     "perf_charts.js",
     "perf_calibration.js",
+    "perf_live.js",
     "pickers.js",
     "panels_info.js",
     "hero_kpi.js",

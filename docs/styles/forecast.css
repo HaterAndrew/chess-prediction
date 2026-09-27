@@ -120,16 +120,24 @@ html[data-loading] .hero-number:empty { min-height: 1em; min-width: 3ch; }
 
 /* ── The chart on ruled paper (chart_main.js) ── */
 .chart-card { border: 1px solid var(--line); margin-bottom: var(--s-5); padding: var(--s-4); position: relative; }
-.chart-top { align-items: flex-start; display: flex; flex-wrap: wrap; gap: var(--s-3); justify-content: space-between; margin-bottom: var(--s-3); }
+/* The title and the range buttons share the first row; the key sits between
+   them on a wide sheet and under them everywhere else. */
+.chart-top { align-items: start; display: grid; gap: 8px var(--s-4); grid-template-areas: "head range" "legend legend"; grid-template-columns: minmax(0, 1fr) auto; margin-bottom: var(--s-3); }
+.chart-head { grid-area: head; min-width: 0; }
+.chart-range { grid-area: range; }
 .chart-title { font: 800 var(--fs-h2) var(--display); font-stretch: var(--stretch-label); letter-spacing: .04em; margin: 0; text-transform: uppercase; }
 .chart-subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
-.chart-top-right { align-items: flex-end; display: flex; flex-direction: column; gap: 8px; }
-.chart-legend { align-items: center; display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.chart-legend { align-items: center; display: flex; flex-wrap: wrap; gap: 6px var(--s-3); grid-area: legend; }
 .legend-item { align-items: center; color: var(--muted); display: flex; font-size: 12px; gap: 6px; }
-.legend-swatch { height: 3px; width: 16px; }
+.legend-swatch { background: var(--chart-actual); height: 3px; width: 16px; }
 /* a hard-stop gradient draws the dash rhythm (6 on, 4 off): a pattern, not shading */
 .legend-swatch.dashed { background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 10px); }
-.legend-swatch.band { height: 10px; opacity: .4; }
+.legend-swatch.band { background: var(--chart-band); border-block: 1px solid color-mix(in srgb, var(--chart-actual) 30%, transparent); height: 10px; }
+.legend-swatch.past { background: var(--chart-hist); height: 2px; }
+@media (min-width: 1024px) {
+  .chart-top { grid-template-areas: "head legend range"; grid-template-columns: minmax(0, 1fr) auto auto; }
+  .chart-legend { align-self: center; }
+}
 .chart-wrap { height: 320px; position: relative; }
 @media (min-width: 768px) { .chart-wrap { height: 360px; } }
 @media (min-width: 1024px) {
@@ -140,6 +148,4 @@ html[data-loading] .hero-number:empty { min-height: 1em; min-width: 3ch; }
   .chart-card { padding: var(--s-3); }
   .chart-wrap { height: 340px; }
   .chart-subtitle { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .chart-top { flex-direction: column; }
-  .chart-top-right { align-items: flex-start; }
 }

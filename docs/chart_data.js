@@ -25,11 +25,38 @@ function chartTableHTML(spec) {
   return `${caption}<thead><tr>${head}</tr></thead><tbody>${body}</tbody>`;
 }
 
+// The value a cumulative series holds at time x: the latest point at or
+// before x, or null outside the series' own span. points: [{x, y}] sorted.
+function stepValueAt(points, x) {
+  if (!points || !points.length || x < points[0].x || x > points[points.length - 1].x) return null;
+  let lo = 0, hi = points.length - 1;
+  while (lo < hi) {
+    const mid = (lo + hi + 1) >> 1;
+    if (points[mid].x <= x) lo = mid; else hi = mid - 1;
+  }
+  return points[lo].y;
+}
+
+// Every seventh day back from end (a timestamp) while on or after start,
+// oldest first: the rows of the main chart's table, anchored on event day.
+function weeklyStops(endMs, startMs) {
+  const out = [];
+  for (let k = 0; ; k++) {
+    const d = new Date(endMs);
+    d.setDate(d.getDate() - 7 * k);
+    if (d.getTime() < startMs) break;
+    out.push(d.getTime());
+  }
+  return out.reverse();
+}
+
 // ── UMD-style tail, as in util_core.js: a no-op in the page, the export for
 // the node drivers. ──
 if (typeof globalThis !== 'undefined') {
   globalThis.chartTableHTML = chartTableHTML;
+  globalThis.stepValueAt = stepValueAt;
+  globalThis.weeklyStops = weeklyStops;
 }
 if (typeof module !== 'undefined') {
-  module.exports = { chartTableHTML };
+  module.exports = { chartTableHTML, stepValueAt, weeklyStops };
 }

@@ -16,6 +16,7 @@ function renderChart(t) {
     document.getElementById('chartLegend').innerHTML = '';
     document.getElementById('chartSubtitle').textContent =
       'Chart unavailable: the charting library did not load.';
+    chartDescribe(ctx, { label: 'Cumulative entries chart unavailable.' });
     return;
   }
 
@@ -23,6 +24,7 @@ function renderChart(t) {
     // No registration timeline data or missing event date — show placeholder
     document.getElementById('chartLegend').innerHTML = '';
     document.getElementById('chartSubtitle').textContent = 'No registration timeline yet.';
+    chartDescribe(ctx, { label: 'Cumulative entries chart: no registration timeline yet.' });
     return;
   }
 
@@ -39,6 +41,7 @@ function renderChart(t) {
   if (!series.length) {
     document.getElementById('chartLegend').innerHTML = '';
     document.getElementById('chartSubtitle').textContent = 'No registration timeline yet.';
+    chartDescribe(ctx, { label: 'Cumulative entries chart: no registration timeline yet.' });
     return;
   }
 
@@ -89,7 +92,9 @@ function renderChart(t) {
     pointHoverBackgroundColor: PALETTE.actual,
     pointHoverBorderColor: PALETTE.text,
     pointHoverBorderWidth: 2,
-    tension: 0.3,
+    // Monotone: a cumulative count never dips between two points, which a
+    // plain tension curve can draw.
+    cubicInterpolationMode: 'monotone',
     order: 2
   });
   // The first point, and today's (prominent: ink on the pen) or the final one.
@@ -160,7 +165,7 @@ function renderChart(t) {
       pointHoverBackgroundColor: PALETTE.projected,
       pointHoverBorderColor: PALETTE.text,
       pointHoverBorderWidth: 2,
-      tension: 0.3,
+      cubicInterpolationMode: 'monotone',
       order: 3
     });
 
@@ -182,25 +187,23 @@ function renderChart(t) {
       label: 'CI Upper', data: ciUp,
       borderColor: themeRgba(PALETTE.actual, 0.3), borderWidth: 1,
       backgroundColor: PALETTE.band,
-      fill: '+1', pointRadius: 0, tension: 0.3, order: 5
+      fill: '+1', pointRadius: 0, cubicInterpolationMode: 'monotone', order: 5
     });
     datasets.push({
       label: 'CI Lower', data: ciLo,
       borderColor: themeRgba(PALETTE.actual, 0.3), borderWidth: 1,
       backgroundColor: PALETTE.band,
-      pointRadius: 0, tension: 0.3, order: 5
+      pointRadius: 0, cubicInterpolationMode: 'monotone', order: 5
     });
   }
 
-  // Historical traces — dashed lines, no points, for past year curves of this family
+  // Past years: thin solid grey lines (a dash means the projection and
+  // nothing else). Last year is the one labelled comparison, in the full grey
+  // (4.5:1 on the sheet); older years share a lighter grey as context.
+  let lastYear = null;
+  let pastDrawn = 0;
   if (t.historical && t.registration_curve) {
-    const histColors = [
-      themeRgba(PALETTE.hist, 0.45),  // most recent — brightest
-      themeRgba(PALETTE.hist, 0.32),
-      themeRgba(PALETTE.hist, 0.22),
-      themeRgba(PALETTE.hist, 0.14),
-      themeRgba(PALETTE.hist, 0.10),
-    ];
+    const pastColor = i => i === 0 ? PALETTE.hist : themeRgba(PALETTE.hist, 0.4);
     // histLookup is built once at the top of renderChart (above the
     // projection block) so the scrape-ratio computation and the historical
     // line overlays share one source of truth. Cap to most recent N years
@@ -248,24 +251,26 @@ function renderChart(t) {
       // The final-count marker dot below shows where the year ended.
       hData.sort((a, b) => a.x - b.x);
       const colorIdx = recent.length - 1 - i;
+      const isLast = colorIdx === 0;
+      if (isLast) lastYear = { year: h.year, count: h.count, data: hData };
+      pastDrawn++;
       datasets.push({
         label: `${h.year}`,
         data: hData,
-        borderColor: histColors[colorIdx] || histColors[histColors.length - 1],
-        borderWidth: 1.25,
-        borderDash: [5, 4],
+        borderColor: pastColor(colorIdx),
+        borderWidth: isLast ? 1.5 : 1,
         pointRadius: 0,
         pointHoverRadius: 5,
-        pointHoverBackgroundColor: histColors[colorIdx] || histColors[histColors.length - 1],
+        pointHoverBackgroundColor: pastColor(colorIdx),
         pointHoverBorderColor: PALETTE.text,
         pointHoverBorderWidth: 1.5,
-        tension: 0.3,
+        cubicInterpolationMode: 'monotone',
         order: 6
       });
       // Final-count marker, plotted as a single point (no line) at event day
       // in the same color as the year line. Shows the small gap between
       // scrape-end and the eventual final after post-event reconciliation.
-      const markerColor = histColors[colorIdx] || histColors[histColors.length - 1];
+      const markerColor = pastColor(colorIdx);
       datasets.push({
         label: `${h.year} final`,
         data: [{ x: addDays(eventStart, 0).getTime(), y: h.count }],
@@ -273,10 +278,10 @@ function renderChart(t) {
         backgroundColor: markerColor,
         borderColor: markerColor,
         pointStyle: 'circle',
-        pointRadius: 4,
+        pointRadius: isLast ? 4 : 3,
         pointHoverRadius: 6,
-        pointBorderColor: PALETTE.text,
-        pointBorderWidth: 1.5,
+        pointBorderColor: isLast ? PALETTE.surface : markerColor,
+        pointBorderWidth: isLast ? 1.5 : 0,
         order: 4
       });
     });
@@ -332,53 +337,71 @@ function renderChart(t) {
     }
   };
 
-  // Projection endpoint: ink dot + "approx N" label at (event day, predicted
-  // final). Desktop + live only; mobile keeps the hero number as the source.
-  const endpointLabelPlugin = {
-    id: 'endpointLabel',
+  // The figures where the lines end, on every width: the forecast ("~258",
+  // ink) beside its dot at event day, and last year's final ("2025 · 305",
+  // in the past-year grey) beside its dot. Each sits right of its dot when
+  // there is room, else left; two labels on one side that would overlap part
+  // vertically around their midpoint.
+  const endLabelsPlugin = {
+    id: 'endLabels',
     afterDraw(c) {
-      if (isDone(t) || !t.point_estimate || !t.event_start || _mobileVP()) return;
+      if (!t.event_start) return;
       const xS = c.scales.x, yS = c.scales.y;
       const px = xS.getPixelForValue(new Date(t.event_start + 'T00:00:00').getTime());
-      const py = yS.getPixelForValue(t.point_estimate);
-      if (px < xS.left || px > xS.right || py < yS.top || py > yS.bottom) return;
+      if (px < xS.left || px > xS.right) return;
       const g = c.ctx;
-      g.save();
-      // dot, visual twin of the year-final markers
-      g.beginPath();
-      g.arc(px, py, 4, 0, Math.PI * 2);
-      g.fillStyle = PALETTE.projected;
-      g.fill();
-      g.lineWidth = 1.5;
-      g.strokeStyle = PALETTE.surface;
-      g.stroke();
-      // label with a surface halo; right of the dot, flip left at the edge
-      const txt = '\u2248 ' + fmt(t.point_estimate);
-      g.font = 'bold 11px ' + getComputedStyle(document.body).fontFamily;
-      const tw = g.measureText(txt).width;
-      const padX = 5, boxH = 18, gap = 8;
-      let bx = px + gap;
-      if (bx + tw + padX * 2 > xS.right) bx = px - gap - tw - padX * 2;
-      let by = py - boxH / 2;
-      // dodge the year-final dot cluster (same x pixel) if one lands in the box
-      const finalYs = [];
-      c.data.datasets.forEach(ds => {
-        if (/ final$/.test(ds.label || '') && ds.data[0]) {
-          finalYs.push(yS.getPixelForValue(ds.data[0].y));
-        }
-      });
-      if (finalYs.some(fy => fy > by - 4 && fy < by + boxH + 4)) {
-        const below = finalYs.every(fy => fy < py);
-        by = below ? by + 12 : by - 12;
+      const boxH = 18, padX = 5, gap = 8;
+      const labels = [];
+      if (!isDone(t) && t.point_estimate) {
+        labels.push({ y: yS.getPixelForValue(t.point_estimate), text: '~' + fmt(t.point_estimate),
+                      color: PALETTE.text, font: chartLabelFont(12, 'bold'), dot: true });
+      } else if (isDone(t) && actualData.length) {
+        // A finished event's own final, in its pen, beside the line's end.
+        const fin = actualData[actualData.length - 1].y;
+        labels.push({ y: yS.getPixelForValue(fin), text: fmt(fin), color: PALETTE.actual, font: chartLabelFont(12, 'bold') });
       }
-      g.fillStyle = themeRgba(PALETTE.surface, 0.85);
-      g.beginPath();
-      g.rect(bx, by, tw + padX * 2, boxH);
-      g.fill();
-      g.fillStyle = PALETTE.text;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      g.fillText(txt, bx + padX, by + boxH / 2 + 0.5);
+      if (lastYear) {
+        labels.push({ y: yS.getPixelForValue(lastYear.count), text: `${lastYear.year} · ${fmt(lastYear.count)}`,
+                      color: PALETTE.hist, font: chartLabelFont(12) });
+      }
+      g.save();
+      labels.forEach(l => {
+        g.font = l.font;
+        l.w = _labelWidth(g, l.text) + padX * 2;
+        l.right = px + gap + l.w <= c.width - 2;
+        l.by = l.y - boxH / 2;
+      });
+      if (labels.length === 2 && labels[0].right === labels[1].right) {
+        const [hi, lo] = labels[0].y <= labels[1].y ? labels : [labels[1], labels[0]];
+        const need = boxH + 2;
+        if (lo.by - hi.by < need) {
+          const mid = (hi.by + lo.by) / 2;
+          hi.by = mid - need / 2;
+          lo.by = mid + need / 2;
+        }
+      }
+      labels.forEach(l => {
+        if (l.y < yS.top || l.y > yS.bottom) return;
+        if (l.dot) {
+          // the forecast's dot, the visual twin of the year-final markers
+          g.beginPath();
+          g.arc(px, l.y, 4, 0, Math.PI * 2);
+          g.fillStyle = PALETTE.projected;
+          g.fill();
+          g.lineWidth = 1.5;
+          g.strokeStyle = PALETTE.surface;
+          g.stroke();
+        }
+        const bx = l.right ? px + gap : px - gap - l.w;
+        const by = Math.max(yS.top - boxH / 2, Math.min(l.by, yS.bottom - boxH));
+        g.fillStyle = themeRgba(PALETTE.surface, 0.85);
+        g.fillRect(bx, by, l.w, boxH);
+        g.font = l.font;
+        g.fillStyle = l.color;
+        g.textAlign = 'left';
+        g.textBaseline = 'middle';
+        g.fillText(l.text, bx + padX, by + boxH / 2 + 0.5);
+      });
       g.restore();
     }
   };
@@ -511,7 +534,7 @@ function renderChart(t) {
   chart = new Chart(ctx, {
     type: 'line',
     data: { datasets },
-    plugins: [vertLinePlugin, crosshairPlugin, endpointLabelPlugin],
+    plugins: [vertLinePlugin, crosshairPlugin, endLabelsPlugin],
     options: {
       responsive: true, maintainAspectRatio: false,
       parsing: false, normalized: true,
@@ -628,7 +651,7 @@ function renderChart(t) {
                 const ciLo = items.find(i => i.dataset.label === 'CI Lower');
                 if (ciUp && ciLo) {
                   lines.push('');
-                  lines.push(`  Likely range: ${fmt(ciLo.raw.y)} – ${fmt(ciUp.raw.y)}`);
+                  lines.push(`  ${Math.round((t.ci_level || .8) * 100)}% range: ${fmt(ciLo.raw.y)} – ${fmt(ciUp.raw.y)}`);
                 }
               }
               // Pace vs. historical average AT THE SAME T (not vs final).
@@ -693,16 +716,18 @@ function renderChart(t) {
     }
   });
 
-  // Legend
-  let legendHtml = `<div class="legend-item"><div class="legend-swatch" style="background:${PALETTE.actual}"></div>Actual</div>`;
+  // The key: the actual line, the projection and its range while live, the
+  // past years when any are drawn. Swatches are classes (forecast.css), so
+  // they follow the theme.
+  const ciPct = Math.round((t.ci_level || .8) * 100);
+  let legendHtml = '<div class="legend-item"><div class="legend-swatch"></div>Actual</div>';
   if (!isDone(t)) {
     legendHtml += '<div class="legend-item"><div class="legend-swatch dashed"></div>Projected</div>';
-    legendHtml += `<div class="legend-item"><div class="legend-swatch band" style="background:${PALETTE.actual}"></div>Likely Range</div>`;
+    legendHtml += `<div class="legend-item"><div class="legend-swatch band"></div>${ciPct}% Range</div>`;
   }
-  if (t.historical) {
-    legendHtml += `<div class="legend-item"><div class="legend-swatch dashed" style="background:repeating-linear-gradient(90deg,${themeRgba(PALETTE.hist,0.6)} 0 4px,transparent 4px 8px)"></div>Historical</div>`;
-  }
+  if (pastDrawn) legendHtml += '<div class="legend-item"><div class="legend-swatch past"></div>Past Years</div>';
   document.getElementById('chartLegend').innerHTML = legendHtml;
+  _describeMainChart(t, ctx, { actualData, datasets, lastYear, ciPct });
 
   // Subtitle: the early-bird state, the one thing the chart title and the
   // page title do not already say. A non-breaking space holds the line when
@@ -727,5 +752,30 @@ function renderChart(t) {
   // milestone strip under the chart (panels_info.js renderMilestones).
   _syncChartRangeSeg(cw);
 }
+
+// The main chart's text alternative: a label with the figures a sighted
+// reader takes from it, and a weekly table (chartDescribe, chart_kit.js).
+function _describeMainChart(t, canvas, d) {
+  const name = `${t.family} ${t.year}`;
+  const eventDate = new Date(t.event_start + 'T00:00:00');
+  const last = d.lastYear ? `; last year finished at ${fmt(d.lastYear.count)}` : '';
+  const label = isDone(t)
+    ? `${name}: ${fmt(t.current_count)} final entries, event ${fmtDate(t.event_start)}${last}.`
+    : `${name}: ${fmt(t.current_count)} registered on ${fmtDate(TOURNAMENT_DATA.generated)}; forecast ~${fmt(t.point_estimate)} by ${fmtDate(t.event_start)}, ${d.ciPct}% range ${fmt(t.ci_lower)} to ${fmt(t.ci_upper)}${last}.`;
+  const find = l => (d.datasets.find(x => x.label === l) || {}).data;
+  const proj = find('Projected'), up = find('CI Upper'), lo = find('CI Lower');
+  const cols = ['Date', 'Registered'];
+  if (proj) cols.push('Forecast', `${d.ciPct}% Low`, `${d.ciPct}% High`);
+  if (d.lastYear) cols.push(`${d.lastYear.year} at This Point`);
+  const start = d.actualData.length ? d.actualData[0].x : eventDate.getTime();
+  const rows = weeklyStops(eventDate.getTime(), start).map(x => {
+    const r = [DATE_FMT.short.format(new Date(x)), _fmtOrNull(stepValueAt(d.actualData, x))];
+    if (proj) r.push(_fmtOrNull(stepValueAt(proj, x)), _fmtOrNull(stepValueAt(lo, x)), _fmtOrNull(stepValueAt(up, x)));
+    if (d.lastYear) r.push(_fmtOrNull(stepValueAt(d.lastYear.data, x)));
+    return r;
+  });
+  chartDescribe(canvas, { label, caption: `${name}: cumulative entries by week`, columns: cols, rows });
+}
+function _fmtOrNull(v) { return v == null ? null : fmt(v); }
 
 // (What-If panel removed)

@@ -33,7 +33,7 @@
 <!-- One stylesheet: the bundle pipeline/bundling.py builds from
      docs/styles/*.css in cascade order (STYLE_SOURCES). Edit the sources,
      then `python3 -m pipeline.bundling`. -->
-<link rel="stylesheet" href="styles/site.css?v=5912b3e7c9">
+<link rel="stylesheet" href="styles/site.css?v=a488ee7bbf">
 </head>
 <body>
 
@@ -184,21 +184,19 @@
   <!-- ── Main Chart (right near the top) ── -->
   <div class="chart-card" id="chartCard">
     <div class="chart-top">
-      <div>
+      <div class="chart-head">
         <h2 class="chart-title" id="chartTitle">Cumulative Entries</h2>
         <div class="chart-subtitle" id="chartSubtitle">&nbsp;</div>
       </div>
-      <div class="chart-top-right">
-        <div class="chart-legend" id="chartLegend"><div class="legend-item"><div class="legend-swatch"></div>Actual</div><div class="legend-item"><div class="legend-swatch dashed"></div>Projected</div><div class="legend-item"><div class="legend-swatch band"></div>Likely Range</div><div class="legend-item"><div class="legend-swatch dashed"></div>Historical</div></div>
-        <div class="segmented" id="chartRangeSeg" role="group" aria-label="Chart time range">
-          <button data-act="chart-range" data-range="all" class="active">All</button>
-          <button data-act="chart-range" data-range="90">90d</button>
-          <button data-act="chart-range" data-range="30">30d</button>
-        </div>
+      <div class="chart-legend" id="chartLegend"><div class="legend-item"><div class="legend-swatch"></div>Actual</div><div class="legend-item"><div class="legend-swatch dashed"></div>Projected</div><div class="legend-item"><div class="legend-swatch band"></div>80% Range</div><div class="legend-item"><div class="legend-swatch past"></div>Past Years</div></div>
+      <div class="segmented chart-range" id="chartRangeSeg" role="group" aria-label="Chart time range">
+        <button data-act="chart-range" data-range="all" class="active">All</button>
+        <button data-act="chart-range" data-range="90">90d</button>
+        <button data-act="chart-range" data-range="30">30d</button>
       </div>
     </div>
     <div class="chart-wrap">
-      <canvas id="mainChart" aria-label="Cumulative entries chart showing predicted and actual registration counts over time" role="img"></canvas>
+      <canvas id="mainChart" aria-label="Cumulative entries chart" role="img"></canvas>
     </div>
     <!-- The milestones on one rule under the chart (panels_info.js
          renderMilestones): today, the early bird while it is ahead, the next
@@ -835,6 +833,6 @@
      the bundle, dispatches bare globals, so there are no wrappers and no
      modules. Deferred, so it runs after the data tag above and after the
      chart library in <head>. Edit a source, then `python3 -m pipeline.bundling`. -->
-<script defer src="site.js?v=0edfc93a1d"></script>
+<script defer src="site.js?v=964839c27e"></script>
 </body>
 </html>

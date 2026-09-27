@@ -5,6 +5,7 @@ scoreboard grades, so a row it drops or shifts is a forecast nobody can check.
 import csv
 import json
 import os
+import subprocess
 
 import pytest
 
@@ -116,6 +117,21 @@ def test_nightly_commits_the_ledger():
     commit_step = yml.split("Commit and push changes")[1].split("Publish degraded-state banner")[0]
     add_line = next(ln for ln in commit_step.splitlines() if ln.strip().startswith("git add output/"))
     assert "output/forecast_ledger.csv" in add_line
+
+
+def test_nothing_the_nightly_commits_is_ignored():
+    """`git add` of an ignored path exits 1 and fails the commit step, and
+    output/*.csv is ignored by default: every file the workflow stages must be
+    re-included in .gitignore."""
+    path = os.path.join(PROJECT_ROOT, ".github", "workflows", "daily_update.yml")
+    with open(path) as fh:
+        yml = fh.read()
+    commit_step = yml.split("Commit and push changes")[1].split("Publish degraded-state banner")[0]
+    add_line = next(ln for ln in commit_step.splitlines() if ln.strip().startswith("git add output/"))
+    staged = add_line.split()[2:]
+    ignored = subprocess.run(["git", "-C", PROJECT_ROOT, "check-ignore", "--no-index", *staged],
+                             capture_output=True, text=True).stdout.split()
+    assert ignored == []
 
 
 def test_pipeline_records_forecasts_after_logging_the_run():

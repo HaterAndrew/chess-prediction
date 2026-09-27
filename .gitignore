@@ -37,6 +37,7 @@ output/scrape_health.html
 !output/daily_registration_counts.csv
 !output/tournament_metadata.csv
 !output/update_log.csv
+!output/forecast_ledger.csv
 !output/walk_in_family_stats.csv
 !output/walk_in_multipliers.csv
 !output/audit_warnings.json

@@ -37,6 +37,22 @@ function _liveRoutes(live) {
   return counts.map(([label, n]) => `${label} ${n}`).join(', ');
 }
 
+// The sealed test (perf/holdout.py): what the frozen model published for
+// events that started after it froze. Drawn once one of them has finished.
+function _liveSealed(h) {
+  if (!h || !h.n_records) return '';
+  const rows = Object.entries(h.pooled || {})
+    .sort((a, b) => Number(b[0]) - Number(a[0]))
+    .map(([T, m]) => _liveRow(T, m)).join('');
+  return `<p class="perf-table-key">Sealed test: ${h.n_records} forecasts of ${h.n_events} finished
+      event${h.n_events === 1 ? '' : 's'} that started after the model froze on ${h.frozen_on}, so none
+      of them informed a change to it.</p>
+    <table class="perf-table perf-live-table">
+      <thead><tr><th>Lead Time</th><th>Average Miss</th><th>Typical Miss</th><th>Inside the Range</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
 function perfDrawLive(data) {
   const el = document.getElementById('perfLive');
   if (!el) return;
@@ -57,5 +73,6 @@ function perfDrawLive(data) {
       <thead><tr><th>Lead Time</th><th>Average Miss</th><th>Typical Miss</th><th>Inside the Range</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
-    <p class="perf-table-key">n is the forecasts graded at that lead time. Typical miss is the median, above zero when forecasts ran high; the small figures under it and under inside the range are 95% intervals. Inside the range in red: its interval sits wholly below the 80% target.</p>`;
+    <p class="perf-table-key">n is the forecasts graded at that lead time. Typical miss is the median, above zero when forecasts ran high; the small figures under it and under inside the range are 95% intervals. Inside the range in red: its interval sits wholly below the 80% target.</p>
+    ${_liveSealed(live.holdout)}`;
 }

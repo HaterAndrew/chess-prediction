@@ -541,6 +541,7 @@
             <tr><td>Late-surge damping</td><td>Scholastic families, T &gt; 3</td><td>Cap ratio at 1.1 + 0.4 &middot; min(T/90, 1)</td></tr>
             <tr><td>Fill-% shrinkage</td><td>Count &gt; 60% of family mean</td><td>Shrink ratio toward 1.0 (max 20%)</td></tr>
             <tr><td>Family anchor</td><td>Count &lt; threshold, T &ge; 42</td><td>Blend with 0.6 &middot; recent + 0.4 &middot; mean final</td></tr>
+            <tr><td>Last-year anchor</td><td>T &gt; 14</td><td>Blend toward last edition&rsquo;s final (0.4 at T &le; 28, 0.6 beyond)</td></tr>
             <tr><td>Growth trend</td><td>T &ge; 7</td><td>Multiply by 1 + trend &middot; 0.5 (capped &plusmn;15%)</td></tr>
             <tr><td>Pickup blend</td><td>T &le; 14</td><td>Geometric mean with count + entries last edition took after T</td></tr>
             <tr><td>Plausibility bounds</td><td>Pred &lt; 30% of family minimum or &gt; 3&times; its maximum</td><td>Re-centre on the historical median, or cap at 1.5&times; the maximum</td></tr>
@@ -710,28 +711,29 @@
             <th class="tc">Result</th>
           </tr></thead>
           <tbody>
-            <tr><td>Growth trend (&minus;3.4%/yr)</td><td>910 &times; (1 + (&minus;0.034) &middot; 0.5)</td><td class="tc pen">894</td></tr>
-            <tr><td>Plausibility bounds</td><td>Below 70% of family median (916); blend</td><td class="tc pen">900</td></tr>
+            <tr><td>Last-year anchor (T &gt; 28)</td><td>0.6 &times; 899 + 0.4 &times; 910</td><td class="tc pen">903</td></tr>
+            <tr><td>Growth trend (&minus;3.4%/yr)</td><td>903 &times; (1 + (&minus;0.034) &middot; 0.5)</td><td class="tc pen">888</td></tr>
+            <tr><td>Plausibility bounds</td><td>Between 30% of the family minimum (258) and 3&times; its maximum (2,880)</td><td class="tc pen">888</td></tr>
           </tbody>
         </table>
       </div>
       <p class="info-note down">
-        The plausibility check prevents compounding small adjustments from pushing the prediction unreasonably far from historical norms.
-        Final point estimate: ~908 (after CI re-centering in log-space).
+        The plausibility check stops a forecast far outside the family&rsquo;s history; this one sits inside it.
+        The pickup blend applies only inside two weeks, so at T = 62 the point estimate is 888.
       </p>
 
       <!-- Step 5 -->
       <h4>Step 5: Confidence Interval</h4>
       <p class="prose sp">
         From lognormal fit on log-ratios, calibrated via LOO with T-dependent shrinkage:<br>
-        <span class="mono">&sigma; = std(log(r)) = 0.127 &rarr; raw CI = [788, 1046] &rarr; &times; shrink(0.33 at T&asymp;60) &rarr; CI = [856, 963]</span>
+        <span class="mono">&sigma; = std(log(r)) = 0.127 &rarr; raw CI = [788, 1046] &rarr; &times; shrink(0.33 at T&asymp;60) &rarr; re-centred on 903, shifted by the trend &rarr; CI = [837, 942]</span>
       </p>
 
       <!-- Result card -->
       <div class="result-card">
         <div class="result-card-label">Chicago Open 2026 Prediction</div>
-        <div class="result-card-num">908</div>
-        <div class="result-card-ci">80% CI: 856 &ndash; 963</div>
+        <div class="result-card-num">888</div>
+        <div class="result-card-ci">80% CI: 837 &ndash; 942</div>
       </div>
     </details>
 
@@ -840,6 +842,6 @@
      the bundle, dispatches bare globals, so there are no wrappers and no
      modules. Deferred, so it runs after the data tag above and after the
      chart library in <head>. Edit a source, then `python3 -m pipeline.bundling`. -->
-<script defer src="site.js?v=29d54dd8cf"></script>
+<script defer src="site.js?v=64327c1525"></script>
 </body>
 </html>

@@ -10,31 +10,30 @@ from reportlab.platypus import (
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
 
+from perf.holdout import FROZEN_ON
+
 OUTPUT = "output/CCA_Prediction_Model.pdf"
 
 
 def build_pdf():
     # K1: source the headline accuracy figures from the graded output instead of
     # hardcoding them, so the whitepaper can never drift from output/
-    # performance_data.json (the leak fix dropped these from 91%/A+ to the honest
-    # values below). Falls back to the last-known honest values if the file is
-    # absent (this script is not wired into the daily pipeline).
+    # performance_data.json. Without that file there are no honest figures to
+    # print, so the script stops rather than printing remembered ones.
     import json
-    try:
-        with open("output/performance_data.json") as _f:
-            _perf = json.load(_f)
-    except (OSError, ValueError):
-        _perf = {}
-    _cum = _perf.get("cumulative", {})
-    _t14 = next((a for a in _cum.get("aggregate", []) if a.get("T") == 14), {})
-    n_tests = _cum.get("n_tournaments", 133)
-    med14 = _t14.get("median_ape_pct", 7.1)
-    cov14 = round(_t14.get("ci_coverage", 75.0))
-    grade_cum = _cum.get("grade", "B")
-    _t3 = next((a for a in _cum.get("aggregate", []) if a.get("T") == 3), {})
-    cov3 = round(_t3.get("ci_coverage", 67.0))
-    _yrs = sorted(y for y, o in _perf.get("years", {}).items() if (o.get("n_tournaments") or 0) > 0)
-    yr_range = f"{_yrs[0]}-{_yrs[-1]}" if _yrs else "2023-2026"
+    with open("output/performance_data.json") as _f:
+        _perf = json.load(_f)
+    _cum = _perf["cumulative"]
+    _by_T = {a["T"]: a for a in _cum["aggregate"]}
+    n_tests = _cum["n_tournaments"]
+    med14 = _by_T[14]["median_ape_pct"]
+    cov14 = round(_by_T[14]["ci_coverage"])
+    grade_cum = _cum["grade"]
+    cov3 = round(_by_T[3]["ci_coverage"])
+    _covs = [round(a["ci_coverage"]) for a in _cum["aggregate"]]
+    cov_lo, cov_hi = min(_covs), max(_covs)
+    _yrs = sorted(y for y, o in _perf["years"].items() if (o.get("n_tournaments") or 0) > 0)
+    yr_range = f"{_yrs[0]}-{_yrs[-1]}"
 
     doc = SimpleDocTemplate(
         OUTPUT,
@@ -193,31 +192,29 @@ def build_pdf():
 
     story.append(Paragraph("<b>Confidence Range &amp; Sanity Checks</b>", h1))
     story.append(Paragraph(
-        "Every prediction includes a confidence interval \u2014 a range the actual result "
-        "has fallen within about <b>9 out of 10 times</b> in backtesting (intentionally "
-        "conservative \u2014 better to be a little wide than a little narrow). It's wider "
-        "far from the event and tighter as it approaches. Small adjustments (1\u20135%) "
-        "correct for year-over-year trends, historical withdrawals, and near-capacity "
-        "dampening. Predictions that drift too far from historical norms are pulled back "
-        "via plausibility bounds.", blg))
+        "Every prediction includes an 80% range; in the walk-forward test the final landed "
+        f"inside it <b>{cov_lo}\u2013{cov_hi}% of the time</b>, depending on lead time. Months "
+        "out the forecast leans toward last year's final; inside two weeks it is averaged with "
+        "pickup (this year's count plus what last year's edition took from the same point). "
+        "A forecast far outside the family's history is pulled back.", blg))
 
     story.append(Paragraph("<b>How We Tested It</b>", h1))
     story.append(Paragraph(
-        "We never test on data the model has seen. We train through (say) 2023, then predict "
-        "every 2024 tournament as if living in early 2024 \u2014 no future information leaks in, and "
-        f"each tournament is held out of its own training set. Across <b>{n_tests} tournaments</b>, "
-        f"at two weeks out the median miss was <b>{med14}%</b> and the 80% interval captured the true "
-        f"result <b>{cov14}% of the time</b> (cumulative grade <b>{grade_cum}</b>). That coverage falls "
-        f"to about <b>{cov3}%</b> three days out: the intervals are overconfident close to the event, "
-        "which is exactly when the number is most wanted.", blg))
+        "We never test on data the model has seen: each month it is refit on the data as it "
+        "stood that day and forecasts from the entries registered by the forecast date. "
+        f"Across <b>{n_tests} tournaments</b> ({yr_range}), two "
+        f"weeks out the median miss was <b>{med14}%</b> and the 80% range held the result "
+        f"<b>{cov14}% of the time</b> (grade <b>{grade_cum}</b>); three days out, <b>{cov3}%</b>. "
+        f"The model froze on {FROZEN_ON}; the site grades tournaments starting later "
+        "separately, as a sealed test.", blg))
 
     story.append(Paragraph("<b>What We Tried and Rejected</b>", h1))
     story.append(Paragraph(
-        "We tested several alternatives on an earlier blind test. None improved accuracy. The figures "
-        "below are the relative model-selection comparison and predate the leave-one-out leak fix and "
-        "the walk-forward test, so "
-        "the absolute coverage numbers run higher than the honest figures above \u2014 read them as a "
-        "ranking of configurations, not current accuracy.", blg))
+        "A change stays only if it lowers the walk-forward interval score by over one standard "
+        "error, leaves no lead time worse by more, and wins three of four seasons. Kept: the "
+        "pickup blend. Rejected: recalibrating on past errors, conformal ranges, recency weights, "
+        "a stronger pull to last year's final. The table predates the walk-forward: a ranking, "
+        "not current accuracy.", blg))
 
     reject_data = [
         ['Approach', 'Median Error', 'Why It Was Rejected'],
@@ -265,7 +262,7 @@ def build_pdf():
         "apply manual adjustments for known upcoming factors.</b>", blg))
 
     story.append(Spacer(1, 4))
-    story.append(Paragraph("HaterAndrew \u2014 March 2026", footer))
+    story.append(Paragraph("HaterAndrew \u2014 September 2026", footer))
 
     # ── PAGE 2: WORKED EXAMPLE ───────────────────────────────
     story.append(PageBreak())
@@ -316,16 +313,16 @@ def build_pdf():
     story.append(Paragraph("Step 4 \u2014 Adjustments", h2))
     story.append(styled_table(
         [['Adjustment', 'Calculation', 'Result'],
-         ['Growth trend (\u22123.4%/yr)', '910 \u00d7 (1 + (\u22120.034) \u00b7 0.5)', '894'],
-         ['Withdrawal corr. (1.2%)', '894 \u00d7 (1 \u2212 0.012)', '883'],
-         ['Plausibility bounds', 'Below 70% of family median (916);\nblend 0.5 \u00d7 883 + 0.5 \u00d7 916', '900']],
+         ['Last-year anchor (T > 28)', '0.6 \u00d7 899 + 0.4 \u00d7 910', '903'],
+         ['Growth trend (\u22123.4%/yr)', '903 \u00d7 (1 + (\u22120.034) \u00b7 0.5)', '888'],
+         ['Plausibility bounds', 'Between 30% of the family minimum (258)\nand 3\u00d7 its maximum (2,880)', '888']],
         [1.8 * inch, 2.5 * inch, 0.9 * inch],
         font_size=8.5,
     ))
     story.append(Paragraph(
-        "The plausibility check prevents the compounding of small adjustments from pushing the "
-        "prediction unreasonably far from historical norms. Final point estimate: <b>~908</b> "
-        "(after CI re-centering in log-space).", note))
+        "The plausibility check stops a forecast far outside the family's history; this one sits "
+        "inside it. The pickup blend applies only inside two weeks, so at T = 62 the point "
+        "estimate is <b>888</b>.", note))
     story.append(Spacer(1, 3))
 
     story.append(Paragraph("Step 5 \u2014 Confidence Interval", h2))
@@ -334,7 +331,8 @@ def build_pdf():
     story.append(Paragraph(
         "\u03c3 = std(log(r)) = 0.127 &nbsp;\u2192&nbsp; "
         "raw CI = [788, 1046] &nbsp;\u2192&nbsp; "
-        "\u00d7 shrink(0.33 at T\u224860) &nbsp;\u2192&nbsp; <b>CI = [856, 963]</b>", eq_sm))
+        "\u00d7 shrink(0.33 at T\u224860) &nbsp;\u2192&nbsp; re-centred on 903, shifted by the "
+        "trend &nbsp;\u2192&nbsp; <b>CI = [837, 942]</b>", eq_sm))
 
     story.append(Spacer(1, 8))
 
@@ -342,7 +340,7 @@ def build_pdf():
     result_data = [[
         Paragraph("<b>Chicago Open 2026 Prediction</b>",
                    ParagraphStyle('R', parent=body, fontSize=11, alignment=TA_CENTER)),
-        Paragraph("<b>908</b> &nbsp;&nbsp;(80% CI: 856 \u2013 963)",
+        Paragraph("<b>888</b> &nbsp;&nbsp;(80% CI: 837 \u2013 942)",
                    ParagraphStyle('R2', parent=body, fontSize=13, alignment=TA_CENTER)),
     ]]
     result_table = Table(result_data, colWidths=[2.5 * inch, 3.5 * inch])
@@ -357,12 +355,12 @@ def build_pdf():
 
     story.append(Spacer(1, 6))
     story.append(Paragraph(
-        "<b>YoY context (informational, not used in model):</b> Chicago Open 2025 had "
-        "153 entries at T \u2248 62. Current 2026 count of 180 is +17.6% ahead of last "
+        "<b>YoY context (unused at T = 62; the pickup blend uses it inside two weeks):</b> "
+        "Chicago Open 2025 had 153 entries at T \u2248 62. Current 2026 count of 180 is +17.6% ahead of last "
         "year's pace. 2025 finished at 899.", note))
 
     story.append(Spacer(1, 8))
-    story.append(Paragraph("HaterAndrew \u2014 March 2026", footer))
+    story.append(Paragraph("HaterAndrew \u2014 September 2026", footer))
 
     # ── PAGE 3: TECHNICAL SPECIFICATION (was page 1) ─────────
     story.append(PageBreak())
@@ -436,12 +434,14 @@ def build_pdf():
           'Shrink ratio toward 1.0 (max 20%)'],
          ['Family anchor', 'Count < threshold, T \u2265 42',
           'Blend with 0.6 \u00b7 recent + 0.4 \u00b7 mean final'],
+         ['Last-year anchor', 'T > 14',
+          'Blend toward last final (0.4 at T \u2264 28, 0.6 beyond)'],
          ['Growth trend', 'T \u2265 7',
           'Multiply by 1 + trend \u00b7 0.5 (capped \u00b115%)'],
-         ['Withdrawal correction', 'Historical data available',
-          'Reduce by median withdrawal rate'],
-         ['Plausibility bounds', 'Pred < 70% of family median',
-          'Blend toward historical median'],
+         ['Pickup blend', 'T \u2264 14',
+          'Geometric mean with the pickup forecast'],
+         ['Plausibility bounds', '< 30% of family min or > 3\u00d7 max',
+          'Re-centre on the median, or cap at 1.5\u00d7 max'],
          ['Edition widening', '0\u20131 prior editions',
           'Widen CI by 2.5\u00d7 / 1.5\u00d7']],
         [1.4 * inch, 1.6 * inch, 2.7 * inch],
@@ -451,12 +451,9 @@ def build_pdf():
     # 6. Blind testing
     story.append(Paragraph("6. Model Selection &amp; Backtesting", h1))
     story.append(Paragraph(
-        "Validated via <b>walk-forward backtest</b>: on the first of each month the model is refit "
-        "on the data as it stood that day, then forecasts each tournament at each lead time from the "
-        "entries registered by that date. No future or in-sample data leakage. "
-        f"{n_tests} tournaments across {yr_range}. The per-configuration "
-        "figures below are the relative model-selection comparison and predate the walk-forward \u2014 "
-        "absolute coverage runs higher than the honest lead-time numbers above.", body))
+        "Validated via <b>walk-forward backtest</b> (refit monthly on the data as it stood; each "
+        f"forecast from the entries registered by its date): {n_tests} tournaments, {yr_range}. "
+        "The figures below predate it and rank configurations only.", body))
 
     cand_data = [
         ['Configuration', 'MedAPE', 'MAPE', '80% Cov', 'Verdict'],
@@ -482,20 +479,19 @@ def build_pdf():
     story.append(ct)
     story.append(Spacer(1, 2))
     story.append(Paragraph(
-        "<b>Selection rule:</b> keep only changes that improve Median APE without "
-        "degrading 80% CI coverage below 88%. YoY pacing tested in 5 configs \u2014 all "
-        "hurt because the ratio model already captures count-level info implicitly.", note))
+        "<b>Earlier selection rule:</b> keep a change only if it improves Median APE without "
+        "dropping 80% coverage below 88%.", note))
     story.append(Spacer(1, 2))
     story.append(Paragraph(
         f"<b>Final (walk-forward, {n_tests} tournaments, grade {grade_cum}):</b> "
-        f"at two weeks out MedAPE <b>{med14}%</b> \u00b7 80% CI Coverage <b>{cov14}%</b>; "
-        f"at three days out coverage is <b>{cov3}%</b>"
-        + (" \u2014 the intervals are overconfident close to the event, not conservative."
-           if cov3 < 75 else "."),
+        f"two weeks out MedAPE <b>{med14}%</b> \u00b7 coverage <b>{cov14}%</b>; "
+        f"three days out <b>{cov3}%</b>"
+        + (" \u2014 ranges too narrow close in." if cov3 < 73
+           else " \u2014 ranges too wide close in." if cov3 > 87 else "."),
         ParagraphStyle('Perf', parent=body, fontSize=7.5, textColor=HexColor('#1a1a2e'),
                        backColor=HexColor('#f0f0f0'), borderPadding=3)))
     story.append(Spacer(1, 2))
-    story.append(Paragraph("HaterAndrew \u2014 March 2026", footer))
+    story.append(Paragraph("HaterAndrew \u2014 September 2026", footer))
 
     doc.build(story)
     print(f"PDF saved to {OUTPUT}")

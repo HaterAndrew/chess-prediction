@@ -328,7 +328,9 @@ Square. Every radius token is 0: panels, buttons, fields, pills, tags, sheets, c
 - **Motion:** in with `sheetIn` over 250ms on the house ease (`cubic-bezier(.2, 0, 0, 1)`), out over 150ms the way it came; on phones a drag follows the finger, thins the scrim, and on release leaves at the finger's speed past a third of its height or springs back on the house spring (damping 1.0 to move, 0.8 to settle after a flick). Views swipe the same way, resisting at the ends. Reduced motion jumps to the end and drops the fades.
 
 ### Charts
-- **Style:** Chart.js on the sheet: grid in the faint rule, ticks in muted Archivo 11px, tooltips square on the sheet colour with a rule.
+- **Style:** Chart.js on the sheet: a horizontal grid only, in the faint rule; ticks in muted Archivo 11px at full strength; figures drawn on the canvas in Courier Prime at 12px, never under 11px; tooltips square on the sheet colour with a rule. `docs/chart_kit.js` holds these values for every chart.
+- **Encodings:** a dash means a projection and nothing else; grey means context (past years, the typical pattern); lines and points are labelled where they end, on phones too, rather than in a legend. Approximate figures take `~`. Every line or mark that carries meaning reaches 3:1 against the sheet.
+- **Text alternative:** every canvas carries a label that states its figures and a data table only screen readers reach (`chartDescribe`).
 - **Series:** actual in pen blue with a flat 8% tint under it, projected in ink dashed (6, 4), the likely range one flat 14% blue tint edged in a 30% blue hairline, historical traces in dim ink dashed and fading by age; the endpoint an ink dot with the figure beside it. History bars are flat dim ink at 35%, this year on the highlighter with an ink rule. Performance dots are blue within the range and red outside; the lead-time line is ink with a blue wash under the 10% target.
 
 ### The Hero Cell

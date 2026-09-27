@@ -24,8 +24,7 @@
   .up-next,
   .back-to-top,
   .sect-caret,
-  #weekBreakdown,
-  .chart-card .vert-lines {
+  #weekBreakdown {
     display: none !important;
   }
   /* The main column takes the page; only the active view prints. */

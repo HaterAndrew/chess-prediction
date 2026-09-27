@@ -138,18 +138,20 @@ function renderCompareChart(selected) {
         x: {
           type: 'linear',
           reverse: true,
-          title: { display: !_mobileVP(), text: 'Days Before Event', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, maxRotation: 0,
+          title: chartAxisTitle('Days Before Event'),
+          ticks: chartTicks({ maxTicksLimit: _mobileVP() ? 5 : 8,
             callback(v) { return v === 0 ? 'Event' : v + 'd'; }
-          },
-          grid: { color: themeRgba(PALETTE.border, 0.4) }
+          }),
+          grid: chartGridX(),
+          border: chartBorderX()
         },
         y: {
-          title: { display: !_mobileVP(), text: '% of Final Entries', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: 11 }, maxTicksLimit: _mobileVP() ? 5 : 8,
+          title: chartAxisTitle('% of Final Entries'),
+          ticks: chartTicks({ maxTicksLimit: _mobileVP() ? 5 : 8,
             callback(v) { return v + '%'; }
-          },
-          grid: { color: themeRgba(PALETTE.border, 0.4) },
+          }),
+          grid: chartGridY(),
+          border: chartBorderY(),
           min: 0
         }
       },
@@ -165,17 +167,7 @@ function renderCompareChart(selected) {
             usePointStyle: true, pointStyle: 'line'
           }
         },
-        tooltip: {
-          backgroundColor: themeRgba(PALETTE.surface, 0.95),
-          borderColor: themeRgba(PALETTE.border, 0.8),
-          borderWidth: 1,
-          titleColor: PALETTE.text,
-          bodyColor: PALETTE.text2,
-          footerColor: PALETTE.muted,
-          padding: 12,
-          cornerRadius: 0,
-          titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' },
-          bodyFont: { size: 12 },
+        tooltip: chartTooltip({
           usePointStyle: true, pointStyleWidth: _mobileVP() ? 6 : 8,
           callbacks: {
             title(items) {
@@ -187,7 +179,7 @@ function renderCompareChart(selected) {
               return ` ${item.dataset.label}: ${item.parsed.y.toFixed(1)}%`;
             }
           }
-        }
+        })
       }
     }
   });

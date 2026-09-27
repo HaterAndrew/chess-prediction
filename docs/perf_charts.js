@@ -39,7 +39,7 @@ function perfDrawScatter(data) {
         ctx2.globalAlpha = 1;
       });
       ctx2.fillStyle = PALETTE.muted;
-      ctx2.font = `${_mobileVP() ? 9 : 8}px system-ui`;
+      ctx2.font = chartLabelFont(11);
       ctx2.textAlign = 'right';
       ctx2.fillText('Perfect prediction', xS.right - 2, yS.top + 10);
       ctx2.restore();
@@ -71,27 +71,22 @@ function perfDrawScatter(data) {
       scales: {
         x: {
           type: 'linear', min: 0, max: maxV,
-          title: { display: !_mobileVP(), text: 'Actual Entries', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 10 : 9 }, maxTicksLimit: 6, maxRotation: 0,
-            callback(v) { return fmt(v); } },
-          grid: { color: themeRgba(PALETTE.border, 0.4) }
+          title: chartAxisTitle('Actual Entries'),
+          ticks: chartTicks({ maxTicksLimit: 6, callback(v) { return fmt(v); } }),
+          grid: chartGridX(),
+          border: chartBorderX()
         },
         y: {
           type: 'linear', min: 0, max: maxV,
-          title: { display: !_mobileVP(), text: 'Predicted', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 10 : 9 }, maxTicksLimit: 5,
-            callback(v) { return fmt(v); } },
-          grid: { color: themeRgba(PALETTE.border, 0.4) }
+          title: chartAxisTitle('Predicted'),
+          ticks: chartTicks({ maxTicksLimit: 5, callback(v) { return fmt(v); } }),
+          grid: chartGridY(),
+          border: chartBorderY()
         }
       },
       plugins: {
         legend: { display: false },
-        tooltip: {
-          backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
-          titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
-          padding: 12, cornerRadius: 0,
-          titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' }, bodyFont: { size: 12 },
-          footerFont: { size: 11, style: 'italic' },
+        tooltip: chartTooltip({
           usePointStyle: true, pointStyleWidth: _mobileVP() ? 6 : 8,
           filter(item) { return item.dataset.label !== 'perfect'; },
           callbacks: {
@@ -105,7 +100,7 @@ function perfDrawScatter(data) {
               return items[0].raw.ok ? 'Within CI' : 'Outside CI';
             }
           }
-        }
+        })
       }
     }
   });
@@ -152,7 +147,7 @@ function perfDrawTimeline(data) {
         ctx2.beginPath(); ctx2.arc(el.x, el.y, 4, 0, Math.PI * 2); ctx2.fill();
         ctx2.strokeStyle = PALETTE.surface2; ctx2.lineWidth = 1.5; ctx2.stroke();
         ctx2.fillStyle = PALETTE.text;
-        ctx2.font = `bold ${_mobileVP() ? 10 : 9}px system-ui`;
+        ctx2.font = chartLabelFont(11, 'bold');
         ctx2.textAlign = 'center';
         ctx2.fillText(agg[i].mae_pct.toFixed(1) + '%', el.x, el.y - 10);
       });
@@ -188,24 +183,21 @@ function perfDrawTimeline(data) {
       interaction: { mode: 'nearest', intersect: false },
       scales: {
         x: {
-          title: { display: !_mobileVP(), text: 'Days Before Event', color: themeRgba(PALETTE.muted, 0.8), font: { size: 11 } },
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 10 : 9 }, maxRotation: 0 },
-          grid: { display: false }
+          title: chartAxisTitle('Days Before Event'),
+          ticks: chartTicks(),
+          grid: chartGridX(),
+          border: chartBorderX()
         },
         y: {
           min: 0, max: Math.round(maxMAE * 10) / 10,
-          ticks: { color: themeRgba(PALETTE.muted, 0.6), font: { size: _mobileVP() ? 9 : 8 }, maxTicksLimit: 4,
-            callback(v) { return v + '%'; } },
-          grid: { color: themeRgba(PALETTE.border, 0.4) }
+          ticks: chartTicks({ maxTicksLimit: 4, callback(v) { return v + '%'; } }),
+          grid: chartGridY(),
+          border: chartBorderY()
         }
       },
       plugins: {
         legend: { display: false },
-        tooltip: {
-          backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
-          titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
-          padding: 12, cornerRadius: 0,
-          titleFont: { size: _mobileVP() ? 12 : 14, weight: 'bold' }, bodyFont: { size: 12 },
+        tooltip: chartTooltip({
           displayColors: false,
           callbacks: {
             title(items) {
@@ -221,7 +213,7 @@ function perfDrawTimeline(data) {
               return [`  n=${a.n}`, `  Bias: ${bias}%`, `  CI coverage: ${a.ci_coverage}%`];
             }
           }
-        }
+        })
       }
     }
   });

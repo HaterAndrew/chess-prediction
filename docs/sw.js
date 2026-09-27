@@ -33,7 +33,7 @@ const CDN_ASSETS = [
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
-  'styles/site.css?v=aff7ba0dcf',
+  'styles/site.css?v=5912b3e7c9',
   'fonts/archivo/archivo-latin.woff2',
   'fonts/archivo/archivo-latin-ext.woff2',
   'fonts/courier-prime/courier-prime-400-latin.woff2',
@@ -43,7 +43,7 @@ const OFFLINE_FALLBACKS = [
   'boot.js?v=cc39f2ee1b',
   'vendor/chart.umd.min.js?v=48444a82d4',
   'vendor/chartjs-adapter-date-fns.bundle.min.js?v=ea7ab30d26',
-  'site.js?v=f51a404c35',
+  'site.js?v=bbcf6093f0',
   'manifest.json',
   'icons/icon-192.png'
 ];

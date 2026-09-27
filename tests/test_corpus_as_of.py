@@ -121,7 +121,7 @@ def test_dates_come_from_metadata_then_last_registration_then_year_end():
     assert pd.isna(cal.loc[3, 'start']) and cal.loc[3, 'end'] == pd.Timestamp('2019-12-31')
 
 
-def _scramble_after(corpus, d):
+def _scramble_after(corpus, d, final_scale=3):
     """Change everything dated after d, working from the raw frames."""
     meta = corpus.meta.assign(start=pd.to_datetime(corpus.meta['start_date']),
                               end=pd.to_datetime(corpus.meta['end_date']))
@@ -130,7 +130,8 @@ def _scramble_after(corpus, d):
         left_on=['family', 'tournament_year'], right_on=['family', 'year'], how='left')
     summary = corpus.summary.copy()
     unfinished = (keyed['end'] >= d).to_numpy()
-    summary.loc[unfinished, 'final_count'] = summary.loc[unfinished, 'final_count'] * 3 + 7
+    summary.loc[unfinished, 'final_count'] = (
+        summary.loc[unfinished, 'final_count'] * final_scale + 7).round().astype(int)
     summary.loc[unfinished, 'last_reg'] = '2099-01-01'
     starts = dict(zip(keyed['tid'], keyed['start']))
     row_date = corpus.daily['tid'].map(starts) - pd.to_timedelta(corpus.daily['T'], unit='D')

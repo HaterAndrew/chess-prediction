@@ -221,7 +221,7 @@ def prepare_folds():
         print(f"  Excluded {len(no_scrape_skipped)} 2026 tournament(s) (snapshot truth unverifiable):")
         for name, reason in no_scrape_skipped:
             print(f"    {name:<55} {reason}")
-    return summary, daily, meta, enrichment_lookup, completed_2026_tids
+    return corpus, (summary, daily, meta, enrichment_lookup, completed_2026_tids)
 
 
 def run_year_folds(summary, daily, meta, enrichment_lookup, completed_2026_tids):

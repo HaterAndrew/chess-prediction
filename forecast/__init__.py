@@ -6,9 +6,9 @@ route, runs it, and applies the plausibility clamp last. tests/
 test_forecast_entry.py forbids calling the engines or the clamp from anywhere
 else, so what is graded is what is published.
 """
-from forecast.event import choose_route, forecast_event
+from forecast.event import choose_route, forecast_event, shadow_forecasts
 from forecast.fit import fit_models
 from forecast.types import Event, Fitted, Forecast, Observation
 
 __all__ = ['Event', 'Fitted', 'Forecast', 'Observation', 'choose_route',
-           'fit_models', 'forecast_event']
+           'fit_models', 'forecast_event', 'shadow_forecasts']

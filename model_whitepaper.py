@@ -1,4 +1,4 @@
-"""Generate a 3-page PDF describing the CCA prediction model + blind test results."""
+"""Generate a 3-page PDF describing the CCA prediction model + walk-forward test results."""
 
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
@@ -141,15 +141,15 @@ def build_pdf():
         [Paragraph('<b>Error Rate</b>', cs_b),
          Paragraph('~20% median (est.)', cs),
          Paragraph('~12-15% median (est.)', cs),
-         Paragraph(f'<b>{med14}% median APE</b> at 2 wks (blind tested)', cs)],
+         Paragraph(f'<b>{med14}% median APE</b> at 2 wks (walk-forward)', cs)],
         [Paragraph('<b>Prediction Intervals</b>', cs_b),
          Paragraph('None', cs),
          Paragraph('MAE-based error bars; not calibrated intervals', cs),
          Paragraph(f'Lognormal calibrated 80% CI; <b>{cov14}% coverage</b> at 2 wks', cs)],
-        [Paragraph('<b>Blind Testing</b>', cs_b),
+        [Paragraph('<b>Backtesting</b>', cs_b),
          Paragraph('No formal backtesting', cs),
          Paragraph('No formal backtesting', cs),
-         Paragraph(f'{n_tests} tournaments, {yr_range} leave-one-out expanding window', cs)],
+         Paragraph(f'{n_tests} tournaments, {yr_range} walk-forward, refit monthly', cs)],
         [Paragraph('<b>Limitations</b>', cs_b),
          Paragraph('Multiplier updated by feel; no systematic validation', cs),
          Paragraph('Single-deadline events only; no multi-deadline handling', cs),
@@ -213,8 +213,9 @@ def build_pdf():
 
     story.append(Paragraph("<b>What We Tried and Rejected</b>", h1))
     story.append(Paragraph(
-        "We tested several alternatives on the same blind test. None improved accuracy. The figures "
-        "below are the relative model-selection comparison and predate the leave-one-out leak fix, so "
+        "We tested several alternatives on an earlier blind test. None improved accuracy. The figures "
+        "below are the relative model-selection comparison and predate the leave-one-out leak fix and "
+        "the walk-forward test, so "
         "the absolute coverage numbers run higher than the honest figures above \u2014 read them as a "
         "ranking of configurations, not current accuracy.", blg))
 
@@ -448,12 +449,13 @@ def build_pdf():
     ))
 
     # 6. Blind testing
-    story.append(Paragraph("6. Model Selection &amp; Blind Testing", h1))
+    story.append(Paragraph("6. Model Selection &amp; Backtesting", h1))
     story.append(Paragraph(
-        "Validated via <b>leave-one-out expanding-window blind test</b>: train on years \u2264 Y "
-        "(holding out the target tournament), predict at each observed lead time. No future or "
-        f"in-sample data leakage. {n_tests} tournaments across {yr_range}. The per-configuration "
-        "figures below are the relative model-selection comparison and predate the leak fix \u2014 "
+        "Validated via <b>walk-forward backtest</b>: on the first of each month the model is refit "
+        "on the data as it stood that day, then forecasts each tournament at each lead time from the "
+        "entries registered by that date. No future or in-sample data leakage. "
+        f"{n_tests} tournaments across {yr_range}. The per-configuration "
+        "figures below are the relative model-selection comparison and predate the walk-forward \u2014 "
         "absolute coverage runs higher than the honest lead-time numbers above.", body))
 
     cand_data = [
@@ -485,10 +487,11 @@ def build_pdf():
         "hurt because the ratio model already captures count-level info implicitly.", note))
     story.append(Spacer(1, 2))
     story.append(Paragraph(
-        f"<b>Final (leave-one-out, {n_tests} tournaments, grade {grade_cum}):</b> "
+        f"<b>Final (walk-forward, {n_tests} tournaments, grade {grade_cum}):</b> "
         f"at two weeks out MedAPE <b>{med14}%</b> \u00b7 80% CI Coverage <b>{cov14}%</b>; "
-        f"at three days out coverage falls to <b>{cov3}%</b> \u2014 the intervals are "
-        "overconfident close to the event, not conservative.",
+        f"at three days out coverage is <b>{cov3}%</b>"
+        + (" \u2014 the intervals are overconfident close to the event, not conservative."
+           if cov3 < 75 else "."),
         ParagraphStyle('Perf', parent=body, fontSize=7.5, textColor=HexColor('#1a1a2e'),
                        backColor=HexColor('#f0f0f0'), borderPadding=3)))
     story.append(Spacer(1, 2))

@@ -82,13 +82,14 @@ def test_splices_tournament_data_compact(build_env):
 def test_optional_consts_follow_their_sources(build_env):
     """Each optional const is spliced only when its source exists, compacted,
     and PERFORMANCE_SUMMARY is the performance payload minus every per-tournament
-    list, at any depth."""
+    list, at any depth, and minus the walk-forward block."""
     out = build_env["out"]
     perf = {
         "generated": "2026-07-07", "aggregate": [{"T": 14, "mae_pct": 5.0}],
         "tournaments": [{"family": "X"}],
         "years": {"2026": {"n_tournaments": 1, "aggregate": [], "tournaments": [{"family": "X"}]}},
         "cumulative": {"n_tournaments": 1, "tournaments": [{"family": "X"}]},
+        "walk_forward": {"n_records": 8, "pooled": {"14": {"n": 1}}},
     }
     (out / "performance_data.json").write_text(json.dumps(perf, indent=2))
 
@@ -113,6 +114,7 @@ def test_optional_consts_follow_their_sources(build_env):
     assert summary_obj["aggregate"] == perf["aggregate"]
     assert summary_obj["years"]["2026"]["n_tournaments"] == 1
     assert summary_obj["cumulative"]["n_tournaments"] == 1
+    assert "walk_forward" not in summary_obj, "the tab-only block leaked into the summary"
 
     performance = build_env["files"]["performance_data.js"].read_text()
     assert performance == f"const PERFORMANCE_DATA = {json.dumps(perf, separators=(',', ':'))};\n"

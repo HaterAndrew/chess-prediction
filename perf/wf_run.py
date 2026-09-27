@@ -23,7 +23,7 @@ def write_records(records, path):
 
 
 def walk_forward_block(corpus, today, output_dir=OUTPUT_DIR):
-    """Run the walk-forward, write its records, print its summary, return its block."""
+    """Run the walk-forward, write its records, print its summary; return the records and block."""
     started = time.monotonic()
     records, warnings = run_walk_forward(corpus, today)
     for w in warnings:
@@ -37,4 +37,4 @@ def walk_forward_block(corpus, today, output_dir=OUTPUT_DIR):
     for T, m in block.get('pooled', {}).items():
         print(f"  Walk-forward T-{T:>2}: MAE {m['mae_pct']:5.2f}%  median error "
               f"{m['median_error_pct']:+5.2f}%  coverage {m['coverage']:5.1f}%  (n={m['n']})")
-    return block
+    return records, block

@@ -308,12 +308,13 @@ def test_likely_range_tooltip_is_not_a_hardcoded_claim():
 
 
 def test_coverage_tile_turns_green_only_at_the_advertised_target():
-    """Green used to start at 75, below the 80% the site advertises."""
+    """Green used to start at 75, below the 80% the site advertises. It now
+    needs the 95% interval to hold 80, or 80 itself where no interval exists."""
     src = open(PERF_JS).read()
-    m = re.search(r"l: 'CI Coverage'.*?_perfTone\(avgCov >= (\d+)", src, re.S)
-    assert m, "could not find the CI Coverage tile threshold"
-    assert int(m.group(1)) >= 80, (
-        f"coverage tile reads green at {m.group(1)}%, under the 80% target")
+    body = re.search(r"function _perfCoverageKPI\(a\) \{(.*?)\n\}", src, re.S)
+    assert body, "could not find the coverage tile"
+    assert "_perfTone(a.ci_coverage >= 80," in body.group(1)
+    assert "_perfTone(ci[0] <= 80 && 80 <= ci[1]," in body.group(1)
 
 
 def test_hero_number_is_not_inside_a_live_region():

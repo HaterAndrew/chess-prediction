@@ -152,7 +152,8 @@ function perfDrawTimeline(data) {
       const segments = pts.slice(1).map((el, i) => [pts[i].x, pts[i].y, el.x, el.y]);
       // A dot is 4px plus half its 1.5px ring.
       const taken = pts.map(el => ({ l: el.x - 5, r: el.x + 5, t: el.y - 5, b: el.y + 5 }));
-      const area = { l: 0, t: 0, r: c.width, b: c.chartArea.bottom };
+      // Right of the y-axis figures, which a label beside the first point can cover.
+      const area = { l: c.chartArea.left, t: 0, r: c.width, b: c.chartArea.bottom };
       pts.forEach((el, i) => {
         const text = agg[i].mae_pct.toFixed(1) + '%';
         const spot = chooseLabelSpot(el.x, el.y, _labelWidth(g, text) + 6, 15,

@@ -83,15 +83,22 @@ def _without_tournaments(obj):
     return obj
 
 
+# Top-level blocks only the Performance tab reads, from the full file.
+TAB_ONLY_KEYS = ("walk_forward",)
+
+
 def _performance_summary(json_text):
     """PERFORMANCE_DATA minus the per-tournament records (400 KB -> 18 KB).
 
     The hero tooltip, the accuracy strip and the About tab read only the
-    aggregates, grades and counts; the per-tournament tables belong to the
-    Performance tab, which fetches the full file when it opens.
+    aggregates, grades and counts; the per-tournament tables and the
+    walk-forward block belong to the Performance tab, which fetches the full
+    file when it opens.
     """
-    return json.dumps(_without_tournaments(json.loads(json_text)),
-                      separators=(",", ":"))
+    data = json.loads(json_text)
+    for key in TAB_ONLY_KEYS:
+        data.pop(key, None)
+    return json.dumps(_without_tournaments(data), separators=(",", ":"))
 
 
 def _read(path):

@@ -78,3 +78,31 @@ def test_the_pace_gap_reads_in_whole_points(res):
     assert res["pace_behind"]["text"] == "10 pts behind"
     assert res["pace_ahead_one"]["text"] == "1 pt ahead"
     assert res["pace_on"]["text"] == "on pace"
+
+
+def test_calibration_dots_stack_where_they_would_touch(res):
+    c = res["cal"]
+    assert (c["below"], c["inside"], c["above"], c["pct"]) == (2, 4, 2, 50)
+    # x = pit x width, held r from each edge; a dot within 2r+1 of the last
+    # one in a row moves up a row.
+    assert c["placed"] == [[5, 0], [6, 1], [100, 0], [101, 1], [102, 2], [140, 0], [194, 0], [195, 1]]
+    assert c["rows"] == 3
+
+
+def test_a_segment_through_a_box_hits_it(res):
+    assert res["seg_through"] is True
+    assert res["seg_past"] is False
+
+
+def test_a_label_takes_the_first_spot_clear_of_lines_and_labels(res):
+    assert res["spot_free"] == [100, 86, True], "with nothing near, above the point"
+    assert res["spot_below"] == [100, 114, True], "a line through 'above' moves it below"
+    x, y, clear = res["spot_diag"]
+    assert clear and x != 100, "above and below blocked: a diagonal"
+    assert res["spot_none"] is False, "no spot fits the area: says so"
+    assert res["spot_order"] == "left", "a caller's order wins"
+    assert res["cross"] == [True, False]
+    assert res["spot_sight"] == "below", "a label never sits across a line from its dot"
+    assert res["spot_slide"] == [90, True], "a label below slides inside the area"
+    assert res["spot_ring"] == [120, True], "blocked close in, it steps out a ring"
+    assert res["spot_margin"] == ["above", "below"], "the margin keeps a line's width clear"

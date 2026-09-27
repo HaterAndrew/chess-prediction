@@ -82,6 +82,100 @@ function paceGap(typicalPct, thisPct) {
   return { diff, text: `${pts} pt${pts === 1 ? '' : 's'} ${diff > 0 ? 'ahead' : 'behind'}` };
 }
 
+// The calibration strip's layout: each event at x = pit × width (the 80%
+// range runs from 0.1 to 0.9), stacked in rows where dots of radius r would
+// touch, lowest row first. events: [{pit, inside, ...}]. Returns the dots
+// with x and row, the counts, and the share inside.
+function calibrationLayout(events, width, r) {
+  const gap = 2 * r + 1;
+  const rows = [];
+  const dots = events
+    .map(e => Object.assign({}, e, { x: Math.min(width - r, Math.max(r, e.pit * width)) }))
+    .sort((a, b) => a.x - b.x);
+  dots.forEach(d => {
+    let row = 0;
+    while (rows[row] != null && d.x - rows[row] < gap) row++;
+    rows[row] = d.x;
+    d.row = row;
+  });
+  const inside = dots.filter(d => d.inside).length;
+  const below = dots.filter(d => !d.inside && d.pit < 0.5).length;
+  const above = dots.length - inside - below;
+  return { dots, inside, below, above, rows: rows.length,
+           pctInside: dots.length ? Math.round(inside / dots.length * 100) : 0 };
+}
+
+// Does the segment (x0, y0)–(x1, y1) enter the box {l, t, r, b}?
+// (Liang–Barsky clipping.)
+function segmentHitsBox(x0, y0, x1, y1, b) {
+  let t0 = 0, t1 = 1;
+  const dx = x1 - x0, dy = y1 - y0;
+  const edges = [[-dx, x0 - b.l], [dx, b.r - x0], [-dy, y0 - b.t], [dy, b.b - y0]];
+  for (const [p, q] of edges) {
+    if (p === 0) { if (q < 0) return false; continue; }
+    const r = q / p;
+    if (p < 0) { if (r > t1) return false; if (r > t0) t0 = r; }
+    else { if (r < t0) return false; if (r < t1) t1 = r; }
+  }
+  return t0 < t1;
+}
+function boxesMeet(a, b) { return a.l < b.r && b.l < a.r && a.t < b.b && b.t < a.b; }
+// Do two segments cross (touching counts)?
+function segmentsCross(a, b) {
+  const side = (p, q, r) => Math.sign((q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]));
+  const [p1, p2, q1, q2] = [[a[0], a[1]], [a[2], a[3]], [b[0], b[1]], [b[2], b[3]]];
+  return side(p1, p2, q1) !== side(p1, p2, q2) && side(q1, q2, p1) !== side(q1, q2, p2);
+}
+
+// The spots a label can take round a point, nearest first.
+const LABEL_SPOTS = ['above', 'below', 'above-right', 'above-left', 'below-right', 'below-left', 'right', 'left'];
+
+// Where a label w × h goes beside the point (x, y): the first spot in
+// opts.order (default LABEL_SPOTS) whose box, grown by opts.margin, clears
+// every data segment [x0, y0, x1, y1] and every taken box (dots, earlier
+// labels), stays inside opts.area {l, t, r, b}, and sees its point: the
+// sight line from the edge of the point's dot (opts.radius) to the box
+// crosses no data segment, so a label never sits across a line from its
+// dot. The spots sit opts.gap
+// from the point, then step out opts.step at a time (opts.rings in all); a
+// label straight above or below slides sideways to stay inside the area.
+// Returns the box centre, the box, the spot and whether it is clear; with
+// no clear spot, the first one.
+function chooseLabelSpot(x, y, w, h, opts) {
+  const o = opts || {};
+  const segments = o.segments || [], taken = o.taken || [], area = o.area;
+  const m = o.margin || 0, order = o.order || LABEL_SPOTS, r = o.radius || 0;
+  const gap = o.gap == null ? 7 : o.gap, step = o.step || 6, rings = o.rings || 3;
+  const at = (name, d) => {
+    const dx = w / 2 + d, dy = h / 2 + d;
+    const off = { above: [0, -dy], below: [0, dy], 'above-right': [dx, -dy], 'above-left': [-dx, -dy],
+                  'below-right': [dx, dy], 'below-left': [-dx, dy], right: [dx + 2, 0], left: [-dx - 2, 0] }[name];
+    let cx = x + off[0];
+    if (area && !off[0]) cx = Math.min(Math.max(cx, area.l + w / 2), area.r - w / 2);
+    const cy = y + off[1];
+    return { x: cx, y: cy, spot: name, box: { l: cx - w / 2, r: cx + w / 2, t: cy - h / 2, b: cy + h / 2 } };
+  };
+  const clear = b => {
+    if (area && (b.l < area.l || b.r > area.r || b.t < area.t || b.b > area.b)) return false;
+    const g = { l: b.l - m, r: b.r + m, t: b.t - m, b: b.b + m };
+    return !segments.some(sg => segmentHitsBox(sg[0], sg[1], sg[2], sg[3], g)) && !taken.some(tb => boxesMeet(tb, g)) && sees(b);
+  };
+  const sees = b => {
+    const px = Math.min(Math.max(x, b.l), b.r), py = Math.min(Math.max(y, b.t), b.b);
+    const d = Math.hypot(px - x, py - y);
+    if (d <= r) return true;
+    const sight = [x + (px - x) * r / d, y + (py - y) * r / d, px, py];
+    return !segments.some(sg => segmentsCross(sight, sg));
+  };
+  for (let k = 0; k < rings; k++) {
+    for (const name of order) {
+      const c = at(name, gap + k * step);
+      if (clear(c.box)) return Object.assign(c, { clear: true });
+    }
+  }
+  return Object.assign(at(order[0], gap), { clear: false });
+}
+
 // ── UMD-style tail, as in util_core.js: a no-op in the page, the export for
 // the node drivers. ──
 if (typeof globalThis !== 'undefined') {
@@ -90,7 +184,12 @@ if (typeof globalThis !== 'undefined') {
   globalThis.weeklyStops = weeklyStops;
   globalThis.historySlots = historySlots;
   globalThis.paceGap = paceGap;
+  globalThis.calibrationLayout = calibrationLayout;
+  globalThis.segmentHitsBox = segmentHitsBox;
+  globalThis.segmentsCross = segmentsCross;
+  globalThis.chooseLabelSpot = chooseLabelSpot;
 }
 if (typeof module !== 'undefined') {
-  module.exports = { chartTableHTML, stepValueAt, weeklyStops, historySlots, paceGap };
+  module.exports = { chartTableHTML, stepValueAt, weeklyStops, historySlots, paceGap, calibrationLayout,
+    segmentHitsBox, segmentsCross, chooseLabelSpot };
 }

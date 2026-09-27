@@ -33,7 +33,7 @@
 <!-- One stylesheet: the bundle pipeline/bundling.py builds from
      docs/styles/*.css in cascade order (STYLE_SOURCES). Edit the sources,
      then `python3 -m pipeline.bundling`. -->
-<link rel="stylesheet" href="styles/site.css?v=bf25fdf5a6">
+<link rel="stylesheet" href="styles/site.css?v=b34f9746e6">
 </head>
 <body>
 
@@ -385,17 +385,18 @@
       <div class="chart-tile">
         <div class="chart-tile-head">
           <span class="chart-tile-title">Predicted vs Actual</span>
-          <span class="chart-tile-sub">at T-14</span>
+          <span class="chart-tile-sub" id="perfScatterSub">at T-14</span>
         </div>
-        <div class="chart-tile-body"><canvas id="perfScatterCanvas" class="chart-tile-canvas" aria-label="Scatter plot of predicted versus actual tournament entries" role="img"></canvas></div>
+        <div class="chart-tile-key" id="perfScatterKey"></div>
+        <div class="chart-tile-body"><canvas id="perfScatterCanvas" class="chart-tile-canvas" aria-label="Predicted versus actual entries" role="img"></canvas></div>
       </div>
       <!-- Error over lead time -->
       <div class="chart-tile">
         <div class="chart-tile-head">
           <span class="chart-tile-title">Error by Lead Time</span>
-          <span class="chart-tile-sub">MAE % at each horizon</span>
+          <span class="chart-tile-sub">average miss at each horizon</span>
         </div>
-        <div class="chart-tile-body"><canvas id="perfTimelineCanvas" class="chart-tile-canvas" aria-label="Line chart showing prediction error percentage by lead time horizon" role="img"></canvas></div>
+        <div class="chart-tile-body"><canvas id="perfTimelineCanvas" class="chart-tile-canvas" aria-label="Average miss by days before the event" role="img"></canvas></div>
       </div>
     </div>
 
@@ -826,13 +827,13 @@
      The data tag carries what the page needs at first paint; its data-*
      attribute names the file the Performance tab fetches on demand
      (loadDataFile), stamped by the pipeline like every other asset. -->
-<script defer id="dataScript" src="data/tournaments.js?v=b4ff0c0727" data-performance="data/performance_data.js?v=f0d12ffd18"></script>
+<script defer id="dataScript" src="data/tournaments.js?v=b4ff0c0727" data-performance="data/performance_data.js?v=2f0fc5a4b4"></script>
 <!-- One script: the bundle pipeline/bundling.py builds from the page
      scripts in load order (SCRIPT_SOURCES, where the order and its reasons
      live). Classic scripts sharing one global scope: actions.js, last in
      the bundle, dispatches bare globals, so there are no wrappers and no
      modules. Deferred, so it runs after the data tag above and after the
      chart library in <head>. Edit a source, then `python3 -m pipeline.bundling`. -->
-<script defer src="site.js?v=b98d3dbcb6"></script>
+<script defer src="site.js?v=5bdf620c5e"></script>
 </body>
 </html>

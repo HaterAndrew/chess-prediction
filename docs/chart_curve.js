@@ -21,30 +21,22 @@ function _curveTodayPoints(t) {
   return { db: t.days_remaining, typical, now, gap: paceGap(typical, now) };
 }
 
-// The two dots at today, a hairline between them, and their labels on the
-// side with more room; labels closer than a line apart part vertically.
+// The two dots at today and a hairline between them. Each label takes the
+// first spot clear of the curve, the dots and the other label, beside the
+// dot on the side with more room first. The labels draw after the Today
+// marker, so a label under a dot may sit over its dashed line on a halo.
 function _curveTodayPlugin(pts) {
+  let at = null;
   return {
     id: 'curveToday',
     afterDatasetsDraw(c) {
+      at = null;
       if (!pts) return;
       const g = c.ctx, xS = c.scales.x, yS = c.scales.y;
       const x = xS.getPixelForValue(pts.db);
       if (x < xS.left || x > xS.right) return;
       const yT = yS.getPixelForValue(Math.min(pts.typical, 100));
       const yN = yS.getPixelForValue(Math.min(pts.now, 100));
-      const labels = [
-        { y: yT, text: `Typical year ${Math.round(pts.typical)}%`, color: PALETTE.hist },
-        { y: yN, text: `This event ${Math.round(pts.now)}%`, color: PALETTE.actual },
-      ];
-      const [hi, lo] = yT <= yN ? labels : [labels[1], labels[0]];
-      const need = 17;
-      if (lo.y - hi.y < need) {
-        const mid = (hi.y + lo.y) / 2;
-        hi.y = mid - need / 2;
-        lo.y = mid + need / 2;
-      }
-      const right = x - xS.left < xS.right - x;
       g.save();
       g.strokeStyle = PALETTE.muted;
       g.lineWidth = 1;
@@ -54,10 +46,32 @@ function _curveTodayPlugin(pts) {
         g.fillStyle = col; g.fill();
         g.lineWidth = 1.5; g.strokeStyle = PALETTE.surface; g.stroke();
       });
+      g.restore();
+      at = { x, yT, yN };
+    },
+    afterDraw(c) {
+      if (!at) return;
+      const g = c.ctx, a = c.chartArea, { x, yT, yN } = at;
+      const curve = c.getDatasetMeta(0).data;
+      const segments = curve.slice(1).map((el, i) => [curve[i].x, curve[i].y, el.x, el.y]);
+      const taken = [yT, yN].map(y => ({ l: x - 5.5, r: x + 5.5, t: y - 5.5, b: y + 5.5 }));
+      const order = x - a.left < a.right - x
+        ? ['right', 'above-right', 'below-right', 'above', 'below', 'left', 'above-left', 'below-left']
+        : ['left', 'above-left', 'below-left', 'above', 'below', 'right', 'above-right', 'below-right'];
+      const area = { l: a.left, t: a.top, r: a.right, b: a.bottom };
+      g.save();
       g.font = chartLabelFont(12, 'bold');
-      labels.forEach(l => {
-        g.fillStyle = l.color;
-        chartHaloText(g, l.text, right ? x + 10 : x - 10, l.y, right ? 'left' : 'right');
+      // Where the full label has no clear spot (a phone, today near the
+      // event), the figure alone stands by its dot; the caption names it.
+      [[yT, `Typical year ${Math.round(pts.typical)}%`, PALETTE.hist],
+       [yN, `This event ${Math.round(pts.now)}%`, PALETTE.actual]].forEach(([y, text, col]) => {
+        const place = t => chooseLabelSpot(x, y, _labelWidth(g, t) + 6, 15,
+                                           { segments, taken, area, gap: 8, margin: 1.5, radius: 5.5, order });
+        let spot = place(text);
+        if (!spot.clear) { text = text.replace(/^\D+/, ''); spot = place(text); }
+        taken.push(spot.box);
+        g.fillStyle = col;
+        chartHaloText(g, text, spot.x, spot.y, 'center');
       });
       g.restore();
     }

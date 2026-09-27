@@ -6,7 +6,9 @@
 //   crossed  a line or mark drawn before a label passes through it, and the
 //            label has no halo (an opaque box filled under it first);
 //   covered  a line, mark or box drawn after a label passes through it;
-//   clipped  a label runs off the canvas edge.
+//   clipped  a label runs off the canvas edge;
+//   hides    a label's halo is drawn over a data line or mark (a stroke of
+//            1.5px or more, or a dot): the label erases the data.
 // A full-canvas clearRect starts a new frame, so only the last frame counts.
 (() => {
   const P = CanvasRenderingContext2D.prototype;
@@ -121,7 +123,8 @@
     const s = state(this);
     // A line covers half its width either side of its path.
     const t = this.getTransform(), w = this.lineWidth * Math.hypot(t.a, t.b);
-    if (this.globalAlpha > 0.05) pathMarks(opsFor(this, arguments)).forEach(m => s.marks.push(Object.assign(m, { seq: ++s.seq, w, clip: s.clip })));
+    const data = this.lineWidth >= 1.5;
+    if (this.globalAlpha > 0.05) pathMarks(opsFor(this, arguments)).forEach(m => s.marks.push(Object.assign(m, { seq: ++s.seq, w, data, clip: s.clip })));
     return oStroke.apply(this, arguments);
   };
   const oFill = P.fill;
@@ -129,7 +132,7 @@
     const s = state(this);
     opsFor(this, arguments).filter(op => op.k === 'A' || op.k === 'R').forEach(op => {
       if (op.k === 'R') s.fills.push({ box: meet(s.clip, op.box), seq: ++s.seq, opaque: alpha(this.fillStyle) * this.globalAlpha >= 0.8 });
-      else s.marks.push({ box: op.box, seq: ++s.seq, clip: s.clip });
+      else s.marks.push({ box: op.box, seq: ++s.seq, clip: s.clip, data: true });
     });
     return oFill.apply(this, arguments);
   };
@@ -186,8 +189,13 @@
       s.texts.slice(i + 1).forEach(b => {
         if (inter(a.box, b.box, 1 * dpr)) problems.push(`overlap: "${a.text}" / "${b.text}"`);
       });
-      const halo = s.fills.some(f => f.opaque && f.seq < a.seq && f.box.l <= a.box.l + 1 && f.box.r >= a.box.r - 1 &&
-                                     f.box.t <= a.box.t + 1 && f.box.b >= a.box.b - 1);
+      const halos = s.fills.filter(f => f.opaque && f.seq < a.seq && f.box.l <= a.box.l + 1 && f.box.r >= a.box.r - 1 &&
+                                         f.box.t <= a.box.t + 1 && f.box.b >= a.box.b - 1);
+      const halo = halos.length > 0;
+      // The halo itself must not paint over data drawn before it.
+      const hidden = halos.length ? s.marks.filter(m => m.data && m.seq < halos[halos.length - 1].seq &&
+                                                        hits(m, halos[halos.length - 1].box)).length : 0;
+      if (hidden) problems.push(`hides: the halo of "${a.text}" covers ${hidden} data mark(s)`);
       const before = s.marks.filter(m => m.seq < a.seq && hits(m, inner));
       if (before.length && !halo) problems.push(`crossed: "${a.text}" by ${before.length} earlier mark(s)`);
       const after = s.marks.filter(m => m.seq > a.seq && hits(m, inner)).length +

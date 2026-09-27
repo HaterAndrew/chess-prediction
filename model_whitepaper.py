@@ -333,6 +333,9 @@ def build_pdf():
         "raw CI = [788, 1046] &nbsp;\u2192&nbsp; "
         "\u00d7 shrink(0.33 at T\u224860) &nbsp;\u2192&nbsp; re-centred on 903, shifted by the "
         "trend &nbsp;\u2192&nbsp; <b>CI = [837, 942]</b>", eq_sm))
+    story.append(Paragraph(
+        "The range cap would hold each side to the year-over-year spread of finals, about "
+        "719\u20131,065 around 888; this range already sits inside it.", note))
 
     story.append(Spacer(1, 8))
 

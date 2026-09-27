@@ -6571,7 +6571,19 @@
         "mae_pct": 5.49,
         "coverage": 78.9
       }
-    ]
+    ],
+    "holdout": {
+      "frozen_on": "2026-09-27",
+      "model_hash": "2387f62ee5e739ea",
+      "protocol": {
+        "source": "forecast ledger and its backfill",
+        "match_days": 3,
+        "first_date": "2026-03-23",
+        "last_date": "2026-09-27"
+      },
+      "n_records": 0,
+      "n_invalid_ranges": 0
+    }
   },
   "years": {
     "2023": {

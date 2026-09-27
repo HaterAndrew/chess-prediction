@@ -34,7 +34,7 @@ def raw_frames():
     return summary, daily, meta
 
 
-def build_report(summary, year_results, all_tournament_results):
+def build_report(summary, year_results, all_tournament_results, walk_forward=None):
     cum_agg = compute_aggregate(all_tournament_results)
     cum_grade, cum_detail = grade_from_aggregate(cum_agg)
 
@@ -104,6 +104,10 @@ def build_report(summary, year_results, all_tournament_results):
         # them. Kept as its own block, with its own horizon note, because the
         # two letters are not comparable.
         "window_engine": window_engine,
+        # Every forecast made as production would have made it on its date:
+        # monthly refits on the corpus as it stood, counts read from rows dated
+        # by the forecast date (perf.walkforward).
+        "walk_forward": walk_forward,
         # Multi-year breakdown
         "years": year_results,
         # Cumulative across all years

@@ -13,7 +13,7 @@ from pipeline import config, warns
 # Lines a step emits that must reach the run log even when they fall outside the
 # 20-line tail (v3 O6): grades, coverage, and the audit's own exclusion notices.
 KEEP_LOG_RE = re.compile(
-    r'^\s*(Grade:|Evaluated |Excluded |Display clamp:|LOO-refit |Accepted )')
+    r'^\s*(Grade:|Evaluated |Excluded |Display clamp:|LOO-refit |Accepted |Walk-forward)')
 
 DEFAULT_STEP_TIMEOUT = 300
 STEP_TIMEOUT_OVERRIDES = {

@@ -32,27 +32,32 @@ class CountAsOf:
     basis: str
 
 
-def count_as_of(curve, T, exact=True, carry_days=CARRY_DAYS, close_T=None):
+def count_as_of(curve, T, exact=True, carry_days=CARRY_DAYS, close_T=None,
+                exact_until_T=None):
     """The count T days before the start, read only from rows dated by then.
 
     exact: the curve lists every registration (the export); False for a
-    scraped curve. close_T: the T of registration close (0 or below), after
-    which a scraped count cannot change. An event with no rows at all has no
-    count.
+    scraped curve. exact_until_T: an export taken before the event ended is
+    complete only through its snapshot, the T given here; after it the rows
+    are observations, and the export stands as one taken at the snapshot.
+    close_T: the T of registration close (0 or below), after which a scraped
+    count cannot change. An event with no rows at all has no count.
     """
     if curve.empty:
         return CountAsOf(None, UNOBSERVED)
     known = curve[curve['T'] >= T]
+    exact_here = exact and (exact_until_T is None or T >= exact_until_T)
     if known.empty:
         # Counts never fall, so a zero seen later means zero then.
-        if exact or (curve['cum_regs'] == 0).any():
+        if exact_here or (curve['cum_regs'] == 0).any():
             return CountAsOf(0, NOT_OPEN)
         return CountAsOf(None, UNOBSERVED)
     count = int(known['cum_regs'].max())
     last_T = int(known['T'].min())
-    if exact or last_T == T:
+    if exact_here or last_T == T:
         return CountAsOf(count, OBSERVED)
+    seen_T = min(last_T, exact_until_T) if exact else last_T
     closed = close_T is not None and last_T <= close_T
-    if last_T - T <= carry_days or closed:
+    if seen_T - T <= carry_days or closed:
         return CountAsOf(count, CARRIED)
     return CountAsOf(None, UNOBSERVED)

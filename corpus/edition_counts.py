@@ -42,7 +42,16 @@ def edition_counts(corpus):
     bounds = {tid: int((start - snapshot).days)
               for tid, start, end in zip(cal['tid'], cal['start'], cal['end'])
               if pd.notna(start) and not end < snapshot}
-    s = corpus.summary
+    return edition_counts_from(corpus.summary, corpus.daily, bounds)
+
+
+def edition_counts_from(summary, daily, bounds=None):
+    """Curves by edition from a summary and its daily counts.
+
+    bounds: the horizon through which each running edition's export is exact;
+    None for finished editions, which are exact throughout.
+    """
+    s = summary
     scraped = frozenset(s.loc[has_curve(s) & ~s['has_timestamps'].fillna(False).astype(bool), 'tid'])
-    return EditionCounts(dict(tuple(corpus.daily.groupby('tid'))), bounds, scraped,
-                         corpus.daily.iloc[0:0])
+    return EditionCounts(dict(tuple(daily.groupby('tid'))), bounds or {}, scraped,
+                         daily.iloc[0:0])

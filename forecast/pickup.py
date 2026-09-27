@@ -7,12 +7,12 @@ PICKUP_WEIGHT to the model, and the range moves with the point. On the
 walk-forward, a weight chosen on earlier seasons only settled on 0.5 for each
 of 2024, 2025 and 2026, and lowered the short-horizon interval and point
 scores in all three; at T-28 and beyond no weight helped, so those horizons
-keep the model alone.
+keep the model alone. The arithmetic lives in shared.pickup_blend, which the
+recalibration also reads.
 """
-import math
+from shared.pickup_blend import PICKUP_HORIZON, PICKUP_WEIGHT, pickup_blend
 
-PICKUP_HORIZON = 14
-PICKUP_WEIGHT = 0.5
+__all__ = ['PICKUP_HORIZON', 'PICKUP_WEIGHT', 'blend_pickup', 'pickup_point']
 
 
 def pickup_point(count, T, prior, count_of):
@@ -35,8 +35,5 @@ def blend_pickup(forecast, obs):
 
     The range scales with the point; nothing falls below the count.
     """
-    if not (obs.pickup and obs.pickup > 0 and forecast.point > 0
-            and 0 < obs.days_to_start <= PICKUP_HORIZON):
-        return forecast
-    return forecast.moved_to(math.exp(PICKUP_WEIGHT * math.log(forecast.point)
-                                      + (1 - PICKUP_WEIGHT) * math.log(obs.pickup)), obs.count)
+    blended = pickup_blend(forecast.point, obs.pickup, obs.days_to_start)
+    return forecast if blended is None else forecast.moved_to(blended, obs.count)

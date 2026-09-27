@@ -114,7 +114,8 @@ def finalize_cards(completed_tids, prod_model, tournaments_out):
             "last final, each side is held to "
             "the year-over-year spread of finals. "
             f"Rolling retraining on completed {CURRENT_SEASON} tournaments. "
-            "Automated bias + CI recalibration. Walk-in multiplier: post-hoc "
+            "Automated bias + CI recalibration; inside two weeks the CI is "
+            "sized around the pickup blend. Walk-in multiplier: post-hoc "
             "adjustment using historical standings-to-prereg ratios ("
             + _walkin_prov + ")."),
         "n_completed_in_training": len(completed_tids) if completed_tids else 0,

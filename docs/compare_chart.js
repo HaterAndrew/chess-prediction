@@ -1,6 +1,97 @@
-// compare_chart.js — the Compare view's chart: each pick's registration curve
-// by days before its event, with the prior edition dimmed and the legend
-// naming the lines (split from tab_compare.js).
+// compare_chart.js — the Compare view's chart: each pick's registrations by
+// days before its event as a share of its final (the forecast, for a live
+// event), its prior edition as a thin line in the pick's colour, and a dot
+// at today (split from tab_compare.js).
+
+// Days before the event for a point [day, count]: from the edition's own
+// start and event dates, the main chart's anchor; without them, from the
+// tail, taking the last point as tailDB days out.
+function _compareDaysBefore(ed, points, tailDB) {
+  if (ed.daily_start_date && ed.event_start) {
+    const span = daysBetween(ed.daily_start_date, ed.event_start);
+    return p => span - p[0];
+  }
+  const last = points[points.length - 1][0];
+  return p => last - p[0] + tailDB;
+}
+
+// An edition's sanitised daily series as {x: days before, y: % of target}.
+// Same contract as the main chart (v3 P1): points above the scraped total
+// are impossible and would skew the share.
+function _compareSeries(ed, target, isLive, tailDB) {
+  const pts = (typeof DailySeries !== 'undefined')
+    ? DailySeries.sanitizeSeries(ed.daily_data, { currentCount: ed.current_count, isLive }).points
+    : ed.daily_data;
+  if (!pts.length) return [];
+  const db = _compareDaysBefore(ed, pts, tailDB);
+  return pts.map(p => ({ x: db(p), y: p[1] / target * 100 }));
+}
+
+// The latest earlier edition with a daily series. The cards' own
+// `historical` list carries counts only; the series live on the historical
+// editions in TOURNAMENT_DATA, where the main chart reads them too.
+function _comparePrior(t) {
+  return (TOURNAMENT_DATA.tournaments || [])
+    .filter(o => o.family === t.family && o.status === 'historical' && o.year < t.year &&
+                 o.current_count > 0 && Array.isArray(o.daily_data) && o.daily_data.length > 1)
+    .sort((a, b) => b.year - a.year)[0] || null;
+}
+
+// One pick's lines: this edition (a finished event with no series gets its
+// final as one dot on event day), the prior edition for a live event unless
+// it is itself a pick, and today's dot at days_remaining, the main chart's
+// anchor.
+function _compareDatasets(t, ci, picked) {
+  const color = compareColors()[ci], live = t.status === 'live';
+  const target = live ? t.point_estimate : t.current_count;
+  if (!(target > 0)) return [];
+  const out = [];
+  const line = t.daily_data && t.daily_data.length && t.event_start
+    ? _compareSeries(t, target, live, t.days_remaining || 0) : [];
+  if (line.length) {
+    out.push({
+      label: `${t.family} ${t.year}`, data: line,
+      borderColor: color, backgroundColor: compareColorsDim()[ci], fill: ci === 0,
+      borderWidth: 2.5, borderCapStyle: 'round', pointRadius: 0, pointHoverRadius: 5,
+      cubicInterpolationMode: 'monotone',
+    });
+  } else if (!live) {
+    out.push({
+      label: `${t.family} ${t.year}`, data: [{ x: 0, y: 100 }],
+      borderColor: color, backgroundColor: color, pointRadius: 8, pointStyle: 'circle', showLine: false,
+    });
+  }
+  if (!live) return out;
+  let prior = _comparePrior(t);
+  if (prior && picked.has(`${prior.family}|${prior.year}`)) prior = null;
+  const priorLine = prior ? _compareSeries(prior, prior.current_count, false, 0) : [];
+  // Context, not a projection: solid and thin in the pick's colour at 60%,
+  // the least that clears 3:1 on the sheet in both themes (a dash means the
+  // projection and nothing else).
+  if (priorLine.length) {
+    out.push({
+      label: `${t.family} · ${prior.year} (prior)`, data: priorLine,
+      borderColor: themeRgba(color, 0.6), borderWidth: 1.5, borderCapStyle: 'round',
+      pointRadius: 0, pointHoverRadius: 3, cubicInterpolationMode: 'monotone', fill: false,
+    });
+  }
+  out.push({
+    label: `${t.family} · Today`, data: [{ x: t.days_remaining || 0, y: t.current_count / target * 100 }],
+    borderColor: color, backgroundColor: color, pointRadius: 7, pointStyle: 'circle', pointBorderWidth: 2,
+    // Canvas cannot resolve CSS custom properties, so the ring reads the
+    // paper through PALETTE (a var() here painted it black on every theme).
+    pointBorderColor: PALETTE.bg, showLine: false,
+  });
+  return out;
+}
+
+function _compareLabel(selected) {
+  const anyLive = selected.some(s => s.t.status === 'live');
+  const parts = selected.map(({ t }) => t.status === 'live' && t.point_estimate > 0
+    ? `${t.family} ${t.year} at ${Math.round(t.current_count / t.point_estimate * 100)}% of its forecast with ${t.days_remaining} days to go`
+    : `${t.family} ${t.year} finished with ${fmt(t.current_count)} entries`);
+  return `Registrations by days before each event as a share of the final${anyLive ? ' (the forecast, for a live event)' : ''}: ${parts.join('; ')}.`;
+}
 
 function renderCompareChart(selected) {
   if (_compareChart) { _compareChart.destroy(); _compareChart = null; }
@@ -8,121 +99,18 @@ function renderCompareChart(selected) {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  // Build datasets from each tournament's ACTUAL daily_data (current edition's
-  // real trajectory), not the smoothed prediction curve. y-axis is normalized
-  // to % of predicted final, so different-sized tournaments compare cleanly
-  // on the same scale. Each live tournament gets:
-  //   - A solid line of its actual trajectory so far (this year's daily_data)
-  //   - A dashed line of its prior year at T-N (where available) for context
-  //   - A "today" dot at the latest data point
-  // Completed tournaments get a single solid trace of their full daily_data.
-  const datasets = [];
-  selected.forEach((s, ci) => {
-    const t = s.t;
-    const color = compareColors()[ci];
-    const dimColor = compareColorsDim()[ci];
-    // The y scaling target — predicted for live, actual final for completed.
-    const target = (t.status === 'live')
-      ? (t.point_estimate || 1)
-      : (t.current_count || 1);
-    if (target <= 0) return;
-
-    // Current edition trajectory (solid line).
-    if (t.daily_data && t.daily_data.length > 0 && t.event_start) {
-      // Same contract as the main chart (v3 P1): draw the sanitised series,
-      // never the raw array — raw points above the scraped total are
-      // impossible and skew the normalized %.
-      const dd = (typeof DailySeries !== 'undefined')
-        ? DailySeries.sanitizeSeries(t.daily_data, {
-            currentCount: t.current_count, isLive: t.status === 'live' }).points
-        : t.daily_data;
-      // Guard block (not an early return): an empty sanitised series must not
-      // silently drop this tournament's prior-year trace below.
-      if (dd.length) {
-        // Convert daily_data ([day_idx, cumulative]) to (days_before, %).
-        const lastDay = dd[dd.length - 1][0];
-        const data = dd.map(p => ({
-          x: lastDay - p[0] + (t.days_remaining || 0),
-          y: (p[1] / target) * 100,
-        }));
-        datasets.push({
-          label: `${t.family} ${t.year}`,
-          data,
-          borderColor: color,
-          backgroundColor: dimColor,
-          fill: ci === 0,
-          borderWidth: 2.5,
-          borderCapStyle: 'round',
-          pointRadius: 0,
-          pointHoverRadius: 5,
-          tension: 0.25,
-        });
-        // Today dot — the very last actual data point.
-        if (t.status === 'live') {
-          const last = data[data.length - 1];
-          datasets.push({
-            label: `${t.family} · Today`,
-            data: [last],
-            borderColor: color,
-            backgroundColor: color,
-            pointRadius: 7,
-            pointStyle: 'circle',
-            pointBorderWidth: 2,
-            // Canvas cannot resolve CSS custom properties, so the ring reads the
-            // paper through PALETTE (a var() here painted it black on every theme).
-            pointBorderColor: PALETTE.bg,
-            showLine: false,
-          });
-        }
-      }
-    }
-
-    // Prior-year context — dashed line of the most recent historical edition
-    // (model uses this as part of its training). Surfaces "is this year
-    // tracking ahead/behind last year at the same T?" visually.
-    if (t.status === 'live' && t.historical && t.historical.length > 0) {
-      const prior = t.historical[t.historical.length - 1];
-      if (prior && prior.daily_data && prior.daily_data.length > 0
-          && prior.count && prior.count > 0) {
-        const priorTarget = prior.count;
-        const pdd = (typeof DailySeries !== 'undefined')
-          ? DailySeries.sanitizeSeries(prior.daily_data, {
-              currentCount: prior.count, isLive: false }).points
-          : prior.daily_data;
-        const priorLast = pdd.length ? pdd[pdd.length - 1][0] : 0;
-        const priorData = pdd.map(p => ({
-          x: priorLast - p[0],
-          y: (p[1] / priorTarget) * 100,
-        }));
-        datasets.push({
-          label: `${t.family} · ${prior.year} (prior)`,
-          data: priorData,
-          borderColor: color,
-          borderDash: [4, 4],
-          borderWidth: 1.5,
-          borderCapStyle: 'round',
-          pointRadius: 0,
-          pointHoverRadius: 3,
-          tension: 0.25,
-          fill: false,
-        });
-      }
-    }
-
-    // Final-count fallback: if we couldn't build a daily line (e.g. no
-    // daily_data for a completed tournament), at least render a single
-    // marker at x=0 (event day) at 100%.
-    if (!t.daily_data || t.daily_data.length === 0) {
-      datasets.push({
-        label: `${t.family} ${t.year}`,
-        data: [{ x: 0, y: 100 }],
-        borderColor: color, backgroundColor: color,
-        pointRadius: 8, pointStyle: 'circle', showLine: false,
-      });
-    }
-  });
-
-  if (datasets.length === 0) return;
+  const picked = new Set(selected.map(s => `${s.t.family}|${s.t.year}`));
+  const datasets = selected.flatMap((s, ci) => _compareDatasets(s.t, ci, picked));
+  if (!datasets.length) {
+    const message = 'No registration data for these picks.';
+    const note = document.createElement('div');
+    note.className = 'chart-tile-empty';
+    note.textContent = message;
+    canvas.parentNode.appendChild(note);
+    chartDescribe(canvas, { label: message });
+    return;
+  }
+  const allDone = selected.every(s => s.t.status !== 'live');
 
   _compareChart = new Chart(ctx, {
     type: 'line',
@@ -146,7 +134,7 @@ function renderCompareChart(selected) {
           border: chartBorderX()
         },
         y: {
-          title: chartAxisTitle('% of Final Entries'),
+          title: chartAxisTitle(allDone ? '% of Final Entries' : '% of Final (Forecast for Live Events)'),
           ticks: chartTicks({ maxTicksLimit: _mobileVP() ? 5 : 8,
             callback(v) { return v + '%'; }
           }),
@@ -183,4 +171,5 @@ function renderCompareChart(selected) {
       }
     }
   });
+  chartDescribe(canvas, { label: _compareLabel(selected) });
 }

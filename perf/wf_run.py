@@ -4,12 +4,13 @@ import time
 
 import pandas as pd
 
+from corpus.edition_counts import snapshot_date
 from shared.paths import OUTPUT_DIR
 
 from perf.route_evidence import STAND_IN, route_evidence
 from perf.schedule import FIRST_SEASON, monthly_cutoffs
 from perf.walkforward import run_walk_forward
-from perf.wf_events import provisional_names, snapshot_date
+from perf.wf_events import provisional_names
 from perf.wf_summary import summarize
 
 RECORDS_CSV = "walk_forward_records.csv"

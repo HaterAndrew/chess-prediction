@@ -1,8 +1,9 @@
-"""forecast_event: pick the route, run it, clamp last."""
+"""forecast_event: pick the route, run it, blend the model with pickup, clamp last."""
 from dataclasses import replace
 
 from pipeline_utils import apply_plausibility_clamp, pace_gate_ok
 
+from forecast.pickup import blend_pickup
 from forecast.routes import (HISTORICAL_AVG, MODEL, PACE, WINDOW,
                              historical_avg_route, model_route, pace_route,
                              window_route)
@@ -52,7 +53,8 @@ def shadow_forecasts(event, obs, fitted, history, as_of=None):
 
 
 def run_route(route, event, obs, fitted, history, as_of=None):
-    """One route's forecast, clamped as the published one is, or None."""
+    """One route's forecast, or None: the model's blended with pickup inside two
+    weeks (forecast.pickup), then clamped as the published one is."""
     if route == MODEL:
         raw = model_route(event, obs, fitted, as_of)
     elif route == WINDOW:
@@ -64,6 +66,8 @@ def run_route(route, event, obs, fitted, history, as_of=None):
     if raw is None:
         return None
     raw = replace(raw, raw_point=raw.point)
+    if route == MODEL:
+        raw = blend_pickup(raw, obs)
     if route not in CLAMPED or history is None:
         return raw
     point, low, high = apply_plausibility_clamp(

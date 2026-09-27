@@ -542,6 +542,7 @@
             <tr><td>Fill-% shrinkage</td><td>Count &gt; 60% of family mean</td><td>Shrink ratio toward 1.0 (max 20%)</td></tr>
             <tr><td>Family anchor</td><td>Count &lt; threshold, T &ge; 42</td><td>Blend with 0.6 &middot; recent + 0.4 &middot; mean final</td></tr>
             <tr><td>Growth trend</td><td>T &ge; 7</td><td>Multiply by 1 + trend &middot; 0.5 (capped &plusmn;15%)</td></tr>
+            <tr><td>Pickup blend</td><td>T &le; 14</td><td>Geometric mean with count + entries last edition took after T</td></tr>
             <tr><td>Plausibility bounds</td><td>Pred &lt; 70% of family median</td><td>Blend toward historical median</td></tr>
             <tr><td>Edition widening</td><td>0&ndash;1 prior editions</td><td>Widen CI by 2.5&times; / 1.5&times;</td></tr>
           </tbody>

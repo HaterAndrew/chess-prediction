@@ -946,6 +946,7 @@ season,tid,family,T,forecast_date,cutoff,count,count_basis,point,low,high,raw_po
 2026,4412,Bradley Open,90,2026-04-25,2026-04-01,4,observed,255,187,347,255,209,0.198929,1,model,family-direct,246.0,248.0
 2026,4284,DC International,60,2026-04-26,2026-04-01,10,observed,102,94,110,102,107,-0.047856,1,model,family-alias,126.0,124.0
 2026,4351,DC Open,60,2026-04-27,2026-04-01,6,observed,272,203,365,272,188,0.36936,0,model,family-alias,325.0,322.0
+2026,4432,World Open Under 13 Championship,60,2026-04-30,2026-04-01,5,observed,93,75,115,93,82,0.12588,1,model,family-alias,76.0,80.0
 2026,4415,Pacific Coast Open,90,2026-05-02,2026-05-01,8,observed,396,289,541,396,394,0.005063,1,model,family-direct,391.0,391.0
 2026,4244,Chicago Open,14,2026-05-07,2026-05-01,454,observed,853,781,933,853,917,-0.072348,1,model,family-direct,899.0,949.0
 2026,4349,New York State Open,42,2026-05-08,2026-05-01,25,observed,93,68,128,93,109,-0.158748,1,model,family-direct,83.0,105.0
@@ -954,19 +955,26 @@ season,tid,family,T,forecast_date,cutoff,count,count_basis,point,low,high,raw_po
 2026,4244,Chicago Open,7,2026-05-14,2026-05-01,558,observed,886,804,977,886,917,-0.034391,1,model,family-direct,899.0,964.0
 2026,4284,DC International,42,2026-05-14,2026-05-01,29,observed,109,101,119,109,107,0.018519,1,model,family-alias,126.0,130.0
 2026,4351,DC Open,42,2026-05-15,2026-05-01,14,observed,267,247,288,267,188,0.350807,0,model,family-alias,325.0,301.0
+2026,4420,Continental Open,90,2026-05-15,2026-05-01,2,observed,260,198,342,260,266,-0.022815,1,model,family-direct,265.0,265.0
+2026,4419,Central California Open,90,2026-05-16,2026-05-01,3,observed,179,136,237,179,169,0.057487,1,model,family-direct,179.0,178.0
 2026,4244,Chicago Open,3,2026-05-18,2026-05-01,664,observed,772,664,972,772,917,-0.172123,1,model,family-direct,899.0,973.0
 2026,4404,Chicago Class,60,2026-05-18,2026-05-01,4,observed,281,214,370,281,288,-0.024606,1,model,family-direct,294.0,295.0
 2026,4414,Pittsburgh Open,60,2026-05-18,2026-05-01,9,observed,157,112,222,157,170,-0.079553,1,model,family-direct,152.0,159.0
+2026,4431,Southern Open,60,2026-05-18,2026-05-01,7,observed,195,148,256,195,206,-0.054877,1,model,family-direct,188.0,189.0
+2026,4432,World Open Under 13 Championship,42,2026-05-18,2026-05-01,17,observed,98,89,107,98,82,0.178248,0,model,family-alias,76.0,83.0
 2026,4244,Chicago Open,1,2026-05-20,2026-05-01,820,observed,858,820,964,858,917,-0.066503,1,model,family-direct,899.0,1001.0
 2026,4349,New York State Open,28,2026-05-22,2026-05-01,32,observed,97,77,122,97,109,-0.116637,1,model,family-direct,83.0,99.0
 2026,4413,Hartford Open,14,2026-05-22,2026-05-01,54,observed,210,192,229,210,206,0.019231,1,model,family-direct,189.0,205.0
 2026,4417,Cleveland Open,14,2026-05-22,2026-05-01,40,observed,183,166,202,183,179,0.0221,1,model,family-direct,199.0,198.0
+2026,4418,Atlantic Open,90,2026-05-23,2026-05-01,2,observed,256,195,337,256,242,0.05624,1,model,family-direct,238.0,238.0
+2026,4423,Indianapolis Open,90,2026-05-23,2026-05-01,1,observed,184,138,245,184,180,0.021979,1,model,family-direct,187.0,187.0
 2026,4412,Bradley Open,60,2026-05-25,2026-05-01,5,carried,251,191,330,251,209,0.183119,1,model,family-direct,246.0,248.0
 2026,4284,DC International,28,2026-05-28,2026-05-01,52,observed,121,111,132,121,107,0.122962,0,model,family-alias,126.0,134.0
 2026,4351,DC Open,28,2026-05-29,2026-05-01,32,observed,264,239,293,264,188,0.339507,0,model,family-alias,325.0,296.0
 2026,4413,Hartford Open,7,2026-05-29,2026-05-01,74,observed,208,188,229,208,206,0.009662,1,model,family-direct,189.0,199.0
 2026,4417,Cleveland Open,7,2026-05-29,2026-05-01,61,observed,182,165,201,182,179,0.016621,1,model,family-direct,199.0,198.0
 2026,4415,Pacific Coast Open,60,2026-06-01,2026-06-01,19,observed,391,297,515,391,394,-0.007643,1,model,family-direct,391.0,387.0
+2026,4432,World Open Under 13 Championship,28,2026-06-01,2026-06-01,22,observed,92,85,101,92,82,0.115069,0,model,family-alias,76.0,83.0
 2026,4413,Hartford Open,3,2026-06-02,2026-06-01,144,observed,216,174,268,216,206,0.047402,1,model,family-direct,189.0,222.0
 2026,4417,Cleveland Open,3,2026-06-02,2026-06-01,121,observed,189,153,234,189,179,0.054361,1,model,family-direct,199.0,215.0
 2026,4413,Hartford Open,1,2026-06-04,2026-06-01,182,observed,189,182,212,189,206,-0.086129,1,model,family-direct,189.0,211.0
@@ -974,10 +982,15 @@ season,tid,family,T,forecast_date,cutoff,count,count_basis,point,low,high,raw_po
 2026,4349,New York State Open,14,2026-06-05,2026-06-01,42,observed,88,69,112,88,109,-0.214011,1,model,family-direct,83.0,97.0
 2026,4404,Chicago Class,42,2026-06-05,2026-06-01,12,observed,286,217,376,286,288,-0.006969,1,model,family-direct,294.0,293.0
 2026,4414,Pittsburgh Open,42,2026-06-05,2026-06-01,20,observed,162,148,177,162,170,-0.048202,1,model,family-direct,152.0,163.0
+2026,4431,Southern Open,42,2026-06-05,2026-06-01,18,observed,197,173,224,197,206,-0.044672,1,model,family-direct,188.0,191.0
+2026,4428,New York State Championship,90,2026-06-06,2026-06-01,8,observed,337,238,477,337,332,0.014948,1,model,family-direct,348.0,349.0
 2026,4284,DC International,14,2026-06-11,2026-06-01,70,observed,118,109,127,118,107,0.097856,0,model,family-alias,126.0,130.0
 2026,4349,New York State Open,7,2026-06-12,2026-06-01,53,observed,92,68,125,92,109,-0.169559,1,model,family-direct,83.0,99.0
 2026,4351,DC Open,14,2026-06-12,2026-06-01,57,observed,257,235,281,257,188,0.312634,0,model,family-alias,325.0,287.0
 2026,4412,Bradley Open,42,2026-06-12,2026-06-01,17,observed,261,234,291,261,209,0.222186,0,model,family-direct,246.0,252.0
+2026,4420,Continental Open,60,2026-06-14,2026-06-01,12,observed,265,194,363,265,266,-0.003766,1,model,family-direct,265.0,266.0
+2026,4419,Central California Open,60,2026-06-15,2026-06-01,5,observed,177,135,233,177,169,0.046251,1,model,family-direct,179.0,175.0
+2026,4432,World Open Under 13 Championship,14,2026-06-15,2026-06-01,40,observed,95,87,104,95,82,0.147158,0,model,family-alias,76.0,94.0
 2026,4349,New York State Open,3,2026-06-16,2026-06-01,73,observed,82,73,149,82,109,-0.284629,1,model,family-direct,83.0,102.0
 2026,4284,DC International,7,2026-06-18,2026-06-01,81,observed,123,112,136,123,107,0.139356,0,model,family-alias,126.0,125.0
 2026,4349,New York State Open,1,2026-06-18,2026-06-01,99,observed,99,99,131,99,109,-0.096228,1,model,family-direct,83.0,108.0
@@ -985,25 +998,66 @@ season,tid,family,T,forecast_date,cutoff,count,count_basis,point,low,high,raw_po
 2026,4404,Chicago Class,28,2026-06-19,2026-06-01,33,observed,287,260,317,287,288,-0.003478,1,model,family-direct,294.0,301.0
 2026,4414,Pittsburgh Open,28,2026-06-19,2026-06-01,33,observed,183,164,205,183,170,0.073688,1,model,family-direct,152.0,171.0
 2026,4415,Pacific Coast Open,42,2026-06-19,2026-06-01,33,observed,395,370,422,395,394,0.002535,1,model,family-direct,391.0,384.0
+2026,4431,Southern Open,28,2026-06-19,2026-06-01,30,observed,200,179,224,200,206,-0.029559,1,model,family-direct,188.0,189.0
 2026,4284,DC International,3,2026-06-22,2026-06-01,97,observed,119,97,148,119,107,0.106295,1,model,family-alias,126.0,132.0
+2026,4418,Atlantic Open,60,2026-06-22,2026-06-01,2,observed,243,180,329,243,242,0.004124,1,model,family-direct,238.0,231.0
+2026,4423,Indianapolis Open,60,2026-06-22,2026-06-01,3,observed,186,141,244,186,180,0.03279,1,model,family-direct,187.0,188.0
+2026,4432,World Open Under 13 Championship,7,2026-06-22,2026-06-01,52,observed,103,93,113,103,82,0.22801,0,model,family-alias,76.0,93.0
 2026,4351,DC Open,3,2026-06-23,2026-06-01,114,observed,198,157,250,198,188,0.051825,1,model,family-alias,325.0,265.0
 2026,4284,DC International,1,2026-06-24,2026-06-01,102,observed,121,105,140,121,107,0.122962,1,model,family-alias,126.0,123.0
 2026,4351,DC Open,1,2026-06-25,2026-06-01,160,observed,214,187,245,214,188,0.129534,1,model,family-alias,325.0,231.0
 2026,4412,Bradley Open,28,2026-06-26,2026-06-01,29,observed,275,246,308,275,209,0.274437,0,model,family-direct,246.0,255.0
-2026,4404,Chicago Class,14,2026-07-03,2026-07-01,82,observed,295,270,323,295,288,0.024015,1,model,family-direct,294.0,311.0
-2026,4414,Pittsburgh Open,14,2026-07-03,2026-07-01,50,observed,171,156,186,171,170,0.005865,1,model,family-direct,152.0,169.0
-2026,4415,Pacific Coast Open,28,2026-07-03,2026-07-01,50,observed,374,345,405,374,394,-0.052095,1,model,family-direct,391.0,374.0
-2026,4404,Chicago Class,7,2026-07-10,2026-07-01,125,observed,296,268,328,296,288,0.027399,1,model,family-direct,294.0,302.0
-2026,4412,Bradley Open,14,2026-07-10,2026-07-01,56,observed,256,236,279,256,209,0.202843,0,model,family-direct,246.0,251.0
-2026,4414,Pittsburgh Open,7,2026-07-10,2026-07-01,80,observed,185,166,206,185,170,0.084557,1,model,family-direct,152.0,176.0
-2026,4404,Chicago Class,3,2026-07-14,2026-07-01,198,observed,275,221,342,275,288,-0.046189,1,model,family-direct,294.0,313.0
-2026,4414,Pittsburgh Open,3,2026-07-14,2026-07-01,112,observed,166,135,206,166,170,-0.023811,1,model,family-direct,152.0,176.0
-2026,4404,Chicago Class,1,2026-07-16,2026-07-01,256,observed,267,256,295,267,288,-0.075712,1,model,family-direct,294.0,300.0
-2026,4414,Pittsburgh Open,1,2026-07-16,2026-07-01,145,observed,153,145,169,153,170,-0.105361,0,model,family-direct,152.0,157.0
-2026,4412,Bradley Open,7,2026-07-17,2026-07-01,84,observed,258,234,285,258,209,0.210625,0,model,family-direct,246.0,245.0
-2026,4415,Pacific Coast Open,14,2026-07-17,2026-07-01,98,observed,359,324,398,359,394,-0.093029,1,model,family-direct,391.0,357.0
-2026,4412,Bradley Open,3,2026-07-21,2026-07-01,135,observed,221,180,270,221,209,0.055828,1,model,family-direct,246.0,253.0
-2026,4412,Bradley Open,1,2026-07-23,2026-07-01,190,observed,213,191,237,213,209,0.018958,1,model,family-direct,246.0,218.0
-2026,4415,Pacific Coast Open,7,2026-07-24,2026-07-01,153,carried,352,318,390,352,394,-0.11272,0,model,family-direct,391.0,353.0
-2026,4415,Pacific Coast Open,3,2026-07-28,2026-07-01,225,observed,292,237,361,292,394,-0.299597,0,model,family-direct,391.0,326.0
-2026,4415,Pacific Coast Open,1,2026-07-30,2026-07-01,284,observed,305,284,337,305,394,-0.256039,0,model,family-direct,391.0,319.0
+2026,4432,World Open Under 13 Championship,3,2026-06-26,2026-06-01,69,observed,94,76,116,94,82,0.136576,1,model,family-alias,76.0,95.0
+2026,4432,World Open Under 13 Championship,1,2026-06-28,2026-06-01,77,observed,99,87,113,99,82,0.188401,0,model,family-alias,76.0,99.0
+2026,4420,Continental Open,42,2026-07-02,2026-07-01,16,observed,264,227,305,264,266,-0.007547,1,model,family-direct,265.0,263.0
+2026,4404,Chicago Class,14,2026-07-03,2026-07-01,82,observed,293,268,321,293,288,0.017212,1,model,family-direct,294.0,311.0
+2026,4414,Pittsburgh Open,14,2026-07-03,2026-07-01,50,observed,170,155,186,170,170,0.0,1,model,family-direct,152.0,169.0
+2026,4415,Pacific Coast Open,28,2026-07-03,2026-07-01,50,observed,373,343,404,373,394,-0.054772,1,model,family-direct,391.0,374.0
+2026,4419,Central California Open,42,2026-07-03,2026-07-01,10,observed,176,133,231,176,169,0.040585,1,model,family-direct,179.0,176.0
+2026,4431,Southern Open,14,2026-07-03,2026-07-01,62,observed,207,187,228,207,206,0.004843,1,model,family-direct,188.0,198.0
+2026,4428,New York State Championship,60,2026-07-06,2026-07-01,11,observed,340,240,481,340,332,0.023811,1,model,family-direct,348.0,346.0
+2026,4404,Chicago Class,7,2026-07-10,2026-07-01,125,observed,286,256,319,286,288,-0.006969,1,model,family-direct,294.0,302.0
+2026,4412,Bradley Open,14,2026-07-10,2026-07-01,56,observed,255,234,277,255,209,0.198929,0,model,family-direct,246.0,251.0
+2026,4414,Pittsburgh Open,7,2026-07-10,2026-07-01,80,observed,178,158,201,178,170,0.045985,1,model,family-direct,152.0,176.0
+2026,4418,Atlantic Open,42,2026-07-10,2026-07-01,11,observed,239,182,314,239,242,-0.012474,1,model,family-direct,238.0,234.0
+2026,4423,Indianapolis Open,42,2026-07-10,2026-07-01,5,observed,184,140,242,184,180,0.021979,1,model,family-direct,187.0,185.0
+2026,4431,Southern Open,7,2026-07-10,2026-07-01,103,observed,207,183,234,207,206,0.004843,1,model,family-direct,188.0,204.0
+2026,4404,Chicago Class,3,2026-07-14,2026-07-01,198,observed,274,219,342,274,288,-0.049832,1,model,family-direct,294.0,313.0
+2026,4414,Pittsburgh Open,3,2026-07-14,2026-07-01,112,observed,165,133,205,165,170,-0.029853,1,model,family-direct,152.0,176.0
+2026,4431,Southern Open,3,2026-07-14,2026-07-01,160,observed,210,163,270,210,206,0.019231,1,model,family-direct,188.0,240.0
+2026,4404,Chicago Class,1,2026-07-16,2026-07-01,256,observed,266,256,295,266,288,-0.079464,1,model,family-direct,294.0,300.0
+2026,4414,Pittsburgh Open,1,2026-07-16,2026-07-01,145,observed,152,145,169,152,170,-0.111918,0,model,family-direct,152.0,157.0
+2026,4420,Continental Open,28,2026-07-16,2026-07-01,22,observed,257,232,284,257,266,-0.03442,1,model,family-direct,265.0,259.0
+2026,4431,Southern Open,1,2026-07-16,2026-07-01,177,observed,194,177,216,194,206,-0.060018,1,model,family-direct,188.0,204.0
+2026,4412,Bradley Open,7,2026-07-17,2026-07-01,84,observed,249,224,277,249,209,0.175119,0,model,family-direct,246.0,245.0
+2026,4415,Pacific Coast Open,14,2026-07-17,2026-07-01,98,observed,357,322,396,357,394,-0.098615,1,model,family-direct,391.0,357.0
+2026,4419,Central California Open,28,2026-07-17,2026-07-01,19,observed,174,156,194,174,169,0.029157,1,model,family-direct,179.0,179.0
+2026,4412,Bradley Open,3,2026-07-21,2026-07-01,135,observed,220,178,270,220,209,0.051293,1,model,family-direct,246.0,253.0
+2026,4412,Bradley Open,1,2026-07-23,2026-07-01,190,observed,212,190,237,212,209,0.014252,1,model,family-direct,246.0,218.0
+2026,4415,Pacific Coast Open,7,2026-07-24,2026-07-01,153,carried,340,304,380,340,394,-0.147405,0,model,family-direct,391.0,353.0
+2026,4418,Atlantic Open,28,2026-07-24,2026-07-01,26,observed,239,217,262,239,242,-0.012474,1,model,family-direct,238.0,237.0
+2026,4423,Indianapolis Open,28,2026-07-24,2026-07-01,20,observed,184,166,204,184,180,0.021979,1,model,family-direct,187.0,188.0
+2026,4428,New York State Championship,42,2026-07-24,2026-07-01,24,observed,339,308,373,339,332,0.020865,1,model,family-direct,348.0,342.0
+2026,4415,Pacific Coast Open,3,2026-07-28,2026-07-01,225,observed,291,235,361,291,394,-0.303028,0,model,family-direct,391.0,326.0
+2026,4415,Pacific Coast Open,1,2026-07-30,2026-07-01,284,observed,304,284,337,304,394,-0.259323,0,model,family-direct,391.0,319.0
+2026,4420,Continental Open,14,2026-07-30,2026-07-01,56,observed,263,240,287,263,266,-0.011342,1,model,family-direct,265.0,262.0
+2026,4419,Central California Open,14,2026-07-31,2026-07-01,40,observed,167,153,182,167,169,-0.011905,1,model,family-direct,179.0,175.0
+2026,4420,Continental Open,7,2026-08-06,2026-08-01,116,observed,289,250,333,289,266,0.08293,1,model,family-direct,265.0,285.0
+2026,4418,Atlantic Open,14,2026-08-07,2026-08-01,68,observed,247,224,272,247,242,0.020451,1,model,family-direct,238.0,232.0
+2026,4419,Central California Open,7,2026-08-07,2026-08-01,76,observed,160,140,183,160,169,-0.054725,1,model,family-direct,179.0,167.0
+2026,4423,Indianapolis Open,14,2026-08-07,2026-08-01,49,observed,184,168,202,184,180,0.021979,1,model,family-direct,187.0,195.0
+2026,4428,New York State Championship,28,2026-08-07,2026-08-01,43,observed,330,298,365,330,332,-0.006042,1,model,family-direct,348.0,340.0
+2026,4420,Continental Open,3,2026-08-10,2026-08-01,156,observed,251,193,325,251,266,-0.058043,1,model,family-direct,265.0,249.0
+2026,4419,Central California Open,3,2026-08-11,2026-08-01,118,observed,146,118,191,146,169,-0.146292,1,model,family-direct,179.0,141.0
+2026,4420,Continental Open,1,2026-08-12,2026-08-01,235,observed,261,240,285,261,266,-0.018976,1,model,family-direct,265.0,257.0
+2026,4419,Central California Open,1,2026-08-13,2026-08-01,141,observed,152,141,166,152,169,-0.106018,0,model,family-direct,179.0,150.0
+2026,4418,Atlantic Open,7,2026-08-14,2026-08-01,102,observed,230,201,265,230,242,-0.050858,1,model,family-direct,238.0,234.0
+2026,4423,Indianapolis Open,7,2026-08-14,2026-08-01,73,observed,180,157,206,180,180,0.0,1,model,family-direct,187.0,189.0
+2026,4418,Atlantic Open,3,2026-08-18,2026-08-01,168,observed,234,184,296,234,242,-0.033617,1,model,family-direct,238.0,238.0
+2026,4423,Indianapolis Open,3,2026-08-18,2026-08-01,115,observed,160,127,202,160,180,-0.117783,1,model,family-direct,187.0,176.0
+2026,4418,Atlantic Open,1,2026-08-20,2026-08-01,210,observed,244,223,267,244,242,0.00823,1,model,family-direct,238.0,243.0
+2026,4423,Indianapolis Open,1,2026-08-20,2026-08-01,155,observed,166,155,180,166,180,-0.080969,1,model,family-direct,187.0,167.0
+2026,4428,New York State Championship,14,2026-08-21,2026-08-01,109,observed,329,296,365,329,332,-0.009077,1,model,family-direct,348.0,352.0
+2026,4428,New York State Championship,7,2026-08-28,2026-08-01,167,observed,337,293,387,337,332,0.014948,1,model,family-direct,348.0,363.0
+2026,4428,New York State Championship,3,2026-09-01,2026-09-01,229,observed,302,244,375,302,332,-0.094708,1,model,family-direct,348.0,353.0
+2026,4428,New York State Championship,1,2026-09-03,2026-09-01,291,observed,305,291,331,305,332,-0.084823,0,model,family-direct,348.0,338.0

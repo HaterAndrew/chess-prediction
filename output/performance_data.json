@@ -3535,7 +3535,7 @@
     }
   ],
   "n_corpus_tournaments": 785,
-  "n_entry_records": 196317,
+  "n_entry_records": 196318,
   "corpus_year_min": 2012,
   "corpus_year_max": 2027,
   "corpus_year_span": 16,
@@ -6574,7 +6574,7 @@
     ],
     "holdout": {
       "frozen_on": "2026-09-27",
-      "model_hash": "6b0bd39145d00730",
+      "model_hash": "e0e6631e4c8e940d",
       "protocol": {
         "source": "forecast ledger and its backfill",
         "match_days": 3,

@@ -1,8 +1,9 @@
-"""forecast_event: pick the route, run it, blend with pickup, cap the range, clamp last."""
+"""forecast_event: pick the route, run it, settle the model's forecast, clamp last."""
 from dataclasses import replace
 
 from pipeline_utils import apply_plausibility_clamp, pace_gate_ok
 
+from forecast.known_final import anchor_known_final, ignores_last_final
 from forecast.pickup import blend_pickup
 from forecast.routes import (HISTORICAL_AVG, MODEL, PACE, WINDOW,
                              historical_avg_route, model_route, pace_route,
@@ -53,9 +54,19 @@ def shadow_forecasts(event, obs, fitted, history, as_of=None):
     return out
 
 
+def settle_model(forecast, event, obs, fitted, history):
+    """The model's forecast blended with pickup inside two weeks (forecast.pickup),
+    moved toward a last final it knew nothing of (forecast.known_final), and its
+    range capped (forecast.yoy_range)."""
+    forecast = blend_pickup(forecast, obs)
+    if ignores_last_final(forecast, event, obs, fitted, history):
+        return cap_range(anchor_known_final(forecast, obs, history), obs, history,
+                         fitted.yoy_arms, min_history=1)
+    return cap_range(forecast, obs, history, fitted.yoy_arms)
+
+
 def run_route(route, event, obs, fitted, history, as_of=None):
-    """One route's forecast, or None: the model's blended with pickup inside two
-    weeks (forecast.pickup) and its range capped (forecast.yoy_range), then
+    """One route's forecast, or None: the model's settled (settle_model), then
     clamped as the published one is."""
     if route == MODEL:
         raw = model_route(event, obs, fitted, as_of)
@@ -69,7 +80,7 @@ def run_route(route, event, obs, fitted, history, as_of=None):
         return None
     raw = replace(raw, raw_point=raw.point)
     if route == MODEL:
-        raw = cap_range(blend_pickup(raw, obs), obs, history, fitted.yoy_arms)
+        raw = settle_model(raw, event, obs, fitted, history)
     if route not in CLAMPED or history is None:
         return raw
     point, low, high = apply_plausibility_clamp(

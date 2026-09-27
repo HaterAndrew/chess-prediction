@@ -1,5 +1,5 @@
 """What a forecast is made from, and what it returns."""
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Optional
 
 
@@ -68,3 +68,13 @@ class Forecast:
     # The route's point before the plausibility clamp, so graders can count
     # how often the clamp changed a published number.
     raw_point: Any = None
+
+    def moved_to(self, point, floor):
+        """This forecast with its point at `point` and its range scaled with it.
+
+        Nothing falls below floor, the count already registered.
+        """
+        scale = point / self.point
+        point = max(round(point), floor)
+        return replace(self, point=point, low=max(round(self.low * scale), floor),
+                       high=max(round(self.high * scale), point))

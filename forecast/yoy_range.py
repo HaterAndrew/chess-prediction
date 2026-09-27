@@ -44,9 +44,13 @@ def yoy_arms(finished):
     return float(mid - low), float(high - mid)
 
 
-def cap_range(forecast, obs, history, arms):
-    """The forecast with each side of its range held to the year-over-year arm."""
-    if arms is None or len(history or ()) < MIN_HISTORY or forecast.point <= 0:
+def cap_range(forecast, obs, history, arms, min_history=MIN_HISTORY):
+    """The forecast with each side of its range held to the year-over-year arm.
+
+    min_history: the past finals an event needs for the cap; a point moved
+    toward the last final (forecast.known_final) needs only that one.
+    """
+    if arms is None or len(history or ()) < min_history or forecast.point <= 0:
         return forecast
     below, above = arms
     low = max(forecast.low, forecast.point * math.exp(-below))

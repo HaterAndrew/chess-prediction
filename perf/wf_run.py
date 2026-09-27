@@ -14,7 +14,7 @@ from perf.wf_summary import summarize
 RECORDS_CSV = "walk_forward_records.csv"
 RECORD_COLUMNS = ['season', 'tid', 'family', 'T', 'forecast_date', 'cutoff', 'count',
                   'count_basis', 'point', 'low', 'high', 'raw_point', 'final',
-                  'log_error', 'in_range', 'route', 'tier']
+                  'log_error', 'in_range', 'route', 'tier', 'last_year', 'pickup']
 
 
 def write_records(records, path):

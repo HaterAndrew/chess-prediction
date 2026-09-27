@@ -10,9 +10,11 @@ after d.
 import contextlib
 import io
 import math
+from dataclasses import dataclass
 
 import pandas as pd
 
+from corpus.calendar import event_calendar
 from corpus.coverage import count_as_of
 from forecast import Event, Observation, fit_models, forecast_event
 from model.data_io import build_enrichment_lookup
@@ -22,7 +24,8 @@ from tournament_aliases import FAMILY_ALIASES
 
 from perf.grading import T_POINTS
 from perf.schedule import FIRST_SEASON, forecast_points, monthly_cutoffs
-from perf.wf_events import gradeable_events
+from perf.wf_baselines import last_year_point, pickup_point
+from perf.wf_events import gradeable_events, snapshot_date
 
 
 def _quietly(fn, *args, **kwargs):
@@ -49,14 +52,42 @@ def fit_as_of(view, season):
                     season=season, standings=view.standings, verbose=False)
 
 
-def history_as_of(view, family, year):
-    """The family's finished editions before `year`, as the card builds them."""
+@dataclass(frozen=True)
+class _Curves:
+    """Every event's curve, and the horizon through which its export is exact."""
+    by_tid: dict
+    bounds: dict
+    empty: pd.DataFrame
+
+    def curve(self, tid):
+        return self.by_tid.get(tid, self.empty)
+
+    def bound(self, tid):
+        return self.bounds.get(tid)
+
+
+def curves_of(corpus):
+    """Curves by event; an event still running at the export snapshot is exact only up to it."""
+    snapshot = snapshot_date(corpus.summary)
+    cal = event_calendar(corpus.summary, corpus.meta)
+    bounds = {tid: int((start - snapshot).days)
+              for tid, start, end in zip(cal['tid'], cal['start'], cal['end'])
+              if pd.notna(start) and not end < snapshot}
+    return _Curves(dict(tuple(corpus.daily.groupby('tid'))), bounds, corpus.daily.iloc[0:0])
+
+
+def prior_as_of(view, family, year):
+    """The family's finished editions before `year`, oldest first, as the card finds them."""
     families = [family] + FAMILY_ALIASES.get(family, [])
     hist = prior_editions(view.summary, families, year, lambda fam, yr: True)
-    hist = hist[hist['final_count'].notna()]
+    return hist[hist['final_count'].notna()]
+
+
+def history_counts(family, prior):
+    """Their finals as the card lists them (pre-split World Open scaled to its top six)."""
     return [h['count'] for h in _apply_wo_top6_adjustment(family, [
         {'year': int(r['tournament_year']), 'count': int(r['final_count']), 'family': r['family']}
-        for _, r in hist.iterrows()])]
+        for _, r in prior.iterrows()])]
 
 
 def early_bird(meta, family, year, start):
@@ -76,16 +107,16 @@ def early_bird(meta, family, year, start):
     return deadline
 
 
-def forecast_record(ev, T, d, cutoff, curve, view, fitted, eb_deadline):
-    """One graded forecast, or None when there was no count or no forecast."""
-    bound = None if pd.isna(ev['exact_until_T']) else int(ev['exact_until_T'])
-    seen = count_as_of(curve, T, exact_until_T=bound)
+def forecast_record(ev, T, d, cutoff, view, fitted, eb_deadline, curves):
+    """One graded forecast with its baselines, or None when there was no count or forecast."""
+    seen = count_as_of(curves.curve(ev['tid']), T, exact_until_T=curves.bound(ev['tid']))
     if not seen.count:
         return None
     family, year = ev['family'], int(ev['tournament_year'])
+    prior = prior_as_of(view, family, year)
+    history = history_counts(family, prior)
     f = forecast_event(Event(family, event_start=ev['start'], early_bird_deadline=eb_deadline),
-                       Observation(seen.count, T), fitted,
-                       history_as_of(view, family, year), as_of=d)
+                       Observation(seen.count, T), fitted, history, as_of=d)
     if f is None:
         return None
     final = int(ev['final_count'])
@@ -96,7 +127,9 @@ def forecast_record(ev, T, d, cutoff, curve, view, fitted, eb_deadline):
             'raw_point': int(round(f.raw_point)), 'final': final,
             'log_error': round(math.log(f.point / final), 6),
             'in_range': int(f.low <= final <= f.high),
-            'route': f.route, 'tier': f.tier}
+            'route': f.route, 'tier': f.tier,
+            'last_year': last_year_point(history),
+            'pickup': pickup_point(seen.count, T, prior, curves.curve, curves.bound)}
 
 
 def run_walk_forward(corpus, today, first_season=FIRST_SEASON, horizons=T_POINTS):
@@ -106,8 +139,7 @@ def run_walk_forward(corpus, today, first_season=FIRST_SEASON, horizons=T_POINTS
     by_cutoff = {}
     for point in forecast_points(events, horizons, cutoffs, today):
         by_cutoff.setdefault(point[3], []).append(point)
-    curves = dict(tuple(corpus.daily.groupby('tid')))
-    empty = corpus.daily.iloc[0:0]
+    curves = curves_of(corpus)
     eb = {tid: _quietly(early_bird, corpus.meta, ev['family'], int(ev['tournament_year']),
                         ev['start'])[0] for tid, ev in events.iterrows()}
     records, warnings = [], []
@@ -116,8 +148,7 @@ def run_walk_forward(corpus, today, first_season=FIRST_SEASON, horizons=T_POINTS
         fitted, warned = fit_as_of(view, cutoff.year)
         warnings += [f"{cutoff.date()}: {w}" for w in warned]
         for tid, T, d, _ in by_cutoff[cutoff]:
-            rec = forecast_record(events.loc[tid], T, d, cutoff, curves.get(tid, empty),
-                                  view, fitted, eb[tid])
+            rec = forecast_record(events.loc[tid], T, d, cutoff, view, fitted, eb[tid], curves)
             if rec is not None:
                 records.append(rec)
     records.sort(key=lambda r: (r['forecast_date'], r['tid'], -r['T']))

@@ -1,5 +1,4 @@
 """Which events the walk-forward backtest grades."""
-import numpy as np
 import pandas as pd
 
 from corpus.calendar import event_calendar
@@ -48,12 +47,7 @@ def _eligible(ev, today, first_season, snapshot, scraped):
 
 
 def gradeable_events(corpus, today, first_season):
-    """The editions the walk-forward grades, with their start and snapshot bound.
-
-    exact_until_T is the horizon of the export snapshot for an event still
-    running when the export was taken (NaN when it had ended): its curve is
-    complete only up to there.
-    """
+    """The editions the walk-forward grades, with their start and end."""
     today = pd.Timestamp(today).normalize()
     snapshot = snapshot_date(corpus.summary)
     ev = corpus.summary.merge(event_calendar(corpus.summary, corpus.meta), on='tid')
@@ -61,7 +55,5 @@ def gradeable_events(corpus, today, first_season):
     curves = dict(tuple(corpus.daily.groupby('tid')))
     empty = corpus.daily.iloc[0:0]
     ev = ev[[is_curve_gradeable(curves.get(tid, empty), final)[0]
-             for tid, final in zip(ev['tid'], ev['final_count'])]].copy()
-    ev['exact_until_T'] = np.where(ev['end'] < snapshot, np.nan,
-                                   (ev['start'] - snapshot).dt.days)
+             for tid, final in zip(ev['tid'], ev['final_count'])]]
     return ev.reset_index(drop=True)

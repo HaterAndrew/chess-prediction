@@ -16,12 +16,13 @@ import pandas as pd
 
 from corpus.calendar import event_calendar
 from corpus.coverage import count_as_of
-from forecast import Event, Observation, fit_models, forecast_event
+from forecast import Event, Observation, fit_models, forecast_event, shadow_forecasts
+from forecast.routes import HISTORICAL_AVG, PACE
 from model.data_io import build_enrichment_lookup
 from shared.curves import has_curve
 from sitebuild.editions import prior_editions
 from sitebuild.helpers import _apply_wo_top6_adjustment, sanitize_early_bird
-from tournament_aliases import FAMILY_ALIASES
+from tournament_aliases import FAMILY_ALIASES, canonicalize_family
 
 from perf.grading import T_POINTS
 from perf.schedule import FIRST_SEASON, forecast_points, monthly_cutoffs
@@ -112,16 +113,33 @@ def early_bird(meta, family, year, start):
     return deadline
 
 
+# The record columns each shadow route fills: <prefix>_point, _low, _high.
+SHADOW_PREFIX = {PACE: 'pace', HISTORICAL_AVG: 'hist'}
+
+
+def shadow_columns(event, obs, fitted, history, as_of):
+    """The routes that could stand in for the model, on the same date and count."""
+    out = {f'{p}_{k}': None for p in SHADOW_PREFIX.values() for k in ('point', 'low', 'high')}
+    for route, f in shadow_forecasts(event, obs, fitted, history, as_of).items():
+        p = SHADOW_PREFIX[route]
+        out.update({f'{p}_point': int(f.point), f'{p}_low': int(f.low), f'{p}_high': int(f.high)})
+    return out
+
+
 def forecast_record(ev, T, d, cutoff, view, fitted, eb_deadline, curves):
-    """One graded forecast with its baselines, or None when there was no count or forecast."""
+    """One graded forecast with its baselines and shadow routes, or None when
+    there was no count or forecast."""
     seen = curves.count(ev['tid'], T)
     if not seen.count:
         return None
     family, year = ev['family'], int(ev['tournament_year'])
     prior = prior_as_of(view, family, year)
     history = history_counts(family, prior)
-    f = forecast_event(Event(family, event_start=ev['start'], early_bird_deadline=eb_deadline),
-                       Observation(seen.count, T), fitted, history, as_of=d)
+    event = Event(family, event_start=ev['start'], early_bird_deadline=eb_deadline,
+                  canonical=canonicalize_family(family),
+                  names=(family, *FAMILY_ALIASES.get(family, [])))
+    obs = Observation(seen.count, T)
+    f = forecast_event(event, obs, fitted, history, as_of=d)
     if f is None:
         return None
     final = int(ev['final_count'])
@@ -134,7 +152,9 @@ def forecast_record(ev, T, d, cutoff, view, fitted, eb_deadline, curves):
             'in_range': int(f.low <= final <= f.high),
             'route': f.route, 'tier': f.tier,
             'last_year': last_year_point(history),
-            'pickup': pickup_point(seen.count, T, prior, curves.count)}
+            'pickup': pickup_point(seen.count, T, prior, curves.count),
+            'n_history': len(history),
+            **shadow_columns(event, obs, fitted, history, d)}
 
 
 def run_walk_forward(corpus, today, first_season=FIRST_SEASON, horizons=T_POINTS):

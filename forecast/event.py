@@ -34,7 +34,25 @@ def forecast_event(event, obs, fitted, history, as_of=None):
     metadata routes read. None skips the clamp, for grading the raw model.
     Returns None when the route has nothing to say.
     """
-    route = choose_route(event, obs, fitted, history)
+    return run_route(choose_route(event, obs, fitted, history), event, obs, fitted,
+                     history, as_of)
+
+
+def shadow_forecasts(event, obs, fitted, history, as_of=None):
+    """What each route that could stand in for the model would have said: the
+    pace route when there are past finals to band it, and the historical average.
+    Graded beside the model so the choice between them follows evidence."""
+    routes = ([PACE] if history and fitted.ratios is not None else []) + [HISTORICAL_AVG]
+    out = {}
+    for route in routes:
+        f = run_route(route, event, obs, fitted, history, as_of)
+        if f is not None:
+            out[route] = f
+    return out
+
+
+def run_route(route, event, obs, fitted, history, as_of=None):
+    """One route's forecast, clamped as the published one is, or None."""
     if route == MODEL:
         raw = model_route(event, obs, fitted, as_of)
     elif route == WINDOW:

@@ -6,6 +6,7 @@ import pandas as pd
 
 from shared.paths import OUTPUT_DIR
 
+from perf.route_evidence import STAND_IN, route_evidence
 from perf.schedule import FIRST_SEASON, monthly_cutoffs
 from perf.walkforward import run_walk_forward
 from perf.wf_events import provisional_names, snapshot_date
@@ -14,7 +15,9 @@ from perf.wf_summary import summarize
 RECORDS_CSV = "walk_forward_records.csv"
 RECORD_COLUMNS = ['season', 'tid', 'family', 'T', 'forecast_date', 'cutoff', 'count',
                   'count_basis', 'point', 'low', 'high', 'raw_point', 'final',
-                  'log_error', 'in_range', 'route', 'tier', 'last_year', 'pickup']
+                  'log_error', 'in_range', 'route', 'tier', 'last_year', 'pickup',
+                  'n_history', 'pace_point', 'pace_low', 'pace_high',
+                  'hist_point', 'hist_low', 'hist_high']
 
 
 def write_records(records, path):
@@ -31,6 +34,13 @@ def walk_forward_block(corpus, today, output_dir=OUTPUT_DIR):
     write_records(records, os.path.join(output_dir, RECORDS_CSV))
     n_cutoffs = len(monthly_cutoffs(FIRST_SEASON, today))
     block = summarize(records, FIRST_SEASON, n_cutoffs, snapshot_date(corpus.summary))
+    block['route_evidence'] = route_evidence(records)
+    wins = [r for r in block['route_evidence'] if r['verdict'] == STAND_IN]
+    print(f"  Route evidence: {len(block['route_evidence'])} bucket comparisons, "
+          f"{len(wins)} won by a stand-in route")
+    for r in wins:
+        print(f"    {r['route']} beats the model: {r['band']} horizons, count {r['count_band']}, "
+              f"history {r['history']} (LIS {r['lis_diff']:+.3f} +/- {r['lis_diff_se']:.3f}, n={r['n']})")
     # Finished, but neither the export nor the scrape saw registration close.
     block['provisional'] = provisional_names(corpus, today)
     if block['provisional']:

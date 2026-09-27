@@ -4506,6 +4506,787 @@
       }
     }
   },
+  "live_record": {
+    "protocol": {
+      "source": "forecast ledger and its backfill",
+      "match_days": 3,
+      "first_date": "2026-03-23",
+      "last_date": "2026-09-27"
+    },
+    "n_records": 129,
+    "n_invalid_ranges": 0,
+    "n_events": 18,
+    "pooled": {
+      "90": {
+        "n": 12,
+        "n_events": 12,
+        "mae_pct": 13.74,
+        "median_error_pct": 4.71,
+        "median_error_ci": [
+          -6.54,
+          26.79
+        ],
+        "coverage": 83.3,
+        "coverage_ci": [
+          55.2,
+          95.3
+        ],
+        "below_pct": 16.7,
+        "above_pct": 0.0,
+        "ale": {
+          "mean": 0.1228,
+          "se": 0.0332
+        },
+        "lis": {
+          "mean": 0.845,
+          "se": 0.2201
+        },
+        "baselines": {}
+      },
+      "60": {
+        "n": 16,
+        "n_events": 16,
+        "mae_pct": 14.81,
+        "median_error_pct": 3.54,
+        "median_error_ci": [
+          -4.51,
+          21.53
+        ],
+        "coverage": 87.5,
+        "coverage_ci": [
+          64.0,
+          96.5
+        ],
+        "below_pct": 12.5,
+        "above_pct": 0.0,
+        "ale": {
+          "mean": 0.136,
+          "se": 0.0315
+        },
+        "lis": {
+          "mean": 0.7339,
+          "se": 0.1527
+        },
+        "baselines": {}
+      },
+      "42": {
+        "n": 16,
+        "n_events": 16,
+        "mae_pct": 15.66,
+        "median_error_pct": 4.42,
+        "median_error_ci": [
+          -1.53,
+          34.15
+        ],
+        "coverage": 87.5,
+        "coverage_ci": [
+          64.0,
+          96.5
+        ],
+        "below_pct": 12.5,
+        "above_pct": 0.0,
+        "ale": {
+          "mean": 0.1394,
+          "se": 0.0315
+        },
+        "lis": {
+          "mean": 0.7411,
+          "se": 0.1843
+        },
+        "baselines": {}
+      },
+      "28": {
+        "n": 15,
+        "n_events": 15,
+        "mae_pct": 11.94,
+        "median_error_pct": -3.16,
+        "median_error_ci": [
+          -5.64,
+          15.88
+        ],
+        "coverage": 73.3,
+        "coverage_ci": [
+          48.0,
+          89.1
+        ],
+        "below_pct": 20.0,
+        "above_pct": 6.7,
+        "ale": {
+          "mean": 0.109,
+          "se": 0.0269
+        },
+        "lis": {
+          "mean": 0.6749,
+          "se": 0.143
+        },
+        "baselines": {}
+      },
+      "14": {
+        "n": 16,
+        "n_events": 16,
+        "mae_pct": 10.43,
+        "median_error_pct": 3.81,
+        "median_error_ci": [
+          -1.78,
+          10.28
+        ],
+        "coverage": 68.8,
+        "coverage_ci": [
+          44.4,
+          85.8
+        ],
+        "below_pct": 31.2,
+        "above_pct": 0.0,
+        "ale": {
+          "mean": 0.0958,
+          "se": 0.0266
+        },
+        "lis": {
+          "mean": 0.6223,
+          "se": 0.1851
+        },
+        "baselines": {}
+      },
+      "7": {
+        "n": 18,
+        "n_events": 18,
+        "mae_pct": 10.07,
+        "median_error_pct": 5.27,
+        "median_error_ci": [
+          2.79,
+          13.08
+        ],
+        "coverage": 66.7,
+        "coverage_ci": [
+          43.7,
+          83.7
+        ],
+        "below_pct": 33.3,
+        "above_pct": 0.0,
+        "ale": {
+          "mean": 0.094,
+          "se": 0.0191
+        },
+        "lis": {
+          "mean": 0.5398,
+          "se": 0.1511
+        },
+        "baselines": {}
+      },
+      "3": {
+        "n": 18,
+        "n_events": 18,
+        "mae_pct": 12.31,
+        "median_error_pct": 7.13,
+        "median_error_ci": [
+          -5.34,
+          16.99
+        ],
+        "coverage": 55.6,
+        "coverage_ci": [
+          33.7,
+          75.4
+        ],
+        "below_pct": 44.4,
+        "above_pct": 0.0,
+        "ale": {
+          "mean": 0.1176,
+          "se": 0.016
+        },
+        "lis": {
+          "mean": 0.6491,
+          "se": 0.1269
+        },
+        "baselines": {}
+      },
+      "1": {
+        "n": 18,
+        "n_events": 18,
+        "mae_pct": 9.02,
+        "median_error_pct": -1.99,
+        "median_error_ci": [
+          -5.83,
+          8.13
+        ],
+        "coverage": 55.6,
+        "coverage_ci": [
+          33.7,
+          75.4
+        ],
+        "below_pct": 27.8,
+        "above_pct": 16.7,
+        "ale": {
+          "mean": 0.0863,
+          "se": 0.0168
+        },
+        "lis": {
+          "mean": 0.5143,
+          "se": 0.1396
+        },
+        "baselines": {}
+      }
+    },
+    "by_route": {
+      "metadata_historical_avg": {
+        "90": {
+          "n": 1,
+          "n_events": 1,
+          "mae_pct": 8.43,
+          "median_error_pct": -8.43,
+          "median_error_ci": [
+            -8.43,
+            -8.43
+          ],
+          "coverage": 100.0,
+          "coverage_ci": [
+            20.7,
+            100.0
+          ],
+          "below_pct": 0.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.0881,
+            "se": null
+          },
+          "lis": {
+            "mean": 0.3813,
+            "se": null
+          },
+          "baselines": {}
+        },
+        "60": {
+          "n": 5,
+          "n_events": 5,
+          "mae_pct": 10.46,
+          "median_error_pct": 3.55,
+          "median_error_ci": [
+            -8.43,
+            30.58
+          ],
+          "coverage": 80.0,
+          "coverage_ci": [
+            37.6,
+            96.4
+          ],
+          "below_pct": 20.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.0969,
+            "se": 0.0384
+          },
+          "lis": {
+            "mean": 0.3792,
+            "se": 0.1047
+          },
+          "baselines": {}
+        },
+        "42": {
+          "n": 2,
+          "n_events": 2,
+          "mae_pct": 3.44,
+          "median_error_pct": 3.44,
+          "median_error_ci": [
+            3.33,
+            3.55
+          ],
+          "coverage": 100.0,
+          "coverage_ci": [
+            34.2,
+            100.0
+          ],
+          "below_pct": 0.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.0338,
+            "se": 0.0007
+          },
+          "lis": {
+            "mean": 0.2334,
+            "se": 0.0766
+          },
+          "baselines": {}
+        }
+      },
+      "metadata_pace": {
+        "42": {
+          "n": 3,
+          "n_events": 3,
+          "mae_pct": 30.49,
+          "median_error_pct": 37.35,
+          "median_error_ci": [
+            -16.53,
+            37.59
+          ],
+          "coverage": 100.0,
+          "coverage_ci": [
+            43.8,
+            100.0
+          ],
+          "below_pct": 0.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.2724,
+            "se": 0.0371
+          },
+          "lis": {
+            "mean": 0.8508,
+            "se": 0.1262
+          },
+          "baselines": {}
+        },
+        "28": {
+          "n": 5,
+          "n_events": 5,
+          "mae_pct": 4.51,
+          "median_error_pct": -4.13,
+          "median_error_ci": [
+            -10.65,
+            1.67
+          ],
+          "coverage": 100.0,
+          "coverage_ci": [
+            56.6,
+            100.0
+          ],
+          "below_pct": 0.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.0468,
+            "se": 0.0168
+          },
+          "lis": {
+            "mean": 0.6369,
+            "se": 0.0399
+          },
+          "baselines": {}
+        },
+        "14": {
+          "n": 2,
+          "n_events": 2,
+          "mae_pct": 21.69,
+          "median_error_pct": 20.78,
+          "median_error_ci": [
+            6.8,
+            36.59
+          ],
+          "coverage": 50.0,
+          "coverage_ci": [
+            9.5,
+            90.5
+          ],
+          "below_pct": 50.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.1888,
+            "se": 0.0857
+          },
+          "lis": {
+            "mean": 1.0472,
+            "se": 0.4071
+          },
+          "baselines": {}
+        },
+        "7": {
+          "n": 2,
+          "n_events": 2,
+          "mae_pct": 20.59,
+          "median_error_pct": 19.96,
+          "median_error_ci": [
+            8.25,
+            32.93
+          ],
+          "coverage": 50.0,
+          "coverage_ci": [
+            9.5,
+            90.5
+          ],
+          "below_pct": 50.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.182,
+            "se": 0.0715
+          },
+          "lis": {
+            "mean": 1.3401,
+            "se": 0.6765
+          },
+          "baselines": {}
+        },
+        "3": {
+          "n": 2,
+          "n_events": 2,
+          "mae_pct": 25.57,
+          "median_error_pct": 25.27,
+          "median_error_ci": [
+            16.99,
+            34.15
+          ],
+          "coverage": 50.0,
+          "coverage_ci": [
+            9.5,
+            90.5
+          ],
+          "below_pct": 50.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.2253,
+            "se": 0.0477
+          },
+          "lis": {
+            "mean": 1.3938,
+            "se": 0.7062
+          },
+          "baselines": {}
+        },
+        "1": {
+          "n": 2,
+          "n_events": 2,
+          "mae_pct": 18.77,
+          "median_error_pct": 11.37,
+          "median_error_ci": [
+            -5.83,
+            31.71
+          ],
+          "coverage": 50.0,
+          "coverage_ci": [
+            9.5,
+            90.5
+          ],
+          "below_pct": 50.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.1677,
+            "se": 0.075
+          },
+          "lis": {
+            "mean": 1.1713,
+            "se": 0.7263
+          },
+          "baselines": {}
+        }
+      },
+      "model": {
+        "90": {
+          "n": 4,
+          "n_events": 4,
+          "mae_pct": 10.33,
+          "median_error_pct": 3.94,
+          "median_error_ci": [
+            -6.6,
+            26.79
+          ],
+          "coverage": 100.0,
+          "coverage_ci": [
+            51.0,
+            100.0
+          ],
+          "below_pct": 0.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.0957,
+            "se": 0.0409
+          },
+          "lis": {
+            "mean": 1.0155,
+            "se": 0.1132
+          },
+          "baselines": {}
+        },
+        "60": {
+          "n": 9,
+          "n_events": 9,
+          "mae_pct": 15.33,
+          "median_error_pct": 1.46,
+          "median_error_ci": [
+            -6.54,
+            21.53
+          ],
+          "coverage": 88.9,
+          "coverage_ci": [
+            56.5,
+            98.0
+          ],
+          "below_pct": 11.1,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.1422,
+            "se": 0.0472
+          },
+          "lis": {
+            "mean": 0.9756,
+            "se": 0.2304
+          },
+          "baselines": {}
+        },
+        "42": {
+          "n": 9,
+          "n_events": 9,
+          "mae_pct": 11.72,
+          "median_error_pct": 1.87,
+          "median_error_ci": [
+            -3.05,
+            30.14
+          ],
+          "coverage": 77.8,
+          "coverage_ci": [
+            45.3,
+            93.7
+          ],
+          "below_pct": 22.2,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.1037,
+            "se": 0.039
+          },
+          "lis": {
+            "mean": 0.8636,
+            "se": 0.3026
+          },
+          "baselines": {}
+        },
+        "28": {
+          "n": 9,
+          "n_events": 9,
+          "mae_pct": 13.6,
+          "median_error_pct": -3.16,
+          "median_error_ci": [
+            -6.42,
+            34.93
+          ],
+          "coverage": 55.6,
+          "coverage_ci": [
+            26.7,
+            81.1
+          ],
+          "below_pct": 33.3,
+          "above_pct": 11.1,
+          "ale": {
+            "mean": 0.123,
+            "se": 0.0348
+          },
+          "lis": {
+            "mean": 0.7006,
+            "se": 0.2389
+          },
+          "baselines": {}
+        },
+        "14": {
+          "n": 14,
+          "n_events": 14,
+          "mae_pct": 8.82,
+          "median_error_pct": 2.63,
+          "median_error_ci": [
+            -1.88,
+            10.28
+          ],
+          "coverage": 71.4,
+          "coverage_ci": [
+            45.4,
+            88.3
+          ],
+          "below_pct": 28.6,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.0825,
+            "se": 0.0255
+          },
+          "lis": {
+            "mean": 0.5616,
+            "se": 0.1974
+          },
+          "baselines": {}
+        },
+        "7": {
+          "n": 15,
+          "n_events": 15,
+          "mae_pct": 8.93,
+          "median_error_pct": 4.44,
+          "median_error_ci": [
+            -0.83,
+            13.08
+          ],
+          "coverage": 66.7,
+          "coverage_ci": [
+            41.7,
+            84.8
+          ],
+          "below_pct": 33.3,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.0846,
+            "se": 0.019
+          },
+          "lis": {
+            "mean": 0.461,
+            "se": 0.1357
+          },
+          "baselines": {}
+        },
+        "3": {
+          "n": 15,
+          "n_events": 15,
+          "mae_pct": 10.83,
+          "median_error_pct": -1.65,
+          "median_error_ci": [
+            -9.04,
+            16.2
+          ],
+          "coverage": 60.0,
+          "coverage_ci": [
+            35.7,
+            80.2
+          ],
+          "below_pct": 40.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.1059,
+            "se": 0.0146
+          },
+          "lis": {
+            "mean": 0.5678,
+            "se": 0.0982
+          },
+          "baselines": {}
+        },
+        "1": {
+          "n": 15,
+          "n_events": 15,
+          "mae_pct": 7.09,
+          "median_error_pct": -2.23,
+          "median_error_ci": [
+            -8.12,
+            -0.41
+          ],
+          "coverage": 60.0,
+          "coverage_ci": [
+            35.7,
+            80.2
+          ],
+          "below_pct": 20.0,
+          "above_pct": 20.0,
+          "ale": {
+            "mean": 0.0699,
+            "se": 0.0146
+          },
+          "lis": {
+            "mean": 0.3712,
+            "se": 0.1025
+          },
+          "baselines": {}
+        }
+      }
+    },
+    "eras": [
+      {
+        "model_hash": "e3b0c44298fc1c14",
+        "first": "2026-03-25",
+        "last": "2026-04-09",
+        "n": 8,
+        "n_events": 6,
+        "mae_pct": 13.73,
+        "coverage": 62.5
+      },
+      {
+        "model_hash": "62a6c37e0cb5e74c",
+        "first": "2026-04-18",
+        "last": "2026-04-20",
+        "n": 4,
+        "n_events": 4,
+        "mae_pct": 12.93,
+        "coverage": 100.0
+      },
+      {
+        "model_hash": "2d4f0a9c96715539",
+        "first": "2026-04-23",
+        "last": "2026-04-27",
+        "n": 6,
+        "n_events": 6,
+        "mae_pct": 18.27,
+        "coverage": 83.3
+      },
+      {
+        "model_hash": "342a9d66ce6220d8",
+        "first": "2026-04-30",
+        "last": "2026-05-02",
+        "n": 2,
+        "n_events": 2,
+        "mae_pct": 18.09,
+        "coverage": 100.0
+      },
+      {
+        "model_hash": "4b5e148ceb4f00ab",
+        "first": "2026-05-14",
+        "last": "2026-05-20",
+        "n": 11,
+        "n_events": 9,
+        "mae_pct": 10.79,
+        "coverage": 90.9
+      },
+      {
+        "model_hash": "53b9476dbdfbba95",
+        "first": "2026-05-22",
+        "last": "2026-05-24",
+        "n": 6,
+        "n_events": 6,
+        "mae_pct": 12.31,
+        "coverage": 66.7
+      },
+      {
+        "model_hash": "217a3ec5be3e3541",
+        "first": "2026-05-28",
+        "last": "2026-06-05",
+        "n": 14,
+        "n_events": 10,
+        "mae_pct": 11.87,
+        "coverage": 71.4
+      },
+      {
+        "model_hash": "00fa551144bffa5b",
+        "first": "2026-06-06",
+        "last": "2026-07-24",
+        "n": 55,
+        "n_events": 14,
+        "mae_pct": 14.16,
+        "coverage": 60.0
+      },
+      {
+        "model_hash": "16c2b6a914aafb45",
+        "first": "2026-07-28",
+        "last": "2026-07-28",
+        "n": 1,
+        "n_events": 1,
+        "mae_pct": 2.79,
+        "coverage": 100.0
+      },
+      {
+        "model_hash": "1ca0a9aa4feaed2d",
+        "first": "2026-07-30",
+        "last": "2026-07-30",
+        "n": 2,
+        "n_events": 2,
+        "mae_pct": 5.0,
+        "coverage": 100.0
+      },
+      {
+        "model_hash": "d16d1da2378acc7c",
+        "first": "2026-07-31",
+        "last": "2026-07-31",
+        "n": 1,
+        "n_events": 1,
+        "mae_pct": 1.78,
+        "coverage": 100.0
+      },
+      {
+        "model_hash": "f9263d3ebc0ca4e2",
+        "first": "2026-08-06",
+        "last": "2026-09-03",
+        "n": 19,
+        "n_events": 5,
+        "mae_pct": 5.49,
+        "coverage": 78.9
+      }
+    ]
+  },
   "years": {
     "2023": {
       "year": 2023,

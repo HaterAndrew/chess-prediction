@@ -209,29 +209,6 @@ class FitMixin:
         # Track number of training editions per family (for CI widening)
         self.family_n_editions = valid.groupby('family').size().to_dict()
 
-        # Compute per-family withdrawal rates from enrichment data
-        self.family_withdrawal_rates = {}
-        if self.enrichment:
-            from collections import defaultdict
-            wd_data = defaultdict(list)
-            for (fam, yr), info in self.enrichment.items():
-                # v3 T5: same fold restriction as the standings join above.
-                if exclude_family_years and (fam, yr) in exclude_family_years:
-                    continue
-                if fold_year is not None:
-                    try:
-                        if int(yr) >= int(fold_year):
-                            continue
-                    except (TypeError, ValueError):
-                        continue
-                total = info.get('total_entries', 0)
-                wd = info.get('withdrawal_count', 0)
-                if total > 0 and wd > 0 and isinstance(wd, (int, float)):
-                    wd_data[fam].append(wd / total)
-            for fam, rates in wd_data.items():
-                if rates:
-                    self.family_withdrawal_rates[fam] = np.median(rates)
-
         # Compute global log-sigma per T for empirical Bayes shrinkage
         for T in CHOP_POINTS:
             g_rats = self.global_ratios.get(T, [])

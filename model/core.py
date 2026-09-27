@@ -129,7 +129,7 @@ class N5v4_Final(FitMixin, NowcastMixin, RecalibrationMixin):
     # separately: each one's marginal contribution was assumed, not shown. Every
     # stage defaults to ON, so production behaviour is unchanged unless a caller
     # explicitly ablates something.
-    ABLATABLE_STAGES = ('late_surge', 'ratio_caps', 'trend', 'withdrawal',
+    ABLATABLE_STAGES = ('late_surge', 'ratio_caps', 'trend',
                         'features', 'recal', 'anchor')
 
     def set_stage_flags(self, **flags):

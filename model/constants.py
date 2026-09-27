@@ -60,11 +60,6 @@ RECAL_IN_SAMPLE_WIDENING = 1.15
 # with its stationarity auto-refit applies.
 RECAL_REGIME_MIN_N = 10
 
-# Ceiling on the withdrawal-rate correction (v3 N4). Rates above this are capped,
-# not discarded — the previous `if wd_rate < 0.15` turned the correction OFF for
-# the high-withdrawal families that most needed it.
-MAX_WITHDRAWAL_CORRECTION = 0.15
-
 # Ratio-vs-regression divergence handling at long T (v3 N5). Beyond the
 # threshold the blend eases toward the regression and the interval widens,
 # rather than the ratio model being discarded outright at a hard step.

@@ -6,6 +6,8 @@ import pandas as pd
 from model.data_io import reanchor_daily_to_event_start
 from shared.paths import OUTPUT_DIR
 
+from corpus.calendar import event_calendar
+from corpus.scrape_curves import scrape_curves
 from corpus.view import Corpus
 
 
@@ -25,16 +27,24 @@ def _optional(output_dir, name):
 def load_corpus(output_dir=OUTPUT_DIR):
     """Every source the models read, curves anchored at event start.
 
-    Missing optional files: no standings or scrape (None), an empty
-    enrichment frame.
+    Editions the export never saw get their curve from the scrape
+    (corpus.scrape_curves); summary.has_curve marks every event with a curve
+    of either kind. Missing optional files: no standings or scrape (None), an
+    empty enrichment frame.
     """
     summary, daily, meta = read_written(output_dir)
     # T=0 at event start, during-event rows dropped: the model trains and
     # predicts on pre-start registrations only.
     daily = reanchor_daily_to_event_start(summary, daily, meta)
     meta['start_date'] = pd.to_datetime(meta['start_date'])
+    scrape = _optional(output_dir, "daily_scrape.csv")
+    scraped = scrape_curves(scrape, summary, event_calendar(summary, meta), set(daily['tid']))
+    if not scraped.empty:
+        daily = pd.concat([daily, scraped], ignore_index=True)
+    summary['has_curve'] = (summary['has_timestamps'].fillna(False).astype(bool)
+                            | summary['tid'].isin(set(scraped['tid'])))
     enrichment = _optional(output_dir, "historical_tournaments.csv")
     return Corpus(summary=summary, daily=daily, meta=meta,
                   standings=_optional(output_dir, "historical_standings.csv"),
                   enrichment=enrichment if enrichment is not None else pd.DataFrame(),
-                  scrape=_optional(output_dir, "daily_scrape.csv"))
+                  scrape=scrape)

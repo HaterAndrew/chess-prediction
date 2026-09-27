@@ -5,6 +5,7 @@ import pandas as pd
 from scipy.interpolate import interp1d
 
 from model.constants import T_GRID
+from shared.curves import has_curve
 from shared.season import TRAINING_CUTOFF
 
 def build_template_curves(summary, daily, season=None):
@@ -15,7 +16,7 @@ def build_template_curves(summary, daily, season=None):
     """
     season = TRAINING_CUTOFF if season is None else int(season)
     valid = summary[
-        (summary['has_timestamps']) &
+        has_curve(summary) &
         (~summary.get('is_online', pd.Series(False)).fillna(False)) &
         (~summary.get('is_covid', pd.Series(False)).fillna(False)) &
         (summary['tournament_year'] < season)

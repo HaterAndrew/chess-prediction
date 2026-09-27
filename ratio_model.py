@@ -14,6 +14,7 @@ declines to produce an estimate.
 """
 import numpy as np
 from scipy.stats import lognorm
+from shared.curves import has_curve
 from shared.season import CURRENT_SEASON
 from model.counts import counts_by_event
 
@@ -41,7 +42,7 @@ def build_ratio_model(train_summary, train_daily, completed_tids=None, season=No
     if completed_tids:
         year_ok = year_ok | train_summary['tid'].isin(completed_tids)
     valid = train_summary[
-        (train_summary['has_timestamps']) &
+        has_curve(train_summary) &
         (~train_summary['is_online'].fillna(False)) &
         (~train_summary['is_covid'].fillna(False)) &
         year_ok

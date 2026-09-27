@@ -8,7 +8,7 @@ from shared.paths import OUTPUT_DIR
 
 from perf.schedule import FIRST_SEASON, monthly_cutoffs
 from perf.walkforward import run_walk_forward
-from perf.wf_events import snapshot_date
+from perf.wf_events import provisional_names, snapshot_date
 from perf.wf_summary import summarize
 
 RECORDS_CSV = "walk_forward_records.csv"
@@ -31,6 +31,11 @@ def walk_forward_block(corpus, today, output_dir=OUTPUT_DIR):
     write_records(records, os.path.join(output_dir, RECORDS_CSV))
     n_cutoffs = len(monthly_cutoffs(FIRST_SEASON, today))
     block = summarize(records, FIRST_SEASON, n_cutoffs, snapshot_date(corpus.summary))
+    # Finished, but neither the export nor the scrape saw registration close.
+    block['provisional'] = provisional_names(corpus, today)
+    if block['provisional']:
+        print(f"  Not graded, final unconfirmed ({len(block['provisional'])}): "
+              f"{', '.join(block['provisional'])}")
     print(f"  Walk-forward: {block['n_records']} forecasts of {block.get('n_events', 0)} "
           f"events from {FIRST_SEASON}, {n_cutoffs} monthly refits, "
           f"{time.monotonic() - started:.0f} s")

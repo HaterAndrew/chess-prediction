@@ -7,6 +7,14 @@ held to a running maximum, one row per scraped day, T in days before the
 event start. Days after the start are left out, as the loader drops them
 from export curves, and so are days with no entries, as 01_data_prep drops
 them.
+
+An edition still registering on the scrape's last day is the exception: its
+curve is the lower envelope, each day the least count seen from then to the
+last scrape, so it ends at the count the live card shows. Its gross count can
+fall when entries are deleted (Eastern Chess Congress, 55 to 50 on
+2026-09-22), and a running maximum would sit above it. No forecast is graded
+or trained on an edition before it starts, so reading its later days is no
+look-ahead; once it starts, its curve is the running maximum again.
 """
 import pandas as pd
 
@@ -35,7 +43,17 @@ def scrape_curves(scrape, summary, calendar, have_curve):
     rows = rows[(rows['T'] >= 0) & (rows['entry_count'] > 0)]
     rows = rows.sort_values(['tid', 'T'], ascending=[True, False], kind='stable')
     rows = rows.drop_duplicates(['tid', 'T'], keep='last')
-    rows['cum_regs'] = rows.groupby('tid')['entry_count'].cummax().astype(int)
+    rows['cum_regs'] = _gross_curve(rows, last_day=rows['date'].max())
     rows['daily_regs'] = rows.groupby('tid')['cum_regs'].diff().fillna(rows['cum_regs']).astype(int)
     rows['cum_pct'] = (rows['cum_regs'] / rows['final_count']).where(rows['final_count'] > 0)
     return rows[CURVE_COLUMNS].reset_index(drop=True)
+
+
+def _gross_curve(rows, last_day):
+    """The running maximum, or the lower envelope for editions starting after last_day.
+
+    rows: scraped days, in date order within each tid.
+    """
+    held = rows.groupby('tid')['entry_count'].cummax()
+    envelope = rows[::-1].groupby('tid')['entry_count'].cummin()[::-1]
+    return held.where(rows['start'] <= last_day, envelope).astype(int)

@@ -13,7 +13,10 @@ from pathlib import Path, PurePosixPath
 from shared.paths import PROJECT_DIR
 
 # n5v5 (2026-09-27): the pickup blend inside two weeks.
-MODEL_LABEL = "n5v5"
+# n5v6 (2026-09-27): the year-over-year range cap (#185), a known last final
+# for events without curves (#187), the new-event prior (#189) and short
+# ranges sized around the pickup blend (#191).
+MODEL_LABEL = "n5v6"
 
 # Everything between the scraped count and the published card: the corpus
 # loader, the forecast entry point and its routes, the engine, the card

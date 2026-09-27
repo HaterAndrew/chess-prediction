@@ -14,7 +14,7 @@ import pandas as pd
 from perf.live_record import summarize_live
 
 FROZEN_ON = '2026-09-27'
-FROZEN_HASH = '6b0bd39145d00730'
+FROZEN_HASH = 'e0e6631e4c8e940d'
 
 
 def sealed(records, frozen_on=FROZEN_ON, frozen_hash=FROZEN_HASH):

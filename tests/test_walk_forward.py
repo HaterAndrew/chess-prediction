@@ -119,15 +119,18 @@ def test_records_and_summary_keep_their_shape(tmp_path):
            'forecast_date': '2025-04-24', 'cutoff': '2025-04-01', 'count': 90,
            'count_basis': OBSERVED, 'point': 110, 'low': 95, 'high': 130, 'raw_point': 110,
            'final': 100, 'log_error': round(float(np.log(1.1)), 6), 'in_range': 1,
-           'route': 'model', 'tier': 'family-direct'}
+           'route': 'model', 'tier': 'family-direct', 'last_year': 95, 'pickup': 104}
     path = tmp_path / 'records.csv'
     write_records([rec], path)
     assert list(pd.read_csv(path).columns) == RECORD_COLUMNS
     write_records([], path)
     assert list(pd.read_csv(path).columns) == RECORD_COLUMNS
     block = summarize([rec], 2023, 45, pd.Timestamp('2026-03-21'))
-    assert block['pooled']['7'] == {'n': 1, 'n_events': 1, 'mae_pct': 10.0,
-                                    'median_error_pct': 10.0, 'coverage': 100.0,
-                                    'below_pct': 0.0, 'above_pct': 0.0}
+    got = block['pooled']['7']
+    assert {k: got[k] for k in ('n', 'n_events', 'mae_pct', 'median_error_pct', 'coverage',
+                                'below_pct', 'above_pct')} == {
+        'n': 1, 'n_events': 1, 'mae_pct': 10.0, 'median_error_pct': 10.0,
+        'coverage': 100.0, 'below_pct': 0.0, 'above_pct': 0.0}
+    assert got['ale'] == {'mean': round(float(np.log(1.1)), 4), 'se': None}
     assert block['by_season']['2025']['7']['n'] == 1
     assert summarize([], 2023, 45, pd.Timestamp('2026-03-21'))['n_records'] == 0

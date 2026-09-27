@@ -50,13 +50,47 @@ function weeklyStops(endMs, startMs) {
   return out.reverse();
 }
 
+// The History bars' slots, oldest first: each past edition, an empty slot
+// for every run of missing years between editions ("2020–21"), then this
+// edition. past: [{year, count, adjusted, count_raw}]; current: {year, count}.
+// A slot: {label, year, count (null for a gap), kind: past|gap|current, flag}.
+function historySlots(past, current) {
+  const eds = (past || []).map(h => ({
+    label: h.adjusted ? `${h.year}*` : String(h.year), year: h.year, count: h.count, kind: 'past',
+    flag: h.adjusted ? { kind: h.adjusted, raw: h.count_raw } : null,
+  }));
+  eds.push({ label: String(current.year), year: current.year, count: current.count, kind: 'current', flag: null });
+  const out = [];
+  eds.forEach((e, i) => {
+    const prev = i > 0 ? eds[i - 1].year : null;
+    if (prev != null && e.year - prev > 1) {
+      const a = prev + 1, b = e.year - 1;
+      const label = a === b ? String(a) : `${a}–${String(b).slice(-2)}`;
+      out.push({ label, year: null, count: null, kind: 'gap', flag: null });
+    }
+    out.push(e);
+  });
+  return out;
+}
+
+// Where this event stands against a typical year at the same point, in
+// percentage points of the final: {diff, text}. Under half a point is on pace.
+function paceGap(typicalPct, thisPct) {
+  const diff = Math.round((thisPct - typicalPct) * 10) / 10;
+  if (Math.abs(diff) < 0.5) return { diff, text: 'on pace' };
+  const pts = Math.abs(Math.round(diff));
+  return { diff, text: `${pts} pt${pts === 1 ? '' : 's'} ${diff > 0 ? 'ahead' : 'behind'}` };
+}
+
 // ── UMD-style tail, as in util_core.js: a no-op in the page, the export for
 // the node drivers. ──
 if (typeof globalThis !== 'undefined') {
   globalThis.chartTableHTML = chartTableHTML;
   globalThis.stepValueAt = stepValueAt;
   globalThis.weeklyStops = weeklyStops;
+  globalThis.historySlots = historySlots;
+  globalThis.paceGap = paceGap;
 }
 if (typeof module !== 'undefined') {
-  module.exports = { chartTableHTML, stepValueAt, weeklyStops };
+  module.exports = { chartTableHTML, stepValueAt, weeklyStops, historySlots, paceGap };
 }

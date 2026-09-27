@@ -4,143 +4,159 @@
 // ══════════════════════════════════════════════════════════
 // REGISTRATION CURVE CHART
 // ══════════════════════════════════════════════════════════
+// The curve is the typical share of final entries by days before the event,
+// drawn on a true time scale: the checkpoints are 120, 90, 75 … 1 days out,
+// and spacing them evenly bent the shape. Straight segments join the
+// measured points (no smoothing between them), grey because it is context.
+// While the event is live, two points mark today: where a typical year
+// stands and where this event stands against its forecast.
 let regCurveObj = null;
+
+const CURVE_TICKS = { wide: [120, 90, 60, 30, 14, 0], phone: [120, 60, 30, 0] };
+
+function _curveTodayPoints(t) {
+  if (isDone(t) || !t.point_estimate) return null;
+  const typical = interpCurve(t.registration_curve, t.days_remaining) * 100;
+  const now = t.current_count / t.point_estimate * 100;
+  return { db: t.days_remaining, typical, now, gap: paceGap(typical, now) };
+}
+
+// The two dots at today, a hairline between them, and their labels on the
+// side with more room; labels closer than a line apart part vertically.
+function _curveTodayPlugin(pts) {
+  return {
+    id: 'curveToday',
+    afterDatasetsDraw(c) {
+      if (!pts) return;
+      const g = c.ctx, xS = c.scales.x, yS = c.scales.y;
+      const x = xS.getPixelForValue(pts.db);
+      if (x < xS.left || x > xS.right) return;
+      const yT = yS.getPixelForValue(Math.min(pts.typical, 100));
+      const yN = yS.getPixelForValue(Math.min(pts.now, 100));
+      const labels = [
+        { y: yT, text: `Typical year ${Math.round(pts.typical)}%`, color: PALETTE.hist },
+        { y: yN, text: `This event ${Math.round(pts.now)}%`, color: PALETTE.actual },
+      ];
+      const [hi, lo] = yT <= yN ? labels : [labels[1], labels[0]];
+      const need = 17;
+      if (lo.y - hi.y < need) {
+        const mid = (hi.y + lo.y) / 2;
+        hi.y = mid - need / 2;
+        lo.y = mid + need / 2;
+      }
+      const right = x - xS.left < xS.right - x;
+      g.save();
+      g.strokeStyle = PALETTE.muted;
+      g.lineWidth = 1;
+      g.beginPath(); g.moveTo(x, yT); g.lineTo(x, yN); g.stroke();
+      [[yT, PALETTE.hist], [yN, PALETTE.actual]].forEach(([y, col]) => {
+        g.beginPath(); g.arc(x, y, 4.5, 0, Math.PI * 2);
+        g.fillStyle = col; g.fill();
+        g.lineWidth = 1.5; g.strokeStyle = PALETTE.surface; g.stroke();
+      });
+      g.font = chartLabelFont(12, 'bold');
+      labels.forEach(l => {
+        g.fillStyle = l.color;
+        chartHaloText(g, l.text, right ? x + 10 : x - 10, l.y, right ? 'left' : 'right');
+      });
+      g.restore();
+    }
+  };
+}
+
 function renderRegCurve(t) {
   const ctx = document.getElementById('regCurveChart');
+  const caption = document.getElementById('regCurveCaption');
   if (regCurveObj) { regCurveObj.destroy(); regCurveObj = null; }
   if (!t.registration_curve || t.registration_curve.length === 0) {
-    document.getElementById('regCurveCaption').textContent = 'No curve data available';
+    caption.textContent = 'No curve data available';
+    chartDescribe(ctx, { label: 'Registration curve: no curve data available.' });
     return;
   }
   if (typeof Chart === 'undefined') {
-    document.getElementById('regCurveCaption').textContent = 'Chart unavailable (the charting library did not load)';
+    caption.textContent = 'Chart unavailable (the charting library did not load)';
+    chartDescribe(ctx, { label: 'Registration curve unavailable.' });
     return;
   }
 
-  const sorted = [...t.registration_curve].sort((a, b) => b.days_before - a.days_before);
-  const labels = sorted.map(pt => pt.days_before);
-  const data = sorted.map(pt => ((pt.cumulative_pct || pt.pct || 0) * 100));
-
-  // Mark where "today" is: the elapsed days in the blue pen, the days still
-  // to come in ink; a finished event is all elapsed.
-  const todayIdx = labels.findIndex(db => db <= t.days_remaining);
-  const pointColors = labels.map(db =>
-    isDone(t) || db >= t.days_remaining ? PALETTE.actual : PALETTE.projected);
-
-  // "You are here" annotation plugin for reg curve
-  const regCurveAnnotation = makeVertMarkersPlugin('regCurveAnnotation', () => {
-    if (isDone(t)) return [];
-    // Find the label index closest to today
-    let idx = -1;
-    let minDiff = Infinity;
-    labels.forEach((db, i) => {
-      const d = Math.abs(db - t.days_remaining);
-      if (d < minDiff) { minDiff = d; idx = i; }
-    });
-    if (idx < 0) return [];
-    return [{ value: idx, label: 'Today', color: PALETTE.markerToday }];
-  });
+  const pts = [...t.registration_curve]
+    .map(pt => ({ x: pt.days_before, y: (pt.cumulative_pct || pt.pct || 0) * 100 }))
+    .sort((a, b) => b.x - a.x);
+  const maxDB = pts[0].x;
+  const today = _curveTodayPoints(t);
+  const ticks = (_mobileVP() ? CURVE_TICKS.phone : CURVE_TICKS.wide).filter(v => v <= maxDB);
+  const todayMarker = makeVertMarkersPlugin('regCurveAnnotation', () =>
+    today && today.db <= maxDB ? [{ value: today.db, label: 'Today', color: PALETTE.markerToday }] : []);
 
   regCurveObj = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: labels.map(db => db === 0 ? 'Event' : db >= 7 ? `${db}d` : `${db}d`),
       datasets: [{
-        data,
-        borderColor: PALETTE.actual,
-        backgroundColor: themeRgba(PALETTE.actual, 0.06),
-        fill: true,
-        borderWidth: 2.25,
-        // Elapsed/ahead split at today, matching pointColors and the main
-        // chart: blue = behind us, ink = still to come. Done tournaments
-        // keep the base pen (no split to show).
-        segment: {
-          borderColor: (c) => isDone(t) ? undefined :
-            (c.p1DataIndex <= todayIdx ? PALETTE.actual : PALETTE.projected)
-        },
-        pointRadius: labels.map(db => db === 0 || db === t.days_remaining ? 5 : 0),
-        pointHoverRadius: 6,
+        data: pts,
+        borderColor: PALETTE.hist,
+        borderWidth: 2,
+        fill: false,
+        pointRadius: 0,
+        pointHoverRadius: 5,
         pointHitRadius: 10,
-        pointBackgroundColor: pointColors,
-        pointBorderColor: pointColors,
-        tension: 0.4
+        pointHoverBackgroundColor: PALETTE.hist,
+        pointHoverBorderColor: PALETTE.surface,
+        tension: 0
       }]
     },
-    plugins: [regCurveAnnotation],
+    plugins: [todayMarker, _curveTodayPlugin(today)],
     options: {
       responsive: true, maintainAspectRatio: false,
       // Headroom for the shared marker pill (drawn 18px above the plot top).
-      layout: { padding: { top: 22 } },
+      layout: { padding: { top: 22, right: 8 } },
+      interaction: { mode: 'nearest', axis: 'x', intersect: false },
       plugins: {
         legend: { display: false },
         tooltip: chartTooltip({
-          displayColors: true,
+          displayColors: false,
           callbacks: {
             title(items) {
               if (!items.length) return '';
-              const db = labels[items[0].dataIndex];
-              if (db === 0) return 'Event Day';
-              return `T-${db} (${db} days before event)`;
+              const db = items[0].raw.x;
+              return db === 0 ? 'Event Day' : `T-${db} (${db} days before event)`;
             },
             label(item) {
-              return ` ${item.raw.toFixed(1)}% of final entries`;
+              return ` Typical year: ${item.raw.y.toFixed(1)}% of final entries`;
             },
             afterBody(items) {
-              if (!items.length) return [];
-              const lines = [];
-              const db = labels[items[0].dataIndex];
-              const pct = items[0].raw / 100;
-              // Estimated count at this point
-              if (t.point_estimate) {
-                const estCount = Math.round(t.point_estimate * pct);
-                lines.push(`  Est. entries: ~${fmt(estCount)}`);
-              }
-              // Compare to current if live
-              if (!isDone(t) && db === t.days_remaining) {
-                lines.push(`  Actual now: ${fmt(t.current_count)}`);
-              }
-              return lines;
-            },
-            footer(items) {
-              if (!items.length || isDone(t)) return '';
-              const db = labels[items[0].dataIndex];
-              if (db > t.days_remaining) return 'Already passed';
-              if (db === t.days_remaining) return 'You are here';
-              return '';
+              if (!items.length || !t.point_estimate) return [];
+              return [`  Est. entries at this share: ~${fmt(Math.round(t.point_estimate * items[0].raw.y / 100))}`];
             }
           }
         })
       },
       scales: {
         x: {
+          type: 'linear', reverse: true, min: 0, max: maxDB,
           grid: chartGridX(),
           border: chartBorderX(),
-          ticks: chartTicks({ maxTicksLimit: _mobileVP() ? 6 : 12 })
+          afterBuildTicks(axis) { axis.ticks = ticks.map(v => ({ value: v })); },
+          ticks: chartTicks({ autoSkip: false, callback: v => v === 0 ? 'Event' : `${v}d` })
         },
         y: {
-          min: 0, max: 105,
+          min: 0, max: 100,
           grid: chartGridY(),
           border: chartBorderY(),
-          ticks: chartTicks({
-            maxTicksLimit: _mobileVP() ? 4 : 6,
-            callback: v => v + '%'
-          })
+          ticks: chartTicks({ stepSize: 25, callback: v => v + '%' })
         }
       }
     }
   });
 
-  // Caption
-  const todayPct = interpCurve(t.registration_curve, t.days_remaining);
-  if (!isDone(t)) {
-    const actualPct = (t.current_count / t.point_estimate * 100).toFixed(1);
-    const expectedPct = (todayPct * 100).toFixed(1);
-    const diff = (actualPct - expectedPct).toFixed(1);
-    const ahead = parseFloat(diff) > 0;
-    document.getElementById('regCurveCaption').textContent =
-      `At T-${t.days_remaining}: expected ${expectedPct}%, actual ${actualPct}% of predicted final; ${ahead ? 'ahead' : 'behind'} typical pace by ${Math.abs(diff)} percentage points`;
-  } else {
-    document.getElementById('regCurveCaption').textContent =
-      `Historical registration pattern for ${t.family}. Shows % of final entries at each lead time.`;
-  }
+  const text = today
+    ? `At T-${today.db}, a typical year has ${Math.round(today.typical)}% of its final entries; this event has ${Math.round(today.now)}% of its forecast, ${today.gap.text}.`
+    : `How ${t.family} registrations typically build, as a share of final entries.`;
+  caption.textContent = text;
+  const at = db => `${Math.round(interpCurve(t.registration_curve, db) * 100)}%`;
+  chartDescribe(ctx, {
+    label: today ? text : `${t.family} typical registration curve: ${at(30)} of final entries by 30 days out, ${at(7)} by 7 days out.`,
+    caption: `${t.family}: typical share of final entries by days before the event`,
+    columns: ['Days Before Event', 'Typical Share of Final Entries'],
+    rows: pts.map(p => [p.x === 0 ? 'Event day' : `${p.x}`, `${p.y.toFixed(1)}%`]),
+  });
 }

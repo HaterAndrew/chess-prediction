@@ -40,8 +40,7 @@ function perfDrawScatter(data) {
       });
       ctx2.fillStyle = PALETTE.muted;
       ctx2.font = chartLabelFont(11);
-      ctx2.textAlign = 'right';
-      ctx2.fillText('Perfect prediction', xS.right - 2, yS.top + 10);
+      chartHaloText(ctx2, 'Perfect prediction', xS.right - 2, yS.top + 10, 'right');
       ctx2.restore();
     }
   };
@@ -148,8 +147,7 @@ function perfDrawTimeline(data) {
         ctx2.strokeStyle = PALETTE.surface2; ctx2.lineWidth = 1.5; ctx2.stroke();
         ctx2.fillStyle = PALETTE.text;
         ctx2.font = chartLabelFont(11, 'bold');
-        ctx2.textAlign = 'center';
-        ctx2.fillText(agg[i].mae_pct.toFixed(1) + '%', el.x, el.y - 10);
+        chartHaloText(ctx2, agg[i].mae_pct.toFixed(1) + '%', el.x, el.y - 12, 'center');
       });
       ctx2.restore();
     }

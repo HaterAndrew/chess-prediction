@@ -1,27 +1,28 @@
 """04d orchestrator: load, fit, cards, metadata, history, output.
 
-The two big loops live in sitebuild.cards / sitebuild.metadata; the rest
-is the functionized 04d body verbatim.
+Fitting and forecasting live in forecast/, the scrape merge in
+sitebuild.scrape_merge, and the two card loops in sitebuild.cards and
+sitebuild.metadata; the rest is the functionized 04d body.
 """
 import os
 
 import pandas as pd
 
 from pipeline_utils import is_event_complete
-from ratio_model import build_ratio_model
 from tournament_aliases import canonicalize_family
 from shared.season import CURRENT_SEASON, is_open_season
 
+from forecast import fit_models
 from sitebuild.assemble import finalize_cards
 from sitebuild.cards import build_model_cards
-from sitebuild.curves import build_template_curves
 from sitebuild.helpers import (OUTPUT_DIR, TODAY, _fam_eq, determine_status,
-                               m04c)
+                               m04c, print_recalibration)
 from sitebuild.history import add_historical_editions
 from sitebuild.metadata import build_metadata_cards
-from sitebuild.scrape_join import (annotate_editions, consecutive_zero_scrape_days,
-                                   counts_by_edition, edition_mask,
+from sitebuild.scrape_join import (consecutive_zero_scrape_days, counts_by_edition,
                                    latest_by_edition, scrape_daily_series)
+from sitebuild.scrape_merge import (inject_scrape_curves, merge_scrape_counts,
+                                    normalize_scrape)
 
 
 def main():
@@ -39,85 +40,15 @@ def main():
 
     # Merge fresh scrape data into summary for every open edition (this season
     # and any later one CCA already lists — see sitebuild.scrape_join).
-    # daily_scrape.csv has the latest entry counts from chessaction.com
-    # Use active_count (net of withdrawals) when available, fall back to entry_count
     scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
     if os.path.exists(scrape_path):
-        scrape = pd.read_csv(scrape_path)
-        scrape['date'] = pd.to_datetime(scrape['date'])
-        # Backfill active_count for older rows that predate the withdrawal columns
-        if 'active_count' not in scrape.columns:
-            scrape['active_count'] = scrape['entry_count']
-        else:
-            scrape['active_count'] = scrape['active_count'].fillna(scrape['entry_count'])
-        if 'withdrawal_count' not in scrape.columns:
-            scrape['withdrawal_count'] = 0
-        else:
-            scrape['withdrawal_count'] = scrape['withdrawal_count'].fillna(0)
-        scrape = annotate_editions(scrape, default_year=CURRENT_SEASON)
-        # Get the most recent scrape per edition
+        scrape = normalize_scrape(pd.read_csv(scrape_path), default_year=CURRENT_SEASON)
         latest_scrape = latest_by_edition(scrape)
-        # H13: publish ONE count semantic — gross (row-count, entry_count), matching
-        # tournament_summary.csv, the performance tab, the freshness guard, and how
-        # 04e grades. The old code overrode final_count with active_count (net), so
-        # cards showed net while the perf tab showed gross (ACO 401 vs 424) and the
-        # deployed model trained on net but was graded on gross. Track the net/
-        # withdrawal delta in a separate column for display instead.
-        if 'active_count' not in summary.columns:
-            summary['active_count'] = pd.NA
-        if 'withdrawal_count' not in summary.columns:
-            summary['withdrawal_count'] = pd.NA
-        updated = 0
-        for _, s in latest_scrape.iterrows():
-            # Past-season editions are settled; reconcile_final_counts owns them.
-            if not is_open_season(s['year']):
-                continue
-            mask = edition_mask(summary, s['family'], s['year'])
-            gross_count = int(s['entry_count']) if s['entry_count'] > 0 else int(s['active_count'])
-            net_count = int(s['active_count']) if s['active_count'] > 0 else gross_count
-            if mask.any() and gross_count > 0:
-                old_count = summary.loc[mask, 'final_count'].iloc[0]
-                summary.loc[mask, 'final_count'] = gross_count
-                summary.loc[mask, 'active_count'] = net_count
-                summary.loc[mask, 'withdrawal_count'] = max(gross_count - net_count, 0)
-                if old_count != gross_count:
-                    updated += 1
+        updated = merge_scrape_counts(summary, latest_scrape)
         # Reanchor ALL daily T values from last_reg to event_start so the model
         # trains and predicts in a consistent coordinate system (T=0 = event start).
         daily = m04c.reanchor_daily_to_event_start(summary, daily, meta)
-
-        # Insert scrape rows using event_start-based T
-        for _, s in scrape.iterrows():
-            if not is_open_season(s['year']):
-                continue
-            family_name, edition_year = s['family'], s['year']
-            tid_match = summary[edition_mask(summary, family_name, edition_year)]
-            if len(tid_match) == 0:
-                continue
-            tid = tid_match.iloc[0]['tid']
-            last_reg = tid_match.iloc[0].get('last_reg')
-            meta_row = meta[edition_mask(meta, family_name, edition_year, year_col='year')]
-            if len(meta_row) == 0:
-                meta_row = meta[(meta['year'] == edition_year) & (meta['start_date'] > pd.Timestamp.now())]
-                meta_row = meta_row[meta_row['family'].str.contains(family_name.split()[0], case=False, na=False)]
-            if len(meta_row) > 0:
-                event_start = pd.to_datetime(meta_row.iloc[0]['start_date'])
-                T = max((event_start - pd.to_datetime(s['date'])).days, 0)
-            elif pd.notna(last_reg):
-                T = max((pd.to_datetime(last_reg) - pd.to_datetime(s['date'])).days, 0)
-            else:
-                continue
-            # Insert or update — use active_count (net) for curve data
-            scrape_count = int(s['active_count']) if s['active_count'] > 0 else int(s['entry_count'])
-            existing = daily[(daily['tid'] == tid) & (daily['T'] == T)]
-            if len(existing) == 0 and scrape_count > 0:
-                new_row = pd.DataFrame([{
-                    'tid': tid, 'T': T, 'daily_regs': 0,
-                    'cum_regs': scrape_count, 'cum_pct': 1.0
-                }])
-                daily = pd.concat([daily, new_row], ignore_index=True)
-            elif len(existing) > 0 and scrape_count > existing.iloc[0]['cum_regs']:
-                daily.loc[(daily['tid'] == tid) & (daily['T'] == T), 'cum_regs'] = scrape_count
+        daily = inject_scrape_curves(scrape, summary, daily, meta, pd.Timestamp.now())
         print(f"  Merged scrape data: {updated} tournament counts updated, {len(latest_scrape)} tournaments in scrape")
 
     # Load enrichment data if available
@@ -185,13 +116,6 @@ def main():
 
     print("Building website data...")
 
-    # Use all non-COVID, non-online data for training
-    train = summary[
-        (~summary['is_online'].fillna(False)) &
-        (~summary['is_covid'].fillna(False))
-    ]
-    train_ts = train[train['has_timestamps']]
-
     # Identify completed 2026 tournaments (last_reg in the past) for rolling retraining
     completed_2026 = summary[
         (summary['tournament_year'] == CURRENT_SEASON) &
@@ -217,49 +141,10 @@ def main():
     if completed_tids:
         print(f"  Rolling retraining: {len(completed_tids)} completed 2026 tournaments included in training")
 
-    # Use production model (N5v4_Final) with all fixes:
-    # - proper prediction intervals, empirical Bayes shrinkage
-    # - expanding-window calibration, T-interpolation
-    # - rolling retraining: completed 2026 tournaments fold into training data
-    prod_model = m04c.N5v4_Final()
-    prod_model.fit(train_ts, daily, enrichment_lookup=enrichment_lookup,
-                   completed_tids=completed_tids if completed_tids else None,
-                   all_summary_families=set(summary['family'].dropna().unique()))
-
-    # Automated recalibration: learn from the two seasons before this one plus
-    # this season's completed tournaments
-    # Recent data is weighted more heavily (2026 conditions > 2019 conditions)
-    recal_data = summary[
-        (summary['has_timestamps']) &
-        (~summary['is_online'].fillna(False)) &
-        (~summary['is_covid'].fillna(False)) &
-        (summary['final_count'] >= 50) &
-        (
-            (summary['tournament_year'].isin([CURRENT_SEASON - 2, CURRENT_SEASON - 1])) |
-            (summary['tid'].isin(completed_tids))
-        )
-    ].copy()
-    if len(recal_data) >= 5:
-        # regime_year: this model predicts the current year, and the cohort
-        # contains its completed events — the bias correction fits on them.
-        recal_diag = prod_model.recalibrate(recal_data, daily,
-                                            regime_year=CURRENT_SEASON)
-        n_2026 = len(recal_data[recal_data['tournament_year'] == CURRENT_SEASON])
-        n_older = len(recal_data) - n_2026
-        print(f"  Recalibration from {len(recal_data)} tournaments ({n_older} from 2024-25, {n_2026} from 2026):")
-        for T, d in sorted(recal_diag.items()):
-            cov = d.get('coverage_before', d.get('coverage', 0))
-            print(f"    T-{T:>2}: bias {d['mean_bias']:>+5.1f}% → factor {d['bias_factor']:.3f}, "
-                  f"CI cov {cov:>3.0f}% → adj {d['ci_adj']:.3f} (n={d['n']})")
-    else:
-        print(f"  Recalibration skipped: need ≥5 completed tournaments, have {len(recal_data)}")
-
-    # kept for families without timestamps; completed 2026 tids fold in under the
-    # same rolling-retrain policy as prod_model.fit (v5 Cat L — without them no
-    # 2026 event could inform a 2026 window prediction).
-    ratios = build_ratio_model(train, daily,
-                               completed_tids=completed_tids if completed_tids else None)
-    curves = build_template_curves(train, daily)
+    # The nowcast model (recalibrated), the ratio model and the template
+    # curves. Completed 2026 tournaments fold into training (rolling retrain).
+    fitted = fit_models(summary, daily, enrichment_lookup, completed_tids)
+    print_recalibration(fitted.recal)
 
     # ── World Open: keep only Under 13, top 6, lower as separate families ──
     # All other WO sub-events are already in EXCLUDE_FAMILIES.
@@ -314,8 +199,8 @@ def main():
 
     tournaments_out = []
 
-    build_model_cards(curves, daily, determine_status, get_event_date,
-                      get_event_end_date, meta, prod_model, ratios, summary,
+    build_model_cards(fitted, daily, determine_status, get_event_date,
+                      get_event_end_date, meta, summary,
                       t2026, tournaments_out, withdrawal_lookup)
 
 
@@ -345,14 +230,14 @@ def main():
     existing_editions = {(canonicalize_family(t['family']), t['year']) for t in tournaments_out}
     build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS,
                          _consecutive_zero_scrape_days, _scrape_daily_series,
-                         _scrape_lookup, curves, existing_editions,
-                         get_event_end_date, meta, ratios, summary, tournaments_out)
+                         _scrape_lookup, fitted, existing_editions,
+                         get_event_end_date, meta, summary, tournaments_out)
 
 
-    add_historical_editions(EXCLUDE_FAMILIES, curves, daily,
+    add_historical_editions(EXCLUDE_FAMILIES, fitted.curves, daily,
                             get_event_date, summary, tournaments_out)
 
-    tournaments_out = finalize_cards(completed_tids, prod_model,
+    tournaments_out = finalize_cards(completed_tids, fitted.model,
                                      tournaments_out)
 
 

@@ -1,8 +1,8 @@
 {
   "generated": "2026-09-27",
-  "generated_time": "2026-09-27T18:09:35.987275-04:00",
+  "generated_time": "2026-09-27T18:29:51.310614-04:00",
   "model": "N5v4_Final",
-  "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). Beyond T-14 the point estimate is blended toward the family's most recent final count (0.40 at T<=28, 0.60 beyond), which measures better than the ensemble alone at those lead times. From T-14 in, it is averaged in log space, half and half, with the pickup forecast: the current count plus the entries last year's edition took after the same point. An event whose past finals have no registration curve moves toward its last final in log space instead (weight 1.0 beyond T-28, down to 0.3 at T-1). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage; for an event with two or more past finals, or one moved toward its last final, each side is held to the year-over-year spread of finals. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (40 family-years across 38 families).",
+  "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). Beyond T-14 the point estimate is blended toward the family's most recent final count (0.40 at T<=28, 0.60 beyond), which measures better than the ensemble alone at those lead times. From T-14 in, it is averaged in log space, half and half, with the pickup forecast: the current count plus the entries last year's edition took after the same point. An event whose past finals have no registration curve moves toward its last final in log space instead (weight 1.0 beyond T-28, down to 0.3 at T-1), and one with no past final toward the spread of first-edition finals (beyond T-42, fully from T-60). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage; for an event with two or more past finals, or one moved toward its last final, each side is held to the year-over-year spread of finals. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (40 family-years across 38 families).",
   "n_completed_in_training": 39,
   "tournaments": [
     {
@@ -15,13 +15,13 @@
       "early_bird_fee": null,
       "regular_fee": 118.0,
       "onsite_fee": 140.0,
-      "current_count": 61,
-      "gross_count": 61,
+      "current_count": 62,
+      "gross_count": 62,
       "withdrawal_count": 0,
       "days_remaining": 12,
-      "point_estimate": 271,
-      "ci_lower": 249,
-      "ci_upper": 297,
+      "point_estimate": 272,
+      "ci_lower": 250,
+      "ci_upper": 298,
       "ci_level": 0.8,
       "historical": [
         {
@@ -661,7 +661,7 @@
         ],
         [
           154,
-          61
+          62
         ]
       ],
       "daily_start_date": "2026-04-26",
@@ -728,9 +728,9 @@
       "shadow_forecasts": [
         {
           "route": "metadata_pace",
-          "point": 239,
-          "ci_lower": 212,
-          "ci_upper": 269
+          "point": 243,
+          "ci_lower": 215,
+          "ci_upper": 274
         },
         {
           "route": "metadata_historical_avg",
@@ -742,11 +742,11 @@
       "pace_alert": {
         "family": "Midwest Class Championships",
         "status": "below_pace",
-        "actual": 61,
+        "actual": 62,
         "expected": 87,
-        "deviation_pct": -29.7,
+        "deviation_pct": -28.5,
         "n_years": 4,
-        "message": "Registrations are 29.7% below 4-year at-this-point pace"
+        "message": "Registrations are 28.5% below 4-year at-this-point pace"
       }
     },
     {
@@ -91155,17 +91155,17 @@
       "total_ci_upper": 1282
     }
   ],
-  "last_updated": "2026-09-27 22:09:19",
+  "last_updated": "2026-09-27 22:29:33",
   "is_stale": false,
   "alerts": [
     {
       "family": "Midwest Class Championships",
       "status": "below_pace",
-      "actual": 61,
+      "actual": 62,
       "expected": 87,
-      "deviation_pct": -29.7,
+      "deviation_pct": -28.5,
       "n_years": 4,
-      "message": "Registrations are 29.7% below 4-year at-this-point pace"
+      "message": "Registrations are 28.5% below 4-year at-this-point pace"
     },
     {
       "family": "Eastern Class Championships",

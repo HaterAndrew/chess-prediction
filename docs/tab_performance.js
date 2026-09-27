@@ -47,13 +47,15 @@ function perfInitFromData() {
     const years = data.years
       ? Object.keys(data.years).map(Number).filter(y => data.years[y] && data.years[y].n_tournaments > 0).sort()
       : [];
+    // The pooled seasons open the tab: one season holds 13 to 39 events, too
+    // few for its coverage or bias to clear their intervals.
+    if (hasCumulative) buttons.push({key: 'cumulative', label: 'All Seasons'});
     years.forEach(y => buttons.push({key: String(y), label: y === nowYear ? `${y} YTD` : String(y)}));
-    if (hasCumulative) buttons.push({key: 'cumulative', label: 'Cumulative'});
 
     selector.innerHTML = '<div class="segmented" role="group" aria-label="Performance view">' +
       buttons.map(b => `<button data-act="perf-year" data-year="${b.key}" id="perfYearBtn_${b.key}">${b.label}</button>`).join('') + '</div>';
 
-    const defaultKey = years.includes(nowYear) ? String(nowYear) : (years.length ? String(years[years.length - 1]) : 'cumulative');
+    const defaultKey = hasCumulative ? 'cumulative' : String(years[years.length - 1]);
     perfSelectYear(defaultKey);
   } else {
     if (selector) selector.style.display = 'none';
@@ -80,9 +82,10 @@ function perfRender() {
 
   const nowYear = new Date().getFullYear();
   const isYTD = key === String(nowYear);
+  const span = baseData.seasons ? `, ${baseData.seasons[0]}\u2013${baseData.seasons[1]}` : '';
   const desc = key === 'cumulative'
-    ? `Blind-tested across ${baseData.n_tournaments} tournaments (all years)`
-    : `Blind-tested on ${baseData.n_tournaments} ${key} tournaments${isYTD ? ' (YTD)' : ''}`;
+    ? `Walk-forward across ${baseData.n_tournaments} tournaments${span}`
+    : `Walk-forward on ${baseData.n_tournaments} ${key} tournaments${isYTD ? ' (YTD)' : ''}`;
 
   perfPaint({
     aggregate: baseData.aggregate,
@@ -100,7 +103,7 @@ function perfRenderFlat(data) {
     tournaments: data.tournaments || [],
     grade: data.grade,
     n_tournaments: data.n_tournaments,
-    detail: data.grade_detail || `Blind-tested on ${data.n_tournaments} completed tournaments`,
+    detail: data.grade_detail || `Walk-forward on ${data.n_tournaments} completed tournaments`,
     generated: data.generated,
   });
 }
@@ -110,6 +113,36 @@ function perfRenderFlat(data) {
 // the palette in both themes.
 function _perfTone(good, fair) {
   return good ? 'v-blue' : fair ? 'v-ink' : 'v-red';
+}
+
+function _perfSigned(v) {
+  return (v > 0 ? '+' : '') + v.toFixed(1);
+}
+
+// Coverage at T-14 with its 95% interval. Blue when the interval holds the
+// advertised 80%, red when it sits wholly below it.
+function _perfCoverageKPI(a) {
+  const ci = a.coverage_ci;
+  if (!ci || ci[0] == null) {
+    return {v: Math.round(a.ci_coverage) + '%', l: '2-Week Coverage', s: 'Target 80%',
+            c: _perfTone(a.ci_coverage >= 80, a.ci_coverage >= 70)};
+  }
+  return {v: Math.round(a.ci_coverage) + '%', l: '2-Week Coverage',
+          s: `Target 80% \u00b7 95% CI ${Math.round(ci[0])}\u2013${Math.round(ci[1])}%`,
+          c: _perfTone(ci[0] <= 80 && 80 <= ci[1], ci[1] >= 80)};
+}
+
+// The typical miss at T-14, median with its 95% interval. It names a lean only
+// when the interval excludes zero; a few large misses move a mean, not this.
+function _perfBiasKPI(a) {
+  const ci = a.median_error_ci;
+  if (a.median_error_pct == null || !ci || ci[0] == null) {
+    return {v: _perfSigned(a.bias_pct) + '%', l: '2-Week Bias', s: 'Mean error', c: 'v-ink'};
+  }
+  const lean = ci[0] > 0 ? 'Over-predicts' : ci[1] < 0 ? 'Under-predicts' : 'Well-centered';
+  return {v: _perfSigned(a.median_error_pct) + '%', l: '2-Week Bias',
+          s: `${lean} \u00b7 95% CI ${_perfSigned(ci[0])} to ${_perfSigned(ci[1])}%`,
+          c: _perfTone(lean === 'Well-centered', Math.abs(a.median_error_pct) <= 5)};
 }
 
 function perfPaint(view) {
@@ -136,17 +169,12 @@ function perfPaint(view) {
 
   const t14 = agg.find(a => a.T === 14) || agg[0];
   const t1 = agg.find(a => a.T === 1);
-  const avgCov = Math.round(agg.reduce((s, a) => s + a.ci_coverage, 0) / agg.length);
-  const avgBias = +(agg.reduce((s, a) => s + a.bias_pct, 0) / agg.length).toFixed(1);
 
   const kpis = [
     {v: t14.mae_pct.toFixed(1) + '%', l: '2-Week Error', s: 'MAE at T-14', c: _perfTone(t14.mae_pct <= 8, t14.mae_pct <= 15)},
     {v: t1 ? t1.mae_pct.toFixed(1) + '%' : '--', l: 'Day Before', s: 'MAE at T-1', c: _perfTone(t1 && t1.mae_pct <= 5, true)},
-    // Blue means "meets the advertised 80%", not "close enough". The old
-    // threshold passed at >= 75, below the number the site itself advertises,
-    // so a miscalibrated interval read as healthy (2026-09-07 review).
-    {v: avgCov + '%', l: 'CI Coverage', s: 'Target 80%', c: _perfTone(avgCov >= 80, avgCov >= 70)},
-    {v: (avgBias > 0 ? '+' : '') + avgBias + '%', l: 'Bias', s: avgBias > 2 ? 'Over-predicts' : avgBias < -2 ? 'Under-predicts' : 'Well-centered', c: _perfTone(Math.abs(avgBias) <= 5, true)},
+    _perfCoverageKPI(t14),
+    _perfBiasKPI(t14),
   ];
   document.getElementById('perfKPIs').innerHTML = kpis.map(k => `
     <div class="perf-kpi">
@@ -186,8 +214,8 @@ function perfDrawScoring(data) {
   const bl = t14.baselines || {};
   const rows = [
     {k: 'model', label: 'This model', mae: t14.mae_pct, n: t14.n},
-    {k: 'baseline_ratio', label: 'Today\u2019s count \u00d7 typical pace',
-     mae: bl.baseline_ratio && bl.baseline_ratio.mae_pct, n: bl.baseline_ratio && bl.baseline_ratio.n},
+    {k: 'baseline_pickup', label: 'This year\u2019s count plus last year\u2019s late entries',
+     mae: bl.baseline_pickup && bl.baseline_pickup.mae_pct, n: bl.baseline_pickup && bl.baseline_pickup.n},
     {k: 'baseline_last_year', label: 'Last year\u2019s final count',
      mae: bl.baseline_last_year && bl.baseline_last_year.mae_pct, n: bl.baseline_last_year && bl.baseline_last_year.n},
   ].filter(r => r.mae != null);

@@ -26,7 +26,7 @@ from perf.evaluation import (  # noqa: F401
     format_results,
     is_curve_gradeable,
 )
-from perf.folds import EVAL_YEARS, prepare_folds, run_year_folds  # noqa: F401
+from perf.folds import EVAL_YEARS, prepare_folds  # noqa: F401
 from perf.report import build_report  # noqa: F401
 from perf.main import main  # noqa: F401
 

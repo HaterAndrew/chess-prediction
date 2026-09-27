@@ -6,8 +6,9 @@ from perf.scoring import summarize
 
 # Naive point forecasts published beside the model so "MAE 9.9%" has something
 # to be measured against (2026-09-07 review). Keys match the fields
-# perf.evaluation attaches to each prediction record.
-BASELINES = ("baseline_last_year", "baseline_ratio")
+# perf.wf_views attaches to each prediction record: last year's final, and
+# this year's count plus last year's late entries (pickup).
+BASELINES = ("baseline_last_year", "baseline_pickup")
 
 # T-points to evaluate (days before event)
 T_POINTS = [90, 60, 42, 28, 14, 7, 3, 1]

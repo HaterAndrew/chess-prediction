@@ -198,7 +198,7 @@ function renderModelHealth() {
       value: grade,
       sub: yr.grade_detail || ((yr.n_tournaments || 0) + ' tournaments'),
       color,
-      help: 'Letter grade from the 2026 evaluation cohort: worst of the T-14/T-7/T-3 lead times (MAE + CI coverage), leave-one-out so no tournament grades itself.',
+      help: 'Letter grade from the 2026 walk-forward forecasts: worst of the T-14/T-7/T-3 lead times (MAE + CI coverage), each forecast made from only the data available on its date.',
     });
   }
 

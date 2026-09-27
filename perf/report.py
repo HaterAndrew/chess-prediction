@@ -1,5 +1,7 @@
-"""Window-engine evaluation + performance_data.json assembly
-(04e main() tail, verbatim).
+"""Window-engine evaluation + performance_data.json assembly.
+
+The per-season and pooled views, the headline, are built from the
+walk-forward records (perf.wf_views).
 """
 import json
 import os
@@ -12,11 +14,10 @@ from shared.paths import OUTPUT_DIR
 from shared.season import CURRENT_SEASON
 from window_grading import grade_from_by_day, grade_window_engine
 
-from perf.evaluation import (_corpus_stats, _hist_lookup,
-                             format_results, is_curve_gradeable)
+from perf.evaluation import _corpus_stats, _hist_lookup, is_curve_gradeable
 from perf.folds import EVAL_YEARS
-from perf.grading import (_GRADE_ORDER, compute_aggregate,
-                          compute_grade, grade_from_aggregate)
+from perf.grading import _GRADE_ORDER, compute_grade
+from perf.wf_views import season_views
 
 TODAY = today_ts()
 
@@ -34,10 +35,8 @@ def raw_frames():
     return summary, daily, meta
 
 
-def build_report(summary, year_results, all_tournament_results, walk_forward=None):
-    cum_agg = compute_aggregate(all_tournament_results)
-    cum_grade, cum_detail = grade_from_aggregate(cum_agg)
-
+def build_report(summary, records, walk_forward=None):
+    """Write performance_data.json from the walk-forward records and the window grade."""
     # ── Second engine: the post-start online-registration window (v3 T7) ──
     # Reloads the daily table from disk deliberately. The `daily` in scope has
     # already been reanchored with during-event rows dropped, and the window
@@ -73,7 +72,8 @@ def build_report(summary, year_results, all_tournament_results, walk_forward=Non
 
     # ── Build output ──
     # Top-level fields carry the current season (YTD) for backward
-    # compatibility with the bias correction that reads them.
+    # compatibility with the readers that expect them (healthcheck.context).
+    year_results, cumulative = season_views(records)
     ytd = year_results.get(CURRENT_SEASON, {})
 
     output = {
@@ -108,16 +108,9 @@ def build_report(summary, year_results, all_tournament_results, walk_forward=Non
         # monthly refits on the corpus as it stood, counts read from rows dated
         # by the forecast date (perf.walkforward).
         "walk_forward": walk_forward,
-        # Multi-year breakdown
+        # Each season's walk-forward forecasts, and all seasons pooled.
         "years": year_results,
-        # Cumulative across all years
-        "cumulative": {
-            "n_tournaments": len(all_tournament_results),
-            "grade": cum_grade,
-            "grade_detail": cum_detail,
-            "aggregate": cum_agg,
-            "tournaments": format_results(all_tournament_results),
-        },
+        "cumulative": cumulative,
     }
 
     out_path = os.path.join(OUTPUT_DIR, "performance_data.json")
@@ -128,10 +121,9 @@ def build_report(summary, year_results, all_tournament_results, walk_forward=Non
     print(f"\n{'='*60}")
     print("  MULTI-YEAR PERFORMANCE SUMMARY")
     print(f"{'='*60}")
-    for yr in EVAL_YEARS:
-        yr_data = year_results.get(yr, {})
-        print(f"  {yr}: {yr_data.get('grade', 'N/A'):>3}  ({yr_data.get('n_tournaments', 0)} tournaments)")
+    for yr, yr_data in year_results.items():
+        print(f"  {yr}: {yr_data['grade']:>3}  ({yr_data['n_tournaments']} tournaments)")
     print(f"  {'─'*40}")
-    print(f"  Cumulative: {cum_grade:>3}  ({len(all_tournament_results)} tournaments)")
-    print(f"  {cum_detail}")
+    print(f"  All seasons: {cumulative['grade']:>3}  ({cumulative['n_tournaments']} tournaments)")
+    print(f"  {cumulative['grade_detail']}")
     print(f"\n  Output: {out_path}")

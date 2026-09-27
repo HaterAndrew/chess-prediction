@@ -243,5 +243,5 @@ function _syncLikelyRangeTitle() {
   const nEvents = cumulative.n_tournaments ?? data.n_tournaments ?? null;
   th.title = `Targets an 80% range. Measured: actual entries landed inside `
     + `it ${Math.round(t14.ci_coverage)}% of the time at two weeks out`
-    + (nEvents ? `, across ${nEvents} blind-tested tournaments.` : '.');
+    + (nEvents ? `, across ${nEvents} tournaments in the walk-forward backtest.` : '.');
 }

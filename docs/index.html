@@ -547,9 +547,10 @@
     <div class="info-panel">
       <h3>How We Tested It</h3>
       <p class="prose sp">
-        We never test on data the model has seen. We train through (say) 2023, then predict every 2024 tournament as if living
-        in early 2024: no future information leaks in, and each tournament is held out of its own training set. Across
-        <strong class="pen" id="about-n">136</strong> blind-tested tournaments, at two weeks out the median miss was
+        We never test on data the model has seen. On the first of each month since 2023 we refit the model on the data as it
+        stood that day, then forecast every tournament that month at each lead time from the entries registered by that date:
+        no future information leaks in. Across
+        <strong class="pen" id="about-n">136</strong> tournaments, at two weeks out the median miss was
         <strong class="pen" id="about-median">7.4%</strong> and the 80% interval captured the true result
         <strong class="pen" id="about-cov">78%</strong> of the time. Coverage three days out sits near
         <strong class="pen" id="about-cov-close">76%</strong>. Earlier releases ran overconfident close to the
@@ -558,8 +559,8 @@
         Performance tab.
       </p>
       <p class="info-note">
-        Validated via <strong>leave-one-out expanding-window blind test</strong>: train on years &le; Y (holding out the target
-        tournament), predict at each observed lead time. No future or in-sample data leakage.
+        Validated via <strong>walk-forward backtest</strong>: refit monthly on the data as it stood, forecast each tournament
+        at each lead time from the entries registered by that date. No future or in-sample data leakage.
         <span id="about-span-note">133 tournaments across 2023&ndash;2026.</span>
       </p>
     </div>
@@ -568,8 +569,8 @@
     <details class="info-panel about-more">
       <summary class="about-more-summary"><h3>What We Tried and Rejected</h3><svg class="sect-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
       <p class="prose sp">
-        We tested several alternatives on the same blind test. None improved accuracy. The figures below are the
-        relative model-selection comparison and predate the leave-one-out leak fix, so the absolute coverage numbers
+        We tested several alternatives on an earlier blind test. None improved accuracy. The figures below are the
+        relative model-selection comparison and predate the leave-one-out leak fix and the walk-forward test, so the absolute coverage numbers
         run higher than the honest figures above; read them as a ranking of configurations, not current accuracy.
       </p>
       <div class="table-scroll">
@@ -622,7 +623,7 @@
               <td class="lbl">Error Rate</td>
               <td>~20% median (est.)</td>
               <td>~12&ndash;15% median (est.)</td>
-              <td><span id="about-prior-median">7.1%</span> median APE at 2 wks (blind tested)</td>
+              <td><span id="about-prior-median">7.1%</span> median APE at 2 wks (walk-forward)</td>
             </tr>
             <tr>
               <td class="lbl">Prediction Intervals</td>
@@ -631,10 +632,10 @@
               <td>Lognormal calibrated 80% CI; <span id="about-prior-cov">75%</span> coverage at 2 wks</td>
             </tr>
             <tr>
-              <td class="lbl">Blind Testing</td>
+              <td class="lbl">Backtesting</td>
               <td>No formal backtesting</td>
               <td>No formal backtesting</td>
-              <td><span id="about-prior-n">133</span> tournaments, 2023&ndash;2026 leave-one-out expanding window</td>
+              <td><span id="about-prior-n">133</span> tournaments, 2023&ndash;2026 walk-forward, refit monthly</td>
             </tr>
             <tr>
               <td class="lbl">Limitations</td>
@@ -832,6 +833,6 @@
      the bundle, dispatches bare globals, so there are no wrappers and no
      modules. Deferred, so it runs after the data tag above and after the
      chart library in <head>. Edit a source, then `python3 -m pipeline.bundling`. -->
-<script defer src="site.js?v=2073e2945b"></script>
+<script defer src="site.js?v=974ae05b91"></script>
 </body>
 </html>

@@ -38,7 +38,8 @@ def _versus(g, col):
             'diff': diff['mean'], 'diff_se': diff['se']}
 
 
-def _metrics(g):
+def horizon_metrics(g):
+    """The walk-forward figures for one horizon's records."""
     pct = (g['point'] - g['final']) / g['final'] * 100
     med_lo, med_hi = median_ci(g['log_error'])
     return {
@@ -59,7 +60,7 @@ def _metrics(g):
 
 
 def _by_T(frame):
-    return {str(T): _metrics(g) for T, g in frame.groupby('T', sort=False)}
+    return {str(T): horizon_metrics(g) for T, g in frame.groupby('T', sort=False)}
 
 
 def summarize(records, first_season, n_cutoffs, snapshot):

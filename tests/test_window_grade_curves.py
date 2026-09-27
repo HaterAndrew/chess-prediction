@@ -49,8 +49,6 @@ def test_build_report_grades_the_window_engine_on_raw_frames(monkeypatch):
         raise _Stop
 
     monkeypatch.setattr(report, "grade_window_engine", capture)
-    monkeypatch.setattr(report, "compute_aggregate", lambda results: {})
-    monkeypatch.setattr(report, "grade_from_aggregate", lambda agg: ("N/A", ""))
     with pytest.raises(_Stop):
-        report.build_report(pd.DataFrame(), {}, [])
+        report.build_report(pd.DataFrame(), [])
     assert seen['daily'] is frames[1] and seen['meta'] is frames[2]

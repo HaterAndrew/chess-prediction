@@ -5,12 +5,16 @@ from ratio_model import build_ratio_model
 from shared.curves import has_curve
 from shared.season import CURRENT_SEASON
 
+from forecast.cohort_pickup import pickup_gains
 from forecast.new_event import new_event_prior
+from forecast.pickup import PICKUP_HORIZON
 from forecast.types import Fitted
 from forecast.yoy_range import yoy_arms
 
 # Recalibration needs at least this many finished events in its cohort.
 MIN_RECAL_EVENTS = 5
+# The recalibration's horizons inside the pickup blend.
+RECAL_PICKUP_HORIZONS = tuple(T for T in (14, 7, 3, 1) if T <= PICKUP_HORIZON)
 # Events smaller than this are left out of the recalibration cohort.
 MIN_RECAL_FINAL = 50
 
@@ -63,7 +67,11 @@ def fit_models(summary, daily, enrichment_lookup, completed_tids, season=None,
     if len(cohort) >= MIN_RECAL_EVENTS:
         # regime_year: the cohort holds this season's finished events, so the
         # bias correction fits on them.
-        recal['diag'] = model.recalibrate(cohort, daily, regime_year=season)
+        # pickup_gains: inside two weeks the widths are sized around the
+        # pickup blend the site publishes (#191).
+        gains = pickup_gains(cohort, summary, daily, RECAL_PICKUP_HORIZONS)
+        recal['diag'] = model.recalibrate(cohort, daily, regime_year=season,
+                                          pickup_gains=gains)
 
     settled = settled_editions(train, completed_tids or set(), season)
     return Fitted(model=model,

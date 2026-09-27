@@ -226,7 +226,8 @@ def main():
                    completed_tids=completed_tids if completed_tids else None,
                    all_summary_families=set(summary['family'].dropna().unique()))
 
-    # Automated recalibration: learn from ALL completed tournaments (2024-2025 + 2026)
+    # Automated recalibration: learn from the two seasons before this one plus
+    # this season's completed tournaments
     # Recent data is weighted more heavily (2026 conditions > 2019 conditions)
     recal_data = summary[
         (summary['has_timestamps']) &
@@ -234,7 +235,7 @@ def main():
         (~summary['is_covid'].fillna(False)) &
         (summary['final_count'] >= 50) &
         (
-            (summary['tournament_year'].isin([2024, 2025])) |
+            (summary['tournament_year'].isin([CURRENT_SEASON - 2, CURRENT_SEASON - 1])) |
             (summary['tid'].isin(completed_tids))
         )
     ].copy()
@@ -242,7 +243,7 @@ def main():
         # regime_year: this model predicts the current year, and the cohort
         # contains its completed events — the bias correction fits on them.
         recal_diag = prod_model.recalibrate(recal_data, daily,
-                                            regime_year=int(TODAY.year))
+                                            regime_year=CURRENT_SEASON)
         n_2026 = len(recal_data[recal_data['tournament_year'] == CURRENT_SEASON])
         n_older = len(recal_data) - n_2026
         print(f"  Recalibration from {len(recal_data)} tournaments ({n_older} from 2024-25, {n_2026} from 2026):")

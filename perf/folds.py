@@ -288,7 +288,7 @@ def run_year_folds(summary, daily, meta, enrichment_lookup, completed_2026_tids)
                     (~summary['is_covid'].fillna(False)) &
                     (summary['final_count'] >= 50) &
                     (
-                        (summary['tournament_year'].isin([2024, 2025])) |
+                        (summary['tournament_year'].isin([year - 2, year - 1])) |
                         (summary['tid'].isin(loo_tids))
                     )
                 ].copy()

@@ -23,7 +23,7 @@ from model.counts import counts_by_event
 CHOP_POINTS = [120, 90, 60, 42, 28, 14, 7, 3, 1, 0]
 
 
-def build_ratio_model(train_summary, train_daily, completed_tids=None):
+def build_ratio_model(train_summary, train_daily, completed_tids=None, season=None):
     """Build historical ratio model with lognormal CIs.
 
     completed_tids (v5 Cat L): tids of COMPLETED current-year tournaments to
@@ -32,8 +32,12 @@ def build_ratio_model(train_summary, train_daily, completed_tids=None):
     2026 window prediction, which left this engine's 2026 coverage 27pp under
     its 2023-25 folds. Backtest folds (window_grading) deliberately do NOT
     pass it, so their train-on-<year cut stays leak-free.
+
+    season: the season being predicted (default CURRENT_SEASON); earlier
+    seasons train, plus completed_tids.
     """
-    year_ok = train_summary['tournament_year'] < CURRENT_SEASON
+    season = CURRENT_SEASON if season is None else int(season)
+    year_ok = train_summary['tournament_year'] < season
     if completed_tids:
         year_ok = year_ok | train_summary['tid'].isin(completed_tids)
     valid = train_summary[

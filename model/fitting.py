@@ -17,7 +17,7 @@ from shared.season import CURRENT_SEASON
 class FitMixin:
     def fit(self, summary, daily, enrichment_lookup=None, completed_tids=None,
             verbose_standings_join=True, all_summary_families=None,
-            fold_year=None, exclude_family_years=None):
+            fold_year=None, exclude_family_years=None, season=None, standings=None):
         """Build ratios from completed, non-online, non-covid tournaments.
 
         fold_year: when set (backtests), every auxiliary source is restricted to
@@ -32,6 +32,14 @@ class FitMixin:
             standings and enrichment joins. The 2026 leave-one-out fold trains on
             every OTHER completed 2026 event, so a blanket fold_year cut would be
             wrong there; it withholds just the target's own row instead.
+
+        season: the season being predicted (default CURRENT_SEASON). Training
+            keeps earlier seasons plus completed_tids, and the interval
+            calibration window is set relative to it, so a backtest dated in
+            another season fits as that season's production run would have.
+        standings: the historical standings frame to join (default: read
+            output/historical_standings.csv), so a caller can pass a view
+            restricted to what was known on a date.
 
         completed_tids: optional set of 2026 tournament tids that have completed.
             If provided, these are included in training (rolling retraining).
@@ -70,13 +78,14 @@ class FitMixin:
         ].copy()
 
         # Exclude in-progress 2026 tournaments, but keep completed ones
+        season = CURRENT_SEASON if season is None else int(season)
         if completed_tids:
             valid = valid[
-                (valid['tournament_year'] < CURRENT_SEASON) |
+                (valid['tournament_year'] < season) |
                 (valid['tid'].isin(completed_tids))
             ]
         else:
-            valid = valid[valid['tournament_year'] < CURRENT_SEASON]
+            valid = valid[valid['tournament_year'] < season]
 
         # v3 T3 → v5 Cat L: remember exactly which tournaments contributed
         # ratios. recalibrate() needs it to tell a genuinely held-out residual
@@ -144,10 +153,11 @@ class FitMixin:
         # AUDIT.md A2: previously the inline map had 19 entries while 37 unique
         # standings names existed in production — the rest dropped silently.
         standings_path = os.path.join(OUTPUT_DIR, "historical_standings.csv")
-        if os.path.exists(standings_path):
-            from tournament_aliases import STANDINGS_NAME_MAP, validate_standings_join
+        if standings is None and os.path.exists(standings_path):
             standings = pd.read_csv(standings_path)
-            standings = standings[standings['total_players'] > 10]
+        if standings is not None:
+            from tournament_aliases import STANDINGS_NAME_MAP, validate_standings_join
+            standings = standings[standings['total_players'] > 10].copy()
             # v3 T5: a backtest fold must not see standings from its own target
             # year or later. Production (fold_year=None) keeps everything.
             # Canonicalize BEFORE any name-keyed filtering. exclude_family_years
@@ -230,11 +240,11 @@ class FitMixin:
                 if len(vals) >= 5:
                     self.global_log_sigma[T] = np.std(np.log(vals), ddof=1)
 
-        # LOO calibration — expanding window.
-        # With completed 2026 data in training, calibrate on pre-2025 data
-        # (2025 + completed 2026 serve as validation). Without 2026 data,
-        # calibrate on pre-2024 (original behavior).
-        cal_year = 2025 if completed_tids else 2024
+        # LOO calibration — expanding window, relative to the season.
+        # With completed current-season events in training, calibrate on data
+        # before last season (last season + the completed events serve as
+        # validation); without them, on data before the season before last.
+        cal_year = season - 1 if completed_tids else season - 2
         self._calibrate(valid, daily, cal_max_year=cal_year)
 
         # T-dependent CI shrinkage: less shrinkage at long T (more uncertainty),

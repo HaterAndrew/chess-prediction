@@ -17,7 +17,7 @@ import os
 import rcssmin
 import rjsmin
 
-from pipeline import config
+from pipeline import config, js_templates
 
 # Cascade order: the order the <link> tags had in index.html. tokens.css must
 # precede every consumer of a custom property and theme.css closes the
@@ -138,8 +138,11 @@ def bundle_text(site_dir, output):
     else:
         # Each source is a complete script on its own; the empty statement
         # between two keeps a file that ends without a semicolon from
-        # swallowing the next file's first line.
-        body = rjsmin.jsmin("\n;\n".join(parts), keep_bang_comments=True)
+        # swallowing the next file's first line. Template literals ride
+        # through behind placeholders: rjsmin strips the spaces in one nested
+        # inside another's ${...} (pipeline/js_templates.py).
+        code, literals = js_templates.protect("\n;\n".join(parts))
+        body = js_templates.restore(rjsmin.jsmin(code, keep_bang_comments=True), literals)
     return _banner(output, sources) + body + "\n"
 
 

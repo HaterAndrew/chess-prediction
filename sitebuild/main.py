@@ -4,7 +4,6 @@ Fitting and forecasting live in forecast/, the scrape merge in
 sitebuild.scrape_merge, and the two card loops in sitebuild.cards and
 sitebuild.metadata; the rest is the functionized 04d body.
 """
-import os
 
 import pandas as pd
 
@@ -12,6 +11,7 @@ from pipeline_utils import is_event_complete
 from tournament_aliases import canonicalize_family
 from shared.season import CURRENT_SEASON, is_open_season
 
+from corpus import load_corpus
 from forecast import fit_models
 from sitebuild.assemble import finalize_cards
 from sitebuild.cards import build_model_cards
@@ -30,31 +30,23 @@ def main():
     importing this module no longer executes the pipeline (G4). Mid-file
     helper defs became closures; behavior is pinned by the golden gate."""
 
-    # Load data
-    summary = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_summary.csv"))
+    # Load data: curves arrive anchored at event start (T=0 = first day).
+    corpus = load_corpus(OUTPUT_DIR)
+    summary, daily, meta = corpus.summary, corpus.daily, corpus.meta
     # Coerce tournament_year: fill NaN with 0, convert to int for clean comparisons
     summary['tournament_year'] = pd.to_numeric(summary['tournament_year'], errors='coerce').fillna(0).astype(int)
-    daily = pd.read_csv(os.path.join(OUTPUT_DIR, "daily_registration_counts.csv"))
-    meta = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_metadata.csv"))
-    meta['start_date'] = pd.to_datetime(meta['start_date'])
 
     # Merge fresh scrape data into summary for every open edition (this season
     # and any later one CCA already lists — see sitebuild.scrape_join).
-    scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
-    if os.path.exists(scrape_path):
-        scrape = normalize_scrape(pd.read_csv(scrape_path), default_year=CURRENT_SEASON)
+    has_scrape = corpus.scrape is not None
+    if has_scrape:
+        scrape = normalize_scrape(corpus.scrape, default_year=CURRENT_SEASON)
         latest_scrape = latest_by_edition(scrape)
         updated = merge_scrape_counts(summary, latest_scrape)
-        # Reanchor ALL daily T values from last_reg to event_start so the model
-        # trains and predicts in a consistent coordinate system (T=0 = event start).
-        daily = m04c.reanchor_daily_to_event_start(summary, daily, meta)
         daily = inject_scrape_curves(scrape, summary, daily, meta, pd.Timestamp.now())
         print(f"  Merged scrape data: {updated} tournament counts updated, {len(latest_scrape)} tournaments in scrape")
 
-    # Load enrichment data if available
-    hist_path = os.path.join(OUTPUT_DIR, "historical_tournaments.csv")
-    hist_enrich = pd.read_csv(hist_path) if os.path.exists(hist_path) else pd.DataFrame()
-    enrichment_lookup = m04c.build_enrichment_lookup(hist_enrich)
+    enrichment_lookup = m04c.build_enrichment_lookup(corpus.enrichment)
 
     # Filter exclusions: online, COVID, sub-events we don't want
     # WO exclusion logic lives in tournament_aliases.is_wo_excluded — single
@@ -143,7 +135,8 @@ def main():
 
     # The nowcast model (recalibrated), the ratio model and the template
     # curves. Completed 2026 tournaments fold into training (rolling retrain).
-    fitted = fit_models(summary, daily, enrichment_lookup, completed_tids)
+    fitted = fit_models(summary, daily, enrichment_lookup, completed_tids,
+                        standings=corpus.standings)
     print_recalibration(fitted.recal)
 
     # ── World Open: keep only Under 13, top 6, lower as separate families ──
@@ -187,7 +180,7 @@ def main():
 
     # Live counts of each scraped edition, (family, year) -> net/gross/wd.
     # Metadata-only tournaments pick their entry counts up from here.
-    _scrape_lookup = counts_by_edition(latest_scrape) if os.path.exists(scrape_path) else {}
+    _scrape_lookup = counts_by_edition(latest_scrape) if has_scrape else {}
 
     # Withdrawal lookup for the model cards. Keyed on the CANONICAL family so
     # comma/whitespace variants between the scraper's spelling and summary rows
@@ -212,13 +205,13 @@ def main():
     NOT_TRACKED_MIN_ZERO_DAYS = 3
 
     def _consecutive_zero_scrape_days(family_name, year):
-        if not os.path.exists(scrape_path):
+        if not has_scrape:
             return NOT_TRACKED_MIN_ZERO_DAYS
         return consecutive_zero_scrape_days(scrape, family_name, year,
                                             never_scraped=NOT_TRACKED_MIN_ZERO_DAYS)
 
     def _scrape_daily_series(family_name, year, fallback_count):
-        if not os.path.exists(scrape_path):
+        if not has_scrape:
             return [[0, int(fallback_count)]], None
         return scrape_daily_series(scrape, family_name, year, fallback_count)
 
@@ -244,7 +237,7 @@ def main():
     # ── Data linking validation ──────────────────────────────────────────────
     # Compare scrape counts to website output. Flag any tournament where the
     # scrape has entries but the website shows 0 — that's a linking failure.
-    if os.path.exists(scrape_path):
+    if has_scrape:
         def _edition(t):
             return canonicalize_family(t['family']), t.get('year')
 

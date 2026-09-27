@@ -2,11 +2,11 @@
 verbatim; the A/B sections become prepare_folds, the year loop
 run_year_folds).
 """
-import os
 from importlib import import_module
 
 import pandas as pd
 
+from corpus import load_corpus
 from pipeline_utils import (clamp_stats,
                             is_event_complete, reset_clamp_stats)
 from shared.clock import today_ts
@@ -30,10 +30,10 @@ EVAL_YEARS = eval_years(first=2022)
 
 
 def prepare_folds():
-    summary, daily, meta, hist_enrich = m04c.load_data()
+    corpus = load_corpus(OUTPUT_DIR)
+    summary, daily, meta = corpus.summary, corpus.daily, corpus.meta
     assert_truth_label_freshness(summary)
-    enrichment_lookup = m04c.build_enrichment_lookup(hist_enrich)
-    meta['start_date'] = pd.to_datetime(meta['start_date'])
+    enrichment_lookup = m04c.build_enrichment_lookup(corpus.enrichment)
 
     # ── Exclude quick-chess side events (not useful for logistical planning).
     # Shared pattern: shared.side_events — the old narrow copy here kept
@@ -80,12 +80,10 @@ def prepare_folds():
     # ACO 2026 (the bug that motivated the original gate) had final=184 vs a
     # family median in the 400s (~46% ratio). The PLAUSIBILITY_FLOOR below
     # would still reject that snapshot.
-    scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
     scraped_names = set()
     snapshot_date = None
-    if os.path.exists(scrape_path):
-        sc = pd.read_csv(scrape_path)
-        sc = sc[sc['entry_count'] > 0]
+    if corpus.scrape is not None:
+        sc = corpus.scrape[corpus.scrape['entry_count'] > 0]
         scraped_names = set(sc['tournament_name'].unique())
 
     # Infer snapshot cutoff from the unreconciled manual snapshot horizon.

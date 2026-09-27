@@ -28,11 +28,13 @@ def recal_cohort(summary, completed_tids, season):
     ].copy()
 
 
-def fit_models(summary, daily, enrichment_lookup, completed_tids, season=None):
+def fit_models(summary, daily, enrichment_lookup, completed_tids, season=None,
+               standings=None):
     """Fit the nowcast model, recalibrate it, and build the ratio model and curves.
 
     completed_tids are this season's finished events; they train alongside
-    the earlier seasons. The Fitted's recal holds the cohort size and the
+    the earlier seasons. standings is the historical standings frame the fit
+    joins (None: the file on disk). The Fitted's recal holds the cohort size and the
     recalibration diagnostics, which are None when the cohort was too small.
     """
     season = CURRENT_SEASON if season is None else season
@@ -41,7 +43,7 @@ def fit_models(summary, daily, enrichment_lookup, completed_tids, season=None):
 
     model = N5v4_Final()
     model.fit(train[train['has_timestamps']], daily, enrichment_lookup=enrichment_lookup,
-              completed_tids=completed, season=season,
+              completed_tids=completed, season=season, standings=standings,
               all_summary_families=set(summary['family'].dropna().unique()))
 
     cohort = recal_cohort(summary, completed_tids or set(), season)

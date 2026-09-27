@@ -6,6 +6,7 @@ import os
 
 import pandas as pd
 
+from corpus import read_written
 from shared.clock import today_ts
 from shared.paths import OUTPUT_DIR
 from shared.season import CURRENT_SEASON
@@ -27,9 +28,7 @@ def raw_frames():
     during-event rows. The model's load_data() hands back curves already shifted with
     those rows dropped, so grading from it shifted them twice.
     """
-    summary = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_summary.csv"))
-    daily = pd.read_csv(os.path.join(OUTPUT_DIR, "daily_registration_counts.csv"))
-    meta = pd.read_csv(os.path.join(OUTPUT_DIR, "tournament_metadata.csv"))
+    summary, daily, meta = read_written(OUTPUT_DIR)
     meta['start_date'] = pd.to_datetime(meta['start_date'], errors='coerce')
     meta['end_date'] = pd.to_datetime(meta['end_date'], errors='coerce')
     return summary, daily, meta

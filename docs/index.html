@@ -547,7 +547,8 @@
             <tr><td>Growth trend</td><td>T &ge; 7</td><td>Multiply by 1 + trend &middot; 0.5 (capped &plusmn;15%)</td></tr>
             <tr><td>Pickup blend</td><td>T &le; 14</td><td>Geometric mean with count + entries last edition took after T</td></tr>
             <tr><td>Last final, no curve</td><td>Past finals, none with a registration curve; no pickup</td><td>Move toward the last final in log space (all the way at T &gt; 28, weight 0.3 at T = 1)</td></tr>
-            <tr><td>Range cap</td><td>Two or more past finals, or the row above</td><td>Hold each side of the range to the year-over-year spread of finals (about 19% below, 20% above)</td></tr>
+            <tr><td>New-event prior</td><td>No past final, T &gt; 42</td><td>Move toward the spread of first-edition finals in log space (all the way at T &ge; 60)</td></tr>
+            <tr><td>Range cap</td><td>Two or more past finals, or the last-final row</td><td>Hold each side of the range to the year-over-year spread of finals (about 19% below, 20% above)</td></tr>
             <tr><td>Plausibility bounds</td><td>Pred &lt; 30% of family minimum or &gt; 3&times; its maximum</td><td>Re-centre on the historical median, or cap at 1.5&times; the maximum</td></tr>
             <tr><td>Edition widening</td><td>0&ndash;1 prior editions</td><td>Widen CI by 2.5&times; / 1.5&times;</td></tr>
           </tbody>

@@ -53,6 +53,8 @@ class Fitted:
     recal: Optional[dict] = None
     # The log arms of the year-over-year change in a final (forecast.yoy_range).
     yoy_arms: Optional[tuple] = None
+    # The 10th, 50th and 90th percentile of first-edition finals (forecast.new_event).
+    new_event_prior: Optional[tuple] = None
 
     def curve_for(self, family):
         return self.curves.get(family, self.curves.get('__global__', {}))

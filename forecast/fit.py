@@ -5,6 +5,7 @@ from ratio_model import build_ratio_model
 from shared.curves import has_curve
 from shared.season import CURRENT_SEASON
 
+from forecast.new_event import new_event_prior
 from forecast.types import Fitted
 from forecast.yoy_range import yoy_arms
 
@@ -37,8 +38,8 @@ def settled_editions(train, completed_tids, season):
 
 def fit_models(summary, daily, enrichment_lookup, completed_tids, season=None,
                standings=None, verbose=True):
-    """Fit the nowcast model, recalibrate it, and build the ratio model, the curves
-    and the year-over-year spread.
+    """Fit the nowcast model, recalibrate it, and build the ratio model, the curves,
+    the year-over-year spread and the new-event prior.
 
     completed_tids are this season's finished events; they train alongside
     the earlier seasons. standings is the historical standings frame the fit
@@ -68,4 +69,5 @@ def fit_models(summary, daily, enrichment_lookup, completed_tids, season=None,
     return Fitted(model=model,
                   ratios=build_ratio_model(train, daily, completed_tids=completed, season=season),
                   curves=build_template_curves(train, daily, season=season),
-                  recal=recal, yoy_arms=yoy_arms(settled))
+                  recal=recal, yoy_arms=yoy_arms(settled),
+                  new_event_prior=new_event_prior(settled))

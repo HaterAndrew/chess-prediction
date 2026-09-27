@@ -390,9 +390,8 @@ def build_pdf():
     # 2. Ratio model
     story.append(Paragraph("2. Historical Ratio Model (Primary)", h1))
     story.append(Paragraph(
-        "For each tournament family at lead time T, compute final/current ratios from every "
-        "prior year. Central estimate uses the <b>harmonic mean</b> (downweights outlier-high "
-        "ratios; sensitive to near-zero ratios):", body))
+        "Per family and lead time T, the <b>harmonic mean</b> of final/current ratios from "
+        "prior years (it downweights outlier-high ratios):", body))
     story.append(Paragraph(
         "r = Final / Count_at_T &nbsp;&nbsp;&nbsp;\u2192&nbsp;&nbsp;&nbsp;"
         "F<font size='7'> ratio</font> = Current_Count \u00d7 HarmonicMean(r1, r2, \u2026, rn)", eq_sm))
@@ -403,9 +402,8 @@ def build_pdf():
     # 3. Regression model
     story.append(Paragraph("3. Huber Regression Model (Secondary)", h1))
     story.append(Paragraph(
-        "Per-family robust linear regression (Huber loss, \u03b5 = 1.35) trained on all "
-        "historical (count, T) \u2192 final pairs. Falls back to a size-matched global "
-        "model for unknown families:", body))
+        "Per-family Huber regression (\u03b5 = 1.35) on historical (count, T) \u2192 final "
+        "pairs; a size-matched global model for unknown families:", body))
     story.append(Paragraph(
         "F<font size='7'> reg</font> = \u03b20 \u00b7 Count_at_T"
         "  +  \u03b21 \u00b7 T  +  \u03b22", eq))
@@ -442,7 +440,9 @@ def build_pdf():
           'Geometric mean with the pickup forecast'],
          ['Last final, no curve', 'Finals known, no curve',
           'Move toward the last final (fully beyond T-28)'],
-         ['Range cap', '2+ past finals, or above',
+         ['New-event prior', 'No past final, T > 42',
+          'Move toward first-edition finals (fully at T \u2265 60)'],
+         ['Range cap', '2+ past finals, or last final',
           'Hold each side to the year-over-year spread'],
          ['Plausibility bounds', '< 30% of family min or > 3\u00d7 max',
           'Re-centre on the median, or cap at 1.5\u00d7 max'],

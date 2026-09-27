@@ -72,6 +72,7 @@ from pipeline.steps import (  # noqa: F401
 )
 from pipeline.site_html import step_update_html  # noqa: F401
 from pipeline.run_log import prune_update_log, step_log_run  # noqa: F401
+from pipeline.ledger import step_record_forecasts  # noqa: F401
 from pipeline.stamping import (  # noqa: F401
     STAMPED_DATA,
     STAMPED_SCRIPTS,
@@ -200,6 +201,7 @@ def main():
         # Always update HTML so the stale flag gets embedded in the page
         step_update_html()
         step_log_run()
+        step_record_forecasts()
 
         # Generate SHA-256 checksums for all output CSVs
         print(f"\n{'─'*60}")

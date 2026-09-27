@@ -28,5 +28,7 @@ INDEX_HTML = os.path.join(SITE_DIR, "index.html")
 # overwriting the published endpoint.
 SITE_DATA_JSON = os.path.join(SITE_DIR, "data", "website_data.json")
 UPDATE_LOG = os.path.join(OUTPUT_DIR, "update_log.csv")
+# Every published forecast, never pruned (pipeline/ledger.py).
+FORECAST_LEDGER = os.path.join(OUTPUT_DIR, "forecast_ledger.csv")
 
 RUN_TS = datetime.now().strftime('%Y-%m-%d %H:%M:%S')

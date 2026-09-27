@@ -35,6 +35,7 @@ def scrape_curves(scrape, summary, calendar, have_curve):
     editions = summary[['tid', 'tournament_name', 'final_count']].merge(calendar, on='tid')
     editions = editions[~editions['tid'].isin(have_curve) & editions['start'].notna()]
     editions = editions.assign(key=editions['tournament_name'].map(edition_key))
+    last_day = pd.to_datetime(scrape['date']).max().normalize()
     rows = scrape[['tournament_name', 'date', 'entry_count']]
     rows = rows.assign(key=rows['tournament_name'].map(edition_key)).drop(columns='tournament_name')
     rows = rows.merge(editions, on='key')
@@ -43,7 +44,7 @@ def scrape_curves(scrape, summary, calendar, have_curve):
     rows = rows[(rows['T'] >= 0) & (rows['entry_count'] > 0)]
     rows = rows.sort_values(['tid', 'T'], ascending=[True, False], kind='stable')
     rows = rows.drop_duplicates(['tid', 'T'], keep='last')
-    rows['cum_regs'] = _gross_curve(rows, last_day=rows['date'].max())
+    rows['cum_regs'] = _gross_curve(rows, last_day)
     rows['daily_regs'] = rows.groupby('tid')['cum_regs'].diff().fillna(rows['cum_regs']).astype(int)
     rows['cum_pct'] = (rows['cum_regs'] / rows['final_count']).where(rows['final_count'] > 0)
     return rows[CURVE_COLUMNS].reset_index(drop=True)

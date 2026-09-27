@@ -42,6 +42,10 @@ def test_a_still_registering_edition_ends_at_its_latest_count():
     curves = scrape_curves(scrape, _summary(), CAL, have_curve={2})
     assert curves['cum_regs'].tolist() == [50, 50, 50, 52, 54], \
         "the least count from each day on: never above the live count, never falling"
+    # The scrape ran on to Jul 20 but lost this edition before its Jul 17 start: it has started.
+    later = pd.concat([scrape, _scrape('2026 Other Open', [9], first='2026-07-20')])
+    assert scrape_curves(later, _summary(), CAL, have_curve={2})['cum_regs'].tolist() == \
+        [54, 55, 55, 55, 55], "a started edition keeps the running maximum"
 
 
 def test_an_edition_with_a_curve_is_left_alone():

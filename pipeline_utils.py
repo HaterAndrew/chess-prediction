@@ -92,7 +92,7 @@ def build_chart_series(tid, daily, current_count, is_live=False):
 # heuristics silently overriding real values, so the clamp keeps a tally the
 # callers can print rather than mutating predictions invisibly. Reset with
 # reset_clamp_stats() when measuring a single run.
-_CLAMP_STATS = {'calls': 0, 'blend-low': 0, 'recentre-low': 0,
+_CLAMP_STATS = {'calls': 0, 'recentre-low': 0,
                 'damp-high': 0, 'floor-current-count': 0}
 
 
@@ -153,13 +153,10 @@ def apply_plausibility_clamp(point, ci_lo, ci_hi, current_count, hist_counts,
         hist_min = min(hist_counts)
         hist_max = max(hist_counts)
         hist_med = int(pd.Series(hist_counts).median())
-        if days_remaining > 60 and point < hist_med * 0.7:
-            # Far out + low: blend model with historical median (50/50)
-            new_point = int(0.5 * point + 0.5 * hist_med)
-            ci_lo, ci_hi = _reanchor(point, new_point, ci_lo, ci_hi)
-            point = new_point
-            _CLAMP_STATS['blend-low'] += 1
-        elif point < hist_min * 0.3:
+        # A far-out blend toward the median for estimates under 70% of it
+        # stood here. It pulled one way only and moved none of the 1,062
+        # walk-forward forecasts (2023-2026) nor any live card, so it went.
+        if point < hist_min * 0.3:
             # Extremely low -- re-centre on historical median
             new_point = hist_med
             ci_lo, ci_hi = _reanchor(point, new_point, ci_lo, ci_hi)

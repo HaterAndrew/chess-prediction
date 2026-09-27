@@ -222,3 +222,15 @@ def test_plausibility_clamp_noop_without_enough_history():
         days_remaining=30)
 
     assert result == (250, 200, 300)
+
+
+def test_plausibility_clamp_leaves_a_modestly_low_far_out_estimate_alone():
+    """The far-out blend toward the median (estimates under 70% of it, T > 60)
+    pulled one way only and moved no graded forecast, so it went: an estimate
+    at 58% of the median is published as the model made it."""
+    from pipeline_utils import apply_plausibility_clamp
+
+    assert apply_plausibility_clamp(
+        point=70, ci_lo=50, ci_hi=95,
+        current_count=10, hist_counts=[100, 120, 130],
+        days_remaining=90) == (70, 50, 95)

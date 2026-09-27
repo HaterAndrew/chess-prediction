@@ -26,6 +26,9 @@
 .card-delta { font: 700 12px var(--mono); }
 .card-delta.pos { color: var(--signal); }
 .card-delta.neg { color: var(--ember); }
+/* On the highlighter the sign carries the direction; the pens would fall
+   under 3:1 on yellow in dark mode. */
+.mini-card-active .card-delta.pos, .mini-card-active .card-delta.neg { color: var(--mark-ink); }
 .mini-card-figure { align-items: baseline; display: flex; flex-wrap: wrap; gap: 10px; }
 .mini-card-number { font: 700 26px/1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
 .mini-grid-featured .mini-card-number { font-size: 32px; }
@@ -33,6 +36,7 @@
 .rule-bar { background: var(--raised); height: 5px; overflow: hidden; }
 .rule-bar-fill { background: var(--ink); height: 100%; transition: width var(--dur-slow) var(--ease-out); }
 .mini-card-active .rule-bar { background: color-mix(in srgb, var(--mark-ink) 15%, transparent); }
+.mini-card-active .rule-bar-fill { background: var(--mark-ink); }
 @media (min-width: 640px) { .mini-grid-featured { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
 /* ── Tournament Overview (panels_grid.js renderAllTournaments): one heading

@@ -4,6 +4,7 @@ from dataclasses import replace
 from pipeline_utils import apply_plausibility_clamp, pace_gate_ok
 
 from forecast.known_final import anchor_known_final, ignores_last_final
+from forecast.new_event import blend_new_event_prior
 from forecast.pickup import blend_pickup
 from forecast.routes import (HISTORICAL_AVG, MODEL, PACE, WINDOW,
                              historical_avg_route, model_route, pace_route,
@@ -57,7 +58,11 @@ def shadow_forecasts(event, obs, fitted, history, as_of=None):
 def settle_model(forecast, event, obs, fitted, history):
     """The model's forecast blended with pickup inside two weeks (forecast.pickup),
     moved toward a last final it knew nothing of (forecast.known_final), and its
-    range capped (forecast.yoy_range)."""
+    range capped (forecast.yoy_range). An event with no past final moves toward
+    the new-event prior instead (forecast.new_event); history None means the
+    past is unknown, not empty."""
+    if history is not None and not history:
+        return blend_new_event_prior(forecast, obs, fitted.new_event_prior)
     forecast = blend_pickup(forecast, obs)
     if ignores_last_final(forecast, event, obs, fitted, history):
         return cap_range(anchor_known_final(forecast, obs, history), obs, history,

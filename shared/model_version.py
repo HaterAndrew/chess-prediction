@@ -12,11 +12,15 @@ from pathlib import Path, PurePosixPath
 
 from shared.paths import PROJECT_DIR
 
-MODEL_LABEL = "n5v4"
+# n5v5 (2026-09-27): the pickup blend inside two weeks.
+MODEL_LABEL = "n5v5"
 
-# Everything between the scraped count and the published card: the engine,
-# the card builder that routes between estimators, and the helpers both use.
+# Everything between the scraped count and the published card: the corpus
+# loader, the forecast entry point and its routes, the engine, the card
+# builder, and the helpers they use.
 MODEL_SOURCES = (
+    "corpus/*.py",
+    "forecast/*.py",
     "model/*.py",
     "sitebuild/*.py",
     "shared/*.py",

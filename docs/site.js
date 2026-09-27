@@ -371,6 +371,13 @@ function _liveRow(T,m){const med=m.median_error_ci||[];const cov=m.coverage_ci||
 (cov[0]!=null?`<div class="perf-cell-ci">${Math.round(cov[0])}–${Math.round(cov[1])}%</div>`:'')+`</td>
   </tr>`;}
 function _liveRoutes(live){const counts=Object.entries(live.by_route||{}).map(([route,byT])=>[LIVE_ROUTES[route]||route,Object.values(byT).reduce((s,m)=>s+m.n,0)]);counts.sort((a,b)=>b[1]-a[1]);return counts.map(([label,n])=>`${label} ${n}`).join(', ');}
+function _liveSealed(h){if(!h||!h.n_records)return'';const rows=Object.entries(h.pooled||{}).sort((a,b)=>Number(b[0])-Number(a[0])).map(([T,m])=>_liveRow(T,m)).join('');return `<p class="perf-table-key">Sealed test: ${h.n_records} forecasts of ${h.n_events} finished
+      event${h.n_events === 1 ? '' : 's'} that started after the model froze on ${h.frozen_on}, so none
+      of them informed a change to it.</p>
+    <table class="perf-table perf-live-table">
+      <thead><tr><th>Lead Time</th><th>Average Miss</th><th>Typical Miss</th><th>Inside the Range</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;}
 function perfDrawLive(data){const el=document.getElementById('perfLive');if(!el)return;const live=data&&data.live_record;if(!live||!live.n_records){el.innerHTML='<div class="empty">No published forecast has a final yet.</div>';return;}
 const p=live.protocol||{};const eras=(live.eras||[]).length;const rows=Object.entries(live.pooled||{}).sort((a,b)=>Number(b[0])-Number(a[0])).map(([T,m])=>_liveRow(T,m)).join('');el.innerHTML=`<p class="perf-table-key">${live.n_records} forecasts of ${live.n_events} finished events,
       published ${p.first_date} to ${p.last_date} by ${eras} model version${eras === 1 ? '' : 's'}.
@@ -379,7 +386,8 @@ const p=live.protocol||{};const eras=(live.eras||[]).length;const rows=Object.en
       <thead><tr><th>Lead Time</th><th>Average Miss</th><th>Typical Miss</th><th>Inside the Range</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
-    <p class="perf-table-key">n is the forecasts graded at that lead time. Typical miss is the median, above zero when forecasts ran high; the small figures under it and under inside the range are 95% intervals. Inside the range in red: its interval sits wholly below the 80% target.</p>`;};const PICKER_SHEET='tourneySheet';const PICKER_SEGMENTS=[['live','Upcoming'],['complete','Complete'],['hist','Historical']];const PICKER_STATUS_RANK={live:0,complete:1,hist:2};let _pickerSeg='live';let _pickerQuery='';function _pickerSegFor(status){return status==='live'?'live':status==='complete'?'complete':'hist';}
+    <p class="perf-table-key">n is the forecasts graded at that lead time. Typical miss is the median, above zero when forecasts ran high; the small figures under it and under inside the range are 95% intervals. Inside the range in red: its interval sits wholly below the 80% target.</p>
+    ${_liveSealed(live.holdout)}`;};const PICKER_SHEET='tourneySheet';const PICKER_SEGMENTS=[['live','Upcoming'],['complete','Complete'],['hist','Historical']];const PICKER_STATUS_RANK={live:0,complete:1,hist:2};let _pickerSeg='live';let _pickerQuery='';function _pickerSegFor(status){return status==='live'?'live':status==='complete'?'complete':'hist';}
 function _pickerEntries(seg){const all=TOURNAMENT_DATA.tournaments.map((t,i)=>({t,i}));if(seg==='live'){return all.filter(x=>x.t.status==='live').sort((a,b)=>a.t.days_remaining-b.t.days_remaining);}
 if(seg==='complete'){return all.filter(x=>x.t.status==='complete').sort((a,b)=>String(b.t.event_start).localeCompare(String(a.t.event_start)));}
 const byFamily=new Map();all.filter(x=>x.t.status==='historical').forEach(x=>{if(!byFamily.has(x.t.family))byFamily.set(x.t.family,[]);byFamily.get(x.t.family).push(x);});const families=Array.from(byFamily.keys()).sort((a,b)=>byFamily.get(b).length-byFamily.get(a).length||a.localeCompare(b));return families.flatMap(f=>byFamily.get(f).sort((a,b)=>b.t.year-a.t.year).map(x=>({t:x.t,i:x.i,family:f,editions:byFamily.get(f).length})));}

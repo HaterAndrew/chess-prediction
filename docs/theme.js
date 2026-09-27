@@ -41,12 +41,16 @@ function applyChartDefaults() {
   if (_reduceMotion()) Chart.defaults.animation = false;
 }
 
-// Redraw whatever charts the active tab shows. Other tabs rebuild on their
-// next switch, which they already do.
-function rerenderVisibleCharts() {
+// Canvases keep the colours and widths they were drawn with. A theme switch
+// or a crossing of the phone breakpoint redraws the charts on screen and
+// marks the other chart views stale; switchPageTab (app.js) redraws a stale
+// view as it opens. Compare redraws on every open already.
+const _STALE_CHART_TABS = new Set();
+const _CHART_TABS = ['predictions', 'performance'];
+
+function _renderTabCharts(tab) {
   if (typeof TOURNAMENT_DATA === 'undefined') return;
   const t = TOURNAMENT_DATA.tournaments[selectedIndex];
-  const tab = typeof _currentTab !== 'undefined' ? _currentTab : 'predictions';
   if (tab === 'predictions' && t) {
     renderChart(t);
     renderHistorical(t);
@@ -56,6 +60,17 @@ function rerenderVisibleCharts() {
   } else if (tab === 'compare' && typeof renderCompareTab === 'function') {
     renderCompareTab();
   }
+}
+
+function rerenderVisibleCharts() {
+  const tab = typeof _currentTab !== 'undefined' ? _currentTab : 'predictions';
+  _CHART_TABS.forEach(x => { if (x !== tab) _STALE_CHART_TABS.add(x); });
+  _renderTabCharts(tab);
+}
+const refreshCharts = rerenderVisibleCharts;
+
+function redrawStaleCharts(tab) {
+  if (_STALE_CHART_TABS.delete(tab)) _renderTabCharts(tab);
 }
 
 // opts.animate: cross-fade colours over THEME_FADE_MS (skipped under

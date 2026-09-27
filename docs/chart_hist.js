@@ -17,7 +17,7 @@ function _barValuesPlugin(counts, done) {
       bars.forEach((bar, i) => {
         const current = i === counts.length - 1;
         ctx2.fillStyle = current ? PALETTE.text : PALETTE.muted;
-        ctx2.font = `${current ? '700 ' : ''}11px ${PALETTE.fontMono}`;
+        ctx2.font = chartLabelFont(11, current ? '700' : '');
         ctx2.fillText(`${fmt(counts[i])}${current && !done ? ' est' : ''}`, bar.x, bar.y - 4);
       });
       ctx2.restore();
@@ -65,7 +65,7 @@ function renderHistorical(t) {
       ctx2.save();
       ctx2.beginPath();
       ctx2.setLineDash([6, 4]);
-      ctx2.strokeStyle = themeRgba(PALETTE.muted, 0.6);
+      ctx2.strokeStyle = PALETTE.muted;
       ctx2.lineWidth = 1;
       // Span the plot area, not the y-axis bounding box. yScale.left sits
       // behind the tick labels, so the line started well left of the first bar
@@ -73,8 +73,8 @@ function renderHistorical(t) {
       ctx2.moveTo(chartInstance.scales.x.left, y);
       ctx2.lineTo(chartInstance.scales.x.right, y);
       ctx2.stroke();
-      ctx2.fillStyle = themeRgba(PALETTE.muted, 0.8);
-      ctx2.font = '9px -apple-system, system-ui, sans-serif';
+      ctx2.fillStyle = PALETTE.muted;
+      ctx2.font = chartLabelFont(11);
       ctx2.textAlign = 'right';
       ctx2.fillText(`avg ${fmt(histAvg)}`, chartInstance.scales.x.right, y - 4);
       ctx2.restore();
@@ -98,11 +98,7 @@ function renderHistorical(t) {
       layout: { padding: { top: 18 } },
       plugins: {
         legend: { display: false },
-        tooltip: {
-          backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
-          titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
-          padding: 12, cornerRadius: 0,
-          titleFont: { size: 14, weight: 'bold' }, bodyFont: { size: 12 }, footerFont: { size: 11, style: 'italic' },
+        tooltip: chartTooltip({
           displayColors: true,
           callbacks: {
             title(items) {
@@ -144,11 +140,11 @@ function renderHistorical(t) {
               return '';
             }
           }
-        }
+        })
       },
       scales: {
-        x: { grid: { display: false }, ticks: { color: PALETTE.muted, font: { size: 11 }, maxRotation: 0 } },
-        y: { beginAtZero: true, grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false }, ticks: { color: PALETTE.muted, font: { size: 11 }, maxTicksLimit: _mobileVP() ? 4 : 6, callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k' : v } }
+        x: { grid: chartGridX(), border: chartBorderX(), ticks: chartTicks() },
+        y: { beginAtZero: true, grid: chartGridY(), border: chartBorderY(), ticks: chartTicks({ maxTicksLimit: _mobileVP() ? 4 : 6, callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k' : v }) }
       }
     }
   });

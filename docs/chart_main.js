@@ -673,21 +673,23 @@ function renderChart(t) {
           // each historical year has visible space and is clearly separate
           // from the chart's data region (the day-of / post-event surge).
           max: cw.max,
-          grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false },
-          ticks: { color: PALETTE.muted, font: { size: 11 }, maxRotation: 0 }
+          grid: chartGridX(),
+          border: chartBorderX(),
+          ticks: chartTicks()
         },
         y: {
           beginAtZero: true,
-          grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false },
-          ticks: { color: PALETTE.muted, font: { size: 11 }, maxTicksLimit: _mobileVP() ? 5 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v }
+          grid: chartGridY(),
+          border: chartBorderY(),
+          ticks: chartTicks({ maxTicksLimit: _mobileVP() ? 5 : 8, callback: v => v >= 1000 ? (v/1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k' : v })
         }
       },
       // Desktop top padding fits two rows of annotation pills so when
       // Early Bird and Event lines overlap horizontally they can stack
       // vertically. Mobile only renders the "Today" pill (Early Bird +
-      // Event are gated by !_isM in vertLinePlugin), so 14px is plenty —
-      // any more steals plot area on phones.
-      layout: { padding: { top: _mobileVP() ? 14 : 40 } }
+      // Event are gated by !_isM in vertLinePlugin), so one 16px pill row
+      // fits in 20px; any more steals plot area on phones.
+      layout: { padding: { top: _mobileVP() ? 20 : 40 } }
     }
   });
 

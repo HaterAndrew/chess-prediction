@@ -53,6 +53,8 @@ STYLE_SOURCES = (
 #     time (tab_compare's COMPARE_COLORS reads foundation's PALETTE);
 #   - theme.js reads PALETTE from foundation.js and sets the Chart.js
 #     defaults before any chart is built;
+#   - chart_data (pure) precedes chart_kit, which reads foundation's
+#     _MOBILE_MQ and theme's refreshCharts, and precedes every chart file;
 #   - the shell (icons, sheet, shell) precedes app.js, whose switchPageTab
 #     calls into shell.js; motion.js precedes gestures.js;
 #   - tab_ask before app: the ASK_* consts exist before init() runs;
@@ -66,6 +68,8 @@ SCRIPT_SOURCES = (
     "util_core.js",
     "foundation.js",
     "theme.js",
+    "chart_data.js",
+    "chart_kit.js",
     "motion.js",
     "icons.js",
     "sheet.js",
@@ -90,6 +94,7 @@ SCRIPT_SOURCES = (
     "compare_chart.js",
     "tab_ask.js",
     "overrides.js",
+    "page_input.js",
     "app.js",
     "actions.js",
 )

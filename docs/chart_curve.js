@@ -73,11 +73,7 @@ function renderRegCurve(t) {
       layout: { padding: { top: 22 } },
       plugins: {
         legend: { display: false },
-        tooltip: {
-          backgroundColor: themeRgba(PALETTE.surface, 0.95), borderColor: themeRgba(PALETTE.border, 0.8), borderWidth: 1,
-          titleColor: PALETTE.text, bodyColor: PALETTE.text2, footerColor: PALETTE.muted,
-          padding: 12, cornerRadius: 0,
-          titleFont: { size: 14, weight: 'bold' }, bodyFont: { size: 12 }, footerFont: { size: 11, style: 'italic' },
+        tooltip: chartTooltip({
           displayColors: true,
           callbacks: {
             title(items) {
@@ -113,21 +109,22 @@ function renderRegCurve(t) {
               return '';
             }
           }
-        }
+        })
       },
       scales: {
         x: {
-          grid: { display: false },
-          ticks: { color: PALETTE.muted, font: { size: 11 }, maxRotation: 0, maxTicksLimit: _mobileVP() ? 6 : 12 }
+          grid: chartGridX(),
+          border: chartBorderX(),
+          ticks: chartTicks({ maxTicksLimit: _mobileVP() ? 6 : 12 })
         },
         y: {
           min: 0, max: 105,
-          grid: { color: themeRgba(PALETTE.border, 0.4), drawBorder: false },
-          ticks: {
-            color: PALETTE.muted, font: { size: 11 },
+          grid: chartGridY(),
+          border: chartBorderY(),
+          ticks: chartTicks({
             maxTicksLimit: _mobileVP() ? 4 : 6,
             callback: v => v + '%'
-          }
+          })
         }
       }
     }

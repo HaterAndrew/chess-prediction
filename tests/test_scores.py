@@ -104,6 +104,68 @@ def test_a_removal_that_changes_nothing_is_non_inferior():
     assert verdict['accept'] and verdict['checks'] == {'no_worse_at_any_horizon': True}
 
 
+THIN = ('F0', 'F1', 'F2', 'F3')
+SEASONS = (2023, 2024, 2025, 2026)
+
+
+def _with_history(rows, gain=None, thin_in=SEASONS, moved=THIN):
+    """The records with a history depth: the THIN families have none in the
+    `thin_in` seasons. gain maps a season to how far the `moved` families'
+    forecasts go toward the final there, range and all (negative: away)."""
+    out = []
+    for r in rows:
+        thin = r['family'] in THIN and r['season'] in thin_in
+        r = {**r, 'n_history': 0 if thin else 4}
+        step = (gain or {}).get(r['season'], 0) if r['family'] in moved else 0
+        k = (r['final'] / r['point']) ** step
+        out.append({**r, 'point': r['point'] * k, 'low': r['low'] * k, 'high': r['high'] * k})
+    return out
+
+
+def _missed(width=0.05, shift=0.3):
+    """Forecasts that run high of a narrow range, so moving them in lowers both scores."""
+    return _records({T: width for T in WIDE}, shift_by_T={T: shift for T in WIDE})
+
+
+def test_a_subset_change_is_judged_on_the_forecasts_it_touches():
+    thin_in = (2023, 2025, 2026)
+    base = _with_history(_missed(), thin_in=thin_in)
+    moved = _with_history(_missed(), gain={2023: 0.8, 2025: 0.8, 2026: -0.1}, thin_in=thin_in)
+    verdict = judge(moved, base, kind='subset', subset='thin_history')
+    assert verdict['accept'], verdict['checks']
+    assert (verdict['n'], verdict['seasons'], verdict['season_wins']) == (4 * 3 * 8, 3, 2)
+    standard = judge(moved, base, band='long')
+    assert not standard['accept'] and standard['season_wins'] == 2, \
+        "a season with no forecast in the subset is not one the change can win"
+
+
+def test_a_subset_change_may_not_touch_a_forecast_outside_it():
+    base = _with_history(_missed())
+    moved = _with_history(_missed(), gain=dict.fromkeys(SEASONS, 0.8), moved=THIN + ('F9',))
+    verdict = judge(moved, base, kind='subset', subset='thin_history')
+    assert not verdict['accept'] and verdict['checks']['outside_unchanged'] is False
+
+
+def test_a_subset_change_needs_the_seasons_behind_it():
+    base = _with_history(_missed())
+    two_lost = _with_history(_missed(), gain={2023: 0.8, 2024: 0.8, 2025: -0.1, 2026: -0.1})
+    verdict = judge(two_lost, base, kind='subset', subset='thin_history')
+    assert verdict['season_wins'] == 2 and verdict['checks']['wins_all_but_one_season'] is False
+    thin_in = (2023, 2024)
+    verdict = judge(_with_history(_missed(), gain={2023: 0.8, 2024: 0.8}, thin_in=thin_in),
+                    _with_history(_missed(), thin_in=thin_in), kind='subset', subset='thin_history')
+    assert not verdict['accept'] and verdict['checks']['seasons_in_subset'] is False
+
+
+def test_no_worse_passes_a_gain_and_fails_a_loss():
+    base = _with_history(_missed())
+    better = _with_history(_missed(), gain=dict.fromkeys(SEASONS, 0.8))
+    assert judge(better, base, kind='no_worse', subset='thin_history')['accept']
+    assert judge(base, base, kind='no_worse')['accept']
+    verdict = judge(base, better, kind='no_worse', subset='thin_history')
+    assert not verdict['accept'] and verdict['checks']['lis_no_worse_by_1se'] is False
+
+
 def test_perf_diff_prints_both_files_and_the_verdict(tmp_path, capsys):
     from scripts.perf_diff import main
     for name, rows in (('before', _records(WIDE)), ('after', _records(WIDE))):
@@ -114,3 +176,5 @@ def test_perf_diff_prints_both_files_and_the_verdict(tmp_path, capsys):
     code = main([str(tmp_path / 'before.csv'), str(tmp_path / 'after.csv'), '--kind', 'removal'])
     out = capsys.readouterr().out
     assert code == 0 and 'lis_before' in out and '"accept": true' in out
+    with pytest.raises(SystemExit):
+        main([str(tmp_path / 'before.csv'), str(tmp_path / 'after.csv'), '--kind', 'subset'])

@@ -8,7 +8,7 @@ uncommitted edits.
 """
 import hashlib
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from shared.paths import PROJECT_DIR
 
@@ -28,17 +28,30 @@ MODEL_SOURCES = (
 )
 
 
-def model_hash(root=PROJECT_DIR, patterns=MODEL_SOURCES):
-    """First 16 hex digits of sha256 over the sorted source paths and bytes."""
-    root = Path(root)
-    files = sorted({p for pat in patterns for p in root.glob(pat) if p.is_file()})
+def is_model_source(rel_path, patterns=MODEL_SOURCES):
+    """Whether a repo-relative POSIX path is one of the model's sources: the
+    pattern must match the whole path, so 'model/*.py' takes model/core.py but
+    not model/sub/x.py, and 'ratio_model.py' only the root file."""
+    path = PurePosixPath(rel_path)
+    return any(len(path.parts) == len(PurePosixPath(p).parts) and path.match(p) for p in patterns)
+
+
+def hash_sources(files):
+    """First 16 hex digits of sha256 over (path, bytes) pairs in path order."""
     digest = hashlib.sha256()
-    for path in files:
-        digest.update(path.relative_to(root).as_posix().encode())
+    for rel_path, data in sorted(files):
+        digest.update(rel_path.encode())
         digest.update(b"\0")
-        digest.update(path.read_bytes())
+        digest.update(data)
         digest.update(b"\0")
     return digest.hexdigest()[:16]
+
+
+def model_hash(root=PROJECT_DIR, patterns=MODEL_SOURCES):
+    """hash_sources over the model's source files as they are on disk."""
+    root = Path(root)
+    files = {p for pat in patterns for p in root.glob(pat) if p.is_file()}
+    return hash_sources((p.relative_to(root).as_posix(), p.read_bytes()) for p in files)
 
 
 def code_commit(env=None):

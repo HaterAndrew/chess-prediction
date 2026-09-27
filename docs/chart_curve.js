@@ -21,6 +21,24 @@ function _curveTodayPoints(t) {
   return { db: t.days_remaining, typical, now, gap: paceGap(typical, now) };
 }
 
+// Dots closer than this, centre to centre, sit on each other (radius 4.5
+// plus the 1.5 stroke on each).
+const CURVE_DOTS_TOUCH = 11;
+
+// One label per dot, or one for both when the dots sit on each other: an
+// event on pace at a point where the curve is flat has nowhere to put two.
+function _curveTodayLabels(pts, yT, yN) {
+  const typical = Math.round(pts.typical), now = Math.round(pts.now);
+  if (Math.abs(yT - yN) >= CURVE_DOTS_TOUCH) {
+    return [{ y: yT, text: `Typical year ${typical}%`, short: `${typical}%`, col: PALETTE.hist },
+            { y: yN, text: `This event ${now}%`, short: `${now}%`, col: PALETTE.actual }];
+  }
+  const same = typical === now;
+  return [{ y: yN, col: PALETTE.actual,
+            text: same ? `Typical year and this event ${now}%` : `Typical year ${typical}%, this event ${now}%`,
+            short: same ? `${now}%` : `${typical}% / ${now}%` }];
+}
+
 // The two dots at today and a hairline between them. Each label takes the
 // first spot clear of the curve, the dots and the other label, beside the
 // dot on the side with more room first. The labels draw after the Today
@@ -62,13 +80,14 @@ function _curveTodayPlugin(pts) {
       g.save();
       g.font = chartLabelFont(12, 'bold');
       // Where the full label has no clear spot (a phone, today near the
-      // event), the figure alone stands by its dot; the caption names it.
-      [[yT, `Typical year ${Math.round(pts.typical)}%`, PALETTE.hist],
-       [yN, `This event ${Math.round(pts.now)}%`, PALETTE.actual]].forEach(([y, text, col]) => {
+      // event), the figure alone stands by its dot; where not even the figure
+      // has one, the dot goes unlabelled. The caption names both figures.
+      _curveTodayLabels(pts, yT, yN).forEach(({ y, text, short, col }) => {
         const place = t => chooseLabelSpot(x, y, _labelWidth(g, t) + 6, 15,
                                            { segments, taken, area, gap: 8, margin: 1.5, radius: 5.5, order });
         let spot = place(text);
-        if (!spot.clear) { text = text.replace(/^\D+/, ''); spot = place(text); }
+        if (!spot.clear) { text = short; spot = place(text); }
+        if (!spot.clear) return;
         taken.push(spot.box);
         g.fillStyle = col;
         chartHaloText(g, text, spot.x, spot.y, 'center');

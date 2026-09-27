@@ -1,4 +1,4 @@
-"""Model-path card loop (04d main() body, verbatim).
+"""Model-path card loop (from the 04d main() body).
 
 Callables that were sibling closures (status/event-date helpers) arrive
 as parameters, so their bindings to main()-scope state are preserved.
@@ -6,11 +6,10 @@ tournaments_out is mutated in place, as before.
 """
 import pandas as pd
 
-from pipeline_utils import (apply_plausibility_clamp, build_chart_series,
-                            chart_series_start_date, roster_pending_model_ok)
-from prediction_window import registration_close_date, window_decayed_estimate
-from ratio_model import predict_with_lognormal_ci
-from pipeline_utils import is_event_complete
+from forecast import Event, Observation, forecast_event
+from pipeline_utils import (build_chart_series, chart_series_start_date,
+                            is_event_complete, roster_pending_model_ok)
+from prediction_window import registration_close_date
 from tournament_aliases import canonicalize_family
 
 from sitebuild.editions import prior_editions
@@ -18,7 +17,7 @@ from sitebuild.helpers import (TODAY, _apply_wo_top6_adjustment,
                                _fam_eq, m04c, sanitize_early_bird)
 
 
-def build_model_cards(curves, daily, determine_status, get_event_date, get_event_end_date, meta, prod_model, ratios, summary, t2026, tournaments_out, withdrawal_lookup):
+def build_model_cards(fitted, daily, determine_status, get_event_date, get_event_end_date, meta, summary, t2026, tournaments_out, withdrawal_lookup):
     def is_settled(fam, yr):
         return is_event_complete(get_event_end_date(fam, yr), TODAY)
 
@@ -69,7 +68,7 @@ def build_model_cards(curves, daily, determine_status, get_event_date, get_event
         days_remaining = days_to_start if days_to_start > 0 else days_to_close
 
         # Registration curve (template) — also feeds the roster-pending gate below.
-        curve = curves.get(family, curves.get('__global__', {}))
+        curve = fitted.curve_for(family)
 
         # v5 Cat R: roster-pending rows ride the model path only when the same
         # pace gate the interim path uses says the live curve is trustworthy;
@@ -110,6 +109,7 @@ def build_model_cards(curves, daily, determine_status, get_event_date, get_event
         # Predictions — use production model with guardrails
         hist_counts = [h['count'] for h in historical]
         prediction_source = 'model'
+        tier_used = None
         if status == 'complete':
             point, ci_lo, ci_hi = current_count, current_count, current_count
             prediction_source = 'final'
@@ -120,34 +120,16 @@ def build_model_cards(curves, daily, determine_status, get_event_date, get_event
             point, ci_lo, ci_hi = current_count, current_count, current_count
             prediction_source = 'live_scrape'
         elif status == 'live' and days_remaining > 0:
-            if days_to_start == 0 and window_len > 0:
-                # Post-start online-registration window: the 5-day schedule has
-                # begun but 4/3/2-day online entries are still arriving. Take the
-                # event-start (T=0) ratio bucket — the full count-at-start -> final
-                # multiplier — and decay it toward 1.0 as registration close nears.
-                # build_ratio_model's `ratios` carry a real T=0 bucket;
-                # prod_model.predict_nowcast's finest bucket is T-1, so at T=0 it
-                # would over-extrapolate from a one-day-earlier ratio.
-                p0, lo0, hi0 = predict_with_lognormal_ci(
-                    current_count, 0, family, ratios)
-                point, ci_lo, ci_hi = window_decayed_estimate(
-                    current_count, p0, lo0, hi0, days_into_window, window_len)
-                prediction_source = 'model_online_window'
-            else:
-                point, ci_lo, ci_hi = prod_model.predict_nowcast(
-                    current_count, days_to_start, family,
-                    early_bird_deadline=eb_deadline,
-                    event_start_date=event_date)
-                if point is None:
-                    point, ci_lo, ci_hi = predict_with_lognormal_ci(
-                        current_count, days_to_start, family, ratios)
-
-            # Plausibility check: if the point estimate is far outside the family's
-            # historical range, blend toward the historical median while preserving
-            # the model's CI width. Floors the result at current_count so a published
-            # final can never sit below the entries already scraped (v3 N2).
-            point, ci_lo, ci_hi = apply_plausibility_clamp(
-                point, ci_lo, ci_hi, current_count, hist_counts, days_remaining)
+            # The model, or the window route once the event has started and
+            # online entries are still arriving; the plausibility clamp last,
+            # which floors the result at current_count (v3 N2).
+            forecast = forecast_event(
+                Event(family, event_start=event_date, early_bird_deadline=eb_deadline,
+                      window_len=window_len),
+                Observation(current_count, days_to_start, days_into_window),
+                fitted, hist_counts, as_of=TODAY)
+            point, ci_lo, ci_hi = forecast.point, forecast.low, forecast.high
+            prediction_source, tier_used = forecast.route, forecast.tier
         else:
             point, ci_lo, ci_hi = current_count, current_count, current_count
 
@@ -215,19 +197,13 @@ def build_model_cards(curves, daily, determine_status, get_event_date, get_event
         # International") reports its true edition count instead of 0 and isn't
         # wrongly flagged low-confidence. Mirrors the alias sum 04c uses for CI
         # widening; without it the JSON field under-reports for every alias family.
-        if hasattr(prod_model, 'family_n_editions'):
-            n_editions_for_family = prod_model.family_n_editions.get(family, 0)
+        if hasattr(fitted.model, 'family_n_editions'):
+            n_editions_for_family = fitted.model.family_n_editions.get(family, 0)
             for _alias in m04c.FAMILY_ALIASES.get(family, []):
-                n_editions_for_family += prod_model.family_n_editions.get(_alias, 0)
+                n_editions_for_family += fitted.model.family_n_editions.get(_alias, 0)
         else:
             n_editions_for_family = 0
         low_confidence = n_editions_for_family < 4
-        # prod_model._last_tier only describes a predict_nowcast() call. The
-        # online-window path uses predict_with_lognormal_ci instead, so leave the
-        # tier null there rather than reporting a stale value from another row.
-        tier_used = (getattr(prod_model, '_last_tier', None)
-                     if status == 'live' and prediction_source != 'model_online_window'
-                     else None)
 
         t_out = {
             "family": display_family,

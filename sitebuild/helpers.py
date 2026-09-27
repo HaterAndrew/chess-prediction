@@ -64,6 +64,20 @@ def _apply_wo_top6_adjustment(target_family, entries, strip_family=False):
     return out
 
 
+def print_recalibration(recal):
+    """The run log's account of the recalibration fit_models ran."""
+    if recal['diag'] is None:
+        print(f"  Recalibration skipped: need ≥5 completed tournaments, have {recal['n']}")
+        return
+    n_older = recal['n'] - recal['n_season']
+    print(f"  Recalibration from {recal['n']} tournaments ({n_older} from the two "
+          f"seasons before, {recal['n_season']} from this season):")
+    for T, d in sorted(recal['diag'].items()):
+        cov = d.get('coverage_before', d.get('coverage', 0))
+        print(f"    T-{T:>2}: bias {d['mean_bias']:>+5.1f}% → factor {d['bias_factor']:.3f}, "
+              f"CI cov {cov:>3.0f}% → adj {d['ci_adj']:.3f} (n={d['n']})")
+
+
 T_GRID = np.arange(0, 121)
 TODAY = pd.Timestamp.now().normalize()
 

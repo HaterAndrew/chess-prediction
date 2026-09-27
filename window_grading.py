@@ -41,10 +41,8 @@ import numpy as np
 import pandas as pd
 
 
-from pipeline_utils import apply_plausibility_clamp
-from prediction_window import window_decayed_estimate
-from ratio_model import (build_ratio_model, predict_with_lognormal_ci,
-                         ratio_observation_count)
+from forecast import Event, Fitted, Observation, forecast_event
+from ratio_model import build_ratio_model, ratio_observation_count
 
 m04c = import_module("04c_final_model")
 
@@ -99,7 +97,7 @@ def eligible_events(summary, meta, year=None):
 
 
 def grade_fold(year, summary, daily_post, meta, ratios, hist_lookup,
-               predict_fn, gradeable_fn=None):
+               gradeable_fn=None):
     """Score the window engine on one year's events, one row per window day."""
     records = []
     clamp_fired = 0
@@ -123,21 +121,19 @@ def grade_fold(year, summary, daily_post, meta, ratios, hist_lookup,
                 continue
         window_len = int(ev['window_len'])
         hist_counts = hist_lookup.get(ev['family'], [])
+        event = Event(ev['family'], window_len=window_len)
+        fitted = Fitted(ratios=ratios)
 
         for d in range(0, window_len):
             current = count_at_window_day(tid_daily, d)
             if current is None or current <= 0:
                 continue
             # Exactly the production chain in 04d's window branch.
-            p0, lo0, hi0 = predict_fn(current, 0, ev['family'], ratios)
-            point, lo, hi = window_decayed_estimate(
-                current, p0, lo0, hi0, d, window_len)
-            days_remaining = window_len - d
-            clamped = apply_plausibility_clamp(
-                point, lo, hi, current, hist_counts, days_remaining)
-            if clamped[0] != point:
+            forecast = forecast_event(
+                event, Observation(current, 0, days_into_window=d), fitted, hist_counts)
+            if forecast.point != forecast.raw_point:
                 clamp_fired += 1
-            point, lo, hi = clamped
+            point, lo, hi = forecast.point, forecast.low, forecast.high
 
             records.append({
                 'tid': ev['tid'], 'family': ev['family'], 'year': int(year),
@@ -279,8 +275,7 @@ def grade_window_engine(summary, daily_raw, meta, eval_years, hist_lookup_fn,
             continue
         recs, clamped, frozen = grade_fold(
             year, summary, daily_post, meta, ratios,
-            hist_lookup_fn(train), predict_with_lognormal_ci,
-            gradeable_fn=gradeable_fn)
+            hist_lookup_fn(train), gradeable_fn=gradeable_fn)
         all_records.extend(recs)
         total_clamped += clamped
         all_frozen.extend(frozen)

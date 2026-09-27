@@ -516,7 +516,7 @@
       <p class="info-note">
         s(T) calibrated via LOO for 80% coverage. Shrink(T) = 0.33 at T &ge; 60 &rarr; 0.75 at T &lt; 5.
         &sigma; floored via variance regularization for families with &le; 3 editions.
-        Small adjustments (1&ndash;5%) correct for year-over-year trends, historical withdrawals, and near-capacity dampening.
+        Small adjustments (1&ndash;5%) correct for year-over-year trends and near-capacity dampening.
         Predictions that drift too far from historical norms are pulled back via plausibility bounds.
       </p>
     </details>
@@ -536,7 +536,6 @@
             <tr><td>Fill-% shrinkage</td><td>Count &gt; 60% of family mean</td><td>Shrink ratio toward 1.0 (max 20%)</td></tr>
             <tr><td>Family anchor</td><td>Count &lt; threshold, T &ge; 42</td><td>Blend with 0.6 &middot; recent + 0.4 &middot; mean final</td></tr>
             <tr><td>Growth trend</td><td>T &ge; 7</td><td>Multiply by 1 + trend &middot; 0.5 (capped &plusmn;15%)</td></tr>
-            <tr><td>Withdrawal correction</td><td>Historical data available</td><td>Reduce by median withdrawal rate</td></tr>
             <tr><td>Plausibility bounds</td><td>Pred &lt; 70% of family median</td><td>Blend toward historical median</td></tr>
             <tr><td>Edition widening</td><td>0&ndash;1 prior editions</td><td>Widen CI by 2.5&times; / 1.5&times;</td></tr>
           </tbody>
@@ -704,7 +703,6 @@
           </tr></thead>
           <tbody>
             <tr><td>Growth trend (&minus;3.4%/yr)</td><td>910 &times; (1 + (&minus;0.034) &middot; 0.5)</td><td class="tc pen">894</td></tr>
-            <tr><td>Withdrawal corr. (1.2%)</td><td>894 &times; (1 &minus; 0.012)</td><td class="tc pen">883</td></tr>
             <tr><td>Plausibility bounds</td><td>Below 70% of family median (916); blend</td><td class="tc pen">900</td></tr>
           </tbody>
         </table>

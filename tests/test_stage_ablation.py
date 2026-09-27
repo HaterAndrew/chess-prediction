@@ -49,7 +49,7 @@ def test_set_stage_flags_is_incremental():
     assert model._stage_on('trend') is False
     assert model._stage_on('recal') is False
     # Untouched stages stay on.
-    assert model._stage_on('withdrawal') is True
+    assert model._stage_on('anchor') is True
 
 
 def test_recal_applies_when_model_has_no_stage_machinery():

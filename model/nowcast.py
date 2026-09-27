@@ -9,7 +9,7 @@ from feature_engineering import compute_adjustment_factor, compute_all_features
 from model.ci_floors import _predict_nowcast_ci_tail
 from model.constants import (ENSEMBLE_DIVERGENCE_THRESHOLD,
                              ENSEMBLE_DIVERGENCE_WIDENING, FAMILY_ALIASES,
-                             MAX_WITHDRAWAL_CORRECTION, TODAY)
+                             TODAY)
 from model.stats import _filter_ratios, lognormal_ci
 
 class NowcastMixin:
@@ -373,19 +373,10 @@ class NowcastMixin:
             low = point - ci_half_width
             high = point + ci_half_width
 
-        # Withdrawal rate correction: reduce prediction by expected withdrawal %.
-        # v3 N4 (audit/AUDIT_2026-07-25.md): the comment said "cap at 15%" but
-        # the condition `wd_rate < 0.15` DISABLED the correction above the
-        # threshold instead of capping it. A family at 14.9% withdrawals got the
-        # full correction; one at 15.1% — withdrawing more — got none at all, a
-        # discontinuity that moved the estimate the wrong way exactly where the
-        # correction matters most. Cap the rate, as intended.
-        wd_rate = self.family_withdrawal_rates.get(family, 0.0)
-        if self._stage_on('withdrawal') and wd_rate > 0:
-            wd_rate = min(wd_rate, MAX_WITHDRAWAL_CORRECTION)
-            point *= (1 - wd_rate)
-            low *= (1 - wd_rate)
-            high *= (1 - wd_rate)
+        # No withdrawal correction: the forecast is of gross entries, the count
+        # the site shows and every final since 2010 records. The correction
+        # that stood here never ran (the enrichment's total_entries is 0 in
+        # every row), and had it run it would have aimed a gross target net.
 
         # Feature-engineered adjustments: day-of-week, holiday proximity,
         # early-bird deadline distance. These apply small multiplicative

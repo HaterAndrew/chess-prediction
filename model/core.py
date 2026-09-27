@@ -6,12 +6,13 @@ decomposition diff is relocation only (04c 579-663 + 996-1141).
 """
 
 import numpy as np
-from sklearn.linear_model import HuberRegressor
 
 from model.constants import CHOP_POINTS
+from model.counts import counts_by_event
 from model.fitting import FitMixin
 from model.nowcast import NowcastMixin
 from model.recalibration import RecalibrationMixin
+from model.robust_reg import fit_huber
 from model.stats import lognormal_ci
 
 class N5v4_Final(FitMixin, NowcastMixin, RecalibrationMixin):
@@ -157,73 +158,49 @@ class N5v4_Final(FitMixin, NowcastMixin, RecalibrationMixin):
         cal_valid = valid
         if cal_max_year is not None:
             cal_valid = valid[valid['tournament_year'] < cal_max_year]
+        counts = counts_by_event(daily, cal_valid['tid'], CHOP_POINTS)
 
         for T in CHOP_POINTS:
-            # Collect all LOO error ratios for this T
-            loo_data = []
-            for _, row in cal_valid.iterrows():
-                tid = row['tid']
-                family = row['family']
-                actual = row['final_count']
-
-                td = daily[daily['tid'] == tid].sort_values('T', ascending=False)
-                if len(td) < 5:
-                    continue
-
-                regs = td[td['T'] >= T]
-                if len(regs) == 0:
-                    continue
-                count_at_T = int(regs['cum_regs'].max())
-                if count_at_T == 0:
-                    continue
-
-                # LOO: get family ratios excluding this tournament
-                fam_rats = self.ratios.get(family, {}).get(T, [])
-                loo = [r[0] for r in fam_rats if r[2] != tid]
-                if len(loo) < 2:
-                    loo = [r[0] for r in self.global_ratios.get(T, []) if r[2] != tid]
-                if len(loo) < 2:
-                    continue
-
-                loo_data.append((count_at_T, actual, loo))
-
-            if len(loo_data) < 10:
+            records = self._loo_interval_records(cal_valid, counts, T)
+            if len(records) < 10:
                 self.ci_scale[T] = 1.0
                 continue
 
             # Binary search for scale factor that gives ~80% coverage
-            g_sigma = self.global_log_sigma.get(T)
-
-            def get_coverage(scale):
-                covered = 0
-                for count_at_T, actual, loo in loo_data:
-                    med, lo_r, hi_r = lognormal_ci(
-                        loo, level=0.80, global_sigma=g_sigma,
-                        count_stats=False,
-                    )
-                    if scale != 1.0:
-                        log_med = np.log(med)
-                        log_lo = np.log(lo_r)
-                        log_hi = np.log(hi_r)
-                        hw = (log_hi - log_lo) / 2 * scale
-                        lo_r = np.exp(log_med - hw)
-                        hi_r = np.exp(log_med + hw)
-                    lo = count_at_T * lo_r
-                    hi = count_at_T * hi_r
-                    if lo <= actual <= hi:
-                        covered += 1
-                return covered / len(loo_data)
-
             lo_s, hi_s = 0.4, 2.0
             for _ in range(20):
                 mid_s = (lo_s + hi_s) / 2
-                cov = get_coverage(mid_s)
-                if cov < 0.80:
+                if _coverage(records, mid_s) < 0.80:
                     lo_s = mid_s
                 else:
                     hi_s = mid_s
 
             self.ci_scale[T] = round(hi_s, 3)
+
+    def _loo_interval_records(self, cal_valid, counts, T):
+        """(count, actual, med, lo_r, hi_r) per calibration event at T, the
+        ratio interval built from the family's ratios without the event.
+
+        The interval does not depend on the scale being searched, so it is
+        built once here instead of on each of the search's 20 steps.
+        """
+        g_sigma = self.global_log_sigma.get(T)
+        records = []
+        for _, row in cal_valid.iterrows():
+            tid = row['tid']
+            count_at_T = counts.get(tid, {}).get(T)
+            if not count_at_T:
+                continue
+            fam_rats = self.ratios.get(row['family'], {}).get(T, [])
+            loo = [r[0] for r in fam_rats if r[2] != tid]
+            if len(loo) < 2:
+                loo = [r[0] for r in self.global_ratios.get(T, []) if r[2] != tid]
+            if len(loo) < 2:
+                continue
+            med, lo_r, hi_r = lognormal_ci(loo, level=0.80, global_sigma=g_sigma,
+                                           count_stats=False)
+            records.append((count_at_T, row['final_count'], med, lo_r, hi_r))
+        return records
 
     def _get_size_matched_regression(self, current_count):
         """Build a Huber regression from size-matched families' training data.
@@ -242,12 +219,8 @@ class N5v4_Final(FitMixin, NowcastMixin, RecalibrationMixin):
             elif self._small_reg is not None:
                 return self._small_reg
             return None
-        X = np.array([[p[0], p[1]] for p in matched_pts], dtype=float)
-        y = np.array([p[2] for p in matched_pts], dtype=float)
         try:
-            hub = HuberRegressor(epsilon=1.35, max_iter=200)
-            hub.fit(X, y)
-            return np.array([hub.coef_[0], hub.coef_[1], hub.intercept_])
+            return fit_huber(matched_pts, label='size-matched')
         except Exception:
             return None
 
@@ -294,3 +267,17 @@ class N5v4_Final(FitMixin, NowcastMixin, RecalibrationMixin):
         'World Open Action',
     }
 
+
+def _coverage(records, scale):
+    """Share of calibration events whose actual lands inside the ratio
+    interval with its log half-width multiplied by scale."""
+    covered = 0
+    for count_at_T, actual, med, lo_r, hi_r in records:
+        if scale != 1.0:
+            log_med = np.log(med)
+            hw = (np.log(hi_r) - np.log(lo_r)) / 2 * scale
+            lo_r = np.exp(log_med - hw)
+            hi_r = np.exp(log_med + hw)
+        if count_at_T * lo_r <= actual <= count_at_T * hi_r:
+            covered += 1
+    return covered / len(records)

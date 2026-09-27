@@ -6,9 +6,10 @@ import warnings
 
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import HuberRegressor
 
 from model.constants import CHOP_POINTS, OUTPUT_DIR
+from model.counts import counts_by_event
+from model.robust_reg import fit_huber, reset_unconverged, unconverged
 from model.stats import report_trim_stats, reset_trim_stats, trim_outliers
 from shared.side_events import SIDE_EVENT_RE
 from shared.season import CURRENT_SEASON
@@ -53,6 +54,7 @@ class FitMixin:
         # AUDIT.md C7 — reset trim counters at start of every fit so reports
         # reflect this fit only, not accumulated across calls.
         reset_trim_stats()
+        reset_unconverged()
 
         # Auto-populate BLITZ_FAMILIES from data: any family matching the
         # shared side-event pattern (shared.side_events — one definition for
@@ -91,27 +93,20 @@ class FitMixin:
         # Track family mean final counts for size-matched fallback
         self.family_mean_final = {}
 
+        # Each event's count at every chop point, read once (model/counts.py).
+        event_counts = counts_by_event(daily, valid['tid'], CHOP_POINTS)
         for _, row in valid.iterrows():
             tid = row['tid']
             family = row['family']
             actual = row['final_count']
             year = row['tournament_year']
-
-            td = daily[daily['tid'] == tid].sort_values('T', ascending=False)
-            if len(td) < 5:
+            if tid not in event_counts:
                 continue
 
             if family not in self.ratios:
                 self.ratios[family] = {}
 
-            for T in CHOP_POINTS:
-                regs = td[td['T'] >= T]
-                if len(regs) == 0:
-                    continue
-                count_at_T = int(regs['cum_regs'].max())
-                if count_at_T == 0:
-                    continue
-
+            for T, count_at_T in event_counts[tid].items():
                 ratio = actual / count_at_T
                 self.ratios[family].setdefault(T, []).append((ratio, year, tid))
                 self.global_ratios.setdefault(T, []).append((ratio, year, tid))
@@ -124,7 +119,8 @@ class FitMixin:
         self.family_mean_final = fam_finals.to_dict()
 
         # Most recent year's final count per family (better anchor than mean)
-        recent = valid.sort_values('tournament_year').groupby('family')['final_count'].last()
+        recent = (valid.sort_values(['tournament_year', 'tid'], kind='mergesort')
+                  .groupby('family')['final_count'].last())
         self.family_recent_final = recent.to_dict()
 
         # Compute per-family growth trend (YoY slope normalized by mean)
@@ -282,36 +278,21 @@ class FitMixin:
         # learn how lead time affects the count-to-final relationship
         reg_data = {}  # family -> [(count_at_T, T, final_count), ...]
         for _, row in valid.iterrows():
-            tid = row['tid']
-            family = row['family']
-            actual = row['final_count']
-            td = daily[daily['tid'] == tid].sort_values('T', ascending=False)
-            if len(td) < 5:
-                continue
-            for T in CHOP_POINTS:
-                regs = td[td['T'] >= T]
-                if len(regs) == 0:
-                    continue
-                count_at_T = int(regs['cum_regs'].max())
-                if count_at_T == 0:
-                    continue
-                reg_data.setdefault(family, []).append(
-                    (count_at_T, T, actual))
+            for T, count_at_T in event_counts.get(row['tid'], {}).items():
+                reg_data.setdefault(row['family'], []).append(
+                    (count_at_T, T, row['final_count']))
 
         self.reg_params = {}
         self._reg_data = reg_data  # save for size-matched regression fallback
         for fam, pts in reg_data.items():
             if len(pts) < 6:
                 continue
-            X = np.array([[p[0], p[1]] for p in pts], dtype=float)
-            y = np.array([p[2] for p in pts], dtype=float)
             try:
-                hub = HuberRegressor(epsilon=1.35, max_iter=200)
-                hub.fit(X, y)
-                coeffs = np.array([hub.coef_[0], hub.coef_[1], hub.intercept_])
-                self.reg_params[fam] = coeffs
+                self.reg_params[fam] = fit_huber(pts, label=fam)
             except Exception:
                 try:
+                    X = np.array([[p[0], p[1]] for p in pts], dtype=float)
+                    y = np.array([p[2] for p in pts], dtype=float)
                     X_aug = np.column_stack([X, np.ones(len(X))])
                     coeffs, _, _, _ = np.linalg.lstsq(X_aug, y, rcond=None)
                     self.reg_params[fam] = coeffs
@@ -332,12 +313,8 @@ class FitMixin:
         self._small_reg = None
         for pts_list, attr in [(large_pts, '_large_reg'), (small_pts, '_small_reg')]:
             if len(pts_list) >= 10:
-                X = np.array([[p[0], p[1]] for p in pts_list], dtype=float)
-                y = np.array([p[2] for p in pts_list], dtype=float)
                 try:
-                    hub = HuberRegressor(epsilon=1.35, max_iter=200)
-                    hub.fit(X, y)
-                    setattr(self, attr, np.array([hub.coef_[0], hub.coef_[1], hub.intercept_]))
+                    setattr(self, attr, fit_huber(pts_list, label=attr))
                 except Exception as e:
                     # H5: don't swallow — a failed backstop fit leaves this leg
                     # unset, which quietly changes predictions. Make it visible.
@@ -347,6 +324,9 @@ class FitMixin:
         # AUDIT.md C7 — surface IQR outlier trim activity at end of fit so
         # silent point dropping is visible. Threshold of 5% pct_trimmed flagged
         # as a warning since IQR 3.0x should normally trim very little.
+        if unconverged():
+            print(f"  WARNING: {len(unconverged())} Huber fit(s) stopped at the iteration cap: "
+                  f"{', '.join(unconverged()[:5])}")
         ts = report_trim_stats(top_n=5)
         if ts['total_in'] > 0:
             print(f"  IQR outlier trim: {ts['total_in'] - ts['total_out']}/{ts['total_in']} "

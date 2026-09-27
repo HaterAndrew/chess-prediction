@@ -513,8 +513,8 @@
       <p class="prose sp">
         Every prediction includes a confidence interval: a range the actual result has fallen within about
         <strong class="pen" id="mc-ci-cover-inline">75%</strong> of the time at two weeks out in backtesting.
-        The interval targets 80%, so it runs slightly tight, and tighter still close to the event, where coverage
-        drops further. Wider far from the event, narrower as it approaches.
+        The interval targets 80%; the Performance tab shows how close each lead time comes.
+        Wider far from the event, narrower as it approaches.
       </p>
       <div class="formula-box plain">
         CI = Count &times; exp( &mu; &plusmn; t(&alpha;, n&minus;1) &middot; &sigma; &middot; &radic;(1 + 1/n) &middot; s(T) &middot; shrink(T) )
@@ -522,7 +522,9 @@
       <p class="info-note">
         s(T) calibrated via LOO for 80% coverage. Shrink(T) = 0.33 at T &ge; 60 &rarr; 0.75 at T &lt; 5.
         &sigma; floored via variance regularization for families with &le; 3 editions.
-        Small adjustments (1&ndash;5%) correct for year-over-year trends and near-capacity dampening.
+        Months out, the forecast leans toward last year&rsquo;s final; inside two weeks it is averaged with pickup
+        (this year&rsquo;s count plus what last year&rsquo;s edition took from the same point).
+        Smaller adjustments correct for year-over-year trends and near-capacity dampening.
         Predictions that drift too far from historical norms are pulled back via plausibility bounds.
       </p>
     </details>
@@ -563,7 +565,7 @@
         <strong class="pen" id="about-cov">78%</strong> of the time. Coverage three days out sits near
         <strong class="pen" id="about-cov-close">76%</strong>. Earlier releases ran overconfident close to the
         event (three-day coverage as low as 67%) — exactly when people most want the number — and the 2026
-        recalibration widened short-lead intervals to close most of that gap. The full lead-time breakdown is on the
+        recalibration widened short-lead intervals. The full lead-time breakdown is on the
         Performance tab.
       </p>
       <p class="info-note">

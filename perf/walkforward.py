@@ -23,6 +23,7 @@ from sitebuild.editions import prior_editions
 from sitebuild.helpers import _apply_wo_top6_adjustment, sanitize_early_bird
 from tournament_aliases import FAMILY_ALIASES, canonicalize_family
 
+from perf.cold_start import disguise
 from perf.grading import T_POINTS
 from perf.schedule import FIRST_SEASON, forecast_points, monthly_cutoffs
 from perf.wf_baselines import last_year_point
@@ -97,9 +98,9 @@ def shadow_columns(event, obs, fitted, history, as_of):
     return out
 
 
-def forecast_record(ev, T, d, cutoff, view, fitted, eb_deadline, curves):
+def forecast_record(ev, T, d, cutoff, view, fitted, eb_deadline, curves, cold_start=None):
     """One graded forecast with its baselines and shadow routes, or None when
-    there was no count or forecast."""
+    there was no count or forecast. cold_start: a perf.cold_start mode."""
     seen = curves.count(ev['tid'], T)
     if not seen.count:
         return None
@@ -110,6 +111,7 @@ def forecast_record(ev, T, d, cutoff, view, fitted, eb_deadline, curves):
                   canonical=canonicalize_family(family),
                   names=(family, *FAMILY_ALIASES.get(family, [])))
     pickup = pickup_point(seen.count, T, prior, curves.count)
+    event, history, pickup = disguise(event, history, pickup, cold_start)
     obs = Observation(seen.count, T, pickup=pickup)
     f = forecast_event(event, obs, fitted, history, as_of=d)
     if f is None:
@@ -129,7 +131,8 @@ def forecast_record(ev, T, d, cutoff, view, fitted, eb_deadline, curves):
             **shadow_columns(event, obs, fitted, history, d)}
 
 
-def run_walk_forward(corpus, today, first_season=FIRST_SEASON, horizons=T_POINTS):
+def run_walk_forward(corpus, today, first_season=FIRST_SEASON, horizons=T_POINTS,
+                     cold_start=None):
     """Every graded forecast, in forecast-date order, and the warnings the fits raised."""
     events = gradeable_events(corpus, today, first_season).set_index('tid', drop=False)
     cutoffs = monthly_cutoffs(first_season, today)
@@ -145,7 +148,8 @@ def run_walk_forward(corpus, today, first_season=FIRST_SEASON, horizons=T_POINTS
         fitted, warned = fit_as_of(view, cutoff.year)
         warnings += [f"{cutoff.date()}: {w}" for w in warned]
         for tid, T, d, _ in by_cutoff[cutoff]:
-            rec = forecast_record(events.loc[tid], T, d, cutoff, view, fitted, eb[tid], curves)
+            rec = forecast_record(events.loc[tid], T, d, cutoff, view, fitted, eb[tid], curves,
+                                  cold_start)
             if rec is not None:
                 records.append(rec)
     records.sort(key=lambda r: (r['forecast_date'], r['tid'], -r['T']))

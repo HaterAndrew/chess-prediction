@@ -36,6 +36,14 @@ def test_a_scraped_edition_gets_a_gross_running_max_curve_before_its_start():
     assert curves['daily_regs'].sum() == 150 and curves['cum_pct'].iloc[-1] == 1.0
 
 
+def test_a_still_registering_edition_ends_at_its_latest_count():
+    # Jul 10..14, all before the Jul 17 start: 55 entries, five deleted, then four more.
+    scrape = _scrape('2026 Scraped Open', [54, 55, 50, 52, 54])
+    curves = scrape_curves(scrape, _summary(), CAL, have_curve={2})
+    assert curves['cum_regs'].tolist() == [50, 50, 50, 52, 54], \
+        "the least count from each day on: never above the live count, never falling"
+
+
 def test_an_edition_with_a_curve_is_left_alone():
     scrape = _scrape('2026 Export Open', [10, 20])
     assert scrape_curves(scrape, _summary(), CAL, have_curve={2}).empty

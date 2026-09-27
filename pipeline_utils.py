@@ -6,6 +6,7 @@ fitting, recalibration, and walk-in multiplier scripts must all agree on.
 import pandas as pd
 
 from shared import clock
+from shared.thresholds import GRADED_HORIZON
 
 
 def is_event_complete(end_date, today=None):
@@ -269,28 +270,28 @@ def pace_gate_ok(current_count, days_to_start, curve):
     return curve_pct_at(curve, days_to_start) >= PACE_MIN_CURVE_PCT
 
 
-def roster_pending_model_ok(current_count, days_to_start, status, event_date,
-                            curve):
+def roster_pending_model_ok(current_count, days_to_start, status, event_date):
     """Should a roster-pending summary row ride the main model card path?
 
     Roster-pending skeletons (reconcile_final_counts H2) carry no registration
     timestamps, but 04d merges their live scrape counts and the corpus loader
-    builds their curve from the scrape (corpus.scrape_curves), and the ratio
-    model trains only on pre-2026 editions —
-    so predict_nowcast needs nothing the missing export would provide
-    (audit v5 Cat R). Admission requires:
+    builds their curve from the scrape (corpus.scrape_curves), so
+    predict_nowcast needs nothing the missing export would provide (audit v5
+    Cat R). Admission requires:
 
       * status == 'live' with days_to_start > 0 — ended / reg-closed /
         post-start-window events keep their settled or in_progress cards from
         the metadata loop, exactly as before;
       * event_date present — the scrape curve's T values are anchored to the
         metadata start_date, so without it there is no usable curve;
-      * pace_gate_ok — the same threshold the interim metadata_pace path uses,
-        so the model path and the fallback flip at the same point and no card
-        can land on a worse estimate than the old interim one.
+      * entries, out to GRADED_HORIZON — the walk-forward grades every stand-in
+        route beside the model (performance_data.walk_forward.route_evidence),
+        and at each graded horizon and count no stand-in beats it. Past the
+        longest graded horizon there is no evidence and the stand-ins keep
+        the card.
     """
     if status != 'live' or days_to_start <= 0:
         return False
     if event_date is None:
         return False
-    return pace_gate_ok(current_count, days_to_start, curve)
+    return current_count >= 1 and days_to_start <= GRADED_HORIZON

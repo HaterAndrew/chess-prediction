@@ -14,3 +14,7 @@ MIN_FINAL_COUNT = 50
 # deliberately keeps its OWN 0.60 literal (PERF_FROZEN_CURVE_RATIO): the
 # scanner is a watchdog on 04e and must keep reporting if the two drift.
 FROZEN_CURVE_MIN_RATIO = 0.60
+
+# The longest horizon the walk-forward grades (perf.grading.T_POINTS). A
+# routing rule rests on graded evidence, so none reaches past it.
+GRADED_HORIZON = 90

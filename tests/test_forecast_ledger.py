@@ -49,6 +49,16 @@ def test_one_row_per_live_card_with_its_forecast_and_horizon():
     assert (row["model_hash"], row["code_commit"]) == ("abc", "70f39a0")
 
 
+def test_each_stand_in_the_card_carries_is_logged_unpublished():
+    shadows = [{"route": "metadata_pace", "point": 240, "ci_lower": 200, "ci_upper": 290},
+               {"route": "metadata_historical_avg", "point": 300, "ci_lower": 250, "ci_upper": 350}]
+    rows = _rows(_website(_card(shadow_forecasts=shadows)))
+    assert [(r["route"], r["published"], r["point"]) for r in rows] == \
+        [("model", 1, 261), ("metadata_pace", 0, 240), ("metadata_historical_avg", 0, 300)]
+    assert rows[2]["ci_upper"] == 350 and rows[2]["tier"] == ""
+    assert {(r["T"], r["count"], r["as_of_date"]) for r in rows} == {(12, 58, "2026-09-27")}
+
+
 def test_a_stale_run_is_flagged_on_every_row():
     rows = _rows(_website(_card(), _card(family="B"), is_stale=True))
     assert {r["is_stale"] for r in rows} == {1}

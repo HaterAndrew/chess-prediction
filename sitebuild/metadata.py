@@ -1,9 +1,8 @@
-"""Metadata/interim card loop (04d main() body, verbatim)."""
-import numpy as np
+"""Metadata/interim card loop (from the 04d main() body)."""
 import pandas as pd
 
-from pipeline_utils import is_event_complete, pace_gate_ok
-from ratio_model import predict_with_lognormal_ci
+from forecast import Event, Observation, forecast_event
+from pipeline_utils import is_event_complete
 from shared.season import CURRENT_SEASON
 from tournament_aliases import canonicalize_family
 
@@ -12,7 +11,7 @@ from sitebuild.helpers import (TODAY, _apply_wo_top6_adjustment,
                                m04c, sanitize_early_bird)
 
 
-def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecutive_zero_scrape_days, _scrape_daily_series, _scrape_lookup, curves, existing_editions, get_event_end_date, meta, ratios, summary, tournaments_out):
+def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecutive_zero_scrape_days, _scrape_daily_series, _scrape_lookup, fitted, existing_editions, get_event_end_date, meta, summary, tournaments_out):
     def is_settled(fam, yr):
         return is_event_complete(get_event_end_date(fam, yr), TODAY)
 
@@ -75,7 +74,7 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
                 # No roster and no live signal — nothing truthful to display.
                 continue
             ended = event_end < TODAY
-            curve = curves.get(mfamily, curves.get('__global__', {}))
+            curve = fitted.curve_for(mfamily)
             reg_curve = [{"days_before": db,
                           "cumulative_pct": round(float(curve.get(db, 0)), 4)}
                          for db in [120, 90, 75, 60, 42, 28, 21, 14, 7, 3, 1, 0]]
@@ -127,7 +126,6 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
         # registrations instead of a frozen historical average, and flag it
         # low-confidence so the card discloses the degraded mode.
         hist_counts = [h['count'] for h in historical]
-        hist_mean = np.mean(hist_counts) if hist_counts else 100
         # Sanity check: 0 registrations close to event = likely cancelled/not tracked.
         #
         # v3 N8 (audit/AUDIT_2026-07-25.md): this is the same missing-scrape-day
@@ -153,50 +151,21 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
             status_label = "live"
 
         days_to_start = max((pd.Timestamp(event_date) - TODAY).days, 0)
-        prediction_source = "metadata_historical_avg"
-        # Only extrapolate from live pace when the signal is informative: close to
-        # the event AND enough registrations that 1-2 early sign-ups don't get
-        # multiplied into an absurd projection (a 1-registrant event 170 days out
-        # has no usable pace). Otherwise lean on the historical average — still
-        # flagged low-confidence below.
-        # v4 X1: the bare 90-day gate routed 46-90 day cards into the clamp
-        # ceiling (the curve share out there is ~1-2%, so the ratio scale-up was
-        # noise labeled as pace). pace_gate_ok keeps the old 45-day behaviour and
-        # grants the extension only where the family curve carries signal.
-        curve = curves.get(mfamily, curves.get('__global__', {}))
-        pace_usable = pace_gate_ok(current_count, days_to_start, curve)
-        if hist_counts and pace_usable and status_label == "live":
-            # Resolve the name the ratio model trained under (summary uses
-            # 01_data_prep's canonical form, which can differ from the FAMILY_GROUPS
-            # head — e.g. "World Open Under 13"); else predict falls to global ratios.
-            ratio_family = canon_family
-            for cand in hist_families:
-                if cand in ratios:
-                    ratio_family = cand
-                    break
-            p, lo, hi = predict_with_lognormal_ci(
-                current_count, days_to_start, ratio_family, ratios)
-            # Clamp into a sane band around observed history so a sparse, far-out
-            # count can't produce an absurd interim number.
-            lo_band, hi_band = min(hist_counts) * 0.6, max(hist_counts) * 1.5
-            point_estimate = int(min(max(p, lo_band), hi_band))
-            ci_lo = int(min(max(lo, lo_band), hi_band))
-            ci_hi = int(min(max(hi, lo_band), hi_band))
-            if ci_hi <= ci_lo:
-                ci_lo, ci_hi = int(min(hist_counts)), int(max(hist_counts))
-            prediction_source = "metadata_pace"
-        else:
-            point_estimate = int(hist_mean)
-            # Variance-based CI from history when no live pace signal is usable.
-            if len(hist_counts) >= 5:
-                ci_lo = int(np.percentile(hist_counts, 10))
-                ci_hi = int(np.percentile(hist_counts, 90))
-            elif len(hist_counts) >= 2:
-                ci_lo = int(min(hist_counts))
-                ci_hi = int(max(hist_counts))
-            else:
-                ci_lo = int(hist_mean * 0.7)
-                ci_hi = int(hist_mean * 1.3)
+        # Extrapolate from live pace only when the signal is informative: close
+        # to the event and enough registrations that 1-2 early sign-ups don't get
+        # multiplied into an absurd projection (pace_gate_ok, v4 X1). Otherwise
+        # the historical average, still flagged low-confidence below. A
+        # not_tracked event has 0 entries, so it never passes the pace gate.
+        # The ratio model may know the event by an alias, so every name is a
+        # candidate (summary uses 01_data_prep's canonical form, which can differ
+        # from the FAMILY_GROUPS head, e.g. "World Open Under 13").
+        curve = fitted.curve_for(mfamily)
+        forecast = forecast_event(
+            Event(mfamily, in_roster=False, canonical=canon_family,
+                  names=tuple(hist_families)),
+            Observation(current_count, days_to_start), fitted, hist_counts)
+        point_estimate, ci_lo, ci_hi = forecast.point, forecast.low, forecast.high
+        prediction_source = forecast.route
         reg_curve = []
         for db in [120, 90, 75, 60, 42, 28, 21, 14, 7, 3, 1, 0]:
             pct = curve.get(db, 0)

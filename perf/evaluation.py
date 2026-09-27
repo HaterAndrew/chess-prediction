@@ -7,7 +7,7 @@ import os
 import numpy as np
 import pandas as pd
 
-from pipeline_utils import apply_plausibility_clamp
+from forecast import Event, Fitted, Observation, forecast_event
 from shared.paths import OUTPUT_DIR
 # Calibration rationale for the 0.60 threshold lives with the constant
 # (shared/thresholds.py); is_curve_gradeable is its consumer here.
@@ -170,23 +170,16 @@ def evaluate_tournaments(model, test_tournaments, daily, frozen_skipped=None,
             if count_at_T <= 0:
                 continue
 
-            point, ci_lo, ci_hi = model.predict_nowcast(count_at_T, T, family)
-            if point is None:
+            # v3 T2: grade what the site actually shows. forecast_event runs the
+            # plausibility clamp (and the current_count floor) 04d publishes
+            # through; without a hist_lookup it grades the raw model.
+            history = hist_lookup.get(family, []) if hist_lookup is not None else None
+            forecast = forecast_event(Event(family), Observation(count_at_T, T),
+                                      Fitted(model=model), history)
+            if forecast is None:
                 continue
-
-            point = int(round(point))
-            ci_lo = int(round(ci_lo))
-            ci_hi = int(round(ci_hi))
-
-            # v3 T2: grade what the site actually shows. 04d applies this clamp
-            # (and the current_count floor) between the model and the page, so
-            # grading the raw output measured a forecast no visitor ever saw.
-            if hist_lookup is not None:
-                point, ci_lo, ci_hi = apply_plausibility_clamp(
-                    point, ci_lo, ci_hi,
-                    current_count=count_at_T,
-                    hist_counts=hist_lookup.get(family, []),
-                    days_remaining=T)
+            point, ci_lo, ci_hi = (int(round(v)) for v in
+                                   (forecast.point, forecast.low, forecast.high))
 
             error_pct = round((point - final) / final * 100, 1)
             t_predictions[T] = {

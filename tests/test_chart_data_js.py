@@ -47,3 +47,15 @@ def test_a_missing_value_reads_as_a_dash(res):
 
 def test_an_empty_table_still_parses(res):
     assert res["table_empty"] == '<thead><tr><th scope="col">A</th></tr></thead><tbody></tbody>'
+
+
+def test_a_series_holds_its_last_value_until_the_next_point(res):
+    assert res["step_before"] is None, "before the series starts there is no value"
+    assert res["step_on"] == 5
+    assert res["step_between"] == 5
+    assert res["step_after"] is None, "past the series' end there is no value"
+    assert res["step_empty"] is None
+
+
+def test_weekly_rows_count_back_from_event_day(res):
+    assert res["weekly"] == [[9, 25], [10, 2], [10, 9]]

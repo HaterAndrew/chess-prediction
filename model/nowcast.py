@@ -389,12 +389,14 @@ class NowcastMixin:
 
         # Feature-engineered adjustments: day-of-week, holiday proximity,
         # early-bird deadline distance. These apply small multiplicative
-        # corrections to the point estimate and CI bounds.
+        # corrections to the point estimate and CI bounds. They are dated at
+        # as_of (the forecast date) when the caller passes one, else today.
         eb_deadline = kwargs.get('early_bird_deadline')
         event_start = kwargs.get('event_start_date')
         if self._stage_on('features') and event_start and days_remaining > 0:
             try:
-                features = compute_all_features(TODAY, event_start, eb_deadline)
+                features = compute_all_features(kwargs.get('as_of') or TODAY,
+                                                event_start, eb_deadline)
                 feat_adj = compute_adjustment_factor(features, days_remaining)
                 if feat_adj != 1.0:
                     point *= feat_adj

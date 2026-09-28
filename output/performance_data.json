@@ -5797,7 +5797,7 @@
       "source": "forecast ledger and its backfill",
       "match_days": 3,
       "first_date": "2026-03-23",
-      "last_date": "2026-09-27"
+      "last_date": "2026-09-28"
     },
     "n_records": 145,
     "n_invalid_ranges": 0,
@@ -6579,7 +6579,7 @@
         "source": "forecast ledger and its backfill",
         "match_days": 3,
         "first_date": "2026-03-23",
-        "last_date": "2026-09-27"
+        "last_date": "2026-09-28"
       },
       "n_records": 0,
       "n_invalid_ranges": 0

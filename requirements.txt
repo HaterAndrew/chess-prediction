@@ -2,7 +2,7 @@
 # scrapers, model). Pinned to the versions the current test suite passes on so
 # a PyPI release cannot silently change model output on the next cron run (G2).
 # Bump deliberately via a PR that re-runs the test gate.
-pandas==3.0.5
+pandas==3.0.6
 numpy==2.5.3
 scipy==1.18.1
 scikit-learn==1.9.1

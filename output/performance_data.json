@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-30",
+  "generated": "2026-10-01",
   "model": "N5v4_Final",
   "n_tournaments": 28,
   "grade": "B+",
@@ -3534,8 +3534,8 @@
       ]
     }
   ],
-  "n_corpus_tournaments": 785,
-  "n_entry_records": 196344,
+  "n_corpus_tournaments": 786,
+  "n_entry_records": 196362,
   "corpus_year_min": 2012,
   "corpus_year_max": 2027,
   "corpus_year_span": 16,
@@ -3599,7 +3599,7 @@
     "protocol": {
       "first_season": 2023,
       "refit": "monthly",
-      "cutoffs": 45,
+      "cutoffs": 46,
       "count_rule": "rows dated by the forecast date; the export is exact through its snapshot (2026-03-21), later counts carry at most 3 days"
     },
     "n_records": 1062,
@@ -5797,7 +5797,7 @@
       "source": "forecast ledger and its backfill",
       "match_days": 3,
       "first_date": "2026-03-23",
-      "last_date": "2026-09-29"
+      "last_date": "2026-09-30"
     },
     "n_records": 145,
     "n_invalid_ranges": 0,
@@ -6579,7 +6579,7 @@
         "source": "forecast ledger and its backfill",
         "match_days": 3,
         "first_date": "2026-03-23",
-        "last_date": "2026-09-29"
+        "last_date": "2026-09-30"
       },
       "n_records": 0,
       "n_invalid_ranges": 0

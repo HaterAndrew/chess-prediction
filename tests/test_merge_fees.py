@@ -134,3 +134,55 @@ def test_next_season_row_never_takes_last_seasons_flyer(tmp_path, monkeypatch):
     meta_csv = _two_editions(tmp_path, monkeypatch, [_flyer(2026, "2026-03-25", 100)])
     assert merge_fees.merge_fees(first_season=2026) == 0
     assert pd.isna(pd.read_csv(meta_csv).set_index("year").loc[2027, "regular_fee"])
+
+
+# ── per-field fill (2026-10-03) ──────────────────────────────────────────
+# The merge skipped any row whose regular_fee was set, and read a blank
+# eb_demoted_reason (NaN in the CSV) as "nan", i.e. demoted. Between them no
+# early-bird tier ever reached metadata (NAO 2026 $245 by 9/20 sat in the
+# fee CSV only).
+
+def _eb_flyer(demoted=""):
+    return {"year": 2026, "url": "https://chesstour.com/tf26.htm",
+            "event_start": "2026-03-25", "regular_fee": 110, "onsite_fee": 130,
+            "early_bird_fee": 90, "eb_demoted_reason": demoted,
+            "early_bird_deadline": "2026-02-20"}
+
+
+def test_set_regular_fee_still_takes_the_flyer_early_bird(tmp_path, monkeypatch):
+    meta_csv = _two_editions(tmp_path, monkeypatch, [_eb_flyer()])
+    assert merge_fees.merge_fees(first_season=2026) == 1
+    row = pd.read_csv(meta_csv).set_index("year").loc[2026]
+    assert row["early_bird_fee"] == 90
+    assert row["early_bird_deadline"] == "2026-02-20"
+
+
+def test_a_set_fee_is_never_overwritten(tmp_path, monkeypatch):
+    """The flyer says 110/130; metadata's 100/120 stays."""
+    meta_csv = _two_editions(tmp_path, monkeypatch, [_eb_flyer()])
+    merge_fees.merge_fees(first_season=2026)
+    row = pd.read_csv(meta_csv).set_index("year").loc[2026]
+    assert (row["regular_fee"], row["onsite_fee"]) == (100, 120)
+
+
+def test_a_demoted_early_bird_tier_is_not_merged(tmp_path, monkeypatch):
+    meta_csv = _two_editions(tmp_path, monkeypatch, [_eb_flyer(demoted="past deadline wording")])
+    assert merge_fees.merge_fees(first_season=2026) == 0
+    assert pd.isna(pd.read_csv(meta_csv).set_index("year").loc[2026, "early_bird_fee"])
+
+
+def test_a_complete_row_is_left_alone(tmp_path, monkeypatch, capsys):
+    meta_csv = _two_editions(tmp_path, monkeypatch, [_eb_flyer()])
+    merge_fees.merge_fees(first_season=2026)
+    capsys.readouterr()
+    assert merge_fees.merge_fees(first_season=2026) == 0
+    assert "filled" not in capsys.readouterr().out.replace("0 families filled", "")
+    assert pd.read_csv(meta_csv).set_index("year").loc[2026, "early_bird_fee"] == 90
+
+
+def test_production_table_maps_the_three_class_and_open_flyers():
+    """swcc26, gwo26 and wcc26 were checked live on 2026-10-03."""
+    from fees.codes import FAMILY_TO_CODE
+    assert FAMILY_TO_CODE["Southwest Class Championships"] == "swcc"
+    assert FAMILY_TO_CODE["George Washington Open"] == "gwo"
+    assert FAMILY_TO_CODE["Western Class Championships"] == "wcc"

@@ -67,6 +67,13 @@ FAMILY_TO_CODE = {
     "DC Open": "dco",
     "World Open lower sections": "wolower",
     "World Open Under 13 Championship": "wu",
+    # Verified 2026-10-03 from the live 2026 flyers: swcc26 ("17th annual
+    # Southwest Class Championships"), gwo26 ("10th annual George Washington
+    # Open") and wcc26 ("33rd annual Western Class Championships"). Their 2027
+    # editions were the open events still showing no fee.
+    "Southwest Class Championships": "swcc",
+    "George Washington Open": "gwo",
+    "Western Class Championships": "wcc",
 }
 
 # Flyer codes that exist on chesstour.com but deliberately map to no family:
@@ -94,9 +101,11 @@ UNMAPPED_CODES = {
 #   "pho"/"uso"/"lvo"/"dc" all 404 with no mapped family (DC Open's
 #     authoritative code is "dco") — removed; a newly posted event reaches
 #     the scraper through blind discovery from the chessevents listing.
+# swcc/gwo/wcc added 2026-10-03: the chessevents listing never surfaced those
+# flyers, so no edition of the three ever reached tournament_fees.csv.
 FLYER_PROBE_CODES = [
     "wo", "chio", "nao", "lbo", "ncc", "aco", "scc",
-    "eo", "ao", "cco",
+    "eo", "ao", "cco", "swcc", "gwo", "wcc",
 ]
 
 # lowercase scraped tournament name (incl. spelling variants) ->

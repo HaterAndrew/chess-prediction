@@ -159,8 +159,9 @@ interface ModelPricing {
 }
 const MODEL_PRICING: Record<string, ModelPricing> = {
   "claude-sonnet-5-5": { input: 2.0, output: 10.0, cacheWrite: 2.5, cacheRead: 0.2 },
-  // Sonnet 5 standard rate (intro $2/$10 runs through 2026-08-31; the budget
-  // guard uses the durable rate so it over-counts, never under-counts).
+  // Sonnet 5 lists at $2/$10: the $3/$15 rise planned for 2026-09-01 was
+  // cancelled (platform.claude.com pricing, checked 2026-10-03). The guard
+  // keeps $3/$15 here so it over-counts, never under-counts.
   "claude-sonnet-5": { input: 3.0, output: 15.0, cacheWrite: 3.75, cacheRead: 0.3 },
   "claude-sonnet-4": { input: 3.0, output: 15.0, cacheWrite: 3.75, cacheRead: 0.3 },
   "claude-opus-4": { input: 15.0, output: 75.0, cacheWrite: 18.75, cacheRead: 1.5 },

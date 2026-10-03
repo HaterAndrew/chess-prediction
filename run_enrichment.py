@@ -20,6 +20,7 @@ import subprocess
 import sys
 
 from pipeline import warns
+from verify_checksums import generate_manifest
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -68,7 +69,20 @@ def main():
                 {"step": f"Enrichment: {name}", "text": f"scraper exited {rc}"})
             failed.append(name)
 
-    warns.write_audit_warnings()
+    # The scrapers rewrote output CSVs; keep checksums.json in step with what
+    # the workflow commits, so `verify_checksums.py verify` holds between
+    # nightly runs. A failure here is recorded with the scrapers' warnings.
+    try:
+        generate_manifest()
+    except Exception as e:  # noqa: BLE001 - the warnings below must still be written
+        warns._PIPELINE_WARNINGS.append(
+            {"step": f"{warns.ENRICHMENT_PREFIX}checksums", "text": f"manifest not regenerated: {e}"})
+        failed.append("checksums")
+
+    # Replace only the scrapers this run attempted; the nightly entries and
+    # any scraper not requested this time keep their last recorded warnings.
+    ran = {f"{warns.ENRICHMENT_PREFIX}{name}" for name in [*targets, "checksums"]}
+    warns.write_audit_warnings(owns=lambda step: step in ran)
 
     if failed:
         print(f"\nEnrichment scrapers failed: {failed}")

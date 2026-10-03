@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 from forecast import Event, Fitted, Observation, forecast_event
+from registry.keys import scrape_edition_key, summary_edition_key
 from shared.paths import OUTPUT_DIR
 # Calibration rationale for the 0.60 threshold lives with the constant
 # (shared/thresholds.py); is_curve_gradeable is its consumer here.
@@ -241,6 +242,18 @@ def format_results(tournament_results):
     return out
 
 
+def _edition_end_dates(meta_path):
+    """end_date per canonical edition. tournament_metadata.csv spells some
+    families two ways ("World Open top 6 sections" and "World Open, top 6
+    sections"), so a raw-name join left those editions without an end date."""
+    meta = pd.read_csv(meta_path)
+    meta['end_date'] = pd.to_datetime(meta['end_date'], errors='coerce')
+    meta['edition'] = [summary_edition_key(f, y) for f, y in zip(meta['family'], meta['year'])]
+    return (meta.dropna(subset=['edition'])
+                .groupby('edition')['end_date'].max()
+                .reset_index())
+
+
 def assert_truth_label_freshness(summary, tolerance=5):
     """Abort if daily_scrape recorded a higher entry_count than summary.final_count
     for an event that has already ended.
@@ -258,23 +271,29 @@ def assert_truth_label_freshness(summary, tolerance=5):
     """
     scrape_path = os.path.join(OUTPUT_DIR, "daily_scrape.csv")
     if not os.path.exists(scrape_path):
+        print(f"  WARNING: {scrape_path} not found; truth-label freshness not checked")
         return
     scrape = pd.read_csv(scrape_path)
-    peak = (scrape.groupby('tournament_name')['entry_count']
-                  .max().reset_index()
-                  .rename(columns={'entry_count': 'scrape_peak'}))
-    merged = summary.merge(peak, on='tournament_name', how='inner')
+    # Join on the canonical edition, not the raw name: the scraper's "2026
+    # World Open, top 6 sections" never equals the export's "World Open top 6
+    # sections", and an exact-name join left those events unchecked.
+    scrape['edition'] = scrape['tournament_name'].map(scrape_edition_key)
+    peak = (scrape.dropna(subset=['edition'])
+                  .groupby('edition')['entry_count'].max()
+                  .rename('scrape_peak').reset_index())
+    keyed = summary.assign(edition=[
+        summary_edition_key(f, y)
+        for f, y in zip(summary['family'], summary['tournament_year'])
+    ])
+    merged = keyed.dropna(subset=['edition']).merge(peak, on='edition', how='inner')
 
     meta_path = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
     today = pd.Timestamp.now().normalize()
     if os.path.exists(meta_path):
-        meta = pd.read_csv(meta_path)
-        meta['end_date'] = pd.to_datetime(meta['end_date'], errors='coerce')
-        meta_keys = meta[['family', 'year', 'end_date']].rename(
-            columns={'year': 'tournament_year'})
-        merged = merged.merge(meta_keys, on=['family', 'tournament_year'], how='left')
+        merged = merged.merge(_edition_end_dates(meta_path), on='edition', how='left')
         completed = merged['end_date'].notna() & (merged['end_date'] < today)
         merged = merged[completed]
+    print(f"  Truth-label freshness: {len(merged)} completed edition(s) checked against the scrape")
 
     stale = merged[merged['scrape_peak'] > merged['final_count'] + tolerance]
     if len(stale) > 0:

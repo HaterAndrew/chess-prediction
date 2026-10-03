@@ -26,7 +26,8 @@ import re
 
 import pandas as pd
 
-from tournament_aliases import canonicalize_family, cca_family
+from registry.keys import scrape_edition_key
+from tournament_aliases import canonicalize_family
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 
@@ -41,12 +42,10 @@ def _scrape_key(name):
     top 6 sections" with a double space vs "World Open, top 6 sections" with a
     comma), so identity checks against summary rows must go through
     canonicalize_family — exact tournament_name matching created duplicate
-    rows (audit v5 Cat R).
+    rows (audit v5 Cat R). registry/keys.py holds the one definition so
+    04e's truth-label guard joins the same way.
     """
-    m = _YEAR_PREFIX_RE.match(str(name))
-    if not m:
-        return None
-    return canonicalize_family(cca_family(name)), int(m.group(1))
+    return scrape_edition_key(str(name))
 
 
 def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):

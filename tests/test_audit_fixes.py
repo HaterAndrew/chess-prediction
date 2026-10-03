@@ -226,6 +226,51 @@ def test_freshness_assertion_skips_in_progress_events(tmp_path):
         perf_eval.OUTPUT_DIR = orig
 
 
+@pytest.mark.parametrize('meta_families', [
+    ['World Open top 6 sections'],
+    # tournament_metadata.csv carries the comma spelling too; joined on the
+    # raw name, the event read as in-progress and dropped out of the check.
+    ['World Open, top 6 sections'],
+    ['World Open top 6 sections', 'World Open, top 6 sections'],
+])
+def test_freshness_assertion_matches_scrape_spellings_by_edition(tmp_path, meta_families):
+    """The scraper writes "2026 World Open, top 6 sections"; the export row is
+    "World Open top 6 sections". An exact-name join never compared them, so
+    the guard was blind to the World Open main events (34 of 39 names matched
+    on 2026-10-03). It now joins on the canonical (family, year)."""
+    from importlib import import_module
+
+    out = tmp_path / "output"
+    out.mkdir()
+    pd.DataFrame({
+        'date': ['2026-06-28', '2026-06-29'],
+        'tournament_name': ['2026 World Open, top 6 sections'] * 2,
+        'entry_count': [1150, 1200],
+        'url': ['http://example.com'] * 2,
+    }).to_csv(out / "daily_scrape.csv", index=False)
+    summary = pd.DataFrame([{
+        'tid': 1, 'tournament_name': 'World Open top 6 sections',
+        'family': 'World Open top 6 sections', 'tournament_year': 2026.0,
+        'final_count': 1066,
+    }])
+    pd.DataFrame([{
+        'family': fam, 'year': 2026,
+        'start_date': '2026-06-30', 'end_date': '2026-07-05',
+    } for fam in meta_families]).to_csv(out / "tournament_metadata.csv", index=False)
+
+    perf = import_module("04e_performance_data")
+    import perf.evaluation as perf_eval
+    orig = perf_eval.OUTPUT_DIR
+    perf_eval.OUTPUT_DIR = str(out)
+    try:
+        with pytest.raises(RuntimeError) as exc:
+            perf.assert_truth_label_freshness(summary)
+        assert 'scrape_peak= 1200' in str(exc.value)
+        assert str(exc.value).count('World Open') == 1, "one row per edition"
+    finally:
+        perf_eval.OUTPUT_DIR = orig
+
+
 # ── A5 / D4 — Scrape-coverage gate edge cases ───────────────────────────
 def test_scrape_coverage_gate_excludes_only_when_event_after_snapshot():
     """Events ending BEFORE snapshot should pass the gate without scrape coverage.

@@ -13,7 +13,7 @@ preview_urls = true
 [assets]
 directory = "../docs"
 binding = "ASSETS"
-run_worker_first = ["/ask", "/health", "/cca-tourlist", "/cca-entrylist"]
+run_worker_first = ["/ask", "/health", "/cca-tourlist", "/cca-entrylist", "/entry-value"]
 html_handling = "auto-trailing-slash"
 not_found_handling = "404-page"
 
@@ -44,6 +44,7 @@ id = "3a7c98e0906c4d9eb355647a5a77feb7"
 # Secrets (set via `wrangler secret put <NAME>`):
 #   ANTHROPIC_API_KEY   the Ask tab's model key
 #   CCA_PROXY_KEY       shared secret gating /cca-tourlist for the nightly scrape
+#   ENTRY_VALUE_KEY     shared secret gating /entry-value (the organizer's view)
 
 # Previews: Workers Builds runs `wrangler preview` for every push to a branch
 # other than main, and wrangler refuses a configuration without this block.
@@ -51,7 +52,8 @@ id = "3a7c98e0906c4d9eb355647a5a77feb7"
 # namespace are restated: the same list (a Preview's own hostname is admitted
 # as same-origin in src/http.ts) and the production namespace, which only
 # holds rate-limit buckets and the daily cost counter. Secrets are not set on
-# Previews, so /ask answers 503 there while the site itself is exercised.
+# Previews, so /ask answers 503 and /entry-value 403 there while the site
+# itself is exercised.
 [previews.vars]
 ALLOWED_ORIGIN = "https://chessentries.com,http://localhost:8080,http://127.0.0.1:8080"
 MODEL = "claude-sonnet-5"

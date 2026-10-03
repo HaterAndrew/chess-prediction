@@ -16,7 +16,7 @@ const CACHE_NAME = 'cca-predictor-v85';
 
 // The API routes the same Worker serves next to the site. Their responses are
 // dynamic and must never enter the cache or be answered from it.
-const API_ROUTE_RE = /^\/(ask|health|cca-tourlist|cca-entrylist)$/;
+const API_ROUTE_RE = /^\/(ask|health|cca-tourlist|cca-entrylist|entry-value)$/;
 
 // Version-pinned, SRI-locked CDN scripts. Immutable, so cache-first. This is
 // the runtime allowlist for the on-demand ExcelJS load in audit.js; the
@@ -33,7 +33,7 @@ const CDN_ASSETS = [
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
-  'styles/site.css?v=08e7d908af',
+  'styles/site.css?v=d1e5870103',
   'fonts/archivo/archivo-latin.woff2',
   'fonts/archivo/archivo-latin-ext.woff2',
   'fonts/courier-prime/courier-prime-400-latin.woff2',
@@ -43,7 +43,7 @@ const OFFLINE_FALLBACKS = [
   'boot.js?v=cc39f2ee1b',
   'vendor/chart.umd.min.js?v=48444a82d4',
   'vendor/chartjs-adapter-date-fns.bundle.min.js?v=ea7ab30d26',
-  'site.js?v=c3ced6c2dd',
+  'site.js?v=06c15f19f6',
   'manifest.json',
   'icons/icon-192.png'
 ];

@@ -151,5 +151,11 @@ def test_same_origin_api_routes_bypass_the_worker(res):
     assert res["api_entrylist"]["intercepted"] is False
 
 
+def test_entry_value_route_is_never_cached(res):
+    """/entry-value answers only to the organizer's key; a cached copy would
+    hand the figures to anyone else using the same browser offline."""
+    assert res["api_entry_value"]["intercepted"] is False
+
+
 def test_non_get_requests_bypass_the_worker(res):
     assert res["post"]["intercepted"] is False

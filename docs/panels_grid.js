@@ -106,6 +106,14 @@ function renderAllTournaments() {
         if (!da || !db) return (da ? 0 : 1) - (db ? 0 : 1);
         return dir * (da.added - db.added);
       }
+      case 'value': {
+        // entry_value.js; events without a figure sink to the bottom.
+        const va = entryValueFor(ta), vb = entryValueFor(tb);
+        const xa = va && va.value != null ? va.value : null;
+        const xb = vb && vb.value != null ? vb.value : null;
+        if (xa === null || xb === null) return (xa === null ? 1 : 0) - (xb === null ? 1 : 0);
+        return dir * (xa - xb);
+      }
       case 'predicted': return dir * (ta.point_estimate - tb.point_estimate);
       case 'progress': {
         const pa = ta.point_estimate > 0 ? ta.current_count / ta.point_estimate : 0;
@@ -148,7 +156,7 @@ function renderAllTournaments() {
       <td data-label="Last day" class="num">${_lastDayCell(t)}</td>
       <td data-label="Predicted" class="td-predicted">${fmt(t.point_estimate)}</td>
       <td data-label="Likely Range" class="td-range">${ci}</td>
-      <td data-label="Progress"><span class="td-progress"><span class="pace-bar-wrap" aria-hidden="true"><span class="pace-bar-fill" style="width:${pct}%"></span></span><span class="td-pct">${pct}%</span></span></td>
+      <td data-label="Progress"><span class="td-progress"><span class="pace-bar-wrap" aria-hidden="true"><span class="pace-bar-fill" style="width:${pct}%"></span></span><span class="td-pct">${pct}%</span></span></td>${entryValueOn() ? valueCell(t) : ''}
     </tr>`;
   }).join('');
   if (active.length === 0) {

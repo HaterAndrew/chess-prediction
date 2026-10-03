@@ -80,6 +80,15 @@
 .pace-bar-fill { background: var(--ink); display: block; height: 100%; }
 .td-pct { color: var(--muted); font: 12px var(--mono); }
 .tt-empty { color: var(--muted); padding: 32px 0; text-align: center; }
+.td-value { font: 700 13px var(--mono); }
+.td-value-sub, .td-value-missing { color: var(--muted); font: 12px var(--mono); }
+.td-value-sub { margin-top: 2px; }
+/* The organizer's key field (entry_value.js): a row of its own under the
+   heading and the filters, only after the private link opens it. */
+.value-unlock { align-items: center; display: flex; flex-basis: 100%; flex-wrap: wrap; gap: var(--s-3); }
+.value-unlock[hidden] { display: none; }
+.value-unlock .field { max-width: 240px; }
+.value-msg { color: var(--muted); font: 12px var(--mono); }
 @media (max-width: 639px) {
   .tt-controls { width: 100%; }
   .tt-search { flex: 1; min-width: 0; }
@@ -88,7 +97,7 @@
      countdown or state and the count in muted type. The status, date,
      current, last day, range and progress columns step aside. */
   .tourney-table { min-width: 0; }
-  .tourney-table :is(th, td):is(:nth-child(2), :nth-child(3), :nth-child(4), :nth-child(5), :nth-child(7), :nth-child(8)) { display: none; }
+  .tourney-table :is(th, td):is(:nth-child(2), :nth-child(3), :nth-child(4), :nth-child(5), :nth-child(7), :nth-child(8), :nth-child(9)) { display: none; }
   .tourney-table :is(th, td):nth-child(6) { text-align: right; vertical-align: top; }
   .tourney-table td { padding: 10px 4px; }
   .tourney-table td.td-predicted { font-size: 15px; }

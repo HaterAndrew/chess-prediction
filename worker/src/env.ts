@@ -15,6 +15,8 @@ export interface Env {
   KV?: KVNamespace;
   // Shared secret gating the /cca-tourlist scrape proxy (see proxyCcaTourList).
   CCA_PROXY_KEY?: string;
+  // Shared secret gating /entry-value (see value-route.ts).
+  ENTRY_VALUE_KEY?: string;
 }
 
 export interface AskRequest {

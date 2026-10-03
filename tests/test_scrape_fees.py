@@ -137,14 +137,17 @@ def test_event_start_survives_parenthetical_and_cp1252_dashes():
 
 # ── v5 Cat F: code-table parity against the real scraped corpus ─────────
 
-def test_every_scraped_2026_code_is_mapped_or_allowlisted():
+def test_every_scraped_code_is_mapped_or_allowlisted():
     """Every flyer code the scraper actually captured must map to some family
     in FAMILY_TO_CODE or be an explicit UNMAPPED_CODES entry —
     TOURNAMENT_CODES and FAMILY_TO_CODE are independently maintained tables,
     and codes falling between them (cono/io/lao/kio/mwcc/nysc/brad) left
     events fee-less while their flyers sat scraped. Reads the real
     output/tournament_fees.csv on purpose: this is data<->code parity, and CI
-    runs the tests right after the pipeline regenerates the data."""
+    runs the tests right after the pipeline regenerates the data.
+
+    Every season in the file is checked: the test used to read 2026 rows only,
+    so an unmapped 2027 flyer would have passed unnoticed."""
     import csv
     import re
 
@@ -157,13 +160,13 @@ def test_every_scraped_2026_code_is_mapped_or_allowlisted():
     from validate_fees import FAMILY_TO_CODE, UNMAPPED_CODES
 
     with open(fees_path, encoding="utf-8") as fh:
-        rows = [r for r in csv.DictReader(fh) if r.get("year") == "2026"]
+        rows = list(csv.DictReader(fh))
     scraped = set()
     for r in rows:
-        m = re.search(r"/([a-z]+)26\.", str(r.get("url", "")))
+        m = re.search(r"/([a-z]+)\d{2}\.", str(r.get("url", "")))
         if m:
             scraped.add(m.group(1))
-    assert scraped, "no 2026 codes parsed from tournament_fees.csv urls"
+    assert scraped, "no flyer codes parsed from tournament_fees.csv urls"
 
     mapped = set(FAMILY_TO_CODE.values())
     orphans = scraped - mapped - UNMAPPED_CODES

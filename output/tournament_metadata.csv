@@ -98,7 +98,7 @@ February Open,2023,2023-02-02,2023-02-05,,,,,,
 George Washington Open,2023,2023-02-23,2023-02-26,,,,,,
 George Washington Open,2024,2024-02-22,2024-02-25,,,,,,
 George Washington Open,2025,2025-02-20,2025-02-23,,,,,,
-George Washington Open,2026,2026-02-26,2026-03-01,,,,,,
+George Washington Open,2026,2026-02-26,2026-03-01,,,123.0,140.0,,
 George Washington Saturday Octos,2026,2026-01-23,2026-01-26,,,,,,
 George Washington Sunday Octos,2026,2026-02-26,2026-03-01,,,,,,
 Golden State Action,2022,2022-01-06,2022-01-09,,,,,,
@@ -259,7 +259,7 @@ Southwest Class Championships,2022,2022-02-17,2022-02-20,,,,,,
 Southwest Class Championships,2023,2023-02-16,2023-02-19,,,,,,
 Southwest Class Championships,2024,2024-02-14,2024-02-17,,,,,,
 Southwest Class Championships,2025,2025-02-13,2025-02-16,,,,,,
-Southwest Class Championships,2026,2026-02-11,2026-02-14,,,,,,
+Southwest Class Championships,2026,2026-02-11,2026-02-14,,,278.0,300.0,,
 Susan Kantor Memorial,2021,2021-10-15,2021-10-18,,,,,,
 Washington Chess Congress,2021,2021-10-07,2021-10-10,,,,,,
 Washington Chess Congress,2023,2023-10-19,2023-10-22,,,,,,
@@ -268,12 +268,12 @@ Western Class,2022,2022-03-03,2022-03-06,,,,,,
 Western Class,2023,2023-03-02,2023-03-05,,,,,,
 Western Class Championships,2024,2024-02-29,2024-03-03,,,,,,
 Western Class Championships,2025,2025-03-06,2025-03-09,,,,,,
-Western Class Championships,2026,2026-03-05,2026-03-08,,,,,,
+Western Class Championships,2026,2026-03-05,2026-03-08,,,138.0,160.0,,
 World Open,2022,2022-06-29,2022-07-03,2022-05-13,279.0,289.0,310.0,Philadelphia,PA
 World Open top 6 sections,2023,2023-06-30,2023-07-03,,,,,,
 World Open top 6 sections,2024,2024-07-03,2024-07-06,,,,,,
 World Open top 6 sections,2025,2025-07-02,2025-07-05,,,,,,
-World Open top 6 sections,2026,2026-07-01,2026-07-05,,,328.0,350.0,,District Of Columbia
+World Open top 6 sections,2026,2026-07-01,2026-07-05,2026-05-15,318.0,328.0,350.0,,District Of Columbia
 World Open Action,2022,2022-06-16,2022-06-19,,,,,,
 World Open Action,2023,2023-06-26,2023-06-29,,,,,,
 World Open Action,2025,2025-06-28,2025-07-01,,,,,,
@@ -321,9 +321,9 @@ World Open lower sections,2025,2025-06-25,2025-06-28,,,,,,
 World Open lower sections,2026,2026-06-26,2026-06-28,,,228.0,250.0,,District Of Columbia
 Youth Rapid Chess Challenge,2022,2022-02-03,2022-02-06,,,,,,
 North American Blitz Championship,2026,2026-12-29,2026-12-29,,,,50.0,,Nevada
-North American Open,2026,2026-12-26,2026-12-30,,,275.0,,,Nevada
+North American Open,2026,2026-12-26,2026-12-30,2026-09-20,245.0,275.0,,,Nevada
 "World Open, lower sections",2026,2026-06-26,2026-06-28,,,228.0,250.0,,District Of Columbia
-"World Open, top 6 sections",2026,2026-07-01,2026-07-05,,,328.0,350.0,,District Of Columbia
+"World Open, top 6 sections",2026,2026-07-01,2026-07-05,2026-05-15,318.0,328.0,350.0,,District Of Columbia
 Eastern Open,2026,2026-12-26,2026-12-29,,,148.0,170.0,,Virginia
 Boston Chess Congress,2027,2027-01-08,2027-01-10,,,,,,Massachusetts
 Golden State Open,2027,2027-01-15,2027-01-18,,,,,,California

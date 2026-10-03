@@ -23,6 +23,10 @@ eccob26,2026,2026-10-24,,,,,48,,False,,https://www.chesstour.com/eccob26.htm
 2023 Eastern Open chess tournament,2025,2025-12-26,,,148,2025-12-23,170,,False,"only one date-bound tier ($148 by 2025-12-23, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/eo25.htm
 2023 Eastern Open chess tournament,2026,2026-12-26,,,148,2026-12-23,170,,False,"only one date-bound tier ($148 by 2026-12-23, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/eo26.htm
 eob26,2026,2026-12-28,,,,,48,,False,,https://www.chesstour.com/eob26.htm
+2023 George Washington Open,2023,2023-02-24,,,113,2023-02-22,130,,False,"only one date-bound tier ($113 by 2023-02-22, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/gwo23.htm
+gwo24,2024,2024-02-23,,,113,2024-02-21,130,,False,"only one date-bound tier ($113 by 2024-02-21, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/gwo24.htm
+gwo25,2025,2025-02-21,,,113,2025-02-19,130,,False,"only one date-bound tier ($113 by 2025-02-19, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/gwo25.htm
+gwo26,2026,2026-03-01,,,123,2026-02-24,140,,False,"only one date-bound tier ($123 by 2026-02-24, T-5) — advance/onsite step, not early bird",https://www.chesstour.com/gwo26.htm
 kio26,2026,2026-11-13,,,138,2026-11-10,160,,False,"only one date-bound tier ($138 by 2026-11-10, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/kio26.htm
 kiob26,2026,2026-11-14,,,,,48,,False,,https://www.chesstour.com/kiob26.htm
 lao26,2026,2026-11-06,,,128,2026-11-03,,2000,False,"only one date-bound tier ($128 by 2026-11-03, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/lao26.htm
@@ -51,6 +55,16 @@ Southern Class Championships,2023,2023-03-17,,,118,2023-03-15,,,False,"only one 
 scc24,2024,2024-03-15,,,118,2024-03-13,,,False,"only one date-bound tier ($118 by 2024-03-13, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/scc24.htm
 scc25,2025,2025-03-07,,,118,2025-03-05,130,,False,"only one date-bound tier ($118 by 2025-03-05, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/scc25.htm
 scc26,2026,2026-03-13,,,118,2026-03-10,130,,False,"only one date-bound tier ($118 by 2026-03-10, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/scc26.htm
+13th annual SOUTHWEST CLASS CHAM,2022,2022-02-17,,,119,2022-02-09,260,500,False,"deadline 2022-02-09 is T-8 (< T-14) vs event 2022-02-17 — advance/onsite step, not early bird",https://www.chesstour.com/swcc22.htm
+14th annual SOUTHWEST CLASS,2023,2023-02-16,,,278,2023-02-15,300,,False,"deadline 2023-02-15 is T-1 (< T-14) vs event 2023-02-16 — advance/onsite step, not early bird",https://www.chesstour.com/swcc23.htm
+swcc24,2024,2024-02-15,,,278,2024-02-14,300,,False,"deadline 2024-02-14 is T-1 (< T-14) vs event 2024-02-15 — advance/onsite step, not early bird",https://www.chesstour.com/swcc24.htm
+swcc25,2025,2025-02-13,,,278,2025-02-12,300,,False,"deadline 2025-02-12 is T-1 (< T-14) vs event 2025-02-13 — advance/onsite step, not early bird",https://www.chesstour.com/swcc25.htm
+swcc26,2026,2026-02-12,,,278,2026-02-11,300,,False,"only one date-bound tier ($278 by 2026-02-11, T-1) — advance/onsite step, not early bird",https://www.chesstour.com/swcc26.htm
+29th annual WESTERN CLASS CHAMPI,2022,2022-03-04,,,128,2022-03-03,150,20000,False,"deadline 2022-03-03 is T-1 (< T-14) vs event 2022-03-04 — advance/onsite step, not early bird",https://www.chesstour.com/wcc22.htm
+Western Class Championships,2023,2023-03-03,,,128,2023-03-01,150,20000,False,"only one date-bound tier ($128 by 2023-03-01, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/wcc23.htm
+wcc24,2024,2024-03-01,,,128,2024-02-28,150,20000,False,"only one date-bound tier ($128 by 2024-02-28, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/wcc24.htm
+wcc25,2025,2025-03-07,,,128,2025-03-05,150,20000,False,"only one date-bound tier ($128 by 2025-03-05, T-2) — advance/onsite step, not early bird",https://www.chesstour.com/wcc25.htm
+wcc26,2026,2026-03-06,,,138,2026-03-03,160,20000,False,"only one date-bound tier ($138 by 2026-03-03, T-3) — advance/onsite step, not early bird",https://www.chesstour.com/wcc26.htm
 2022 WORLD OPEN CHESS TOURNAMENT,2022,2022-07-04,73,2022-06-15,308,2022-04-15,350,,False,,https://www.chesstour.com/wo22.htm
 2023 WORLD OPEN CHESS TOURNAMENT,2023,2023-07-02,318,2023-05-15,328,2023-06-27,350,208000,False,,https://www.chesstour.com/wo23.htm
 wo24,2024,2024-07-03,318,2024-05-15,328,2024-06-29,350,208000,False,,https://www.chesstour.com/wo24.htm

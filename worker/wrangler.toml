@@ -13,7 +13,7 @@ preview_urls = true
 [assets]
 directory = "../docs"
 binding = "ASSETS"
-run_worker_first = ["/ask", "/health", "/cca-tourlist", "/cca-entrylist", "/entry-value"]
+run_worker_first = ["/ask", "/health", "/cca-tourlist", "/cca-entrylist", "/entry-value", "/price"]
 html_handling = "auto-trailing-slash"
 not_found_handling = "404-page"
 

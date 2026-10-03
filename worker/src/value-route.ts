@@ -12,6 +12,9 @@ import { entryValues, type ValuePayload } from "./entry-value";
 import { jsonResponse } from "./http";
 
 export const VALUE_KEY_HEADER = "X-Value-Key";
+// The link handed to the organizer. It lands on the page's own #value
+// unlock (docs/entry_value.js); the hash never reaches the server.
+export const PRICE_PATH = "/price";
 export const FAIL_LIMIT_PER_IP = 10;
 export const FAIL_LIMIT_GLOBAL = 50;
 
@@ -43,6 +46,13 @@ async function loadPayload(env: Env): Promise<ValuePayload> {
   const resp = await env.ASSETS.fetch(new URL("/data/website_data.json", "https://assets.local"));
   if (!resp.ok) throw new Error(`site data fetch failed: ${resp.status}`);
   return (await resp.json()) as ValuePayload;
+}
+
+export function priceRedirect(request: Request): Response {
+  return new Response(null, {
+    status: 302,
+    headers: { Location: new URL("/#value", request.url).toString(), "Cache-Control": "no-store" },
+  });
 }
 
 export async function handleEntryValue(env: Env, request: Request): Promise<Response> {

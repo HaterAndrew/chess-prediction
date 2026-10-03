@@ -65,6 +65,19 @@ const out = {
   empty_sanitized: DS.sanitizeSeries([], { currentCount: 10, isLive: true }),
   null_sanitized: DS.sanitizeSeries(null, { currentCount: 10, isLive: true }),
   empty_latest: DS.latestDailyChange({ status: 'live', daily_data: [] }),
+
+  // The Last day column: healthy's tail ends 2026-07-04, gappy's 2026-07-09.
+  on_current: (() => {
+    const i = DS.latestIntervalOn(healthyCard, '2026-07-04');
+    return i && { span: i.span, added: i.added };
+  })(),
+  on_stale: DS.latestIntervalOn(healthyCard, '2026-07-05'),
+  on_gap: (() => {
+    const i = DS.latestIntervalOn(gappyCard, '2026-07-09');
+    return i && { span: i.span, added: i.added, isGap: i.isGap };
+  })(),
+  on_no_anchor: DS.latestIntervalOn({ status: 'live', daily_data: [[0, 1], [1, 2]] }, '2026-07-02'),
+  on_no_date: DS.latestIntervalOn(healthyCard, undefined),
 };
 
 process.stdout.write(JSON.stringify(out));

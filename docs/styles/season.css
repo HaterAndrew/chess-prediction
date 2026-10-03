@@ -72,6 +72,9 @@
 .td-predicted { font: 700 13px var(--mono); }
 .td-range { color: var(--muted); font: 12px var(--mono); }
 .td-pace { color: var(--muted); font: 12px var(--mono); margin-left: 6px; }
+.td-delta { font: 700 13px var(--mono); }
+.td-delta.pos { color: var(--signal); }
+.td-delta.neg { color: var(--ember); }
 .td-progress { align-items: center; display: flex; gap: 8px; }
 .pace-bar-wrap { background: var(--raised); display: inline-block; height: 5px; overflow: hidden; vertical-align: middle; width: 60px; }
 .pace-bar-fill { background: var(--ink); display: block; height: 100%; }
@@ -83,10 +86,10 @@
   .tt-search input { font-size: 16px; }
   /* A row is two lines: the name and the forecast, then the date, the
      countdown or state and the count in muted type. The status, date,
-     current, range and progress columns step aside. */
+     current, last day, range and progress columns step aside. */
   .tourney-table { min-width: 0; }
-  .tourney-table :is(th, td):is(:nth-child(2), :nth-child(3), :nth-child(4), :nth-child(6), :nth-child(7)) { display: none; }
-  .tourney-table :is(th, td):nth-child(5) { text-align: right; vertical-align: top; }
+  .tourney-table :is(th, td):is(:nth-child(2), :nth-child(3), :nth-child(4), :nth-child(5), :nth-child(7), :nth-child(8)) { display: none; }
+  .tourney-table :is(th, td):nth-child(6) { text-align: right; vertical-align: top; }
   .tourney-table td { padding: 10px 4px; }
   .tourney-table td.td-predicted { font-size: 15px; }
   .t-sub { display: none; }

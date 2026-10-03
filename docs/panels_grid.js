@@ -49,6 +49,26 @@ function overviewSeasonLabel(tournaments) {
   return years.length === 1 ? first : `${first}–${last.slice(-2)}`;
 }
 
+// Entries since the previous scrape, for the Last day column. Read through
+// DailySeries so a missed scrape is labelled with its true span instead of
+// passing as one day (v3 P1), and only when the series reaches today's
+// scrape: an older tail is not "last day".
+function _lastDay(t) {
+  if (t.status !== 'live' || typeof DailySeries === 'undefined') return null;
+  return DailySeries.latestIntervalOn(t, TOURNAMENT_DATA.generated, { isLive: true });
+}
+
+function _lastDayCell(t) {
+  const iv = _lastDay(t);
+  if (!iv) return '–';
+  const cls = iv.added > 0 ? ' pos' : iv.added < 0 ? ' neg' : '';
+  const sign = iv.added > 0 ? '+' : '';
+  if (iv.isGap) {
+    return `<span class="td-delta${cls}" title="No scrape for ${iv.span} days: the value covers the whole period, not one day">${sign}${fmt(iv.added)}</span><span class="td-pace">/ ${iv.span}d</span>`;
+  }
+  return `<span class="td-delta${cls}" title="Change since the previous day's scrape">${sign}${fmt(iv.added)}</span>`;
+}
+
 function renderAllTournaments() {
   _syncLikelyRangeTitle();
   const body = document.getElementById('tourneyBody');
@@ -80,6 +100,12 @@ function renderAllTournaments() {
       // collator (30 ms at 4x CPU throttle) on the default sort.
       case 'date': return dir * ((ta.event_start || '') < (tb.event_start || '') ? -1 : (ta.event_start || '') > (tb.event_start || '') ? 1 : 0);
       case 'current': return dir * (ta.current_count - tb.current_count);
+      case 'lastday': {
+        // Rows with no figure sink to the bottom in either direction.
+        const da = _lastDay(ta), db = _lastDay(tb);
+        if (!da || !db) return (da ? 0 : 1) - (db ? 0 : 1);
+        return dir * (da.added - db.added);
+      }
       case 'predicted': return dir * (ta.point_estimate - tb.point_estimate);
       case 'progress': {
         const pa = ta.point_estimate > 0 ? ta.current_count / ta.point_estimate : 0;
@@ -119,13 +145,15 @@ function renderAllTournaments() {
       <td data-label="Status">${pill}</td>
       <td data-label="Event Date" class="num">${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
       <td data-label="Current"><span class="td-current">${fmt(t.current_count)}</span>${paceStr}</td>
+      <td data-label="Last day" class="num">${_lastDayCell(t)}</td>
       <td data-label="Predicted" class="td-predicted">${fmt(t.point_estimate)}</td>
       <td data-label="Likely Range" class="td-range">${ci}</td>
       <td data-label="Progress"><span class="td-progress"><span class="pace-bar-wrap" aria-hidden="true"><span class="pace-bar-fill" style="width:${pct}%"></span></span><span class="td-pct">${pct}%</span></span></td>
     </tr>`;
   }).join('');
   if (active.length === 0) {
-    body.innerHTML = '<tr><td colspan="7" class="tt-empty">No tournaments match the current filter.</td></tr>';
+    const cols = document.querySelectorAll('#tourneyTable thead th:not([hidden])').length;
+    body.innerHTML = `<tr><td colspan="${cols}" class="tt-empty">No tournaments match the current filter.</td></tr>`;
   }
 }
 

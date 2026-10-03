@@ -33,7 +33,7 @@
 <!-- One stylesheet: the bundle pipeline/bundling.py builds from
      docs/styles/*.css in cascade order (STYLE_SOURCES). Edit the sources,
      then `python3 -m pipeline.bundling`. -->
-<link rel="stylesheet" href="styles/site.css?v=cd5277b56f">
+<link rel="stylesheet" href="styles/site.css?v=08e7d908af">
 </head>
 <body>
 
@@ -282,6 +282,7 @@
             <th class="sortable" data-act="sort-table" data-col="status">Status</th>
             <th class="sortable" data-act="sort-table" data-col="date">Event Date</th>
             <th class="sortable" data-act="sort-table" data-col="current">Current</th>
+            <th class="sortable" data-act="sort-table" data-col="lastday" title="Entries since the previous day's scrape">Last day</th>
             <th class="sortable" data-act="sort-table" data-col="predicted">Predicted</th>
             <th id="thLikelyRange" title="The interval targets 80% coverage. Measured rate loads with the performance data.">Likely Range</th>
             <th class="sortable" data-act="sort-table" data-col="progress">Progress</th>
@@ -850,6 +851,6 @@
      the bundle, dispatches bare globals, so there are no wrappers and no
      modules. Deferred, so it runs after the data tag above and after the
      chart library in <head>. Edit a source, then `python3 -m pipeline.bundling`. -->
-<script defer src="site.js?v=64327c1525"></script>
+<script defer src="site.js?v=c3ced6c2dd"></script>
 </body>
 </html>

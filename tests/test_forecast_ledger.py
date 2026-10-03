@@ -101,6 +101,41 @@ def test_step_records_tonights_live_cards(tmp_path, monkeypatch):
     assert row["model_hash"] == model_version.model_hash()
 
 
+def test_a_local_run_is_recorded_but_not_as_published():
+    """Only the CI run commits docs/, so only its forecasts reach the site. A
+    local run's rows used to say origin=nightly, published=1, and the
+    scoreboard keeps each day's LAST run, so a daytime local run displaced
+    the forecast the site actually showed (2026-09-27: 12+ daytime runs)."""
+    rows = _rows(_website(_card(shadow_forecasts=[
+        {"route": "metadata_pace", "point": 240, "ci_lower": 200, "ci_upper": 290}])),
+        origin="local")
+    assert [(r["origin"], r["published"]) for r in rows] == [("local", 0), ("local", 0)]
+
+
+def test_run_origin_is_nightly_only_on_github_actions():
+    assert ledger.run_origin({"GITHUB_ACTIONS": "true"}) == "nightly"
+    assert ledger.run_origin({}) == "local"
+
+
+def test_step_records_ci_runs_as_published(tmp_path, monkeypatch):
+    website = tmp_path / "website_data.json"
+    website.write_text(json.dumps(_website(_card())))
+    monkeypatch.setattr(config, "WEBSITE_JSON", str(website))
+    monkeypatch.setattr(config, "FORECAST_LEDGER", str(tmp_path / "forecast_ledger.csv"))
+    monkeypatch.setenv("GITHUB_ACTIONS", "true")
+    ledger.step_record_forecasts()
+    with open(tmp_path / "forecast_ledger.csv", newline="") as fh:
+        row = next(csv.DictReader(fh))
+    assert (row["origin"], row["published"]) == ("nightly", "1")
+
+
+def test_no_ledger_flag_skips_recording():
+    with open(os.path.join(PROJECT_ROOT, "auto_update.py")) as fh:
+        src = fh.read()
+    assert "--no-ledger" in src
+    assert "if not args.no_ledger:\n            step_record_forecasts()" in src
+
+
 def test_model_hash_is_stable_and_moves_when_a_source_file_changes(tmp_path):
     (tmp_path / "model").mkdir()
     src = tmp_path / "model" / "engine.py"

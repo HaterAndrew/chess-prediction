@@ -120,6 +120,9 @@ def main():
     parser.add_argument('--scrape-failed', action='store_true',
                         help="The external scrape step (CI) failed: keep "
                              "last-known data, skip validation, stamp stale")
+    parser.add_argument('--no-ledger', action='store_true',
+                        help="Do not append to forecast_ledger.csv (local "
+                             "refresh runs whose output is not published)")
     args = parser.parse_args()
 
     print(f"{'='*60}")
@@ -201,7 +204,10 @@ def main():
         # Always update HTML so the stale flag gets embedded in the page
         step_update_html()
         step_log_run()
-        step_record_forecasts()
+        if not args.no_ledger:
+            step_record_forecasts()
+        else:
+            print("\n  Skipping the forecast ledger (--no-ledger)")
 
         # Generate SHA-256 checksums for all output CSVs
         print(f"\n{'─'*60}")

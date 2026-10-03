@@ -62,6 +62,7 @@ def test_each_committed_run_becomes_rows_stamped_with_its_commit_and_code(repo):
     assert [(r["as_of_date"], r["family"]) for r in rows] == [
         ("2026-09-01", "A"), ("2026-09-01", "B"), ("2026-09-02", "A")]
     assert {r["origin"] for r in rows} == {"backfill"}
+    assert {r["published"] for r in rows} == {1}, "these are the runs the site published"
     assert rows[0]["code_commit"] == first[:12] and rows[2]["code_commit"] == second[:12]
     assert rows[0]["T"] == 38
     assert rows[0]["model_label"] == "N5v4_Final"

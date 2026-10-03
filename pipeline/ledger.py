@@ -37,19 +37,36 @@ def _blank(value):
     return '' if value is None else value
 
 
+# Origins whose rows are the forecasts the site showed: the CI run, and the
+# backfill rebuilt from its published commits. A local run's output never
+# reaches the site.
+PUBLISHED_ORIGINS = ('nightly', 'backfill')
+
+
+def run_origin(env=os.environ):
+    """'nightly' on the GitHub Actions runner, whose commit is what the site
+    serves; 'local' anywhere else."""
+    return 'nightly' if env.get('GITHUB_ACTIONS') == 'true' else 'local'
+
+
 def ledger_rows(website, *, run_ts, model_label, model_hash, code_commit, origin='nightly'):
-    """One published row per live card in a website_data.json payload, then an
+    """One row per live card in a website_data.json payload, then an
     unpublished row (published 0) for each stand-in route the card carries in
-    shadow_forecasts. The forecast date is the payload's `generated` date (the
-    pipeline's local day), falling back to the run timestamp's date."""
+    shadow_forecasts. The card's own row counts as published only for a
+    PUBLISHED_ORIGINS run: the scoreboard keeps each day's last published
+    run, so a local run marked published would displace the forecast the site
+    showed. The forecast date is the
+    payload's `generated` date (the pipeline's local day), falling back to
+    the run timestamp's date."""
     as_of = website.get('generated') or str(run_ts)[:10]
     stale = int(bool(website.get('is_stale')))
+    published = int(origin in PUBLISHED_ORIGINS)
     rows = []
     for card in website.get('tournaments', []):
         if card.get('status') != 'live':
             continue
         row = {
-            'as_of_date': as_of, 'run_ts': run_ts, 'origin': origin, 'published': 1,
+            'as_of_date': as_of, 'run_ts': run_ts, 'origin': origin, 'published': published,
             'family': card.get('family', ''), 'year': _blank(card.get('year')),
             'event_start': _blank(card.get('event_start')),
             'T': days_before(card.get('event_start'), as_of),
@@ -102,10 +119,11 @@ def step_record_forecasts():
     """Append tonight's published forecasts to the ledger."""
     with open(config.WEBSITE_JSON) as fh:
         website = json.load(fh)
+    origin = run_origin()
     rows = ledger_rows(website, run_ts=config.RUN_TS, model_label=MODEL_LABEL,
-                       model_hash=model_hash(), code_commit=code_commit())
+                       model_hash=model_hash(), code_commit=code_commit(), origin=origin)
     n = append_ledger(rows, config.FORECAST_LEDGER)
-    shadows = sum(1 for r in rows if not r['published'])
-    print(f"  Recorded {n - shadows} published forecasts and {shadows} stand-in "
-          f"forecasts in {config.FORECAST_LEDGER}")
+    published = sum(1 for r in rows if r['published'])
+    print(f"  Recorded {published} published and {n - published} unpublished "
+          f"({origin}) forecasts in {config.FORECAST_LEDGER}")
     return n

@@ -76,7 +76,14 @@ interface RunResult {
   tools_used: string[];
   latency_ms: number;
   cost_usd: number;
+  // The model that served the last turn. Differs from the configured model
+  // when a refusal fallback answered.
+  model: string;
 }
+
+// Thinking counts toward max_tokens, so a long turn can stop mid-answer. Say so
+// rather than presenting the partial text as a complete answer.
+const TRUNCATED_NOTE = "\n\n(This answer was cut off before it finished. Try a narrower question.)";
 
 export async function runAgentLoop(
   client: Anthropic,
@@ -91,6 +98,14 @@ export async function runAgentLoop(
   const toolsUsed: string[] = [];
   let totalCost = 0;
   let budgetStopped = false;
+  let servedModel = model;
+  const finish = (answer: string): RunResult => ({
+    answer,
+    tools_used: toolsUsed,
+    latency_ms: Date.now() - start,
+    cost_usd: +totalCost.toFixed(6),
+    model: servedModel,
+  });
 
   const messages: Anthropic.Beta.BetaMessageParam[] = [];
   if (body.history && Array.isArray(body.history)) {
@@ -131,8 +146,13 @@ export async function runAgentLoop(
       tools,
       output_config: { effort: "medium" },
       messages,
-      betas: ["files-api-2025-04-14"],
+      // On a policy refusal the API re-runs the turn on a fallback model it
+      // picks by refusal category. Non-streaming responses omit the declined
+      // partial, so resp.content is pushed back unchanged below.
+      fallbacks: "default",
+      betas: ["files-api-2025-04-14", "server-side-fallback-2026-07-01"],
     });
+    servedModel = resp.model ?? servedModel;
 
     // Track tool usage. Server-side tools (code_execution) emit server_tool_use blocks
     // with names like "bash_code_execution", "text_editor_code_execution". We collapse
@@ -145,8 +165,19 @@ export async function runAgentLoop(
         if (name.includes("code_execution")) sawCodeExec = true;
       }
     }
-    const turnCost = estimateCost(resp.usage, model, sawCodeExec ? 1 : 0);
+    const turnCost = estimateCost(resp.usage, resp.model, sawCodeExec ? 1 : 0);
     totalCost += turnCost;
+    console.log(JSON.stringify({
+      event: "ask_turn",
+      turn,
+      stop_reason: resp.stop_reason,
+      model: resp.model,
+      input_tokens: resp.usage.input_tokens,
+      output_tokens: resp.usage.output_tokens,
+      cache_read_input_tokens: resp.usage.cache_read_input_tokens,
+      cache_creation_input_tokens: resp.usage.cache_creation_input_tokens,
+      cost_usd: +turnCost.toFixed(6),
+    }));
     if (sawCodeExec && !toolsUsed.includes("code_execution")) {
       toolsUsed.push("code_execution");
     }
@@ -199,37 +230,20 @@ export async function runAgentLoop(
         .map((b) => b.text)
         .join("")
         .trim();
-      return {
-        answer: text || "(no answer returned)",
-        tools_used: toolsUsed,
-        latency_ms: Date.now() - start,
-        cost_usd: +totalCost.toFixed(6),
-      };
+      const answer = text || "(no answer returned)";
+      return finish(resp.stop_reason === "max_tokens" ? answer + TRUNCATED_NOTE : answer);
     }
 
     if (resp.stop_reason === "refusal") {
-      return {
-        answer: "I can't answer that one. Try a different question about the tournament data.",
-        tools_used: toolsUsed,
-        latency_ms: Date.now() - start,
-        cost_usd: +totalCost.toFixed(6),
-      };
+      return finish("I can't answer that one. Try a different question about the tournament data.");
     }
 
-    return {
-      answer: `(unexpected stop_reason: ${resp.stop_reason ?? "null"})`,
-      tools_used: toolsUsed,
-      latency_ms: Date.now() - start,
-      cost_usd: +totalCost.toFixed(6),
-    };
+    return finish(`(unexpected stop_reason: ${resp.stop_reason ?? "null"})`);
   }
 
-  return {
-    answer: budgetStopped
+  return finish(
+    budgetStopped
       ? "I ran out of the daily question budget partway through this one. Try again tomorrow."
-      : "Sorry — I got stuck looking that up. Try rephrasing the question.",
-    tools_used: toolsUsed,
-    latency_ms: Date.now() - start,
-    cost_usd: +totalCost.toFixed(6),
-  };
+      : "Sorry — I got stuck looking that up. Try rephrasing the question."
+  );
 }

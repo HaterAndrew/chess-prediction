@@ -29,7 +29,7 @@ enabled = true
 # answers on (see src/http.ts); this list covers the static dev server.
 [vars]
 ALLOWED_ORIGIN = "https://chessentries.com,http://localhost:8080,http://127.0.0.1:8080"
-MODEL = "claude-sonnet-5"
+MODEL = "claude-sonnet-5-5"
 DAILY_BUDGET_USD = "1.00"
 RATE_LIMIT_PER_MIN = "20"
 # Ceiling across every caller. The per-IP limit above cannot bind an attacker
@@ -56,7 +56,7 @@ id = "3a7c98e0906c4d9eb355647a5a77feb7"
 # itself is exercised.
 [previews.vars]
 ALLOWED_ORIGIN = "https://chessentries.com,http://localhost:8080,http://127.0.0.1:8080"
-MODEL = "claude-sonnet-5"
+MODEL = "claude-sonnet-5-5"
 DAILY_BUDGET_USD = "1.00"
 RATE_LIMIT_PER_MIN = "20"
 GLOBAL_RATE_LIMIT_PER_MIN = "60"

@@ -6,7 +6,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { cachedFileId, loadData, runAgentLoop, type CachedData } from "./agent";
 import type { AskRequest, Env } from "./env";
 import { corsPreflight, isOriginAllowed, jsonResponse } from "./http";
-import { checkDailyBudget, checkGlobalRateLimit, checkRateLimit, recordCost } from "./limits";
+import { checkDailyBudget, checkGlobalRateLimit, checkRateLimit, pricingFor, recordCost } from "./limits";
 import { proxyCcaEntryList, proxyCcaTourList } from "./cca-proxy";
 import { handleEntryValue, PRICE_PATH, priceRedirect } from "./value-route";
 
@@ -125,6 +125,20 @@ export default {
       );
     }
 
+    // The configured model must be priced before the first billed call. A
+    // fallback model the server picks is priced after the fact (estimateCost).
+    try {
+      pricingFor(env.MODEL);
+    } catch (e) {
+      console.error((e as Error).message);
+      return jsonResponse(
+        { error: "model_unpriced", message: (e as Error).message, fallback_search: body.question },
+        { status: 503 },
+        env,
+        request
+      );
+    }
+
     const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
 
     let cd: CachedData;
@@ -161,7 +175,6 @@ export default {
       return jsonResponse(
         {
           ...result,
-          model: env.MODEL,
           data_generated: cd.data.generated,
           file_mounted: !!cd.fileId,
         },

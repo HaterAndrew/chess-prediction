@@ -8,7 +8,7 @@ import type { AskRequest, Env } from "./env";
 import { corsPreflight, isOriginAllowed, jsonResponse } from "./http";
 import { checkDailyBudget, checkGlobalRateLimit, checkRateLimit, recordCost } from "./limits";
 import { proxyCcaEntryList, proxyCcaTourList } from "./cca-proxy";
-import { handleEntryValue } from "./value-route";
+import { handleEntryValue, PRICE_PATH, priceRedirect } from "./value-route";
 
 export type { Env };
 
@@ -30,6 +30,9 @@ export default {
     }
     if (url.pathname === "/entry-value") {
       return handleEntryValue(env, request);
+    }
+    if (url.pathname === PRICE_PATH) {
+      return priceRedirect(request);
     }
     if (url.pathname !== "/ask" || request.method !== "POST") {
       return jsonResponse({ error: "Not found" }, { status: 404 }, env, request);

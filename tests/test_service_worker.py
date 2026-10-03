@@ -157,5 +157,11 @@ def test_entry_value_route_is_never_cached(res):
     assert res["api_entry_value"]["intercepted"] is False
 
 
+def test_price_link_reaches_the_worker_redirect(res):
+    """/price is the Worker's 302 to /#value; a navigation the service worker
+    answered from cache would never reach it."""
+    assert res["api_price"]["intercepted"] is False
+
+
 def test_non_get_requests_bypass_the_worker(res):
     assert res["post"]["intercepted"] is False

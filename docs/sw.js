@@ -16,7 +16,7 @@ const CACHE_NAME = 'cca-predictor-v85';
 
 // The API routes the same Worker serves next to the site. Their responses are
 // dynamic and must never enter the cache or be answered from it.
-const API_ROUTE_RE = /^\/(ask|health|cca-tourlist|cca-entrylist|entry-value)$/;
+const API_ROUTE_RE = /^\/(ask|health|cca-tourlist|cca-entrylist|entry-value|price)$/;
 
 // Version-pinned, SRI-locked CDN scripts. Immutable, so cache-first. This is
 // the runtime allowlist for the on-demand ExcelJS load in audit.js; the

@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import type { Env } from "./env";
 import { cleanSeries, entryValues, eventValue, type ValueCard } from "./entry-value";
-import { FAIL_LIMIT_PER_IP, handleEntryValue, VALUE_KEY_HEADER } from "./value-route";
+import { FAIL_LIMIT_PER_IP, handleEntryValue, priceRedirect, VALUE_KEY_HEADER } from "./value-route";
 
 const GENERATED = "2026-10-03";
 
@@ -152,5 +152,14 @@ describe("handleEntryValue", () => {
   it("refuses other methods", async () => {
     const req = new Request("https://chessentries.com/entry-value", { method: "POST" });
     expect((await handleEntryValue(envWith(), req)).status).toBe(405);
+  });
+});
+
+describe("priceRedirect", () => {
+  it("sends /price to the page's unlock link on the same host, uncached", () => {
+    const res = priceRedirect(new Request("https://chessentries.com/price"));
+    expect(res.status).toBe(302);
+    expect(res.headers.get("Location")).toBe("https://chessentries.com/#value");
+    expect(res.headers.get("Cache-Control")).toBe("no-store");
   });
 });

@@ -138,6 +138,7 @@ async function main() {
   results.api_health = await online.dispatch({ url: `${SCOPE}health` });
   results.api_entrylist = await online.dispatch({ url: `${SCOPE}cca-entrylist?code=ABC` });
   results.api_entry_value = await online.dispatch({ url: `${SCOPE}entry-value` });
+  results.api_price = await online.dispatch({ url: `${SCOPE}price`, mode: 'navigate' });
   results.post = await online.dispatch({ url: SCOPE, method: 'POST', mode: 'navigate' });
   results.cdn_miss = await online.dispatch({ url: CDN_EXCELJS });
   results.cdn_hit = await online.dispatch({ url: CDN_EXCELJS });

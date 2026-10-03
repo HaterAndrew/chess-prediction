@@ -3,7 +3,8 @@
 // /entry-value, which answers only to the shared key (worker/src/value-route.ts).
 //
 // Nothing shows for the public. The key field opens from the private link
-// chessentries.com/#value; after one unlock this browser keeps the key and
+// chessentries.com/price (the Worker redirects it to /#value); after one
+// unlock this browser keeps the key and
 // the column loads on every visit. A failure always says so in the field's
 // message line: the column never shows a blank or a $0 it does not know.
 

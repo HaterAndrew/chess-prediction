@@ -182,6 +182,19 @@
   }
 
   /**
+   * The latest interval, only when it ends on `isoDate` ('YYYY-MM-DD', the
+   * payload's generated date). A series whose tail stopped days ago has no
+   * "last day" figure; returning its old final interval would pass stale
+   * registrations off as today's.
+   */
+  function latestIntervalOn(card, isoDate, opts) {
+    var last = latestInterval(card, opts);
+    if (!last || !last.date || !isoDate) return null;
+    // Both sides are UTC midnight (see pointDate), so compare instants.
+    return Date.parse(isoDate + 'T00:00:00Z') === last.date.getTime() ? last : null;
+  }
+
+  /**
    * Does the RAW series look like the incident shape — a suspiciously large
    * jump at the tail? Deliberately evaluated before the currentCount cap: the
    * cap removes the impossible point, so asking this question after sanitising
@@ -213,6 +226,7 @@
     intervals: intervals,
     latestDailyChange: latestDailyChange,
     latestInterval: latestInterval,
+    latestIntervalOn: latestIntervalOn,
     hasSuspectTail: hasSuspectTail,
     SUSPECT_JUMP_RATIO: SUSPECT_JUMP_RATIO,
     MIN_SUSPECT_COUNT: MIN_SUSPECT_COUNT,

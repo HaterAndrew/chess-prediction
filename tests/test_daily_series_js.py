@@ -98,3 +98,23 @@ def test_empty_and_null_inputs_are_safe(res):
     assert res["empty_sanitized"]["points"] == []
     assert res["null_sanitized"]["points"] == []
     assert res["empty_latest"] is None
+
+
+def test_last_day_reads_the_interval_ending_on_the_scrape_date(res):
+    """The overview's Last day column: 200 - 140 on the day the data was built."""
+    assert res["on_current"] == {"span": 1, "added": 60}
+
+
+def test_last_day_is_null_when_the_series_stopped_before_the_scrape_date(res):
+    """A tail that ended yesterday is not today's change."""
+    assert res["on_stale"] is None
+
+
+def test_last_day_keeps_the_gap_span_for_labelling(res):
+    """A missed scrape still reports, but with its true span for the label."""
+    assert res["on_gap"] == {"span": 7, "added": 220, "isGap": True}
+
+
+def test_last_day_needs_an_anchor_and_a_date(res):
+    assert res["on_no_anchor"] is None
+    assert res["on_no_date"] is None

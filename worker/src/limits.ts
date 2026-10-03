@@ -75,7 +75,8 @@ const DEFAULT_DAILY_BUDGET_USD = 1;
 // to 60s stale and the cap was effectively per-PoP, per-minute. Worst case per
 // request is MAX_TURNS x max_tokens at Sonnet output rates (~$0.48) against a
 // $1.00 cap, so a burst of concurrent POSTs billed roughly $96 while the
-// counter recorded one charge.
+// counter recorded one charge. ($0.48 stays the floor on Sonnet 5.5: a turn
+// served by its refusal fallback bills at the Sonnet 5 entry below.)
 //
 // Writes to distinct keys cannot lose updates, so the sum is exact for
 // everything KV has converged on. The residual is list read-after-write lag,
@@ -157,31 +158,81 @@ interface ModelPricing {
   cacheRead: number;
 }
 const MODEL_PRICING: Record<string, ModelPricing> = {
-  // Sonnet 5 standard rate (intro $2/$10 runs through 2026-08-31; the budget
-  // guard uses the durable rate so it over-counts, never under-counts).
+  "claude-sonnet-5-5": { input: 2.0, output: 10.0, cacheWrite: 2.5, cacheRead: 0.2 },
+  // Sonnet 5 lists at $2/$10: the $3/$15 rise planned for 2026-09-01 was
+  // cancelled (platform.claude.com pricing, checked 2026-10-03). The guard
+  // keeps $3/$15 here so it over-counts, never under-counts.
   "claude-sonnet-5": { input: 3.0, output: 15.0, cacheWrite: 3.75, cacheRead: 0.3 },
   "claude-sonnet-4": { input: 3.0, output: 15.0, cacheWrite: 3.75, cacheRead: 0.3 },
   "claude-opus-4": { input: 15.0, output: 75.0, cacheWrite: 18.75, cacheRead: 1.5 },
   "claude-haiku-4": { input: 1.0, output: 5.0, cacheWrite: 1.25, cacheRead: 0.1 },
 };
+// Every rate at its table maximum. Bills a model the table does not know, which
+// can happen without a deploy: with `fallbacks: "default"` the server picks the
+// fallback model.
+const CEILING_PRICING: ModelPricing = {
+  input: Math.max(...Object.values(MODEL_PRICING).map(p => p.input)),
+  output: Math.max(...Object.values(MODEL_PRICING).map(p => p.output)),
+  cacheWrite: Math.max(...Object.values(MODEL_PRICING).map(p => p.cacheWrite)),
+  cacheRead: Math.max(...Object.values(MODEL_PRICING).map(p => p.cacheRead)),
+};
 // code_execution bills container uptime separately (~$0.05/hour). We can't see
 // wall-clock per request, so add a small per-invocation term when it ran.
 const CODE_EXEC_COST_PER_CALL = 0.0005;
 
+// Longest matching prefix wins: "claude-sonnet-5-5" also starts with
+// "claude-sonnet-5", and a first-match lookup would depend on key order.
+function priceKeyFor(model: string): string | undefined {
+  return Object.keys(MODEL_PRICING)
+    .filter(k => model.startsWith(k))
+    .sort((a, b) => b.length - a.length)[0];
+}
+
+// Strict lookup for the configured model. Callers check it before the first
+// billed call, so a missing entry stops the request instead of the spend.
 export function pricingFor(model: string): ModelPricing {
-  const key = Object.keys(MODEL_PRICING).find(k => model.startsWith(k));
+  const key = priceKeyFor(model);
   if (!key) {
     throw new Error(`No price table entry for model "${model}" — add it to MODEL_PRICING before deploying.`);
   }
   return MODEL_PRICING[key];
 }
 
-export function estimateCost(usage: Anthropic.Beta.BetaUsage, model: string, codeExecCalls = 0): number {
-  const p = pricingFor(model);
-  const i = usage.input_tokens ?? 0;
-  const o = usage.output_tokens ?? 0;
-  const cw = usage.cache_creation_input_tokens ?? 0;
-  const cr = usage.cache_read_input_tokens ?? 0;
-  const tokenCost = ((i * p.input) + (o * p.output) + (cw * p.cacheWrite) + (cr * p.cacheRead)) / 1_000_000;
-  return tokenCost + codeExecCalls * CODE_EXEC_COST_PER_CALL;
+// Lenient lookup for a model the API reports after the call. The tokens are
+// already billed, so an unknown model is charged at the ceiling and logged
+// rather than throwing and losing the record.
+function pricingForServed(model: string | null): ModelPricing {
+  const key = model ? priceKeyFor(model) : undefined;
+  if (key) return MODEL_PRICING[key];
+  console.error(`No price table entry for served model "${model}" — billing at the table's highest rates`);
+  return CEILING_PRICING;
+}
+
+interface TokenCounts {
+  input_tokens?: number | null;
+  output_tokens?: number | null;
+  cache_creation_input_tokens?: number | null;
+  cache_read_input_tokens?: number | null;
+}
+
+function tokenCost(u: TokenCounts, p: ModelPricing): number {
+  const i = u.input_tokens ?? 0;
+  const o = u.output_tokens ?? 0;
+  const cw = u.cache_creation_input_tokens ?? 0;
+  const cr = u.cache_read_input_tokens ?? 0;
+  return ((i * p.input) + (o * p.output) + (cw * p.cacheWrite) + (cr * p.cacheRead)) / 1_000_000;
+}
+
+// `model` is the model that served the response (`resp.model`). Top-level
+// usage covers only that attempt; with refusal fallbacks, `usage.iterations`
+// lists every attempt at its own model. Bill the larger of the two so a
+// declined attempt is never dropped. An entry without a model (compaction, or
+// a null `model`) is priced as the served model.
+export function estimateCost(usage: Anthropic.Beta.BetaUsage, model: string | null, codeExecCalls = 0): number {
+  const served = tokenCost(usage, pricingForServed(model));
+  const attempts = (usage.iterations ?? []).reduce((sum, it) => {
+    const itModel = "model" in it && it.model ? it.model : model;
+    return sum + tokenCost(it, pricingForServed(itModel));
+  }, 0);
+  return Math.max(served, attempts) + codeExecCalls * CODE_EXEC_COST_PER_CALL;
 }

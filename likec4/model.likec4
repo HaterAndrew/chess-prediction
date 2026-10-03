@@ -14,7 +14,7 @@ model {
     description 'chessaction.com entry lists + chesstour.com flyers + chessevents.com standings'
   }
   anthropic = external 'Anthropic API' {
-    description 'Ask-tab model calls (Sonnet 5), billed to the worker owner'
+    description 'Ask-tab model calls (Sonnet 5.5), billed to the worker owner'
   }
   visitor = external 'Visitor' {
     description 'Browser / installed PWA'

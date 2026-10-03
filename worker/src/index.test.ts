@@ -57,7 +57,7 @@ function envWith(overrides: Partial<Env> = {}): Env {
     ANTHROPIC_API_KEY: "test",
     ALLOWED_ORIGIN: "https://chessentries.com,http://localhost:8080",
     ASSETS: undefined as never,
-    MODEL: "claude-sonnet-5",
+    MODEL: "claude-sonnet-5-5",
     DAILY_BUDGET_USD: "1.00",
     RATE_LIMIT_PER_MIN: "20",
     KV: fakeKV(),
@@ -81,6 +81,16 @@ describe("pricingFor", () => {
     // Both rates are equal today; assert key identity, not just values.
     expect(pricingFor("claude-sonnet-4-6")).not.toBe(pricingFor("claude-sonnet-5"));
     expect(pricingFor("claude-opus-4-1").input).toBe(15.0);
+  });
+
+  it("gives sonnet-5-5 its own entry, not the sonnet-5 prefix match", () => {
+    const p = pricingFor("claude-sonnet-5-5");
+    expect(p).not.toBe(pricingFor("claude-sonnet-5"));
+    expect(p).toEqual({ input: 2.0, output: 10.0, cacheWrite: 2.5, cacheRead: 0.2 });
+  });
+
+  it("keeps sonnet-5 dated variants on the sonnet-5 entry", () => {
+    expect(pricingFor("claude-sonnet-5-20260901")).toBe(pricingFor("claude-sonnet-5"));
   });
 });
 
@@ -106,6 +116,48 @@ describe("estimateCost", () => {
 
   it("treats missing usage fields as zero", () => {
     expect(estimateCost({} as never, "claude-sonnet-5")).toBe(0);
+  });
+
+  it("prices sonnet-5-5 at its own rates", () => {
+    // 1M*2 + 0.1M*10 + 0.2M*2.5 + 0.4M*0.2 = 2 + 1 + 0.5 + 0.08
+    expect(estimateCost(usage, "claude-sonnet-5-5")).toBeCloseTo(3.58, 6);
+  });
+
+  it("bills an unknown served model at the table's highest rates instead of throwing", () => {
+    // Opus is the ceiling: 1M*15 + 0.1M*75 + 0.2M*18.75 + 0.4M*1.5 = 15 + 7.5 + 3.75 + 0.6
+    expect(estimateCost(usage, "claude-unlisted-9")).toBeCloseTo(26.85, 6);
+    expect(estimateCost(usage, null)).toBeCloseTo(26.85, 6);
+  });
+
+  it("bills every fallback attempt when iterations exceed the served attempt", () => {
+    // Sonnet 5.5 declined after 1M input; Sonnet 5 served 1M in + 0.1M out.
+    // Top-level usage covers only the served attempt.
+    const fallbackUsage = {
+      input_tokens: 1_000_000,
+      output_tokens: 100_000,
+      iterations: [
+        { type: "message", model: "claude-sonnet-5-5", input_tokens: 1_000_000, output_tokens: 0,
+          cache_creation_input_tokens: 0, cache_read_input_tokens: 0, cache_creation: null },
+        { type: "fallback_message", model: "claude-sonnet-5", input_tokens: 1_000_000, output_tokens: 100_000,
+          cache_creation_input_tokens: 0, cache_read_input_tokens: 0, cache_creation: null },
+      ],
+    } as never;
+    // Declined: 1M*2 = 2.0. Served at sonnet-5: 1M*3 + 0.1M*15 = 4.5. Sum 6.5 > 4.5.
+    expect(estimateCost(fallbackUsage, "claude-sonnet-5")).toBeCloseTo(6.5, 6);
+  });
+
+  it("prices a model-less iteration as the served model", () => {
+    const compacted = {
+      input_tokens: 0,
+      output_tokens: 0,
+      iterations: [
+        { type: "compaction", input_tokens: 1_000_000, output_tokens: 0,
+          cache_creation_input_tokens: 0, cache_read_input_tokens: 0, cache_creation: null },
+        { type: "message", model: null, input_tokens: 1_000_000, output_tokens: 0,
+          cache_creation_input_tokens: 0, cache_read_input_tokens: 0, cache_creation: null },
+      ],
+    } as never;
+    expect(estimateCost(compacted, "claude-sonnet-5-5")).toBeCloseTo(4.0, 6);
   });
 });
 

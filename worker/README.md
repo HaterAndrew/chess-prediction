@@ -83,7 +83,7 @@ npm run tail
 |---|---|---|
 | `[assets] directory` | `../docs` | The site. `run_worker_first` names the four API paths; everything else never invokes the Worker. |
 | `ALLOWED_ORIGIN` | `https://chessentries.com,http://localhost:8080,http://127.0.0.1:8080` | Cross-origin allowlist. Same-origin requests need no entry. |
-| `MODEL` | `claude-sonnet-5` | Anthropic model id. Swap to `claude-haiku-4-5` for a large cost reduction. |
+| `MODEL` | `claude-sonnet-5-5` | Anthropic model id. Needs an entry in `MODEL_PRICING` (`src/limits.ts`) or `/ask` answers 503. The agent loop sends `output_config.effort`, so a model without effort support (Haiku 4.5) fails every call. Refusals fall back server-side (`fallbacks: "default"`); a fallback model the price table lacks is billed at its highest rates. |
 | `DAILY_BUDGET_USD` | `1.00` | Hard cap; 503 past this. Charges are recorded one KV key each and summed by prefix, so concurrent turns cannot lose updates. |
 | `RATE_LIMIT_PER_MIN` | `20` | Per-IP request cap per 60-second window. |
 | `GLOBAL_RATE_LIMIT_PER_MIN` | `60` | Cap across every caller. The per-IP limit alone cannot bind an attacker who rotates through an IPv6 /64 or drives the endpoint from other people's browsers. |

@@ -51,6 +51,37 @@ def _num(v):
     return float(v) if pd.notna(v) and str(v).strip() != "" else None
 
 
+FEE_FIELDS = ("regular_fee", "onsite_fee", "early_bird_fee", "early_bird_deadline")
+
+
+def _is_set(v):
+    return pd.notna(v) and str(v).strip() != ""
+
+
+def _flyer_updates(fr, reg, ons, eb, blank):
+    """The flyer values to write into this row's blank fee fields only.
+
+    A demoted early-bird tier is never merged, and the early-bird deadline is
+    written only together with its fee.
+    """
+    updates = {}
+    if reg is not None and "regular_fee" in blank:
+        updates["regular_fee"] = reg
+    if ons is not None and "onsite_fee" in blank:
+        updates["onsite_fee"] = ons
+    # A blank reason reads back from the CSV as NaN, and str(NaN or "") is
+    # "nan": the old check treated every undemoted tier as demoted, so no
+    # early-bird fee ever reached metadata.
+    eb_demoted = _is_set(fr.get("eb_demoted_reason"))
+    ebd = fr.get("early_bird_deadline")
+    if eb is None or eb_demoted or "early_bird_fee" not in blank:
+        return updates
+    updates["early_bird_fee"] = eb
+    if _is_set(ebd) and "early_bird_deadline" in blank:
+        updates["early_bird_deadline"] = str(ebd)[:10]
+    return updates
+
+
 def _code_for(family):
     return FAMILY_TO_CODE.get(family) or FAMILY_TO_CODE.get(canonicalize_family(family))
 
@@ -72,7 +103,9 @@ def merge_fees(dry_run=False, today=None, first_season=None):
         return 0
 
     all_fees = pd.read_csv(FEES_CSV)
-    meta = pd.read_csv(META_CSV)
+    # A deadline column with no values yet reads back as float64, which
+    # refuses the first date string written into it.
+    meta = pd.read_csv(META_CSV, dtype={"early_bird_deadline": "str"})
 
     filled = 0
     skipped = 0
@@ -81,8 +114,13 @@ def merge_fees(dry_run=False, today=None, first_season=None):
         year = int(row["year"])
         YY = str(year)[2:]
         fees = all_fees[all_fees["year"] == year]
-        if pd.notna(row.get("regular_fee")):
-            continue  # already has a fee — never overwrite
+        # Never overwrite a fee that is set, but fill each blank field on its
+        # own: the old whole-row skip on a set regular_fee left the flyer's
+        # early-bird tier out of metadata for good (NAO 2026 $245 by 9/20,
+        # World Open 2026 $318 by 5/15, both in tournament_fees.csv).
+        blank = {c for c in FEE_FIELDS if not _is_set(row.get(c))}
+        if not blank:
+            continue
         code = _code_for(family)
         if not code:
             # v5 Cat F: this was the only silent skip path in the merge — the
@@ -137,18 +175,14 @@ def merge_fees(dry_run=False, today=None, first_season=None):
             skipped += 1
             continue
 
+        updates = _flyer_updates(fr, reg, ons, eb, blank)
+        if not updates:
+            continue
         if not dry_run:
-            if reg is not None:
-                meta.at[idx, "regular_fee"] = reg
-            if ons is not None:
-                meta.at[idx, "onsite_fee"] = ons
-            eb_demoted = str(fr.get("eb_demoted_reason") or "").strip()
-            if eb is not None and not eb_demoted:
-                meta.at[idx, "early_bird_fee"] = eb
-                ebd = fr.get("early_bird_deadline")
-                if pd.notna(ebd) and str(ebd).strip():
-                    meta.at[idx, "early_bird_deadline"] = str(ebd)[:10]
-        print(f"  {'(dry) ' if dry_run else ''}filled {family}: regular={reg} onsite={ons} eb={eb} ({code}{YY})")
+            for col, val in updates.items():
+                meta.at[idx, col] = val
+        print(f"  {'(dry) ' if dry_run else ''}filled {family}: "
+              + " ".join(f"{c}={v}" for c, v in updates.items()) + f" ({code}{YY})")
         filled += 1
 
     if not dry_run and filled:

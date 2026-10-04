@@ -9,3 +9,9 @@ scikit-learn==1.9.1
 requests==2.34.2
 urllib3==2.8.0
 beautifulsoup4==4.15.0
+# Column contracts for the edition registry's integrity check (registry/).
+# pydantic and typeguard are pandera's own dependencies, pinned because their
+# major releases have broken pandera before.
+pandera[pandas]==0.33.1
+pydantic==2.13.5
+typeguard==4.6.0

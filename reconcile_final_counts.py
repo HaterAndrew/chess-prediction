@@ -162,7 +162,9 @@ def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
     }
     tid_max = summary["tid"].max()
     next_tid = (int(tid_max) + 1) if len(summary) and pd.notna(tid_max) else 1
-    new_rows = []
+    # One skeleton per edition: two scrape spellings of a new edition (CCA
+    # respelled the card) share it, under the spelling with the higher peak.
+    pending = {}
     for _, r in scrape_peak.iterrows():
         name = r["tournament_name"]
         peak = int(r["scrape_peak"])
@@ -172,9 +174,14 @@ def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
         m = _YEAR_PREFIX_RE.match(str(name))
         if not m:
             continue
-        if _scrape_key(name) in known_keys:
+        key = _scrape_key(name)
+        if key in known_keys:
             continue
-        new_rows.append({
+        if key in pending:
+            if peak > pending[key]["final_count"]:
+                pending[key].update(tournament_name=name, final_count=peak)
+            continue
+        pending[key] = {
             # family is stored canonical so 04d's family joins, history lookups
             # and n_editions counts resolve; tournament_name stays scraper-exact
             # (04e's scrape joins depend on it).
@@ -185,8 +192,9 @@ def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
             "last_reg": pd.NA, "is_covid": False, "is_online": False,
             "snapshot_last_reg": pd.NA, "early_bird_spike": False,
             "spike_day": pd.NA, "spike_magnitude": pd.NA, "roster_pending": True,
-        })
+        }
         next_tid += 1
+    new_rows = list(pending.values())
 
     if new_rows:
         if "roster_pending" not in summary.columns:

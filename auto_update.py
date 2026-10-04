@@ -73,6 +73,7 @@ from pipeline.steps import (  # noqa: F401
 from pipeline.site_html import step_update_html  # noqa: F401
 from pipeline.run_log import prune_update_log, step_log_run  # noqa: F401
 from pipeline.ledger import step_record_forecasts  # noqa: F401
+from pipeline.registry_step import step_edition_registry  # noqa: F401
 from pipeline.stamping import (  # noqa: F401
     STAMPED_DATA,
     STAMPED_SCRIPTS,
@@ -208,6 +209,10 @@ def main():
             step_record_forecasts()
         else:
             print("\n  Skipping the forecast ledger (--no-ledger)")
+
+        # Every file's edition keys must resolve before anything is committed;
+        # a failure raises into the degraded path below.
+        step_edition_registry()
 
         # Generate SHA-256 checksums for all output CSVs
         print(f"\n{'─'*60}")

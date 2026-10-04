@@ -42,6 +42,7 @@ output/scrape_health.html
 !output/walk_forward_records.csv
 !output/walk_in_family_stats.csv
 !output/walk_in_multipliers.csv
+!output/edition_registry.csv
 !output/audit_warnings.json
 
 # Data (local dev DB)

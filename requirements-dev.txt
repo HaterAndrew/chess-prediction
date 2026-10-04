@@ -6,3 +6,5 @@ ruff==0.16.9
 openpyxl==3.1.5
 rjsmin==1.2.5
 rcssmin==1.2.2
+# scripts/import_ccasite_standings.py reads cca-site's YAML front matter:
+PyYAML==6.0.3

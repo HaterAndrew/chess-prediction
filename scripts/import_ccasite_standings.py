@@ -18,53 +18,23 @@ from collections import Counter
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import pandas as pd  # noqa: E402
-
-from scrapers.standings import SLUG_DISPLAY  # noqa: E402
 from shared.paths import OUTPUT_DIR, PROJECT_DIR  # noqa: E402
-from registry.keys import summary_edition_key  # noqa: E402
 from standings.agreement import (against_final_counts, compare, render,  # noqa: E402
                                  render_final_counts)
 from standings.ccasite import read_editions, read_events  # noqa: E402
-from standings.families import Folder, folder_spellings  # noqa: E402
-from standings.importer import COLUMNS, build_rows  # noqa: E402
-from tournament_aliases import STANDINGS_NAME_MAP, canonicalize_family  # noqa: E402
+from standings.families import Folder, folder_spellings, legacy_standings_name  # noqa: E402
+from standings.importer import build_rows  # noqa: E402
+from standings.output_files import (STANDINGS_CSV, final_counts, read_standings,  # noqa: E402
+                                    spelling_years, write_standings)
+from tournament_aliases import canonicalize_family  # noqa: E402
 
-STANDINGS = "historical_standings.csv"
 YEAR_BANDS = ((0, 2008, "before 2009"), (2009, 2012, "2009-2012"), (2013, 9999, "2013 on"))
-
-
-def _scraper_name(slug):
-    """The family the standings scraper filed this folder under, if mapped."""
-    return STANDINGS_NAME_MAP.get(SLUG_DISPLAY.get(slug, slug.replace("-", " ").title()))
-
-
-def _spelling_years(output_dir):
-    summary = pd.read_csv(os.path.join(output_dir, "tournament_summary.csv"))
-    meta = pd.read_csv(os.path.join(output_dir, "tournament_metadata.csv"))
-    pairs = pd.concat([summary[["family", "tournament_year"]].set_axis(["family", "year"], axis=1),
-                       meta[["family", "year"]]]).dropna()
-    years = {}
-    for family, year in zip(pairs["family"], pairs["year"]):
-        years.setdefault(family, set()).add(int(year))
-    return years
-
-
-def _final_counts(output_dir):
-    summary = pd.read_csv(os.path.join(output_dir, "tournament_summary.csv"))
-    finals = {}
-    for family, year, count in zip(summary["family"], summary["tournament_year"], summary["final_count"]):
-        key = summary_edition_key(family, year)
-        if key and pd.notna(count):
-            finals[key] = max(finals.get(key, 0), int(count))
-    return finals
 
 
 def _committed_rows(ref=None):
     if ref is None:
-        with open(os.path.join(OUTPUT_DIR, STANDINGS), encoding="utf-8", newline="") as fh:
-            return list(csv.DictReader(fh))
-    text = subprocess.run(["git", "-C", PROJECT_DIR, "show", f"{ref}:output/{STANDINGS}"],
+        return read_standings(os.path.join(OUTPUT_DIR, STANDINGS_CSV))
+    text = subprocess.run(["git", "-C", PROJECT_DIR, "show", f"{ref}:output/{STANDINGS_CSV}"],
                           check=True, capture_output=True, text=True, encoding="utf-8").stdout
     return list(csv.DictReader(io.StringIO(text)))
 
@@ -95,23 +65,20 @@ def main(argv=None):
     content = os.path.join(args.cca_site, "content")
 
     events = read_events(content)
-    folders = [Folder(slug, names + (_scraper_name(slug),)) for slug, names in events.items()]
-    spelling_years = _spelling_years(OUTPUT_DIR)
-    spellings = folder_spellings(folders, spelling_years, canonicalize_family)
-    report = build_rows(read_editions(content), folders, spellings, spelling_years)
+    folders = [Folder(slug, names + (legacy_standings_name(slug),)) for slug, names in events.items()]
+    years = spelling_years(OUTPUT_DIR)
+    spellings = folder_spellings(folders, years, canonicalize_family)
+    report = build_rows(read_editions(content), folders, spellings, years)
 
     os.makedirs(out, exist_ok=True)
-    with open(os.path.join(out, STANDINGS), "w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=COLUMNS, lineterminator="\n")
-        writer.writeheader()
-        writer.writerows(report.rows)
+    write_standings(os.path.join(out, STANDINGS_CSV), report.rows)
 
     committed = _committed_rows()
     keys = {(r["tournament_name"], r["year"]) for r in committed}
     deleted = [r for r in _committed_rows(args.baseline_ref)
                if (r["tournament_name"], r["year"]) not in keys]
     lines = (_summary_lines(report)
-             + render_final_counts(*against_final_counts(report.rows, _final_counts(OUTPUT_DIR)))
+             + render_final_counts(*against_final_counts(report.rows, final_counts(OUTPUT_DIR)))
              + render("Against the committed rows", compare(committed, report.rows))
              + render(f"Against rows in {args.baseline_ref} since deleted", compare(deleted, report.rows)))
     with open(os.path.join(out, "agreement.md"), "w", encoding="utf-8", newline="\n") as fh:

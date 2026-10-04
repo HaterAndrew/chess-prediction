@@ -14,6 +14,8 @@ international folder (Philadelphia International) shares its lineage.
 import re
 from dataclasses import dataclass
 
+from tournament_aliases import STANDINGS_NAME_MAP
+
 
 def letters(name):
     return re.sub(r"[^a-z]", "", str(name).casefold())
@@ -23,6 +25,13 @@ def letters(name):
 class Folder:
     slug: str
     names: tuple   # cca-site name, its aliases, the scraper's mapped name
+
+
+def legacy_standings_name(slug):
+    """The family STANDINGS_NAME_MAP gives the name the old scraper filed a
+    chessevents slug under ("newyorkopen" -> "Newyorkopen" -> "New York
+    State Open"), or None."""
+    return STANDINGS_NAME_MAP.get(slug.replace("-", " ").title())
 
 
 class SpellingTie(ValueError):

@@ -197,6 +197,44 @@ def test_sync_adds_a_new_edition_under_the_scraped_spelling(tmp_path):
     assert ("World Open, top 6 sections", "2027") in {(r["family"], r["year"]) for r in _read_meta(meta)}
 
 
+def test_two_cards_for_one_edition_with_different_dates_are_not_applied(tmp_path, capsys):
+    meta = tmp_path / "tournament_metadata.csv"
+    _write_meta(meta, [_aco(2026, "2026-03-25", "2026-03-29")])
+    sync_metadata([
+        {"name": "2026 Atlantic City Open", "year": 2026, "start_date": "2026-03-26",
+         "end_date": "2026-03-30", "state": "New Jersey"},
+        {"name": "2026 Atlantic City  Open", "year": 2026, "start_date": "2026-04-02",
+         "end_date": "2026-04-05", "state": "New Jersey"},
+    ], meta_path=str(meta))
+    assert [r["start_date"] for r in _read_meta(meta)] == ["2026-03-25"]
+    assert "WARNING: two scraped cards name 'atlantic city open' 2026" in capsys.readouterr().out
+
+
+def test_a_respelled_card_gets_its_own_row_for_the_registry_to_report(tmp_path):
+    """Folding it onto the older row would leave sitebuild reading the old
+    name's frozen scrape count for that row."""
+    meta = tmp_path / "tournament_metadata.csv"
+    _write_meta(meta, [{"family": "World Open Under 13 Championship", "year": "2027",
+                        "start_date": "2027-07-01", "end_date": "2027-07-04",
+                        "venue_state": "", "regular_fee": ""}])
+    sync_metadata([{"name": "2027 World Open Under 13", "year": 2027,
+                    "start_date": "2027-07-02", "end_date": "2027-07-05",
+                    "state": ""}], meta_path=str(meta))
+    assert len(_read_meta(meta)) == 2
+
+
+def test_venue_editions_in_one_year_keep_their_own_rows(tmp_path):
+    meta = tmp_path / "tournament_metadata.csv"
+    _write_meta(meta, [])
+    sync_metadata([
+        {"name": f"2026 Eastern Class Championships (in {place})", "year": 2026,
+         "start_date": start, "end_date": start, "state": ""}
+        for place, start in (("Connecticut", "2026-10-16"), ("New Jersey", "2026-11-06"))
+    ], meta_path=str(meta))
+    # Two rows for one registry edition: the registry check reports them.
+    assert sorted(r["start_date"] for r in _read_meta(meta)) == ["2026-10-16", "2026-11-06"]
+
+
 def test_sync_files_a_typod_card_under_the_repaired_family(tmp_path):
     meta = tmp_path / "tournament_metadata.csv"
     _write_meta(meta, [{"family": "Western Class Championships", "year": "2026",

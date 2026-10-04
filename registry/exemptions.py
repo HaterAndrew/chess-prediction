@@ -4,7 +4,10 @@ Every exemption is an explicit list or a named rule, and every run reports
 how many rows each one covered, so a check can never pass by skipping rows
 silently. A new row that needs exempting is added here with its reason.
 """
+import pandas as pd
+
 from fees.codes import UNMAPPED_CODES
+from shared.editions import split_edition_name
 from shared.side_events import SIDE_EVENT_RE
 
 # tournament_summary.csv tids 10-75: the oldest export rows, named "42nd
@@ -29,12 +32,30 @@ MISDATED_HISTORICAL_ROWS = {
 
 
 def summary_exemption(row):
-    """The rule that exempts a summary row from resolution, or None."""
+    """The rule that exempts a summary row from resolution, or None. Only a
+    row with no year is exempt: a listed tid that gains a year resolves."""
+    if not pd.isna(row["tournament_year"]):
+        return None
     if row["tid"] in NON_EDITION_TIDS:
         return "non-edition tid"
     if row["tid"] in LEGACY_TID_RANGE:
         return "legacy tid 10-75"
     return None
+
+
+def scrape_exemption(row):
+    """daily_scrape.csv is append-only. The scraper has always written the
+    "<year> " prefix; a row without one cannot be keyed by name, and sitebuild
+    files it under a default year instead."""
+    if split_edition_name(row["tournament_name"])[1] is None:
+        return "name carries no year"
+    return None
+
+
+def ledger_exemption(row):
+    """The forecast ledgers are append-only: a card without a year left a
+    blank that no later run can fix."""
+    return "no year" if pd.isna(row["year"]) else None
 
 
 def fee_exemption(code):
@@ -44,7 +65,8 @@ def fee_exemption(code):
 
 
 def historical_exemption(row):
-    if (row["tournament_name"], row["year"]) in MISDATED_HISTORICAL_ROWS:
+    misdated = (row["tournament_name"], row["year"]) in MISDATED_HISTORICAL_ROWS
+    if misdated and row["total_entries"] == 0:
         return "name year contradicts start_date"
     if SIDE_EVENT_RE.search(str(row["tournament_name"])):
         return "side event"

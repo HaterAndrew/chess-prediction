@@ -77,7 +77,7 @@ def test_a_modern_summary_row_without_a_year_fails():
     summary = _frames()["tournament_summary.csv"]
     summary.loc[len(summary)] = [4200, "Chicago Open", float("nan"), 5]
     report, _ = check_integrity(_frames(**{"tournament_summary.csv": summary}))
-    assert report.errors == ["tournament_summary.csv row 4: '4200' carries no year"]
+    assert report.errors == ["tournament_summary.csv row 4: '4200' names no family or year"]
 
 
 def test_an_unmapped_flyer_code_fails():
@@ -170,3 +170,55 @@ def test_both_writers_run_the_step_and_both_workflows_commit_the_registry():
     assert enrich.index("step_edition_registry()") < enrich.index("generate_manifest()")
     for workflow in ("daily_update.yml", "enrichment_scrapers.yml"):
         assert "output/edition_registry.csv" in read(".github", "workflows", workflow)
+
+
+def test_an_empty_file_fails_instead_of_passing_vacuously():
+    empty = _frames()["historical_standings.csv"].iloc[0:0]
+    report, _ = check_integrity(_frames(**{"historical_standings.csv": empty}))
+    assert report.errors == ["historical_standings.csv has no rows"]
+
+
+def test_a_legacy_tid_with_a_year_is_resolved_not_exempted():
+    summary = _frames()["tournament_summary.csv"].assign(tournament_year=[2012.0, 2026.0])
+    report, resolutions = check_integrity(_frames(**{"tournament_summary.csv": summary}))
+    assert report.errors == []
+    assert "tournament_summary.csv: 1 row(s) exempt as legacy tid 10-75" not in exemption_lines(resolutions)
+    assert ("42nd annual Continental Open", 2012) in set(build_registry(resolutions)
+                                                        .set_index(["family", "year"]).index)
+
+
+def test_a_fractional_year_breaks_the_contract():
+    summary = _frames()["tournament_summary.csv"].assign(tournament_year=[None, 2026.5])
+    report, _ = check_integrity(_frames(**{"tournament_summary.csv": summary}))
+    assert any("whole_number" in e for e in report.errors)
+
+
+def test_year_columns_that_disagree_with_the_key_are_warned():
+    fees = _frames()["tournament_fees.csv"].assign(year=[2025, 2026])
+    hist = _frames()["historical_tournaments.csv"].assign(year=[2024, 2025, 2020])
+    report, _ = check_integrity(_frames(**{"tournament_fees.csv": fees,
+                                           "historical_tournaments.csv": hist}))
+    assert report.errors == []
+    assert report.warnings == [
+        "tournament_fees.csv row 2: year column 2025 disagrees with the URL's 2026",
+        "historical_tournaments.csv row 2: '2025 Chicago Open' is filed under 2024, "
+        "the year of its start_date",
+    ]
+
+
+def test_append_only_files_count_yearless_rows_instead_of_failing_forever():
+    scrape = _frames()["daily_scrape.csv"]
+    scrape.loc[len(scrape)] = ["2026-05-03", "Chicago Open", 510, "u"]
+    ledger = pd.DataFrame({"family": ["Chicago Open", "Chicago Open"], "year": [2026, None]})
+    report, resolutions = check_integrity(_frames(**{"daily_scrape.csv": scrape,
+                                                    "forecast_ledger.csv": ledger}))
+    assert report.errors == []
+    lines = exemption_lines(resolutions)
+    assert "daily_scrape.csv: 1 row(s) exempt as name carries no year" in lines
+    assert "forecast_ledger.csv: 1 row(s) exempt as no year" in lines
+
+
+def test_an_all_integer_summary_year_still_passes():
+    summary = _frames()["tournament_summary.csv"].iloc[[1]].assign(tournament_year=[2026])
+    report, _ = check_integrity(_frames(**{"tournament_summary.csv": summary}))
+    assert report.errors == []

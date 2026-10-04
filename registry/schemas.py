@@ -7,6 +7,7 @@ import pandera.pandas as pa
 
 DATE = pa.Check.str_matches(r"^\d{4}-\d{2}-\d{2}$")
 YEAR = pa.Check.in_range(1970, 2100)
+WHOLE = pa.Check(lambda s: s.dropna().mod(1).eq(0), name="whole_number")
 COUNT = pa.Check.ge(0)
 
 
@@ -18,15 +19,18 @@ SCHEMAS = {
     "tournament_summary.csv": _schema({
         "tid": pa.Column(int, unique=True),
         "family": pa.Column(str),
-        # Null for the legacy and non-edition tids (registry.exemptions).
-        "tournament_year": pa.Column(float, YEAR, nullable=True),
+        # Null for the legacy and non-edition tids (registry.exemptions);
+        # coerced so the column still passes once those rows are gone and
+        # pandas reads it as int64.
+        "tournament_year": pa.Column(float, [YEAR, WHOLE], nullable=True, coerce=True),
         "final_count": pa.Column(int, COUNT),
     }),
     "tournament_metadata.csv": _schema({
         "family": pa.Column(str),
         "year": pa.Column(int, YEAR),
-        "start_date": pa.Column(str, DATE),
-        "end_date": pa.Column(str, DATE),
+        # Dates are not part of the key; an announced edition may lack them.
+        "start_date": pa.Column(str, DATE, nullable=True),
+        "end_date": pa.Column(str, DATE, nullable=True),
     }),
     "daily_scrape.csv": _schema({
         "date": pa.Column(str, DATE),
@@ -54,13 +58,16 @@ SCHEMAS = {
         "year": pa.Column(int, YEAR),
         "walk_in_ratio": pa.Column(float, pa.Check.gt(0)),
     }),
+    # The ledgers are append-only and never pruned: a card without a year
+    # writes a blank, which must not fail every run after it. Such rows are
+    # counted under registry.exemptions.no_year.
     "forecast_ledger.csv": _schema({
         "family": pa.Column(str),
-        "year": pa.Column(int, YEAR),
+        "year": pa.Column(float, [YEAR, WHOLE], nullable=True, coerce=True),
     }),
     "forecast_ledger_backfill.csv": _schema({
         "family": pa.Column(str),
-        "year": pa.Column(int, YEAR),
+        "year": pa.Column(float, [YEAR, WHOLE], nullable=True, coerce=True),
     }),
 }
 

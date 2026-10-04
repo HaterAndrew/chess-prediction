@@ -3,7 +3,7 @@ from collections import Counter
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-from registry.keys import (AmbiguousKey, UnresolvedKey, historical_edition_key,
+from registry.keys import (UnresolvedKey, historical_edition_key,
                            scrape_edition_key, standings_edition_key, summary_edition_key)
 
 SCHEMES = {
@@ -33,6 +33,7 @@ class Source:
     edition_of: row -> edition or None (may raise UnresolvedKey/AmbiguousKey)
     label: row -> the file's own key, as the registry lists it
     exemption_of: row -> the exemption rule covering it, or None
+    warning_of: (row, edition) -> a note on a resolved row, or None
     unknown_family_rule: when set, a row of an unknown family is counted
         under this rule instead of failing (files that list every CCA event)
     unique: at most one row per edition
@@ -42,6 +43,7 @@ class Source:
     edition_of: Callable
     label: Callable
     exemption_of: Callable = lambda row: None
+    warning_of: Callable = lambda row, edition: None
     unknown_family_rule: Optional[str] = None
     unique: bool = True
     column: Optional[str] = None
@@ -54,6 +56,7 @@ class Resolution:
     exempt: Counter = field(default_factory=Counter)
     unresolved: list = field(default_factory=list)
     duplicates: list = field(default_factory=list)
+    warnings: list = field(default_factory=list)
 
 
 def _resolve_row(source, row, families):
@@ -63,10 +66,10 @@ def _resolve_row(source, row, families):
         return "exempt", rule
     try:
         edition = source.edition_of(row)
-    except (UnresolvedKey, AmbiguousKey) as e:
-        return "unresolved", str(e)
+    except (LookupError, ValueError, TypeError) as e:  # UnresolvedKey, AmbiguousKey, bad values
+        return "unresolved", f"{source.label(row)!r}: {e}"
     if edition is None:
-        return "unresolved", f"{source.label(row)!r} carries no year"
+        return "unresolved", f"{source.label(row)!r} names no family or year"
     if edition[0] in families:
         return "edition", edition
     if source.unknown_family_rule:
@@ -80,6 +83,9 @@ def resolve_source(source, frame, families):
         kind, value = _resolve_row(source, row, families)
         if kind == "edition":
             result.rows.append((value, source.label(row)))
+            note = source.warning_of(row, value)
+            if note:
+                result.warnings.append(f"{source.file} row {i}: {note}")
         elif kind == "exempt":
             result.exempt[value] += 1
         else:

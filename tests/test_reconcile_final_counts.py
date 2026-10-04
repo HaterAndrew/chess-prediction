@@ -207,3 +207,16 @@ def test_new_skeleton_family_is_canonical(tmp_output):
     assert len(row) == 1
     assert row.iloc[0]["family"] == "World Open lower sections"
     assert bool(row.iloc[0]["roster_pending"]) is True
+
+
+def test_two_spellings_of_one_new_edition_spawn_one_skeleton(tmp_output):
+    """Two scrape names for one edition with no summary row (CCA respelled the
+    card) used to append a skeleton each: the summary then held two rows for
+    one edition, which the edition registry rejects every night."""
+    _append_scrape_rows(tmp_output, "2026 World Open, lower sections", [40, 60])
+    _append_scrape_rows(tmp_output, "2026 World Open lower sections", [70, 80])
+    reconcile_final_counts(tmp_output, verbose=False)
+    after = _summary(tmp_output)
+    lower = after.loc[after["family"] == "World Open lower sections"]
+    assert len(lower) == 1
+    assert int(lower.iloc[0]["final_count"]) == 80

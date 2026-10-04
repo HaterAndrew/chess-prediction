@@ -5,11 +5,12 @@ A failed check raises. In the nightly that fails the run, so the stale
 banner goes up over the last published data instead of a commit of broken
 keys; in the enrichment run it blocks the commit of the scraped files.
 """
-from pipeline import config
+from pipeline import config, warns
 from registry.checks import build_registry, check_integrity, exemption_lines
 from registry.io import load_frames, write_registry
 
 MAX_LISTED_ERRORS = 20
+STEP = "Edition registry"
 
 
 def step_edition_registry(output_dir=None):
@@ -20,6 +21,11 @@ def step_edition_registry(output_dir=None):
     report, resolutions = check_integrity(load_frames(output_dir))
     for line in exemption_lines(resolutions):
         print(f"  {line}")
+    for line in report.warnings:
+        print(f"  WARNING: {line}")
+        warns._PIPELINE_WARNINGS.append({'step': STEP, 'text': line})
+    for line in report.errors:
+        print(f"  ERROR: {line}")
     if not report.passed:
         listed = "\n".join(f"  {e}" for e in report.errors[:MAX_LISTED_ERRORS])
         more = len(report.errors) - MAX_LISTED_ERRORS

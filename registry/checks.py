@@ -3,34 +3,54 @@ import pandas as pd
 
 from registry.resolve import resolve_source
 from registry.schemas import schema_errors
-from registry.sources import SOURCES, families
+from registry.sources import METADATA, SOURCES, SUMMARY, families
 from validation.report import ValidationReport
 
 REGISTRY_COLUMNS = ["family", "year"] + [s.column for s in SOURCES if s.column]
 
 
+def _contract_errors(frames):
+    """{file: [errors]} for files that are missing, empty, or fail their
+    column contract."""
+    failed = {}
+    for source in SOURCES:
+        frame = frames.get(source.file)
+        if frame is None:
+            failed[source.file] = [f"{source.file} not found"]
+        elif frame.empty:
+            failed[source.file] = [f"{source.file} has no rows"]
+        else:
+            errors = schema_errors(source.file, frame)
+            if errors:
+                failed[source.file] = errors + [
+                    f"{source.file}: rows not resolved until its columns pass"]
+    return failed
+
+
 def check_integrity(frames):
-    """(report, resolutions). Errors: a missing file, a failed column
-    contract, a row that resolves to no edition, two rows for one edition.
+    """(report, resolutions). Errors: a missing or empty file, a failed
+    column contract, a row that resolves to no edition, two rows for one
+    edition. Warnings: a resolved row whose own year columns disagree.
     Exemptions are counted per rule in each resolution."""
     report = ValidationReport()
-    missing = [s.file for s in SOURCES if s.file not in frames]
-    for file in missing:
-        report.add_error(f"{file} not found")
-    if missing:
+    failed = _contract_errors(frames)
+    for errors in failed.values():
+        for line in errors:
+            report.add_error(line)
+    if SUMMARY in failed or METADATA in failed:
+        report.add_error("no file resolved: the family universe comes from the summary and metadata")
         return report, []
 
     universe = families(frames)
     resolutions = []
     for source in SOURCES:
-        errors = schema_errors(source.file, frames[source.file])
-        for line in errors:
-            report.add_error(line)
-        if errors:
-            continue  # rows cannot be keyed reliably until the contract holds
+        if source.file in failed:
+            continue
         resolution = resolve_source(source, frames[source.file], universe)
         for line in resolution.unresolved + resolution.duplicates:
             report.add_error(line)
+        for line in resolution.warnings:
+            report.add_warning(line)
         resolutions.append(resolution)
     return report, resolutions
 

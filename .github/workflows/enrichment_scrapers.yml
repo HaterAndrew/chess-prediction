@@ -65,7 +65,7 @@ jobs:
           # checksums.json: run_enrichment.py regenerates it after the scrapers
           # rewrite their CSVs; without it the committed manifest disagrees
           # with the committed data until the next nightly run.
-          git add output/tournament_fees.csv output/historical_standings.csv output/historical_tournaments.csv output/tournament_metadata.csv output/audit_warnings.json docs/audit_warnings.json output/checksums.json
+          git add output/tournament_fees.csv output/historical_standings.csv output/historical_tournaments.csv output/tournament_metadata.csv output/audit_warnings.json docs/audit_warnings.json output/edition_registry.csv output/checksums.json
           git diff --cached --quiet || git commit -m "Enrichment data update: $(date +%Y-%m-%d)"
           git pull --rebase || git pull --no-rebase
           git push

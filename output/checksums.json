@@ -13,6 +13,12 @@
       "timestamp": "2026-10-04T06:54:40Z"
     },
     {
+      "filename": "edition_registry.csv",
+      "sha256": "f39ae7695095f605e1856f9b24b2afcc9998296bca47b2d7fe3a5e56a849d882",
+      "row_count": 810,
+      "timestamp": "2026-10-04T05:54:58Z"
+    },
+    {
       "filename": "forecast_ledger.csv",
       "sha256": "9b01864a16b52dd3928fd36867d8936206522af3e2f42920f62d810e8a4fa6cb",
       "row_count": 630,

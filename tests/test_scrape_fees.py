@@ -149,7 +149,6 @@ def test_every_scraped_code_is_mapped_or_allowlisted():
     Every season in the file is checked: the test used to read 2026 rows only,
     so an unmapped 2027 flyer would have passed unnoticed."""
     import csv
-    import re
 
     import pytest
 
@@ -157,15 +156,15 @@ def test_every_scraped_code_is_mapped_or_allowlisted():
     if not os.path.exists(fees_path):
         pytest.skip("no scraped fee corpus in this checkout")
 
+    from registry.keys import flyer_code
     from validate_fees import FAMILY_TO_CODE, UNMAPPED_CODES
 
     with open(fees_path, encoding="utf-8") as fh:
         rows = list(csv.DictReader(fh))
-    scraped = set()
-    for r in rows:
-        m = re.search(r"/([a-z]+)\d{2}\.", str(r.get("url", "")))
-        if m:
-            scraped.add(m.group(1))
+    codes = {r["url"]: flyer_code(r.get("url", "")) for r in rows}
+    unread = sorted(url for url, code in codes.items() if code is None)
+    assert not unread, f"flyer URL(s) with no <code><yy>.htm page: {unread}"
+    scraped = set(codes.values())
     assert scraped, "no flyer codes parsed from tournament_fees.csv urls"
 
     mapped = set(FAMILY_TO_CODE.values())

@@ -76,19 +76,31 @@ FAMILY_TO_CODE = {
     "Southwest Class Championships": "swcc",
     "George Washington Open": "gwo",
     "Western Class Championships": "wcc",
+    # Verified 2026-10-04 from the live 2026 flyers: so26 ("Southern Open"),
+    # woam26 ("5th annual World Open Amateur"), wosa26 ("16th annual World
+    # Open Senior Amateur") and wowc26 ("15th annual World Open Women's
+    # Championship"). Each is a Game/90 event with its own entry fee.
+    "Southern Open": "so",
+    "World Open Amateur": "woam",
+    "World Open Senior Amateur": "wosa",
+    "World Open Womens Championship": "wowc",
 }
 
 # Flyer codes that exist on chesstour.com but deliberately map to no family:
-# blitz side events sharing the parent flyer's code with a "b" suffix carry
-# no advance fee schedule. The parity test in tests/test_scrape_fees.py
-# fails when a scraped code is neither mapped above nor listed here, so a
-# newly discovered flyer cannot fall through silently (v5 Cat F).
+# blitz and quick-chess side events. Their flyers state a fee, but no card
+# shows a side event (shared/side_events.py), so nothing reads it. The parity
+# test in tests/test_scrape_fees.py fails when a scraped code is neither
+# mapped above nor listed here, so a newly discovered flyer cannot fall
+# through silently (v5 Cat F).
 UNMAPPED_CODES = {
     "aob", "conob", "eccob", "kiob", "laob", "mwccb", "pcob",
     # Posted 2026-07-29, caught by the parity test on the 2026-07-31 fees
-    # run: Eastern Open Blitz and National Chess Congress Blitz — same
-    # no-advance-fee blitz side-event class as the rest of this set.
+    # run: Eastern Open Blitz and National Chess Congress Blitz.
     "eob", "nccb",
+    # Restored 2026-10-04 with the flyers the weekly rewrite had dropped:
+    # Chicago Class Blitz, World Open Action (G/30), Blitz, Game/10, Game/7
+    # Blitz and Game/50.
+    "chccb", "woac", "wob", "woq", "woseven", "wog50",
 }
 
 # Blind-discovery probe list (moved verbatim from scrape_fees.TOURNAMENT_CODES).

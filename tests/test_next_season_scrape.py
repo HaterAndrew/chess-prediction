@@ -168,6 +168,35 @@ def test_cca_family_fixes_the_typo_cca_publishes_every_year():
     assert cca_family("2027 Western Class Championshps") == "Western Class Championships"
 
 
+def test_sync_updates_the_lineage_row_instead_of_adding_a_second_spelling(tmp_path):
+    """CCA spells the card "World Open, top 6 sections"; the lineage row has no
+    comma. Matched on the raw name, the sync appended a second 2026 row for
+    the same edition (found 2026-10-04 by the edition registry)."""
+    meta = tmp_path / "tournament_metadata.csv"
+    _write_meta(meta, [{"family": "World Open top 6 sections", "year": "2026",
+                        "start_date": "2026-07-01", "end_date": "2026-07-05",
+                        "venue_state": "", "regular_fee": "318"}])
+    sync_metadata([{"name": "2026 World Open, top 6 sections", "year": 2026,
+                    "start_date": "2026-07-02", "end_date": "2026-07-06",
+                    "state": "Pennsylvania"}], meta_path=str(meta))
+    rows = _read_meta(meta)
+    assert [(r["family"], r["start_date"], r["regular_fee"]) for r in rows] == [
+        ("World Open top 6 sections", "2026-07-02", "318")]
+
+
+def test_sync_adds_a_new_edition_under_the_scraped_spelling(tmp_path):
+    """sitebuild's metadata cards look scrape counts up by the metadata row's
+    own spelling, which the scraper's spelling must match."""
+    meta = tmp_path / "tournament_metadata.csv"
+    _write_meta(meta, [{"family": "World Open top 6 sections", "year": "2026",
+                        "start_date": "2026-07-01", "end_date": "2026-07-05",
+                        "venue_state": "", "regular_fee": ""}])
+    sync_metadata([{"name": "2027 World Open, top 6 sections", "year": 2027,
+                    "start_date": "2027-07-01", "end_date": "2027-07-05",
+                    "state": "Pennsylvania"}], meta_path=str(meta))
+    assert ("World Open, top 6 sections", "2027") in {(r["family"], r["year"]) for r in _read_meta(meta)}
+
+
 def test_sync_files_a_typod_card_under_the_repaired_family(tmp_path):
     meta = tmp_path / "tournament_metadata.csv"
     _write_meta(meta, [{"family": "Western Class Championships", "year": "2026",

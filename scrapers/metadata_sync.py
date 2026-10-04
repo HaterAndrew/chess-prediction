@@ -11,31 +11,38 @@ import csv
 import os
 
 from shared.paths import OUTPUT_DIR
-from tournament_aliases import cca_family
+from tournament_aliases import cca_family, strip_venue_suffix
 
 META_PATH = os.path.join(OUTPUT_DIR, "tournament_metadata.csv")
 
 
-def _edition_key(tournament):
-    """(family, 'YYYY') for a scraped tournament dict. Year is a string because
-    that is how the metadata CSV holds it."""
-    return cca_family(tournament['name']), str(tournament['year'])
+def _edition_key(family, year):
+    """(spelling, 'YYYY'). Year is a string because that is how the metadata
+    CSV holds it. The spelling ignores commas, spacing, case and an "(in
+    <place>)" suffix, so CCA's "World Open, top 6 sections" card updates the
+    "World Open top 6 sections" row instead of adding a second row for the
+    same edition. It does not fold lineage renames (canonicalize_family maps
+    "Philadelphia Open" to "DC Open"): two such events in one year keep
+    separate rows, and the edition registry reports the clash."""
+    spelling = ' '.join(strip_venue_suffix(family).replace(',', ' ').split()).casefold()
+    return spelling, str(year)
 
 
 def plan_sync(meta_rows, tournaments, fieldnames):
     """Apply scraped dates to metadata rows, matching on the edition.
 
     Returns (rows, changes). `rows` is `meta_rows` with dates updated in place
-    plus a new row per scraped edition that had none; fee and venue columns on
-    existing rows are left alone. `changes` is a list of human-readable lines,
-    empty when nothing differed.
+    plus a new row per scraped edition that had none, under the scraper's
+    spelling (sitebuild looks scrape counts up by the metadata row's own
+    family); fee and venue columns on existing rows are left alone. `changes`
+    is a list of human-readable lines, empty when nothing differed.
     """
-    scraped = {_edition_key(t): t for t in tournaments}
+    scraped = {_edition_key(cca_family(t['name']), t['year']): t for t in tournaments}
     changes = []
     seen = set()
 
     for row in meta_rows:
-        key = (row['family'], str(row['year']))
+        key = _edition_key(row['family'], row['year'])
         seen.add(key)
         t = scraped.get(key)
         if t is None:
@@ -44,20 +51,20 @@ def plan_sync(meta_rows, tournaments, fieldnames):
         new = (t['start_date'], t['end_date'])
         if old == new:
             continue
-        changes.append(f"UPDATED {key[0]} {key[1]}: {old[0]}..{old[1]} -> {new[0]}..{new[1]}")
+        changes.append(f"UPDATED {row['family']} {key[1]}: {old[0]}..{old[1]} -> {new[0]}..{new[1]}")
         row['start_date'], row['end_date'] = new
 
     for key, t in scraped.items():
         if key in seen:
             continue
         new_row = {fn: '' for fn in fieldnames}
-        new_row['family'], new_row['year'] = key
+        new_row['family'], new_row['year'] = cca_family(t['name']), key[1]
         new_row['start_date'] = t['start_date']
         new_row['end_date'] = t['end_date']
         if 'venue_state' in fieldnames:
             new_row['venue_state'] = t.get('state', '')
         meta_rows.append(new_row)
-        changes.append(f"ADDED {key[0]} {key[1]}: {t['start_date']}..{t['end_date']}")
+        changes.append(f"ADDED {new_row['family']} {key[1]}: {t['start_date']}..{t['end_date']}")
 
     return meta_rows, changes
 

@@ -25,6 +25,7 @@ from fees.discover import (  # noqa: F401
 from fees.parse import parse_flyer  # noqa: F401
 from fees.patterns import EARLY_BIRD_MIN_GAP_DAYS  # noqa: F401
 from fees.store import read_fees, upsert, write_fees
+from registry.keys import flyer_code
 from shared.paths import OUTPUT_DIR
 
 CSV_PATH = os.path.join(OUTPUT_DIR, "tournament_fees.csv")
@@ -70,6 +71,9 @@ def main():
         sys.exit(0)
 
     parsed, unparsed = _parse_live(live)
+    # chessevents.com also links help pages (Byes.htm, taxes.htm); only
+    # <code><yy>.htm pages are flyers.
+    unparsed = [url for url in unparsed if flyer_code(url)]
     if unparsed:
         print(f"{len(unparsed)} live flyer(s) did not parse: {', '.join(unparsed)}")
     if not parsed:

@@ -99,8 +99,8 @@ UNMAPPED_CODES = {
     "eob", "nccb",
     # Restored 2026-10-04 with the flyers the weekly rewrite had dropped:
     # Chicago Class Blitz, World Open Action (G/30), Blitz, Game/10, Game/7
-    # Blitz and Game/50.
-    "chccb", "woac", "wob", "woq", "woseven", "wog50",
+    # Blitz and Game/50. eccb26 is the Eastern Class Blitz Championship.
+    "chccb", "woac", "wob", "woq", "woseven", "wog50", "eccb",
 }
 
 # Blind-discovery probe list (moved verbatim from scrape_fees.TOURNAMENT_CODES).

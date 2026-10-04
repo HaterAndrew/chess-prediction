@@ -20,6 +20,13 @@ from standings.importer import FolderEdition
 
 FRONT_MATTER_RE = re.compile(r"\A---\r?\n(.*?)\r?\n---", re.S)
 
+# Editions whose cca-site copy lacks main sections the event had. The import
+# leaves them out rather than publish a short count.
+INCOMPLETE_EDITIONS = {
+    ("worldopen", 2001): "3 of the 8 main sections the March 2026 archive scrape found",
+    ("pittsburgh", 2026): "no Under 2100 section; chessevents.com lists it with 40 players",
+}
+
 
 def read_events(content_dir):
     """{slug: (name, *aliases)} for every event."""

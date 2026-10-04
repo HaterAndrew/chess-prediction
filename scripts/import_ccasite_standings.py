@@ -3,10 +3,11 @@ directory, with an agreement report against the committed rows.
 
     .venv/bin/python scripts/import_ccasite_standings.py --out <dir> [--cca-site ../cca-site]
 
-Writes <dir>/historical_standings.csv and <dir>/agreement.md. It never
-writes under output/: the rebuilt file replaces the committed one only in
-its own reviewed change. Counts and section names only; no player names or
-IDs leave cca-site.
+Writes <dir>/historical_standings.csv and <dir>/agreement.md. Committed
+rows for editions the rebuild has no row for are kept as they are, marked
+by their source. The script never writes under output/: the rebuilt file
+replaces the committed one only in its own reviewed change. Counts and
+section names only; no player names or IDs leave cca-site.
 """
 import argparse
 import csv
@@ -21,7 +22,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from shared.paths import OUTPUT_DIR, PROJECT_DIR  # noqa: E402
 from standings.agreement import (against_final_counts, compare, render,  # noqa: E402
                                  render_final_counts)
-from standings.ccasite import read_editions, read_events  # noqa: E402
+from registry.keys import standings_edition_key  # noqa: E402
+from standings.ccasite import INCOMPLETE_EDITIONS, read_editions, read_events  # noqa: E402
 from standings.families import Folder, folder_spellings, legacy_standings_name  # noqa: E402
 from standings.importer import build_rows  # noqa: E402
 from standings.output_files import (STANDINGS_CSV, final_counts, read_standings,  # noqa: E402
@@ -29,6 +31,7 @@ from standings.output_files import (STANDINGS_CSV, final_counts, read_standings,
 from tournament_aliases import canonicalize_family  # noqa: E402
 
 YEAR_BANDS = ((0, 2008, "before 2009"), (2009, 2012, "2009-2012"), (2013, 9999, "2013 on"))
+CARRIED_SOURCE = "old scraper"
 
 
 def _committed_rows(ref=None):
@@ -37,6 +40,23 @@ def _committed_rows(ref=None):
     text = subprocess.run(["git", "-C", PROJECT_DIR, "show", f"{ref}:output/{STANDINGS_CSV}"],
                           check=True, capture_output=True, text=True, encoding="utf-8").stdout
     return list(csv.DictReader(io.StringIO(text)))
+
+
+def _complete(editions, skipped):
+    for edition in editions:
+        reason = INCOMPLETE_EDITIONS.get((edition.slug, edition.year))
+        if reason:
+            skipped.append(f"{edition.slug} {edition.year}: not imported, cca-site has {reason}")
+        else:
+            yield edition
+
+
+def _carried(committed, rows):
+    """Committed rows for editions the rebuild has no row for, kept as they
+    are and marked: the weekly scrape's rows, and old rows cca-site lacks."""
+    rebuilt = {standings_edition_key(r["tournament_name"], r["year"]) for r in rows}
+    return [dict(r, source=r.get("source") or CARRIED_SOURCE) for r in committed
+            if standings_edition_key(r["tournament_name"], int(r["year"])) not in rebuilt]
 
 
 def _summary_lines(report):
@@ -68,12 +88,17 @@ def main(argv=None):
     folders = [Folder(slug, names + (legacy_standings_name(slug),)) for slug, names in events.items()]
     years = spelling_years(OUTPUT_DIR)
     spellings = folder_spellings(folders, years, canonicalize_family)
-    report = build_rows(read_editions(content), folders, spellings, years)
-
-    os.makedirs(out, exist_ok=True)
-    write_standings(os.path.join(out, STANDINGS_CSV), report.rows)
+    skipped = []
+    report = build_rows(_complete(read_editions(content), skipped), folders, spellings, years)
+    report.notes[:0] = skipped
 
     committed = _committed_rows()
+    carried = _carried(committed, report.rows)
+    report.notes += [f"{r['tournament_name']} {r['year']}: no rebuilt row; the committed row "
+                     f"({r['total_players']}, old count rule) is kept" for r in carried]
+    os.makedirs(out, exist_ok=True)
+    write_standings(os.path.join(out, STANDINGS_CSV), report.rows + carried)
+
     keys = {(r["tournament_name"], r["year"]) for r in committed}
     deleted = [r for r in _committed_rows(args.baseline_ref)
                if (r["tournament_name"], r["year"]) not in keys]
@@ -83,7 +108,7 @@ def main(argv=None):
              + render(f"Against rows in {args.baseline_ref} since deleted", compare(deleted, report.rows)))
     with open(os.path.join(out, "agreement.md"), "w", encoding="utf-8", newline="\n") as fh:
         fh.write("\n".join(lines))
-    print(f"{len(report.rows)} rows and agreement.md written to {out}")
+    print(f"{len(report.rows)} rebuilt and {len(carried)} kept rows, and agreement.md, written to {out}")
 
 
 if __name__ == "__main__":

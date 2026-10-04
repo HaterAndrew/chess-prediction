@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 from registry.keys import standings_edition_key
 from standings.count_rule import is_side_event_section
 
-FINAL_COUNT_BAND = (0.8, 1.5)
+FINAL_COUNT_BAND = (0.85, 1.25)
 
 
 @dataclass(frozen=True)

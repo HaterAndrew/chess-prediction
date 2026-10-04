@@ -4,6 +4,11 @@ A section is dropped when it is
   * a side event, by name (blitz, quick chess, quads, extra rated games,
     team and doubles events);
   * a team section, whose rows carry `members` instead of a player;
+  * a schedule list ("2-Day Major", "Under 1800 2 day"): the players on a
+    shorter schedule merge into the main section and appear in its
+    standings too. cca-site often has no IDs for these lists, so the
+    re-listing check below cannot see it: Kings Island Open 2022's six
+    2-day lists name 145 players, all of them in its main sections;
   * a re-listing: every player in it also plays in the sections kept, as
     with Eastern Open's "Senior Championship", which is its six main
     sections combined.
@@ -20,6 +25,7 @@ from dataclasses import dataclass, field
 
 from shared.side_events import SIDE_EVENT_RE
 
+SCHEDULE_LIST_RE = re.compile(r"\b[123]\s*-?\s*day\b", re.IGNORECASE)
 SECTION_SIDE_EVENT_RE = re.compile(
     r"\bGame\s*/?\s*\d+|Mixed|Doubles|Team|Quick|Speed|Puzzle|\bQuads?\b|\bHex\b"
     r"|Extra\b.*\bGames|^Rated Games$|Fischer Random|Side Event", re.IGNORECASE)
@@ -51,6 +57,8 @@ def _drop_reason(section):
         return "side event"
     if any("members" in r for r in section.rows):
         return "team section"
+    if SCHEDULE_LIST_RE.search(section.name):
+        return "schedule list"
     return None
 
 

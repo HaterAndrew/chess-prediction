@@ -73,3 +73,14 @@ def test_a_section_without_ids_is_never_judged_a_relist(ids):
     result = count_edition([Section("Open", _players("a", "b")),
                             Section("Under 1000", [{"uscfId": i} for i in ids])])
     assert "Under 1000" not in result.dropped
+
+
+def test_schedule_lists_are_dropped_even_without_ids():
+    """cca-site has no IDs for Kings Island Open 2022's 2-day lists; all 145
+    of their players are in the main sections too."""
+    result = count_edition([Section("Under 1700", _players("a", "b", "c")),
+                            Section("Under 1700 2-Day", [{"uscfId": None}] * 2),
+                            Section("2-Day Major!", [{"uscfId": None}]),
+                            Section("Under 1200 2 day", _players("c"))])
+    assert result.total == 3
+    assert set(result.dropped.values()) == {"schedule list"}

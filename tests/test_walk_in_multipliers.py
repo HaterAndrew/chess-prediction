@@ -40,6 +40,20 @@ def test_multiplier_computation():
     print("  PASS: multiplier computation")
 
 
+def test_standings_meet_the_summary_on_the_edition_key():
+    """STANDINGS_NAME_MAP sends "Southwest Class" to "Southwest Class
+    Championships", which the summary spells "Southwest Class" for 2015-2021;
+    a letters match after the map lost every one of those years."""
+    from importlib import import_module
+    m06 = import_module("06_walk_in_multipliers")
+
+    standings = {("Southwest Class", 2019): 393, ("Bostonchess Congress", 2019): 270}
+    summary = {("Southwest Class", 2019): 360, ("Boston Chess Congress", 2019): 250}
+    rows = m06.compute_multipliers(standings, summary)
+    assert [(r["family"], r["standings_count"]) for r in rows] == [
+        ("Boston Chess Congress", 270), ("Southwest Class", 393)]
+
+
 def test_ratio_floor_filter():
     """Ratios < 0.5 should be filtered out (bad standings data)."""
     from importlib import import_module

@@ -12,16 +12,15 @@ Outputs:
 
 import csv
 import os
-import re
 import statistics
 import sys
 from collections import defaultdict
 from datetime import datetime
 
-# Map standings tournament names to summary family names — single source of
-# truth in tournament_aliases.py (AUDIT.md A2).
+# Standings names and summary families meet on the registry's edition key,
+# which applies tournament_aliases (STANDINGS_NAME_MAP, canonicalize_family).
+from registry.keys import standings_edition_key, summary_edition_key
 from shared.season import CURRENT_SEASON
-from tournament_aliases import STANDINGS_NAME_MAP
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
@@ -56,9 +55,10 @@ CLASS_FAMILIES = {
 
 
 def load_standings():
-    """Load standings data, filter bad entries, normalize names."""
-    standings = {}  # (family, year) -> total_players
-    with open(STANDINGS_CSV, "r") as f:
+    """Load standings data and filter bad entries. Names stay as written;
+    compute_multipliers resolves them to editions."""
+    standings = {}  # (standings name, year) -> total_players
+    with open(STANDINGS_CSV, "r", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             total = int(row["total_players"])
             if total < MIN_STANDINGS_COUNT:
@@ -66,9 +66,7 @@ def load_standings():
             year = int(row["year"])
             if year in COVID_YEARS:
                 continue
-            name = row["tournament_name"]
-            name = STANDINGS_NAME_MAP.get(name, name)
-            standings[(name, year)] = total
+            standings[(row["tournament_name"], year)] = total
     return standings
 
 
@@ -126,29 +124,28 @@ def load_summary():
     return summary
 
 
-def normalize_name(s):
-    """Normalize tournament name for fuzzy matching."""
-    return re.sub(r'[^a-z]', '', s.lower())
-
-
 def compute_multipliers(standings, summary):
     """
-    Match standings to summary by family+year, compute walk-in ratios.
+    Match standings to summary on the edition key, compute walk-in ratios.
     Returns list of dicts for the per-year output.
+
+    The key is the registry's (canonical family, year). Matching letters
+    after STANDINGS_NAME_MAP missed every year the summary spells a family
+    differently from the map's target: "Southwest Class" standings mapped to
+    "Southwest Class Championships" and never met the 2015-2021 summary rows.
     """
-    # Build normalized lookup for summary
-    summary_norm = {}
+    by_edition = {}
     for (fam, yr), count in summary.items():
-        key = (normalize_name(fam), yr)
+        key = summary_edition_key(fam, yr)
         # Keep the entry with the highest count if duplicates exist
-        if key not in summary_norm or count > summary_norm[key][1]:
-            summary_norm[key] = (fam, count)
+        if key not in by_edition or count > by_edition[key][1]:
+            by_edition[key] = (fam, count)
 
     rows = []
     for (st_name, year), st_count in sorted(standings.items()):
-        norm_key = (normalize_name(st_name), year)
-        if norm_key in summary_norm:
-            fam, prereg = summary_norm[norm_key]
+        key = standings_edition_key(st_name, year)
+        if key in by_edition:
+            fam, prereg = by_edition[key]
             ratio = st_count / prereg
             # Ratio < 0.5 means fewer actual players than half the pre-reg
             # — almost certainly bad standings data, not a real outcome

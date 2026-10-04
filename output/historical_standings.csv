@@ -1,196 +1,885 @@
-tournament_name,year,total_players,num_sections,sections
-Atlantic,2025,311,9,"{""Major!"": 47, ""Under 2100"": 48, ""Under 1900"": 32, ""Under 1700"": 29, ""Under 1500"": 32, ""Under 1300"": 25, ""Under 1000"": 29, ""Mixed Doubles Teams!"": 32, ""Blitz"": 37}"
-Boardwalk,2015,151,6,"{""Open"": 27, ""Under 2100"": 51, ""Under 1700"": 25, ""Under 1300"": 21, ""Mixed Doubles Teams"": 9, ""Blitz"": 18}"
-Boston,2026,413,8,"{""Premier!"": 65, ""Under 2100"": 91, ""Under 1900"": 44, ""Under 1700"": 54, ""Under 1500"": 40, ""Under 1200"": 59, ""Mixed Doubles Teams"": 23, ""Blitz"": 37}"
-Bostonchess Congress,2012,164,5,"{""Group 1"": 43, ""Group 2"": 34, ""Group 3"": 38, ""Group 4"": 28, ""Group 5"": 21}"
-Bostonchess Congress,2013,227,8,"{""Premier Section"": 17, ""Major Section"": 31, ""Amateur Section"": 33, ""Booster Section"": 41, ""Reserve Section"": 30, ""Under 1500 Section"": 32, ""Adult Under 1300 Section"": 22, ""Junior Under 1300 Section"": 21}"
-Bostonchess Congress,2014,276,8,"{""Premier Section"": 40, ""Under 2100 Section"": 40, ""Under 1900 Section"": 36, ""Under 1700 Section"": 31, ""Under 1500 Section 2"": 34, ""Under 1300 Section"": 34, ""Mixed Doubles Teams"": 30, ""Blitz"": 31}"
-Bostonchess Congress,2015,315,8,"{""Premier Section"": 41, ""Under 2100 Section"": 54, ""Under 1900 Section"": 56, ""Under 1700 Section"": 43, ""Under 1500 Section"": 30, ""Under 1300 Section"": 45, ""Mixed Doubles Teams"": 18, ""Blitz"": 28}"
-Bostonchess Congress,2016,364,8,"{""Premier Section"": 55, ""Under 2100 Section"": 52, ""Under 1900 Section"": 47, ""Under 1700 Section"": 47, ""Under 1500 Section"": 36, ""Under 1300 Section"": 57, ""Mixed Doubles Teams"": 42, ""Blitz"": 28}"
-Bostonchess Congress,2017,347,8,"{""Premier Section"": 44, ""Under 2100 Section"": 44, ""Under 1900 Section"": 58, ""Under 1700 Section"": 36, ""Under 1500 Section"": 32, ""Under 1250 Section"": 46, ""Mixed Doubles Teams"": 63, ""Blitz"": 24}"
-Bostonchess Congress,2018,385,8,"{""Premier Section"": 54, ""Under 2100 Section"": 46, ""Under 1900 Section"": 55, ""Under 1700 Section"": 45, ""Under 1500 Section"": 37, ""Under 1250 Section"": 32, ""Mixed Doubles Teams"": 78, ""Blitz"": 38}"
-Bostonchess Congress,2019,427,8,"{""Premier Section"": 48, ""Under 2100 Section"": 62, ""Under 1900 Section"": 63, ""Under 1700 Section"": 48, ""Under 1500 Section"": 40, ""Under 1250 Section"": 57, ""Mixed Doubles Teams"": 60, ""Blitz"": 49}"
-Bostonchess Congress,2020,433,8,"{""Premier Section"": 41, ""Under 2100 Section"": 67, ""Under 1900 Section"": 56, ""Under 1700 Section"": 54, ""Under 1500 Section"": 38, ""Under 1250 Section"": 57, ""Mixed Doubles Teams"": 93, ""Blitz"": 27}"
-Bradley,2025,285,7,"{""Major"": 57, ""Under 2100"": 61, ""Under 1800"": 47, ""Under 1500"": 26, ""Under 1200"": 46, ""Mixed Doubles Teams"": 23, ""Blitz"": 25}"
-Bradley Open,2012,228,5,"{""Open Section"": 36, ""Under 2100 Section"": 56, ""Under 1800 Section"": 57, ""Under 1500 Section"": 33, ""Under 1200 Section"": 46}"
-Bradley Open,2013,182,5,"{""Open Section"": 28, ""Under 2110 Section"": 39, ""Under 1810 Section"": 56, ""Under 1510 Section"": 26, ""Under 1210 Section"": 33}"
-Bradley Open,2014,212,6,"{""Open Section"": 43, ""Under 2010 Section"": 51, ""Under 1610 Section"": 42, ""Under 1210 Section"": 36, ""Mixed Doubles Teams"": 27, ""Blitz"": 13}"
-Bradley Open,2015,283,7,"{""Open Section"": 51, ""Under 2010 Section"": 82, ""Under 1610 Section"": 37, ""Under 1210 Section"": 33, ""Mixed Doubles Teams"": 45, ""Blitz"": 23, ""Quads"": 12}"
-Bradley Open,2016,267,6,"{""Open Section"": 46, ""Under 2010 Section"": 51, ""Under 1710 Section"": 41, ""Under 1310 Section"": 38, ""Mixed Doubles Teams"": 69, ""Blitz"": 22}"
-Bradley Open,2017,345,7,"{""Open Section"": 45, ""Under 2100 Section"": 62, ""Under 1800 Section"": 55, ""Under 1500 Section"": 36, ""Under 1200 Section"": 43, ""Mixed Doubles Teams"": 81, ""Blitz"": 23}"
-Bradley Open,2018,305,7,"{""Major Section"": 34, ""Under 2100 Section"": 60, ""Under 1800 Section"": 44, ""Under 1500 Section"": 35, ""Under 1200 Section"": 39, ""Mixed Doubles Teams"": 75, ""Blitz"": 18}"
-Bradley Open,2019,288,7,"{""Major Section"": 28, ""Under 2100 Section"": 53, ""Under 1800 Section"": 43, ""Under 1500 Section"": 38, ""Under 1200 Section"": 50, ""Mixed Doubles Teams"": 57, ""Blitz"": 19}"
-Bradley Open,2021,59,1,"{""Major Section"": 59}"
-Centralcalifornia,2025,220,6,"{""Major!"": 47, ""Under 2100"": 63, ""Under 1700"": 30, ""Under 1300"": 36, ""Mixed Doubles Teams"": 9, ""Blitz"": 35}"
-Centralnewyork,2023,189,7,"{""Open"": 28, ""Under 2000"": 31, ""Under 1700"": 29, ""Under 1400"": 54, ""Mixed Doubles Teams!"": 6, ""College and K-12 Teams"": 31, ""Blitz"": 10}"
-Chicagoclass,2025,366,9,"{""Master"": 37, ""Expert"": 51, ""Class A"": 52, ""Class B"": 53, ""Class C"": 42, ""Class D"": 27, ""Class E"": 41, ""Mixed Doubles Teams"": 25, ""Blitz"": 38}"
-Cleveland,2025,250,7,"{""Major"": 37, ""Under 2100"": 59, ""Under 1800"": 35, ""Under 1500"": 29, ""Under 1200"": 34, ""Mixed Doubles Teams"": 21, ""Blitz"": 35}"
-Cleveland Open,2011,238,6,"{""Open Section"": 42, ""Under 2000 Section"": 43, ""Under 1800 Section"": 41, ""Under 1600 Section"": 47, ""Under 1300 Section"": 39, ""Under 1000 Section"": 26}"
-Cleveland Open,2012,259,6,"{""Open Section"": 54, ""Under 2000 Section"": 57, ""Under 1800 Section"": 45, ""Under 1600 Section"": 43, ""Under 1300 Section"": 42, ""Under 1000 Section"": 18}"
-Cleveland Open,2013,312,7,"{""Open Section"": 39, ""Under 2100 Section"": 60, ""Under 1800 Section"": 57, ""Under 1500 Section"": 43, ""Adult Under 1200 Section"": 21, ""Junior Under 1200 Section"": 47, ""Mixed Doubles Teams"": 45}"
-Cleveland Open,2014,339,7,"{""Open Section"": 54, ""Under 2100 Section"": 61, ""Under 1800 Section"": 52, ""Under 1500 Section"": 50, ""Under 1200 Section"": 43, ""Mixed Doubles Teams"": 57, ""Blitz"": 22}"
-Cleveland Open,2015,330,6,"{""Open Section"": 43, ""Under 2100 Section"": 85, ""Under 1700 Section"": 74, ""Under 1300 Section"": 51, ""Mixed Doubles Teams"": 39, ""Blitz"": 38}"
-Cleveland Open,2016,318,6,"{""Open Section"": 55, ""Under 2100 Section"": 75, ""Under 1700 Section"": 60, ""Under 1300 Section"": 45, ""Mixed Doubles Teams"": 52, ""Blitz"": 31}"
-Cleveland Open,2017,345,7,"{""Open Section"": 58, ""Under 2100 Section"": 63, ""Under 1800 Section"": 53, ""Under 1500 Section"": 34, ""Under 1200 Section"": 38, ""Mixed Doubles Teams"": 71, ""Blitz"": 28}"
-Cleveland Open,2018,344,8,"{""Major Section"": 46, ""Under 2100 Section"": 45, ""Under 1900 Section"": 52, ""Under 1700 Section"": 44, ""Under 1500 Section"": 33, ""Under 1200 Section"": 34, ""Mixed Doubles Teams"": 48, ""Blitz"": 42}"
-Cleveland Open,2019,378,8,"{""Major Section"": 49, ""Under 2100 Section"": 54, ""Under 1900 Section"": 54, ""Under 1700 Section"": 45, ""Under 1500 Section"": 43, ""Under 1200 Section"": 35, ""Mixed Doubles Teams"": 59, ""Blitz"": 39}"
-Cleveland Open,2021,54,1,"{""Major Section"": 54}"
-Continental Open,2011,270,7,"{""Open Section"": 37, ""Under 2200 Section"": 41, ""Under 2000 Section"": 52, ""Under 1800 Section"": 38, ""Under 1600 Section"": 47, ""Under 1300 Section"": 32, ""Under 1000 Section"": 23}"
-Continental Open,2012,263,7,"{""Open Section"": 33, ""Under 2200 Section"": 42, ""Under 2000 Section"": 46, ""Under 1800 Section"": 40, ""Under 1600 Section"": 42, ""Under 1400 Section"": 28, ""Under 1100 Section"": 32}"
-Continental Open,2013,272,6,"{""Open Section"": 34, ""Under 2200 Section"": 47, ""Under 1900 Section"": 58, ""Under 1600 Section"": 42, ""Under 1300 Section"": 37, ""Mixed Doubles Teams"": 54}"
-Continental Open,2014,353,8,"{""Open Section"": 48, ""Under 2100 Section"": 49, ""Under 1900 Section"": 60, ""Under 1700 Section"": 39, ""Under 1500 Section"": 34, ""Under 1300 Section"": 29, ""Under 1000 Section"": 28, ""Mixed Doubles Teams"": 66}"
-Continental Open,2015,437,9,"{""Open Section"": 53, ""Under 2100 Section"": 58, ""Under 1900 Section"": 56, ""Under 1700 Section"": 41, ""Under 1500 Section"": 44, ""Under 1300 Section"": 38, ""Under 1000 Section"": 32, ""Mixed Doubles Teams"": 75, ""Blitz"": 40}"
-Continental Open,2016,395,8,"{""Open Section"": 39, ""Under 1900 Section"": 61, ""Under 1700 Section"": 49, ""Under 1500 Section"": 43, ""Under 1300 Section"": 36, ""Under 1000 Section"": 37, ""Mixed Doubles Teams"": 90, ""Blitz"": 40}"
-Continental Open,2017,595,9,"{""Open Section"": 52, ""Under 2100 Section"": 77, ""Under 1900 Section"": 74, ""Under 1700 Section"": 65, ""Under 1500 Section"": 51, ""Under 1300 Section"": 45, ""Under 1000 Section"": 47, ""Mixed Doubles Teams"": 138, ""Blitz"": 46}"
-Continental Open,2018,479,8,"{""Premier Section"": 61, ""Under 2100 Section"": 70, ""Under 1900 Section"": 63, ""Under 1700 Section"": 44, ""Under 1500 Section"": 57, ""Under 1250 Section"": 52, ""Mixed Doubles Teams"": 102, ""Blitz"": 30}"
-Continental Open,2019,421,8,"{""Premier Section"": 56, ""Under 2100 Section"": 75, ""Under 1900 Section"": 45, ""Under 1700 Section"": 42, ""Under 1500 Section"": 54, ""Under 1250 Section"": 53, ""Mixed Doubles Teams"": 62, ""Blitz"": 34}"
-Continental Open,2021,38,1,"{""Master Section"": 38}"
-Continentalclass,2023,230,10,"{""Master"": 25, ""Expert"": 26, ""Class A"": 26, ""Class B"": 27, ""Class C"": 26, ""Class D"": 22, ""Class E"": 20, ""Under 1000 Section"": 27, ""Mixed Doubles Teams!"": 13, ""Saturday Blitz Championship!"": 18}"
-Continentalopen,2025,340,9,"{""Premier Section!"": 50, ""Under 2100 Section"": 63, ""Under 1900 Section"": 33, ""Under 1700 Section"": 47, ""Under 1500 Section"": 26, ""Under 1300 Section"": 18, ""Under 1100 Section"": 36, ""Mixed Doubles Teams!"": 20, ""Blitz!"": 47}"
-Eastern Open,2022,898,9,"{""Premier Section!"": 66, ""Under 2200"": 105, ""Under 1900"": 72, ""Under 1600"": 44, ""Under 1300"": 54, ""Under 1000 Section"": 55, ""Blitz Championship!"": 69, ""Mixed Doubles Teams!"": 37, ""Senior Champoionship!"": 396}"
-Eastern Open,2023,877,9,"{""Premier Section!"": 61, ""Under 2200"": 96, ""Under 1900"": 62, ""Under 1600"": 50, ""Under 1300"": 46, ""Under 1000 Section"": 50, ""Blitz Championship!"": 67, ""Mixed Doubles Teams!"": 47, ""Senior Championship!"": 398}"
-Eastern Open,2024,892,9,"{""Premier Section!"": 79, ""Under 2200"": 102, ""Under 1900"": 76, ""Under 1600"": 56, ""Under 1300"": 43, ""Under 1000 Section"": 42, ""Blitz Championship!"": 58, ""Mixed Doubles Teams!"": 38, ""Senior Championship!"": 398}"
-Eastern Open,2025,887,9,"{""Premier Section!"": 87, ""Under 2200"": 107, ""Under 1900"": 70, ""Under 1600"": 44, ""Under 1300"": 41, ""Under 1000 Section"": 41, ""Blitz Championship!"": 70, ""Mixed Doubles Teams!"": 37, ""Senior Championship!"": 390}"
-Easternchesscongress,2025,579,9,"{""Premier"": 106, ""Under 2100"": 113, ""Under 1900"": 57, ""Under 1700"": 56, ""Under 1500"": 41, ""Under 1300"": 56, ""Under 1000"": 46, ""Saturday Night Blitz!"": 44, ""Mixed Doubles Teams!"": 60}"
-Easternclass,2025,232,9,"{""Master (Over 2099)"": 26, ""Expert (1900-2199)"": 40, ""Class A (1700-1999/Unr.)"": 37, ""Class B (1500-1799/Unr.)"": 30, ""Class C (1300-1599/Unr.)"": 18, ""Class D (Under 1400/Unr.)"": 20, ""Class E (Under 1200/Unr.)"": 23, ""Mixed Doubles Teams!"": 19, ""Saturday Night Blitz!"": 19}"
-Empirecity,2019,379,8,"{""Major"": 64, ""Under 2100"": 70, ""Under 1900"": 52, ""Under 1700"": 47, ""Under 1500"": 42, ""Under 1200"": 48, ""Mixed Doubles Teams"": 30, ""Blitz"": 26}"
-Empirestate,2021,293,13,"{""Open"": 51, ""Under 2000"": 24, ""Under 1700"": 35, ""Under 1400"": 36, ""Mixed Doubles Teams"": 13, ""Blitz"": 26, ""NY State Under 13 Action Champ"": 8, ""NY State Under 13 Action Under"": 15, ""NY State Junior Championship"": 10, ""NY State Under 16 Championship"": 15, ""NY State U13 Championship"": 17, ""NY State Under 13 Under 1000"": 13, ""NY State Under 10 Championship"": 30}"
-Foxwoods,2024,513,8,"{""Open"": 84, ""Under 2200"": 119, ""Under 2000"": 72, ""Under 1800"": 64, ""Under 1600"": 48, ""Under 1400"": 41, ""Under 1100"": 44, ""Mixed Doubles Teams"": 41}"
-Foxwoods Open,2009,1287,9,"{""Tournament Standings (All Final)"": 626, ""Open"": 133, ""U2100 Section"": 109, ""U1900 Section"": 116, ""U1700 Section"": 88, ""U1500 Section"": 68, ""U1300 Section"": 49, ""U1000 Section"": 52, ""Blitz"": 46}"
-Foxwoods Open,2014,349,7,"{""Open Section"": 47, ""Under 2200 Section"": 50, ""Under 2000 Section"": 70, ""Under 1800 Section"": 74, ""Under 1600 Section"": 44, ""Under 1400 Section"": 40, ""Blitz"": 24}"
-Foxwoods Open,2019,659,9,"{""Open Section"": 94, ""Under 2200 Section"": 66, ""Under 2000 Section"": 78, ""Under 1800 Section"": 78, ""Under 1600 Section"": 53, ""Under 1400 Section"": 49, ""Under 1100 Section"": 50, ""Mixed Doubles Teams"": 129, ""Blitz"": 62}"
-Georgewashington,2026,217,6,"{""Major"": 55, ""Under 2100"": 53, ""Under 1800"": 39, ""Under 1500"": 34, ""Under 1200"": 22, ""Mixed Doubles Teams"": 14}"
-Georgewashington Open,2016,387,7,"{""Open Section"": 39, ""Under 2100 Section"": 79, ""Under 1800 Section"": 55, ""Under 1500 Section"": 62, ""Under 1200 Section"": 42, ""Mixed Doubles Teams"": 84, ""Blitz"": 26}"
-Georgewashington Open,2017,315,7,"{""Open Section"": 31, ""Under 2100 Section"": 59, ""Under 1800 Section"": 62, ""Under 1500 Section"": 38, ""Under 1200 Section"": 54, ""Mixed Doubles Teams"": 51, ""Blitz"": 20}"
-Georgewashington Open,2018,375,7,"{""Major Section"": 50, ""Under 2100 Section"": 60, ""Under 1800 Section"": 68, ""Under 1500 Section"": 55, ""Under 1200 Section"": 45, ""Mixed Doubles Teams"": 78, ""Blitz"": 19}"
-Georgewashington Open,2019,401,7,"{""Major Section"": 48, ""Under 2100 Section"": 56, ""Under 1800 Section"": 73, ""Under 1500 Section"": 64, ""Under 1200 Section"": 53, ""Mixed Doubles Teams"": 78, ""Blitz"": 29}"
-Georgewashington Open,2020,70,1,"{""Major Section"": 70}"
-Golden State,2011,283,6,"{""Open Section"": 50, ""Under 2200 Section"": 24, ""Under 2000 Section"": 59, ""Under 1800 Section"": 58, ""Under 1600 Section"": 46, ""Under 1300 Section"": 46}"
-Golden State,2012,600,6,"{""Final Standings"": 290, ""Open Section"": 66, ""Under 2100 Section"": 70, ""Under 1800 Section"": 66, ""Under 1500 Section"": 63, ""Under 1200 Section"": 45}"
-Golden State,2013,328,6,"{""Open Section"": 58, ""Under 2200 Section"": 75, ""Under 1900 Section"": 76, ""Under 1600 Section"": 48, ""Under 1300 Section"": 41, ""Under 1000 Section"": 30}"
-Golden State,2014,390,8,"{""Open Section"": 55, ""Under 2200 Section"": 78, ""Under 1900 Section"": 77, ""Under 1600 Section"": 47, ""Under 1300 Section"": 37, ""Under 1000 Section"": 35, ""Mixed Doubles Teams"": 39, ""Blitz"": 22}"
-Golden State,2015,390,8,"{""Open Section"": 54, ""Under 2200 Section"": 71, ""Under 1900 Section"": 59, ""Under 1600 Section"": 49, ""Under 1300 Section"": 40, ""Under 1000 Section"": 35, ""Mixed Doubles Teams"": 57, ""Blitz"": 25}"
-Golden State,2016,423,9,"{""Open Section"": 60, ""Under 2200 Section"": 45, ""Under 2000 Section"": 47, ""Under 1800 Section"": 61, ""Under 1600 Section"": 32, ""Under 1400 Section"": 33, ""Under 1200 Section"": 49, ""Mixed Doubles Teams"": 69, ""Blitz"": 27}"
-Golden State,2017,427,7,"{""Open Section"": 68, ""Under 2100 Section"": 83, ""Under 1800 Section"": 72, ""Under 1500 Section"": 49, ""Under 1200 Section"": 59, ""Mixed Doubles Teams"": 76, ""Blitz"": 20}"
-Golden State,2018,441,7,"{""Major Section"": 78, ""Under 2100 Section"": 70, ""Under 1800 Section"": 71, ""Under 1500 Section"": 60, ""Under 1200 Section"": 49, ""Mixed Doubles Teams"": 84, ""Blitz"": 29}"
-Golden State,2019,413,7,"{""Major Section"": 66, ""Under 2100 Section"": 84, ""Under 1800 Section"": 83, ""Under 1500 Section"": 41, ""Under 1200 Section"": 42, ""Mixed Doubles Teams"": 75, ""Blitz"": 22}"
-Golden State,2020,79,1,"{""Major Section"": 79}"
-Goldenstate,2026,434,7,"{""Major"": 65, ""Under 2100"": 129, ""Under 1800"": 90, ""Under 1500"": 54, ""Under 1200"": 55, ""Mixed Doubles Teams"": 22, ""Blitz"": 19}"
-Hartford,2025,211,7,"{""Major"": 54, ""Under 2100"": 49, ""Under 1800"": 37, ""Under 1500"": 15, ""Under 1200"": 26, ""Mixed Doubles Teams"": 10, ""Blitz"": 20}"
-Indianapolis,2025,237,7,"{""Major"": 50, ""Under 2100"": 50, ""Under 1800"": 31, ""Under 1500"": 24, ""Under 1200"": 32, ""Mixed Doubles Teams"": 12, ""Blitz"": 38}"
-International,2025,122,1,"{""International"": 122}"
-Kingsisland,2025,382,8,"{""Major"": 62, ""Under 2100"": 70, ""Under 1900"": 52, ""Under 1700"": 46, ""Under 1500"": 49, ""Under 1250"": 37, ""Under 1000"": 41, ""Mixed Doubles Teams"": 25}"
-Kingsisland Open,2011,708,8,"{""Final Standings"": 339, ""Open Section"": 74, ""Under 2100 Section"": 41, ""Under 1900 Section"": 59, ""Under 1700 Section"": 57, ""Under 1500 Section"": 55, ""Under 1250 Section"": 41, ""Under 1000 Section"": 42}"
-Kingsisland Open,2012,386,7,"{""Open Section"": 56, ""Under 2100 Section"": 47, ""Under 1900 Section"": 53, ""Under 1700 Section"": 66, ""Under 1500 Section"": 60, ""Under 1250 Section"": 64, ""Under 1000 Section"": 40}"
-Kingsisland Open,2013,489,9,"{""Open Section"": 56, ""Under 2100 Section"": 44, ""Under 1900 Section"": 73, ""Under 1700 Section"": 76, ""Under 1500 Section"": 55, ""Under 1250 Section"": 47, ""Under 1000 Section"": 50, ""Mixed Doubles Teams"": 72, ""Blitz"": 16}"
-Kingsisland Open,2014,488,9,"{""Open Section"": 65, ""Under 2100 Section"": 45, ""Under 1900 Section"": 71, ""Under 1700 Section"": 54, ""Under 1500 Section"": 60, ""Under 1250 Section"": 45, ""Under 1000 Section"": 41, ""Mixed Doubles Teams"": 66, ""Blitz"": 41}"
-Kingsisland Open,2015,461,9,"{""Open Section"": 46, ""Under 2100 Section"": 57, ""Under 1900 Section"": 59, ""Under 1700 Section"": 66, ""Under 1500 Section"": 51, ""Under 1250 Section"": 37, ""Under 1000 Section"": 40, ""Mixed Doubles Teams"": 66, ""Blitz"": 39}"
-Kingsisland Open,2016,471,9,"{""Open Section"": 65, ""Under 2100 Section"": 52, ""Under 1900 Section"": 66, ""Under 1700 Section"": 52, ""Under 1500 Section"": 45, ""Under 1250 Section"": 34, ""Under 1000 Section"": 46, ""Mixed Doubles Teams"": 72, ""Blitz"": 39}"
-Kingsisland Open,2017,481,9,"{""Major Section"": 67, ""Under 2100 Section"": 54, ""Under 1900 Section"": 57, ""Under 1700 Section"": 57, ""Under 1500 Section"": 49, ""Under 1250 Section"": 42, ""Under 1000 Section"": 44, ""Mixed Doubles Teams"": 78, ""Blitz"": 33}"
-Kingsisland Open,2018,405,9,"{""Major Section"": 53, ""Under 2100 Section"": 35, ""Under 1900 Section"": 62, ""Under 1700 Section"": 57, ""Under 1500 Section"": 35, ""Under 1250 Section"": 49, ""Under 1000 Section"": 35, ""Mixed Doubles Teams"": 48, ""Blitz"": 31}"
-Kingsisland Open,2019,463,9,"{""Major Section"": 65, ""Under 2100 Section"": 55, ""Under 1900 Section"": 53, ""Under 1700 Section"": 61, ""Under 1500 Section"": 51, ""Under 1250 Section"": 43, ""Under 1000 Section"": 39, ""Mixed Doubles Teams"": 51, ""Blitz"": 45}"
-Kingsisland Open,2021,59,1,"{""Major Section"": 59}"
-Liberty Bell,2026,687,8,"{""Major Section!"": 158, ""Under 2100 Section"": 103, ""Under 1900 Section"": 91, ""Under 1700 Section"": 58, ""Under 1500 Section"": 80, ""Under 1200 Section"": 76, ""Blitz Championship!"": 66, ""Mixed Doubles Teams!"": 55}"
-Losangeles,2025,469,9,"{""Major"": 83, ""Under 2100"": 60, ""Under 1900"": 70, ""Under 1700"": 48, ""Under 1500"": 37, ""Under 1300"": 39, ""Under 1000"": 60, ""Mixed Doubles"": 25, ""Blitz"": 47}"
-Losangeles Open,2011,198,6,"{""Open Section"": 19, ""Under 2300 Section"": 47, ""Under 2000 Section"": 49, ""Under 1700 Section"": 33, ""Under 1400 Section"": 22, ""Under 1000 Section"": 28}"
-Losangeles Open,2012,225,6,"{""Open Section"": 31, ""Under 2200 Section"": 49, ""Under 1900 Section"": 49, ""Under 1600 Section"": 44, ""Under 1300 Section"": 29, ""Under 1000 Section"": 23}"
-Losangeles Open,2013,289,6,"{""Open Section"": 42, ""Under 2200 Section"": 38, ""Under 1900 Section"": 55, ""Under 1600 Section"": 44, ""Under 1300 Section"": 38, ""Mixed Doubles Teams"": 72}"
-Losangeles Open,2016,293,8,"{""Open Section"": 37, ""Under 2050 Section"": 36, ""Under 1850 Section"": 32, ""Under 1650 Section"": 42, ""Under 1450 Section"": 37, ""Under 1200 Section"": 37, ""Mixed Doubles Teams"": 42, ""Blitz"": 30}"
-Losangeles Open,2017,339,8,"{""Open Section"": 49, ""Under 2050 Section"": 54, ""Under 1850 Section"": 49, ""Under 1650 Section"": 40, ""Under 1450 Section"": 41, ""Under 1200 Section"": 34, ""Mixed Doubles Teams"": 42, ""Blitz"": 30}"
-Losangeles Open,2018,393,8,"{""Major Section"": 62, ""Under 2050 Section"": 45, ""Under 1850 Section"": 49, ""Under 1650 Section"": 55, ""Under 1450 Section"": 47, ""Under 1200 Section"": 40, ""Mixed Doubles Teams"": 60, ""Blitz"": 35}"
-Losangeles Open,2019,377,8,"{""Major Section"": 62, ""Under 2050 Section"": 56, ""Under 1850 Section"": 56, ""Under 1650 Section"": 48, ""Under 1450 Section"": 34, ""Under 1200 Section"": 34, ""Mixed Doubles Teams"": 48, ""Blitz"": 39}"
-Losangeles Open,2021,80,1,"{""Major Section"": 80}"
-Manhattan,2019,504,9,"{""Major"": 49, ""Under 2200"": 78, ""Under 2000"": 77, ""Under 1800"": 51, ""Under 1600"": 73, ""Under 1400"": 62, ""Under 1100"": 53, ""Mixed Doubles Teams"": 40, ""Blitz"": 21}"
-Midamerica,2026,267,8,"{""Major"": 36, ""Under 2100"": 44, ""Under 1900"": 31, ""Under 1700"": 32, ""Under 1500"": 33, ""Under 1200"": 27, ""Saturday Blitz Championship!"": 42, ""Mixed Doubles Teams!"": 22}"
-Midamerica Open,2009,449,2,"{""Other Tournaments"": 240, ""2010"": 209}"
-Midamerica Open,2010,449,2,"{""Other Tournaments"": 209, ""2009"": 240}"
-Midamerica Open,2011,675,7,"{""Open Section"": 52, ""Under 2000 Section"": 41, ""Under 1800 Section"": 38, ""Under 1600 Section"": 52, ""Under 1300 Section"": 43, ""2010"": 209, ""2009"": 240}"
-Midamerica Open,2012,711,9,"{""Open Section"": 54, ""Under 2000 Section"": 41, ""Under 1800 Section"": 45, ""Under 1600 Section"": 44, ""Under 1400 Section"": 26, ""Under 1200 Section"": 30, ""Under 900 Section"": 22, ""2010"": 209, ""2009"": 240}"
-Midamerica Open,2013,753,9,"{""Open Section"": 66, ""Under 2000 Section"": 38, ""Under 1800 Section"": 62, ""Under 1600 Section"": 44, ""Under 1400 Section"": 38, ""Adult Under 1200 Section"": 18, ""Junior Under 1200 Section"": 38, ""2010"": 209, ""2009"": 240}"
-Midamerica Open,2014,838,11,"{""Open Section"": 48, ""Under 2100 Section"": 45, ""Under 1900 Section"": 53, ""Under 1700 Section"": 48, ""Under 1500 Section"": 39, ""Under 1300 Section"": 37, ""Under 1000 Section"": 31, ""Mixed Doubles Teams"": 54, ""Blitz"": 34, ""2010"": 209, ""2009"": 240}"
-Midamerica Open,2015,862,11,"{""Open Section"": 43, ""Under 2100 Section"": 46, ""Under 1900 Section"": 55, ""Under 1700 Section"": 52, ""Under 1500 Section"": 41, ""Under 1300 Section"": 43, ""Under 1000 Section"": 38, ""Mixed Doubles Teams"": 72, ""Blitz"": 23, ""2010"": 209, ""2009"": 240}"
-Midamerica Open,2016,819,11,"{""Open Section"": 63, ""Under 2100 Section"": 47, ""Under 1900 Section"": 51, ""Under 1700 Section"": 35, ""Under 1500 Section"": 35, ""Under 1300 Section"": 38, ""Under 1000 Section"": 27, ""Mixed Doubles Teams"": 40, ""Blitz"": 34, ""2010"": 209, ""2009"": 240}"
-Midamerica Open,2017,951,11,"{""Open Section"": 68, ""Under 2100 Section"": 48, ""Under 1900 Section"": 48, ""Under 1700 Section"": 70, ""Under 1500 Section"": 44, ""Under 1300 Section"": 49, ""Under 1000 Section"": 53, ""Mixed Doubles Teams"": 85, ""Blitz"": 37, ""2010"": 209, ""2009"": 240}"
-Midamerica Open,2018,900,10,"{""Major Section"": 56, ""Under 2100 Section"": 39, ""Under 1900 Section"": 45, ""Under 1700 Section"": 54, ""Under 1500 Section"": 49, ""Under 1250 Section"": 79, ""2018 Mixed Doubles Teams"": 96, ""2018 Blitz"": 33, ""2010"": 209, ""2009"": 240}"
-Midamerica Open,2019,949,10,"{""Major Section"": 74, ""Under 2100 Section"": 43, ""Under 1900 Section"": 56, ""Under 1700 Section"": 65, ""Under 1500 Section"": 65, ""Under 1250 Section"": 74, ""Mixed Doubles Teams"": 88, ""Blitz"": 35, ""2010"": 209, ""2009"": 240}"
-Midwest Class,2011,292,7,"{""Masters"": 39, ""Experts"": 40, ""Class A"": 40, ""Class B"": 38, ""Class C"": 48, ""Class D"": 43, ""Class E"": 44}"
-Midwest Class,2012,275,7,"{""Master Section"": 31, ""Expert Section"": 35, ""Class A Section"": 47, ""Class B Section"": 45, ""Class C Section"": 47, ""Class D Section"": 29, ""Class E Section"": 41}"
-Midwest Class,2013,348,8,"{""Master Section"": 40, ""Expert Section"": 41, ""Class A Section"": 32, ""Class B Section"": 47, ""Class C Section"": 40, ""Class D Section"": 38, ""Class E Section"": 56, ""Mixed Doubles Teams"": 54}"
-Midwest Class,2014,434,9,"{""Premier Section"": 68, ""1700 2099 Section"": 50, ""1500 1899 Section"": 49, ""1300 1699 Section"": 49, ""1100 1499 Section"": 39, ""Under 1300 Section"": 26, ""Under 1100 Section"": 44, ""Mixed Doubles Teams"": 81, ""Blitz"": 28}"
-Midwest Class,2015,465,9,"{""Premier Section"": 69, ""1700 2099 Section"": 57, ""1500 1899 Section"": 43, ""1300 1699 Section"": 49, ""1100 1499 Section"": 44, ""Under 1300 Section"": 28, ""Under 1100 Section"": 59, ""Mixed Doubles Teams"": 90, ""Blitz"": 26}"
-Midwest Class,2016,459,9,"{""Premier Section"": 49, ""1700 2099 Section"": 71, ""1500 1899 Section"": 48, ""1300 1699 Section"": 49, ""1100 1499 Section"": 35, ""Under 1300 Section"": 32, ""Under 1100 Section"": 67, ""Mixed Doubles Teams"": 81, ""Blitz"": 27}"
-Midwest Class,2017,530,9,"{""Premier Section"": 70, ""1700 2099 Section"": 43, ""1500 1899 Section"": 59, ""1300 1699 Section"": 58, ""1100 1499 Section"": 60, ""Under 1300 Section"": 36, ""Under 1100 Section"": 59, ""Mixed Doubles Teams"": 109, ""Blitz"": 36}"
-Midwest Class,2018,514,9,"{""Premier Section"": 67, ""1700 2099 Section"": 65, ""1500 1899 Section"": 55, ""1300 1699 Section"": 55, ""1100 1499 Section"": 46, ""Under 1300 Section"": 39, ""Under 1100 Section"": 68, ""Mixed Doubles Teams"": 87, ""Blitz"": 32}"
-Midwest Class,2019,481,9,"{""Premier Section"": 67, ""1700 2099 Section"": 60, ""1500 1899 Section"": 60, ""1300 1699 Section"": 56, ""1100 1499 Section"": 34, ""Under 1300 Section"": 30, ""Under 1100 Section"": 53, ""Mixed Doubles Teams"": 93, ""Blitz"": 28}"
-Midwest Class,2021,45,1,"{""Premier Section"": 45}"
-Midwestclass,2025,362,9,"{""Premier"": 57, ""1800 2099"": 48, ""1600 1899"": 59, ""1400 1699"": 43, ""1200 1499"": 37, ""Under 1300"": 29, ""Under 1100"": 33, ""Mixed Doubles Teams"": 30, ""Blitz"": 26}"
-Midwestcongress,2022,107,6,"{""Major"": 25, ""Under 2000"": 24, ""Under 1600"": 15, ""Under 1200"": 20, ""Blitz"": 18, ""Mixed Doubles"": 5}"
-Newyorkopen,2025,99,6,"{""Open Section!"": 37, ""Seniors' Under 1910 Section"": 17, ""Under 1610 Section"": 16, ""Under 1210 Section"": 15, ""Mixed Doubles Teams!"": 5, ""Blitz!"": 9}"
-Niagarafalls,2025,141,6,"{""Major"": 26, ""Under 2000"": 39, ""Under 1600"": 27, ""Under 1200"": 27, ""Blitz"": 13, ""Mixed Doubles"": 9}"
-Northamerican,2025,1647,11,"{""Open"": 125, ""Under 2300"": 201, ""Under 2100"": 205, ""Under 1900"": 175, ""Under 1700"": 157, ""Under 1500"": 114, ""Mixed Doubles Teams"": 113, ""Blitz Open"": 105, ""Blitz Under 2000"": 186, ""Under 1300"": 127, ""Under 1000"": 139}"
-Northeast,2022,474,17,"{""Major"": 51, ""Under 2100"": 66, ""Under 1800"": 39, ""Under 1500"": 29, ""Under 1200"": 36, ""Mixed Doubles Teams"": 18, ""Blitz"": 18, ""3-Day Major!"": 41, ""3-Day Under 2100"": 29, ""3-Day Under 1800"": 12, ""3-Day Under 1500"": 12, ""3-Day Under 1200"": 10, ""2-Day Major!"": 9, ""2-Day Under 2100"": 37, ""2-Day Under 1800"": 24, ""2-Day Under 1500"": 17, ""2-Day Under 1200"": 26}"
-Nychampionship,2025,411,7,"{""Championship"": 88, ""Under 2100"": 80, ""Under 1800"": 73, ""Under 1500"": 45, ""Under 1200"": 53, ""Mixed Doubles Teams!"": 33, ""NY State Blitz Championship!"": 39}"
-Nyhighschool,2026,236,6,"{""High School Championship!"": 72, ""High School Under 1900"": 53, ""High School Under 1500"": 50, ""High School Under 1000"": 18, ""Mixed Doubles Teams!"": 17, ""NY High School Blitz!"": 26}"
-Nyscholastics,2026,1703,13,"{""Middle School Championship"": 119, ""K-8 Under 1700"": 85, ""K-8 Under 1300"": 144, ""K-8 Under 900"": 93, ""Elementary Championship"": 148, ""K-5 Under 1400"": 110, ""K-5 Under 1000"": 199, ""K-5 Under 600"": 257, ""Primary Championship"": 150, ""K-3 Under 800"": 124, ""K-1 Championship"": 123, ""K-1 Under 400"": 128, ""Blitz"": 23}"
-Nysenior,2026,64,3,"{""Senior"": 48, ""Young Adult/Middle Age"": 12, ""Mixed Doubles Teams!"": 4}"
-Pacificcoast,2025,448,9,"{""Premier!"": 66, ""Under 2100"": 97, ""Under 1900"": 53, ""Under 1700"": 52, ""Under 1500"": 42, ""Under 1300"": 37, ""Under 1000"": 33, ""Mixed Doubles Teams!"": 23, ""Saturday Night Blitz!"": 45}"
-Pacificcoast Open,2011,238,7,"{""Open Section"": 34, ""Under 2100 Section"": 47, ""Under 1900 Section"": 40, ""Under 1700 Section"": 43, ""Under 1500 Section"": 31, ""Under 1200 Section"": 23, ""Under 900 Section"": 20}"
-Pacificcoast Open,2012,245,7,"{""Open Section"": 35, ""Under 2100 Section"": 44, ""Under 1900 Section"": 51, ""Under 1700 Section"": 40, ""Under 1500 Section"": 32, ""Under 1200 Section"": 25, ""Under 900 Section"": 18}"
-Pacificcoast Open,2013,361,8,"{""Open Section"": 54, ""Under 2100 Section"": 45, ""Under 1900 Section"": 45, ""Under 1700 Section"": 46, ""Under 1500 Section"": 39, ""Adult Under 1200 Section"": 18, ""Junior Under 1200 Section"": 39, ""Mixed Doubles"": 75}"
-Pacificcoast Open,2014,351,8,"{""Open Section"": 50, ""Under 2100 Section"": 51, ""Under 1900 Section"": 49, ""Under 1700 Section"": 36, ""Under 1500 Section"": 34, ""Under 1250 Section"": 44, ""Mixed Doubles Teams"": 57, ""Blitz"": 30}"
-Pacificcoast Open,2015,387,9,"{""Open Section"": 42, ""Under 2100 Section"": 49, ""Under 1900 Section"": 47, ""Under 1700 Section"": 42, ""Under 1500 Section"": 33, ""Under 1250 Section"": 59, ""Mixed Doubles Teams"": 63, ""Blitz"": 32, ""Quads"": 20}"
-Pacificcoast Open,2016,363,8,"{""Open Section"": 50, ""Under 2100 Section"": 52, ""Under 1900 Section"": 55, ""Under 1700 Section"": 41, ""Under 1500 Section"": 38, ""Under 1250 Section"": 43, ""Mixed Doubles Teams"": 51, ""Blitz"": 33}"
-Pacificcoast Open,2017,398,8,"{""Open Section"": 39, ""Under 2100 Section"": 63, ""Under 1900 Section"": 45, ""Under 1700 Section"": 53, ""Under 1500 Section"": 46, ""Under 1250 Section"": 48, ""Mixed Doubles Teams"": 72, ""Blitz"": 32}"
-Pacificcoast Open,2018,398,8,"{""Major Section"": 43, ""Under 2100 Section"": 47, ""Under 1900 Section"": 51, ""Under 1700 Section"": 51, ""Under 1500 Section"": 52, ""Under 1250 Section"": 54, ""Mixed Doubles Teams"": 63, ""Blitz"": 37}"
-Pacificcoast Open,2019,386,8,"{""Major Section"": 50, ""Under 2100 Section"": 50, ""Under 1900 Section"": 59, ""Under 1700 Section"": 51, ""Under 1500 Section"": 43, ""Under 1250 Section"": 41, ""Mixed Doubles Teams"": 57, ""Blitz"": 35}"
-Pacificcoast Open,2021,69,1,"{""Premier Section"": 69}"
-Philadelphia,2025,401,6,"{""Major"": 79, ""Under 2100"": 102, ""Under 1800"": 74, ""Under 1500"": 64, ""Mixed Doubles"": 40, ""Saturday Night Blitz!"": 42}"
-Philadelphia Open,2010,585,7,"{""Open Section"": 133, ""Under 2100 Section"": 106, ""Under 1900 Section"": 106, ""Under 1700 Section"": 83, ""Under 1500 Section"": 58, ""Under 1300 Section"": 59, ""Under 1000 Section"": 40}"
-Philadelphia Open,2011,513,6,"{""Open Section"": 111, ""Under 2100 Section"": 102, ""Under 1900 Section"": 85, ""Under 1700 Section"": 74, ""Under 1500 Section"": 81, ""Under 1200 Section"": 60}"
-Philadelphia Open,2013,571,7,"{""Open Section"": 77, ""Under 2200 Section"": 89, ""Under 2000 Section"": 90, ""Under 1800 Section"": 80, ""Under 1600 Section"": 97, ""Under 1300 Section"": 82, ""Under 1000 Section"": 56}"
-Philadelphia Open,2014,813,10,"{""Open Section"": 89, ""Under 2200 Section"": 101, ""Under 2000 Section"": 105, ""Under 1800 Section"": 90, ""Under 1600 Section"": 89, ""Under 1300 Section"": 72, ""Under 1000Unrated Section"": 58, ""Unratedprovisional Section"": 15, ""Mixed Doubles Teams"": 171, ""Game10"": 23}"
-Philadelphia Open,2015,818,10,"{""Open Section"": 111, ""Under 2200 Section"": 108, ""Under 2000 Section"": 101, ""Under 1800 Section"": 95, ""Under 1600 Section"": 69, ""Under 1400 Section"": 68, ""Under 1100 Section"": 77, ""Extra Rated Games"": 12, ""Mixed Doubles Teams"": 126, ""Blitz"": 51}"
-Philadelphia Open,2016,779,9,"{""Open Section"": 93, ""Under 2200 Section"": 104, ""Under 2000 Section"": 111, ""Under 1800 Section"": 98, ""Under 1600 Section"": 65, ""Under 1400 Section"": 60, ""Under 1100 Section"": 64, ""Mixed Doubles Teams"": 132, ""Blitz"": 52}"
-Philadelphia Open,2017,818,9,"{""Open Section"": 97, ""Under 2200 Section"": 107, ""Under 2000 Section"": 109, ""Under 1800 Section"": 95, ""Under 1600 Section"": 86, ""Under 1400 Section"": 72, ""Under 1100 Section"": 81, ""Mixed Doubles Teams"": 129, ""Blitz"": 42}"
-Philadelphia Open,2018,837,10,"{""Open Section"": 101, ""Under 2200 Section"": 100, ""Under 2000 Section"": 101, ""Under 1800 Section"": 83, ""Under 1600 Section"": 81, ""Under 1400 Section"": 62, ""Under 1100 Section"": 86, ""Extra Games"": 13, ""Mixed Doubles Teams"": 162, ""Blitz"": 48}"
-Philadelphia Open,2019,370,8,"{""Major Section"": 26, ""Under 2000 Section"": 72, ""Under 1800 Section"": 40, ""Under 1600 Section"": 44, ""Under 1400 Section"": 48, ""Under 1100 Section"": 41, ""Mixed Doubles Teams"": 72, ""Blitz"": 27}"
-Philadelphia Open,2021,37,1,"{""Major Section"": 37}"
-Pittsburgh,2025,185,7,"{""Major"": 30, ""Under 2100"": 37, ""Under 1800"": 27, ""Under 1500"": 20, ""Under 1200"": 39, ""Blitz"": 16, ""Mixed Doubles Teams"": 16}"
-Princeton,2025,738,9,"{""Open"": 105, ""Under 2200"": 129, ""Under 2000"": 69, ""Under 1800"": 73, ""Under 1600"": 52, ""Under 1400"": 65, ""Under 1100"": 77, ""Blitz"": 105, ""Mixed Doubles"": 63}"
-Southern Open,2011,400,6,"{""Standings"": 190, ""Open Section"": 30, ""Under 2100 Section"": 46, ""Under 1800 Section"": 44, ""Under 1500 Section"": 48, ""Under 1200 Section"": 42}"
-Southern Open,2012,257,5,"{""Open Section"": 31, ""Under 2100 Section"": 49, ""Under 1800 Section"": 58, ""Under 1500 Section"": 60, ""Under 1200 Section"": 59}"
-Southern Open,2013,328,6,"{""Open Section"": 35, ""Under 2100 Section"": 52, ""Under 1800 Section"": 59, ""Under 1500 Section"": 63, ""Under 1200 Section"": 56, ""Mixed Doubles Teams"": 63}"
-Southern Open,2014,264,6,"{""Open Section"": 30, ""Under 2100 Section"": 62, ""Under 1700 Section"": 72, ""Under 1300 Section"": 42, ""Mixed Doubles Teams"": 33, ""Blitz"": 25}"
-Southern Open,2015,333,6,"{""Open Section"": 38, ""Under 2100 Section"": 70, ""Under 1700 Section"": 87, ""Under 1300 Section"": 72, ""Mixed Doubles Teams"": 33, ""Blitz"": 33}"
-Southern Open,2016,334,6,"{""Open Section"": 36, ""Under 2100 Section"": 75, ""Under 1700 Section"": 68, ""Under 1300 Section"": 73, ""Mixed Doubles Teams"": 48, ""Blitz"": 34}"
-Southern Open,2017,339,7,"{""Open Section"": 29, ""Under 2100 Section"": 59, ""Under 1800 Section"": 53, ""Under 1500 Section"": 63, ""Under 1200 Section"": 66, ""Mixed Doubles Teams"": 36, ""Blitz"": 33}"
-Southern Open,2018,354,7,"{""Major Section"": 26, ""Under 2100 Section"": 57, ""Under 1800 Section"": 70, ""Under 1500 Section"": 51, ""Under 1200 Section"": 76, ""Mixed Doubles Teams"": 48, ""Blitz"": 26}"
-Southern Open,2019,300,7,"{""Major Section"": 26, ""Under 2100 Section"": 41, ""Under 1800 Section"": 49, ""Under 1500 Section"": 56, ""Under 1200 Section"": 53, ""Mixed Doubles Teams"": 45, ""Blitz"": 30}"
-Southernclass,2026,250,9,"{""Master"": 31, ""Expert"": 47, ""Class A"": 32, ""Class B"": 26, ""Class C"": 21, ""Class D"": 17, ""Class E"": 32, ""Mixed Doubles Teams"": 18, ""Blitz"": 26}"
-Southernopen,2025,237,7,"{""Major"": 40, ""Under 2100"": 41, ""Under 1800"": 34, ""Under 1500"": 34, ""Under 1200"": 43, ""Mixed Doubles Teams"": 17, ""Blitz"": 28}"
-Southwest Class,2015,460,9,"{""Master Section"": 62, ""Expert Section"": 47, ""Class A Section"": 48, ""Class B Section"": 36, ""Class C Section"": 30, ""Class D Section"": 35, ""Class E Section"": 70, ""Mixed Doubles Teams"": 106, ""Blitz"": 26}"
-Southwest Class,2016,460,9,"{""Blitz"": 17, ""Master Section"": 67, ""Expert Section"": 56, ""Class A Section"": 51, ""Class B Section"": 47, ""Class C Section"": 54, ""Class D Section"": 28, ""Class E Section"": 56, ""Mixed Doubles Teams"": 84}"
-Southwest Class,2017,526,9,"{""Master Section"": 81, ""Expert Section"": 61, ""Class A Section"": 53, ""Class B Section"": 74, ""Class C Section"": 50, ""Class D Section"": 41, ""Class E Section"": 49, ""Mixed Doubles Teams"": 84, ""Blitz"": 33}"
-Southwest Class,2018,561,9,"{""Master Section"": 87, ""Expert Section"": 57, ""Class A Section"": 65, ""Class B Section"": 64, ""Class C Section"": 56, ""Class D Section"": 39, ""Class E Section"": 47, ""Mixed Doubles Teams"": 120, ""Blitz"": 26}"
-Southwest Class,2019,573,9,"{""Master Section"": 90, ""Expert Section"": 67, ""Class A Section"": 63, ""Class B Section"": 61, ""Class C Section"": 59, ""Class D Section"": 52, ""Class E Section"": 61, ""Mixed Doubles Teams"": 87, ""Blitz"": 33}"
-Southwest Class,2020,94,1,"{""Master Section"": 94}"
-Southwestclass,2026,608,9,"{""Master"": 116, ""Expert"": 86, ""Class A"": 81, ""Class B"": 72, ""Class C"": 51, ""Class D"": 27, ""Class E"": 47, ""Mixed Doubles Teams"": 37, ""Blitz"": 91}"
-Stamford,2019,221,6,"{""Major"": 51, ""Under 2010"": 52, ""Under 1710"": 47, ""Under 1310"": 37, ""Mixed Doubles Teams"": 14, ""Blitz"": 20}"
-Washingtoncongress,2023,309,8,"{""Premier!"": 46, ""Under 2200"": 64, ""Under 1900"": 48, ""Under 1600"": 37, ""Under 1300"": 29, ""Under 1000"": 26, ""Saturday Night Blitz!"": 38, ""Mixed Doubles Teams!"": 21}"
-Western Class,2009,456,2,"{""Other Tournaments"": 227, ""2010"": 229}"
-Western Class,2010,456,2,"{""Other Tournaments"": 229, ""2009"": 227}"
-Western Class,2011,685,8,"{""Master Section"": 39, ""Class A Section"": 41, ""Class B Section"": 41, ""Class C Section"": 49, ""Class D Section"": 26, ""Class E Section"": 33, ""2010"": 229, ""2009"": 227}"
-Western Class,2012,743,9,"{""Master Section"": 40, ""Expert Section"": 42, ""Class A Section"": 43, ""Class B Section"": 51, ""Class C Section"": 48, ""Class D Section"": 24, ""Class E Section"": 39, ""2010"": 229, ""2009"": 227}"
-Western Class,2013,730,9,"{""Master Section"": 30, ""Expert Section"": 40, ""Class A Section"": 40, ""Class B Section"": 53, ""Class C Section"": 46, ""Class D Section"": 32, ""Class E Section"": 33, ""2010"": 229, ""2009"": 227}"
-Western Class,2014,793,11,"{""Master Section"": 35, ""Expert Section"": 49, ""Class A Section"": 39, ""Class B Section"": 53, ""Class C Section"": 33, ""Class D Section"": 23, ""Class E Section"": 25, ""Blitz"": 20, ""Mixed Doubles Teams"": 60, ""2010"": 229, ""2009"": 227}"
-Western Class,2015,809,11,"{""Master Section"": 35, ""Expert Section"": 36, ""Class A Section"": 50, ""Class B Section"": 37, ""Class C Section"": 30, ""Class D Section"": 32, ""Class E Section"": 33, ""Mixed Doubles Teams"": 72, ""Blitz"": 28, ""2010"": 229, ""2009"": 227}"
-Western Class,2016,808,11,"{""Master Section"": 34, ""Expert Section"": 40, ""Class A Section"": 51, ""Class B Section"": 55, ""Class C Section"": 39, ""Class D Section"": 23, ""Class E Section"": 39, ""Mixed Doubles Teams"": 39, ""Blitz"": 32, ""2010"": 229, ""2009"": 227}"
-Western Class,2017,842,11,"{""Master Section"": 37, ""Expert Section"": 49, ""Class A Section"": 51, ""Class B Section"": 49, ""Class C Section"": 50, ""Class D Section"": 35, ""Class E Section"": 39, ""Mixed Doubles Teams"": 48, ""Blitz"": 28, ""2010"": 229, ""2009"": 227}"
-Western Class,2018,872,11,"{""Master Section"": 40, ""Expert Section"": 52, ""Class A Section"": 47, ""Class B Section"": 53, ""Class C Section"": 37, ""Class D Section"": 34, ""Class E Section"": 47, ""Mixed Doubles Teams"": 69, ""Blitz"": 37, ""2010"": 229, ""2009"": 227}"
-Western Class,2019,900,11,"{""Master Section"": 46, ""Expert Section"": 50, ""Class A Section"": 56, ""Class B Section"": 54, ""Class C Section"": 49, ""Class D Section"": 30, ""Class E Section"": 42, ""Mixed Doubles Teams"": 78, ""Blitz"": 39, ""2010"": 229, ""2009"": 227}"
-Western Class,2020,37,1,"{""Master Section"": 37}"
-Westernclass,2026,330,8,"{""Master"": 32, ""Expert"": 48, ""Class A"": 63, ""Class B"": 58, ""Class C"": 36, ""Class D"": 26, ""Class E"": 50, ""Mixed Doubles Teams"": 17}"
-World Open,1999,1589,7,"{""Open Section"": 234, ""Under 2200 Section"": 172, ""Under 2000 Section"": 266, ""Under 1800 Section"": 299, ""Under 1600 Section"": 271, ""Under 1400 Section"": 303, ""Unrated Section"": 44}"
-World Open,2000,1240,7,"{""Open Section"": 188, ""Under 2200 Section"": 152, ""Under 2000 Section"": 215, ""Under 1800 Section"": 226, ""Under 1600 Section"": 151, ""Under 1400 Section"": 275, ""Unrated Section"": 33}"
-World Open,2001,1397,8,"{""Open Section"": 234, ""Under 2200 Section"": 164, ""Under 2000 Section"": 198, ""Under 1800 Section"": 230, ""Under 1600 Section"": 236, ""Under 1400 Section"": 172, ""Under 1200 Section"": 122, ""Unrated Section"": 41}"
-World Open,2002,1399,8,"{""Open Section"": 222, ""Under 2200 Section"": 170, ""Under 2000 Section"": 230, ""Under 1800 Section"": 255, ""Under 1600 Section"": 224, ""Under 1400 Section"": 163, ""Under 1200 Section"": 96, ""Unrated Section"": 39}"
+tournament_name,year,total_players,num_sections,sections,source
+Atlantic City Open,2026,403,7,"{""Open"": 106, ""Under 2200"": 87, ""Under 2000"": 46, ""Under 1800"": 48, ""Under 1600"": 41, ""Under 1400"": 41, ""Under 1100"": 45}",ccasite
+Atlantic Open,1992,208,8,"{""Open"": 39, ""Under 2200"": 24, ""Under 2000"": 34, ""Under 1800"": 43, ""Under 1600"": 38, ""Under 1400"": 18, ""Under 1200"": 13, ""Unrated"": 6}",ccasite
+Atlantic Open,1993,207,5,"{""Open"": 62, ""Under 2000"": 37, ""Under 1800"": 44, ""Under 1600"": 36, ""Under 1400"": 34}",ccasite
+Atlantic Open,1994,292,7,"{""Open"": 58, ""Under 2200"": 31, ""Under 2000"": 49, ""Under 1800"": 50, ""Under 1600"": 65, ""Under 1400"": 34, ""Unrated"": 18}",ccasite
+Atlantic Open,1995,260,7,"{""Open"": 47, ""Under 2200"": 29, ""Under 2000"": 37, ""Under 1800"": 45, ""Under 1600"": 48, ""Under 1400"": 57, ""Unrateds'"": 8}",ccasite
+Atlantic Open,1996,92,8,"{""Open"": 16, ""Under 2200"": 6, ""Under 2000"": 14, ""Under 1800"": 14, ""Under 1600"": 22, ""Under 1400"": 8, ""Under 1200"": 13, ""Unrateds"": 4}",ccasite
+Atlantic Open,1997,326,9,"{""Open"": 54, ""Under 2200"": 32, ""Under 2000"": 53, ""Under 1800"": 41, ""Under 1600"": 69, ""Under 1400"": 54, ""Under 1200"": 23, ""Under 1000"": 13, ""Unrateds"": 6}",ccasite
+Atlantic Open,1998,339,7,"{""Open"": 48, ""Under 2200"": 32, ""Under 2000"": 56, ""Under 1800"": 55, ""Under 1600/Unr"": 67, ""Under 1400"": 36, ""Under 1200"": 45}",ccasite
+Atlantic Open,2000,346,7,"{""Open"": 59, ""Under 2200"": 18, ""Under 2000"": 43, ""Under 1800"": 56, ""Under 1600"": 68, ""Under 1400"": 63, ""Under 1200"": 39}",ccasite
+Atlantic Open,2001,346,7,"{""Open"": 47, ""Under 2200"": 39, ""Under 2000"": 50, ""Under 1800"": 63, ""Under 1600"": 60, ""Under 1400"": 40, ""Under 1200"": 47}",ccasite
+Atlantic Open,2002,378,7,"{""Open"": 67, ""Under 2200"": 33, ""Under 2000"": 67, ""Under 1800"": 49, ""Under 1600"": 79, ""Under 1400"": 42, ""Under 1200"": 41}",ccasite
+Atlantic Open,2003,405,7,"{""Open"": 64, ""Under 2200"": 50, ""Under 2000"": 55, ""Under 1800"": 77, ""Under 1600"": 73, ""Under 1400"": 45, ""Under 1200"": 41}",ccasite
+Atlantic Open,2004,306,7,"{""Open"": 62, ""Under 2200"": 33, ""Under 2000"": 47, ""Under 1800"": 56, ""Under 1600"": 47, ""Under 1400"": 40, ""Under 1200"": 30}",ccasite
+Atlantic Open,2005,339,7,"{""Open"": 49, ""Under 2200"": 43, ""Under 2000"": 49, ""Under 1800"": 62, ""Under 1600"": 54, ""Under 1400"": 57, ""Under 1200"": 38}",ccasite
+Atlantic Open,2006,340,7,"{""Open"": 43, ""Under 2200"": 40, ""Under 2000"": 58, ""Under 1800"": 56, ""Under 1600"": 48, ""Under 1400"": 49, ""Under 1200"": 61}",ccasite
+Atlantic Open,2007,269,7,"{""Open"": 47, ""Under 2200"": 40, ""Under 2000"": 38, ""Under 1800"": 50, ""Under 1600"": 44, ""Under 1400"": 30, ""Under 1200"": 32}",ccasite
+Atlantic Open,2008,402,7,"{""Open"": 73, ""Under 2100"": 55, ""Under 1900"": 55, ""Under 1700"": 68, ""Under 1500"": 57, ""Under 1300"": 66, ""Under 1000"": 45}",ccasite
+Atlantic Open,2009,374,7,"{""Open"": 68, ""Under 2100"": 54, ""Under 1900"": 52, ""Under 1700"": 68, ""Under 1500"": 52, ""Under 1300"": 54, ""Under 1000"": 40}",ccasite
+Atlantic Open,2010,350,7,"{""Open"": 63, ""Under 2100"": 51, ""Under 1900"": 61, ""Under 1700"": 58, ""Under 1500"": 46, ""Under 1300"": 45, ""Under 1000"": 38}",ccasite
+Atlantic Open,2011,265,7,"{""Open"": 36, ""Under 2100"": 47, ""Under 1900"": 44, ""Under 1700"": 35, ""Under 1500"": 36, ""Under 1300"": 31, ""Under 1000"": 36}",ccasite
+Atlantic Open,2012,329,7,"{""Open"": 59, ""Under 2100"": 56, ""Under 1900"": 48, ""Under 1700"": 53, ""Under 1500"": 37, ""Under 1300"": 34, ""Under 1000"": 42}",ccasite
+Atlantic Open,2013,294,7,"{""Open"": 46, ""Under 2100"": 34, ""Under 1900"": 59, ""Under 1700"": 42, ""Under 1500"": 33, ""Under 1300"": 37, ""Under 1000"": 43}",ccasite
+Atlantic Open,2014,258,7,"{""Open"": 45, ""Under 2100"": 49, ""Under 1900"": 28, ""Under 1700"": 35, ""Under 1500"": 39, ""Under 1250"": 25, ""Under 1000"": 37}",ccasite
+Atlantic Open,2015,250,7,"{""Open"": 37, ""Under 2100"": 41, ""Under 1900"": 45, ""Under 1700"": 35, ""Under 1500"": 35, ""Under 1300"": 38, ""Under 1000"": 25}",ccasite
+Atlantic Open,2016,302,7,"{""Open"": 49, ""Under 2100"": 53, ""Under 1900"": 45, ""Under 1700"": 50, ""Under 1500"": 47, ""Under 1300"": 37, ""Under 1000"": 35}",ccasite
+Atlantic Open,2017,291,7,"{""Open"": 44, ""Under 2100"": 42, ""Under 1900"": 48, ""Under 1700"": 39, ""Under 1500"": 33, ""Under 1300"": 41, ""Under 1000"": 51}",ccasite
+Atlantic Open,2018,312,7,"{""Major"": 60, ""Under 2100"": 40, ""Under 1900"": 39, ""Under 1700"": 40, ""Under 1500"": 50, ""Under 1300"": 54, ""Under 1000"": 40}",ccasite
+Atlantic Open,2019,303,7,"{""Major"": 38, ""Under 2100"": 51, ""Under 1900"": 47, ""Under 1700"": 48, ""Under 1500"": 38, ""Under 1300"": 43, ""Under 1000"": 49}",ccasite
+Atlantic Open,2020,141,4,"{""Major"": 28, ""Under 2000/Unr"": 45, ""Under 1700/Unr"": 32, ""Under 1400/Unr"": 36}",ccasite
+Atlantic Open,2021,464,7,"{""Major"": 64, ""Under 2100"": 65, ""Under 1900"": 60, ""Under 1700"": 63, ""Under 1500"": 65, ""Under 1300"": 70, ""Under 1000"": 77}",ccasite
+Atlantic Open,2022,411,7,"{""Major"": 68, ""Under 2100"": 63, ""Under 1900"": 54, ""Under 1700"": 59, ""Under 1500"": 46, ""Under 1300"": 67, ""Under 1000"": 66}",ccasite
+Atlantic Open,2023,365,7,"{""Major"": 67, ""Under 2100"": 63, ""Under 1900"": 51, ""Under 1700"": 45, ""Under 1500"": 41, ""Under 1300"": 47, ""Under 1000"": 58}",ccasite
+Atlantic Open,2024,263,7,"{""Major"": 47, ""Under 2100"": 41, ""Under 1900"": 43, ""Under 1700"": 38, ""Under 1500"": 33, ""Under 1300"": 37, ""Under 1000"": 30}",ccasite
+Atlantic Open,2025,238,7,"{""Major"": 47, ""Under 2100"": 48, ""Under 1900"": 32, ""Under 1700"": 29, ""Under 1500"": 32, ""Under 1300"": 25, ""Under 1000"": 29}",ccasite
+Atlantic Open,2026,238,7,"{""Major"": 43, ""Under 2100"": 23, ""Under 1900"": 43, ""Under 1700"": 30, ""Under 1500"": 37, ""Under 1300"": 38, ""Under 1000"": 37}",ccasite
+Bill Little Memorial,2016,70,3,"{""Open"": 32, ""Under 1800"": 17, ""Under 1400"": 21}",ccasite
+Bill Little Memorial,2018,61,3,"{""Open"": 19, ""Under 1850"": 24, ""Under 1450"": 21}",ccasite
+Bill Little Memorial,2019,48,3,"{""Open"": 17, ""Under 1850"": 11, ""Under 1450"": 21}",ccasite
+Boardwalk Open,2010,168,6,"{""Open"": 21, ""U2100"": 34, ""U1900"": 32, ""U1700"": 17, ""U1500"": 28, ""U1200"": 36}",ccasite
+Boardwalk Open,2011,170,5,"{""Open"": 18, ""Under 2100"": 48, ""Under 1800"": 39, ""Under 1500"": 36, ""Under 1200"": 29}",ccasite
+Boardwalk Open,2012,185,5,"{""Open"": 28, ""Under 2100"": 50, ""Under 1800"": 41, ""Under 1500"": 33, ""Under 1200"": 33}",ccasite
+Boardwalk Open,2013,156,5,"{""Open"": 23, ""Under 2200"": 30, ""Under 1900"": 52, ""Under 1600"": 31, ""Under 1300"": 20}",ccasite
+Boardwalk Open,2014,114,4,"{""Open"": 33, ""Under 2000"": 37, ""Under 1600"": 26, ""Under 1200"": 18}",ccasite
+Boardwalk Open,2015,121,4,"{""Open"": 27, ""Under 2100"": 51, ""Under 1700"": 25, ""Under 1300"": 21}",ccasite
+Boston Chess Congress,2013,179,8,"{""Premier"": 11, ""Major"": 25, ""Under 1500"": 26, ""Amateur"": 27, ""Booster"": 35, ""Reserve"": 24, ""Adult Under 1300"": 16, ""Junior Under 1300"": 15}",ccasite
+Boston Chess Congress,2014,179,6,"{""Premier"": 34, ""Under 2100"": 34, ""Under 1900"": 30, ""Under 1700"": 25, ""Under 1500"": 28, ""Under 1300"": 28}",ccasite
+Boston Chess Congress,2015,233,6,"{""Premier"": 35, ""Under 2100"": 48, ""Under 1900"": 50, ""Under 1700"": 37, ""Under 1500"": 24, ""Under 1300"": 39}",ccasite
+Boston Chess Congress,2016,252,6,"{""Premier"": 49, ""Under 2100"": 46, ""Under 1900"": 41, ""Under 1700"": 41, ""Under 1500"": 30, ""Under 1300"": 51}",ccasite
+Boston Chess Congress,2017,217,6,"{""Premier"": 38, ""Under 2100"": 38, ""Under 1900"": 52, ""Under 1700"": 30, ""Under 1500"": 26, ""Under 1250"": 40}",ccasite
+Boston Chess Congress,2018,221,6,"{""Premier"": 48, ""Under 2100"": 40, ""Under 1900"": 49, ""Under 1700"": 39, ""Under 1500"": 31, ""Under 1250"": 26}",ccasite
+Boston Chess Congress,2019,270,6,"{""Premier"": 42, ""Under 2100"": 56, ""Under 1900"": 57, ""Under 1700"": 42, ""Under 1500"": 34, ""Under 1250"": 51}",ccasite
+Boston Chess Congress,2020,271,6,"{""Premier"": 35, ""Under 2100"": 61, ""Under 1900"": 50, ""Under 1700"": 48, ""Under 1500"": 32, ""Under 1250"": 51}",ccasite
+Boston Chess Congress,2021,186,4,"{""Major"": 53, ""U2000"": 72, ""U1700"": 38, ""U1400"": 24}",ccasite
+Boston Chess Congress,2022,258,6,"{""Premier"": 37, ""Under 2100"": 76, ""Under 1900"": 29, ""Under 1700"": 35, ""Under 1500"": 43, ""Under 1250"": 47}",ccasite
+Boston Chess Congress,2023,391,6,"{""Premier"": 54, ""Under 2100"": 90, ""Under 1900"": 53, ""Under 1700"": 52, ""Under 1500"": 66, ""Under 1200"": 88}",ccasite
+Boston Chess Congress,2024,335,6,"{""Premier"": 47, ""Under 2100"": 68, ""Under 1900"": 41, ""Under 1700"": 51, ""Under 1500"": 62, ""Under 1200"": 72}",ccasite
+Boston Chess Congress,2025,374,6,"{""Premier"": 66, ""Under 2100"": 84, ""Under 1900"": 45, ""Under 1700"": 65, ""Under 1500"": 43, ""Under 1200"": 75}",ccasite
+Boston Chess Congress,2026,343,6,"{""Premier"": 65, ""Under 2100"": 91, ""Under 1900"": 44, ""Under 1700"": 54, ""Under 1500"": 40, ""Under 1200"": 59}",ccasite
+Bostonchess Congress,2012,164,5,"{""Group 1"": 43, ""Group 2"": 34, ""Group 3"": 38, ""Group 4"": 28, ""Group 5"": 21}",old scraper
+Bradley Open,1998,245,7,"{""Open"": 29, ""Under 2200"": 22, ""Under 2000"": 35, ""Under 1800"": 44, ""Under 1600"": 36, ""Under 1400"": 53, ""Scholastic Novice"": 26}",ccasite
+Bradley Open,1999,182,5,"{""Open"": 48, ""Under 2000"": 37, ""Under 1800"": 35, ""Under 1600"": 42, ""Under 1400"": 20}",ccasite
+Bradley Open,2000,216,6,"{""Open"": 46, ""Under 2000"": 26, ""Under 1800"": 49, ""Under 1600"": 39, ""Under 1400"": 24, ""Under 1200"": 32}",ccasite
+Bradley Open,2001,206,6,"{""Open"": 37, ""Under 2000"": 35, ""Under 1800"": 44, ""Under 1600/Unr"": 35, ""Under 1400"": 30, ""Under 1200"": 25}",ccasite
+Bradley Open,2002,186,7,"{""Open"": 42, ""Under 2000"": 24, ""Under 1800"": 40, ""Under 1600/Unr"": 30, ""Under 1400"": 20, ""Under 1200"": 21, ""Under 1000"": 9}",ccasite
+Bradley Open,2003,173,6,"{""Open"": 38, ""Under 2000"": 28, ""Under 1800"": 38, ""Under 1600"": 21, ""Under 1400"": 15, ""Under 1200"": 33}",ccasite
+Bradley Open,2004,137,7,"{""Open"": 10, ""Under 2200"": 18, ""Under 2000"": 19, ""Under 1800"": 19, ""Under 1600"": 34, ""Under 1400"": 18, ""Under 1200"": 24}",ccasite
+Bradley Open,2005,131,6,"{""Open"": 23, ""Under 2000"": 14, ""Under 1800"": 31, ""Under 1600"": 18, ""Under 1400"": 22, ""Under 1200"": 27}",ccasite
+Bradley Open,2006,175,6,"{""Open"": 35, ""Under 2100"": 31, ""Under 1900"": 36, ""Under 1700"": 22, ""Under 1500"": 25, ""Under 1300"": 33}",ccasite
+Bradley Open,2007,167,6,"{""Open"": 22, ""Under 2100"": 31, ""Under 1900"": 26, ""Under 1700"": 43, ""Under 1500"": 21, ""Under 1200"": 24}",ccasite
+Bradley Open,2008,175,4,"{""Open"": 38, ""Under 2000"": 60, ""Under 1600"": 53, ""Under 1200"": 28}",ccasite
+Bradley Open,2009,167,4,"{""Open"": 34, ""Under 2000"": 67, ""Under 1600"": 48, ""Under 1200"": 24}",ccasite
+Bradley Open,2010,167,4,"{""Open"": 46, ""Under 2000"": 61, ""Under 1600"": 40, ""Under 1200"": 25}",ccasite
+Bradley Open,2011,128,4,"{""Open"": 30, ""Under 2100"": 40, ""Under 1700"": 43, ""Under 1300"": 18}",ccasite
+Bradley Open,2012,198,5,"{""Open"": 30, ""Under 2100"": 50, ""Under 1800"": 51, ""Under 1500"": 27, ""Under 1200"": 40}",ccasite
+Bradley Open,2013,152,5,"{""Open"": 22, ""Under 2110"": 33, ""Under 1810"": 50, ""Under 1510"": 20, ""Under 1210"": 27}",ccasite
+Bradley Open,2014,148,4,"{""Open"": 37, ""Under 2010"": 45, ""Under 1610"": 36, ""Under 1210"": 30}",ccasite
+Bradley Open,2015,174,4,"{""Open"": 45, ""Under 2010"": 76, ""Under 1610"": 31, ""Under 1210"": 27}",ccasite
+Bradley Open,2016,149,4,"{""Open"": 40, ""Under 2010"": 45, ""Under 1710"": 35, ""Under 1310"": 32}",ccasite
+Bradley Open,2017,209,5,"{""Open"": 39, ""Under 2100"": 56, ""Under 1800"": 49, ""Under 1500"": 30, ""Under 1200"": 37}",ccasite
+Bradley Open,2018,177,5,"{""Major"": 28, ""Under 2100"": 54, ""Under 1800"": 38, ""Under 1500"": 29, ""Under 1200"": 33}",ccasite
+Bradley Open,2019,178,5,"{""Major"": 22, ""Under 2100"": 47, ""Under 1800"": 37, ""Under 1500"": 32, ""Under 1200"": 44}",ccasite
+Bradley Open,2020,96,2,"{""Open"": 51, ""Under 1800"": 45}",ccasite
+Bradley Open,2021,290,5,"{""Major"": 53, ""Under 2100"": 70, ""Under 1800"": 63, ""Under 1500"": 49, ""Under 1200"": 55}",ccasite
+Bradley Open,2022,230,5,"{""Major"": 36, ""Under 2100"": 62, ""Under 1800"": 51, ""Under 1500"": 41, ""Under 1200"": 40}",ccasite
+Bradley Open,2023,258,5,"{""Major"": 49, ""Under 2100"": 68, ""Under 1800"": 54, ""Under 1500"": 36, ""Under 1200"": 51}",ccasite
+Bradley Open,2024,265,5,"{""Major"": 53, ""Under 2100"": 76, ""Under 1800"": 59, ""Under 1500"": 43, ""Under 1200"": 40}",ccasite
+Bradley Open,2025,233,5,"{""Major"": 57, ""Under 2100"": 61, ""Under 1800"": 47, ""Under 1500"": 26, ""Under 1200"": 46}",ccasite
+Bradley Open,2026,213,5,"{""Major"": 53, ""Under 2100"": 60, ""Under 1800"": 40, ""Under 1500"": 30, ""Under 1200"": 31}",ccasite
+Central California Open,2009,139,4,"{""Open"": 36, ""Under 2000"": 40, ""Under 1600"": 30, ""Under 1200"": 38}",ccasite
+Central California Open,2010,123,6,"{""Open"": 28, ""Under 2000"": 22, ""Under 1800"": 18, ""Under 1600"": 21, ""Under 1300"": 24, ""Under 1000"": 21}",ccasite
+Central California Open,2011,124,5,"{""Open"": 30, ""Under 2000"": 30, ""Under 1700"": 25, ""Under 1400"": 30, ""Under 1000"": 9}",ccasite
+Central California Open,2012,129,4,"{""Open"": 30, ""Under 2000"": 33, ""Under 1700"": 19, ""Under 1400"": 47}",ccasite
+Central California Open,2014,116,4,"{""Open"": 37, ""Under 2000"": 35, ""Under 1600"": 29, ""Under 1200"": 15}",ccasite
+Central California Open,2015,122,4,"{""Open"": 27, ""Under 2050"": 38, ""Under 1650"": 25, ""Under 1250"": 33}",ccasite
+Central California Open,2016,97,4,"{""Open"": 22, ""Under 2050"": 36, ""Under 1650"": 18, ""Under 1250"": 22}",ccasite
+Central California Open,2017,154,4,"{""Open"": 32, ""Under 2050"": 60, ""Under 1650"": 36, ""Under 1250"": 30}",ccasite
+Central California Open,2018,134,4,"{""Major"": 31, ""Under 2050"": 39, ""Under 1650"": 35, ""Under 1250"": 32}",ccasite
+Central California Open,2019,139,4,"{""Major"": 31, ""Under 2050"": 53, ""Under 1650"": 27, ""Under 1250"": 35}",ccasite
+Central California Open,2021,186,4,"{""Open"": 42, ""Under 2100"": 49, ""Under 1700"": 40, ""Under 1300"": 55}",ccasite
+Central California Open,2022,190,4,"{""Major"": 52, ""Under 2100"": 48, ""Under 1700"": 40, ""Under 1300"": 52}",ccasite
+Central California Open,2023,207,4,"{""Major"": 32, ""Under 2100"": 57, ""Under 1700"": 44, ""Under 1300"": 75}",ccasite
+Central California Open,2024,166,4,"{""Major"": 33, ""Under 2100"": 55, ""Under 1700"": 37, ""Under 1300"": 45}",ccasite
+Central California Open,2025,172,4,"{""Major"": 47, ""Under 2100"": 63, ""Under 1700"": 30, ""Under 1300"": 36}",ccasite
+Central California Open,2026,166,4,"{""Major"": 44, ""Under 2100"": 64, ""Under 1700"": 25, ""Under 1300"": 35}",ccasite
+Central New York Open,2014,65,3,"{""Open"": 22, ""Under 1900"": 22, ""Under 1500"": 22}",ccasite
+Central New York Open,2015,63,3,"{""Open"": 26, ""Under 1900"": 21, ""Under 1500"": 17}",ccasite
+Central New York Open,2016,57,3,"{""Open"": 21, ""Under 1900"": 14, ""Under 1500"": 24}",ccasite
+Central New York Open,2017,64,3,"{""Open"": 17, ""Under 1900"": 18, ""Under 1500"": 29}",ccasite
+Central New York Open,2018,46,3,"{""Open"": 16, ""Under 1900"": 12, ""Under 1500"": 18}",ccasite
+Central New York Open,2019,44,3,"{""Open"": 15, ""Under 1900"": 18, ""Under 1500"": 14}",ccasite
+Central New York Open,2021,111,4,"{""Open"": 22, ""Under 2000"": 24, ""Under 1700"": 20, ""Under 1400"": 45}",ccasite
+Central New York Open,2022,116,4,"{""Open"": 23, ""Under 2000"": 26, ""Under 1700"": 34, ""Under 1400"": 40}",ccasite
+Central New York Open,2023,139,4,"{""Open"": 28, ""Under 2000"": 31, ""Under 1700"": 29, ""Under 1400"": 54}",ccasite
+Chicago Class,2008,308,9,"{""Class A"": 46, ""Class B"": 46, ""Class C"": 54, ""Class D"": 41, ""Class E"": 34, ""Under 1000"": 29, ""Under 700"": 13, ""Masters'"": 20, ""Experts'"": 36}",ccasite
+Chicago Class,2009,329,9,"{""Master"": 21, ""Expert"": 37, ""Class A"": 35, ""Class B"": 60, ""Class C"": 48, ""Class D"": 36, ""Class E"": 34, ""Under 1000"": 40, ""Under 700"": 18}",ccasite
+Chicago Class,2010,290,9,"{""Master"": 23, ""Expert"": 50, ""Class A"": 47, ""Class B"": 39, ""Class C"": 46, ""Class D"": 27, ""Class E"": 21, ""Under 1000"": 34, ""Under 700"": 6}",ccasite
+Chicago Class,2011,295,8,"{""Master"": 37, ""Expert"": 36, ""Class A"": 46, ""Class B"": 36, ""Class C"": 40, ""Class D"": 42, ""Class E"": 26, ""Under 1000"": 32}",ccasite
+Chicago Class,2012,330,8,"{""Master"": 31, ""Expert"": 48, ""Class A"": 51, ""Class B"": 51, ""Class C"": 40, ""Class D"": 41, ""Class E"": 26, ""Under 1000"": 42}",ccasite
+Chicago Class,2013,273,8,"{""Master"": 37, ""Expert"": 40, ""Class A"": 38, ""Class B"": 41, ""Class C"": 33, ""Class D"": 29, ""Class E"": 20, ""Under 1000"": 35}",ccasite
+Chicago Class,2014,377,7,"{""Master"": 49, ""Expert"": 52, ""Class A"": 54, ""Class B"": 41, ""Class C"": 53, ""Class D"": 47, ""Class E"": 81}",ccasite
+Chicago Class,2015,315,7,"{""Master"": 39, ""Expert"": 40, ""Class A"": 57, ""Class B"": 44, ""Class C"": 47, ""Class D"": 39, ""Class E"": 58}",ccasite
+Chicago Class,2016,339,7,"{""Master"": 39, ""Expert"": 60, ""Class A"": 61, ""Class B"": 56, ""Class C"": 47, ""Class D"": 39, ""Class E"": 55}",ccasite
+Chicago Class,2017,409,7,"{""Master"": 52, ""Expert"": 52, ""Class A"": 57, ""Class B"": 61, ""Class C"": 45, ""Class D"": 50, ""Class E"": 102}",ccasite
+Chicago Class,2018,369,7,"{""Master"": 29, ""Expert"": 55, ""Class A"": 47, ""Class B"": 70, ""Class C"": 50, ""Class D"": 47, ""Class E"": 71}",ccasite
+Chicago Class,2019,332,7,"{""Master"": 35, ""Expert"": 61, ""Class A"": 62, ""Class B"": 51, ""Class C"": 46, ""Class D"": 45, ""Class E"": 49}",ccasite
+Chicago Class,2020,105,6,"{""Master"": 16, ""Expert"": 8, ""Class A"": 15, ""Class B"": 13, ""Class C"": 24, ""Class D/E"": 29}",ccasite
+Chicago Class,2021,441,7,"{""Master"": 42, ""Expert"": 55, ""Class A"": 60, ""Class B"": 68, ""Class C"": 61, ""Class D"": 43, ""Class E"": 112}",ccasite
+Chicago Class,2022,331,7,"{""Master"": 27, ""Expert"": 43, ""Class A"": 62, ""Class B"": 46, ""Class C"": 42, ""Class D"": 39, ""Class E"": 78}",ccasite
+Chicago Class,2023,284,7,"{""Master"": 21, ""Expert"": 48, ""Class A"": 48, ""Class B"": 53, ""Class C"": 35, ""Class D"": 37, ""Class E"": 59}",ccasite
+Chicago Class,2024,268,7,"{""Master"": 24, ""Expert"": 50, ""Class A"": 49, ""Class B"": 51, ""Class C"": 35, ""Class D"": 36, ""Class E"": 33}",ccasite
+Chicago Class,2025,289,7,"{""Master"": 37, ""Expert"": 51, ""Class A"": 52, ""Class B"": 53, ""Class C"": 42, ""Class D"": 27, ""Class E"": 41}",ccasite
+Chicago Class,2026,292,7,"{""Master"": 40, ""Expert"": 42, ""Class A"": 63, ""Class B"": 36, ""Class C"": 43, ""Class D"": 34, ""Class E"": 40}",ccasite
+Chicago Open,1992,383,6,"{""Open"": 73, ""Under 2200"": 55, ""U2000"": 81, ""U1800"": 74, ""U1600"": 84, ""U1200"": 32}",ccasite
+Chicago Open,1995,392,7,"{""Open"": 49, ""Under 2200"": 48, ""Under 2000"": 71, ""Under 1800"": 62, ""Under 1600"": 87, ""Under 1400"": 86, ""Unrateds"": 23}",ccasite
+Chicago Open,1996,648,8,"{""Open"": 72, ""Under 2200"": 68, ""Under 2000"": 131, ""Under 1800"": 124, ""Under 1600"": 134, ""Under 1400"": 106, ""Under 1200"": 73, ""Unrated"": 15}",ccasite
+Chicago Open,1999,917,7,"{""Open"": 113, ""Under 2200"": 102, ""Under 2000"": 157, ""Under 1800"": 141, ""Under 1600"": 141, ""Under 1400"": 232, ""Unrated Players"": 31}",ccasite
+Chicago Open,2001,939,8,"{""Open"": 126, ""Under 2200"": 110, ""Under 2000"": 117, ""Under 1800"": 154, ""Under 1600"": 117, ""Under 1400"": 142, ""Under 1200"": 133, ""Unrated"": 40}",ccasite
+Chicago Open,2002,828,8,"{""Open"": 117, ""Under 2200"": 89, ""Under 2000"": 135, ""Under 1800"": 122, ""Under 1600"": 144, ""Under 1400"": 104, ""Under 1200"": 74, ""Unrated"": 43}",ccasite
+Chicago Open,2003,847,8,"{""Open"": 119, ""Under 2200"": 97, ""Under 2000"": 132, ""Under 1800"": 159, ""Under 1600"": 126, ""Under 1400"": 90, ""Under 1200"": 81, ""Unrated"": 43}",ccasite
+Chicago Open,2004,785,8,"{""Open"": 110, ""Under 2200"": 95, ""Under 2000"": 130, ""Under 1800"": 123, ""Under 1600"": 120, ""Under 1400"": 91, ""Under 1200"": 94, ""Unrated"": 22}",ccasite
+Chicago Open,2005,629,8,"{""Open"": 82, ""Under 2200"": 78, ""Under 2000"": 101, ""Under 1800"": 114, ""Under 1600"": 93, ""Under 1400"": 91, ""Under 1200"": 48, ""Unrated Players"": 22}",ccasite
+Chicago Open,2006,581,7,"{""Open"": 83, ""Under 2200"": 73, ""Under 2000"": 108, ""Under 1800"": 100, ""Under 1600"": 93, ""Under 1400"": 73, ""Under 1200"": 51}",ccasite
+Chicago Open,2007,754,8,"{""Open"": 65, ""U2300"": 81, ""U2100"": 145, ""U1900"": 123, ""U1700"": 107, ""U1500"": 118, ""U1200"": 76, ""U800"": 39}",ccasite
+Chicago Open,2008,764,10,"{""Open"": 54, ""Unrated"": 23, ""U2300"": 95, ""U2100"": 99, ""U1900"": 115, ""U1700"": 109, ""U1500"": 102, ""U1300"": 98, ""U1000"": 41, ""U700"": 28}",ccasite
+Chicago Open,2009,805,8,"{""Open"": 50, ""U2300"": 85, ""U2100"": 115, ""U1900"": 117, ""U1700"": 127, ""U1500"": 105, ""U1300"": 121, ""U900"": 85}",ccasite
+Chicago Open,2010,744,7,"{""Open"": 149, ""Under 2100"": 103, ""Under 1900"": 132, ""Under 1700"": 117, ""Under 1500"": 82, ""Under 1300"": 96, ""Under 1000"": 65}",ccasite
+Chicago Open,2011,663,6,"{""Open"": 139, ""Under 2100"": 112, ""Under 1900"": 125, ""Under 1700"": 89, ""Under 1500"": 98, ""Under 1200"": 100}",ccasite
+Chicago Open,2012,810,9,"{""Open"": 98, ""Under 2300"": 73, ""Under 2100"": 105, ""Under 1900"": 119, ""Under 1700"": 124, ""Under 1500"": 83, ""Under 1300"": 65, ""Under 1100"": 71, ""Under 900"": 72}",ccasite
+Chicago Open,2013,740,9,"{""Open"": 91, ""Under 2300"": 68, ""Under 2100"": 108, ""Under 1900"": 119, ""Under 1700"": 97, ""Under 1500"": 95, ""Under 1300"": 67, ""Adult Under 1100"": 24, ""Junior Under 1100"": 71}",ccasite
+Chicago Open,2014,764,9,"{""Open"": 95, ""Under 2300/Unrated"": 97, ""Under 2100"": 125, ""Under 1900"": 127, ""Under 1700"": 89, ""Under 1500"": 86, ""Under 1300"": 62, ""Under 1000/Unrated"": 64, ""Unrated/Provisional"": 19}",ccasite
+Chicago Open,2015,890,8,"{""Open"": 113, ""Under 2300"": 95, ""Under 2100"": 129, ""Under 1900"": 147, ""Under 1700"": 123, ""Under 1500"": 84, ""Under 1300"": 91, ""Under 1000"": 108}",ccasite
+Chicago Open,2016,932,8,"{""Open"": 126, ""Under 2300"": 113, ""Under 2100"": 141, ""Under 1900"": 148, ""Under 1700"": 140, ""Under 1500"": 94, ""Under 1300"": 70, ""Under 1000"": 100}",ccasite
+Chicago Open,2017,988,8,"{""Open"": 119, ""Under 2300"": 109, ""Under 2100"": 155, ""Under 1900"": 157, ""Under 1700"": 122, ""Under 1500"": 94, ""Under 1300"": 110, ""Under 1000"": 122}",ccasite
+Chicago Open,2018,900,8,"{""Open"": 128, ""Under 2300"": 84, ""Under 2100"": 135, ""Under 1900"": 164, ""Under 1700"": 112, ""Under 1500"": 79, ""Under 1300"": 79, ""Under 1000"": 119}",ccasite
+Chicago Open,2019,914,8,"{""Open"": 120, ""Under 2300"": 122, ""Under 2100"": 129, ""Under 1900"": 150, ""Under 1700"": 95, ""Under 1500"": 92, ""Under 1300"": 98, ""Under 1000"": 108}",ccasite
+Chicago Open,2020,304,5,"{""Open"": 51, ""Under 2200"": 98, ""Under 1900"": 62, ""Under 1600"": 46, ""Under 1300"": 47}",ccasite
+Chicago Open,2021,572,7,"{""Open"": 69, ""Under 2300"": 71, ""Under 2100"": 92, ""Under 1900"": 68, ""Under 1700"": 86, ""Under 1500"": 90, ""Under 1200"": 96}",ccasite
+Chicago Open,2022,998,8,"{""Open"": 128, ""Under 2300"": 116, ""Under 2100"": 144, ""Under 1900"": 127, ""Under 1700"": 112, ""Under 1500"": 102, ""Under 1300"": 121, ""Under 1000"": 159}",ccasite
+Chicago Open,2023,941,8,"{""Open"": 128, ""Under 2300"": 105, ""Under 2100"": 119, ""Under 1900"": 113, ""Under 1700"": 118, ""Under 1500"": 95, ""Under 1300"": 125, ""Under 1000"": 159}",ccasite
+Chicago Open,2024,838,7,"{""Open"": 109, ""Under 2300"": 142, ""Under 2100"": 129, ""Under 1900"": 108, ""Under 1700"": 121, ""Under 1500"": 106, ""Under 1300"": 143}",ccasite
+Chicago Open,2025,876,8,"{""Open"": 110, ""Under 2300"": 141, ""Under 2100"": 134, ""Under 1900"": 115, ""Under 1700"": 115, ""Under 1500"": 114, ""Under 1300"": 88, ""Under 1000"": 85}",ccasite
+Chicago Open,2026,886,8,"{""Open"": 133, ""Under 2300"": 147, ""Under 2100"": 151, ""Under 1900"": 127, ""Under 1700"": 101, ""Under 1500"": 90, ""Under 1300"": 76, ""Under 1000"": 84}",ccasite
+Cleveland Open,2008,52,1,"{""Open"": 52}",ccasite
+Cleveland Open,2009,144,7,"{""Open"": 45, ""Under 2000"": 25, ""Under 1800"": 20, ""Under 1600"": 25, ""Under 1400"": 14, ""Under 1200"": 10, ""Under 1000"": 12}",ccasite
+Cleveland Open,2010,134,7,"{""Open"": 37, ""Under 2000"": 19, ""Under 1800"": 15, ""Under 1600"": 18, ""Under 1400"": 14, ""Under 1200"": 22, ""Under 13 Novice"": 9}",ccasite
+Cleveland Open,2011,202,6,"{""Open"": 36, ""Under 2000"": 37, ""Under 1800"": 35, ""Under 1600"": 41, ""Under 1300"": 33, ""Under 1000"": 20}",ccasite
+Cleveland Open,2012,223,6,"{""Open"": 48, ""Under 2000"": 51, ""Under 1800"": 39, ""Under 1600"": 37, ""Under 1300"": 36, ""Under 1000"": 12}",ccasite
+Cleveland Open,2013,231,6,"{""Open"": 33, ""Under 2100"": 54, ""Under 1800"": 51, ""Under 1500"": 37, ""Adult Under 1200"": 15, ""Junior Under 1200"": 41}",ccasite
+Cleveland Open,2014,230,5,"{""Open"": 48, ""Under 2100"": 55, ""Under 1800"": 46, ""Under 1500"": 44, ""Under 1200"": 37}",ccasite
+Cleveland Open,2015,218,4,"{""Open"": 37, ""Under 2100"": 79, ""Under 1700"": 68, ""Under 1300"": 45}",ccasite
+Cleveland Open,2016,202,4,"{""Open"": 49, ""Under 2100"": 69, ""Under 1700"": 54, ""Under 1300"": 39}",ccasite
+Cleveland Open,2017,216,5,"{""Open"": 52, ""Under 2100"": 57, ""Under 1800"": 47, ""Under 1500"": 28, ""Under 1200"": 32}",ccasite
+Cleveland Open,2018,207,6,"{""Major"": 40, ""Under 2100"": 39, ""Under 1900"": 46, ""Under 1700"": 38, ""Under 1500"": 27, ""Under 1200"": 28}",ccasite
+Cleveland Open,2019,235,6,"{""Major"": 43, ""Under 2100"": 48, ""Under 1900"": 48, ""Under 1700"": 39, ""Under 1500"": 37, ""Under 1200"": 29}",ccasite
+Cleveland Open,2020,123,3,"{""Open"": 45, ""U1900"": 41, ""U1500"": 37}",ccasite
+Cleveland Open,2021,206,5,"{""Major"": 48, ""Under 2100"": 53, ""Under 1800"": 43, ""Under 1500"": 26, ""Under 1200"": 36}",ccasite
+Cleveland Open,2022,200,5,"{""Major"": 38, ""Under 2100"": 51, ""Under 1800"": 36, ""Under 1500"": 36, ""Under 1200"": 43}",ccasite
+Cleveland Open,2023,221,5,"{""Major"": 38, ""Under 2100"": 59, ""Under 1800"": 33, ""Under 1500"": 40, ""Under 1200"": 52}",ccasite
+Cleveland Open,2024,139,5,"{""Major"": 32, ""Under 2100"": 49, ""Under 1800"": 41, ""Under 1500"": 9, ""Under 1200"": 9}",ccasite
+Cleveland Open,2025,193,5,"{""Major"": 37, ""Under 2100"": 59, ""Under 1800"": 35, ""Under 1500"": 29, ""Under 1200"": 34}",ccasite
+Cleveland Open,2026,179,5,"{""Major"": 30, ""Under 2100"": 42, ""Under 1800"": 49, ""Under 1500"": 32, ""Under 1200"": 30}",ccasite
+Continental Class,2023,192,8,"{""Master"": 25, ""Expert"": 26, ""Class A"": 26, ""Class B"": 27, ""Class C"": 26, ""Class D"": 22, ""Class E"": 20, ""Under 1000 Section"": 27}",ccasite
+Continental Class Championships,2010,333,8,"{""Master"": 61, ""Expert"": 50, ""Class A"": 49, ""Class B"": 46, ""Class C"": 41, ""Class D"": 27, ""Class E"": 35, ""Under 900"": 24}",ccasite
+Continental Class Championships,2011,271,8,"{""Master"": 51, ""Expert"": 35, ""Class A"": 40, ""Class B"": 48, ""Class C"": 30, ""Class D"": 24, ""Class E"": 21, ""Under 1600 One-Day Event"": 22}",ccasite
+Continental Class Championships,2012,254,7,"{""Master"": 53, ""Expert"": 40, ""Class A"": 30, ""Class B"": 43, ""Class C"": 33, ""Class D"": 25, ""Class E"": 30}",ccasite
+Continental Class Championships,2013,213,7,"{""Master"": 33, ""Expert"": 34, ""Class A"": 48, ""Class B"": 38, ""Class C"": 20, ""Class D"": 20, ""Class E"": 20}",ccasite
+Continental Class Championships,2016,231,7,"{""Master"": 32, ""Expert"": 29, ""Class A"": 50, ""Class B"": 31, ""Class C"": 30, ""Class D"": 22, ""Class E"": 40}",ccasite
+Continental Class Championships,2017,230,7,"{""Master"": 19, ""Expert"": 32, ""Class A"": 37, ""Class B"": 44, ""Class C"": 24, ""Class D"": 34, ""Class E"": 43}",ccasite
+Continental Class Championships,2018,234,7,"{""Master"": 27, ""Expert"": 33, ""Class A"": 28, ""Class B"": 46, ""Class C"": 35, ""Class D"": 26, ""Class E"": 47}",ccasite
+Continental Class Championships,2019,254,7,"{""Master"": 30, ""Expert"": 36, ""Class A"": 43, ""Class B"": 39, ""Class C"": 33, ""Class D"": 29, ""Class E"": 49}",ccasite
+Continental Open,1983,58,3,"{""Open"": 26, ""Under 2300"": 16, ""Under 2150"": 16}",ccasite
+Continental Open,1997,578,8,"{""Open"": 74, ""Under 2200"": 83, ""Under 2000"": 94, ""Under 1800"": 103, ""Under 1600"": 88, ""Under 1400"": 69, ""Under 1200"": 40, ""Under 1000"": 27}",ccasite
+Continental Open,1998,409,6,"{""Open"": 59, ""Under 2200"": 53, ""Under 2000"": 65, ""Under 1800"": 72, ""Under 1600"": 76, ""Under 1400"": 84}",ccasite
+Continental Open,1999,378,5,"{""Open"": 93, ""Under 2000"": 80, ""Under 1800"": 77, ""Under 1600"": 61, ""Under 1400"": 67}",ccasite
+Continental Open,2000,459,7,"{""Open"": 54, ""Under 2200"": 73, ""Under 2000"": 85, ""Under 1800"": 72, ""Under 1600"": 78, ""Under 1400"": 80, ""Unrated"": 17}",ccasite
+Continental Open,2002,310,8,"{""Open"": 49, ""Under 2200"": 48, ""Under 2000"": 57, ""Under 1800"": 43, ""Under 1600"": 40, ""Under 1400"": 32, ""Under 1200"": 31, ""Unrated"": 10}",ccasite
+Continental Open,2003,185,7,"{""Open"": 26, ""Under 2200"": 18, ""Under 2000"": 24, ""Under 1800"": 31, ""Under 1600"": 33, ""Under 1400"": 28, ""Under 1200"": 25}",ccasite
+Continental Open,2004,253,7,"{""Open"": 48, ""Under 2200"": 32, ""Under 2000"": 52, ""Under 1800"": 43, ""Under 1600"": 35, ""Under 1400"": 22, ""Under 1200"": 21}",ccasite
+Continental Open,2005,237,7,"{""Open"": 31, ""Under 2200"": 27, ""Under 2000"": 38, ""Under 1800"": 46, ""Under 1600"": 32, ""Under 1400"": 36, ""Under 1200"": 27}",ccasite
+Continental Open,2006,219,7,"{""Open"": 29, ""Under 2200"": 32, ""Under 2000"": 36, ""Under 1800"": 49, ""Under 1600"": 38, ""Under 1400"": 10, ""Under 1200"": 25}",ccasite
+Continental Open,2007,233,7,"{""Open"": 48, ""Under 2100"": 39, ""Under 1900"": 46, ""Under 1700"": 47, ""Under 1500"": 33, ""Under 1200"": 23, ""Under 800"": 14}",ccasite
+Continental Open,2008,247,7,"{""Open"": 41, ""Under 2100"": 41, ""Under 1900"": 43, ""Under 1700"": 44, ""Under 1500"": 25, ""Under 1300"": 24, ""Under 1000"": 29}",ccasite
+Continental Open,2009,246,7,"{""Open"": 47, ""Under 2100"": 47, ""Under 1900"": 55, ""Under 1700"": 41, ""Under 1500"": 30, ""Under 1300"": 24, ""Under 1000"": 20}",ccasite
+Continental Open,2010,46,1,"{""Open"": 46}",ccasite
+Continental Open,2011,228,7,"{""Open"": 31, ""Under 2200"": 35, ""Under 2000"": 46, ""Under 1800"": 32, ""Under 1600"": 41, ""Under 1300"": 26, ""Under 1000"": 17}",ccasite
+Continental Open,2012,221,7,"{""Open"": 27, ""Under 2200"": 36, ""Under 2000"": 40, ""Under 1800"": 34, ""Under 1600"": 36, ""Under 1400"": 22, ""Under 1100"": 26}",ccasite
+Continental Open,2013,188,5,"{""Open"": 28, ""Under 2200"": 41, ""Under 1900"": 52, ""Under 1600"": 36, ""Under 1300"": 31}",ccasite
+Continental Open,2014,245,7,"{""Open"": 42, ""Under 2100"": 43, ""Under 1900"": 54, ""Under 1700"": 33, ""Under 1500"": 28, ""Under 1300"": 23, ""Under 1000"": 22}",ccasite
+Continental Open,2015,272,7,"{""Open"": 47, ""Under 2100"": 52, ""Under 1900"": 50, ""Under 1700"": 35, ""Under 1500"": 38, ""Under 1300"": 32, ""Under 1000"": 26}",ccasite
+Continental Open,2016,288,7,"{""Open"": 33, ""Under 2100"": 59, ""Under 1900"": 55, ""Under 1700"": 43, ""Under 1500"": 37, ""Under 1300"": 30, ""Under 1000"": 31}",ccasite
+Continental Open,2017,369,7,"{""Open"": 46, ""Under 2100"": 71, ""Under 1900"": 68, ""Under 1700"": 59, ""Under 1500"": 45, ""Under 1300"": 39, ""Under 1000"": 41}",ccasite
+Continental Open,2018,311,6,"{""Premier"": 55, ""Under 2100"": 64, ""Under 1900"": 57, ""Under 1700"": 38, ""Under 1500"": 51, ""Under 1250"": 46}",ccasite
+Continental Open,2019,274,6,"{""Premier"": 50, ""Under 2100"": 69, ""Under 1900"": 39, ""Under 1700"": 36, ""Under 1500"": 48, ""Under 1250"": 47}",ccasite
+Continental Open,2020,180,4,"{""Premier"": 40, ""Under 2100"": 71, ""Under 1700"": 41, ""Under 1300"": 28}",ccasite
+Continental Open,2021,387,7,"{""Master"": 32, ""Under 2200"": 87, ""Under 2000"": 63, ""Under 1800"": 31, ""Under 1600"": 46, ""Under 1400"": 46, ""Under 1200"": 82}",ccasite
+Continental Open,2022,331,7,"{""Master"": 35, ""Under 2200"": 81, ""Under 2000"": 63, ""Under 1800"": 35, ""Under 1600"": 28, ""Under 1400"": 32, ""Under 1200"": 57}",ccasite
+Continental Open,2023,275,6,"{""Under 2100 Section"": 75, ""Under 1900 Section"": 40, ""Under 1700 Section"": 34, ""Under 1500 Section"": 34, ""Under 1100 Section"": 43, ""Premier Section"": 54}",ccasite
+Continental Open,2024,244,7,"{""Under 2100 Section"": 66, ""Under 1900 Section"": 37, ""Under 1700 Section"": 28, ""Under 1500 Section"": 34, ""Under 1300 Section"": 13, ""Under 1100 Section"": 27, ""Premier Section"": 51}",ccasite
+Continental Open,2025,265,7,"{""Under 2100 Section"": 63, ""Under 1900 Section"": 33, ""Under 1700 Section"": 47, ""Under 1500 Section"": 26, ""Under 1300 Section"": 18, ""Under 1100 Section"": 36, ""Premier Section"": 50}",ccasite
+Continental Open,2026,270,7,"{""Under 2100 Section"": 56, ""Under 1900 Section"": 40, ""Under 1700 Section"": 36, ""Under 1500 Section"": 32, ""Under 1300 Section"": 25, ""Under 1100 Section"": 25, ""Premier Section"": 61}",ccasite
+DC International,2013,71,1,"{""Standings"": 71}",ccasite
+DC International,2014,83,1,"{""Standings"": 83}",ccasite
+DC International,2015,123,1,"{""Standings"": 123}",ccasite
+DC International,2026,102,1,"{""International"": 102}",ccasite
+DC Open,2026,183,4,"{""Major"": 42, ""Under 2100"": 58, ""Under 1800"": 40, ""Under 1500"": 44}",ccasite
+Eastern Chess Congress,2003,134,4,"{""Premier"": 43, ""Under 1900"": 40, ""Under 1500"": 32, ""Under 1100"": 19}",ccasite
+Eastern Chess Congress,2004,125,4,"{""Premier"": 42, ""Under 1900"": 30, ""Under 1600"": 32, ""Under 1300"": 25}",ccasite
+Eastern Chess Congress,2005,127,4,"{""Premier"": 40, ""Under 1900"": 38, ""Under 1600"": 27, ""Under 1300"": 25}",ccasite
+Eastern Chess Congress,2006,102,4,"{""Premier"": 32, ""Under 1900"": 33, ""Under 1600"": 24, ""Under 1300"": 15}",ccasite
+Eastern Chess Congress,2010,141,6,"{""Open"": 41, ""Under 1910"": 26, ""Under 1710"": 14, ""Under 1510"": 25, ""Under 1210"": 15, ""Senior"": 20}",ccasite
+Eastern Chess Congress,2014,118,4,"{""Premier"": 33, ""Under 2100"": 35, ""Under 1700"": 33, ""Under 1300"": 17}",ccasite
+Eastern Chess Congress,2015,125,4,"{""Premier"": 21, ""Under 2100"": 49, ""Under 1700"": 36, ""Under 1300"": 21}",ccasite
+Eastern Chess Congress,2016,277,7,"{""Premier"": 41, ""Under 2100"": 51, ""Under 1900"": 49, ""Under 1700"": 40, ""Under 1500"": 27, ""Under 1300"": 29, ""Under 1100"": 45}",ccasite
+Eastern Chess Congress,2017,402,7,"{""Premier"": 71, ""Under 2100"": 57, ""Under 1900"": 53, ""Under 1700"": 62, ""Under 1500"": 54, ""Under 1300"": 53, ""Under 1100"": 66}",ccasite
+Eastern Chess Congress,2018,314,6,"{""Premier"": 44, ""Under 2100"": 64, ""Under 1900"": 63, ""Under 1700"": 49, ""Under 1500"": 39, ""Under 1250"": 64}",ccasite
+Eastern Chess Congress,2019,351,7,"{""Premier"": 56, ""Under 2100"": 66, ""Under 1900"": 58, ""Under 1700"": 40, ""Under 1500"": 31, ""Under 1300"": 44, ""Under 1100"": 61}",ccasite
+Eastern Chess Congress,2020,161,4,"{""Premier"": 34, ""Under 2100"": 75, ""Under 1700"": 28, ""Under 1300"": 25}",ccasite
+Eastern Chess Congress,2021,477,7,"{""Premier"": 75, ""Under 2100"": 80, ""Under 1900"": 58, ""Under 1700"": 58, ""Under 1500"": 63, ""Under 1300"": 45, ""Under 1100"": 98}",ccasite
+Eastern Chess Congress,2022,472,7,"{""Premier"": 78, ""Under 2100"": 114, ""Under 1900"": 63, ""Under 1700"": 50, ""Under 1500"": 62, ""Under 1300"": 41, ""Under 1100"": 74}",ccasite
+Eastern Chess Congress,2023,514,7,"{""Premier"": 81, ""Under 2100"": 128, ""Under 1900"": 58, ""Under 1700"": 55, ""Under 1500"": 47, ""Under 1300"": 72, ""Under 1000"": 83}",ccasite
+Eastern Chess Congress,2024,475,7,"{""Premier"": 89, ""Under 2100"": 115, ""Under 1900"": 68, ""Under 1700"": 53, ""Under 1500"": 42, ""Under 1300"": 56, ""Under 1000"": 60}",ccasite
+Eastern Chess Congress,2025,469,7,"{""Premier"": 106, ""Under 2100"": 113, ""Under 1900"": 57, ""Under 1700"": 56, ""Under 1500"": 41, ""Under 1300"": 56, ""Under 1000"": 46}",ccasite
+Eastern Class,2021,189,5,"{""Class A"": 40, ""Class B"": 40, ""Class C"": 32, ""Master/Expert"": 42, ""Class D/E"": 35}",ccasite
+Eastern Class,2022,225,7,"{""Master"": 21, ""Expert"": 39, ""Class A"": 53, ""Class B"": 41, ""Class C"": 29, ""Class D"": 14, ""Class E"": 41}",ccasite
+Eastern Class,2023,242,7,"{""Master (Over 2099)"": 26, ""Expert (1900-2199)"": 45, ""Class A (1700-1999/Unr.)"": 29, ""Class B (1500-1799/Unr.)"": 38, ""Class C (1300-1599/Unr.)"": 40, ""Class D (Under 1400/Unr.)"": 23, ""Class E (Under 1200/Unr.)"": 47}",ccasite
+Eastern Class,2024,200,7,"{""Master (Over 2099)"": 28, ""Expert (1900-2199)"": 27, ""Class A (1700-1999/Unr.)"": 36, ""Class B (1500-1799/Unr.)"": 40, ""Class C (1300-1599/Unr.)"": 26, ""Class D (Under 1400/Unr.)"": 18, ""Class E (Under 1200/Unr.)"": 25}",ccasite
+Eastern Class,2025,189,7,"{""Master (Over 2099)"": 25, ""Expert (1900-2199)"": 40, ""Class A (1700-1999/Unr.)"": 37, ""Class B (1500-1799/Unr.)"": 30, ""Class C (1300-1599/Unr.)"": 18, ""Class D (Under 1400/Unr.)"": 20, ""Class E (Under 1200/Unr.)"": 23}",ccasite
+Eastern Class Championships,1997,318,8,"{""Experts"": 36, ""Class A"": 53, ""Class B"": 57, ""Class C"": 66, ""Class D"": 54, ""Class E"": 29, ""Unrated"": 12, ""Class F"": 11}",ccasite
+Eastern Class Championships,1998,278,8,"{""Master"": 27, ""Expert"": 39, ""Class A"": 51, ""Class B"": 65, ""Class C"": 46, ""Class D"": 37, ""Class E"": 24, ""Class F"": 10}",ccasite
+Eastern Class Championships,1999,262,8,"{""Masters"": 32, ""Experts"": 30, ""Class A"": 41, ""Class B"": 53, ""Class C"": 45, ""Class D"": 35, ""Class E"": 19, ""Unrateds"": 7}",ccasite
+Eastern Class Championships,2000,283,8,"{""Masters"": 28, ""Experts"": 21, ""Class A"": 49, ""Class B"": 67, ""Class C"": 47, ""Class D"": 30, ""Class E"": 35, ""Unrateds"": 6}",ccasite
+Eastern Class Championships,2001,244,8,"{""Masters"": 15, ""Experts"": 25, ""Class A"": 39, ""Class B"": 54, ""Class C"": 45, ""Class D"": 35, ""Class E"": 25, ""Unrated"": 6}",ccasite
+Eastern Class Championships,2002,198,6,"{""Experts"": 35, ""Class A"": 32, ""Class B"": 40, ""Class C"": 44, ""Class D"": 27, ""Class E"": 20}",ccasite
+Eastern Class Championships,2003,232,7,"{""Masters' Championship"": 26, ""Experts' Championship"": 23, ""Class A Championship"": 43, ""Class B Championship"": 41, ""Class C Championship"": 49, ""Class D Championship"": 31, ""Class E Championship"": 19}",ccasite
+Eastern Class Championships,2005,153,6,"{""Class A"": 24, ""Class B"": 46, ""Class C"": 26, ""Class D"": 25, ""Class E"": 24, ""Masters'"": 21}",ccasite
+Eastern Class Championships,2006,138,6,"{""Class A"": 26, ""Class B"": 43, ""Class C"": 28, ""Class D"": 14, ""Class E"": 17, ""Experts'"": 18}",ccasite
+Eastern Class Championships,2007,188,7,"{""Class A"": 29, ""Class B"": 42, ""Class C"": 45, ""Under 1400"": 31, ""Under 800"": 9, ""Masters'"": 26, ""Experts'"": 21}",ccasite
+Eastern Class Championships,2008,194,8,"{""Master"": 17, ""Expert"": 20, ""Class A"": 37, ""Class B"": 42, ""Class C"": 32, ""Class D"": 26, ""Class E"": 6, ""Under 900"": 14}",ccasite
+Eastern Class Championships,2009,200,7,"{""Class A"": 36, ""Class B"": 48, ""Class C"": 30, ""Class D"": 19, ""Class E"": 23, ""Masters'"": 27, ""Experts'"": 32}",ccasite
+Eastern Class Championships,2010,208,8,"{""Master"": 30, ""Expert"": 27, ""Class A"": 49, ""Class B"": 32, ""Class C"": 28, ""Class D"": 25, ""Class E"": 11, ""Under 900"": 6}",ccasite
+Eastern Class Championships,2011,182,7,"{""Master"": 23, ""Expert"": 20, ""Class A"": 41, ""Class B"": 37, ""Class C"": 26, ""Class D"": 21, ""Class E"": 14}",ccasite
+Eastern Class Championships,2012,192,7,"{""Master"": 21, ""Expert"": 33, ""Class A"": 36, ""Class B"": 35, ""Class C"": 31, ""Class D"": 13, ""Class E"": 23}",ccasite
+Eastern Class Championships,2013,175,7,"{""Master"": 18, ""Expert"": 24, ""Class A"": 32, ""Class B"": 38, ""Class C"": 20, ""Class D"": 17, ""Class E"": 26}",ccasite
+Eastern Class Championships,2014,268,7,"{""Master"": 39, ""Expert"": 39, ""Class A"": 47, ""Class B"": 50, ""Class C"": 40, ""Class D"": 23, ""Class E"": 30}",ccasite
+Eastern Class Championships,2015,234,7,"{""Master"": 27, ""Expert"": 34, ""Class A"": 44, ""Class B"": 46, ""Class C"": 36, ""Class D"": 23, ""Class E"": 32}",ccasite
+Eastern Class Championships,2016,275,7,"{""Master"": 26, ""Expert"": 35, ""Class A"": 51, ""Class B"": 59, ""Class C"": 37, ""Class D"": 31, ""Class E"": 36}",ccasite
+Eastern Class Championships,2017,291,7,"{""Master"": 22, ""Expert"": 48, ""Class A"": 59, ""Class B"": 52, ""Class C"": 46, ""Class D"": 23, ""Class E"": 41}",ccasite
+Eastern Class Championships,2018,299,7,"{""Master"": 36, ""Expert"": 37, ""Class A"": 51, ""Class B"": 68, ""Class C"": 39, ""Class D"": 27, ""Class E"": 41}",ccasite
+Eastern Class Championships,2019,225,7,"{""Master"": 29, ""Expert"": 36, ""Class A"": 51, ""Class B"": 40, ""Class C"": 27, ""Class D"": 25, ""Class E"": 22}",ccasite
+Eastern Open,2022,389,6,"{""Under 2200"": 105, ""Under 1900"": 72, ""Under 1600"": 44, ""Under 1300"": 54, ""Under 1000 Section"": 55, ""Premier Section"": 66}",ccasite
+Eastern Open,2023,359,6,"{""Under 2200"": 96, ""Under 1900"": 62, ""Under 1600"": 50, ""Under 1300"": 46, ""Under 1000 Section"": 50, ""Premier Section"": 61}",ccasite
+Eastern Open,2024,389,6,"{""Under 2200"": 102, ""Under 1900"": 76, ""Under 1600"": 56, ""Under 1300"": 43, ""Under 1000 Section"": 42, ""Premier Section"": 79}",ccasite
+Eastern Open,2025,381,6,"{""Under 2200"": 107, ""Under 1900"": 70, ""Under 1600"": 44, ""Under 1300"": 41, ""Under 1000 Section"": 41, ""Premier Section"": 87}",ccasite
+Eastern Team Championship,2011,121,5,"{""Individual Board 1"": 29, ""Individual Board 2"": 30, ""Individual Board 3"": 30, ""Individual Board 4"": 30, ""Individual Alternates"": 2}",ccasite
+Eastern Team Championship,2012,205,4,"{""Open"": 31, ""Booster"": 9, ""Booster Board by Board"": 37, ""Open Board by Board"": 128}",ccasite
+Eastern Team Championship,2013,144,1,"{""Final"": 144}",ccasite
+Empire City Open,1972,76,1,"{""Standings"": 76}",ccasite
+Empire City Open,2004,198,4,"{""Open"": 38, ""Under 2000"": 65, ""Under 1600"": 79, ""Rated Beginners' Open"": 23}",ccasite
+Empire City Open,2005,274,4,"{""Open"": 58, ""Under 2000"": 81, ""Under 1600"": 88, ""Under 1200"": 60}",ccasite
+Empire City Open,2006,134,4,"{""Open"": 36, ""Under 2000"": 39, ""Under 1600"": 37, ""Under 1200"": 25}",ccasite
+Empire City Open,2010,156,6,"{""Open"": 34, ""Under 2200"": 31, ""Under 2000"": 25, ""Under 1800"": 19, ""Under 1600"": 30, ""Under 1400"": 31}",ccasite
+Empire City Open,2011,268,5,"{""Open"": 63, ""Under 2100"": 56, ""Under 1800"": 61, ""Under 1500"": 40, ""Under 1200"": 48}",ccasite
+Empire City Open,2012,322,6,"{""Open"": 38, ""Under 2200"": 67, ""Under 1900"": 76, ""Under 1600"": 62, ""Adult Under 1300"": 22, ""Junior Under 1300"": 57}",ccasite
+Empire City Open,2013,353,5,"{""Open"": 40, ""Under 2200"": 78, ""Under 1900"": 98, ""Under 1600"": 66, ""Under 1300"": 71}",ccasite
+Empire City Open,2014,289,5,"{""Open"": 42, ""Under 2200"": 68, ""Under 1900"": 95, ""Under 1600"": 47, ""Under 1300"": 37}",ccasite
+Empire City Open,2015,343,6,"{""Open"": 38, ""Under 2200"": 86, ""Under 1900"": 85, ""Under 1600"": 61, ""Under 1300"": 47, ""Under 1000"": 36}",ccasite
+Empire City Open,2016,414,7,"{""Open"": 60, ""Under 2100"": 71, ""Under 1900"": 88, ""Under 1700"": 66, ""Under 1500"": 39, ""Under 1300"": 47, ""Under 1100"": 65}",ccasite
+Empire City Open,2017,332,6,"{""Major"": 56, ""Under 2100"": 74, ""Under 1900"": 53, ""Under 1700"": 44, ""Under 1500"": 51, ""Under 1300"": 54}",ccasite
+Empire City Open,2018,306,6,"{""Major"": 50, ""Under 2100"": 63, ""Under 1900"": 57, ""Under 1700"": 46, ""Under 1500"": 61, ""Under 1200"": 42}",ccasite
+Empire City Open,2019,317,6,"{""Major"": 64, ""Under 2100"": 70, ""Under 1900"": 52, ""Under 1700"": 47, ""Under 1500"": 42, ""Under 1200"": 48}",ccasite
+Empire State Open,1998,97,7,"{""Open"": 8, ""Under 2200"": 18, ""Under 2000"": 16, ""Under 1800"": 17, ""Under 1600"": 16, ""Under 1400"": 15, ""Under 1200"": 18}",ccasite
+Empire State Open,2007,93,3,"{""Open"": 37, ""Under 1900"": 40, ""Under 1500"": 22}",ccasite
+Empire State Open,2008,72,4,"{""Open"": 19, ""Under 2000"": 21, ""Under 1600"": 21, ""Under 1200"": 17}",ccasite
+Empire State Open,2009,83,4,"{""Open"": 19, ""Under 2000"": 22, ""Under 1600"": 30, ""Under 1200"": 19}",ccasite
+Empire State Open,2011,47,4,"{""Open"": 11, ""Under 1910"": 14, ""Under 1610"": 11, ""Under 1410"": 12}",ccasite
+Empire State Open,2021,224,9,"{""Open"": 51, ""Under 2000"": 24, ""Under 1700"": 35, ""Under 1400"": 36, ""NY State Junior Championship"": 10, ""NY State Under 16 Championship"": 15, ""NY State U13 Championship"": 17, ""NY State Under 13 Under 1000"": 13, ""NY State Under 10 Championship"": 30}",ccasite
+Foxwoods Open,1999,455,8,"{""Open"": 78, ""Under 2200"": 50, ""Under 2000"": 84, ""Under 1800"": 74, ""Under 1600"": 70, ""Under 1400"": 42, ""Under 1200"": 49, ""Unrated"": 25}",ccasite
+Foxwoods Open,2000,549,7,"{""Open"": 90, ""Under 2200"": 72, ""Under 2000"": 120, ""Under 1800"": 103, ""Under 1600"": 88, ""Under 1400"": 94, ""Unrateds"": 17}",ccasite
+Foxwoods Open,2001,509,9,"{""Open"": 95, ""Under 2200"": 60, ""Under 2000"": 82, ""Under 1800"": 96, ""Under 1600"": 90, ""Under 1400"": 56, ""Under 1200"": 45, ""Unrateds"": 18, ""Extra Game"": 12}",ccasite
+Foxwoods Open,2002,545,8,"{""Open"": 104, ""Under 2200"": 76, ""Under 2000"": 94, ""Under 1800"": 90, ""Under 1600"": 80, ""Under 1400"": 61, ""Under 1200"": 50, ""Unrated"": 20}",ccasite
+Foxwoods Open,2004,617,8,"{""Open"": 135, ""Under 2200"": 80, ""Under 2000"": 102, ""Under 1800"": 108, ""Under 1600"": 80, ""Under 1400"": 51, ""Under 1200"": 39, ""Unrated"": 22}",ccasite
+Foxwoods Open,2005,526,8,"{""Open"": 121, ""Under 2200"": 79, ""Under 2000"": 84, ""Under 1800"": 101, ""Under 1600"": 75, ""Under 1400"": 37, ""Under 1200"": 37, ""Unrated"": 14}",ccasite
+Foxwoods Open,2006,497,7,"{""Open"": 117, ""Under 2200"": 68, ""Under 2000"": 90, ""Under 1800"": 85, ""Under 1600"": 86, ""Under 1400"": 42, ""Under 1200"": 39}",ccasite
+Foxwoods Open,2007,574,7,"{""Open"": 131, ""U2200"": 77, ""U2000"": 94, ""U1800"": 106, ""U1600"": 95, ""U1300"": 58, ""U800"": 35}",ccasite
+Foxwoods Open,2008,557,7,"{""Open"": 121, ""Under 2100"": 101, ""Under 1900"": 100, ""Under 1700"": 101, ""Under 1500"": 53, ""Under 1300"": 46, ""Under 900"": 35}",ccasite
+Foxwoods Open,2009,573,7,"{""Open"": 127, ""U1000"": 46, ""U1300"": 43, ""U1500"": 62, ""U1700"": 82, ""U1900"": 110, ""U2100"": 103}",ccasite
+Foxwoods Open,2014,289,6,"{""Open"": 41, ""Under 2200"": 44, ""Under 2000"": 64, ""Under 1800"": 68, ""Under 1600"": 38, ""Under 1400"": 34}",ccasite
+George Washington Open,2016,242,5,"{""Open"": 33, ""Under 2100"": 73, ""Under 1800"": 49, ""Under 1500"": 56, ""Under 1200"": 36}",ccasite
+George Washington Open,2017,214,5,"{""Open"": 25, ""Under 2100"": 53, ""Under 1800"": 56, ""Under 1500"": 32, ""Under 1200"": 48}",ccasite
+George Washington Open,2018,236,5,"{""Major"": 44, ""Under 2100"": 54, ""Under 1800"": 62, ""Under 1500"": 49, ""Under 1200"": 39}",ccasite
+George Washington Open,2019,260,5,"{""Major"": 42, ""Under 2100"": 50, ""Under 1800"": 67, ""Under 1500"": 58, ""Under 1200"": 47}",ccasite
+George Washington Open,2020,254,5,"{""Major"": 64, ""Under 2100"": 58, ""Under 1800"": 61, ""Under 1500"": 39, ""Under 1200"": 37}",ccasite
+George Washington Open,2021,185,4,"{""Major"": 33, ""U2000"": 48, ""U1700"": 53, ""U1400"": 51}",ccasite
+George Washington Open,2023,343,5,"{""Major"": 80, ""Under 2100"": 68, ""Under 1800"": 64, ""Under 1500"": 56, ""Under 1200"": 78}",ccasite
+George Washington Open,2024,259,5,"{""Major"": 55, ""Under 2100"": 69, ""Under 1800"": 58, ""Under 1500"": 33, ""Under 1200"": 52}",ccasite
+George Washington Open,2025,245,5,"{""Major"": 49, ""Under 2100"": 67, ""Under 1800"": 53, ""Under 1500"": 43, ""Under 1200"": 41}",ccasite
+George Washington Open,2026,198,5,"{""Major"": 55, ""Under 2100"": 53, ""Under 1800"": 39, ""Under 1500"": 34, ""Under 1200"": 22}",ccasite
+Golden State Open,2010,274,8,"{""Open"": 40, ""Under 2200"": 30, ""Under 2000"": 52, ""Under 1800"": 60, ""Under 1600"": 43, ""Under 1400"": 23, ""Under 1200"": 29, ""Under 900"": 25}",ccasite
+Golden State Open,2011,247,6,"{""Open"": 44, ""Under 2200"": 18, ""Under 2000"": 53, ""Under 1800"": 52, ""Under 1600"": 40, ""Under 1300"": 40}",ccasite
+Golden State Open,2012,280,5,"{""Open"": 60, ""Under 2100"": 64, ""Under 1800"": 60, ""Under 1500"": 57, ""Under 1200"": 39}",ccasite
+Golden State Open,2013,292,6,"{""Open"": 52, ""Under 2200"": 69, ""Under 1900"": 70, ""Under 1600"": 42, ""Under 1300"": 35, ""Under 1000"": 24}",ccasite
+Golden State Open,2014,293,6,"{""Open"": 49, ""Under 2200"": 72, ""Under 1900"": 71, ""Under 1600"": 41, ""Under 1300"": 31, ""Under 1000"": 29}",ccasite
+Golden State Open,2015,272,6,"{""Open"": 48, ""Under 2200"": 65, ""Under 1900"": 53, ""Under 1600"": 43, ""Under 1300"": 34, ""Under 1000"": 29}",ccasite
+Golden State Open,2016,270,7,"{""Open"": 54, ""Under 2200"": 39, ""Under 2000"": 41, ""Under 1800"": 55, ""Under 1600"": 26, ""Under 1400"": 27, ""Under 1200"": 43}",ccasite
+Golden State Open,2017,301,5,"{""Open"": 62, ""Under 2100"": 77, ""Under 1800"": 66, ""Under 1500"": 43, ""Under 1200"": 53}",ccasite
+Golden State Open,2018,289,5,"{""Major"": 72, ""Under 2100"": 64, ""Under 1800"": 65, ""Under 1500"": 54, ""Under 1200"": 43}",ccasite
+Golden State Open,2019,278,5,"{""Major"": 60, ""Under 2100"": 78, ""Under 1800"": 77, ""Under 1500"": 35, ""Under 1200"": 36}",ccasite
+Golden State Open,2020,305,5,"{""Major"": 73, ""Under 2100"": 74, ""Under 1800"": 59, ""Under 1500"": 47, ""Under 1200"": 65}",ccasite
+Golden State Open,2021,213,4,"{""Major"": 57, ""Under 2000"": 73, ""Under 1700"": 45, ""Under 1400"": 38}",ccasite
+Golden State Open,2022,261,5,"{""Major"": 63, ""Under 2100"": 55, ""Under 1800"": 47, ""Under 1500"": 45, ""Under 1200"": 59}",ccasite
+Golden State Open,2023,287,5,"{""Major"": 61, ""Under 2100"": 67, ""Under 1800"": 53, ""Under 1500"": 50, ""Under 1200"": 63}",ccasite
+Golden State Open,2024,292,5,"{""Major"": 52, ""Under 2100"": 82, ""Under 1800"": 76, ""Under 1500"": 37, ""Under 1200"": 52}",ccasite
+Golden State Open,2025,365,5,"{""Major"": 71, ""Under 2100"": 107, ""Under 1800"": 88, ""Under 1500"": 61, ""Under 1200"": 46}",ccasite
+Golden State Open,2026,386,5,"{""Major"": 65, ""Under 2100"": 129, ""Under 1800"": 90, ""Under 1500"": 54, ""Under 1200"": 55}",ccasite
+Hartford Open,2010,153,7,"{""Open"": 29, ""Under 2205"": 20, ""Under 2005"": 24, ""Under 1805"": 28, ""Under 1605"": 18, ""Under 1405"": 17, ""Under 1105"": 17}",ccasite
+Hartford Open,2011,132,4,"{""Open"": 27, ""Under 2010"": 49, ""Under 1710"": 32, ""Under 1410"": 33}",ccasite
+Hartford Open,2013,124,4,"{""Open"": 28, ""Under 2010"": 47, ""Under 1610"": 34, ""Under 1210"": 15}",ccasite
+Hartford Open,2014,93,4,"{""Open"": 26, ""Under 2010"": 24, ""Under 1610"": 25, ""Under 1210"": 18}",ccasite
+Hartford Open,2015,115,4,"{""Open"": 28, ""Under 2010"": 39, ""Under 1610"": 32, ""Under 1210"": 20}",ccasite
+Hartford Open,2016,94,4,"{""Open"": 26, ""Under 2010"": 29, ""Under 1610"": 21, ""Under 1210"": 23}",ccasite
+Hartford Open,2017,127,4,"{""Open"": 36, ""Under 2010"": 32, ""Under 1610"": 41, ""Under 1210"": 23}",ccasite
+Hartford Open,2018,125,4,"{""Major"": 32, ""Under 2010"": 43, ""Under 1610"": 27, ""Under 1210"": 25}",ccasite
+Hartford Open,2019,115,4,"{""Major"": 24, ""Under 2010"": 37, ""Under 1610"": 37, ""Under 1210"": 22}",ccasite
+Hartford Open,2022,189,5,"{""Major"": 40, ""Under 2100"": 50, ""Under 1800"": 36, ""Under 1500"": 34, ""Under 1200"": 31}",ccasite
+Hartford Open,2023,216,5,"{""Major"": 37, ""Under 2100"": 51, ""Under 1800"": 39, ""Under 1500"": 46, ""Under 1200"": 51}",ccasite
+Hartford Open,2024,183,5,"{""Major"": 54, ""Under 2100"": 59, ""Under 1800"": 30, ""Under 1500"": 23, ""Under 1200"": 20}",ccasite
+Hartford Open,2025,177,5,"{""Major"": 54, ""Under 2100"": 49, ""Under 1800"": 37, ""Under 1500"": 15, ""Under 1200"": 26}",ccasite
+Hartford Open,2026,199,5,"{""Major"": 51, ""Under 2100"": 57, ""Under 1800"": 33, ""Under 1500"": 27, ""Under 1200"": 33}",ccasite
+Indianapolis Open,2010,221,6,"{""Open"": 41, ""Under 2100"": 37, ""Under 1900"": 45, ""Under 1700"": 29, ""Under 1500"": 35, ""Under 1200"": 38}",ccasite
+Indianapolis Open,2011,184,6,"{""Open"": 28, ""Under 2100"": 28, ""Under 1900"": 31, ""Under 1700"": 28, ""Under 1500"": 33, ""Under 1200"": 36}",ccasite
+Indianapolis Open,2012,210,5,"{""Open"": 36, ""Under 2100"": 53, ""Under 1800"": 48, ""Under 1500"": 40, ""Under 1200"": 33}",ccasite
+Indianapolis Open,2013,171,5,"{""Open"": 37, ""Under 2100"": 41, ""Under 1800"": 43, ""Under 1500"": 28, ""Under 1200"": 22}",ccasite
+Indianapolis Open,2014,193,5,"{""Open"": 29, ""Under 2100"": 42, ""Under 1800"": 47, ""Under 1500"": 36, ""Under 1200"": 39}",ccasite
+Indianapolis Open,2015,200,4,"{""Open"": 38, ""Under 2000"": 66, ""Under 1600"": 62, ""Under 1200"": 37}",ccasite
+Indianapolis Open,2016,188,4,"{""Open"": 34, ""Under 2000"": 71, ""Under 1600"": 44, ""Under 1200"": 39}",ccasite
+Indianapolis Open,2017,177,4,"{""Open"": 37, ""Under 2000"": 61, ""Under 1600"": 47, ""Under 1200"": 40}",ccasite
+Indianapolis Open,2018,202,6,"{""Major"": 39, ""Under 2000"": 33, ""Under 1800"": 30, ""Under 1600"": 36, ""Under 1400"": 46, ""Under 1100"": 31}",ccasite
+Indianapolis Open,2019,215,6,"{""Major"": 39, ""Under 2000"": 34, ""Under 1800"": 38, ""Under 1600"": 41, ""Under 1400"": 34, ""Under 1100"": 37}",ccasite
+Indianapolis Open,2020,126,3,"{""Open"": 52, ""Under 1900/Unr"": 34, ""Under 1500/Unr"": 40}",ccasite
+Indianapolis Open,2021,174,5,"{""Major"": 31, ""Under 2100"": 37, ""Under 1800"": 37, ""Under 1500"": 36, ""Under 1200"": 33}",ccasite
+Indianapolis Open,2022,176,5,"{""Major"": 36, ""Under 2100"": 41, ""Under 1800"": 45, ""Under 1500"": 25, ""Under 1200"": 34}",ccasite
+Indianapolis Open,2023,183,5,"{""Major"": 39, ""Under 2100"": 52, ""Under 1800"": 43, ""Under 1500"": 21, ""Under 1200"": 32}",ccasite
+Indianapolis Open,2024,161,5,"{""Major"": 33, ""Under 2100"": 47, ""Under 1800"": 31, ""Under 1500"": 20, ""Under 1200"": 35}",ccasite
+Indianapolis Open,2025,183,5,"{""Major"": 50, ""Under 2100"": 50, ""Under 1800"": 31, ""Under 1500"": 24, ""Under 1200"": 32}",ccasite
+Indianapolis Open,2026,178,5,"{""Major"": 51, ""Under 2100"": 41, ""Under 1800"": 36, ""Under 1500"": 30, ""Under 1200"": 25}",ccasite
+Kings Island Open,1997,420,9,"{""Open"": 43, ""Under 2200"": 38, ""Under 2000"": 55, ""Under 1800"": 61, ""Under 1600"": 64, ""Under 1400"": 66, ""Under 1200"": 46, ""Under 1000"": 28, ""Unrated"": 19}",ccasite
+Kings Island Open,1998,439,8,"{""Open"": 43, ""Under 2200"": 33, ""Under 2000"": 62, ""Under 1800"": 69, ""Under 1600"": 76, ""Under 1400"": 77, ""Under 1200"": 44, ""Under 1000"": 35}",ccasite
+Kings Island Open,1999,436,8,"{""Open"": 57, ""Under 2200"": 46, ""Under 2000"": 62, ""Under 1800"": 63, ""Under 1600"": 66, ""Under 1400"": 63, ""Under 1200"": 52, ""Under 1000"": 27}",ccasite
+Kings Island Open,2000,379,8,"{""Open"": 47, ""Under 2200"": 31, ""Under 2000"": 45, ""Under 1800"": 55, ""Under 1600"": 54, ""Under 1400"": 56, ""Under 1200"": 57, ""Under 1000"": 34}",ccasite
+Kings Island Open,2001,358,7,"{""Open"": 47, ""Under 2200"": 34, ""Under 2000"": 34, ""Under 1800"": 62, ""Under 1600"": 82, ""Under 1400"": 57, ""Under 1200"": 42}",ccasite
+Kings Island Open,2002,405,8,"{""Open"": 52, ""Under 2200"": 36, ""Under 2000"": 54, ""Under 1800"": 65, ""Under 1600"": 65, ""Under 1400"": 54, ""Under 1200"": 42, ""Under 1000"": 37}",ccasite
+Kings Island Open,2003,363,8,"{""Open"": 50, ""Under 2200"": 34, ""Under 2000"": 56, ""Under 1800"": 48, ""Under 1600"": 58, ""Under 1400"": 50, ""Under 1200"": 36, ""Under 1000"": 31}",ccasite
+Kings Island Open,2004,334,8,"{""Open"": 40, ""Under 2200"": 27, ""Under 2000"": 50, ""Under 1800"": 58, ""Under 1600"": 53, ""Under 1400"": 52, ""Under 1200"": 30, ""Under 1000"": 24}",ccasite
+Kings Island Open,2005,333,8,"{""Open"": 42, ""Under 2200"": 37, ""Under 2000"": 44, ""Under 1800"": 51, ""Under 1600"": 56, ""Under 1400"": 36, ""Under 1200"": 42, ""Under 1000"": 25}",ccasite
+Kings Island Open,2006,32,1,"{""Open"": 32}",ccasite
+Kings Island Open,2007,344,7,"{""Open"": 49, ""Under 2100"": 53, ""Under 1900"": 65, ""Under 1700"": 58, ""Under 1500"": 45, ""Under 1300"": 55, ""Under 1000"": 36}",ccasite
+Kings Island Open,2008,309,7,"{""Open"": 52, ""Under 2100"": 51, ""Under 1900"": 52, ""Under 1700"": 53, ""Under 1500"": 39, ""Under 1300"": 51, ""Under 1000"": 24}",ccasite
+Kings Island Open,2009,299,7,"{""Open"": 44, ""Under 2100"": 37, ""Under 1900"": 47, ""Under 1700"": 50, ""Under 1500"": 41, ""Under 1300"": 46, ""Under 1000"": 46}",ccasite
+Kings Island Open,2010,301,7,"{""Open"": 60, ""Under 2100"": 44, ""Under 1900"": 53, ""Under 1700"": 44, ""Under 1500"": 44, ""Under 1300"": 42, ""Under 1100"": 30}",ccasite
+Kings Island Open,2011,327,7,"{""Open"": 68, ""Under 2100"": 35, ""Under 1900"": 53, ""Under 1700"": 51, ""Under 1500"": 49, ""Under 1250"": 35, ""Under 1000"": 36}",ccasite
+Kings Island Open,2012,344,7,"{""Open"": 50, ""Under 2100"": 41, ""Under 1900"": 47, ""Under 1700"": 60, ""Under 1500"": 54, ""Under 1250"": 58, ""Under 1000"": 34}",ccasite
+Kings Island Open,2013,359,7,"{""Open"": 50, ""Under 2100"": 38, ""Under 1900"": 67, ""Under 1700"": 70, ""Under 1500"": 49, ""Under 1250"": 41, ""Under 1000"": 44}",ccasite
+Kings Island Open,2014,339,7,"{""Open"": 59, ""Under 2100"": 39, ""Under 1900"": 65, ""Under 1700"": 48, ""Under 1500"": 54, ""Under 1250"": 39, ""Under 1000"": 35}",ccasite
+Kings Island Open,2015,293,7,"{""Open"": 40, ""Under 2100"": 51, ""Under 1900"": 53, ""Under 1700"": 60, ""Under 1500"": 45, ""Under 1250"": 31, ""Under 1000"": 34}",ccasite
+Kings Island Open,2016,304,7,"{""Open"": 59, ""Under 2100"": 46, ""Under 1900"": 60, ""Under 1700"": 46, ""Under 1500"": 39, ""Under 1250"": 28, ""Under 1000"": 40}",ccasite
+Kings Island Open,2017,308,7,"{""Major"": 61, ""Under 2100"": 48, ""Under 1900"": 51, ""Under 1700"": 51, ""Under 1500"": 43, ""Under 1250"": 36, ""Under 1000"": 38}",ccasite
+Kings Island Open,2018,272,7,"{""Major"": 47, ""Under 2100"": 29, ""Under 1900"": 56, ""Under 1700"": 51, ""Under 1500"": 29, ""Under 1250"": 43, ""Under 1000"": 29}",ccasite
+Kings Island Open,2019,312,7,"{""Major"": 59, ""Under 2100"": 49, ""Under 1900"": 47, ""Under 1700"": 55, ""Under 1500"": 45, ""Under 1250"": 37, ""Under 1000"": 33}",ccasite
+Kings Island Open,2020,123,4,"{""Premier"": 33, ""Under 2100"": 50, ""Under 1700"": 22, ""Under 1300"": 18}",ccasite
+Kings Island Open,2021,324,7,"{""Major"": 53, ""Under 2100"": 55, ""Under 1900"": 47, ""Under 1700"": 41, ""Under 1500"": 49, ""Under 1250"": 39, ""Under 1000"": 40}",ccasite
+Kings Island Open,2022,365,7,"{""Major"": 49, ""Under 2100"": 64, ""Under 1900"": 47, ""Under 1700"": 66, ""Under 1500"": 50, ""Under 1250"": 51, ""Under 1000"": 53}",ccasite
+Kings Island Open,2023,357,7,"{""Major"": 56, ""Under 2100"": 60, ""Under 1900"": 45, ""Under 1700"": 51, ""Under 1500"": 53, ""Under 1250"": 47, ""Under 1000"": 59}",ccasite
+Kings Island Open,2024,337,7,"{""Major"": 57, ""Under 2100"": 65, ""Under 1900"": 46, ""Under 1700"": 50, ""Under 1500"": 51, ""Under 1250"": 40, ""Under 1000"": 39}",ccasite
+Kings Island Open,2025,347,7,"{""Major"": 62, ""Under 2100"": 70, ""Under 1900"": 52, ""Under 1700"": 46, ""Under 1500"": 49, ""Under 1250"": 37, ""Under 1000"": 41}",ccasite
+Liberty Bell Open,1998,269,7,"{""Open"": 39, ""Under 2200"": 22, ""Under 2000"": 44, ""Under 1800"": 39, ""Under 1600/Unr"": 48, ""Under 1400"": 40, ""Under 1200"": 37}",ccasite
+Liberty Bell Open,1999,278,7,"{""Open"": 45, ""Under 2200"": 41, ""Under 2000"": 35, ""Under 1800"": 44, ""Under 1600/Unr"": 55, ""Under 1400"": 46, ""Under 1200"": 29}",ccasite
+Liberty Bell Open,2000,321,7,"{""Open"": 49, ""Under 2200"": 34, ""Under 2000"": 34, ""Under 1800"": 43, ""Under 1600"": 74, ""Under 1400"": 39, ""Under 1200"": 48}",ccasite
+Liberty Bell Open,2001,318,7,"{""Open"": 51, ""Under 2200"": 29, ""Under 2000"": 22, ""Under 1800"": 53, ""Under 1600"": 67, ""Under 1400"": 35, ""Under 1200"": 61}",ccasite
+Liberty Bell Open,2002,277,7,"{""Open"": 49, ""Under 2200"": 27, ""Under 2000"": 38, ""Under 1800"": 46, ""Under 1600"": 51, ""Under 1400"": 30, ""Under 1200"": 36}",ccasite
+Liberty Bell Open,2003,346,7,"{""Open"": 56, ""Under 2200"": 37, ""Under 2000"": 56, ""Under 1800"": 44, ""Under 1600"": 52, ""Under 1400"": 50, ""Under 1200"": 51}",ccasite
+Liberty Bell Open,2004,364,8,"{""Open"": 58, ""Under 2200"": 37, ""Under 2000"": 42, ""Under 1800"": 55, ""Under 1600"": 60, ""Under 1400"": 52, ""Under 1200"": 39, ""Novice"": 21}",ccasite
+Liberty Bell Open,2005,316,7,"{""Open"": 48, ""Under 2200"": 34, ""Under 2000"": 48, ""Under 1800"": 47, ""Under 1600"": 46, ""Under 1400"": 55, ""Under 1200"": 55}",ccasite
+Liberty Bell Open,2006,328,7,"{""Open"": 61, ""Under 2200"": 26, ""Under 2000"": 50, ""Under 1800"": 56, ""Under 1600"": 54, ""Under 1400"": 44, ""Under 1200"": 52}",ccasite
+Liberty Bell Open,2007,330,7,"{""Open"": 45, ""Under 2200"": 35, ""Under 2000"": 50, ""Under 1800"": 50, ""Under 1600"": 51, ""Under 1400"": 47, ""Under 1200"": 74}",ccasite
+Liberty Bell Open,2008,374,8,"{""Open"": 65, ""Under 2100"": 56, ""Under 1900"": 62, ""Under 1700"": 50, ""Under 1500"": 50, ""Under 1300"": 42, ""Under 1100"": 37, ""Under 900"": 34}",ccasite
+Liberty Bell Open,2009,445,8,"{""Open"": 68, ""Under 2100"": 58, ""Under 1900"": 66, ""Under 1700"": 60, ""Under 1500"": 45, ""Under 1300"": 61, ""Under 1100"": 38, ""Under 900"": 71}",ccasite
+Liberty Bell Open,2010,444,8,"{""Open"": 74, ""Under 2100"": 51, ""Under 1900"": 73, ""Under 1700"": 50, ""Under 1500"": 54, ""Under 1300"": 34, ""Under 1100"": 37, ""Under 900"": 82}",ccasite
+Liberty Bell Open,2011,474,9,"{""Open"": 41, ""Under 2300"": 47, ""Under 2100"": 62, ""Under 1900"": 56, ""Under 1700"": 65, ""Under 1500"": 55, ""Under 1300"": 38, ""Under 1100"": 33, ""Under 900"": 77}",ccasite
+Liberty Bell Open,2012,528,9,"{""Open"": 52, ""Under 2300"": 47, ""Under 2100"": 75, ""Under 1900"": 64, ""Under 1700"": 76, ""Under 1500"": 56, ""Under 1300"": 46, ""Under 1100"": 38, ""Under 900"": 74}",ccasite
+Liberty Bell Open,2013,456,9,"{""Open"": 35, ""Under 2300"": 56, ""Under 2100"": 61, ""Under 1900"": 52, ""Under 1700"": 58, ""Under 1500"": 40, ""Under 1300"": 53, ""Under 1100"": 38, ""Under 900"": 63}",ccasite
+Liberty Bell Open,2014,427,7,"{""Open"": 74, ""Under 2100"": 68, ""Under 1900"": 58, ""Under 1700"": 48, ""Under 1500"": 41, ""Under 1300"": 64, ""Under 1000"": 74}",ccasite
+Liberty Bell Open,2015,380,6,"{""Open"": 67, ""Under 2100"": 66, ""Under 1900"": 70, ""Under 1700"": 42, ""Under 1500"": 60, ""Under 1250"": 75}",ccasite
+Liberty Bell Open,2016,343,6,"{""Open"": 45, ""Under 2100"": 71, ""Under 1900"": 49, ""Under 1700"": 72, ""Under 1500"": 55, ""Under 1250"": 69}",ccasite
+Liberty Bell Open,2017,348,6,"{""Open"": 58, ""Under 2100"": 55, ""Under 1900"": 68, ""Under 1700"": 52, ""Under 1500"": 51, ""Under 1250"": 88}",ccasite
+Liberty Bell Open,2018,343,6,"{""Major"": 59, ""Under 2100"": 50, ""Under 1900"": 55, ""Under 1700"": 71, ""Under 1500"": 47, ""Under 1250"": 78}",ccasite
+Liberty Bell Open,2019,277,6,"{""Major"": 45, ""Under 2100"": 47, ""Under 1900"": 44, ""Under 1700"": 39, ""Under 1500"": 54, ""Under 1250"": 61}",ccasite
+Liberty Bell Open,2020,363,6,"{""Major"": 70, ""Under 2100"": 62, ""Under 1900"": 64, ""Under 1700"": 53, ""Under 1500"": 59, ""Under 1200"": 67}",ccasite
+Liberty Bell Open,2021,207,4,"{""Major"": 45, ""Under 2000"": 57, ""Under 1700"": 59, ""Under 1400"": 46}",ccasite
+Liberty Bell Open,2022,343,6,"{""Major"": 56, ""Under 2100"": 76, ""Under 1900"": 48, ""Under 1700"": 40, ""Under 1500"": 70, ""Under 1200"": 75}",ccasite
+Liberty Bell Open,2023,464,7,"{""Under 2100 Section"": 105, ""Under 1900 Section"": 58, ""Under 1700 Section"": 45, ""Under 1500 Section"": 55, ""Under 1300 Section"": 52, ""Under 1000 Section"": 81, ""Major Section"": 91}",ccasite
+Liberty Bell Open,2024,456,6,"{""Under 2100 Section"": 89, ""Under 1900 Section"": 61, ""Under 1700 Section"": 76, ""Under 1500 Section"": 73, ""Under 1200 Section"": 85, ""Major Section"": 86}",ccasite
+Liberty Bell Open,2025,514,6,"{""Under 2100 Section"": 109, ""Under 1900 Section"": 66, ""Under 1700 Section"": 61, ""Under 1500 Section"": 70, ""Under 1200 Section"": 102, ""Major Section"": 116}",ccasite
+Liberty Bell Open,2026,546,6,"{""Under 2100 Section"": 103, ""Under 1900 Section"": 91, ""Under 1700 Section"": 58, ""Under 1500 Section"": 80, ""Under 1200 Section"": 76, ""Major Section"": 158}",ccasite
+Long Island Open,2012,162,4,"{""Open"": 37, ""Under 2100"": 46, ""Under 1700"": 44, ""Under 1300"": 35}",ccasite
+Long Island Open,2013,153,5,"{""Open"": 25, ""Under 2100"": 37, ""Under 1800"": 34, ""Under 1500"": 23, ""Under 1200"": 34}",ccasite
+Long Island Open,2014,207,5,"{""Open"": 33, ""Under 2100"": 58, ""Under 1700"": 58, ""Under 1300"": 28, ""Under 900"": 30}",ccasite
+Los Angeles Open,1998,207,7,"{""Open"": 28, ""Under 2200"": 23, ""Under 2000"": 20, ""Under 1800"": 37, ""Under 1600"": 53, ""Under 1400"": 27, ""Under 1200"": 19}",ccasite
+Los Angeles Open,1999,148,5,"{""Open"": 38, ""Under 2000"": 29, ""Under 1800"": 20, ""Under 1600"": 35, ""Under 1400"": 26}",ccasite
+Los Angeles Open,2011,162,6,"{""Open"": 13, ""Under 2300"": 41, ""Under 2000"": 43, ""Under 1700"": 27, ""Under 1400"": 16, ""Under 1000"": 22}",ccasite
+Los Angeles Open,2012,189,6,"{""Open"": 25, ""Under 2200"": 43, ""Under 1900"": 43, ""Under 1600"": 38, ""Under 1300"": 23, ""Under 1000"": 17}",ccasite
+Los Angeles Open,2013,187,5,"{""Open"": 36, ""Under 2200"": 32, ""Under 1900"": 49, ""Under 1600"": 38, ""Under 1300"": 32}",ccasite
+Los Angeles Open,2016,180,6,"{""Open"": 31, ""Under 2050"": 30, ""Under 1850"": 26, ""Under 1650"": 36, ""Under 1450"": 31, ""Under 1200"": 31}",ccasite
+Los Angeles Open,2017,224,6,"{""Open"": 43, ""Under 2050"": 48, ""Under 1850"": 43, ""Under 1650"": 34, ""Under 1450"": 35, ""Under 1200"": 28}",ccasite
+Los Angeles Open,2018,250,6,"{""Major"": 56, ""Under 2050"": 39, ""Under 1850"": 43, ""Under 1650"": 49, ""Under 1450"": 41, ""Under 1200"": 34}",ccasite
+Los Angeles Open,2019,241,6,"{""Major"": 56, ""Under 2050"": 50, ""Under 1850"": 50, ""Under 1650"": 42, ""Under 1450"": 28, ""Under 1200"": 28}",ccasite
+Los Angeles Open,2020,129,4,"{""Major"": 32, ""Under 2000"": 33, ""Under 1700"": 34, ""Under 1400"": 30}",ccasite
+Los Angeles Open,2021,376,6,"{""Major"": 74, ""Under 2050"": 69, ""Under 1850"": 58, ""Under 1650"": 39, ""Under 1450"": 41, ""Under 1200"": 95}",ccasite
+Los Angeles Open,2022,357,6,"{""Major"": 54, ""Under 2050"": 71, ""Under 1850"": 53, ""Under 1650"": 48, ""Under 1450"": 48, ""Under 1200"": 90}",ccasite
+Los Angeles Open,2023,400,7,"{""Major"": 56, ""Under 2100"": 52, ""Under 1900"": 63, ""Under 1700"": 41, ""Under 1500"": 48, ""Under 1300"": 70, ""Under 1000"": 78}",ccasite
+Los Angeles Open,2024,400,7,"{""Major"": 79, ""Under 2100"": 71, ""Under 1900"": 61, ""Under 1700"": 44, ""Under 1500"": 46, ""Under 1300"": 44, ""Under 1000"": 67}",ccasite
+Los Angeles Open,2025,388,7,"{""Major"": 83, ""Under 2100"": 60, ""Under 1900"": 70, ""Under 1700"": 48, ""Under 1500"": 37, ""Under 1300"": 39, ""Under 1000"": 60}",ccasite
+Louisville Open,2005,90,4,"{""Open"": 24, ""Under 2000"": 30, ""Under 1600"": 34, ""Under 1200"": 5}",ccasite
+Louisville Open,2006,81,4,"{""Open"": 22, ""Under 1800"": 38, ""Under 1400"": 20, ""Under 1000"": 7}",ccasite
+Louisville Open,2010,99,6,"{""Open"": 21, ""Under 2000"": 17, ""Under 1800"": 22, ""Under 1600"": 20, ""Under 1400"": 10, ""Under 1100"": 15}",ccasite
+Louisville Open,2011,93,4,"{""Open"": 27, ""Under 1900"": 32, ""Under 1600"": 25, ""Under 1300"": 13}",ccasite
+Louisville Open,2012,136,6,"{""Open"": 29, ""Under 1900"": 30, ""Under 1600"": 36, ""Under 1300"": 18, ""K-5 Under 800"": 7, ""K-8 Under 1000"": 16}",ccasite
+Louisville Open,2013,117,4,"{""Open"": 35, ""Under 2000"": 31, ""Under 1600"": 28, ""Under 1200"": 23}",ccasite
+Manhattan Open,2011,437,7,"{""Open"": 76, ""Under 2300"": 63, ""Under 2100"": 93, ""Under 1900"": 70, ""Under 1700"": 57, ""Under 1500"": 53, ""Under 1200"": 25}",ccasite
+Manhattan Open,2012,401,10,"{""Open"": 39, ""Under 2300"": 54, ""Under 2100"": 64, ""Under 1900"": 49, ""Under 1700"": 47, ""Under 1500"": 30, ""Under 1300"": 35, ""Under 1100"": 28, ""Under 900"": 25, ""Under 700"": 30}",ccasite
+Manhattan Open,2013,388,5,"{""Open"": 32, ""Under 2300"": 70, ""Under 2000"": 82, ""Under 1700"": 84, ""Under 1400"": 120}",ccasite
+Manhattan Open,2014,386,5,"{""Open"": 36, ""Under 2300"": 82, ""Under 2000"": 103, ""Under 1700"": 73, ""Under 1400"": 92}",ccasite
+Manhattan Open,2015,478,6,"{""Open"": 73, ""Under 2200"": 88, ""Under 1900"": 128, ""Under 1600"": 69, ""Under 1300"": 78, ""Under 1000"": 58}",ccasite
+Manhattan Open,2016,461,6,"{""Open"": 59, ""Under 2200"": 96, ""Under 1900"": 104, ""Under 1600"": 94, ""Under 1300"": 60, ""Under 1000"": 67}",ccasite
+Manhattan Open,2017,447,8,"{""Open"": 51, ""Under 2200"": 62, ""Under 2000"": 58, ""Under 1800"": 58, ""Under 1600"": 46, ""Under 1400"": 44, ""Under 1200"": 65, ""Under 1000"": 68}",ccasite
+Manhattan Open,2018,479,7,"{""Major"": 71, ""Under 2200"": 73, ""Under 2000"": 59, ""Under 1800"": 65, ""Under 1600"": 65, ""Under 1400"": 81, ""Under 1100"": 65}",ccasite
+Manhattan Open,2019,426,7,"{""Major"": 49, ""Under 2200"": 78, ""Under 2000"": 77, ""Under 1800"": 51, ""Under 1600"": 73, ""Under 1400"": 62, ""Under 1100"": 53}",ccasite
+Manhattan Open,2020,193,4,"{""Major"": 51, ""Under 2000"": 50, ""Under 1700"": 53, ""Under 1400"": 39}",ccasite
+Mid-America Open,1991,109,3,"{""Open"": 38, ""Amateur"": 35, ""Reserve"": 39}",ccasite
+Mid-America Open,1992,152,6,"{""Open"": 23, ""Under 2200"": 19, ""Under 2000"": 31, ""Under 1800"": 32, ""Under 1600"": 27, ""Under 1400"": 24}",ccasite
+Mid-America Open,1993,114,6,"{""Open"": 28, ""Under 2000"": 20, ""Under 1800"": 17, ""Under 1600"": 23, ""Under 1400"": 19, ""Unrated"": 9}",ccasite
+Mid-America Open,1994,158,5,"{""Open"": 32, ""Under 2000"": 28, ""Under 1800"": 23, ""Under 1600"": 34, ""Under 1400"": 45}",ccasite
+Mid-America Open,1995,137,6,"{""Open"": 27, ""Under 2000"": 22, ""Under 1800"": 21, ""Under 1600"": 32, ""Under 1400"": 39, ""Extra"": 8}",ccasite
+Mid-America Open,1996,155,8,"{""Open"": 31, ""Under 2200"": 11, ""Under 2000"": 20, ""Under 1800"": 27, ""Under 1600"": 31, ""Under 1400"": 30, ""Under 1200"": 10, ""Under 1000"": 13}",ccasite
+Mid-America Open,2000,99,6,"{""Open"": 21, ""Under 2000"": 12, ""Under 1800"": 17, ""Under 1600"": 16, ""Under 1400"": 20, ""Under 1200"": 13}",ccasite
+Mid-America Open,2001,132,5,"{""Open"": 27, ""Under 2000"": 35, ""Under 1600"": 33, ""Under 1200"": 9, ""Elementary"": 28}",ccasite
+Mid-America Open,2002,108,4,"{""Open"": 31, ""Under 2000"": 35, ""Under 1600"": 32, ""Under 1200"": 10}",ccasite
+Mid-America Open,2003,145,3,"{""Open"": 36, ""Under 2000"": 50, ""Under 1600"": 59}",ccasite
+Mid-America Open,2005,74,4,"{""Open"": 21, ""Under 2000"": 24, ""Under 1600"": 20, ""Under 1200"": 11}",ccasite
+Mid-America Open,2008,214,7,"{""Open"": 32, ""Under 2000"": 34, ""Under 1800"": 40, ""Under 1600"": 44, ""Under 1400"": 29, ""Under 1200"": 33, ""Under 900"": 18}",ccasite
+Mid-America Open,2009,228,7,"{""Open"": 44, ""Under 2000"": 40, ""Under 1800"": 36, ""Under 1600"": 31, ""Under 1400"": 24, ""Under 1200"": 32, ""Under 900"": 21}",ccasite
+Mid-America Open,2010,185,8,"{""Open"": 26, ""Under 2200"": 18, ""Under 2000"": 30, ""Under 1800"": 37, ""Under 1600"": 29, ""Under 1400"": 25, ""Under 1200"": 19, ""Under 900"": 12}",ccasite
+Mid-America Open,2011,196,5,"{""Open"": 46, ""Under 2000"": 35, ""Under 1800"": 32, ""Under 1600"": 46, ""Under 1300"": 37}",ccasite
+Mid-America Open,2012,220,7,"{""Open"": 48, ""Under 2000"": 35, ""Under 1800"": 39, ""Under 1600"": 38, ""Under 1400"": 20, ""Under 1200"": 24, ""Under 900"": 16}",ccasite
+Mid-America Open,2013,262,7,"{""Open"": 60, ""Under 2000"": 32, ""Under 1800"": 56, ""Under 1600"": 38, ""Under 1400"": 32, ""Adult Under 1200"": 12, ""Junior Under 1200"": 32}",ccasite
+Mid-America Open,2014,259,7,"{""Open"": 42, ""Under 2100"": 39, ""Under 1900"": 47, ""Under 1700"": 42, ""Under 1500"": 33, ""Under 1300"": 31, ""Under 1000"": 25}",ccasite
+Mid-America Open,2015,261,7,"{""Open"": 37, ""Under 2100"": 40, ""Under 1900"": 49, ""Under 1700"": 46, ""Under 1500"": 35, ""Under 1300"": 37, ""Under 1000"": 32}",ccasite
+Mid-America Open,2016,231,7,"{""Open"": 57, ""Under 2100"": 41, ""Under 1900"": 45, ""Under 1700"": 29, ""Under 1500"": 29, ""Under 1300"": 32, ""Under 1000"": 21}",ccasite
+Mid-America Open,2017,314,7,"{""Open"": 62, ""Under 2100"": 42, ""Under 1900"": 42, ""Under 1700"": 64, ""Under 1500"": 38, ""Under 1300"": 43, ""Under 1000"": 47}",ccasite
+Mid-America Open,2018,278,6,"{""Major"": 50, ""Under 2100"": 33, ""Under 1900"": 39, ""Under 1700"": 48, ""Under 1500"": 43, ""Under 1250"": 73}",ccasite
+Mid-America Open,2019,329,6,"{""Major"": 68, ""Under 2100"": 37, ""Under 1900"": 50, ""Under 1700"": 59, ""Under 1500"": 59, ""Under 1250"": 68}",ccasite
+Mid-America Open,2020,129,4,"{""Major"": 31, ""Under 2000"": 35, ""Under 1700"": 36, ""Under 1400"": 27}",ccasite
+Mid-America Open,2021,199,4,"{""Major"": 50, ""Under 2000/Unr"": 66, ""Under 1700/Unr"": 45, ""Under 1400/Unr"": 38}",ccasite
+Mid-America Open,2022,282,6,"{""Major"": 72, ""Under 2100"": 50, ""Under 1900"": 33, ""Under 1700"": 45, ""Under 1500"": 41, ""Under 1200"": 55}",ccasite
+Mid-America Open,2023,323,6,"{""Major"": 46, ""Under 2100"": 61, ""Under 1900"": 33, ""Under 1700"": 52, ""Under 1500"": 65, ""Under 1200"": 78}",ccasite
+Mid-America Open,2024,303,6,"{""Major"": 53, ""Under 2100"": 51, ""Under 1900"": 36, ""Under 1700"": 59, ""Under 1500"": 53, ""Under 1200"": 61}",ccasite
+Mid-America Open,2025,250,6,"{""Major"": 66, ""Under 2100"": 53, ""Under 1900"": 28, ""Under 1700"": 48, ""Under 1500"": 38, ""Under 1200"": 30}",ccasite
+Mid-America Open,2026,195,6,"{""Major"": 36, ""Under 2100"": 44, ""Under 1900"": 31, ""Under 1700"": 32, ""Under 1500"": 33, ""Under 1200"": 27}",ccasite
+Midwest Chess Congress,2022,82,4,"{""Major"": 25, ""Under 2000"": 24, ""Under 1600"": 15, ""Under 1200"": 20}",ccasite
+Midwest Class Championships,1997,336,10,"{""Master"": 27, ""Expert"": 36, ""Class A"": 54, ""Class B"": 42, ""Class C"": 61, ""Class D"": 60, ""Class E"": 15, ""Unrated"": 17, ""Class F"": 16, ""Class G"": 8}",ccasite
+Midwest Class Championships,1998,257,8,"{""Masters"": 19, ""Experts"": 27, ""Class A"": 49, ""Class B"": 42, ""Class C"": 41, ""Class D"": 38, ""Class E"": 34, ""Unrated"": 7}",ccasite
+Midwest Class Championships,1999,269,8,"{""Masters"": 17, ""Experts"": 26, ""Class A"": 42, ""Class B"": 44, ""Class C"": 45, ""Class D"": 36, ""Class E"": 47, ""Unrateds"": 12}",ccasite
+Midwest Class Championships,2000,264,8,"{""Masters"": 31, ""Experts"": 26, ""Class A"": 34, ""Class B"": 37, ""Class C"": 35, ""Class D"": 33, ""Class E"": 61, ""Unrated"": 7}",ccasite
+Midwest Class Championships,2001,264,9,"{""Masters"": 17, ""Experts"": 23, ""Class A"": 37, ""Class B"": 41, ""Class C"": 51, ""Class D"": 43, ""Class E"": 16, ""Unrated"": 8, ""Class F"": 28}",ccasite
+Midwest Class Championships,2002,277,9,"{""Masters"": 19, ""Experts"": 35, ""Class A"": 39, ""Class B"": 53, ""Class C"": 47, ""Class D"": 34, ""Class E"": 26, ""Unrated"": 15, ""Class F"": 9}",ccasite
+Midwest Class Championships,2003,282,8,"{""Master"": 20, ""Expert"": 22, ""Class A"": 53, ""Class B"": 52, ""Class C"": 60, ""Class D"": 38, ""Class E"": 24, ""Class F"": 13}",ccasite
+Midwest Class Championships,2004,261,7,"{""Class A"": 49, ""Class B"": 58, ""Class C"": 52, ""Class D"": 44, ""Class E"": 31, ""Masters'"": 1, ""Experts'"": 34}",ccasite
+Midwest Class Championships,2005,213,7,"{""Class A"": 36, ""Class B"": 52, ""Class C"": 34, ""Class D"": 35, ""Class E"": 24, ""Masters'"": 20, ""Experts'"": 27}",ccasite
+Midwest Class Championships,2006,236,8,"{""Master"": 28, ""Expert"": 26, ""Class A"": 38, ""Class B"": 36, ""Class C"": 50, ""Class D"": 49, ""Scholoastic Novice"": 8, ""Elementary Novice"": 13}",ccasite
+Midwest Class Championships,2007,264,9,"{""Master"": 24, ""Class A"": 30, ""Class B"": 46, ""Class C"": 48, ""Class D"": 30, ""Class E"": 28, ""Under 1000"": 26, ""Under 700"": 17, ""Experts'"": 28}",ccasite
+Midwest Class Championships,2008,228,9,"{""Class A"": 30, ""Class B"": 45, ""Class C"": 32, ""Class D"": 28, ""Class E"": 25, ""Under 1000"": 24, ""Under 700"": 6, ""Masters'"": 23, ""Experts'"": 26}",ccasite
+Midwest Class Championships,2009,243,9,"{""Class A"": 33, ""Class B"": 34, ""Class C"": 30, ""Class D"": 36, ""Class E"": 31, ""Under 1000"": 25, ""Under 700"": 7, ""Masters'"": 29, ""Experts'"": 29}",ccasite
+Midwest Class Championships,2010,236,7,"{""Class A"": 39, ""Class B"": 42, ""Class C"": 41, ""Class D"": 29, ""Class E"": 41, ""Masters'"": 24, ""Experts'"": 35}",ccasite
+Midwest Class Championships,2011,250,7,"{""Masters"": 33, ""Experts"": 34, ""Class A"": 34, ""Class B"": 32, ""Class C"": 42, ""Class D"": 37, ""Class E"": 38}",ccasite
+Midwest Class Championships,2012,233,7,"{""Master"": 25, ""Expert"": 29, ""Class A"": 41, ""Class B"": 39, ""Class C"": 41, ""Class D"": 23, ""Class E"": 35}",ccasite
+Midwest Class Championships,2013,252,7,"{""Master"": 34, ""Expert"": 35, ""Class A"": 26, ""Class B"": 41, ""Class C"": 34, ""Class D"": 32, ""Class E"": 50}",ccasite
+Midwest Class Championships,2014,283,7,"{""Premier"": 62, ""1700-2099"": 44, ""1500-1899"": 43, ""1300-1699"": 43, ""1100-1499"": 33, ""Under 1300"": 20, ""Under 1100"": 38}",ccasite
+Midwest Class Championships,2015,292,7,"{""Premier"": 63, ""1700-2099"": 51, ""1500-1899"": 37, ""1300-1699"": 43, ""1100-1499"": 38, ""Under 1300"": 22, ""Under 1100"": 53}",ccasite
+Midwest Class Championships,2016,309,7,"{""Premier"": 43, ""1700-2099"": 65, ""1500-1899"": 42, ""1300-1699"": 43, ""1100-1499"": 29, ""Under 1300"": 26, ""Under 1100"": 61}",ccasite
+Midwest Class Championships,2017,333,7,"{""Premier"": 64, ""1700-2099"": 37, ""1500-1899"": 53, ""1300-1699"": 52, ""1100-1499"": 54, ""Under 1300"": 30, ""Under 1100"": 53}",ccasite
+Midwest Class Championships,2018,339,7,"{""Premier"": 61, ""1700-2099"": 59, ""1500-1899"": 49, ""1300-1699"": 49, ""1100-1499"": 40, ""Under 1300"": 33, ""Under 1100"": 62}",ccasite
+Midwest Class Championships,2019,308,7,"{""Premier"": 61, ""1700-2099"": 54, ""1500-1899"": 54, ""1300-1699"": 50, ""1100-1499"": 28, ""Under 1300"": 24, ""Under 1100"": 47}",ccasite
+Midwest Class Championships,2021,360,7,"{""Premier"": 39, ""1800-2099"": 56, ""1600-1899"": 51, ""1400-1699"": 48, ""1200-1499"": 39, ""Under 1300"": 45, ""Under 1100"": 82}",ccasite
+Midwest Class Championships,2022,356,7,"{""Premier"": 57, ""1800-2099"": 59, ""1600-1899"": 58, ""1400-1699"": 50, ""1200-1499"": 35, ""Under 1300"": 38, ""Under 1100"": 69}",ccasite
+Midwest Class Championships,2023,278,7,"{""Premier"": 47, ""1800-2099"": 42, ""1600-1899"": 57, ""1400-1699"": 34, ""1200-1499"": 30, ""Under 1300"": 25, ""Under 1100"": 46}",ccasite
+Midwest Class Championships,2024,303,7,"{""Premier"": 45, ""1800-2099"": 56, ""1600-1899"": 42, ""1400-1699"": 48, ""1200-1499"": 47, ""Under 1300"": 34, ""Under 1100"": 43}",ccasite
+Midwest Class Championships,2025,293,7,"{""Premier"": 57, ""1800-2099"": 48, ""1600-1899"": 59, ""1400-1699"": 43, ""1200-1499"": 37, ""Under 1300"": 29, ""Under 1100"": 33}",ccasite
+Mountains Open,2021,114,4,"{""Major"": 23, ""Under 2000/Unr"": 37, ""Under 1700/Unr"": 22, ""Under 1400/Unr"": 32}",ccasite
+National Chess Congress,1992,269,7,"{""Under 2000"": 60, ""Under 1800"": 46, ""Under 1600"": 29, ""Under 1400"": 23, ""Under 1200"": 13, ""Unrated"": 4, ""Master-exp"": 100}",ccasite
+National Chess Congress,1997,617,11,"{""Open"": 92, ""Under 2200"": 51, ""Under 2000"": 81, ""Under 1800"": 73, ""Under 1600"": 73, ""Under 1400"": 67, ""Under 1200"": 68, ""Under 1000"": 40, ""Under 800"": 17, ""Under 600"": 8, ""Unrated Players"": 47}",ccasite
+National Chess Congress,1998,630,13,"{""Open"": 102, ""Under 2200"": 53, ""Under 2000"": 67, ""Under 1800"": 76, ""Under 1600"": 76, ""Under 1400"": 72, ""Under 1200"": 53, ""Under 1000"": 37, ""Under 800"": 20, ""Under 600"": 8, ""Unrateds"": 35, ""Eastern Intercollegiate Championship"": 19, ""Eastern Intercollegiate Under 1600"": 12}",ccasite
+National Chess Congress,1999,619,11,"{""Open"": 84, ""Under 2200"": 54, ""Under 2000"": 76, ""Under 1800"": 89, ""Under 1600"": 83, ""Under 1400"": 63, ""Under 1200"": 70, ""Under 1000"": 37, ""Under 800"": 18, ""Under 600"": 9, ""Unrateds"": 36}",ccasite
+National Chess Congress,2006,549,11,"{""Premier"": 83, ""Under 2200"": 62, ""Under 2000"": 79, ""Under 1800"": 69, ""Under 1600"": 71, ""Under 1400"": 50, ""Under 1200"": 64, ""Under 1000"": 26, ""Under 800"": 12, ""Under 600"": 15, ""Unrated"": 18}",ccasite
+National Chess Congress,2007,487,11,"{""Premier"": 64, ""Under 2200"": 45, ""Under 2000"": 59, ""Under 1800"": 75, ""Under 1600"": 80, ""Under 1400"": 63, ""Under 1200"": 41, ""Under 1000"": 37, ""Under 800"": 16, ""Under 600"": 14, ""Unrated"": 15}",ccasite
+National Chess Congress,2008,602,10,"{""Premier"": 69, ""Under 2200"": 58, ""Under 2000"": 65, ""Under 1800"": 77, ""Under 1600"": 78, ""Under 1400"": 55, ""Under 1200"": 77, ""Under 1000"": 41, ""Under 800"": 43, ""Under 600"": 39}",ccasite
+National Chess Congress,2009,590,10,"{""Premier"": 75, ""Under 2200"": 66, ""Under 2000"": 81, ""Under 1800"": 85, ""Under 1600"": 73, ""Under 1400"": 60, ""Under 1200"": 51, ""Under 1000"": 36, ""Under 800"": 28, ""Under 600"": 35}",ccasite
+National Chess Congress,2010,550,11,"{""Premier"": 77, ""Under 2200"": 64, ""Under 2000"": 67, ""Under 1800"": 75, ""Under 1600"": 57, ""Under 1400"": 52, ""Under 1200"": 53, ""Under 1000"": 28, ""Under 800"": 24, ""Under 600"": 42, ""Under 13 Novice Tournament"": 11}",ccasite
+National Chess Congress,2011,549,10,"{""Premier"": 57, ""Under 2200"": 60, ""Under 2000"": 66, ""Under 1800"": 80, ""Under 1600"": 69, ""Under 1400"": 51, ""Under 1200"": 56, ""Under 1000"": 45, ""Under 800"": 31, ""Under 600"": 34}",ccasite
+National Chess Congress,2012,499,10,"{""Premier"": 46, ""Under 2200"": 72, ""Under 2000"": 72, ""Under 1800"": 58, ""Under 1600"": 55, ""Under 1400"": 47, ""Under 1200"": 58, ""Under 1000"": 31, ""Under 800"": 21, ""Under 600"": 39}",ccasite
+National Chess Congress,2013,591,10,"{""Premier"": 73, ""Under 2200"": 71, ""Under 2000"": 81, ""Under 1800"": 85, ""Under 1600"": 54, ""Under 1400"": 50, ""Under 1200"": 67, ""Under 1000"": 42, ""Under 800"": 36, ""Under 600"": 32}",ccasite
+National Chess Congress,2014,650,10,"{""Premier"": 59, ""Under 2200"": 88, ""Under 2000"": 98, ""Under 1800"": 77, ""Under 1600"": 72, ""Under 1400"": 65, ""Under 1200"": 76, ""Under 1000"": 39, ""Under 800"": 31, ""Scholastic Under 600"": 45}",ccasite
+National Chess Congress,2015,603,10,"{""Premier"": 76, ""Under 2200"": 80, ""Under 2000"": 107, ""Under 1800"": 85, ""Under 1600"": 60, ""Under 1400"": 57, ""Under 1200"": 64, ""Under 1000"": 33, ""Under 800"": 28, ""Scholastic Under 600"": 36}",ccasite
+National Chess Congress,2016,635,10,"{""Premier"": 70, ""Under 2200"": 92, ""Under 2000"": 86, ""Under 1800"": 85, ""Under 1600"": 66, ""Under 1400"": 55, ""Under 1200"": 38, ""Under 1000"": 51, ""Under 800"": 46, ""Scholastic Under 600"": 46}",ccasite
+National Chess Congress,2017,682,10,"{""Premier"": 102, ""Under 2200"": 73, ""Under 2000"": 98, ""Under 1800"": 83, ""Under 1600"": 75, ""Under 1400"": 64, ""Under 1200"": 71, ""Under 1000"": 40, ""Under 800"": 37, ""Scholastic Under 600"": 39}",ccasite
+National Chess Congress,2018,524,10,"{""Premier"": 65, ""Under 2200"": 71, ""Under 2000"": 75, ""Under 1800"": 74, ""Under 1600"": 60, ""Under 1400"": 50, ""Under 1200"": 61, ""Under 1000"": 33, ""Under 800"": 23, ""Under 600"": 36}",ccasite
+National Chess Congress,2019,564,10,"{""Premier"": 83, ""Under 2200"": 77, ""Under 2000"": 71, ""Under 1800"": 63, ""Under 1600"": 66, ""Under 1400"": 59, ""Under 1200"": 64, ""Under 1000"": 41, ""Under 800"": 31, ""Under 600"": 27}",ccasite
+National Chess Congress,2020,460,5,"{""Premier"": 41, ""U2200"": 172, ""U1800"": 118, ""U1400"": 87, ""U1000"": 43}",ccasite
+National Chess Congress,2021,626,10,"{""Premier"": 60, ""Under 2200"": 89, ""Under 2000"": 83, ""Under 1800"": 67, ""Under 1600"": 73, ""Under 1400"": 53, ""Under 1200"": 60, ""Under 1000"": 70, ""Under 800"": 24, ""Under 600"": 47}",ccasite
+National Chess Congress,2022,594,10,"{""Premier"": 78, ""Under 2200"": 91, ""Under 2000"": 90, ""Under 1800"": 59, ""Under 1600"": 59, ""Under 1400"": 58, ""Under 1200"": 47, ""Under 1000"": 55, ""Under 800"": 25, ""Under 600"": 44}",ccasite
+National Chess Congress,2023,636,10,"{""Premier"": 72, ""Under 2200"": 108, ""Under 2000"": 84, ""Under 1800"": 88, ""Under 1600"": 48, ""Under 1400"": 62, ""Under 1200"": 59, ""Under 1000"": 58, ""Under 800"": 35, ""Under 600"": 29}",ccasite
+National Chess Congress,2024,600,10,"{""Premier"": 63, ""Under 2200"": 94, ""Under 2000"": 82, ""Under 1800"": 92, ""Under 1600"": 64, ""Under 1400"": 67, ""Under 1200"": 48, ""Under 1000"": 50, ""Under 800"": 25, ""Under 600"": 44}",ccasite
+National Chess Congress,2025,689,10,"{""Premier"": 92, ""Under 2200"": 120, ""Under 2000"": 109, ""Under 1800"": 88, ""Under 1600"": 63, ""Under 1400"": 59, ""Under 1200"": 59, ""Under 1000"": 55, ""Under 800"": 30, ""Under 600"": 40}",ccasite
+New York State Championship,2001,200,6,"{""Championship"": 45, ""Under 2000"": 28, ""Under 1800"": 20, ""Under 1600"": 32, ""Under 1400"": 20, ""Under 1200"": 55}",ccasite
+New York State Championship,2002,194,7,"{""Championship"": 56, ""Under 2000"": 22, ""Under 1800"": 20, ""Under 1600/Unrated"": 27, ""Under 1400"": 18, ""Under 1200"": 25, ""Under 1000"": 26}",ccasite
+New York State Championship,2003,209,7,"{""Championship"": 57, ""Under 2000"": 28, ""Under 1800"": 26, ""Under 1600"": 36, ""Under 1400"": 27, ""Under 1200"": 24, ""Under 1000"": 11}",ccasite
+New York State Championship,2004,114,7,"{""Championship"": 1, ""Under 2200"": 18, ""Under 2000"": 30, ""Under 1800"": 19, ""Under 1600"": 9, ""Under 1400"": 19, ""Under 1200"": 23}",ccasite
+New York State Championship,2005,149,4,"{""Open"": 45, ""Under 2000"": 48, ""Under 1600"": 28, ""Under 1200"": 28}",ccasite
+New York State Championship,2006,198,4,"{""Open"": 57, ""Under 2000"": 50, ""Under 1600"": 54, ""Under 1200"": 41}",ccasite
+New York State Championship,2007,185,4,"{""Open"": 65, ""Under 2000"": 48, ""Under 1600"": 51, ""Under 1200"": 27}",ccasite
+New York State Championship,2008,186,4,"{""Open"": 47, ""Under 2000"": 63, ""Under 1600"": 53, ""Under 1200"": 37}",ccasite
+New York State Championship,2009,182,4,"{""Open"": 54, ""Under 2000"": 60, ""Under 1600"": 50, ""Under 1200"": 28}",ccasite
+New York State Championship,2010,199,6,"{""Open"": 30, ""Under 2200"": 23, ""Under 2000"": 42, ""Under 1800"": 33, ""Under 1600"": 37, ""Under 1300"": 49}",ccasite
+New York State Championship,2011,194,6,"{""Open"": 26, ""Under 2200"": 31, ""Under 2000"": 38, ""Under 1800"": 31, ""Under 1600"": 39, ""Under 1300"": 29}",ccasite
+New York State Championship,2012,181,5,"{""Open"": 32, ""Under 2100"": 55, ""Under 1800"": 40, ""Under 1500"": 30, ""Under 1200"": 24}",ccasite
+New York State Championship,2013,216,5,"{""Open"": 43, ""Under 2100"": 56, ""Under 1800"": 45, ""Under 1500"": 29, ""Under 1200"": 43}",ccasite
+New York State Championship,2014,232,5,"{""Open"": 40, ""Under 2100"": 67, ""Under 1800"": 51, ""Under 1500"": 32, ""Under 1200"": 42}",ccasite
+New York State Championship,2015,201,5,"{""Open"": 40, ""Under 2100"": 62, ""Under 1800"": 43, ""Under 1500"": 29, ""Under 1200"": 36}",ccasite
+New York State Championship,2016,208,5,"{""Open"": 38, ""Under 2100"": 57, ""Under 1800"": 50, ""Under 1500"": 34, ""Under 1200"": 37}",ccasite
+New York State Championship,2017,193,5,"{""Championship"": 39, ""Under 2100"": 53, ""Under 1800"": 44, ""Under 1500"": 30, ""Under 1200"": 39}",ccasite
+New York State Championship,2018,198,5,"{""Championship"": 43, ""Under 2100"": 50, ""Under 1800"": 51, ""Under 1500"": 31, ""Under 1200"": 33}",ccasite
+New York State Championship,2019,189,5,"{""Championship"": 44, ""Under 2100"": 45, ""Under 1800"": 47, ""Under 1500"": 31, ""Under 1200"": 31}",ccasite
+New York State Championship,2020,233,4,"{""Championship"": 78, ""Under 2000"": 67, ""Under 1600"": 58, ""Under 1200"": 30}",ccasite
+New York State Championship,2021,224,5,"{""Championship"": 43, ""Under 2100"": 68, ""Under 1800"": 33, ""Under 1500"": 38, ""Under 1200"": 42}",ccasite
+New York State Championship,2022,318,5,"{""Championship"": 66, ""Under 2100"": 82, ""Under 1800"": 70, ""Under 1500"": 52, ""Under 1200"": 60}",ccasite
+New York State Championship,2023,350,5,"{""Championship"": 75, ""Under 2100"": 86, ""Under 1800"": 87, ""Under 1500"": 56, ""Under 1200"": 55}",ccasite
+New York State Championship,2024,322,5,"{""Championship"": 84, ""Under 2100"": 87, ""Under 1800"": 53, ""Under 1500"": 53, ""Under 1200"": 59}",ccasite
+New York State Championship,2025,336,5,"{""Championship"": 88, ""Under 2100"": 80, ""Under 1800"": 73, ""Under 1500"": 45, ""Under 1200"": 53}",ccasite
+New York State Championship,2026,330,5,"{""Championship"": 88, ""Under 2100"": 87, ""Under 1800"": 71, ""Under 1500"": 56, ""Under 1200"": 35}",ccasite
+New York State High School Championship,2025,205,3,"{""High School Championship"": 91, ""High School Under 1800"": 71, ""High School Under 1200"": 43}",ccasite
+New York State High School Championship,2026,193,4,"{""High School Championship"": 72, ""High School Under 1900"": 53, ""High School Under 1500"": 50, ""High School Under 1000"": 18}",ccasite
+New York State Open,1997,73,3,"{""Open"": 23, ""Under 1800"": 20, ""Under 1500"": 30}",ccasite
+New York State Open,1998,86,4,"{""Open"": 25, ""Under 1800"": 17, ""Under 1500"": 26, ""Scholastic Novice"": 18}",ccasite
+New York State Open,2000,75,3,"{""Open"": 24, ""Under 2000"": 15, ""Under 1600"": 36}",ccasite
+New York State Open,2001,114,4,"{""Open"": 46, ""Under 1800"": 21, ""Under 1400"": 36, ""Rated Beginners Open"": 11}",ccasite
+New York State Open,2002,151,8,"{""Open"": 29, ""Under 2000"": 21, ""Under 1800"": 21, ""Under 1600"": 23, ""Under 1400"": 21, ""Under 1200"": 16, ""Under 1000"": 13, ""Under 800"": 7}",ccasite
+New York State Open,2003,92,4,"{""Open"": 17, ""Under 2000"": 33, ""Under 1600"": 23, ""Under 1200"": 19}",ccasite
+New York State Open,2004,78,4,"{""Open"": 19, ""Under 2000"": 18, ""Under 1600"": 27, ""Under 1200"": 16}",ccasite
+New York State Open,2006,50,3,"{""Open"": 18, ""Under 1800"": 16, ""Under 1400"": 20}",ccasite
+New York State Open,2007,63,3,"{""Open"": 22, ""Under 1900"": 17, ""Under 1600"": 26}",ccasite
+New York State Open,2008,62,4,"{""Open"": 14, ""Under 2000"": 16, ""Under 1600"": 21, ""Under 1200"": 14}",ccasite
+New York State Open,2009,57,2,"{""Open"": 23, ""Under 1700"": 34}",ccasite
+New York State Open,2010,69,3,"{""Open"": 14, ""Under 1710"": 39, ""Senior"": 18}",ccasite
+New York State Open,2012,88,4,"{""Open"": 35, ""Under 1610"": 17, ""Under 1310"": 19, ""Senior"": 19}",ccasite
+New York State Open,2013,65,4,"{""Open"": 20, ""Under 1710"": 20, ""Under 1310"": 18, ""Senior"": 12}",ccasite
+New York State Open,2014,88,3,"{""Open"": 33, ""Under 1610"": 34, ""Senior"": 21}",ccasite
+New York State Open,2015,80,4,"{""Open"": 27, ""Under 1610"": 19, ""Under 1210"": 18, ""Senior"": 19}",ccasite
+New York State Open,2016,105,4,"{""Open"": 36, ""Under 1610"": 26, ""Under 1210"": 22, ""Senior"": 23}",ccasite
+New York State Open,2017,89,4,"{""Open"": 25, ""Under 1610"": 18, ""Under 1210"": 32, ""Senior"": 16}",ccasite
+New York State Open,2018,98,4,"{""Open"": 39, ""Under 1610"": 23, ""Under 1210"": 16, ""Senior"": 22}",ccasite
+New York State Open,2019,83,4,"{""Open"": 26, ""Under 1610"": 21, ""Under 1210"": 19, ""Senior"": 20}",ccasite
+New York State Open,2021,147,4,"{""Major"": 31, ""Under 2000/Unr"": 44, ""Under 1700 / Unr"": 37, ""Under 1400/Unr"": 35}",ccasite
+New York State Open,2024,76,4,"{""Under 1610 Section"": 12, ""Under 1210 Section"": 22, ""Open Section"": 26, ""Seniors' Under 1910 Section"": 19}",ccasite
+New York State Open,2025,82,4,"{""Under 1610 Section"": 16, ""Under 1210 Section"": 15, ""Open Section"": 37, ""Seniors' Under 1910 Section"": 17}",ccasite
+New York State Open,2026,109,4,"{""Under 1610 Section"": 27, ""Under 1210 Section"": 15, ""Open Section"": 40, ""Seniors' Under 1910 Section"": 29}",ccasite
+New York State Scholastic Championships,2007,123,2,"{""Primary Championship"": 84, ""Primary/K-1 Championship"": 39}",ccasite
+New York State Scholastic Championships,2008,381,6,"{""High School Championship"": 68, ""Junior High Championship"": 66, ""Elementary Championship"": 84, ""Elementary Novice"": 66, ""Primary Championship"": 53, ""Primary/K-1 Championship"": 47}",ccasite
+New York State Scholastic Championships,2009,353,5,"{""High School Championship"": 94, ""Junior High Championship"": 75, ""Elementary Championship"": 92, ""Elementary Novice"": 46, ""Primary/K-1 Championship"": 46}",ccasite
+New York State Scholastic Championships,2010,362,6,"{""High School Championship"": 86, ""Junior High Championship"": 61, ""Elementary Championship"": 65, ""Elementary Novice"": 72, ""Primary Championship"": 45, ""Primary/K-1 Championship"": 36}",ccasite
+New York State Scholastic Championships,2011,391,8,"{""High School Championship"": 38, ""High School Reserve Championship"": 29, ""Junior High Championship"": 58, ""Middle School Reserve Championship"": 33, ""Elementary Championship"": 74, ""Elementary Reserve Championship"": 69, ""Primary Championship"": 53, ""Primary/K-1 Championship"": 43}",ccasite
+New York State Scholastic Championships,2014,787,9,"{""High School Championship"": 63, ""High School Reserve"": 71, ""Junior High Championship"": 75, ""Middle School Reserve"": 83, ""Elementary Championship"": 117, ""Elementary Reserve"": 127, ""Primary Championship"": 78, ""Primary Reserve"": 75, ""K-1 Championship"": 98}",ccasite
+New York State Scholastic Championships,2015,934,10,"{""Parents and Friends"": 7, ""K-1 Championship"": 59, ""Primary Reserve"": 113, ""Primary Championship"": 71, ""Elementary Reserve"": 150, ""Elementary Championship"": 124, ""Middle School Reserve"": 144, ""Junior High Championship"": 96, ""High School Reserve"": 98, ""High School Championship"": 79}",ccasite
+New York State Scholastic Championships,2016,942,11,"{""Elementary Reserve"": 144, ""Parents and Friends"": 4, ""K-1 Championship"": 58, ""Primary Reserve"": 106, ""Primary Championship"": 66, ""Elementary Intermediate"": 94, ""Elementary Championship"": 113, ""Middle School Reserve"": 110, ""Junior High Championship"": 88, ""High School Reserve"": 68, ""High School Championship"": 93}",ccasite
+New York State Scholastic Championships,2017,1150,12,"{""Parents and Friends"": 6, ""K-1 Reserve"": 60, ""K-1 Championship"": 33, ""Primary Reserve"": 120, ""Primary Championship"": 91, ""Elementary Reserve"": 171, ""Elementary Intermediate"": 114, ""Elementary Championship"": 134, ""Middle School Reserve"": 94, ""Junior High Championship"": 113, ""Highschool Reserve"": 114, ""Highschool Championship"": 106}",ccasite
+New York State Scholastic Championships,2018,1222,15,"{""Highschool Championship"": 62, ""Highschool Intermediate"": 64, ""Highschool Reserve"": 109, ""Junior High Championship"": 54, ""Middle School Intermediate"": 62, ""Middle School Reserve"": 95, ""Elementary Championship"": 124, ""Elementary Intermediate"": 62, ""K-5 Intermediate"": 98, ""K-5 Reserve"": 168, ""Primary Championship"": 94, ""Primary Reserve"": 108, ""K-1 Championship"": 58, ""K-1 Reserve"": 63, ""Parents and Friends"": 8}",ccasite
+New York State Scholastic Championships,2019,1226,15,"{""Highschool Championship"": 46, ""K-12 Under 1800"": 56, ""K-12 Under 1200"": 130, ""Junior High Championship"": 60, ""K-8 Under 1600"": 65, ""K-8 Under 900"": 65, ""Elementary Championship"": 103, ""K-6 Under 1400"": 117, ""K-6 Under 1000"": 128, ""K-6 Under 600"": 157, ""Primary Championship"": 74, ""K-3 Under 800"": 81, ""K-1 Championship"": 69, ""K-1 Under 400"": 78, ""Parents and Friends"": 8}",ccasite
+New York State Scholastic Championships,2022,919,15,"{""Highschool Championship"": 65, ""K-12 Under 1800"": 39, ""K-12 Under 1200"": 65, ""Middle School Championship"": 58, ""K-8 Under 1600"": 52, ""K-8 Under 900"": 52, ""Elementary Championship"": 67, ""K-5 Under 1400"": 28, ""K-5 Under 1000"": 74, ""K-5 Under 600"": 146, ""Primary Championship"": 65, ""K-3 Under 800"": 77, ""K-1 Championship"": 46, ""K-1 Under 400"": 84, ""Parents and Friends"": 5}",ccasite
+New York State Scholastic Championships,2023,1011,11,"{""Highschool Championship"": 93, ""K-12 Under 1800"": 56, ""K-12 Under 1200"": 102, ""K-8 Under 1600"": 64, ""Elementary Championship"": 132, ""K-5 Under 1000"": 119, ""Primary Championship"": 77, ""K-3 Under 800"": 176, ""K-1 Championship"": 60, ""K-1 Under 400"": 133, ""Parents and Friends"": 4}",ccasite
+New York State Scholastic Championships,2024,1706,14,"{""Highschool Championship"": 101, ""K-12 Under 1800"": 64, ""K-12 Under 1200"": 94, ""Middle School Championship"": 123, ""K-8 Under 1600"": 86, ""K-8 Under 900"": 125, ""Elementary Championship"": 132, ""K-5 Under 1400"": 75, ""K-5 Under 1000"": 173, ""K-5 Under 600"": 224, ""Primary Championship"": 146, ""K-3 Under 800"": 145, ""K-1 Championship"": 110, ""K-1 Under 400"": 112}",ccasite
+New York State Scholastic Championships Grades K-8,2025,1701,11,"{""Middle School Championship"": 124, ""K-8 Under 1600"": 182, ""K-8 Under 900"": 101, ""Elementary Championship"": 114, ""K-5 Under 1400"": 179, ""K-5 Under 1000"": 252, ""K-5 Under 600"": 277, ""Primary Championship"": 103, ""K-3 Under 800"": 133, ""K-1 Championship"": 97, ""K-1 Under 400"": 143}",ccasite
+New York State Scholastic Championships Grades K-8,2026,1678,12,"{""Middle School Championship"": 119, ""K-8 Under 1700"": 85, ""K-8 Under 1300"": 144, ""K-8 Under 900"": 93, ""Elementary Championship"": 148, ""K-5 Under 1400"": 110, ""K-5 Under 1000"": 199, ""K-5 Under 600"": 257, ""Primary Championship"": 150, ""K-3 Under 800"": 124, ""K-1 Championship"": 123, ""K-1 Under 400"": 128}",ccasite
+New York State Senior Championship With Young Adult Mi,2025,54,2,"{""Senior"": 30, ""Young Adult/Middle Age"": 24}",ccasite
+New York State Senior Championship With Young Adult Mi,2026,60,2,"{""Senior"": 48, ""Young Adult/Middle Age"": 12}",ccasite
+Niagara Falls Open,2022,96,5,"{""Major"": 22, ""Under 2100"": 19, ""Under 1800"": 15, ""Under 1500"": 22, ""Under 1200"": 19}",ccasite
+Niagara Falls Open,2023,179,4,"{""Open"": 31, ""Under 2000"": 56, ""Under 1600"": 47, ""Under 1200"": 47}",ccasite
+Niagara Falls Open,2024,176,4,"{""Major"": 31, ""Under 2000"": 63, ""Under 1600"": 57, ""Under 1200"": 28}",ccasite
+Niagara Falls Open,2025,117,4,"{""Major"": 26, ""Under 2000"": 39, ""Under 1600"": 27, ""Under 1200"": 27}",ccasite
+North American Blitz Championship,2020,141,2,"{""Open"": 56, ""U2000"": 85}",ccasite
+North American Open,1992,519,3,"{""Under 2000"": 224, ""Under 1600"": 156, ""(open) Section"": 155}",ccasite
+North American Open,1997,654,9,"{""Open"": 82, ""Under 2200"": 72, ""Under 2000"": 103, ""Under 1800"": 136, ""Under 1600"": 109, ""Under 1400"": 69, ""Under 1200"": 53, ""Under 1000"": 18, ""Unrated"": 12}",ccasite
+North American Open,1998,631,8,"{""Open"": 80, ""Under 2200"": 70, ""Under 2000"": 102, ""Under 1800"": 105, ""Under 1600"": 130, ""Under 1400"": 88, ""Under 1200"": 43, ""Unrated"": 13}",ccasite
+North American Open,1999,500,8,"{""Open"": 67, ""Under 2200"": 70, ""Under 2000"": 79, ""Under 1800"": 75, ""Under 1600"": 91, ""Under 1400"": 60, ""Under 1200"": 44, ""Unrated"": 14}",ccasite
+North American Open,2000,635,7,"{""Open"": 89, ""Under 2200"": 74, ""Under 2000"": 90, ""Under 1800"": 105, ""Under 1600"": 121, ""Under 1400"": 121, ""Unrated"": 35}",ccasite
+North American Open,2001,502,8,"{""Open"": 73, ""Under 2200"": 52, ""Under 2000"": 78, ""Under 1800"": 91, ""Under 1600"": 79, ""Under 1400"": 73, ""Under 1200"": 41, ""Unrated"": 15}",ccasite
+North American Open,2003,614,8,"{""Open"": 105, ""Under 2200"": 83, ""Under 2000"": 90, ""Under 1800"": 100, ""Under 1600"": 98, ""Under 1400"": 74, ""Under 1200"": 49, ""Unrated"": 15}",ccasite
+North American Open,2004,514,8,"{""Open"": 75, ""Under 2200"": 73, ""Under 2000"": 74, ""Under 1800"": 86, ""Under 1600"": 93, ""Under 1400"": 57, ""Under 1200"": 40, ""Unrated"": 16}",ccasite
+North American Open,2006,511,7,"{""Open"": 78, ""Under 2200"": 99, ""Under 2000"": 102, ""Under 1800"": 98, ""Under 1600"": 102, ""Under 1400"": 62, ""Under 1200"": 41}",ccasite
+North American Open,2007,1258,14,"{""Open"": 94, ""U800/Unrated"": 22, ""U1200"": 53, ""U1500"": 102, ""U1700"": 124, ""U1900"": 141, ""U2100"": 131, ""Nao"": 94, ""NA21"": 131, ""NA19"": 141, ""NA17"": 124, ""NA15"": 102, ""NA12"": 53, ""NA8"": 22}",ccasite
+North American Open,2008,632,7,"{""Open"": 89, ""U1000"": 41, ""U1300"": 60, ""U1500"": 78, ""U1700"": 119, ""U1900"": 120, ""U2100"": 125}",ccasite
+North American Open,2009,663,7,"{""Open"": 99, ""Under 2100"": 118, ""Under 1900"": 137, ""Under 1700"": 108, ""Under 1500"": 71, ""Under 1300"": 73, ""Under 1000/Unrated"": 57}",ccasite
+North American Open,2010,697,7,"{""Open"": 131, ""Under 2100"": 113, ""Under 1900"": 140, ""Under 1700"": 105, ""Under 1500"": 76, ""Under 1300"": 81, ""Under 1000"": 51}",ccasite
+North American Open,2011,628,7,"{""Open"": 62, ""Under 2300"": 94, ""Under 2100"": 98, ""Under 1900"": 107, ""Under 1700"": 96, ""Under 1500"": 85, ""Under 1250"": 86}",ccasite
+North American Open,2012,674,7,"{""Open"": 85, ""Under 2300"": 91, ""Under 2100"": 122, ""Under 1900"": 134, ""Under 1700"": 96, ""Under 1500"": 77, ""Under 1250"": 69}",ccasite
+North American Open,2013,686,7,"{""Open"": 78, ""Under 2300"": 89, ""Under 2100"": 112, ""Under 1900"": 121, ""Under 1700"": 115, ""Under 1500"": 84, ""Under 1250"": 87}",ccasite
+North American Open,2014,661,7,"{""Open"": 95, ""Under 2300"": 109, ""Under 2100"": 113, ""Under 1900"": 123, ""Under 1700"": 90, ""Under 1500"": 65, ""Under 1250"": 66}",ccasite
+North American Open,2015,742,7,"{""Open"": 108, ""Under 2300"": 92, ""Under 2100"": 138, ""Under 1900"": 134, ""Under 1700"": 117, ""Under 1500"": 81, ""Under 1250"": 95}",ccasite
+North American Open,2016,819,7,"{""Open"": 97, ""Under 2300"": 117, ""Under 2100"": 127, ""Under 1900"": 149, ""Under 1700"": 125, ""Under 1500"": 93, ""Under 1250"": 111}",ccasite
+North American Open,2017,823,7,"{""Open"": 129, ""Under 2300"": 100, ""Under 2100"": 136, ""Under 1900"": 129, ""Under 1700"": 104, ""Under 1500"": 120, ""Under 1250"": 105}",ccasite
+North American Open,2018,850,7,"{""Open"": 116, ""Under 2300"": 94, ""Under 2100"": 148, ""Under 1900"": 157, ""Under 1700"": 140, ""Under 1500"": 89, ""Under 1250"": 106}",ccasite
+North American Open,2019,873,7,"{""Open"": 91, ""Under 2300"": 123, ""Under 2100"": 151, ""Under 1900"": 146, ""Under 1700"": 123, ""Under 1500"": 112, ""Under 1250"": 127}",ccasite
+North American Open,2020,531,5,"{""Open"": 53, ""U2200"": 135, ""U1900"": 137, ""U1600"": 98, ""U1300"": 108}",ccasite
+North American Open,2021,861,7,"{""Open"": 111, ""Under 2300"": 124, ""Under 2100"": 129, ""Under 1900"": 132, ""Under 1700"": 106, ""Under 1500"": 122, ""Under 1250"": 165}",ccasite
+North American Open,2022,949,7,"{""Open"": 130, ""Under 2300"": 126, ""Under 2100"": 144, ""Under 1900"": 148, ""Under 1700"": 123, ""Under 1500"": 123, ""Under 1250"": 175}",ccasite
+North American Open,2023,1091,8,"{""Open"": 125, ""Under 2300"": 161, ""Under 2100"": 157, ""Under 1900"": 179, ""Under 1700"": 150, ""Under 1500"": 121, ""Under 1300"": 104, ""Under 1000"": 126}",ccasite
+North American Open,2024,1076,8,"{""Open"": 113, ""Under 2300"": 179, ""Under 2100"": 146, ""Under 1900"": 168, ""Under 1700"": 131, ""Under 1500"": 114, ""Under 1300"": 99, ""Under 1000"": 148}",ccasite
+North American Open,2025,1209,8,"{""Open"": 125, ""Under 2300"": 201, ""Under 2100"": 205, ""Under 1900"": 175, ""Under 1700"": 157, ""Under 1500"": 114, ""Under 1300"": 127, ""Under 1000"": 139}",ccasite
+North American Scholastics,2020,326,4,"{""High School Championship"": 74, ""Jr High Championship"": 75, ""Elementary Championship"": 127, ""Reserve"": 50}",ccasite
+Northeast Open,2003,156,4,"{""Open"": 38, ""Under 2000"": 54, ""Under 1600"": 37, ""Under 1200"": 27}",ccasite
+Northeast Open,2005,131,4,"{""Open"": 30, ""Under 2000"": 36, ""Under 1600"": 41, ""Under 1200"": 26}",ccasite
+Northeast Open,2006,135,4,"{""Open"": 34, ""Under 2000"": 56, ""Under 1600"": 29, ""Under 1200"": 21}",ccasite
+Northeast Open,2007,180,4,"{""Open"": 47, ""Under 2000"": 63, ""Under 1600"": 47, ""Under 1200"": 29}",ccasite
+Northeast Open,2008,168,4,"{""Open"": 24, ""Under 2100"": 50, ""Under 1700"": 49, ""Under 1300"": 53}",ccasite
+Northeast Open,2009,173,4,"{""Open"": 38, ""Under 2000"": 62, ""Under 1600"": 50, ""Under 1200"": 23}",ccasite
+Northeast Open,2010,185,4,"{""Open"": 43, ""Under 2050"": 72, ""Under 1650"": 40, ""Under 1250"": 37}",ccasite
+Northeast Open,2011,139,4,"{""Open"": 38, ""Under 2050"": 49, ""Under 1650"": 37, ""Under 1250"": 20}",ccasite
+Northeast Open,2012,165,4,"{""Open"": 45, ""Under 2050"": 59, ""Under 1650"": 44, ""Under 1250"": 17}",ccasite
+Northeast Open,2013,177,4,"{""Open"": 46, ""Under 2050"": 48, ""Under 1650"": 40, ""Under 1250"": 43}",ccasite
+Northeast Open,2014,166,4,"{""Open"": 36, ""Under 2050"": 56, ""Under 1650"": 37, ""Under 1250"": 37}",ccasite
+Northeast Open,2015,206,4,"{""Open"": 39, ""Under 2050"": 73, ""Under 1650"": 49, ""Under 1250"": 51}",ccasite
+Northeast Open,2016,193,4,"{""Open"": 37, ""Under 2050"": 86, ""Under 1650"": 43, ""Under 1250"": 32}",ccasite
+Northeast Open,2017,209,4,"{""Open"": 31, ""Under 2050"": 77, ""Under 1650"": 53, ""Under 1250"": 52}",ccasite
+Northeast Open,2018,168,4,"{""Major"": 33, ""Under 2050"": 57, ""Under 1650"": 46, ""Under 1250"": 37}",ccasite
+Northeast Open,2019,213,5,"{""Major"": 51, ""Under 2100"": 57, ""Under 1800"": 52, ""Under 1500"": 35, ""Under 1200"": 27}",ccasite
+Northeast Open,2021,277,5,"{""Major"": 69, ""Under 2100"": 62, ""Under 1800"": 42, ""Under 1500"": 53, ""Under 1200"": 51}",ccasite
+Northeast Open,2022,216,5,"{""Major"": 51, ""Under 2100"": 66, ""Under 1800"": 39, ""Under 1500"": 29, ""Under 1200"": 36}",ccasite
+Open at Foxwoods,2019,426,7,"{""Open"": 88, ""Under 2200"": 60, ""Under 2000"": 72, ""Under 1800"": 72, ""Under 1600"": 47, ""Under 1400"": 43, ""Under 1100"": 44}",ccasite
+Open at Foxwoods,2022,462,8,"{""Open"": 63, ""Under 2200"": 88, ""Under 2000"": 72, ""Under 1800"": 57, ""Under 1600"": 62, ""Under 1400"": 46, ""Under 1100"": 66, ""FIDE Under 2400"": 11}",ccasite
+Open at Foxwoods,2023,446,7,"{""Open"": 72, ""Under 2200"": 102, ""Under 2000"": 69, ""Under 1800"": 54, ""Under 1600"": 46, ""Under 1400"": 55, ""Under 1100"": 55}",ccasite
+Open at Foxwoods,2024,456,7,"{""Open"": 84, ""Under 2200"": 119, ""Under 2000"": 72, ""Under 1800"": 64, ""Under 1600"": 48, ""Under 1400"": 41, ""Under 1100"": 44}",ccasite
+Pacific Coast Open,1997,9,1,"{""Standings"": 9}",ccasite
+Pacific Coast Open,1998,146,7,"{""Open"": 23, ""Under 2200"": 20, ""Under 2000"": 15, ""Under 1800"": 28, ""Under 1600/Unr"": 37, ""Under 1400"": 22, ""Under 1200"": 11}",ccasite
+Pacific Coast Open,1999,192,6,"{""Open"": 29, ""Under 2200"": 29, ""Under 2000"": 27, ""Under 1800"": 41, ""Under 1600"": 43, ""Under 1400"": 23}",ccasite
+Pacific Coast Open,2000,183,6,"{""Open"": 30, ""Under 2200"": 23, ""Under 2000"": 24, ""Under 1800"": 41, ""Under 1600"": 30, ""Under 1400"": 35}",ccasite
+Pacific Coast Open,2004,176,7,"{""Open"": 1, ""Under 2200"": 38, ""Under 2000"": 34, ""Under 1800"": 38, ""Under 1600"": 35, ""Under 1400"": 34, ""Under 1200"": 2}",ccasite
+Pacific Coast Open,2005,214,7,"{""Open"": 28, ""Under 2200"": 39, ""Under 2000"": 29, ""Under 1800"": 36, ""Under 1600"": 40, ""Under 1400"": 25, ""Under 1200"": 33}",ccasite
+Pacific Coast Open,2006,192,7,"{""Open"": 25, ""Under 2200"": 37, ""Under 2000"": 32, ""Under 1800"": 26, ""Under 1600"": 32, ""Under 1400"": 29, ""Under 1200"": 26}",ccasite
+Pacific Coast Open,2007,208,7,"{""Open"": 42, ""Under 2100"": 30, ""Under 1900"": 35, ""Under 1700"": 38, ""Under 1500"": 33, ""Under 1200"": 31, ""Under 800"": 14}",ccasite
+Pacific Coast Open,2008,197,7,"{""Open"": 34, ""Under 2100"": 33, ""Under 1900"": 36, ""Under 1700"": 37, ""Under 1500"": 24, ""Under 1300"": 27, ""Under 1000"": 24}",ccasite
+Pacific Coast Open,2009,217,7,"{""Open"": 34, ""Under 2100"": 32, ""Under 1900"": 57, ""Under 1700"": 35, ""Under 1500"": 34, ""Under 1300"": 25, ""Under 1000"": 20}",ccasite
+Pacific Coast Open,2010,207,6,"{""Open"": 35, ""Under 2100"": 40, ""Under 1900"": 46, ""Under 1700"": 33, ""Under 1500"": 39, ""Under 1200"": 34}",ccasite
+Pacific Coast Open,2011,196,7,"{""Open"": 28, ""Under 2100"": 41, ""Under 1900"": 34, ""Under 1700"": 37, ""Under 1500"": 25, ""Under 1200"": 17, ""Under 900"": 14}",ccasite
+Pacific Coast Open,2012,203,7,"{""Open"": 29, ""Under 2100"": 38, ""Under 1900"": 45, ""Under 1700"": 34, ""Under 1500"": 26, ""Under 1200"": 19, ""Under 900"": 12}",ccasite
+Pacific Coast Open,2013,244,7,"{""Open"": 48, ""Under 2100"": 39, ""Under 1900"": 39, ""Under 1700"": 40, ""Under 1500"": 33, ""Adult Under 1200"": 12, ""Junior Under 1200"": 33}",ccasite
+Pacific Coast Open,2014,228,6,"{""Open"": 44, ""Under 2100"": 45, ""Under 1900"": 43, ""Under 1700"": 30, ""Under 1500"": 28, ""Under 1250"": 38}",ccasite
+Pacific Coast Open,2015,220,6,"{""Open"": 36, ""Under 2100"": 43, ""Under 1900"": 41, ""Under 1700"": 36, ""Under 1500"": 27, ""Under 1250"": 53}",ccasite
+Pacific Coast Open,2016,234,6,"{""Open"": 44, ""Under 2100"": 46, ""Under 1900"": 49, ""Under 1700"": 35, ""Under 1500"": 32, ""Under 1250"": 37}",ccasite
+Pacific Coast Open,2017,246,6,"{""Open"": 33, ""Under 2100"": 57, ""Under 1900"": 39, ""Under 1700"": 47, ""Under 1500"": 40, ""Under 1250"": 42}",ccasite
+Pacific Coast Open,2018,256,6,"{""Major"": 37, ""Under 2100"": 41, ""Under 1900"": 45, ""Under 1700"": 45, ""Under 1500"": 46, ""Under 1250"": 48}",ccasite
+Pacific Coast Open,2019,247,6,"{""Major"": 44, ""Under 2100"": 44, ""Under 1900"": 53, ""Under 1700"": 45, ""Under 1500"": 37, ""Under 1250"": 35}",ccasite
+Pacific Coast Open,2020,165,4,"{""Premier"": 29, ""Under 2100"": 78, ""Under 1700"": 34, ""Under 1300"": 24}",ccasite
+Pacific Coast Open,2021,442,6,"{""Premier"": 63, ""Under 2100"": 81, ""Under 1900"": 72, ""Under 1700"": 46, ""Under 1500"": 63, ""Under 1200"": 117}",ccasite
+Pacific Coast Open,2022,342,6,"{""Premier"": 62, ""Under 2100"": 73, ""Under 1900"": 63, ""Under 1700"": 36, ""Under 1500"": 50, ""Under 1200"": 75}",ccasite
+Pacific Coast Open,2023,390,7,"{""Premier"": 60, ""Under 2100"": 75, ""Under 1900"": 49, ""Under 1700"": 50, ""Under 1500"": 36, ""Under 1300"": 61, ""Under 1000"": 67}",ccasite
+Pacific Coast Open,2024,358,7,"{""Premier"": 50, ""Under 2100"": 80, ""Under 1900"": 63, ""Under 1700"": 37, ""Under 1500"": 47, ""Under 1300"": 51, ""Under 1000"": 45}",ccasite
+Pacific Coast Open,2025,370,7,"{""Premier"": 65, ""Under 2100"": 97, ""Under 1900"": 53, ""Under 1700"": 52, ""Under 1500"": 42, ""Under 1300"": 37, ""Under 1000"": 33}",ccasite
+Pacific Coast Open,2026,387,7,"{""Premier"": 80, ""Under 2100"": 96, ""Under 1900"": 62, ""Under 1700"": 40, ""Under 1500"": 32, ""Under 1300"": 42, ""Under 1000"": 42}",ccasite
+Peter Henner Memorial,2017,96,4,"{""Premier"": 23, ""Under 2000"": 32, ""Under 1600"": 17, ""Under 1200"": 26}",ccasite
+Peter Henner Memorial,2018,99,4,"{""Major"": 20, ""Under 2010"": 40, ""Under 1610"": 21, ""Under 1210"": 18}",ccasite
+Peter Henner Memorial,2019,43,3,"{""Open"": 13, ""Under 1850"": 13, ""Under 1450"": 17}",ccasite
+Peter Henner Memorial,2021,108,4,"{""Major"": 22, ""Under 2100"": 29, ""Under 1800"": 28, ""Under 1400"": 29}",ccasite
+Philadelphia International,2009,43,1,"{""Standings"": 43}",ccasite
+Philadelphia International,2010,59,1,"{""Standings"": 59}",ccasite
+Philadelphia International,2011,33,1,"{""Standings"": 33}",ccasite
+Philadelphia International,2012,77,1,"{""Standings"": 77}",ccasite
+Philadelphia International,2016,64,1,"{""Open"": 64}",ccasite
+Philadelphia International,2017,81,1,"{""Open"": 81}",ccasite
+Philadelphia International,2018,143,3,"{""Premier"": 116, ""US Under 2100"": 20, ""US Under 1900"": 9}",ccasite
+Philadelphia International,2019,141,2,"{""Premier"": 91, ""Expert"": 50}",ccasite
+Philadelphia International,2021,96,2,"{""Premier"": 79, ""Expert Section"": 17}",ccasite
+Philadelphia International,2022,82,1,"{""Premier"": 82}",ccasite
+Philadelphia International,2023,99,1,"{""International"": 99}",ccasite
+Philadelphia International,2024,120,1,"{""International"": 120}",ccasite
+Philadelphia International,2025,121,1,"{""International"": 121}",ccasite
+Philadelphia Open,2010,542,8,"{""Open"": 127, ""Under 2100"": 100, ""Under 1900"": 100, ""Under 1700"": 77, ""Under 1500"": 52, ""Under 1300"": 44, ""Under 1300 Vazquez Maccarini"": 8, ""Under 1000"": 34}",ccasite
+Philadelphia Open,2011,477,6,"{""Open"": 105, ""Under 2100"": 96, ""Under 1900"": 79, ""Under 1700"": 68, ""Under 1500"": 75, ""Under 1200"": 54}",ccasite
+Philadelphia Open,2012,510,8,"{""Open"": 80, ""Under 2200"": 80, ""Under 2000"": 88, ""Under 1800"": 74, ""Under 1600"": 43, ""Under 1400"": 36, ""Under 1200"": 51, ""Under 1000"": 58}",ccasite
+Philadelphia Open,2013,529,7,"{""Open"": 71, ""Under 2200"": 83, ""Under 2000"": 84, ""Under 1800"": 74, ""Under 1600"": 91, ""Under 1300"": 76, ""Under 1000"": 50}",ccasite
+Philadelphia Open,2014,571,8,"{""Open"": 83, ""Under 2200"": 95, ""Under 2000"": 99, ""Under 1800"": 84, ""Under 1600"": 83, ""Under 1300"": 66, ""Under 1000/Unrated"": 52, ""Unrated/Provisional"": 9}",ccasite
+Philadelphia Open,2015,587,7,"{""Open"": 105, ""Under 2200"": 102, ""Under 2000"": 95, ""Under 1800"": 89, ""Under 1600"": 63, ""Under 1400"": 62, ""Under 1100"": 71}",ccasite
+Philadelphia Open,2016,553,7,"{""Open"": 87, ""Under 2200"": 98, ""Under 2000"": 105, ""Under 1800"": 92, ""Under 1600"": 59, ""Under 1400"": 54, ""Under 1100"": 58}",ccasite
+Philadelphia Open,2017,605,7,"{""Open"": 91, ""Under 2200"": 101, ""Under 2000"": 103, ""Under 1800"": 89, ""Under 1600"": 80, ""Under 1400"": 66, ""Under 1100"": 75}",ccasite
+Philadelphia Open,2018,572,7,"{""Open"": 95, ""Under 2200"": 94, ""Under 2000"": 95, ""Under 1800"": 77, ""Under 1600"": 75, ""Under 1400"": 56, ""Under 1100"": 80}",ccasite
+Philadelphia Open,2019,234,6,"{""Major"": 20, ""Under 2000"": 66, ""Under 1800"": 34, ""Under 1600"": 38, ""Under 1400"": 42, ""Under 1100"": 35}",ccasite
+Philadelphia Open,2020,143,2,"{""Open"": 83, ""Under 1800/Unr"": 60}",ccasite
+Philadelphia Open,2021,254,5,"{""Major"": 31, ""Under 2100"": 41, ""Under 1800"": 60, ""Under 1500"": 49, ""Under 1200"": 81}",ccasite
+Philadelphia Open,2022,269,5,"{""Major"": 48, ""Under 2100"": 71, ""Under 1800"": 49, ""Under 1500"": 51, ""Under 1200"": 57}",ccasite
+Philadelphia Open,2023,272,4,"{""Major"": 67, ""Under 2100"": 86, ""Under 1800"": 46, ""Under 1500"": 77}",ccasite
+Philadelphia Open,2024,309,4,"{""Major"": 67, ""Under 2100"": 93, ""Under 1800"": 63, ""Under 1500"": 88}",ccasite
+Philadelphia Open,2025,315,4,"{""Major"": 79, ""Under 2100"": 102, ""Under 1800"": 74, ""Under 1500"": 64}",ccasite
+Pittsburgh Open,1997,25,1,"{""Open"": 25}",ccasite
+Pittsburgh Open,2004,192,9,"{""Open"": 39, ""Under 2200"": 12, ""Under 2000"": 24, ""Under 1800"": 29, ""Under 1600"": 29, ""Under 1400"": 17, ""Under 1200"": 17, ""Under 1000"": 15, ""Under 800"": 10}",ccasite
+Pittsburgh Open,2005,122,4,"{""Open"": 28, ""Under 2000"": 31, ""Under 1600"": 36, ""Under 1200"": 27}",ccasite
+Pittsburgh Open,2011,148,5,"{""Open"": 30, ""Under 2100"": 33, ""Under 1800"": 38, ""Under 1500"": 27, ""Under 1200"": 20}",ccasite
+Pittsburgh Open,2012,149,5,"{""Open"": 26, ""Under 2100"": 37, ""Under 1800"": 33, ""Under 1500"": 29, ""Under 1200"": 24}",ccasite
+Pittsburgh Open,2013,151,5,"{""Open"": 25, ""Under 2100"": 28, ""Under 1800"": 36, ""Under 1500"": 26, ""Under 1200"": 36}",ccasite
+Pittsburgh Open,2014,106,5,"{""Open"": 23, ""Under 2100"": 22, ""Under 1800"": 26, ""Under 1500"": 19, ""Under 1200"": 16}",ccasite
+Pittsburgh Open,2015,139,4,"{""Open"": 36, ""Under 2100"": 39, ""Under 1700"": 35, ""Under 1300"": 31}",ccasite
+Pittsburgh Open,2016,108,5,"{""Open"": 24, ""Under 2100"": 29, ""Under 1800"": 25, ""Under 1500"": 17, ""Under 1200"": 20}",ccasite
+Pittsburgh Open,2017,110,5,"{""Open"": 25, ""Under 2100"": 28, ""Under 1800"": 24, ""Under 1500"": 22, ""Under 1200"": 12}",ccasite
+Pittsburgh Open,2018,139,5,"{""Major"": 23, ""Under 2100"": 26, ""Under 1800"": 25, ""Under 1500"": 39, ""Under 1200"": 31}",ccasite
+Pittsburgh Open,2019,177,5,"{""Major"": 36, ""Under 2100"": 46, ""Under 1800"": 41, ""Under 1500"": 34, ""Under 1200"": 29}",ccasite
+Pittsburgh Open,2020,140,2,"{""Open"": 87, ""Under 1700"": 53}",ccasite
+Pittsburgh Open,2021,224,5,"{""Major"": 48, ""Under 2100"": 42, ""Under 1800"": 36, ""Under 1500"": 42, ""Under 1200"": 56}",ccasite
+Pittsburgh Open,2022,189,5,"{""Major"": 27, ""Under 2100"": 51, ""Under 1800"": 33, ""Under 1500"": 32, ""Under 1200"": 50}",ccasite
+Pittsburgh Open,2023,180,5,"{""Major"": 29, ""Under 2100"": 39, ""Under 1800"": 44, ""Under 1500"": 27, ""Under 1200"": 46}",ccasite
+Pittsburgh Open,2024,160,5,"{""Major"": 21, ""Under 2100"": 49, ""Under 1800"": 38, ""Under 1500"": 26, ""Under 1200"": 35}",ccasite
+Pittsburgh Open,2025,150,5,"{""Major"": 30, ""Under 2100"": 37, ""Under 1800"": 27, ""Under 1500"": 20, ""Under 1200"": 39}",ccasite
+Pittsburgh Open,2026,160,5,"{""Major"": 49, ""Under 2100"": 40, ""Under 1800"": 28, ""Under 1500"": 21, ""Under 1200"": 22}",chessevents
+Princeton Open,2025,558,7,"{""Open"": 105, ""Under 2200"": 129, ""Under 2000"": 69, ""Under 1800"": 73, ""Under 1600"": 52, ""Under 1400"": 65, ""Under 1100"": 77}",ccasite
+Schenectady Open,2016,73,3,"{""Open"": 25, ""Under 1850"": 20, ""Under 1450"": 29}",ccasite
+Schenectady Open,2019,45,3,"{""Open"": 9, ""Under 1850"": 14, ""Under 1450"": 23}",ccasite
+Southern Chess Congress,2016,230,7,"{""Premier"": 18, ""Under 2200"": 33, ""Under 2000"": 40, ""Under 1800"": 42, ""Under 1600"": 31, ""Under 1400"": 27, ""Under 1100"": 39}",ccasite
+Southern Class,2021,106,4,"{""Class B"": 29, ""Class C"": 20, ""Master/Expert"": 26, ""Class D/E"": 31}",ccasite
+Southern Class,2022,203,7,"{""Master"": 16, ""Expert"": 27, ""Class A"": 39, ""Class B"": 28, ""Class C"": 31, ""Class D"": 20, ""Class E"": 50}",ccasite
+Southern Class,2023,239,6,"{""Expert"": 25, ""Class A"": 39, ""Class B"": 42, ""Class C"": 32, ""Class D"": 39, ""Class E"": 64}",ccasite
+Southern Class,2024,268,7,"{""Master"": 31, ""Expert"": 35, ""Class A"": 42, ""Class B"": 34, ""Class C"": 26, ""Class D"": 40, ""Class E"": 60}",ccasite
+Southern Class,2025,168,7,"{""Master"": 16, ""Expert"": 22, ""Class A"": 28, ""Class B"": 26, ""Class C"": 27, ""Class D"": 22, ""Class E"": 28}",ccasite
+Southern Class,2026,196,7,"{""Master"": 31, ""Expert"": 47, ""Class A"": 32, ""Class B"": 26, ""Class C"": 21, ""Class D"": 17, ""Class E"": 32}",ccasite
+Southern Class Championships,2010,136,6,"{""Class A"": 21, ""Class B"": 20, ""Class C"": 24, ""Class D"": 26, ""Class E"": 20, ""Master-Expert"": 32}",ccasite
+Southern Class Championships,2012,186,7,"{""Master"": 14, ""Expert"": 17, ""Class A"": 33, ""Class B"": 37, ""Class C"": 29, ""Class D"": 24, ""Class E"": 32}",ccasite
+Southern Class Championships,2013,212,7,"{""Master"": 11, ""Expert"": 20, ""Class A"": 28, ""Class B"": 30, ""Class C"": 36, ""Class D"": 28, ""Class E"": 59}",ccasite
+Southern Class Championships,2014,201,7,"{""Master"": 13, ""Expert"": 17, ""Class A"": 37, ""Class B"": 30, ""Class C"": 30, ""Class D"": 32, ""Class E"": 42}",ccasite
+Southern Class Championships,2015,213,7,"{""Master"": 10, ""Expert"": 18, ""Class A"": 27, ""Class B"": 44, ""Class C"": 41, ""Class D"": 23, ""Class E"": 64}",ccasite
+Southern Class Championships,2016,184,7,"{""Master"": 15, ""Expert"": 15, ""Class A"": 32, ""Class B"": 29, ""Class C"": 29, ""Class D"": 26, ""Class E"": 38}",ccasite
+Southern Class Championships,2017,218,7,"{""Master"": 14, ""Expert"": 25, ""Class A"": 34, ""Class B"": 47, ""Class C"": 23, ""Class D"": 31, ""Class E"": 54}",ccasite
+Southern Class Championships,2018,188,7,"{""Master"": 11, ""Expert"": 24, ""Class A"": 35, ""Class B"": 44, ""Class C"": 20, ""Class D"": 27, ""Class E"": 34}",ccasite
+Southern Class Championships,2019,213,7,"{""Master"": 15, ""Expert"": 23, ""Class A"": 36, ""Class B"": 39, ""Class C"": 31, ""Class D"": 30, ""Class E"": 47}",ccasite
+Southern Open,1998,239,8,"{""Open"": 21, ""Under 2200"": 27, ""Under 2000"": 31, ""Under 1800"": 37, ""Under 1600/UNRATED"": 41, ""Under 1400"": 37, ""Under 1200"": 25, ""Scholastic Novice"": 20}",ccasite
+Southern Open,1999,200,5,"{""Open"": 43, ""Under 2000"": 41, ""Under 1800"": 38, ""Under 1600"": 48, ""Under 1400"": 30}",ccasite
+Southern Open,2000,252,6,"{""Open"": 46, ""Under 2000"": 26, ""Under 1800"": 37, ""Under 1600"": 53, ""Under 1400"": 40, ""Under 1200"": 50}",ccasite
+Southern Open,2001,205,6,"{""Open"": 33, ""Under 2000"": 25, ""Under 1800"": 36, ""Under 1600"": 52, ""Under 1400"": 18, ""Under 1200"": 41}",ccasite
+Southern Open,2002,238,7,"{""Open"": 22, ""Under 2200"": 23, ""Under 2000"": 33, ""Under 1800"": 29, ""Under 1600/Unr"": 53, ""Under 1400"": 37, ""Under 1200"": 41}",ccasite
+Southern Open,2004,184,7,"{""Open"": 23, ""Under 2200"": 17, ""Under 2000"": 19, ""Under 1800"": 43, ""Under 1600"": 35, ""Under 1400"": 25, ""Under 1200"": 29}",ccasite
+Southern Open,2006,166,6,"{""Open"": 21, ""Under 2000"": 24, ""Under 1800"": 44, ""Under 1600"": 32, ""Under 1400"": 23, ""Under 1200"": 30}",ccasite
+Southern Open,2007,157,6,"{""Open"": 24, ""Under 2000"": 24, ""Under 1800"": 35, ""Under 1600"": 37, ""Under 1400"": 20, ""Under 1200"": 23}",ccasite
+Southern Open,2008,171,4,"{""Open"": 21, ""Under 2100"": 46, ""Under 1700"": 60, ""Under 1300"": 53}",ccasite
+Southern Open,2009,130,4,"{""Open"": 25, ""Under 2100"": 27, ""Under 1700"": 53, ""Under 1300"": 31}",ccasite
+Southern Open,2010,192,6,"{""Open"": 29, ""Under 2100"": 19, ""Under 1900"": 35, ""Under 1700"": 30, ""Under 1500"": 43, ""Under 1200"": 45}",ccasite
+Southern Open,2011,180,5,"{""Open"": 24, ""Under 2100"": 40, ""Under 1800"": 38, ""Under 1500"": 42, ""Under 1200"": 36}",ccasite
+Southern Open,2012,227,5,"{""Open"": 25, ""Under 2100"": 43, ""Under 1800"": 52, ""Under 1500"": 54, ""Under 1200"": 53}",ccasite
+Southern Open,2013,235,5,"{""Open"": 29, ""Under 2100"": 46, ""Under 1800"": 53, ""Under 1500"": 57, ""Under 1200"": 50}",ccasite
+Southern Open,2014,182,4,"{""Open"": 24, ""Under 2100"": 56, ""Under 1700"": 66, ""Under 1300"": 36}",ccasite
+Southern Open,2015,237,4,"{""Open"": 32, ""Under 2100"": 64, ""Under 1700"": 81, ""Under 1300"": 66}",ccasite
+Southern Open,2016,222,4,"{""Open"": 30, ""Under 2100"": 69, ""Under 1700"": 62, ""Under 1300"": 67}",ccasite
+Southern Open,2017,230,5,"{""Open"": 23, ""Under 2100"": 53, ""Under 1800"": 47, ""Under 1500"": 57, ""Under 1200"": 60}",ccasite
+Southern Open,2018,244,5,"{""Major"": 20, ""Under 2100"": 51, ""Under 1800"": 64, ""Under 1500"": 45, ""Under 1200"": 70}",ccasite
+Southern Open,2019,191,5,"{""Major"": 20, ""Under 2100"": 35, ""Under 1800"": 43, ""Under 1500"": 50, ""Under 1200"": 47}",ccasite
+Southern Open,2020,114,4,"{""Major"": 41, ""Under 2000/Unr"": 35, ""Under 1700/Unr"": 20, ""Under 1400/Unr"": 18}",ccasite
+Southern Open,2021,367,5,"{""Major"": 47, ""Under 2100"": 77, ""Under 1800"": 65, ""Under 1500"": 81, ""Under 1200"": 97}",ccasite
+Southern Open,2022,265,5,"{""Major"": 33, ""Under 2100"": 53, ""Under 1800"": 62, ""Under 1500"": 49, ""Under 1200"": 70}",ccasite
+Southern Open,2023,299,5,"{""Major"": 45, ""Under 2100"": 63, ""Under 1800"": 69, ""Under 1500"": 44, ""Under 1200"": 87}",ccasite
+Southern Open,2024,224,5,"{""Major"": 39, ""Under 2100"": 48, ""Under 1800"": 47, ""Under 1500"": 32, ""Under 1200"": 65}",ccasite
+Southern Open,2025,187,5,"{""Major"": 40, ""Under 2100"": 41, ""Under 1800"": 34, ""Under 1500"": 34, ""Under 1200"": 43}",ccasite
+Southern Open,2026,203,5,"{""Major"": 46, ""Under 2100"": 44, ""Under 1800"": 45, ""Under 1500"": 32, ""Under 1200"": 39}",ccasite
+Southwest Class,2015,286,7,"{""Master"": 56, ""Expert"": 41, ""Class A"": 42, ""Class B"": 30, ""Class C"": 24, ""Class D"": 29, ""Class E"": 64}",ccasite
+Southwest Class,2016,302,7,"{""Master"": 61, ""Expert"": 50, ""Class A"": 45, ""Class B"": 41, ""Class C"": 48, ""Class D"": 22, ""Class E"": 50}",ccasite
+Southwest Class,2017,338,7,"{""Master"": 75, ""Expert"": 55, ""Class A"": 47, ""Class B"": 68, ""Class C"": 44, ""Class D"": 35, ""Class E"": 43}",ccasite
+Southwest Class,2018,355,7,"{""Master"": 81, ""Expert"": 51, ""Class A"": 59, ""Class B"": 58, ""Class C"": 50, ""Class D"": 33, ""Class E"": 41}",ccasite
+Southwest Class,2019,393,7,"{""Master"": 84, ""Expert"": 61, ""Class A"": 57, ""Class B"": 55, ""Class C"": 53, ""Class D"": 46, ""Class E"": 55}",ccasite
+Southwest Class,2020,378,7,"{""Master"": 88, ""Expert"": 42, ""Class A"": 56, ""Class B"": 63, ""Class C"": 54, ""Class D"": 45, ""Class E"": 45}",ccasite
+Southwest Class,2021,243,6,"{""Master"": 27, ""Expert"": 26, ""Class A"": 47, ""Class B"": 46, ""Class C"": 39, ""Class D/E"": 59}",ccasite
+Southwest Class Championships,2022,377,7,"{""Master"": 75, ""Expert"": 73, ""Class A"": 59, ""Class B"": 60, ""Class C"": 43, ""Class D"": 30, ""Class E"": 43}",ccasite
+Southwest Class Championships,2023,413,7,"{""Master"": 90, ""Expert"": 60, ""Class A"": 73, ""Class B"": 65, ""Class C"": 63, ""Class D"": 26, ""Class E"": 48}",ccasite
+Southwest Class Championships,2024,425,7,"{""Master"": 104, ""Expert"": 59, ""Class A"": 84, ""Class B"": 52, ""Class C"": 46, ""Class D"": 32, ""Class E"": 55}",ccasite
+Southwest Class Championships,2025,473,7,"{""Master"": 112, ""Expert"": 82, ""Class A"": 72, ""Class B"": 66, ""Class C"": 54, ""Class D"": 43, ""Class E"": 50}",ccasite
+Southwest Class Championships,2026,473,7,"{""Master"": 116, ""Expert"": 86, ""Class A"": 81, ""Class B"": 72, ""Class C"": 51, ""Class D"": 27, ""Class E"": 47}",ccasite
+Stamford Open,2016,147,6,"{""Open"": 38, ""Under 2010"": 37, ""Under 1760"": 29, ""Under 1510"": 17, ""Under 1260"": 19, ""Under 1000"": 14}",ccasite
+Stamford Open,2017,171,5,"{""Open"": 40, ""Under 2010"": 38, ""Under 1710"": 39, ""Under 1410"": 30, ""Under 1110"": 32}",ccasite
+Stamford Open,2018,142,5,"{""Major"": 28, ""Under 2010"": 43, ""Under 1710"": 38, ""Under 1410"": 21, ""Under 1110"": 17}",ccasite
+Stamford Open,2019,182,4,"{""Major"": 51, ""Under 2010"": 52, ""Under 1710"": 47, ""Under 1310"": 37}",ccasite
+Washington Chess Congress,2014,173,4,"{""Premier"": 38, ""Under 2100"": 62, ""Under 1700"": 44, ""Under 1300"": 29}",ccasite
+Washington Chess Congress,2015,198,4,"{""Premier"": 47, ""Under 2100"": 84, ""Under 1700"": 38, ""Under 1300"": 32}",ccasite
+Washington Chess Congress,2016,197,4,"{""Premier"": 52, ""Under 2100"": 66, ""Under 1700"": 49, ""Under 1300"": 36}",ccasite
+Washington Chess Congress,2017,212,4,"{""Premier"": 48, ""Under 2100"": 63, ""Under 1700"": 55, ""Under 1300"": 50}",ccasite
+Washington Chess Congress,2018,231,4,"{""Premier"": 68, ""Under 2100"": 71, ""Under 1700"": 58, ""Under 1300"": 38}",ccasite
+Washington Chess Congress,2019,274,4,"{""Premier"": 85, ""Under 2100"": 80, ""Under 1700"": 68, ""Under 1300"": 45}",ccasite
+Washington Chess Congress,2021,328,4,"{""Premier"": 60, ""Under 2200"": 108, ""Under 1800"": 57, ""Under 1400"": 103}",ccasite
+Washington Chess Congress,2023,243,6,"{""Premier"": 46, ""Under 2200"": 64, ""Under 1900"": 48, ""Under 1600"": 37, ""Under 1300"": 29, ""Under 1000"": 26}",ccasite
+Western Action,2002,37,1,"{""Standings"": 37}",ccasite
+Western Class,2021,181,6,"{""Master"": 26, ""Expert"": 33, ""Class A"": 31, ""Class B"": 35, ""Class C"": 34, ""Class D/E"": 22}",ccasite
+Western Class,2022,343,7,"{""Master"": 36, ""Expert"": 51, ""Class A"": 49, ""Class B"": 56, ""Class C"": 32, ""Class D"": 43, ""Class E"": 83}",ccasite
+Western Class,2023,340,7,"{""Master"": 37, ""Expert"": 43, ""Class A"": 60, ""Class B"": 43, ""Class C"": 53, ""Class D"": 39, ""Class E"": 74}",ccasite
+Western Class Championships,1998,318,9,"{""Masters"": 43, ""Experts"": 39, ""Class A"": 33, ""Class B"": 61, ""Class C"": 57, ""Class D"": 19, ""Class E"": 36, ""Unrated Players"": 14, ""Class F"": 16}",ccasite
+Western Class Championships,1999,256,8,"{""Masters"": 19, ""Experts"": 28, ""Class A"": 31, ""Class B"": 54, ""Class C"": 43, ""Class D"": 44, ""Class E"": 28, ""Unrateds"": 9}",ccasite
+Western Class Championships,2002,234,7,"{""Master"": 29, ""Expert"": 28, ""Class A"": 32, ""Class B"": 52, ""Class C"": 42, ""Class D"": 26, ""Class E"": 25}",ccasite
+Western Class Championships,2003,236,7,"{""Master"": 36, ""Expert"": 36, ""Class A"": 37, ""Class B"": 49, ""Class C"": 38, ""Class D"": 24, ""Class E"": 16}",ccasite
+Western Class Championships,2005,202,7,"{""Master"": 27, ""Expert"": 31, ""Class A"": 33, ""Class B"": 31, ""Class C"": 30, ""Class D"": 27, ""Class E"": 23}",ccasite
+Western Class Championships,2006,174,7,"{""Master"": 23, ""Expert"": 30, ""Class A"": 26, ""Class B"": 33, ""Class C"": 22, ""Class D"": 22, ""Class E"": 18}",ccasite
+Western Class Championships,2007,25,1,"{""Master"": 25}",ccasite
+Western Class Championships,2008,180,10,"{""Master"": 23, ""Expert"": 29, ""Class A"": 25, ""Class B"": 16, ""Class C"": 14, ""Class D"": 13, ""Class E"": 26, ""1700-1899"": 7, ""1400-1699"": 15, ""Under 900"": 12}",ccasite
+Western Class Championships,2009,201,8,"{""Master"": 26, ""Expert"": 29, ""Class A"": 31, ""Class B"": 28, ""Class C"": 34, ""Class D"": 25, ""Class E"": 19, ""Under 1000"": 22}",ccasite
+Western Class Championships,2010,208,8,"{""Master"": 32, ""Expert"": 23, ""Class A"": 41, ""Class B"": 32, ""Class C"": 30, ""Class D"": 30, ""Class E"": 12, ""Under 900"": 16}",ccasite
+Western Class Championships,2011,227,7,"{""Master"": 33, ""Expert"": 34, ""Class A"": 35, ""Class B"": 35, ""Class C"": 43, ""Class D"": 20, ""Class E"": 27}",ccasite
+Western Class Championships,2012,245,7,"{""Master"": 34, ""Expert"": 36, ""Class A"": 37, ""Class B"": 45, ""Class C"": 42, ""Class D"": 18, ""Class E"": 33}",ccasite
+Western Class Championships,2013,232,7,"{""Master"": 24, ""Expert"": 34, ""Class A"": 34, ""Class B"": 47, ""Class C"": 40, ""Class D"": 26, ""Class E"": 27}",ccasite
+Western Class Championships,2014,215,7,"{""Master"": 29, ""Expert"": 43, ""Class A"": 33, ""Class B"": 47, ""Class C"": 27, ""Class D"": 17, ""Class E"": 19}",ccasite
+Western Class Championships,2015,207,7,"{""Master"": 29, ""Expert"": 32, ""Class A"": 44, ""Class B"": 31, ""Class C"": 24, ""Class D"": 26, ""Class E"": 27}",ccasite
+Western Class Championships,2016,229,7,"{""Master"": 28, ""Expert"": 34, ""Class A"": 45, ""Class B"": 49, ""Class C"": 33, ""Class D"": 17, ""Class E"": 33}",ccasite
+Western Class Championships,2017,259,7,"{""Master"": 31, ""Expert"": 43, ""Class A"": 45, ""Class B"": 43, ""Class C"": 44, ""Class D"": 29, ""Class E"": 33}",ccasite
+Western Class Championships,2018,260,7,"{""Master"": 34, ""Expert"": 46, ""Class A"": 41, ""Class B"": 47, ""Class C"": 31, ""Class D"": 28, ""Class E"": 41}",ccasite
+Western Class Championships,2019,274,7,"{""Master"": 40, ""Expert"": 44, ""Class A"": 50, ""Class B"": 48, ""Class C"": 43, ""Class D"": 24, ""Class E"": 36}",ccasite
+Western Class Championships,2020,190,7,"{""Master"": 31, ""Expert"": 30, ""Class A"": 32, ""Class B"": 42, ""Class C"": 22, ""Class D"": 19, ""Class E"": 17}",ccasite
+Western Class Championships,2024,411,7,"{""Master"": 45, ""Expert"": 51, ""Class A"": 67, ""Class B"": 55, ""Class C"": 45, ""Class D"": 53, ""Class E"": 102}",ccasite
+Western Class Championships,2025,383,7,"{""Master"": 47, ""Expert"": 45, ""Class A"": 73, ""Class B"": 65, ""Class C"": 49, ""Class D"": 39, ""Class E"": 72}",ccasite
+Western Class Championships,2026,308,7,"{""Master"": 32, ""Expert"": 48, ""Class A"": 63, ""Class B"": 58, ""Class C"": 36, ""Class D"": 26, ""Class E"": 50}",ccasite
+World Open,1986,229,1,"{""Open"": 229}",ccasite
+World Open,1992,1126,6,"{""Open"": 220, ""U2200"": 206, ""U2000"": 241, ""U1800"": 263, ""U1600"": 284, ""U1200"": 41}",ccasite
+World Open,1993,1135,5,"{""Open"": 222, ""Under 2200"": 203, ""Under 2000"": 239, ""Under 1800"": 258, ""Under 1600"": 309}",ccasite
+World Open,1994,1410,7,"{""Open"": 237, ""Under 2200"": 191, ""Under 2000"": 240, ""Under 1800"": 282, ""Under 1600"": 258, ""Under 1400"": 168, ""Unrated"": 34}",ccasite
+World Open,1995,1299,7,"{""Open"": 234, ""Under 2200"": 183, ""Under 2000"": 269, ""Under 1800"": 276, ""Under 1600"": 234, ""Under 1400"": 201, ""Unrated"": 38}",ccasite
+World Open,1996,1337,7,"{""Open"": 235, ""Under 2200"": 158, ""Under 2000"": 233, ""Under 1800"": 256, ""Under 1600"": 234, ""Under 1400"": 203, ""Unrated"": 18}",ccasite
+World Open,1997,1380,9,"{""Open"": 227, ""Under 2200"": 160, ""Under 2000"": 199, ""Under 1800"": 245, ""Under 1600"": 241, ""Under 1400"": 153, ""Under 1200"": 65, ""Under 1000"": 49, ""Unrated"": 41}",ccasite
+World Open,1998,1463,7,"{""Open"": 221, ""Under 2200"": 155, ""Under 2000"": 235, ""Under 1800"": 270, ""Under 1600"": 259, ""Under 1400"": 291, ""Unrated Players"": 32}",ccasite
+World Open,1999,1496,7,"{""Open"": 228, ""Under 2200"": 166, ""Under 2000 2"": 209, ""Under 1800"": 293, ""Under 1600"": 265, ""Under 1400"": 297, ""Unrated"": 38}",ccasite
+World Open,2000,1197,7,"{""Open"": 182, ""Under 2200"": 146, ""Under 2000"": 209, ""Under 1800"": 220, ""Under 1600"": 144, ""Under 1400"": 269, ""Unrated"": 27}",ccasite
+World Open,2001,1397,8,"{""Open Section"": 234, ""Under 2200 Section"": 164, ""Under 2000 Section"": 198, ""Under 1800 Section"": 230, ""Under 1600 Section"": 236, ""Under 1400 Section"": 172, ""Under 1200 Section"": 122, ""Unrated Section"": 41}",old scraper
+World Open,2002,1208,8,"{""Open"": 216, ""Under 2200"": 164, ""Under 2000"": 224, ""Under 1800"": 249, ""Under 1600"": 218, ""Under 1400"": 157, ""Under 1200"": 90, ""Unrated"": 33}",ccasite
+World Open,2004,1328,8,"{""Open"": 234, ""Under 2200"": 175, ""Under 2000"": 206, ""Under 1800"": 237, ""Under 1600"": 213, ""Under 1400"": 137, ""Under 1200"": 102, ""Unrated"": 24}",ccasite
+World Open,2005,1064,8,"{""Open"": 204, ""Under 2200"": 136, ""Under 2000"": 200, ""Under 1800"": 198, ""Under 1600"": 173, ""Under 1400"": 99, ""Under 1200"": 95, ""Unrated"": 23}",ccasite
+World Open,2006,1461,7,"{""Open"": 237, ""Under 2200"": 202, ""Under 2000"": 279, ""Under 1800"": 224, ""Under 1600"": 244, ""Under 1400"": 143, ""Under 1200"": 132}",ccasite
+World Open,2007,1228,9,"{""Open"": 92, ""Under 2400"": 131, ""Under 2200"": 170, ""Under 2000"": 236, ""Under 1800"": 217, ""Under 1600"": 157, ""Under 1400"": 143, ""Under 1100"": 52, ""Under 800"": 30}",ccasite
+World Open,2008,1442,12,"{""Open"": 118, ""Under 2400"": 128, ""Under 2200"": 193, ""Under 2000"": 218, ""Under 1800"": 236, ""Under 1600"": 185, ""Under 1400"": 127, ""Under 1200"": 99, ""Under 900"": 45, ""Under 600"": 28, ""Unrated"": 26, ""Standings"": 39}",ccasite
+World Open,2009,1349,9,"{""Open"": 98, ""Under 2400"": 129, ""Under 2200"": 186, ""Under 2000"": 225, ""Under 1800"": 212, ""Under 1600"": 169, ""Under 1400"": 128, ""Under 1200"": 81, ""Under 900/Unrated"": 121}",ccasite
+World Open,2010,1146,9,"{""Open"": 119, ""Under 2400"": 121, ""Under 2200"": 158, ""Under 2000"": 200, ""Under 1800"": 179, ""Under 1600"": 139, ""Under 1400"": 87, ""Under 1200"": 78, ""Under 900/Unrated"": 65}",ccasite
+World Open,2011,1117,7,"{""Open"": 94, ""Under 2400"": 139, ""Under 2200"": 177, ""Under 2000"": 205, ""Under 1800"": 170, ""Under 1600"": 209, ""Under 1300"": 123}",ccasite
+World Open,2012,1260,9,"{""Open"": 118, ""Under 2400"": 113, ""Under 2200"": 184, ""Under 2000"": 234, ""Under 1800"": 179, ""Under 1600"": 145, ""Under 1400"": 103, ""Under 1200"": 96, ""Under 900"": 88}",ccasite
+World Open,2013,1349,10,"{""Open"": 114, ""Under 2400"": 128, ""Under 2300"": 21, ""Under 2200"": 217, ""Under 2000"": 217, ""Under 1800"": 204, ""Under 1600"": 164, ""Under 1400"": 108, ""Under 1200"": 96, ""Under 900"": 80}",ccasite
+World Open,2014,1206,10,"{""Open"": 95, ""Under 2400/Unrated"": 135, ""Under 2200"": 197, ""Under 2000"": 211, ""Under 1800"": 186, ""Under 1600"": 139, ""Under 1400"": 80, ""Under 1200"": 72, ""Under 900/Unrated"": 71, ""Unrated/Provisional"": 20}",ccasite
+World Open,2015,1016,8,"{""Open"": 211, ""Under 2200"": 186, ""Under 2000"": 216, ""Under 1800"": 179, ""Under 1600"": 123, ""Under 1400"": 73, ""Under 1200"": 84, ""Unrated"": 20}",ccasite
+World Open,2016,1281,9,"{""Open"": 222, ""Under 2200"": 225, ""Under 2000"": 233, ""Under 1800"": 209, ""Under 1600"": 122, ""Under 1400"": 118, ""Under 1200"": 70, ""Under 900"": 54, ""Unrated"": 28}",ccasite
+World Open,2017,1234,9,"{""Open"": 216, ""Under 2200"": 244, ""Under 2000"": 247, ""Under 1800"": 195, ""Under 1600"": 155, ""Under 1400"": 110, ""Under 1200"": 86, ""Under 900"": 59, ""Unrated"": 12}",ccasite
+World Open,2018,1268,9,"{""Open"": 200, ""Under 2200"": 204, ""Under 2000"": 220, ""Under 1800"": 211, ""Under 1600"": 171, ""Under 1400"": 82, ""Under 1200"": 90, ""Under 900"": 74, ""Unrated"": 16}",ccasite
+World Open,2019,1437,9,"{""Open"": 227, ""Under 2200"": 258, ""Under 2000"": 230, ""Under 1800"": 226, ""Under 1600"": 165, ""Under 1400"": 125, ""Under 1200"": 109, ""Under 900"": 84, ""Unrated"": 13}",ccasite
+World Open,2020,962,7,"{""Open"": 122, ""Major"": 39, ""Under 2200"": 288, ""Under 2000"": 58, ""Under 1800"": 265, ""Under 1600"": 52, ""Under 1400"": 234}",ccasite
+World Open,2021,1100,7,"{""Open"": 196, ""Under 2200"": 202, ""Under 2000"": 173, ""Under 1800"": 149, ""Under 1600"": 123, ""Under 1400"": 140, ""Under 1100"": 117}",ccasite
+World Open,2022,1495,8,"{""Open"": 225, ""Under 2200"": 286, ""Under 2000"": 227, ""Under 1800"": 191, ""Under 1600"": 169, ""Under 1400"": 138, ""Under 1200"": 120, ""Under 1000"": 166}",ccasite
+World Open Under 13,2009,26,1,"{""Standings"": 26}",ccasite
+World Open Under 13,2020,205,4,"{""Open"": 83, ""Under 1400"": 58, ""Under 1000"": 34, ""Under 600"": 31}",ccasite
+World Open lower sections,2023,138,2,"{""Under 1200"": 53, ""Under 1000"": 89}",ccasite
+World Open lower sections,2024,145,2,"{""Under 1200"": 59, ""Under 1000"": 89}",ccasite
+World Open lower sections,2025,125,2,"{""Under 1200"": 54, ""Under 1000"": 72}",ccasite
+World Open lower sections,2026,96,2,"{""Under 1200"": 44, ""Under 1000"": 52}",ccasite
+World Open top 6 sections,2023,1302,6,"{""Open"": 271, ""Under 2200"": 293, ""Under 2000"": 225, ""Under 1800"": 204, ""Under 1600"": 165, ""Under 1400"": 219}",ccasite
+World Open top 6 sections,2024,1173,6,"{""Open"": 244, ""Under 2200"": 292, ""Under 2000"": 227, ""Under 1800"": 177, ""Under 1600"": 147, ""Under 1400"": 152}",ccasite
+World Open top 6 sections,2025,1141,6,"{""Open"": 223, ""Under 2200"": 304, ""Under 2000"": 208, ""Under 1800"": 181, ""Under 1600"": 162, ""Under 1400"": 140}",ccasite
+World Open top 6 sections,2026,1083,6,"{""Open"": 231, ""Under 2200"": 263, ""Under 2000"": 218, ""Under 1800"": 179, ""Under 1600"": 131, ""Under 1400"": 134}",ccasite

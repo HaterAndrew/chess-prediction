@@ -1,136 +1,448 @@
 family,year,prereg_count,standings_count,walk_in_ratio,walk_in_delta,walk_in_pct,tournament_type
-Atlantic Open,2025,238,311,1.3067,73,30.7,open
-Boardwalk Open,2015,115,151,1.313,36,31.3,open
-Boston Chess Congress,2014,172,276,1.6047,104,60.5,open
-Boston Chess Congress,2015,225,315,1.4,90,40.0,open
-Boston Chess Congress,2016,242,364,1.5041,122,50.4,open
-Boston Chess Congress,2017,208,347,1.6683,139,66.8,open
-Boston Chess Congress,2018,237,385,1.6245,148,62.4,open
-Boston Chess Congress,2019,270,427,1.5815,157,58.1,open
-Boston Chess Congress,2026,359,413,1.1504,54,15.0,open
-Bradley Open,2013,131,182,1.3893,51,38.9,open
-Bradley Open,2014,138,212,1.5362,74,53.6,open
-Bradley Open,2015,169,283,1.6746,114,67.5,open
-Bradley Open,2016,148,267,1.8041,119,80.4,open
-Bradley Open,2017,204,345,1.6912,141,69.1,open
-Bradley Open,2018,173,305,1.763,132,76.3,open
-Bradley Open,2019,171,288,1.6842,117,68.4,open
-Bradley Open,2025,246,285,1.1585,39,15.9,open
-Central California Open,2025,179,220,1.2291,41,22.9,open
-Central New York Open,2023,139,189,1.3597,50,36.0,open
-Chicago Class,2025,294,366,1.2449,72,24.5,class
-Cleveland Open,2013,207,312,1.5072,105,50.7,open
-Cleveland Open,2014,195,339,1.7385,144,73.8,open
-Cleveland Open,2015,197,330,1.6751,133,67.5,open
-Cleveland Open,2016,190,318,1.6737,128,67.4,open
-Cleveland Open,2017,185,345,1.8649,160,86.5,open
-Cleveland Open,2018,196,344,1.7551,148,75.5,open
-Cleveland Open,2019,224,378,1.6875,154,68.8,open
-Cleveland Open,2025,199,250,1.2563,51,25.6,open
-Continental Class,2023,198,230,1.1616,32,16.2,class
-Continental Open,2013,162,272,1.679,110,67.9,open
-Continental Open,2014,228,353,1.5482,125,54.8,open
-Continental Open,2015,253,437,1.7273,184,72.7,open
-Continental Open,2016,255,395,1.549,140,54.9,open
-Continental Open,2017,350,595,1.7,245,70.0,open
-Continental Open,2018,292,479,1.6404,187,64.0,open
-Continental Open,2019,274,421,1.5365,147,53.6,open
-Continental Open,2025,265,340,1.283,75,28.3,open
-Eastern Chess Congress,2025,487,579,1.1889,92,18.9,open
-Eastern Class,2025,195,232,1.1897,37,19.0,class
-Eastern Open,2022,404,898,2.2228,494,122.3,open
-Eastern Open,2023,367,877,2.3896,510,139.0,open
-Eastern Open,2024,391,892,2.2813,501,128.1,open
-Eastern Open,2025,389,887,2.2802,498,128.0,open
-Empire City Open,2019,318,379,1.1918,61,19.2,open
-George Washington Open,2016,241,387,1.6058,146,60.6,open
-George Washington Open,2017,197,315,1.599,118,59.9,open
-George Washington Open,2018,227,375,1.652,148,65.2,open
-George Washington Open,2019,253,401,1.585,148,58.5,open
-George Washington Open,2026,209,217,1.0383,8,3.8,open
-Golden State Open,2014,285,390,1.3684,105,36.8,open
-Golden State Open,2015,247,390,1.5789,143,57.9,open
-Golden State Open,2016,261,423,1.6207,162,62.1,open
-Golden State Open,2017,282,427,1.5142,145,51.4,open
-Golden State Open,2018,288,441,1.5312,153,53.1,open
-Golden State Open,2019,273,413,1.5128,140,51.3,open
-Golden State Open,2026,387,434,1.1214,47,12.1,open
-Hartford Open,2025,189,211,1.1164,22,11.6,open
-Indianapolis Open,2025,187,237,1.2674,50,26.7,open
-Kings Island Open,2013,289,489,1.692,200,69.2,open
-Kings Island Open,2014,296,488,1.6486,192,64.9,open
-Kings Island Open,2015,274,461,1.6825,187,68.2,open
-Kings Island Open,2016,279,471,1.6882,192,68.8,open
-Kings Island Open,2017,291,481,1.6529,190,65.3,open
-Kings Island Open,2018,251,405,1.6135,154,61.4,open
-Kings Island Open,2019,298,463,1.5537,165,55.4,open
-Kings Island Open,2025,356,382,1.073,26,7.3,open
-Liberty Bell Open,2026,564,687,1.2181,123,21.8,open
-Los Angeles Open,2013,154,289,1.8766,135,87.7,open
-Los Angeles Open,2016,171,293,1.7135,122,71.3,open
-Los Angeles Open,2017,213,339,1.5915,126,59.2,open
-Los Angeles Open,2018,252,393,1.5595,141,56.0,open
-Los Angeles Open,2019,241,377,1.5643,136,56.4,open
-Los Angeles Open,2025,397,469,1.1814,72,18.1,open
-Manhattan Open,2019,434,504,1.1613,70,16.1,open
-Mid-America Open,2014,232,838,3.6121,606,261.2,open
-Mid-America Open,2015,234,862,3.6838,628,268.4,open
-Mid-America Open,2016,210,819,3.9,609,290.0,open
-Mid-America Open,2017,306,951,3.1078,645,210.8,open
-Mid-America Open,2018,268,900,3.3582,632,235.8,open
-Mid-America Open,2019,320,949,2.9656,629,196.6,open
-Mid-America Open,2026,200,267,1.335,67,33.5,open
-Midwest Chess Congress,2022,81,107,1.321,26,32.1,open
-Midwest Class Championships,2013,214,348,1.6262,134,62.6,class
-Midwest Class Championships,2014,243,434,1.786,191,78.6,class
-Midwest Class Championships,2015,265,465,1.7547,200,75.5,class
-Midwest Class Championships,2016,280,459,1.6393,179,63.9,class
-Midwest Class Championships,2017,316,530,1.6772,214,67.7,class
-Midwest Class Championships,2018,328,514,1.5671,186,56.7,class
-Midwest Class Championships,2019,305,481,1.577,176,57.7,class
-Midwest Class Championships,2025,306,362,1.183,56,18.3,class
-New York State Championship,2025,348,411,1.181,63,18.1,open
-New York State High School Championship,2026,198,236,1.1919,38,19.2,open
-New York State Open,2025,83,99,1.1928,16,19.3,open
-New York State Scholastic Championships Grades K-8,2026,1753,1703,0.9715,-50,-2.9,open
-New York State Senior Championship With Young Adult Mi,2026,61,64,1.0492,3,4.9,open
-Niagara Falls Open,2025,123,141,1.1463,18,14.6,open
-North American Open,2025,1256,1647,1.3113,391,31.1,open
-Northeast Open,2022,227,474,2.0881,247,108.8,open
-Open at Foxwoods,2019,415,659,1.588,244,58.8,open
-Open at Foxwoods,2024,465,513,1.1032,48,10.3,open
-Pacific Coast Open,2014,194,351,1.8093,157,80.9,open
-Pacific Coast Open,2015,203,387,1.9064,184,90.6,open
-Pacific Coast Open,2016,214,363,1.6963,149,69.6,open
-Pacific Coast Open,2017,232,398,1.7155,166,71.6,open
-Pacific Coast Open,2018,245,398,1.6245,153,62.4,open
-Pacific Coast Open,2019,230,386,1.6783,156,67.8,open
-Pacific Coast Open,2025,391,448,1.1458,57,14.6,open
-Philadelphia International,2025,126,122,0.9683,-4,-3.2,open
-Philadelphia Open,2014,481,813,1.6902,332,69.0,open
-Philadelphia Open,2015,515,818,1.5883,303,58.8,open
-Philadelphia Open,2016,511,779,1.5245,268,52.4,open
-Philadelphia Open,2017,553,818,1.4792,265,47.9,open
-Philadelphia Open,2018,527,837,1.5882,310,58.8,open
-Philadelphia Open,2019,231,370,1.6017,139,60.2,open
-Philadelphia Open,2025,325,401,1.2338,76,23.4,open
-Pittsburgh Open,2025,152,185,1.2171,33,21.7,open
-Princeton Open,2025,574,738,1.2857,164,28.6,open
-Southern Open,2013,192,328,1.7083,136,70.8,open
-Southern Open,2014,162,264,1.6296,102,63.0,open
-Southern Open,2015,210,333,1.5857,123,58.6,open
-Southern Open,2016,203,334,1.6453,131,64.5,open
-Southern Open,2017,211,339,1.6066,128,60.7,open
-Southern Open,2018,231,354,1.5325,123,53.2,open
-Southern Open,2019,181,300,1.6575,119,65.7,open
-Southern Open,2025,188,237,1.2606,49,26.1,open
-Southwest Class Championships,2026,492,608,1.2358,116,23.6,class
-Stamford Open,2019,169,221,1.3077,52,30.8,open
-Washington Chess Congress,2023,249,309,1.241,60,24.1,open
-Western Class Championships,2014,180,793,4.4056,613,340.6,class
-Western Class Championships,2015,200,809,4.045,609,304.5,class
-Western Class Championships,2016,202,808,4.0,606,300.0,class
-Western Class Championships,2017,254,842,3.315,588,231.5,class
-Western Class Championships,2018,245,872,3.5592,627,255.9,class
-Western Class Championships,2019,253,900,3.5573,647,255.7,class
-Western Class Championships,2026,318,330,1.0377,12,3.8,class
+Atlantic City Open,2026,424,403,0.9505,-21,-5.0,open
+Atlantic Open,2012,267,329,1.2322,62,23.2,open
+Atlantic Open,2013,244,294,1.2049,50,20.5,open
+Atlantic Open,2014,222,258,1.1622,36,16.2,open
+Atlantic Open,2015,226,250,1.1062,24,10.6,open
+Atlantic Open,2016,286,302,1.0559,16,5.6,open
+Atlantic Open,2017,283,291,1.0283,8,2.8,open
+Atlantic Open,2018,299,312,1.0435,13,4.3,open
+Atlantic Open,2019,289,303,1.0484,14,4.8,open
+Atlantic Open,2022,412,411,0.9976,-1,-0.2,open
+Atlantic Open,2023,371,365,0.9838,-6,-1.6,open
+Atlantic Open,2024,272,263,0.9669,-9,-3.3,open
+Atlantic Open,2025,238,238,1.0,0,0.0,open
+Atlantic Open,2026,242,238,0.9835,-4,-1.7,open
+Bill Little Memorial,2016,64,70,1.0938,6,9.4,open
+Bill Little Memorial,2018,58,61,1.0517,3,5.2,open
+Bill Little Memorial,2019,47,48,1.0213,1,2.1,open
+Boardwalk Open,2013,136,156,1.1471,20,14.7,open
+Boardwalk Open,2014,107,114,1.0654,7,6.5,open
+Boardwalk Open,2015,115,121,1.0522,6,5.2,open
+Boston Chess Congress,2014,172,179,1.0407,7,4.1,open
+Boston Chess Congress,2015,225,233,1.0356,8,3.6,open
+Boston Chess Congress,2016,242,252,1.0413,10,4.1,open
+Boston Chess Congress,2017,208,217,1.0433,9,4.3,open
+Boston Chess Congress,2018,237,221,0.9325,-16,-6.8,open
+Boston Chess Congress,2019,270,270,1.0,0,0.0,open
+Boston Chess Congress,2022,287,258,0.899,-29,-10.1,open
+Boston Chess Congress,2023,391,391,1.0,0,0.0,open
+Boston Chess Congress,2024,342,335,0.9795,-7,-2.0,open
+Boston Chess Congress,2025,383,374,0.9765,-9,-2.3,open
+Boston Chess Congress,2026,359,343,0.9554,-16,-4.5,open
+Bradley Open,2013,131,152,1.1603,21,16.0,open
+Bradley Open,2014,138,148,1.0725,10,7.2,open
+Bradley Open,2015,169,174,1.0296,5,3.0,open
+Bradley Open,2016,148,149,1.0068,1,0.7,open
+Bradley Open,2017,204,209,1.0245,5,2.5,open
+Bradley Open,2018,173,177,1.0231,4,2.3,open
+Bradley Open,2019,171,178,1.0409,7,4.1,open
+Bradley Open,2022,227,230,1.0132,3,1.3,open
+Bradley Open,2023,256,258,1.0078,2,0.8,open
+Bradley Open,2024,270,265,0.9815,-5,-1.9,open
+Bradley Open,2025,246,233,0.9472,-13,-5.3,open
+Bradley Open,2026,209,213,1.0191,4,1.9,open
+Central California Open,2012,114,129,1.1316,15,13.2,open
+Central California Open,2014,105,116,1.1048,11,10.5,open
+Central California Open,2015,114,122,1.0702,8,7.0,open
+Central California Open,2016,92,97,1.0543,5,5.4,open
+Central California Open,2017,150,154,1.0267,4,2.7,open
+Central California Open,2018,128,134,1.0469,6,4.7,open
+Central California Open,2019,128,139,1.0859,11,8.6,open
+Central California Open,2022,188,190,1.0106,2,1.1,open
+Central California Open,2023,214,207,0.9673,-7,-3.3,open
+Central California Open,2024,169,166,0.9822,-3,-1.8,open
+Central California Open,2025,179,172,0.9609,-7,-3.9,open
+Central California Open,2026,169,166,0.9822,-3,-1.8,open
+Central New York Open,2014,56,65,1.1607,9,16.1,open
+Central New York Open,2015,61,63,1.0328,2,3.3,open
+Central New York Open,2016,56,57,1.0179,1,1.8,open
+Central New York Open,2017,57,64,1.1228,7,12.3,open
+Central New York Open,2018,45,46,1.0222,1,2.2,open
+Central New York Open,2019,40,44,1.1,4,10.0,open
+Central New York Open,2022,119,116,0.9748,-3,-2.5,open
+Central New York Open,2023,139,139,1.0,0,0.0,open
+Chicago Class,2014,320,377,1.1781,57,17.8,class
+Chicago Class,2015,291,315,1.0825,24,8.2,class
+Chicago Class,2016,321,339,1.0561,18,5.6,class
+Chicago Class,2017,382,409,1.0707,27,7.1,class
+Chicago Class,2018,337,369,1.095,32,9.5,class
+Chicago Class,2019,330,332,1.0061,2,0.6,class
+Chicago Class,2022,337,331,0.9822,-6,-1.8,class
+Chicago Class,2023,280,284,1.0143,4,1.4,class
+Chicago Class,2024,270,268,0.9926,-2,-0.7,class
+Chicago Class,2025,294,289,0.983,-5,-1.7,class
+Chicago Class,2026,288,292,1.0139,4,1.4,class
+Chicago Open,2014,618,764,1.2362,146,23.6,open
+Chicago Open,2015,774,890,1.1499,116,15.0,open
+Chicago Open,2016,798,932,1.1679,134,16.8,open
+Chicago Open,2017,883,988,1.1189,105,11.9,open
+Chicago Open,2018,829,900,1.0856,71,8.6,open
+Chicago Open,2019,843,914,1.0842,71,8.4,open
+Chicago Open,2022,944,998,1.0572,54,5.7,open
+Chicago Open,2023,960,941,0.9802,-19,-2.0,open
+Chicago Open,2024,860,838,0.9744,-22,-2.6,open
+Chicago Open,2025,899,876,0.9744,-23,-2.6,open
+Chicago Open,2026,917,886,0.9662,-31,-3.4,open
+Cleveland Open,2013,207,231,1.1159,24,11.6,open
+Cleveland Open,2014,195,230,1.1795,35,17.9,open
+Cleveland Open,2015,197,218,1.1066,21,10.7,open
+Cleveland Open,2016,190,202,1.0632,12,6.3,open
+Cleveland Open,2017,185,216,1.1676,31,16.8,open
+Cleveland Open,2018,196,207,1.0561,11,5.6,open
+Cleveland Open,2019,224,235,1.0491,11,4.9,open
+Cleveland Open,2022,201,200,0.995,-1,-0.5,open
+Cleveland Open,2023,226,221,0.9779,-5,-2.2,open
+Cleveland Open,2024,167,139,0.8323,-28,-16.8,open
+Cleveland Open,2025,199,193,0.9698,-6,-3.0,open
+Cleveland Open,2026,179,179,1.0,0,0.0,open
+Continental Class,2023,198,192,0.9697,-6,-3.0,class
+Continental Class Championships,2013,185,213,1.1514,28,15.1,class
+Continental Class Championships,2016,212,231,1.0896,19,9.0,class
+Continental Class Championships,2017,219,230,1.0502,11,5.0,class
+Continental Class Championships,2018,236,234,0.9915,-2,-0.8,class
+Continental Class Championships,2019,249,254,1.0201,5,2.0,class
+Continental Open,2013,162,188,1.1605,26,16.0,open
+Continental Open,2014,228,245,1.0746,17,7.5,open
+Continental Open,2015,253,272,1.0751,19,7.5,open
+Continental Open,2016,255,288,1.1294,33,12.9,open
+Continental Open,2017,350,369,1.0543,19,5.4,open
+Continental Open,2018,292,311,1.0651,19,6.5,open
+Continental Open,2019,274,274,1.0,0,0.0,open
+Continental Open,2022,321,331,1.0312,10,3.1,open
+Continental Open,2023,312,275,0.8814,-37,-11.9,open
+Continental Open,2024,244,244,1.0,0,0.0,open
+Continental Open,2025,265,265,1.0,0,0.0,open
+Continental Open,2026,266,270,1.015,4,1.5,open
+DC International,2014,80,83,1.0375,3,3.8,open
+DC International,2015,128,123,0.9609,-5,-3.9,open
+DC International,2026,107,102,0.9533,-5,-4.7,open
+DC Open,2026,188,183,0.9734,-5,-2.7,open
+Eastern Chess Congress,2014,111,118,1.0631,7,6.3,open
+Eastern Chess Congress,2015,116,125,1.0776,9,7.8,open
+Eastern Chess Congress,2016,279,277,0.9928,-2,-0.7,open
+Eastern Chess Congress,2017,400,402,1.005,2,0.5,open
+Eastern Chess Congress,2018,316,314,0.9937,-2,-0.6,open
+Eastern Chess Congress,2019,349,351,1.0057,2,0.6,open
+Eastern Chess Congress,2022,493,472,0.9574,-21,-4.3,open
+Eastern Chess Congress,2023,527,514,0.9753,-13,-2.5,open
+Eastern Chess Congress,2024,490,475,0.9694,-15,-3.1,open
+Eastern Chess Congress,2025,487,469,0.963,-18,-3.7,open
+Eastern Class,2022,230,225,0.9783,-5,-2.2,class
+Eastern Class,2023,257,242,0.9416,-15,-5.8,class
+Eastern Class,2024,203,200,0.9852,-3,-1.5,class
+Eastern Class,2025,195,189,0.9692,-6,-3.1,class
+Eastern Class Championships,2014,228,268,1.1754,40,17.5,class
+Eastern Class Championships,2015,214,234,1.0935,20,9.3,class
+Eastern Class Championships,2016,252,275,1.0913,23,9.1,class
+Eastern Class Championships,2017,271,291,1.0738,20,7.4,class
+Eastern Class Championships,2018,278,299,1.0755,21,7.6,class
+Eastern Class Championships,2019,220,225,1.0227,5,2.3,class
+Eastern Open,2022,404,389,0.9629,-15,-3.7,open
+Eastern Open,2023,367,359,0.9782,-8,-2.2,open
+Eastern Open,2024,391,389,0.9949,-2,-0.5,open
+Eastern Open,2025,389,381,0.9794,-8,-2.1,open
+Eastern Team Championship,2013,134,144,1.0746,10,7.5,open
+Empire City Open,2013,284,353,1.243,69,24.3,open
+Empire City Open,2014,249,289,1.1606,40,16.1,open
+Empire City Open,2015,330,343,1.0394,13,3.9,open
+Empire City Open,2016,397,414,1.0428,17,4.3,open
+Empire City Open,2017,307,332,1.0814,25,8.1,open
+Empire City Open,2018,298,306,1.0268,8,2.7,open
+Empire City Open,2019,318,317,0.9969,-1,-0.3,open
+Foxwoods Open,2014,235,289,1.2298,54,23.0,open
+George Washington Open,2016,241,242,1.0041,1,0.4,open
+George Washington Open,2017,197,214,1.0863,17,8.6,open
+George Washington Open,2018,227,236,1.0396,9,4.0,open
+George Washington Open,2019,253,260,1.0277,7,2.8,open
+George Washington Open,2023,345,343,0.9942,-2,-0.6,open
+George Washington Open,2024,266,259,0.9737,-7,-2.6,open
+George Washington Open,2025,250,245,0.98,-5,-2.0,open
+George Washington Open,2026,209,198,0.9474,-11,-5.3,open
+Golden State Open,2014,285,293,1.0281,8,2.8,open
+Golden State Open,2015,247,272,1.1012,25,10.1,open
+Golden State Open,2016,261,270,1.0345,9,3.4,open
+Golden State Open,2017,282,301,1.0674,19,6.7,open
+Golden State Open,2018,288,289,1.0035,1,0.3,open
+Golden State Open,2019,273,278,1.0183,5,1.8,open
+Golden State Open,2022,275,261,0.9491,-14,-5.1,open
+Golden State Open,2023,293,287,0.9795,-6,-2.0,open
+Golden State Open,2024,293,292,0.9966,-1,-0.3,open
+Golden State Open,2025,377,365,0.9682,-12,-3.2,open
+Golden State Open,2026,387,386,0.9974,-1,-0.3,open
+Hartford Open,2013,115,124,1.0783,9,7.8,open
+Hartford Open,2014,89,93,1.0449,4,4.5,open
+Hartford Open,2015,108,115,1.0648,7,6.5,open
+Hartford Open,2016,86,94,1.093,8,9.3,open
+Hartford Open,2017,125,127,1.016,2,1.6,open
+Hartford Open,2018,122,125,1.0246,3,2.5,open
+Hartford Open,2019,110,115,1.0455,5,4.5,open
+Hartford Open,2022,198,189,0.9545,-9,-4.5,open
+Hartford Open,2023,223,216,0.9686,-7,-3.1,open
+Hartford Open,2024,199,183,0.9196,-16,-8.0,open
+Hartford Open,2025,189,177,0.9365,-12,-6.3,open
+Hartford Open,2026,206,199,0.966,-7,-3.4,open
+Indianapolis Open,2012,161,210,1.3043,49,30.4,open
+Indianapolis Open,2013,171,171,1.0,0,0.0,open
+Indianapolis Open,2014,176,193,1.0966,17,9.7,open
+Indianapolis Open,2015,179,200,1.1173,21,11.7,open
+Indianapolis Open,2016,186,188,1.0108,2,1.1,open
+Indianapolis Open,2017,159,177,1.1132,18,11.3,open
+Indianapolis Open,2018,191,202,1.0576,11,5.8,open
+Indianapolis Open,2019,204,215,1.0539,11,5.4,open
+Indianapolis Open,2022,183,176,0.9617,-7,-3.8,open
+Indianapolis Open,2023,190,183,0.9632,-7,-3.7,open
+Indianapolis Open,2024,170,161,0.9471,-9,-5.3,open
+Indianapolis Open,2025,187,183,0.9786,-4,-2.1,open
+Indianapolis Open,2026,180,178,0.9889,-2,-1.1,open
+Kings Island Open,2013,289,359,1.2422,70,24.2,open
+Kings Island Open,2014,296,339,1.1453,43,14.5,open
+Kings Island Open,2015,274,293,1.0693,19,6.9,open
+Kings Island Open,2016,279,304,1.0896,25,9.0,open
+Kings Island Open,2017,291,308,1.0584,17,5.8,open
+Kings Island Open,2018,251,272,1.0837,21,8.4,open
+Kings Island Open,2019,298,312,1.047,14,4.7,open
+Kings Island Open,2022,368,365,0.9918,-3,-0.8,open
+Kings Island Open,2023,358,357,0.9972,-1,-0.3,open
+Kings Island Open,2024,350,337,0.9629,-13,-3.7,open
+Kings Island Open,2025,356,347,0.9747,-9,-2.5,open
+Liberty Bell Open,2014,387,427,1.1034,40,10.3,open
+Liberty Bell Open,2015,339,380,1.1209,41,12.1,open
+Liberty Bell Open,2016,326,343,1.0521,17,5.2,open
+Liberty Bell Open,2017,336,348,1.0357,12,3.6,open
+Liberty Bell Open,2018,334,343,1.0269,9,2.7,open
+Liberty Bell Open,2019,287,277,0.9652,-10,-3.5,open
+Liberty Bell Open,2022,362,343,0.9475,-19,-5.2,open
+Liberty Bell Open,2023,473,464,0.981,-9,-1.9,open
+Liberty Bell Open,2024,481,456,0.948,-25,-5.2,open
+Liberty Bell Open,2025,530,514,0.9698,-16,-3.0,open
+Liberty Bell Open,2026,564,546,0.9681,-18,-3.2,open
+Long Island Open,2014,187,207,1.107,20,10.7,open
+Los Angeles Open,2013,154,187,1.2143,33,21.4,open
+Los Angeles Open,2016,171,180,1.0526,9,5.3,open
+Los Angeles Open,2017,213,224,1.0516,11,5.2,open
+Los Angeles Open,2018,252,250,0.9921,-2,-0.8,open
+Los Angeles Open,2019,241,241,1.0,0,0.0,open
+Los Angeles Open,2022,361,357,0.9889,-4,-1.1,open
+Los Angeles Open,2023,415,400,0.9639,-15,-3.6,open
+Los Angeles Open,2024,412,400,0.9709,-12,-2.9,open
+Los Angeles Open,2025,397,388,0.9773,-9,-2.3,open
+Louisville Open,2013,98,117,1.1939,19,19.4,open
+Manhattan Open,2012,281,401,1.427,120,42.7,open
+Manhattan Open,2013,329,388,1.1793,59,17.9,open
+Manhattan Open,2014,331,386,1.1662,55,16.6,open
+Manhattan Open,2015,435,478,1.0989,43,9.9,open
+Manhattan Open,2016,438,461,1.0525,23,5.3,open
+Manhattan Open,2017,419,447,1.0668,28,6.7,open
+Manhattan Open,2018,463,479,1.0346,16,3.5,open
+Manhattan Open,2019,434,426,0.9816,-8,-1.8,open
+Mid-America Open,2014,232,259,1.1164,27,11.6,open
+Mid-America Open,2015,234,261,1.1154,27,11.5,open
+Mid-America Open,2016,210,231,1.1,21,10.0,open
+Mid-America Open,2017,306,314,1.0261,8,2.6,open
+Mid-America Open,2018,268,278,1.0373,10,3.7,open
+Mid-America Open,2019,320,329,1.0281,9,2.8,open
+Mid-America Open,2022,288,282,0.9792,-6,-2.1,open
+Mid-America Open,2023,328,323,0.9848,-5,-1.5,open
+Mid-America Open,2024,305,303,0.9934,-2,-0.7,open
+Mid-America Open,2025,262,250,0.9542,-12,-4.6,open
+Mid-America Open,2026,200,195,0.975,-5,-2.5,open
+Midwest Chess Congress,2022,81,82,1.0123,1,1.2,open
+Midwest Class Championships,2013,214,252,1.1776,38,17.8,class
+Midwest Class Championships,2014,243,283,1.1646,40,16.5,class
+Midwest Class Championships,2015,265,292,1.1019,27,10.2,class
+Midwest Class Championships,2016,280,309,1.1036,29,10.4,class
+Midwest Class Championships,2017,316,333,1.0538,17,5.4,class
+Midwest Class Championships,2018,328,339,1.0335,11,3.4,class
+Midwest Class Championships,2019,305,308,1.0098,3,1.0,class
+Midwest Class Championships,2022,360,356,0.9889,-4,-1.1,class
+Midwest Class Championships,2023,292,278,0.9521,-14,-4.8,class
+Midwest Class Championships,2024,303,303,1.0,0,0.0,class
+Midwest Class Championships,2025,306,293,0.9575,-13,-4.2,class
+National Chess Congress,2013,540,591,1.0944,51,9.4,open
+National Chess Congress,2014,582,650,1.1168,68,11.7,open
+National Chess Congress,2015,574,603,1.0505,29,5.1,open
+National Chess Congress,2016,595,635,1.0672,40,6.7,open
+National Chess Congress,2017,645,682,1.0574,37,5.7,open
+National Chess Congress,2018,523,524,1.0019,1,0.2,open
+National Chess Congress,2019,550,564,1.0255,14,2.5,open
+National Chess Congress,2022,606,594,0.9802,-12,-2.0,open
+National Chess Congress,2023,636,636,1.0,0,0.0,open
+National Chess Congress,2024,621,600,0.9662,-21,-3.4,open
+National Chess Congress,2025,705,689,0.9773,-16,-2.3,open
+New York State Championship,2013,190,216,1.1368,26,13.7,open
+New York State Championship,2014,209,232,1.11,23,11.0,open
+New York State Championship,2015,173,201,1.1618,28,16.2,open
+New York State Championship,2016,190,208,1.0947,18,9.5,open
+New York State Championship,2017,183,193,1.0546,10,5.5,open
+New York State Championship,2018,188,198,1.0532,10,5.3,open
+New York State Championship,2019,185,189,1.0216,4,2.2,open
+New York State Championship,2022,316,318,1.0063,2,0.6,open
+New York State Championship,2023,347,350,1.0086,3,0.9,open
+New York State Championship,2024,326,322,0.9877,-4,-1.2,open
+New York State Championship,2025,348,336,0.9655,-12,-3.4,open
+New York State Championship,2026,332,330,0.994,-2,-0.6,open
+New York State High School Championship,2025,219,205,0.9361,-14,-6.4,open
+New York State High School Championship,2026,198,193,0.9747,-5,-2.5,open
+New York State Open,2014,68,88,1.2941,20,29.4,open
+New York State Open,2015,70,80,1.1429,10,14.3,open
+New York State Open,2016,100,105,1.05,5,5.0,open
+New York State Open,2017,86,89,1.0349,3,3.5,open
+New York State Open,2024,76,76,1.0,0,0.0,open
+New York State Open,2025,83,82,0.988,-1,-1.2,open
+New York State Open,2026,109,109,1.0,0,0.0,open
+New York State Scholastic Championships,2014,785,787,1.0025,2,0.3,open
+New York State Scholastic Championships,2015,953,934,0.9801,-19,-2.0,open
+New York State Scholastic Championships,2016,952,942,0.9895,-10,-1.1,open
+New York State Scholastic Championships,2017,1156,1150,0.9948,-6,-0.5,open
+New York State Scholastic Championships,2018,1229,1222,0.9943,-7,-0.6,open
+New York State Scholastic Championships,2019,1249,1226,0.9816,-23,-1.8,open
+New York State Scholastic Championships,2022,941,919,0.9766,-22,-2.3,open
+New York State Scholastic Championships,2023,1548,1011,0.6531,-537,-34.7,open
+New York State Scholastic Championships,2024,1777,1706,0.96,-71,-4.0,open
+New York State Scholastic Championships Grades K-8,2025,1767,1701,0.9626,-66,-3.7,open
+New York State Scholastic Championships Grades K-8,2026,1753,1678,0.9572,-75,-4.3,open
+New York State Senior Championship With Young Adult Mi,2025,57,54,0.9474,-3,-5.3,open
+New York State Senior Championship With Young Adult Mi,2026,61,60,0.9836,-1,-1.6,open
+Niagara Falls Open,2022,94,96,1.0213,2,2.1,open
+Niagara Falls Open,2023,170,179,1.0529,9,5.3,open
+Niagara Falls Open,2024,177,176,0.9944,-1,-0.6,open
+Niagara Falls Open,2025,123,117,0.9512,-6,-4.9,open
+North American Open,2013,591,686,1.1607,95,16.1,open
+North American Open,2014,619,661,1.0679,42,6.8,open
+North American Open,2015,717,742,1.0349,25,3.5,open
+North American Open,2016,766,819,1.0692,53,6.9,open
+North American Open,2017,800,823,1.0288,23,2.9,open
+North American Open,2018,822,850,1.0341,28,3.4,open
+North American Open,2019,863,873,1.0116,10,1.2,open
+North American Open,2022,1071,949,0.8861,-122,-11.4,open
+North American Open,2023,1115,1091,0.9785,-24,-2.2,open
+North American Open,2024,1102,1076,0.9764,-26,-2.4,open
+North American Open,2025,1256,1209,0.9626,-47,-3.7,open
+Northeast Open,2014,147,166,1.1293,19,12.9,open
+Northeast Open,2015,189,206,1.0899,17,9.0,open
+Northeast Open,2016,178,193,1.0843,15,8.4,open
+Northeast Open,2017,205,209,1.0195,4,2.0,open
+Northeast Open,2018,172,168,0.9767,-4,-2.3,open
+Northeast Open,2019,210,213,1.0143,3,1.4,open
+Northeast Open,2022,227,216,0.9515,-11,-4.8,open
+Open at Foxwoods,2019,415,426,1.0265,11,2.7,open
+Open at Foxwoods,2022,472,462,0.9788,-10,-2.1,open
+Open at Foxwoods,2023,445,446,1.0022,1,0.2,open
+Open at Foxwoods,2024,465,456,0.9806,-9,-1.9,open
+Pacific Coast Open,2014,194,228,1.1753,34,17.5,open
+Pacific Coast Open,2015,203,220,1.0837,17,8.4,open
+Pacific Coast Open,2016,214,234,1.0935,20,9.3,open
+Pacific Coast Open,2017,232,246,1.0603,14,6.0,open
+Pacific Coast Open,2018,245,256,1.0449,11,4.5,open
+Pacific Coast Open,2019,230,247,1.0739,17,7.4,open
+Pacific Coast Open,2022,344,342,0.9942,-2,-0.6,open
+Pacific Coast Open,2023,403,390,0.9677,-13,-3.2,open
+Pacific Coast Open,2024,361,358,0.9917,-3,-0.8,open
+Pacific Coast Open,2025,391,370,0.9463,-21,-5.4,open
+Pacific Coast Open,2026,394,387,0.9822,-7,-1.8,open
+Peter Henner Memorial,2017,92,96,1.0435,4,4.3,open
+Peter Henner Memorial,2018,99,99,1.0,0,0.0,open
+Peter Henner Memorial,2019,49,43,0.8776,-6,-12.2,open
+Philadelphia International,2016,66,64,0.9697,-2,-3.0,open
+Philadelphia International,2017,87,81,0.931,-6,-6.9,open
+Philadelphia International,2018,151,143,0.947,-8,-5.3,open
+Philadelphia International,2019,147,141,0.9592,-6,-4.1,open
+Philadelphia International,2022,88,82,0.9318,-6,-6.8,open
+Philadelphia International,2023,108,99,0.9167,-9,-8.3,open
+Philadelphia International,2024,143,120,0.8392,-23,-16.1,open
+Philadelphia International,2025,126,121,0.9603,-5,-4.0,open
+Philadelphia Open,2014,481,571,1.1871,90,18.7,open
+Philadelphia Open,2015,515,587,1.1398,72,14.0,open
+Philadelphia Open,2016,511,553,1.0822,42,8.2,open
+Philadelphia Open,2017,553,605,1.094,52,9.4,open
+Philadelphia Open,2018,527,572,1.0854,45,8.5,open
+Philadelphia Open,2019,231,234,1.013,3,1.3,open
+Philadelphia Open,2022,281,269,0.9573,-12,-4.3,open
+Philadelphia Open,2023,281,272,0.968,-9,-3.2,open
+Philadelphia Open,2024,312,309,0.9904,-3,-1.0,open
+Philadelphia Open,2025,325,315,0.9692,-10,-3.1,open
+Pittsburgh Open,2014,96,106,1.1042,10,10.4,open
+Pittsburgh Open,2015,136,139,1.0221,3,2.2,open
+Pittsburgh Open,2016,106,108,1.0189,2,1.9,open
+Pittsburgh Open,2017,113,110,0.9735,-3,-2.7,open
+Pittsburgh Open,2018,130,139,1.0692,9,6.9,open
+Pittsburgh Open,2019,176,177,1.0057,1,0.6,open
+Pittsburgh Open,2022,195,189,0.9692,-6,-3.1,open
+Pittsburgh Open,2023,183,180,0.9836,-3,-1.6,open
+Pittsburgh Open,2024,166,160,0.9639,-6,-3.6,open
+Pittsburgh Open,2025,152,150,0.9868,-2,-1.3,open
+Pittsburgh Open,2026,170,160,0.9412,-10,-5.9,open
+Princeton Open,2025,574,558,0.9721,-16,-2.8,open
+Schenectady Open,2016,69,73,1.058,4,5.8,open
+Southern Chess Congress,2016,199,230,1.1558,31,15.6,open
+Southern Class,2022,200,203,1.015,3,1.5,class
+Southern Class,2023,264,239,0.9053,-25,-9.5,class
+Southern Class,2024,259,268,1.0347,9,3.5,class
+Southern Class,2025,170,168,0.9882,-2,-1.2,class
+Southern Class,2026,195,196,1.0051,1,0.5,class
+Southern Class Championships,2014,182,201,1.1044,19,10.4,class
+Southern Class Championships,2015,196,213,1.0867,17,8.7,class
+Southern Class Championships,2016,168,184,1.0952,16,9.5,class
+Southern Class Championships,2017,204,218,1.0686,14,6.9,class
+Southern Class Championships,2018,174,188,1.0805,14,8.0,class
+Southern Class Championships,2019,196,213,1.0867,17,8.7,class
+Southern Open,2013,192,235,1.224,43,22.4,open
+Southern Open,2014,162,182,1.1235,20,12.3,open
+Southern Open,2015,210,237,1.1286,27,12.9,open
+Southern Open,2016,203,222,1.0936,19,9.4,open
+Southern Open,2017,211,230,1.09,19,9.0,open
+Southern Open,2018,231,244,1.0563,13,5.6,open
+Southern Open,2019,181,191,1.0552,10,5.5,open
+Southern Open,2022,266,265,0.9962,-1,-0.4,open
+Southern Open,2023,294,299,1.017,5,1.7,open
+Southern Open,2024,231,224,0.9697,-7,-3.0,open
+Southern Open,2025,188,187,0.9947,-1,-0.5,open
+Southern Open,2026,206,203,0.9854,-3,-1.5,open
+Southwest Class,2015,259,286,1.1042,27,10.4,open
+Southwest Class,2016,298,302,1.0134,4,1.3,open
+Southwest Class,2017,328,338,1.0305,10,3.0,open
+Southwest Class,2018,355,355,1.0,0,0.0,open
+Southwest Class,2019,385,393,1.0208,8,2.1,open
+Southwest Class Championships,2022,397,377,0.9496,-20,-5.0,class
+Southwest Class Championships,2023,426,413,0.9695,-13,-3.1,class
+Southwest Class Championships,2024,441,425,0.9637,-16,-3.6,class
+Southwest Class Championships,2025,488,473,0.9693,-15,-3.1,class
+Southwest Class Championships,2026,492,473,0.9614,-19,-3.9,class
+Stamford Open,2016,137,147,1.073,10,7.3,open
+Stamford Open,2017,162,171,1.0556,9,5.6,open
+Stamford Open,2018,136,142,1.0441,6,4.4,open
+Stamford Open,2019,169,182,1.0769,13,7.7,open
+Washington Chess Congress,2014,138,173,1.2536,35,25.4,open
+Washington Chess Congress,2015,185,198,1.0703,13,7.0,open
+Washington Chess Congress,2016,197,197,1.0,0,0.0,open
+Washington Chess Congress,2017,219,212,0.968,-7,-3.2,open
+Washington Chess Congress,2018,235,231,0.983,-4,-1.7,open
+Washington Chess Congress,2019,271,274,1.0111,3,1.1,open
+Washington Chess Congress,2023,249,243,0.9759,-6,-2.4,open
+Western Class,2022,362,343,0.9475,-19,-5.2,open
+Western Class,2023,346,340,0.9827,-6,-1.7,open
+Western Class Championships,2014,180,215,1.1944,35,19.4,class
+Western Class Championships,2015,200,207,1.035,7,3.5,class
+Western Class Championships,2016,202,229,1.1337,27,13.4,class
+Western Class Championships,2017,254,259,1.0197,5,2.0,class
+Western Class Championships,2018,245,260,1.0612,15,6.1,class
+Western Class Championships,2019,253,274,1.083,21,8.3,class
+Western Class Championships,2024,421,411,0.9762,-10,-2.4,class
+Western Class Championships,2025,389,383,0.9846,-6,-1.5,class
+Western Class Championships,2026,318,308,0.9686,-10,-3.1,class
+World Open,2014,1014,1206,1.1893,192,18.9,open
+World Open,2015,921,1016,1.1031,95,10.3,open
+World Open,2016,1137,1281,1.1266,144,12.7,open
+World Open,2017,1185,1234,1.0414,49,4.1,open
+World Open,2018,1149,1268,1.1036,119,10.4,open
+World Open,2019,1269,1437,1.1324,168,13.2,open
+World Open,2022,1491,1495,1.0027,4,0.3,open
+World Open lower sections,2023,149,138,0.9262,-11,-7.4,open
+World Open lower sections,2024,151,145,0.9603,-6,-4.0,open
+World Open lower sections,2025,135,125,0.9259,-10,-7.4,open
+World Open lower sections,2026,93,96,1.0323,3,3.2,open
+World Open top 6 sections,2023,1324,1302,0.9834,-22,-1.7,open
+World Open top 6 sections,2024,1195,1173,0.9816,-22,-1.8,open
+World Open top 6 sections,2025,1165,1141,0.9794,-24,-2.1,open
+World Open top 6 sections,2026,1066,1083,1.0159,17,1.6,open

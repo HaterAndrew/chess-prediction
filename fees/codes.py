@@ -22,6 +22,8 @@ scrape_entries.py, and scrape_fees.py respectively and drifted independently
 (re-imports), so monkeypatching call sites keep working.
 """
 
+from tournament_aliases import canonicalize_family
+
 # family display name -> chesstour flyer code.
 FAMILY_TO_CODE = {
     "Atlantic City Open": "aco",
@@ -146,3 +148,12 @@ ENTRY_LIST_CODES = {
     "southwest class": "SWC",
     "boston chess congress": "BCC",
 }
+
+
+def flyer_code_for(family, table=None):
+    """Flyer code for a family, trying its canonical spelling when the raw
+    name has no entry ("Eastern Chess Congress (in New Jersey)" and the
+    comma/no-comma World Open names). `table` lets callers pass their own
+    module attribute so monkeypatched tables keep working."""
+    table = FAMILY_TO_CODE if table is None else table
+    return table.get(family) or table.get(canonicalize_family(family))

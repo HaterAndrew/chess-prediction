@@ -179,7 +179,7 @@ def test_apply_walkin_multiplier():
 
 # ── 5c. Backtesting ────────────────────────────────────────────────────────
 
-def test_backtest_leave_one_out():
+def test_backtest_leave_one_out(tmp_path):
     """
     Leave-one-out by year: for each family with 5+ years of data,
     hold out one year, compute multiplier from remaining, predict held-out year.
@@ -246,8 +246,9 @@ def test_backtest_leave_one_out():
                 "in_ci": in_ci,
             })
 
-    # Write backtest results
-    out_csv = os.path.join(OUTPUT_DIR, "walk_in_backtest_results.csv")
+    # Write backtest results to the test's own directory, not the tracked
+    # output/ tree that verify_checksums hashes.
+    out_csv = os.path.join(tmp_path, "walk_in_backtest_results.csv")
     fields = ["family", "held_out_year", "actual_total", "predicted_total",
               "ci_lower", "ci_upper", "error_pct", "in_ci"]
     with open(out_csv, "w", newline="") as f:

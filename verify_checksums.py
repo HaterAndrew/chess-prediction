@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
-MANIFEST_PATH = os.path.join(OUTPUT_DIR, "checksums.json")
+MANIFEST_NAME = "checksums.json"
 
 
 def compute_checksum(filepath):
@@ -34,12 +34,15 @@ def _row_count(filepath):
     return max(len(lines) - 1, 0)
 
 
+def _csv_names(output_dir):
+    return sorted(name for name in os.listdir(output_dir) if name.endswith(".csv"))
+
+
 def generate_manifest(output_dir=OUTPUT_DIR):
-    """Scan output/*.csv, compute checksums, write checksums.json."""
+    """Scan <output_dir>/*.csv, compute checksums, write its checksums.json."""
+    manifest_path = os.path.join(output_dir, MANIFEST_NAME)
     entries = []
-    for name in sorted(os.listdir(output_dir)):
-        if not name.endswith(".csv"):
-            continue
+    for name in _csv_names(output_dir):
         path = os.path.join(output_dir, name)
         entries.append({
             "filename": name,
@@ -49,23 +52,33 @@ def generate_manifest(output_dir=OUTPUT_DIR):
         })
 
     manifest = {"files": entries}
-    with open(MANIFEST_PATH, "w") as f:
+    with open(manifest_path, "w") as f:
         json.dump(manifest, f, indent=2)
 
-    print(f"  Checksum manifest: {len(entries)} CSV files -> {MANIFEST_PATH}")
+    print(f"  Checksum manifest: {len(entries)} CSV files -> {manifest_path}")
     return manifest
 
 
 def verify_manifest(output_dir=OUTPUT_DIR):
-    """Read checksums.json, recompute hashes, report mismatches."""
-    if not os.path.exists(MANIFEST_PATH):
+    """Read checksums.json, recompute hashes, report mismatches. Fails on an
+    empty manifest and on any CSV the manifest does not list: CI runs this on
+    a fresh checkout, where a pass must mean every CSV was compared."""
+    manifest_path = os.path.join(output_dir, MANIFEST_NAME)
+    if not os.path.exists(manifest_path):
         print("ERROR: checksums.json not found. Run 'generate' first.")
         return False
 
-    with open(MANIFEST_PATH, "r") as f:
+    with open(manifest_path, "r") as f:
         manifest = json.load(f)
 
-    ok = True
+    if not manifest.get("files"):
+        print("  ERROR: checksums.json lists no files.")
+        return False
+    listed = {entry["filename"] for entry in manifest["files"]}
+    unlisted = [name for name in _csv_names(output_dir) if name not in listed]
+    for name in unlisted:
+        print(f"  NOT IN MANIFEST: {name}")
+    ok = not unlisted
     for entry in manifest["files"]:
         path = os.path.join(output_dir, entry["filename"])
         if not os.path.exists(path):

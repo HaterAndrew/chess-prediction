@@ -17,6 +17,8 @@ on:
       # run them too.
       - 'docs/**'
       - 'tests/js/**'
+      # A hand edit to a data file must regenerate checksums.json.
+      - 'output/**'
   workflow_dispatch:
 
 permissions:
@@ -36,6 +38,11 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
+
+      # The committed manifest must match the committed CSVs. Runs on the fresh
+      # checkout, before the tests can write anything to output/.
+      - name: Verify output checksums
+        run: python verify_checksums.py verify
 
       - name: Lint + test (the nightly's own gate)
         run: |

@@ -359,6 +359,18 @@ class TestValidateScrapedDataInvalid:
         assert not report.passed
         assert any("duplicate" in e.lower() for e in report.errors)
 
+    def test_truncated_rows_are_reported_instead_of_crashing(self, tmp_path):
+        """csv.DictReader fills a short row's missing fields with None, which
+        the per-field checks used to .strip() into an AttributeError."""
+        scrape = tmp_path / "short_scrape.csv"
+        scrape.write_text("date,tournament_name,entry_count,url\n2026-03-23,Test Open\n")
+        summary = tmp_path / "short_summary.csv"
+        summary.write_text("tid,tournament_name,final_count,tournament_year\n999\n")
+        scrape_report = validate.validate_daily_scrape(csv_path=str(scrape))
+        summary_report = validate.validate_tournament_summary(csv_path=str(summary))
+        assert any("entry_count" in w for w in scrape_report.warnings)
+        assert any("final_count" in m for m in summary_report.warnings + summary_report.errors)
+
 
 # ---------------------------------------------------------------------------
 # Helper function unit tests

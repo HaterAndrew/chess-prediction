@@ -38,7 +38,7 @@ import pandas as pd
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 from validate_fees import FAMILY_TO_CODE  # noqa: E402
 from shared.season import CURRENT_SEASON  # noqa: E402
-from tournament_aliases import canonicalize_family  # noqa: E402
+from fees.codes import flyer_code_for  # noqa: E402
 
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 FEES_CSV = os.path.join(OUTPUT_DIR, "tournament_fees.csv")
@@ -83,7 +83,9 @@ def _flyer_updates(fr, reg, ons, eb, blank):
 
 
 def _code_for(family):
-    return FAMILY_TO_CODE.get(family) or FAMILY_TO_CODE.get(canonicalize_family(family))
+    # This module's FAMILY_TO_CODE attribute, so tests that monkeypatch it
+    # still steer the lookup.
+    return flyer_code_for(family, FAMILY_TO_CODE)
 
 
 def merge_fees(dry_run=False, today=None, first_season=None):

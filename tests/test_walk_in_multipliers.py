@@ -40,6 +40,20 @@ def test_multiplier_computation():
     print("  PASS: multiplier computation")
 
 
+def test_standings_meet_the_summary_on_the_edition_key():
+    """STANDINGS_NAME_MAP sends "Southwest Class" to "Southwest Class
+    Championships", which the summary spells "Southwest Class" for 2015-2021;
+    a letters match after the map lost every one of those years."""
+    from importlib import import_module
+    m06 = import_module("06_walk_in_multipliers")
+
+    standings = {("Southwest Class", 2019): 393, ("Bostonchess Congress", 2019): 270}
+    summary = {("Southwest Class", 2019): 360, ("Boston Chess Congress", 2019): 250}
+    rows = m06.compute_multipliers(standings, summary)
+    assert [(r["family"], r["standings_count"]) for r in rows] == [
+        ("Boston Chess Congress", 270), ("Southwest Class", 393)]
+
+
 def test_ratio_floor_filter():
     """Ratios < 0.5 should be filtered out (bad standings data)."""
     from importlib import import_module
@@ -316,9 +330,9 @@ def test_backtest_vs_naive():
 
 # ── 5e. History-depth alarm (2026-09-07 review) ────────────────────────────
 #
-# The spot checks below were marked xfail when the walk-in history collapsed to
-# n_years=1 for 37 of 38 families, which turned the only signal that anything
-# was wrong into a silent skip. check_history_depth is the alarm that should
+# The spot checks below were marked xfail from 2026-09-07 to 2026-10-04 while
+# the walk-in history sat at n_years=1 for 37 of 38 families, which turned the
+# only signal that anything was wrong into a silent skip. check_history_depth is the alarm that should
 # have fired instead: it reaches audit_warnings.json and the site's warnings
 # panel through the pipeline's WARNING: harvest.
 
@@ -390,85 +404,40 @@ def test_live_corpus_alarm_state_is_reported_not_hidden():
 
 
 # ── 5d. Spot Checks ────────────────────────────────────────────────────────
+#
+# Until 2026-10-04 these asserted Kings Island ~1.65, Southwest Class ~1.55
+# and a Mid-America "outlier" near 3.5, all strict xfails. Those ratios came
+# from standings totals that counted side events, re-listed sections,
+# whole-event tables and six extra rows per section; Mid-America's also
+# included its 2009 and 2010 archive tables. Counted as the unique players in
+# the main sections, an edition sits near its final registration count.
 
-@pytest.mark.xfail(reason="Walk-in history collapsed: Kings Island now n_years=1 "
-                          "(2025, ratio 1.073) vs the 6-7 years/ratio~1.65 this test "
-                          "assumes. The 2023+ recency restriction (06:179) plus "
-                          "standings-join gaps shrank the family history. Also asserts "
-                          "live-data ranges rather than a fixture. Revisit in Phase 5 (J3).",
-                   # strict: if the corpus recovers, this must be un-xfailed
-                   # deliberately rather than passing unnoticed (2026-09-07 review).
-                   strict=True)
-def test_spot_check_kings_island():
-    """Kings Island Open: stable open, 7 years, ratio ~1.65, std < 0.07."""
+def _family_stats(family):
     stats_csv = os.path.join(OUTPUT_DIR, "walk_in_family_stats.csv")
     with open(stats_csv) as f:
         for r in csv.DictReader(f):
-            if r["family"] == "Kings Island Open":
-                assert int(r["n_years"]) >= 6
-                ratio = float(r["median_ratio"])
-                std = float(r["std_ratio"])
-                assert 1.5 < ratio < 1.8, f"Unexpected ratio {ratio}"
-                assert std < 0.07, f"Unexpected std {std}"
-                print(f"  PASS: Kings Island Open — ratio={ratio:.3f}, std={std:.4f}, n={r['n_years']}")
-                return
-    assert False, "Kings Island Open not found in stats"
+            if r["family"] == family:
+                return r
+    raise AssertionError(f"{family} not found in stats")
 
 
-@pytest.mark.xfail(reason="Walk-in history collapsed: Southwest Class now n_years=1 "
-                          "(2026, ratio 1.236) vs the 5 years/ratio~1.55 this test assumes "
-                          "(2023+ recency + standings-join gaps). Asserts live-data ranges. "
-                          "Revisit in Phase 5 (J3).",
-                   # strict: if the corpus recovers, this must be un-xfailed
-                   # deliberately rather than passing unnoticed (2026-09-07 review).
-                   strict=True)
-def test_spot_check_southwest_class():
-    """Southwest Class: class tournament, 5 years, ratio ~1.55-1.60."""
-    stats_csv = os.path.join(OUTPUT_DIR, "walk_in_family_stats.csv")
-    # Southwest Class is stored as "Southwest Class Championships" in summary
-    # but may appear under different names
-    with open(stats_csv) as f:
-        for r in csv.DictReader(f):
-            if "southwest" in r["family"].lower() and "class" in r["family"].lower():
-                n = int(r["n_years"])
-                assert n >= 4
-                ratio = float(r["median_ratio"])
-                # Southwest Class is actually quite high
-                assert ratio > 1.3, f"Ratio too low: {ratio}"
-                print(f"  PASS: {r['family']} — ratio={ratio:.3f}, n={n}")
-                return
-    print("  SKIP: Southwest Class not found (may need name mapping)")
+@pytest.mark.parametrize("family", ["Kings Island Open", "Southwest Class Championships",
+                                    "Mid-America Open"])
+def test_spot_check_main_section_ratios(family):
+    r = _family_stats(family)
+    assert int(r["n_years"]) >= 3
+    assert 0.9 < float(r["median_ratio"]) < 1.1, r
 
 
-@pytest.mark.xfail(reason="Walk-in history collapsed: Mid-America now n_years=1 "
-                          "(2026, ratio 1.335) vs the ~3.5 outlier this test assumes "
-                          "(2023+ recency + standings-join gaps). Asserts live-data ranges. "
-                          "Revisit in Phase 5 (J3).",
-                   # strict: if the corpus recovers, this must be un-xfailed
-                   # deliberately rather than passing unnoticed (2026-09-07 review).
-                   strict=True)
-def test_spot_check_mid_america():
-    """Mid-America Open: extreme outlier, ratio ~3.5, own family multiplier."""
-    stats_csv = os.path.join(OUTPUT_DIR, "walk_in_family_stats.csv")
-    with open(stats_csv) as f:
-        for r in csv.DictReader(f):
-            if "mid-america" in r["family"].lower() or "midamerica" in r["family"].lower():
-                ratio = float(r["median_ratio"])
-                assert ratio > 2.5, f"Ratio too low for Mid-America: {ratio}"
-                assert ratio < 5.0, f"Ratio suspiciously high: {ratio}"
-                print(f"  PASS: {r['family']} — ratio={ratio:.3f} (confirmed outlier)")
-
-                # Verify it gets its own family multiplier, not type fallback
-                from importlib import import_module
-                m04c = import_module("04c_final_model")
-                multipliers = m04c.load_walkin_multipliers()
-                _, _, _, m_ratio, source = m04c.apply_walkin_multiplier(
-                    100, 80, 120, r["family"], multipliers)
-                assert source == "family", f"Should use family multiplier, got {source}"
-                assert abs(m_ratio - ratio) < 0.01
-                print("  PASS: Mid-America uses family-specific multiplier (not type fallback)")
-                return
-    assert False, "Mid-America Open not found"
+def test_spot_check_mid_america_uses_its_own_multiplier():
+    from importlib import import_module
+    m04c = import_module("04c_final_model")
+    ratio = float(_family_stats("Mid-America Open")["median_ratio"])
+    _, _, _, m_ratio, source = m04c.apply_walkin_multiplier(
+        100, 80, 120, "Mid-America Open", m04c.load_walkin_multipliers())
+    assert source == "family"
+    # Shrunk toward the 1.1 baseline by sample size (model/walkins.py J3).
+    assert min(ratio, 1.1) <= m_ratio <= max(ratio, 1.1)
 
 
 def test_spot_check_recent_2025_2026():
@@ -521,9 +490,9 @@ def main():
     test_backtest_vs_naive()
 
     print("\n--- 5d. Spot Checks ---")
-    test_spot_check_kings_island()
-    test_spot_check_southwest_class()
-    test_spot_check_mid_america()
+    for family in ("Kings Island Open", "Southwest Class Championships", "Mid-America Open"):
+        test_spot_check_main_section_ratios(family)
+    test_spot_check_mid_america_uses_its_own_multiplier()
     test_spot_check_recent_2025_2026()
 
     print("\n" + "=" * 60)

@@ -219,3 +219,18 @@ def test_rows_far_from_the_final_count_are_listed():
     inside, outside = against_final_counts(new, {("Chicago Open", 2020): 415,
                                                  ("Chicago Open", 2019): 880})
     assert (inside, outside) == (1, [(("Chicago Open", 2020), 415, 304)])
+
+
+def test_committed_rows_the_rebuild_lacks_are_kept_and_marked():
+    from scripts.import_ccasite_standings import _carried, _complete
+    committed = [{"tournament_name": "Bostonchess Congress", "year": "2012", "total_players": "164"},
+                 {"tournament_name": "Boston", "year": "2026", "total_players": "413"},
+                 {"tournament_name": "Pittsburgh Open", "year": "2026", "total_players": "160",
+                  "source": "chessevents"}]
+    rebuilt = [{"tournament_name": "Boston Chess Congress", "year": 2026, "total_players": 343}]
+    assert [(r["tournament_name"], r["source"]) for r in _carried(committed, rebuilt)] == [
+        ("Bostonchess Congress", "old scraper"), ("Pittsburgh Open", "chessevents")]
+    skipped = []
+    editions = [FolderEdition("pittsburgh", 2026, ()), FolderEdition("pittsburgh", 2025, ())]
+    assert [e.year for e in _complete(editions, skipped)] == [2025]
+    assert skipped and "Under 2100" in skipped[0]

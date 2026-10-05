@@ -3,12 +3,7 @@
 run_enrichment.SCRAPERS and the weekly workflow run it by name.
 """
 
-from scrapers.standings import (  # noqa: F401
-    SLUG_DISPLAY,
-    budget_exceeded,
-    clean_section_name,
-    scrape_all,
-)
+from scrapers.standings import scrape_all  # noqa: F401
 
 if __name__ == "__main__":
     scrape_all()

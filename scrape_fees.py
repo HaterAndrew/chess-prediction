@@ -9,10 +9,10 @@ Strategy:
 Output: output/tournament_fees.csv
 """
 
-import csv
 import logging
 import os
 import sys
+from datetime import date
 
 from fees.discover import (  # noqa: F401
     TOURNAMENT_CODES,
@@ -24,6 +24,8 @@ from fees.discover import (  # noqa: F401
 )
 from fees.parse import parse_flyer  # noqa: F401
 from fees.patterns import EARLY_BIRD_MIN_GAP_DAYS  # noqa: F401
+from fees.store import read_fees, upsert, write_fees
+from registry.keys import flyer_code
 from shared.paths import OUTPUT_DIR
 
 CSV_PATH = os.path.join(OUTPUT_DIR, "tournament_fees.csv")
@@ -36,64 +38,50 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 
-CSV_COLUMNS = [
-    "tournament_name",
-    "year",
-    "event_start",
-    "early_bird_fee",
-    "early_bird_deadline",
-    "regular_fee",
-    "regular_deadline",
-    "onsite_fee",
-    "prize_fund",
-    "has_eb_phrasing",
-    "eb_demoted_reason",
-    "url",
-]
-
-
-def main():
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-    # Collect candidate URLs from both discovery methods
-    candidates = generate_candidate_urls()
-    log.info("Generated %d brute-force candidate URLs", len(candidates))
-
-    discovered = discover_from_chessevents()
-    candidates |= discovered
-    log.info("Total candidate URLs: %d", len(candidates))
-
-    # Probe which URLs are actually live
-    log.info("Probing candidates (this may take a few minutes) …")
-    live_urls = probe_urls(candidates)
-    log.info("Found %d live flyer pages", len(live_urls))
-
-    if not live_urls:
-        log.warning("No live chesstour.com pages found. CSV not written.")
-        sys.exit(0)
-
-    # Parse each live page
-    results = []
-    for url in sorted(live_urls):
-        resp, ok = fetch(url)
-        if not ok:
-            continue
+def _parse_live(live):
+    """(parsed rows, URLs of live pages that did not parse)."""
+    parsed, unparsed = [], []
+    for url, resp in sorted(live.items()):
         # chesstour.com pages are often latin-1 encoded
         resp.encoding = resp.apparent_encoding or "latin-1"
         record = parse_flyer(resp.text, url)
         if record:
-            results.append(record)
+            parsed.append(record)
             log.info("  PARSED  %s  →  %s", url, record["tournament_name"])
+        else:
+            unparsed.append(url)
+    return parsed, unparsed
 
-    # Write CSV
-    if results:
-        with open(CSV_PATH, "w", newline="", encoding="utf-8") as fh:
-            writer = csv.DictWriter(fh, fieldnames=CSV_COLUMNS)
-            writer.writeheader()
-            writer.writerows(results)
-        log.info("Wrote %d rows to %s", len(results), CSV_PATH)
-    else:
+
+def main():
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    existing = read_fees(CSV_PATH)
+
+    # Every flyer already on file is probed again, with the mapped codes for
+    # this season and next and whatever chessevents.com links to.
+    candidates = generate_candidate_urls(row["url"] for row in existing)
+    candidates |= discover_from_chessevents()
+    log.info("Total candidate URLs: %d", len(candidates))
+
+    log.info("Probing candidates (this may take a few minutes) …")
+    live = probe_urls(candidates)
+    log.info("Found %d live flyer pages", len(live))
+    if not live:
+        log.warning("No live chesstour.com pages found. CSV not written.")
+        sys.exit(0)
+
+    parsed, unparsed = _parse_live(live)
+    # chessevents.com also links help pages (Byes.htm, taxes.htm); only
+    # <code><yy>.htm pages are flyers.
+    unparsed = [url for url in unparsed if flyer_code(url)]
+    if unparsed:
+        print(f"{len(unparsed)} live flyer(s) did not parse: {', '.join(unparsed)}")
+    if not parsed:
         log.warning("Parsed 0 records — CSV not written.")
+    else:
+        rows = upsert(existing, parsed, date.today().isoformat())
+        write_fees(CSV_PATH, rows)
+        log.info("Wrote %d rows (%d parsed this run) to %s", len(rows), len(parsed), CSV_PATH)
 
     # Bridge the scraped flyer fees into the family-keyed tournament_metadata.csv
     # the prediction path reads. Without this, fees sit unused in

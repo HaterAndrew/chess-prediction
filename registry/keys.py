@@ -20,7 +20,8 @@ from fees.codes import FAMILY_TO_CODE
 from shared.editions import split_edition_name
 from tournament_aliases import STANDINGS_NAME_MAP, canonicalize_family, cca_family
 
-FLYER_URL_RE = re.compile(r"/([a-z]+)(\d{2})\.htm")
+# A code can end in digits: wog5026.htm is code "wog50", year 26.
+FLYER_URL_RE = re.compile(r"/([a-z][a-z0-9]*?)(\d{2})\.htm")
 
 
 class UnresolvedKey(LookupError):

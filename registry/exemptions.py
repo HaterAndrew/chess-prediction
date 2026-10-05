@@ -59,8 +59,8 @@ def ledger_exemption(row):
 
 
 def fee_exemption(code):
-    """Blitz side-event flyers share the parent's code plus "b" and carry no
-    advance fee schedule (fees/codes.UNMAPPED_CODES)."""
+    """Blitz and quick-chess side-event flyers map to no family, because no
+    card shows a side event (fees/codes.UNMAPPED_CODES)."""
     return "side-event flyer" if code in UNMAPPED_CODES else None
 
 

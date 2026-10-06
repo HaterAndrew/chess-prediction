@@ -1,25 +1,19 @@
 {
-  "generated": "2026-10-05 20:38:33",
-  "count": 3,
-  "total_occurrences": 3,
+  "generated": "2026-10-06 07:36:04",
+  "count": 2,
+  "total_occurrences": 2,
   "warnings": [
     {
       "step": "Refresh tournament summary",
       "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 live predictions still run from scrape data, but the training corpus is frozen: newly scraped events carry no registration timestamps, so they can never join model training or 04e grading, and early-bird spike features stay absent. Re-export from the CCA admin.",
       "count": 1,
-      "generated": "2026-10-05 07:05:21"
-    },
-    {
-      "step": "Refresh walk-in multipliers (06_walk_in_multipliers.py)",
-      "text": "walk-in history collapsed: 37 of 38 families have fewer than 2 usable editions (median n_years=1). Per-family multipliers shrink toward the 1.1 baseline at this depth, so the walk-in adjustment is close to inert, and 37 family/ies report std_ratio=0, contributing no interval width. Cause is usually the MIN_DATA_YEAR=2023 recency cut combined with a frozen training corpus (missing all_registrations.csv export).",
-      "count": 1,
-      "generated": "2026-10-05 07:05:21"
+      "generated": "2026-10-06 07:36:04"
     },
     {
       "step": "Scan prediction data health (data_health.py)",
       "text": "data-health: 1 MEDIUM finding(s) \u2014 see output/data_health.json",
       "count": 1,
-      "generated": "2026-10-05 07:05:21"
+      "generated": "2026-10-06 07:36:04"
     }
   ]
 }

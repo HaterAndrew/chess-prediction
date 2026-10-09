@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-08",
-  "scanned_at": "2026-10-08T07:31:35",
+  "generated": "2026-10-09",
+  "scanned_at": "2026-10-09T07:28:13",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -42,12 +42,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Los Angeles Open",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Midwest Class Championships",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
@@ -120,6 +114,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Mid-America Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Midwest Class Championships",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {

@@ -4,85 +4,85 @@
       "filename": "daily_registration_counts.csv",
       "sha256": "91ef397ff5118798100451dc8571373441547a9681fce2acb0eadc5b4031bbff",
       "row_count": 13438,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "daily_scrape.csv",
-      "sha256": "9e09555ae7f577bb9e319049bfc170fe09c87d0ba01ef35f6a15c9a04cc9c007",
-      "row_count": 3759,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "sha256": "18062d415927d3b1a6571775b595d35f114585ffdab9549c3cdbec978b114525",
+      "row_count": 3777,
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "edition_registry.csv",
       "sha256": "28f0fb8eeb8794de986f0f721858f22222accf711e3eb5d6c112a4a6b8c521dd",
       "row_count": 1127,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "forecast_ledger.csv",
-      "sha256": "d9574da12ff4126b1aba220c6e1dd8b86633052bade6a19c29c93b4eaacba204",
-      "row_count": 793,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "sha256": "70ea572c42d508a4e09f93996a917b135e7fd42d5b1864d9e42375610312a834",
+      "row_count": 826,
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "forecast_ledger_backfill.csv",
       "sha256": "326b33f00d74c85640795de37a1f5a6c214ad8c316e9b50a231410f11f52651b",
       "row_count": 4654,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "historical_standings.csv",
       "sha256": "983b222eb26b3d380310f313dc97e679eba166ca37021eeb2ff9e02109120e98",
       "row_count": 884,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "historical_tournaments.csv",
       "sha256": "86d250eb7b771f1540c473ff30fad6ce92576baa58c0a848d2ffcbe456842a5b",
       "row_count": 750,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "tournament_fees.csv",
       "sha256": "c103398c039bd58a42fa1b9a65ad9a05d6dbe5afe30aa362718e0222c0267af1",
       "row_count": 101,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "tournament_metadata.csv",
       "sha256": "d312be1165a39632b51025c6b1c6436dd37b9b8a3d25f3855a43bb258cc38145",
       "row_count": 333,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "tournament_summary.csv",
-      "sha256": "e0d6521735c7b17a54572e0bea677afc0c78bdab91a01cae682c340b2195e690",
+      "sha256": "897a8c44daf6090d4f3afcb6d298cb4f31c085d112a19821001243e895c15177",
       "row_count": 786,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "update_log.csv",
-      "sha256": "8a7f64f873cf21fd02215158d2aedad7aab0961a7f9d658483e522fb8df84d8c",
-      "row_count": 4758,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "sha256": "62c06d8e14b4a9b9e38d8c094002bac212a99fe295294f19bcffc0ad5ae9a62a",
+      "row_count": 4767,
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "walk_forward_records.csv",
-      "sha256": "821a6dc37274579ed97936a2ae6e583e3668266e9a63340d4c2190a9040d99c3",
+      "sha256": "677748f97bfdcf0fd5be15fa3103980f8930a2986e5fdc7b209eb39e8eae13af",
       "row_count": 1062,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "walk_in_family_stats.csv",
       "sha256": "f497ca189fb94b7b94b6d356fca23f8a6f2cadbd7e71f1f3570e684adfd591cd",
       "row_count": 48,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "timestamp": "2026-10-10T07:15:23Z"
     },
     {
       "filename": "walk_in_multipliers.csv",
       "sha256": "c864ebc2b62a2a88225ccd538e21553b77793468da942d3ba335965b3b8f1162",
       "row_count": 447,
-      "timestamp": "2026-10-09T07:28:14Z"
+      "timestamp": "2026-10-10T07:15:23Z"
     }
   ]
 }

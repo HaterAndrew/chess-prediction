@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-09",
-  "scanned_at": "2026-10-09T07:28:13",
+  "generated": "2026-10-10",
+  "scanned_at": "2026-10-10T07:15:22",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -13,6 +13,12 @@
       "mode": "daily-large-recent-gap",
       "family": "World Open top 6 sections",
       "message": "7-day gap before the final chart point (day 105 -> 112)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Boston Chess Congress",
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
       "severity": "INFO",
@@ -66,12 +72,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Atlantic Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Boston Chess Congress",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {

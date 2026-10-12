@@ -4,85 +4,85 @@
       "filename": "daily_registration_counts.csv",
       "sha256": "91ef397ff5118798100451dc8571373441547a9681fce2acb0eadc5b4031bbff",
       "row_count": 13438,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "daily_scrape.csv",
-      "sha256": "f45a0fa2469b86421af85a97c7b587edf2214df6f7e581be0b95e8c74e3cc5dc",
-      "row_count": 3795,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "sha256": "a11a0afc6a1f9871520660a79dd894dbcfdbccb0b50a04374cf4409e27ccc93e",
+      "row_count": 3812,
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "edition_registry.csv",
       "sha256": "28f0fb8eeb8794de986f0f721858f22222accf711e3eb5d6c112a4a6b8c521dd",
       "row_count": 1127,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "forecast_ledger.csv",
-      "sha256": "f06eca9825791c035151c6f4152863f256d4c190e516c2f25aff260c8f2ca776",
-      "row_count": 859,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "sha256": "9ba00e65817749155968b933858f54ac4a85696efc8f26202c5db2c0fe0a10a2",
+      "row_count": 891,
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "forecast_ledger_backfill.csv",
       "sha256": "326b33f00d74c85640795de37a1f5a6c214ad8c316e9b50a231410f11f52651b",
       "row_count": 4654,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "historical_standings.csv",
       "sha256": "983b222eb26b3d380310f313dc97e679eba166ca37021eeb2ff9e02109120e98",
       "row_count": 884,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "historical_tournaments.csv",
       "sha256": "86d250eb7b771f1540c473ff30fad6ce92576baa58c0a848d2ffcbe456842a5b",
       "row_count": 750,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "tournament_fees.csv",
       "sha256": "c103398c039bd58a42fa1b9a65ad9a05d6dbe5afe30aa362718e0222c0267af1",
       "row_count": 101,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "tournament_metadata.csv",
       "sha256": "d312be1165a39632b51025c6b1c6436dd37b9b8a3d25f3855a43bb258cc38145",
       "row_count": 333,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "tournament_summary.csv",
-      "sha256": "de63c25463d19c5104520a4f37160d44f5032e967b6e19bcea8aaf451ced89b8",
+      "sha256": "65ae324212b610a3b2fe2ca798a5f1f1a002037f251d7d585c46c2ceca6454ec",
       "row_count": 786,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "update_log.csv",
-      "sha256": "70c7982b996c051f6dd41947f50689919170015ec1c5139cdbfc91d00a106198",
-      "row_count": 4776,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "sha256": "fb11efde0101ea39892410b913fe3cb134711cd309a5150cf5935a3b95675862",
+      "row_count": 4785,
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "walk_forward_records.csv",
-      "sha256": "677748f97bfdcf0fd5be15fa3103980f8930a2986e5fdc7b209eb39e8eae13af",
-      "row_count": 1062,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "sha256": "bedb9fec3613a895f736d78c52678c6f24bb9c77471f7c977c9eac83a8711475",
+      "row_count": 1070,
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "walk_in_family_stats.csv",
       "sha256": "f497ca189fb94b7b94b6d356fca23f8a6f2cadbd7e71f1f3570e684adfd591cd",
       "row_count": 48,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "timestamp": "2026-10-12T07:28:00Z"
     },
     {
       "filename": "walk_in_multipliers.csv",
       "sha256": "c864ebc2b62a2a88225ccd538e21553b77793468da942d3ba335965b3b8f1162",
       "row_count": 447,
-      "timestamp": "2026-10-11T07:18:54Z"
+      "timestamp": "2026-10-12T07:28:00Z"
     }
   ]
 }

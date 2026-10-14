@@ -19,12 +19,22 @@ pytestmark = pytest.mark.skipif(
     shutil.which("node") is None, reason="node not available")
 
 
-@pytest.fixture(scope="module")
-def res():
+def _run(env=None):
     proc = subprocess.run(["node", DRIVER], capture_output=True, text=True,
-                          cwd=PROJECT_DIR, timeout=60)
+                          cwd=PROJECT_DIR, timeout=60, env=env)
     assert proc.returncode == 0, f"driver failed:\n{proc.stderr}"
     return json.loads(proc.stdout)
+
+
+@pytest.fixture(scope="module")
+def res():
+    return _run()
+
+
+@pytest.fixture(scope="module")
+def res_eastern():
+    """The runner's clock is UTC, which has no DST; Eastern does."""
+    return _run({**os.environ, "TZ": "America/New_York"})
 
 
 def test_fmt_and_isdone(res):
@@ -40,6 +50,20 @@ def test_date_arithmetic_is_local_midnight(res):
     assert res["add_days"] == [2026, 7, 31]
     assert res["fmt_date_empty"] == "–"
     assert res["fmt_datetime_bad"] == "–"
+
+
+COVERED_DAYS = [[2026, 10, 13], [2026, 10, 31], [2026, 3, 8]]
+
+
+def test_a_count_runs_through_the_day_before_its_scrape(res):
+    """2026-10-14: the 2 AM scrape dated Oct 14 holds entries through Oct 13."""
+    assert res["counts_through"] == COVERED_DAYS
+
+
+def test_the_covered_day_survives_the_spring_forward_day(res_eastern):
+    """Mar 9 minus 24 h is 11 PM on Mar 7 in Eastern: calendar arithmetic only."""
+    assert res_eastern["tz"] == "America/New_York"
+    assert res_eastern["counts_through"] == COVERED_DAYS
 
 
 def test_curve_interpolation_and_clamps(res):

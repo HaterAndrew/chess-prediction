@@ -77,6 +77,14 @@ function addDays(dateStr, days) {
 function daysBetween(a, b) {
   return Math.round((new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / 86400000);
 }
+// The day a count dated d (a Date or ms at local midnight) runs through. A
+// scrape dated D lands around midnight Eastern, so it holds entries through
+// D-1. Calendar arithmetic, not d - 24 h: a spring-forward day is 23 hours
+// long.
+function countsThrough(d) {
+  d = _asDate(d);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate() - 1);
+}
 function interpCurve(curve, daysBefore) {
   if (!curve || curve.length === 0) return 1;
   const sorted = [...curve].sort((a, b) => b.days_before - a.days_before);
@@ -164,6 +172,7 @@ if (typeof globalThis !== 'undefined') {
   globalThis.fmtDateTimeLong = fmtDateTimeLong;
   globalThis.addDays = addDays;
   globalThis.daysBetween = daysBetween;
+  globalThis.countsThrough = countsThrough;
   globalThis.interpCurve = interpCurve;
   globalThis.getPaceAlert = getPaceAlert;
   globalThis.STALE_AFTER_HOURS = STALE_AFTER_HOURS;
@@ -173,7 +182,7 @@ if (typeof module !== 'undefined') {
   module.exports = {
     fmt, isDone, EARLY_BIRD_MIN_GAP_DAYS, hasValidEarlyBird,
     fmtDate, fmtDateLong, fmtDateTimeLong, addDays, daysBetween,
-    interpCurve, getPaceAlert,
+    countsThrough, interpCurve, getPaceAlert,
     STALE_AFTER_HOURS, assessDataFreshness,
   };
 }

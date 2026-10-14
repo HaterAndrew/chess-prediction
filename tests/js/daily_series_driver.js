@@ -46,6 +46,12 @@ const out = {
     span: i.span, added: i.added, isGap: i.isGap,
     date: i.date ? i.date.toISOString().slice(0, 10) : null })),
 
+  // The Last 7 days bars, dated by the day the entries were made.
+  healthy_breakdown: DS.dailyBreakdown(healthyCard).map(o => ({
+    n: o.n, estimated: o.estimated, date: o.date.toISOString().slice(0, 10) })),
+  gappy_breakdown: DS.dailyBreakdown(gappyCard).map(o => ({
+    n: o.n, estimated: o.estimated, date: o.date.toISOString().slice(0, 10) })),
+
   // A 7-day gap must not be reported as one day's registrations.
   gappy_latest_daily: DS.latestDailyChange(gappyCard),
   gappy_latest_interval: (() => {

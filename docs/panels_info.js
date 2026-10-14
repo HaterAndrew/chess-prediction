@@ -168,7 +168,7 @@ function _milestoneStops(t) {
   const expected = db => Math.max(t.current_count,
     Math.round(t.point_estimate * interpCurve(t.registration_curve, db)));
   return [
-    { label: 'Today', date: fmtDate(TOURNAMENT_DATA.generated), count: fmt(t.current_count), now: true },
+    { label: 'Latest', date: fmtDate(TOURNAMENT_DATA.counts_through), count: fmt(t.current_count), now: true },
     ..._milestoneMiddle(t).map(m => ({
       label: m.label, date: DATE_FMT.short.format(addDays(t.event_start, -m.db)), count: `~${fmt(expected(m.db))}`,
     })),

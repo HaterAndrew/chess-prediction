@@ -600,6 +600,9 @@ function renderChart(t) {
                 // Only show actual line when hovering over real data (past/today),
                 // not when hovering over future projected points
                 if (!isHistorical && !isPastOrToday) return null;
+                // The point sits on its scrape date; the row names the day
+                // its entries run through (countsThrough, util_core.js).
+                const thru = DATE_FMT.short.format(countsThrough(hoveredDate));
                 if (item.dataIndex > 0) {
                   const prevPt = item.dataset.data[item.dataIndex - 1];
                   const delta = item.raw.y - prevPt.y;
@@ -610,11 +613,11 @@ function renderChart(t) {
                   const spanDays = Math.max(1, Math.round(
                     (item.raw.x - prevPt.x) / 86400000));
                   const unit = spanDays === 1 ? '/day' : ` over ${spanDays} days`;
-                  if (delta > 0) return ` Actual: ${val}  (+${fmt(delta)}${unit})`;
-                  if (delta === 0) return ` Actual: ${val}  (no change)`;
-                  return ` Actual: ${val}  (${fmt(delta)}${unit})`;
+                  if (delta > 0) return ` Actual through ${thru}: ${val}  (+${fmt(delta)}${unit})`;
+                  if (delta === 0) return ` Actual through ${thru}: ${val}  (no change)`;
+                  return ` Actual through ${thru}: ${val}  (${fmt(delta)}${unit})`;
                 }
-                return ` Actual: ${val}`;
+                return ` Actual through ${thru}: ${val}`;
               }
 
               if (item.dataset.label === 'Projected') {
@@ -761,7 +764,7 @@ function _describeMainChart(t, canvas, d) {
   const last = d.lastYear ? `; last year finished at ${fmt(d.lastYear.count)}` : '';
   const label = isDone(t)
     ? `${name}: ${fmt(t.current_count)} final entries, event ${fmtDate(t.event_start)}${last}.`
-    : `${name}: ${fmt(t.current_count)} registered on ${fmtDate(TOURNAMENT_DATA.generated)}; forecast ~${fmt(t.point_estimate)} by ${fmtDate(t.event_start)}, ${d.ciPct}% range ${fmt(t.ci_lower)} to ${fmt(t.ci_upper)}${last}.`;
+    : `${name}: ${fmt(t.current_count)} registered through ${fmtDate(TOURNAMENT_DATA.counts_through)}; forecast ~${fmt(t.point_estimate)} by ${fmtDate(t.event_start)}, ${d.ciPct}% range ${fmt(t.ci_lower)} to ${fmt(t.ci_upper)}${last}.`;
   const find = l => (d.datasets.find(x => x.label === l) || {}).data;
   const proj = find('Projected'), up = find('CI Upper'), lo = find('CI Lower');
   const cols = ['Date', 'Registered'];

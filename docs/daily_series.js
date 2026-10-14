@@ -161,6 +161,28 @@
   }
 
   /**
+   * One row per calendar day the intervals cover: {n, date, estimated}.
+   *
+   * `date` is the day the registrations happened, not the scrape that saw
+   * them. A scrape dated D runs around midnight Eastern and holds entries
+   * through D-1, so the entries between the scrapes on days k and k+1 were
+   * made on day k. A gap's total is spread evenly over its days and marked
+   * estimated.
+   */
+  function dailyBreakdown(card, opts) {
+    var res = [];
+    var ivs = intervals(card, opts);
+    for (var i = 0; i < ivs.length; i++) {
+      var iv = ivs[i];
+      for (var g = 0; g < iv.span; g++) {
+        res.push({ n: Math.round(iv.perDay), date: pointDate(card, iv.fromDay + g),
+                   estimated: iv.isGap });
+      }
+    }
+    return res;
+  }
+
+  /**
    * Registrations added on the most recent interval, but ONLY when that
    * interval really is one day. Returns null when the latest gap spans several
    * days — the caller must then say "over N days", not "today".
@@ -224,6 +246,7 @@
     pointDate: pointDate,
     fmtPointDate: fmtPointDate,
     intervals: intervals,
+    dailyBreakdown: dailyBreakdown,
     latestDailyChange: latestDailyChange,
     latestInterval: latestInterval,
     latestIntervalOn: latestIntervalOn,

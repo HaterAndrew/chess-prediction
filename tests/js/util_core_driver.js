@@ -23,6 +23,12 @@ const out = {
     const d = U.addDays('2026-07-01', 30);
     return [d.getFullYear(), d.getMonth() + 1, d.getDate()];
   })(),
+  // The day a scrape-dated count runs through: from a local-midnight ms (the
+  // chart's x) and from a Date. 2026-03-09 follows the spring-forward day.
+  counts_through: [
+    new Date(2026, 9, 14).getTime(), new Date(2026, 10, 1), new Date(2026, 2, 9).getTime(),
+  ].map(x => { const d = U.countsThrough(x); return [d.getFullYear(), d.getMonth() + 1, d.getDate()]; }),
+  tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
   fmt_date_empty: U.fmtDate(null),
   fmt_datetime_bad: U.fmtDateTimeLong('not-a-date'),
 

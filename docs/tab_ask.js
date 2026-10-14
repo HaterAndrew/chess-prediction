@@ -45,7 +45,7 @@ function initAskTab() {
   askInited = true;
   const info = document.getElementById('askDataInfo');
   if (info && typeof TOURNAMENT_DATA !== 'undefined' && TOURNAMENT_DATA && TOURNAMENT_DATA.generated) {
-    info.textContent = `Data as of ${fmtDate(TOURNAMENT_DATA.generated)}.`;
+    info.textContent = `Entries through ${fmtDate(TOURNAMENT_DATA.counts_through)}.`;
   }
   const chipsHost = document.getElementById('askChips');
   if (chipsHost) {

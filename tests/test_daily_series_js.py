@@ -62,6 +62,23 @@ def test_healthy_intervals_are_single_day_and_dated(res):
     assert [i["date"] for i in ivs] == ["2026-07-02", "2026-07-03", "2026-07-04"]
 
 
+def test_week_bars_are_dated_by_the_day_the_entries_were_made(res):
+    """2026-10-14: the scrape dated D holds entries through D-1, so the 30
+    entries between the 07-01 and 07-02 scrapes were made on 07-01."""
+    assert res["healthy_breakdown"] == [
+        {"n": 30, "estimated": False, "date": "2026-07-01"},
+        {"n": 60, "estimated": False, "date": "2026-07-02"},
+        {"n": 60, "estimated": False, "date": "2026-07-03"},
+    ]
+
+
+def test_week_bars_spread_a_gap_over_the_days_it_covers(res):
+    """The 07-02 to 07-09 gap covers entries made 07-02 through 07-08."""
+    gap = res["gappy_breakdown"][1:]
+    assert [o["date"] for o in gap] == [f"2026-07-0{d}" for d in range(2, 9)]
+    assert all(o["estimated"] and o["n"] == 31 for o in gap)
+
+
 def test_multi_day_gap_is_not_reported_as_one_day(res):
     """The core P1 regression: a 7-day gap adding 220 entries must not be
     labelled as a single day's registrations."""

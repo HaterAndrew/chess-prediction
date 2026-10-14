@@ -64,15 +64,8 @@ function _renderWeekBars(t, done) {
   const weekEl = document.getElementById('weekBreakdown');
   const barsEl = document.getElementById('weekBars');
   if (done || !t.daily_data || t.daily_data.length < 2) { weekEl.style.display = 'none'; return; }
-  const ivs = (typeof DailySeries !== 'undefined') ? DailySeries.intervals(t, { isLive: !done }) : [];
-  const days = [];      // {n, date, estimated}
-  for (const iv of ivs) {
-    const perDay = iv.added / iv.span;
-    for (let g = 0; g < iv.span; g++) {
-      const d = (typeof DailySeries !== 'undefined') ? DailySeries.pointDate(t, iv.fromDay + g + 1) : null;
-      days.push({ n: Math.round(perDay), date: d, estimated: iv.isGap });
-    }
-  }
+  // {n, date, estimated}, dated by the day the entries were made.
+  const days = (typeof DailySeries !== 'undefined') ? DailySeries.dailyBreakdown(t, { isLive: !done }) : [];
   const seriesMax = Math.max(...days.map(o => o.n), 1);
   while (days.length > 7) days.shift();
   if (days.length === 0 || days.every(o => o.n === 0)) {

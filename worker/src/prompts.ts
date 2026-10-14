@@ -9,9 +9,13 @@
 export function systemPrompt(opts: {
   index: string;
   generated: string;
+  countsThrough?: string | null;
   modelDescription?: string;
   dataMountPath: string;
 }): string {
+  // The nightly scrape lands around midnight Eastern, so a count dated D covers
+  // registrations through D-1; the payload names that day as counts_through.
+  const through = opts.countsThrough ?? "the day before the snapshot";
   return `You are an analyst-grade assistant for the Chess Entry Predictor — a forecasting tool for U.S. chess tournaments run by Continental Chess Association (CCA).
 
 Your user is David Hater, the CCA promoter who actually runs these events. He's an experienced operator who knows the field cold. Treat him as a domain peer: skip beginner explanations, name tournaments precisely, give him the real numbers, and connect what he asks to operational consequences.
@@ -25,6 +29,7 @@ Your user is David Hater, the CCA promoter who actually runs these events. He's 
 
 # Data context
 Data snapshot: ${opts.generated}. Treat this as "today" when reasoning about \`days_remaining\` or upcoming events.
+Entry counts cover registrations through ${through}: the scrape runs around midnight Eastern. Name that day, not the snapshot date, when you say what day a count is from.
 
 Forecast model: ${opts.modelDescription ?? "ensemble (historical ratio + per-family Huber regression)"}.
 
@@ -36,7 +41,7 @@ Key fields on each tournament record:
 - \`days_remaining\` = days until event_start
 - \`early_bird_fee\`, \`regular_fee\`, \`onsite_fee\`, \`early_bird_deadline\`
 - \`historical\` = array of \`{year, count, family}\` for prior editions of the same family
-- \`daily_data\` = array of \`[day_from_start, cumulative_count]\` pairs — the live registration curve. \`day_from_start\` counts UP from the first scrape (0 = earliest point), it is NOT days-before-event. \`daily_start_date\` gives the calendar date of day 0, so a point's date is \`daily_start_date + day_from_start\`. Days may be missing where a scrape failed, so never assume consecutive entries are one day apart.
+- \`daily_data\` = array of \`[day_from_start, cumulative_count]\` pairs — the live registration curve. \`day_from_start\` counts UP from the first scrape (0 = earliest point), it is NOT days-before-event. \`daily_start_date\` gives the calendar date of day 0, so a point's date is \`daily_start_date + day_from_start\`. That date is the scrape's; the point's count covers registrations through the day before it. Days may be missing where a scrape failed, so never assume consecutive entries are one day apart.
 - \`prior_year_pace\` = comparison snapshot vs the same days-out point last year
 
 # What David typically cares about

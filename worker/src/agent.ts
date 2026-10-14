@@ -131,6 +131,7 @@ export async function runAgentLoop(
   const sys = systemPrompt({
     index: cd.index,
     generated: cd.data.generated,
+    countsThrough: cd.data.counts_through,
     modelDescription: cd.data.model_description,
     dataMountPath: DATA_MOUNT_PATH,
   });

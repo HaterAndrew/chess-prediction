@@ -38,6 +38,7 @@ export interface Tournament {
 export interface WebsiteData {
   generated: string;
   generated_time?: string;
+  counts_through?: string | null;
   model?: string;
   model_description?: string;
   tournaments: Tournament[];

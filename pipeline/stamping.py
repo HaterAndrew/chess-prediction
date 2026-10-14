@@ -1,10 +1,12 @@
 """Cache-buster stamping + freshness flags (auto_update, verbatim;
 targets derive from config.SITE_DIR at call time).
 """
+import csv
 import hashlib
 import json
 import os
 import re
+from datetime import date, timedelta
 
 from pipeline import config
 
@@ -108,11 +110,34 @@ def _atomic_write_json(path, data):
     os.replace(tmp, path)
 
 
+def counts_through(scrape_dates):
+    """The last full day of registrations the newest scrape holds, 'YYYY-MM-DD'.
+
+    A scrape dated D runs around midnight Eastern (the nightly lands between
+    late on D-1 and the small hours of D), so its counts cover registrations
+    through D-1. The files keep D because the curves bin the same way
+    (dataprep.curves floors days-before-event); only the labels on counts use
+    D-1. None when there is no scrape date.
+    """
+    dates = [d[:10] for d in scrape_dates if d]
+    if not dates:
+        return None
+    return (date.fromisoformat(max(dates)) - timedelta(days=1)).isoformat()
+
+
+def _scrape_dates(path):
+    if not os.path.exists(path):
+        return []
+    with open(path, newline='') as f:
+        return [row['date'] for row in csv.DictReader(f)]
+
+
 def _stamp_stale_flag(is_stale):
-    """Add/update last_updated and is_stale fields in website_data.json.
+    """Add/update last_updated, is_stale and counts_through in website_data.json.
 
     Preserves existing predictions when the scrape fails so stale data
-    can still be served with a warning banner.
+    can still be served with a warning banner. counts_through comes from the
+    scrape file, so on that path it still names the last day actually scraped.
     """
     if not os.path.exists(config.WEBSITE_JSON):
         print(f"  WARNING: {config.WEBSITE_JSON} not found — cannot stamp stale flag")
@@ -123,6 +148,10 @@ def _stamp_stale_flag(is_stale):
 
     data['last_updated'] = config.RUN_TS
     data['is_stale'] = is_stale
+    data['counts_through'] = counts_through(_scrape_dates(config.SCRAPE_CSV))
+    if data['counts_through'] is None:
+        print(f"  WARNING: no scrape dates in {config.SCRAPE_CSV} — counts_through unset; "
+              "the site shows '–' for the day counts run through")
     # A successful run clears any degraded marker left by a previous failure.
     if not is_stale:
         data.pop('pipeline_degraded', None)

@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-15",
-  "scanned_at": "2026-10-15T06:00:05",
+  "generated": "2026-10-16",
+  "scanned_at": "2026-10-16T05:57:27",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -24,12 +24,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Eastern Chess Congress",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Eastern Class Championships",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
@@ -84,6 +78,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Continental Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Eastern Class Championships",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {

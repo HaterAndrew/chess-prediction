@@ -1,8 +1,14 @@
 {
-  "generated": "2026-10-19 06:14:28",
-  "count": 2,
-  "total_occurrences": 2,
+  "generated": "2026-10-19 18:01:06",
+  "count": 3,
+  "total_occurrences": 3,
   "warnings": [
+    {
+      "step": "Enrichment: standings",
+      "text": "standings easternclass 2026: not imported, 'Eastern Class Championships' and 'Eastern Class Championships (in Connecticut)' both name the 2026 edition",
+      "count": 1,
+      "generated": "2026-10-19 18:01:06"
+    },
     {
       "step": "Refresh tournament summary",
       "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 live predictions still run from scrape data, but the training corpus is frozen: newly scraped events carry no registration timestamps, so they can never join model training or 04e grading, and early-bird spike features stay absent. Re-export from the CCA admin.",

@@ -22,6 +22,7 @@ from validation.scrape import (  # noqa: F401
     DAILY_SCRAPE_CSV,
     DATE_RE,
     validate_daily_scrape,
+    validate_scrape_mismatches,
 )
 from validation.summary import (  # noqa: F401
     SUMMARY_REQUIRED_FIELDS,
@@ -40,6 +41,7 @@ __all__ = [
     "validate_all",
     "validate_daily_scrape",
     "validate_metadata_freshness",
+    "validate_scrape_mismatches",
     "validate_tournament_summary",
 ]
 
@@ -48,6 +50,7 @@ def validate_all():
     """Run all validators and return a combined ValidationReport."""
     combined = ValidationReport()
     combined.merge(validate_daily_scrape())
+    combined.merge(validate_scrape_mismatches())
     combined.merge(validate_tournament_summary())
     combined.merge(validate_metadata_freshness())
     return combined

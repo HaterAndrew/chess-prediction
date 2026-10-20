@@ -21,6 +21,8 @@ output/*.js
 output/*.pdf
 output/chess_history.json
 output/scrape_health.html
+# Per-run sidecar the validation gate reads in the same CI job; not history.
+output/scrape_mismatches.json
 # output/scrape_health.json is deliberately NOT ignored (v3 O3): it is the
 # append-only reliability log, and CI runs from a blank checkout. While it was
 # ignored, every run started with an empty history, so consecutive-failure and

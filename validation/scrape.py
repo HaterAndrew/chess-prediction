@@ -1,4 +1,5 @@
 """Checks on output/daily_scrape.csv."""
+import json
 import logging
 import os
 import re
@@ -108,4 +109,38 @@ def validate_daily_scrape(csv_path=None):
 
     logger.info("daily_scrape: %d rows checked, %d errors, %d warnings",
                 len(rows), len(report.errors), len(report.warnings))
+    return report
+
+
+def validate_scrape_mismatches(path=None, today=None):
+    """Warn for each event whose entry-list page disagreed with the CCA index.
+
+    scrapers/entries.py writes output/scrape_mismatches.json each run. A
+    mismatch means the scraper kept the index count and dropped withdrawal
+    data for that event, most often because the entry-list code points at
+    another event's page. Only today's file counts; an absent file means the
+    scraper did not run here (local --skip-scrape), which is not a finding.
+    """
+    from shared.clock import today_iso
+    from shared.paths import OUTPUT_DIR
+
+    path = path or os.path.join(OUTPUT_DIR, "scrape_mismatches.json")
+    today = today or today_iso()
+    report = ValidationReport()
+    if not os.path.exists(path):
+        return report
+    with open(path) as f:
+        data = json.load(f)
+    if data.get("date") != today:
+        return report
+    for m in data.get("mismatches", []):
+        if m.get("entry_list_count") is None:
+            report.add_warning(
+                f"No readable entry list for {m['tournament']} ({m['url']}); "
+                f"withdrawals unknown, kept index count {m['index_count']}")
+        else:
+            report.add_warning(
+                f"Entry list {m['url']} shows {m['entry_list_count']} for "
+                f"{m['tournament']} but the CCA index shows {m['index_count']}; "
+                f"check the entry-list code in fees/codes.py")
     return report

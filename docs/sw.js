@@ -33,7 +33,7 @@ const CDN_ASSETS = [
 const OFFLINE_FALLBACKS = [
   './',
   'index.html',
-  'styles/site.css?v=94d06c69d8',
+  'styles/site.css?v=258f940f36',
   'fonts/archivo/archivo-latin.woff2',
   'fonts/archivo/archivo-latin-ext.woff2',
   'fonts/courier-prime/courier-prime-400-latin.woff2',

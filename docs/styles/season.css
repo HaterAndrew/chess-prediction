@@ -94,14 +94,15 @@
   .tt-controls { width: 100%; }
   .tt-search { flex: 1; min-width: 0; }
   .tt-search input { font-size: 16px; }
-  /* The Value column steps aside on phones, so its button does too. */
-  .value-open { display: none; }
+  /* The lock alone, so the filter keeps its width. */
+  .value-open-label { display: none; }
   /* A row is two lines: the name and the forecast, then the date, the
      countdown or state and the count in muted type. The status, date,
-     current, last day, range and progress columns step aside. */
+     current, last day, range and progress columns step aside; the Value
+     column, once unlocked, stays beside the forecast. */
   .tourney-table { min-width: 0; }
-  .tourney-table :is(th, td):is(:nth-child(2), :nth-child(3), :nth-child(4), :nth-child(5), :nth-child(7), :nth-child(8), :nth-child(9)) { display: none; }
-  .tourney-table :is(th, td):nth-child(6) { text-align: right; vertical-align: top; }
+  .tourney-table :is(th, td):is(:nth-child(2), :nth-child(3), :nth-child(4), :nth-child(5), :nth-child(7), :nth-child(8)) { display: none; }
+  .tourney-table :is(th, td):is(:nth-child(6), :nth-child(9)) { text-align: right; vertical-align: top; }
   .tourney-table td { padding: 10px 4px; }
   .tourney-table td.td-predicted { font-size: 15px; }
   .t-sub { display: none; }

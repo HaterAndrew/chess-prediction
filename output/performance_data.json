@@ -3757,7 +3757,7 @@
     }
   ],
   "n_corpus_tournaments": 786,
-  "n_entry_records": 196963,
+  "n_entry_records": 197098,
   "corpus_year_min": 2012,
   "corpus_year_max": 2027,
   "corpus_year_span": 16,
@@ -6019,7 +6019,7 @@
       "source": "forecast ledger and its backfill",
       "match_days": 3,
       "first_date": "2026-03-23",
-      "last_date": "2026-10-19"
+      "last_date": "2026-10-20"
     },
     "n_records": 161,
     "n_invalid_ranges": 0,
@@ -6828,7 +6828,7 @@
         "source": "forecast ledger and its backfill",
         "match_days": 3,
         "first_date": "2026-03-23",
-        "last_date": "2026-10-19"
+        "last_date": "2026-10-20"
       },
       "n_records": 7,
       "n_invalid_ranges": 0,

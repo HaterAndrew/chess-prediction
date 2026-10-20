@@ -1111,3 +1111,34 @@ as_of_date,run_ts,origin,published,family,year,event_start,T,days_remaining,stat
 2026-10-19,2026-10-19 06:14:28,nightly,1,Mid-America Open,2027,2027-03-19,151,151,live,0,0,0,283,231,324,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,e0e6631e4c8e940d,02bae27dbc0c
 2026-10-19,2026-10-19 06:14:28,nightly,1,Southern Class Championships,2027,2027-03-19,151,151,live,2,2,0,214,182,261,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,e0e6631e4c8e940d,02bae27dbc0c
 2026-10-19,2026-10-19 06:14:28,nightly,1,Atlantic City Open,2027,2027-03-24,156,156,live,1,1,0,465,419,523,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,e0e6631e4c8e940d,02bae27dbc0c
+2026-10-20,2026-10-20 06:03:01,nightly,1,Eastern Chess Congress,2026,2026-10-23,3,3,live,206,206,10,315,274,362,0.8,model,roster-pending,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Eastern Chess Congress,2026,2026-10-23,3,3,live,206,206,10,298,265,335,0.8,metadata_pace,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Eastern Chess Congress,2026,2026-10-23,3,3,live,206,206,10,469,404,513,0.8,metadata_historical_avg,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,Los Angeles Open,2026,2026-11-06,17,17,live,91,91,3,365,333,401,0.8,model,roster-pending,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Los Angeles Open,2026,2026-11-06,17,17,live,91,91,3,223,209,238,0.8,metadata_pace,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Los Angeles Open,2026,2026-11-06,17,17,live,91,91,3,365,289,413,0.8,metadata_historical_avg,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,Kings Island Open,2026,2026-11-13,24,24,live,40,40,0,335,302,371,0.8,model,roster-pending,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Kings Island Open,2026,2026-11-13,24,24,live,40,40,0,302,248,368,0.8,metadata_pace,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Kings Island Open,2026,2026-11-13,24,24,live,40,40,0,346,318,364,0.8,metadata_historical_avg,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,National Chess Congress,2026,2026-11-27,38,38,live,77,77,3,669,624,718,0.8,model,roster-pending,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,National Chess Congress,2026,2026-11-27,38,38,live,77,77,3,978,726,1057,0.8,metadata_pace,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,National Chess Congress,2026,2026-11-27,38,38,live,77,77,3,623,572,677,0.8,metadata_historical_avg,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,North American Open,2026,2026-12-26,67,67,live,358,358,2,1214,1112,1326,0.8,model,roster-pending,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,North American Open,2026,2026-12-26,67,67,live,358,358,2,1202,1051,1375,0.8,metadata_pace,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,North American Open,2026,2026-12-26,67,67,live,358,358,2,1081,946,1199,0.8,metadata_historical_avg,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,Eastern Open,2026,2026-12-26,67,67,live,9,9,0,378,305,453,0.8,model,roster-pending,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Eastern Open,2026,2026-12-26,67,67,live,9,9,0,284,220,510,0.8,metadata_pace,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Eastern Open,2026,2026-12-26,67,67,live,9,9,0,387,367,404,0.8,metadata_historical_avg,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,Boston Chess Congress,2027,2027-01-08,80,80,live,2,2,0,353,285,423,0.8,model,roster-pending,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Boston Chess Congress,2027,2027-01-08,80,80,live,2,2,0,190,162,345,0.8,metadata_pace,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Boston Chess Congress,2027,2027-01-08,80,80,live,2,2,0,338,278,387,0.8,metadata_historical_avg,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,Liberty Bell Open,2027,2027-01-15,87,87,live,2,2,0,565,457,678,0.8,model,roster-pending,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Liberty Bell Open,2027,2027-01-15,87,87,live,2,2,0,316,173,575,0.8,metadata_pace,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,0,Liberty Bell Open,2027,2027-01-15,87,87,live,2,2,0,449,324,547,0.8,metadata_historical_avg,,0,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,Golden State Open,2027,2027-01-15,87,87,live,0,0,0,316,274,382,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,Southwest Class Championships,2027,2027-02-11,114,114,live,1,1,0,438,391,490,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,George Washington Open,2027,2027-02-26,129,129,live,1,1,0,264,225,313,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,Western Class Championships,2027,2027-03-12,143,143,live,0,0,0,348,285,405,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,Mid-America Open,2027,2027-03-19,150,150,live,0,0,0,283,231,324,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,Southern Class Championships,2027,2027-03-19,150,150,live,2,2,0,214,182,261,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6
+2026-10-20,2026-10-20 06:03:01,nightly,1,Atlantic City Open,2027,2027-03-24,155,155,live,1,1,0,465,419,523,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,e0e6631e4c8e940d,7b6c4cc228e6

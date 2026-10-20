@@ -89,10 +89,13 @@
 .value-unlock[hidden] { display: none; }
 .value-unlock .field { max-width: 240px; }
 .value-msg { color: var(--muted); font: 12px var(--mono); }
+.value-open[hidden] { display: none; }
 @media (max-width: 639px) {
   .tt-controls { width: 100%; }
   .tt-search { flex: 1; min-width: 0; }
   .tt-search input { font-size: 16px; }
+  /* The Value column steps aside on phones, so its button does too. */
+  .value-open { display: none; }
   /* A row is two lines: the name and the forecast, then the date, the
      countdown or state and the count in muted type. The status, date,
      current, last day, range and progress columns step aside. */

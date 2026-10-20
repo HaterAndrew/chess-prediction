@@ -61,6 +61,7 @@
     // ---- tables ---------------------------------------------------------
     'sort-table': function (el, ev) { sortTable(el.dataset.col, ev); },
     'filter-tourney-table': function (el) { filterTourneyTable(el.dataset.filter); },
+    'open-value-unlock': function () { _openValueUnlock(); },
 
     // ---- performance ----------------------------------------------------
     'perf-year': function (el) { perfSelectYear(el.dataset.year); },

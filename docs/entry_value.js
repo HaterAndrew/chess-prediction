@@ -2,8 +2,9 @@
 // approximate dollar value of entries per event, from the Worker's
 // /entry-value, which answers only to the shared key (worker/src/value-route.ts).
 //
-// Nothing shows for the public. The key field opens from the private link
-// chessentries.com/price (the Worker redirects it to /#value); after one
+// The figures stay behind the key. The key field opens from the Value button
+// on the Season table or the link chessentries.com/price (the Worker
+// redirects it to /#value); after one
 // unlock this browser keeps the key and
 // the column loads on every visit. A failure always says so in the field's
 // message line: the column never shows a blank or a $0 it does not know.
@@ -61,6 +62,8 @@ function _syncValueUi() {
   if (th) th.hidden = !entryValueOn();
   const form = document.getElementById('valueUnlock');
   if (form && entryValueOn()) form.hidden = true;
+  const open = document.getElementById('valueOpen');
+  if (open) open.hidden = entryValueOn();
 }
 
 const _VALUE_ERRORS = {

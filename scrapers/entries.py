@@ -25,6 +25,7 @@ import re
 import sys
 import time
 import csv
+import json
 import logging
 from datetime import date, datetime, timedelta
 
@@ -163,13 +164,58 @@ def _entry_list_url(tournament):
     return ENTRY_LIST_URL_TEMPLATE.format(code=code, yy=str(tournament['year'])[-2:])
 
 
+# The index card and the entry-list page refresh at slightly different
+# times, so a few entries of drift is normal. A gap beyond this means the
+# page belongs to another event (the 2026 Congress read the Class list).
+MISMATCH_TOLERANCE_ABS = 5
+MISMATCH_TOLERANCE_PCT = 0.05
+MISMATCH_PATH = os.path.join(OUTPUT_DIR, "scrape_mismatches.json")
+
+
+def _fetch_entry_list(session, url):
+    """(active, withdrawn) off one entry-list page; withdrawn is None when the
+    page shows only an active count. Returns None when the page is missing,
+    unreadable, or carries no count."""
+    try:
+        resp = session.get(url, timeout=10)
+    except requests.RequestException:
+        return None
+    time.sleep(0.3)  # rate limit
+    if resp.status_code != 200 or len(resp.text) < 1000:
+        return None
+    wd_match = _WD_PATTERN.search(resp.text)
+    if wd_match:
+        return int(wd_match.group(1)), int(wd_match.group(2))
+    active_match = _ACTIVE_ONLY_PATTERN.search(resp.text)
+    if active_match:
+        return int(active_match.group(1)), None
+    return None
+
+
+def _counts_agree(index_count, list_count):
+    gap = abs(index_count - list_count)
+    return gap <= MISMATCH_TOLERANCE_ABS or gap <= MISMATCH_TOLERANCE_PCT * index_count
+
+
+def _write_mismatches(mismatches):
+    """Persist today's index-vs-entry-list disagreements for the validation
+    gate (validation/scrape.py), which runs in a later CI step."""
+    os.makedirs(os.path.dirname(MISMATCH_PATH), exist_ok=True)
+    with open(MISMATCH_PATH, "w") as f:
+        json.dump({"date": TODAY, "mismatches": mismatches}, f, indent=2)
+
+
 def scrape_withdrawals(tournaments):
     """
     Hit each tournament's CCA entry list page to get withdrawal counts.
 
     Adds 'withdrawal_count' and 'active_count' keys to each tournament dict.
     Uses plain requests (no Selenium) — each page is a small static HTML fetch.
-    Tournaments without an entry list page get withdrawal_count=0.
+
+    The entry list overrides the index gross count only when the two agree
+    within tolerance. A page that disagrees, is missing, or cannot be read
+    leaves the index count in place (withdrawal_count=0) and is recorded in
+    output/scrape_mismatches.json so the validation gate warns about it.
 
     World Open sub-events (Blitz, Action, G/xx) share the same entry list
     page as the main World Open, so we only scrape the main WO page once
@@ -179,8 +225,8 @@ def scrape_withdrawals(tournaments):
     print("\n── Scraping withdrawal counts from entry list pages ──")
 
     # Track pages already fetched to avoid hitting the same one twice
-    # (World Open sub-events all map to WO)
-    fetched_cache = {}  # entry-list url -> (active, withdrawn)
+    fetched_cache = {}  # entry-list url -> (active, withdrawn) or None
+    mismatches = []
 
     for t in tournaments:
         url = _entry_list_url(t)
@@ -202,43 +248,35 @@ def scrape_withdrawals(tournaments):
         if 'world open' in name_lower:
             continue
 
-        # Use cache if we already fetched this page.
-        if url in fetched_cache:
-            active, withdrawn = fetched_cache[url]
+        if url not in fetched_cache:
+            fetched_cache[url] = _fetch_entry_list(session, url)
+        counts = fetched_cache[url]
+
+        if counts is None:
+            logger.warning("No readable entry list for %s (%s); keeping index count %d",
+                           t['name'], url, t['entry_count'])
+            mismatches.append({'tournament': t['name'], 'url': url,
+                               'index_count': t['entry_count'], 'entry_list_count': None})
+            continue
+
+        active, withdrawn = counts
+        list_gross = active + (withdrawn or 0)
+        if not _counts_agree(t['entry_count'], list_gross):
+            logger.warning("Entry list %s shows %d entries but the CCA index shows %d for %s; "
+                           "the page likely belongs to another event. Keeping the index count.",
+                           url, list_gross, t['entry_count'], t['name'])
+            mismatches.append({'tournament': t['name'], 'url': url,
+                               'index_count': t['entry_count'], 'entry_list_count': list_gross})
+            continue
+
+        t['active_count'] = active
+        if withdrawn is not None:
             t['withdrawal_count'] = withdrawn
-            t['active_count'] = active
-            continue
+            # Entry list is authoritative once it agrees with the index card.
+            t['entry_count'] = list_gross
+            print(f"  {t['name']:<40s}  {active} active + {withdrawn} withdrawn")
 
-        try:
-            resp = session.get(url, timeout=10)
-            if resp.status_code != 200 or len(resp.text) < 1000:
-                fetched_cache[url] = (t['entry_count'], 0)
-                continue
-
-            wd_match = _WD_PATTERN.search(resp.text)
-            if wd_match:
-                active = int(wd_match.group(1))
-                withdrawn = int(wd_match.group(2))
-                t['withdrawal_count'] = withdrawn
-                t['active_count'] = active
-                # Entry list is authoritative: override index page gross count
-                t['entry_count'] = active + withdrawn
-                fetched_cache[url] = (active, withdrawn)
-                print(f"  {t['name']:<40s}  {active} active + {withdrawn} withdrawn")
-            else:
-                active_match = _ACTIVE_ONLY_PATTERN.search(resp.text)
-                if active_match:
-                    active = int(active_match.group(1))
-                    t['active_count'] = active
-                    fetched_cache[url] = (active, 0)
-                else:
-                    fetched_cache[url] = (t['entry_count'], 0)
-
-            time.sleep(0.3)  # rate limit
-        except requests.RequestException:
-            fetched_cache[url] = (t['entry_count'], 0)
-            continue
-
+    _write_mismatches(mismatches)
     # ── Invariant validation ──
     # Ensure active_count <= entry_count and active + withdrawn == entry
     repaired = 0

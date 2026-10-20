@@ -130,7 +130,7 @@ ENTRY_LIST_CODES = {
     "world open": "WO",
     "chicago open blitz": "COB",
     "chicago open": "CHI",
-    "chicago class": "CC",
+    "chicago class": "CHCC",
     "liberty bell open": "LBO",
     "george washington open": "GWO",
     "golden state open": "GSO",
@@ -153,11 +153,19 @@ ENTRY_LIST_CODES = {
     "mid america open": "MAO",
     "new york open": "NYO",
     "kings island open": "KIO",
-    "eastern chess congress": "ECC",
-    "western class": "WC",
+    # CCA_ECC is the Eastern CLASS list and CCA_ECCO the Congress (verified
+    # live 2026-10-20 for both 25 and 26). The old "congress: ECC" pairing
+    # fed the Class event's count into the Congress row all of 2026. The
+    # same probe found CHCC/WCC/SWCC/SCC/NAB live where CC/WC/SWC and the
+    # initials fallback 404ed (withdrawals silently read as zero).
+    "eastern chess congress": "ECCO",
+    "eastern class": "ECC",
+    "western class": "WCC",
     "national open": "NO",
     "las vegas open": "LVO",
-    "southwest class": "SWC",
+    "southwest class": "SWCC",
+    "southern class": "SCC",
+    "north american blitz": "NAB",
     "boston chess congress": "BCC",
 }
 

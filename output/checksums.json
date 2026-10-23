@@ -4,85 +4,85 @@
       "filename": "daily_registration_counts.csv",
       "sha256": "91ef397ff5118798100451dc8571373441547a9681fce2acb0eadc5b4031bbff",
       "row_count": 13438,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "daily_scrape.csv",
-      "sha256": "a7182bd1f6a7718cd75298f8fb30cf5b65ba38159280ff112c19852cc57e9f66",
-      "row_count": 3978,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "sha256": "9600c5f47e4d0349419c52412fcec7fa9897634bd7b0222f3eb6b441e3904f83",
+      "row_count": 3994,
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "edition_registry.csv",
       "sha256": "23a702788f989b26a0dbc69c76409419f28eff30aac027a41aca29fb38fafc18",
       "row_count": 1127,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "forecast_ledger.csv",
-      "sha256": "85bc52be3085ee4b066ca29ddd181b9d23177bcaf398bab582db9bc9a5505dac",
-      "row_count": 1236,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "sha256": "8e0db925f55fad34ad370d36921b31f70ad0db7696a6e3744ff52d913b29a205",
+      "row_count": 1265,
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "forecast_ledger_backfill.csv",
       "sha256": "326b33f00d74c85640795de37a1f5a6c214ad8c316e9b50a231410f11f52651b",
       "row_count": 4654,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "historical_standings.csv",
       "sha256": "927bf24439118b559cb6cdaecaa17db8d4d99b7232c9c9693370da61ca61c268",
       "row_count": 885,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "historical_tournaments.csv",
       "sha256": "1101742caf3fa7d7bea1be08a6ece869794482a9a5884dd6753c80f59f0df033",
       "row_count": 752,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "tournament_fees.csv",
       "sha256": "ee4f078b65a63e50a34dc88d1059bf399af393f39e52c4d29435f096fa7f6fe6",
       "row_count": 101,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "tournament_metadata.csv",
       "sha256": "d312be1165a39632b51025c6b1c6436dd37b9b8a3d25f3855a43bb258cc38145",
       "row_count": 333,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "tournament_summary.csv",
-      "sha256": "7d8d5df541458efac36ca499caaf9680ad6a48201add91a92e6b663e144db3a3",
+      "sha256": "8f02a763fd427404b159cb222559fc06b18ff854da649c6b7e87c0ea19830b0f",
       "row_count": 786,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "update_log.csv",
-      "sha256": "1840dba1dcf4c9622da108ab34e898da26f6baf0de7aa73ab528df76250d9fff",
-      "row_count": 4962,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "sha256": "c45ddfe5cd8e76f311721f1271d1d6d3a9cfd6ad37264284b36b8a0fb50cd163",
+      "row_count": 5010,
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "walk_forward_records.csv",
-      "sha256": "29155b3529ce0ba6e2936dd96c66a0a4a9f678ec9f9a4abb920a776a29ce63e4",
+      "sha256": "d44700ad51e6837f04c221d496cfcffbe19fc4b24655f494c68e401103a345fc",
       "row_count": 1078,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "walk_in_family_stats.csv",
       "sha256": "2cd62b3f0ab8c9ab6017637321475f16ce9df84b722802d6328d992b247c775b",
       "row_count": 48,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "timestamp": "2026-10-23T06:05:10Z"
     },
     {
       "filename": "walk_in_multipliers.csv",
       "sha256": "fd61a958a33e77e5b0ac9fa7b6fb5eecd2ae7ba2acaa221742f7c67dc9d49806",
       "row_count": 448,
-      "timestamp": "2026-10-22T06:13:06Z"
+      "timestamp": "2026-10-23T06:05:10Z"
     }
   ]
 }

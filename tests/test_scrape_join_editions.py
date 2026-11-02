@@ -94,3 +94,71 @@ def test_edition_mask_selects_the_matching_year_only():
     # comma/whitespace variants still fold through canonicalize_family
     mask_wo = sj.edition_mask(summary, "World Open, top 6 sections", 2027)
     assert list(mask_wo) == [False, False, True]
+
+
+def test_chart_tail_extends_a_stale_archive_without_changing_the_model_corpus():
+    from pipeline_utils import build_chart_series, chart_series_start_date
+
+    daily = pd.DataFrame({'tid': [1, 1], 'T': [112, 105], 'cum_regs': [24, 25]})
+    original = daily.copy(deep=True)
+    summary = pd.DataFrame({'tid': [1], 'family': ['World Open top 6 sections'],
+                            'tournament_year': [2026]})
+    calendar = pd.DataFrame({'tid': [1], 'start': [pd.Timestamp('2026-07-01')],
+                             'end': [pd.Timestamp('2026-07-05')]})
+    scrape = _scrape([
+        ('2026-03-18', '2026 World Open, top 6 sections', 30, 29, 1),  # overlapping day
+        ('2026-06-30', '2026 World Open, top 6 sections', 968, 950, 18),
+        ('2026-07-05', '2026 World Open, top 6 sections', 1066, 1040, 26),
+        ('2026-07-06', '2026 World Open, top 6 sections', 1066, 1040, 26),  # after end
+        ('2026-06-30', '2027 World Open, top 6 sections', 9999, 9999, 0),
+        ('2026-06-30', '2026 World Open, lower sections', 9999, 9999, 0),
+    ])
+    chart = sj.extend_chart_daily(daily, scrape, summary, calendar)
+    assert build_chart_series(1, chart, 1066) == [[0, 24], [7, 25], [111, 968], [116, 1066]]
+    assert chart_series_start_date(1, chart, pd.Timestamp('2026-07-01')) == '2026-03-11'
+    pd.testing.assert_frame_equal(daily, original)
+
+
+def test_chart_tail_without_matching_observations_or_dates_keeps_the_archive():
+    daily = pd.DataFrame({'tid': [1], 'T': [10], 'cum_regs': [25]})
+    summary = pd.DataFrame({'tid': [1], 'family': ['Synthetic Open'], 'tournament_year': [2026]})
+    calendar = pd.DataFrame({'tid': [1], 'start': [pd.NaT], 'end': [pd.NaT]})
+    scrape = _scrape([('2026-06-30', '2026 Synthetic Open', 100, 90, 10)])
+    pd.testing.assert_frame_equal(sj.extend_chart_daily(daily, scrape, summary, calendar), daily)
+    calendar['start'] = pd.Timestamp('2026-07-01')
+    summary['tournament_year'] = 2027
+    pd.testing.assert_frame_equal(sj.extend_chart_daily(daily, scrape, summary, calendar), daily)
+
+
+def test_completed_chart_dates_come_from_the_written_archive_not_model_fallbacks():
+    from pipeline_utils import build_chart_series, chart_series_start_date
+
+    # Model fallback placed these stale March observations in late June.
+    daily = pd.DataFrame({'tid': [1, 1], 'T': [7, 0], 'cum_regs': [24, 25]})
+    written = pd.DataFrame({'tid': [1, 1], 'T': [7, 0], 'cum_regs': [24, 25]})
+    summary = pd.DataFrame({'tid': [1], 'family': ['World Open top 6 sections'],
+                            'tournament_year': [2026], 'last_reg': ['2026-03-20 23:31:56']})
+    calendar = pd.DataFrame({'tid': [1], 'start': [pd.Timestamp('2026-07-01')],
+                             'end': [pd.Timestamp('2026-07-05')]})
+    scrape = _scrape([('2026-06-30', '2026 World Open, top 6 sections', 968, 950, 18),
+                      ('2026-07-05', '2026 World Open, top 6 sections', 1066, 1040, 26)])
+    chart = sj.extend_chart_daily(daily, scrape, summary, calendar, written_daily=written)
+    assert chart_series_start_date(1, chart, calendar.iloc[0]['start']) == '2026-03-13'
+    assert build_chart_series(1, chart, 1066) == [[0, 24], [7, 25], [109, 968], [114, 1066]]
+    pd.testing.assert_frame_equal(daily, written)
+
+
+def test_written_archive_and_scrape_both_stop_at_event_end():
+    from pipeline_utils import build_chart_series, chart_series_start_date
+
+    daily = pd.DataFrame({'tid': [1], 'T': [0], 'cum_regs': [90]})
+    written = pd.DataFrame({'tid': [1, 1], 'T': [2, 0], 'cum_regs': [90, 99]})
+    summary = pd.DataFrame({'tid': [1], 'family': ['Synthetic Open'],
+                            'tournament_year': [2026], 'last_reg': ['2026-07-06']})
+    calendar = pd.DataFrame({'tid': [1], 'start': [pd.Timestamp('2026-07-01')],
+                             'end': [pd.Timestamp('2026-07-05')]})
+    scrape = _scrape([('2026-07-05', '2026 Synthetic Open', 95, 90, 5),
+                      ('2026-07-06', '2026 Synthetic Open', 99, 94, 5)])
+    chart = sj.extend_chart_daily(daily, scrape, summary, calendar, written_daily=written)
+    assert chart_series_start_date(1, chart, calendar.iloc[0]['start']) == '2026-07-04'
+    assert build_chart_series(1, chart, 99) == [[0, 90], [1, 95]]

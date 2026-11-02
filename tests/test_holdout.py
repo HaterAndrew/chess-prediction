@@ -1,6 +1,9 @@
 """The sealed test grades only what the frozen model published after the freeze,
 and any change to the model's sources is caught before it can unseal it."""
-from perf.holdout import FROZEN_HASH, FROZEN_ON, holdout_block, sealed
+import pandas as pd
+
+from perf.holdout import FROZEN_HASH, FROZEN_HASHES, FROZEN_ON, holdout_block, sealed
+from perf.live_record import last_run_per_day, match_forecasts
 from shared.model_version import model_hash
 
 
@@ -28,7 +31,32 @@ def test_the_block_names_the_freeze_and_scores_like_the_live_record():
 
 
 def test_the_model_is_frozen():
-    assert model_hash() == FROZEN_HASH, (
+    assert model_hash() in FROZEN_HASHES, (
         "A model source changed after the freeze (perf/holdout.py). If every forecast "
-        "is unchanged, update FROZEN_HASH alone; if any moved, the sealed test is over: "
+        "is unchanged, record its verified equivalent hash; if any moved, the sealed test is over: "
         "move FROZEN_ON to the day the change merges as well.")
+
+
+def test_equivalent_display_sources_keep_old_and_new_forecasts():
+    records = [_rec('2026-10-01', 14, model_hash=h) for h in sorted(FROZEN_HASHES)]
+    assert sealed(records) == records
+    assert holdout_block(records, '2026-10-01', '2026-10-01')['model_hashes'] == sorted(FROZEN_HASHES)
+    assert sealed(records, frozen_hash='custom-freeze') == []
+    custom = _rec('2026-10-01', 14, model_hash='custom-freeze')
+    assert sealed([*records, custom], frozen_hash='custom-freeze') == [custom]
+
+
+def test_same_day_equivalent_versions_are_matched_once_before_holdout_grading():
+    equivalent = next(h for h in FROZEN_HASHES if h != FROZEN_HASH)
+    row = {'family': 'Harbor Open', 'year': 2026, 'as_of_date': '2026-10-01',
+           'origin': 'nightly', 'published': 1, 'point': 100, 'ci_lower': 90,
+           'ci_upper': 110, 'route': 'model'}
+    ledger = pd.DataFrame([
+        {**row, 'run_ts': '2026-10-01 01:00', 'model_hash': FROZEN_HASH},
+        {**row, 'run_ts': '2026-10-01 02:00', 'model_hash': equivalent},
+    ])
+    events = pd.DataFrame([{'tid': 1, 'family': 'Harbor Open', 'tournament_year': 2026,
+                            'start': pd.Timestamp('2026-10-15'), 'final_count': 100}])
+    records = match_forecasts(last_run_per_day(ledger), events, horizons=[14])
+    assert len(records) == len(sealed(records)) == 1
+    assert records[0]['model_hash'] == equivalent

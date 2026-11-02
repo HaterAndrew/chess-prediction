@@ -2,8 +2,8 @@ name = "chessentries"
 main = "src/index.ts"
 compatibility_date = "2026-05-01"
 compatibility_flags = ["nodejs_compat"]
-# The workers.dev host stays on through the cutover as the fallback origin.
-workers_dev = true
+# Production is served on chessentries.com; branch previews stay available.
+workers_dev = false
 preview_urls = true
 
 # One Worker serves the site and the API on one origin. Every path not listed

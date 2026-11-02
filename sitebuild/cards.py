@@ -18,7 +18,9 @@ from sitebuild.helpers import (TODAY, _apply_wo_top6_adjustment,
                                _fam_eq, m04c, sanitize_early_bird)
 
 
-def build_model_cards(fitted, daily, determine_status, get_event_date, get_event_end_date, meta, summary, t2026, tournaments_out, withdrawal_lookup, counts):
+def build_model_cards(fitted, daily, determine_status, get_event_date, get_event_end_date, meta, summary, t2026, tournaments_out, withdrawal_lookup, counts, chart_daily=None):
+    if chart_daily is None:
+        chart_daily = daily
     def is_settled(fam, yr):
         return is_event_complete(get_event_end_date(fam, yr), TODAY)
 
@@ -148,12 +150,12 @@ def build_model_cards(fitted, daily, determine_status, get_event_date, get_event
         # converts to day_from_start, warns (never rescales) on A4 anomalies, and
         # drops non-increasing points. See v3 N1 / audit/AUDIT_2026-07-25.md.
         daily_data = build_chart_series(
-            tid, daily, current_count,
+            tid, chart_daily, current_count,
             is_live=status in ('live', 'in_progress'))
         # Calendar date of the day_from_start==0 point, so the front end can date
         # every chart point from its own index value instead of counting array
         # positions back from the generation date (v3 P1).
-        daily_start_date = chart_series_start_date(tid, daily, event_date)
+        daily_start_date = chart_series_start_date(tid, chart_daily, event_date)
 
         # Registration curve (template) — `curve` computed above the gate.
         reg_curve = []

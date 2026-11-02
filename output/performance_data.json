@@ -3868,7 +3868,7 @@
     }
   ],
   "n_corpus_tournaments": 788,
-  "n_entry_records": 197606,
+  "n_entry_records": 197607,
   "corpus_year_min": 2012,
   "corpus_year_max": 2027,
   "corpus_year_span": 16,
@@ -6945,6 +6945,7 @@
       "frozen_on": "2026-09-27",
       "model_hash": "e0e6631e4c8e940d",
       "model_hashes": [
+        "598f8e1fe4fd334a",
         "e0e6631e4c8e940d",
         "e2b539beaa9c6f75"
       ],

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-02 19:20:10",
+  "generated": "2026-11-02 19:47:03",
   "count": 4,
   "total_occurrences": 4,
   "warnings": [
@@ -7,13 +7,13 @@
       "step": "Validate scraped data",
       "text": "No readable entry list for 2027 Western Class Championshps (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKefpQ==); withdrawals unknown, kept index count 1",
       "count": 1,
-      "generated": "2026-11-02 19:20:10"
+      "generated": "2026-11-02 19:47:03"
     },
     {
       "step": "Refresh tournament summary",
       "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 live predictions still run from scrape data, but the training corpus is frozen: newly scraped events carry no registration timestamps, so they can never join model training or 04e grading, and early-bird spike features stay absent. Re-export from the CCA admin.",
       "count": 1,
-      "generated": "2026-11-02 19:20:10"
+      "generated": "2026-11-02 19:47:03"
     },
     {
       "step": "Enrichment: standings",

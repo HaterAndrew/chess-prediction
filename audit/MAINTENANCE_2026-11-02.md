@@ -173,3 +173,5 @@ If the alias change causes a fault, restore `workers_dev = true` through a revie
 The hosted workflow trigger change will receive a native GitHub run after publication. The local negative and positive controls verify its path selection now. The checks above do not establish a new production deployment or a successful live Anthropic request.
 
 The local candidate preserves generated data outside the development worktree. The original checkout and the March export remain unchanged.
+
+Subsequent count corrections are documented in [COUNT_RECONCILIATION_2026-11-02.md](COUNT_RECONCILIATION_2026-11-02.md); the forecast-equivalence result above applies to the earlier chart-only release.

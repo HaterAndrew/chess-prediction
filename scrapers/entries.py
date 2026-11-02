@@ -3,15 +3,15 @@ Daily scraper for CCA tournament entry counts from chessaction.com.
 
 Scrapes every open-season tournament (this season and any later one CCA has
 listed) from the CCA index page, extracting:
-  - Entry counts from "Entry List [NNN]" pattern (gross registrations)
+  - Index counts from "Entry List [NNN]", normalized with the event's entry list
   - Withdrawal counts from entry list HTML ("N Active [+M Withdrawn]")
   - Active counts (gross minus withdrawals)
   - Event dates (start/end) directly from CCA listings
   - State/location
 
-The index page provides gross counts in a single load. A lightweight second
-pass hits each tournament's entry list HTML page via requests to capture
-withdrawal data. Tournaments without entry list pages get withdrawal_count=0.
+The index may show active or gross counts. A lightweight second pass reads
+the event's own entry list to obtain gross = active + withdrawn. An unreadable
+list retains the observed index count and records a mismatch warning.
 
 World Open: only 3 sub-events are tracked (Under 13, top 6 sections,
 lower sections). All others (G/7, G/10, Blitz, Action, etc.) are dropped.
@@ -28,6 +28,7 @@ import csv
 import json
 import logging
 from datetime import date, datetime, timedelta
+from urllib.parse import urlsplit, parse_qs
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -155,9 +156,22 @@ def _create_session():
 def _entry_list_url(tournament):
     """Entry-list page URL for one scraped edition, or None without a code.
 
-    The two-digit year in the path is the edition's own: the 2027 Atlantic City
+    Prefer the event-specific link captured from its index card. Legacy callers
+    without that link use the code table. Its two-digit year is the edition's own:
+    the 2027 Atlantic City
     Open lives at CCA_ACO27, not under whichever season the run happens in.
     """
+    observed = tournament.get('entry_list_url')
+    if observed:
+        parts = urlsplit(observed)
+        query = parse_qs(parts.query, keep_blank_values=True)
+        if (parts.scheme != 'https'
+                or parts.netloc not in {'chessaction.com', 'www.chessaction.com'}
+                or parts.path != '/tournaments/advance_entry_list.php'
+                or parts.fragment or set(query) != {'tid'} or len(query['tid']) != 1
+                or not re.fullmatch(r'[A-Za-z0-9_+/=-]{1,128}', query['tid'][0])):
+            raise ValueError('Untrusted event entry-list URL')
+        return observed
     code = _derive_entry_list_code(tournament['name'])
     if not code:
         return None
@@ -177,12 +191,23 @@ def _fetch_entry_list(session, url):
     page shows only an active count. Returns None when the page is missing,
     unreadable, or carries no count."""
     try:
-        resp = session.get(url, timeout=10)
+        resp = session.get(url, timeout=10, allow_redirects=False)
     except requests.RequestException:
         return None
     time.sleep(0.3)  # rate limit
     if resp.status_code != 200 or len(resp.text) < 1000:
         return None
+    if urlsplit(url).path == '/tournaments/advance_entry_list.php':
+        # CCA's per-event wrapper names its generated alphabetical list. Read
+        # that strict same-site path without running the page's JavaScript.
+        paths = set(re.findall(
+            r'var\s+alpnewfilename\s*=\s*["\']'
+            r'(advlists/CCA/CCA_[A-Za-z0-9_]+/CCA_[A-Za-z0-9_]+_alp_n\.html)["\']',
+            resp.text,
+        ))
+        if len(paths) != 1:
+            return None
+        return _fetch_entry_list(session, 'https://www.chessaction.com/tournaments/' + paths.pop())
     wd_match = _WD_PATTERN.search(resp.text)
     if wd_match:
         return int(wd_match.group(1)), int(wd_match.group(2))
@@ -212,14 +237,13 @@ def scrape_withdrawals(tournaments):
     Adds 'withdrawal_count' and 'active_count' keys to each tournament dict.
     Uses plain requests (no Selenium) — each page is a small static HTML fetch.
 
-    The entry list overrides the index gross count only when the two agree
-    within tolerance. A page that disagrees, is missing, or cannot be read
+    The entry list overrides the index count when either its active or gross
+    count agrees within tolerance. A page that disagrees, is missing, or cannot be read
     leaves the index count in place (withdrawal_count=0) and is recorded in
     output/scrape_mismatches.json so the validation gate warns about it.
 
-    World Open sub-events (Blitz, Action, G/xx) share the same entry list
-    page as the main World Open, so we only scrape the main WO page once
-    and skip sub-events (they'll be consolidated separately).
+    World Open editions require an event-specific link: the legacy code table
+    otherwise maps every section group to the same WO page.
     """
     session = _create_session()
     print("\n── Scraping withdrawal counts from entry list pages ──")
@@ -236,16 +260,11 @@ def scrape_withdrawals(tournaments):
         if not url or t['entry_count'] == 0:
             continue
 
-        # World Open: all sub-events resolve to entry-list code "WO" and share
-        # one aggregate entry list page. Aggregate totals can't be applied to
-        # per-section rows without corrupting the count (e.g., writing the WO
-        # total of 100 into the "lower sections" row when its real per-section
-        # count is 6). The CCA index card already gives a correct per-section
-        # entry_count, so skip the fetch + apply entirely for every WO row.
-        # Untracked sub-events (G/7, G/10, Blitz, ...) are dropped downstream
-        # by consolidate_world_open().
+        # A name-derived WO URL does not identify a section group. Use only
+        # links captured from the individual card, and fetch only tracked groups.
         name_lower = t['name'].lower()
-        if 'world open' in name_lower:
+        if 'world open' in name_lower and (not t.get('entry_list_url')
+                                          or not WO_KEEP_PATTERNS.search(t['name'])):
             continue
 
         if url not in fetched_cache:
@@ -261,7 +280,8 @@ def scrape_withdrawals(tournaments):
 
         active, withdrawn = counts
         list_gross = active + (withdrawn or 0)
-        if not _counts_agree(t['entry_count'], list_gross):
+        if not (_counts_agree(t['entry_count'], list_gross)
+                or _counts_agree(t['entry_count'], active)):
             logger.warning("Entry list %s shows %d entries but the CCA index shows %d for %s; "
                            "the page likely belongs to another event. Keeping the index count.",
                            url, list_gross, t['entry_count'], t['name'])
@@ -315,7 +335,8 @@ def _parse_index(html, first_season=None):
     """
     first_season = CURRENT_SEASON if first_season is None else int(first_season)
     tournaments = []
-    for rel_url, name, start_date, end_date, state, count in _INDEX_PATTERN.findall(html):
+    for match in _INDEX_PATTERN.finditer(html):
+        rel_url, name, start_date, end_date, state, count = match.groups()
         start = datetime.strptime(start_date.strip(), '%b %d, %Y')
         _family, year = split_edition_name(name)
         if year is None:
@@ -325,7 +346,7 @@ def _parse_index(html, first_season=None):
         full_url = f'https://www.chessaction.com/{rel_url}'.replace('&amp;', '&')
         start_iso = start.strftime('%Y-%m-%d')
         end_iso = datetime.strptime(end_date.strip(), '%b %d, %Y').strftime('%Y-%m-%d')
-        tournaments.append({
+        tournament = {
             'name': name.strip(),
             'year': year,
             'url': full_url,
@@ -333,7 +354,20 @@ def _parse_index(html, first_season=None):
             'end_date': end_iso,
             'state': state.strip(),
             'entry_count': int(count),
-        })
+        }
+        # This link belongs to the same card, so split World Open events keep
+        # their own list instead of sharing a name-derived static URL.
+        entry_link = re.search(
+            r'href=["\'](tournaments/advance_entry_list\.php\?tid=[A-Za-z0-9_+/%=-]+)["\']',
+            match.group(0),
+        )
+        if entry_link:
+            entry_url = 'https://www.chessaction.com/' + entry_link.group(1)
+            expected_tid = parse_qs(urlsplit(full_url).query).get('tid')
+            if parse_qs(urlsplit(entry_url).query).get('tid') != expected_tid:
+                raise ValueError('Event entry-list URL does not match its tournament card')
+            tournament['entry_list_url'] = entry_url
+        tournaments.append(tournament)
     return tournaments
 
 

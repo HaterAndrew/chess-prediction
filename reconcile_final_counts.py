@@ -15,24 +15,81 @@ because the live scrape recorded far more entries than the frozen truth label
 missing-export branch keeps existing events' truth labels fresh; only the set of
 *new* tournaments stays frozen until the next export.
 
-The final_count rule here is identical to 01_data_prep.py lines 215-218 so the two
-paths can never disagree on the value the guard checks. It deliberately does NOT
+Both pipeline branches call this reconciler after data preparation. Reviewed
+aggregate corrections in final_count_corrections.csv can raise completed-edition
+labels beyond a scrape peak that missed withdrawals. They never create scrape
+observations or alter registration timestamps. This module deliberately does NOT
 touch last_reg or extend daily_counts — that rebase needs the per-registration
 rows from the export and stays in 01_data_prep.
 """
 
 import os
 import re
+from datetime import date
+from urllib.parse import urlsplit
 
 import pandas as pd
 
 from registry.keys import scrape_edition_key
 from tournament_aliases import canonicalize_family
+from shared.clock import today_iso
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 
 # The scraper writes names like "2026 World Open, top 6 sections".
 _YEAR_PREFIX_RE = re.compile(r"^(\d{4})\s+(.*)$")
+
+
+def _apply_verified_finals(summary, output_dir, as_of):
+    """Apply reviewed aggregate outcomes without inventing scrape observations.
+
+    Corrections are dated, event-scoped evidence. The application-date gate
+    skips evidence not yet verified; it does not roll back an already corrected
+    summary. They only raise existing completed-edition labels; a later higher
+    observation remains authoritative.
+    """
+    path = os.path.join(output_dir, "final_count_corrections.csv")
+    if not os.path.exists(path):
+        return set()
+    rows = pd.read_csv(path, dtype=str, keep_default_na=False)
+    required = {"family", "year", "end_date", "verified_on", "last_registration",
+                "active", "withdrawn", "source_url"}
+    if set(rows.columns) != required:
+        raise ValueError("Invalid final-count correction columns")
+    metadata = pd.read_csv(os.path.join(output_dir, "tournament_metadata.csv"))
+    cutoff = date.fromisoformat(as_of)
+    seen, changes = set(), set()
+    for row in rows.to_dict("records"):
+        if not all(re.fullmatch(r"\d+", row[k]) for k in ("year", "active", "withdrawn")):
+            raise ValueError("Final-count corrections require nonnegative integer counts/year")
+        key = canonicalize_family(row["family"]), int(row["year"])
+        if key in seen:
+            raise ValueError(f"Duplicate final-count correction: {key}")
+        seen.add(key)
+        end = date.fromisoformat(row["end_date"])
+        verified = date.fromisoformat(row["verified_on"])
+        last_reg = date.fromisoformat(row["last_registration"])
+        source = urlsplit(row["source_url"])
+        if (source.scheme != "https" or source.netloc not in {"chessaction.com", "www.chessaction.com"}
+                or not source.path.startswith("/tournaments/") or source.fragment):
+            raise ValueError(f"Invalid final-count source: {key}")
+        if last_reg > end or verified <= end or end.year != key[1]:
+            raise ValueError(f"Final-count evidence does not establish a completed edition: {key}")
+        meta = metadata.loc[(metadata["family"].map(canonicalize_family) == key[0])
+                            & (metadata["year"] == key[1])]
+        if len(meta) != 1 or str(meta.iloc[0]["end_date"]) != row["end_date"]:
+            raise ValueError(f"Final-count correction does not match event metadata: {key}")
+        mask = ((summary["family"].map(canonicalize_family) == key[0])
+                & (summary["tournament_year"] == key[1]))
+        if mask.sum() != 1:
+            raise ValueError(f"Final-count correction requires one summary edition: {key}")
+        if verified > cutoff:
+            continue
+        gross = int(row["active"]) + int(row["withdrawn"])
+        if gross > summary.loc[mask, "final_count"].iloc[0]:
+            summary.loc[mask, "final_count"] = gross
+            changes.add(key)
+    return changes
 
 
 def _scrape_key(name):
@@ -48,7 +105,7 @@ def _scrape_key(name):
     return scrape_edition_key(str(name))
 
 
-def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
+def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True, as_of=None):
     """Bump tournament_summary.final_count to the daily_scrape peak where higher,
     and append roster-pending skeletons for scraped events missing from summary.
 
@@ -210,6 +267,8 @@ def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
             summary = pd.concat([summary, new_df.dropna(axis=1, how="all")],
                                 ignore_index=True)
 
+    verified_changes = _apply_verified_finals(summary, output_dir, as_of or today_iso())
+
     if verbose:
         if len(bumped) > 0:
             bumped["delta"] = bumped["final_count"] - pre_count[bumped.index]
@@ -229,10 +288,16 @@ def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True):
             for nr in new_rows:
                 print(f"    {nr['tournament_name']:<55} scrape_peak={nr['final_count']:>5} "
                       f"(has_timestamps=False)")
+        if verified_changes:
+            print(f"  Applied {len(verified_changes)} verified gross final-count correction(s).")
 
-    if len(bumped) > 0 or new_rows or healed:
+    if len(bumped) > 0 or new_rows or healed or verified_changes:
         summary.to_csv(summary_path, index=False)
-    return len(bumped) + len(new_rows) + len(healed)
+    changed = {(canonicalize_family(r['family']), int(r['tournament_year']))
+               for _, r in bumped.iterrows()}
+    changed.update((r['family'], int(r['tournament_year'])) for r in new_rows)
+    changed.update(key for key, *_ in healed)
+    return len(changed | verified_changes)
 
 
 if __name__ == "__main__":

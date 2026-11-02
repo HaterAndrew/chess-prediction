@@ -73,6 +73,44 @@ def _edition_rows(scrape, family, year):
     return scrape[(scrape['family'] == family) & (scrape['year'] == year)]
 
 
+def extend_chart_daily(daily, scrape, summary, calendar, written_daily=None):
+    """Append observed scrape days after an archive curve's last observation.
+
+    This is a chart-only view: training and point-in-time grading retain their
+    own corpus. Match canonical family AND year, retain archive observations,
+    and keep real day offsets, including registration during the event. When
+    supplied, the written archive is dated from its actual last registration;
+    completed-event model fallbacks must not shift those dates on the chart.
+    """
+    view = daily[['tid', 'T', 'cum_regs']].copy()
+    extra = []
+    editions = summary[summary['tournament_year'].isin(scrape['year'].unique())]
+    for _, event in editions.merge(calendar, on='tid').iterrows():
+        if pd.isna(event['start']):
+            continue
+        last_reg = pd.to_datetime(event.get('last_reg'), errors='coerce')
+        if written_daily is not None and pd.notna(last_reg):
+            archive = written_daily.loc[written_daily['tid'] == event['tid'],
+                                        ['tid', 'T', 'cum_regs']].copy()
+            if not archive.empty:
+                archive['T'] -= (last_reg.normalize() - event['start']).days
+                if pd.notna(event['end']):
+                    archive = archive[archive['T'] >= (event['start'] - event['end']).days]
+                view = pd.concat([view[view['tid'] != event['tid']], archive], ignore_index=True)
+        history = view[view['tid'] == event['tid']]
+        rows = scrape[edition_mask(scrape, event['family'], event['tournament_year'],
+                                   year_col='year')].copy()
+        rows['T'] = (event['start'] - rows['date']).dt.days
+        if not history.empty:
+            rows = rows[rows['T'] < history['T'].min()]
+        if pd.notna(event['end']):
+            rows = rows[rows['date'] <= event['end']]
+        for _, row in rows[rows['entry_count'] > 0].iterrows():
+            extra.append({'tid': event['tid'], 'T': row['T'],
+                          'cum_regs': int(row['entry_count'])})
+    return pd.concat([view, pd.DataFrame(extra)], ignore_index=True) if extra else view
+
+
 def _peak_by_day(rows, day_of):
     by_day = {}
     for _, r in rows.iterrows():

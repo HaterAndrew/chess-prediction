@@ -13,7 +13,9 @@ from shared.curves import has_curve
 from shared.season import CURRENT_SEASON, is_open_season
 
 from corpus import load_corpus
+from corpus.calendar import event_calendar
 from corpus.edition_counts import edition_counts
+from corpus.load import read_written
 from forecast import fit_models
 from sitebuild.assemble import finalize_cards
 from sitebuild.cards import build_model_cards
@@ -22,7 +24,7 @@ from sitebuild.helpers import (OUTPUT_DIR, TODAY, _fam_eq, determine_status,
 from sitebuild.history import add_historical_editions
 from sitebuild.metadata import build_metadata_cards
 from sitebuild.scrape_join import (consecutive_zero_scrape_days, counts_by_edition,
-                                   latest_by_edition, scrape_daily_series)
+                                   extend_chart_daily, latest_by_edition, scrape_daily_series)
 from sitebuild.scrape_merge import merge_scrape_counts, normalize_scrape
 
 
@@ -194,9 +196,13 @@ def main():
 
     tournaments_out = []
 
+    chart_daily = (extend_chart_daily(daily, scrape, summary, event_calendar(summary, meta),
+                                     written_daily=read_written(OUTPUT_DIR)[1])
+                   if has_scrape else daily)
     build_model_cards(fitted, daily, determine_status, get_event_date,
                       get_event_end_date, meta, summary,
-                      t2026, tournaments_out, withdrawal_lookup, edition_counts(corpus))
+                      t2026, tournaments_out, withdrawal_lookup, edition_counts(corpus),
+                      chart_daily=chart_daily)
 
 
     # Add tournaments from metadata that have no registrations yet

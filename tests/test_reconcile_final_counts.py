@@ -11,6 +11,9 @@ CI run):
      excludes it until a real export supplies per-registration timestamps.
 """
 import os
+from pathlib import Path
+
+import pytest
 
 import pandas as pd
 
@@ -220,3 +223,80 @@ def test_two_spellings_of_one_new_edition_spawn_one_skeleton(tmp_output):
     lower = after.loc[after["family"] == "World Open lower sections"]
     assert len(lower) == 1
     assert int(lower.iloc[0]["final_count"]) == 80
+
+
+# Reviewed outcomes contain aggregates only, never player rows or fake scrape days.
+def _correction(out, **changes):
+    row = dict(family="Atlantic City Open", year=2026, end_date="2026-04-05",
+               verified_on="2026-11-02", last_registration="2026-04-03",
+               active=401, withdrawn=23,
+               source_url="https://www.chessaction.com/tournaments/advance_entry_list.php?tid=aco26")
+    row.update(changes)
+    pd.DataFrame([row]).to_csv(Path(out) / "final_count_corrections.csv", index=False)
+    pd.DataFrame([dict(family="Atlantic City Open", year=2026, end_date="2026-04-05")]).to_csv(
+        Path(out) / "tournament_metadata.csv", index=False)
+
+
+def test_verified_final_corrects_label_without_rewriting_observations(tmp_output):
+    _correction(tmp_output)
+    scrape = (Path(tmp_output) / "daily_scrape.csv").read_bytes()
+    before = _summary(tmp_output)
+    reconcile_final_counts(tmp_output, verbose=False, as_of="2026-11-02")
+    after = _summary(tmp_output)
+    row = after.loc[after.family == "Atlantic City Open"].iloc[0]
+    assert row.final_count == 424
+    old = before.loc[before.family == "Atlantic City Open"].iloc[0]
+    assert row.ts_count == old.ts_count
+    assert row.last_reg == old.last_reg
+    assert (Path(tmp_output) / "daily_scrape.csv").read_bytes() == scrape
+    first = (Path(tmp_output) / "tournament_summary.csv").read_bytes()
+    assert reconcile_final_counts(tmp_output, verbose=False, as_of="2026-11-02") == 0
+    assert (Path(tmp_output) / "tournament_summary.csv").read_bytes() == first
+
+
+def test_verified_final_is_not_available_before_verification(tmp_output):
+    _correction(tmp_output)
+    reconcile_final_counts(tmp_output, verbose=False, as_of="2026-11-01")
+    assert _summary(tmp_output).loc[lambda d: d.family == "Atlantic City Open", "final_count"].iloc[0] < 424
+
+
+def test_verified_final_does_not_lower_a_newer_peak(tmp_output):
+    _correction(tmp_output)
+    _append_scrape_rows(tmp_output, "2026 Atlantic City Open", [450])
+    reconcile_final_counts(tmp_output, verbose=False)
+    assert _summary(tmp_output).loc[lambda d: d.family == "Atlantic City Open", "final_count"].iloc[0] == 450
+
+
+@pytest.mark.parametrize("changes", [
+    {"active": -1}, {"withdrawn": "2.5"}, {"year": "2026.0"},
+    {"verified_on": "2026-04-05"}, {"last_registration": "2026-04-06"},
+    {"end_date": "2026-04-04"}, {"family": "Unknown Open"},
+    {"source_url": "https://outside.invalid/tournaments/list"},
+])
+def test_invalid_verified_final_fails_before_writing(tmp_output, changes):
+    _correction(tmp_output, **changes)
+    before = (Path(tmp_output) / "tournament_summary.csv").read_bytes()
+    with pytest.raises(ValueError):
+        reconcile_final_counts(tmp_output, verbose=False)
+    assert (Path(tmp_output) / "tournament_summary.csv").read_bytes() == before
+
+
+def test_duplicate_verified_final_is_rejected(tmp_output):
+    _correction(tmp_output)
+    path = Path(tmp_output) / "final_count_corrections.csv"
+    frame = pd.read_csv(path)
+    pd.concat([frame, frame]).to_csv(path, index=False)
+    with pytest.raises(ValueError, match="Duplicate"):
+        reconcile_final_counts(tmp_output, verbose=False)
+
+
+def test_scrape_and_verified_bumps_count_an_edition_once(tmp_output):
+    _correction(tmp_output)
+    # First create unrelated pending rows so this run changes only ACO.
+    (Path(tmp_output) / "final_count_corrections.csv").unlink()
+    reconcile_final_counts(tmp_output, verbose=False)
+    _correction(tmp_output)
+    frame = _summary(tmp_output)
+    frame.loc[frame.family == "Atlantic City Open", "final_count"] = 100
+    frame.to_csv(Path(tmp_output) / "tournament_summary.csv", index=False)
+    assert reconcile_final_counts(tmp_output, verbose=False) == 1

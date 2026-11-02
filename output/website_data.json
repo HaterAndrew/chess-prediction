@@ -1,6 +1,6 @@
 {
   "generated": "2026-11-02",
-  "generated_time": "2026-11-02T10:16:46.426010-05:00",
+  "generated_time": "2026-11-02T14:20:35.297662-05:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). Beyond T-14 the point estimate is blended toward the family's most recent final count (0.40 at T<=28, 0.60 beyond), which measures better than the ensemble alone at those lead times. From T-14 in, it is averaged in log space, half and half, with the pickup forecast: the current count plus the entries last year's edition took after the same point. An event whose past finals have no registration curve moves toward its last final in log space instead (weight 1.0 beyond T-28, down to 0.3 at T-1), and one with no past final toward the spread of first-edition finals (beyond T-42, fully from T-60). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage; for an event with two or more past finals, or one moved toward its last final, each side is held to the year-over-year spread of finals. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration; inside two weeks the CI is sized around the pickup blend. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (146 family-years across 48 families).",
   "n_completed_in_training": 42,
@@ -15,13 +15,13 @@
       "early_bird_fee": null,
       "regular_fee": 128.0,
       "onsite_fee": null,
-      "current_count": 216,
-      "gross_count": 216,
+      "current_count": 221,
+      "gross_count": 221,
       "withdrawal_count": 3,
       "days_remaining": 4,
-      "point_estimate": 326,
-      "ci_lower": 291,
-      "ci_upper": 364,
+      "point_estimate": 330,
+      "ci_lower": 295,
+      "ci_upper": 371,
       "ci_level": 0.8,
       "historical": [
         {
@@ -773,7 +773,7 @@
         ],
         [
           182,
-          216
+          221
         ]
       ],
       "daily_start_date": "2026-05-04",
@@ -840,9 +840,9 @@
       "shadow_forecasts": [
         {
           "route": "metadata_pace",
-          "point": 294,
-          "ci_lower": 270,
-          "ci_upper": 319
+          "point": 300,
+          "ci_lower": 276,
+          "ci_upper": 327
         },
         {
           "route": "metadata_historical_avg",
@@ -854,11 +854,11 @@
       "pace_alert": {
         "family": "Los Angeles Open",
         "status": "on_pace",
-        "actual": 216,
+        "actual": 221,
         "expected": 267,
-        "deviation_pct": -19.0,
+        "deviation_pct": -17.2,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-19%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-17%)"
       }
     },
     {
@@ -871,13 +871,13 @@
       "early_bird_fee": null,
       "regular_fee": 138.0,
       "onsite_fee": 160.0,
-      "current_count": 95,
-      "gross_count": 95,
+      "current_count": 97,
+      "gross_count": 97,
       "withdrawal_count": 2,
       "days_remaining": 11,
-      "point_estimate": 341,
-      "ci_lower": 313,
-      "ci_upper": 372,
+      "point_estimate": 343,
+      "ci_lower": 314,
+      "ci_upper": 374,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1593,7 +1593,7 @@
         ],
         [
           173,
-          95
+          97
         ]
       ],
       "daily_start_date": "2026-05-13",
@@ -1660,9 +1660,9 @@
       "shadow_forecasts": [
         {
           "route": "metadata_pace",
-          "point": 368,
-          "ci_lower": 309,
-          "ci_upper": 438
+          "point": 376,
+          "ci_lower": 316,
+          "ci_upper": 447
         },
         {
           "route": "metadata_historical_avg",
@@ -1674,11 +1674,11 @@
       "pace_alert": {
         "family": "Kings Island Open",
         "status": "on_pace",
-        "actual": 95,
+        "actual": 97,
         "expected": 111,
-        "deviation_pct": -14.6,
+        "deviation_pct": -12.8,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-15%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-13%)"
       }
     },
     {
@@ -1691,13 +1691,13 @@
       "early_bird_fee": null,
       "regular_fee": 138.0,
       "onsite_fee": 160.0,
-      "current_count": 135,
-      "gross_count": 135,
+      "current_count": 136,
+      "gross_count": 136,
       "withdrawal_count": 5,
       "days_remaining": 25,
-      "point_estimate": 669,
-      "ci_lower": 600,
-      "ci_upper": 745,
+      "point_estimate": 670,
+      "ci_lower": 601,
+      "ci_upper": 747,
       "ci_level": 0.8,
       "historical": [
         {
@@ -2445,7 +2445,7 @@
         ],
         [
           181,
-          135
+          136
         ]
       ],
       "daily_start_date": "2026-05-05",
@@ -2512,8 +2512,8 @@
       "shadow_forecasts": [
         {
           "route": "metadata_pace",
-          "point": 931,
-          "ci_lower": 769,
+          "point": 938,
+          "ci_lower": 774,
           "ci_upper": 1057
         },
         {
@@ -2526,11 +2526,11 @@
       "pace_alert": {
         "family": "National Chess Congress",
         "status": "above_pace",
-        "actual": 135,
+        "actual": 136,
         "expected": 110,
-        "deviation_pct": 22.7,
+        "deviation_pct": 23.6,
         "n_years": 4,
-        "message": "Registrations are 22.7% above 4-year at-this-point pace"
+        "message": "Registrations are 23.6% above 4-year at-this-point pace"
       }
     },
     {
@@ -2543,12 +2543,12 @@
       "early_bird_fee": 245.0,
       "regular_fee": 275.0,
       "onsite_fee": null,
-      "current_count": 394,
-      "gross_count": 394,
+      "current_count": 395,
+      "gross_count": 395,
       "withdrawal_count": 8,
       "days_remaining": 54,
       "point_estimate": 1207,
-      "ci_lower": 1115,
+      "ci_lower": 1116,
       "ci_upper": 1306,
       "ci_level": 0.8,
       "historical": [
@@ -3253,7 +3253,7 @@
         ],
         [
           170,
-          394
+          395
         ]
       ],
       "daily_start_date": "2026-05-16",
@@ -3320,9 +3320,9 @@
       "shadow_forecasts": [
         {
           "route": "metadata_pace",
-          "point": 1323,
-          "ci_lower": 1157,
-          "ci_upper": 1513
+          "point": 1326,
+          "ci_lower": 1160,
+          "ci_upper": 1517
         },
         {
           "route": "metadata_historical_avg",
@@ -3334,11 +3334,11 @@
       "pace_alert": {
         "family": "North American Open",
         "status": "on_pace",
-        "actual": 394,
+        "actual": 395,
         "expected": 364,
-        "deviation_pct": 8.4,
+        "deviation_pct": 8.7,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+8%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+9%)"
       }
     },
     {
@@ -11500,11 +11500,11 @@
       "n_historical_editions": 5,
       "prediction_tier": null,
       "shadow_forecasts": [],
-      "walkin_multiplier": 1.041,
+      "walkin_multiplier": 1.04,
       "walkin_source": "family",
-      "total_estimate": 1110,
-      "total_ci_lower": 1068,
-      "total_ci_upper": 1154
+      "total_estimate": 1109,
+      "total_ci_lower": 1100,
+      "total_ci_upper": 1118
     },
     {
       "family": "World Open lower sections",
@@ -11860,8 +11860,8 @@
       "walkin_multiplier": 1.022,
       "walkin_source": "family",
       "total_estimate": 95,
-      "total_ci_lower": 85,
-      "total_ci_upper": 106
+      "total_ci_lower": 88,
+      "total_ci_upper": 103
     },
     {
       "family": "DC International",
@@ -14225,11 +14225,11 @@
       "n_historical_editions": 5,
       "prediction_tier": null,
       "shadow_forecasts": [],
-      "walkin_multiplier": 1.052,
+      "walkin_multiplier": 1.044,
       "walkin_source": "family",
-      "total_estimate": 303,
-      "total_ci_lower": 292,
-      "total_ci_upper": 314
+      "total_estimate": 301,
+      "total_ci_lower": 287,
+      "total_ci_upper": 315
     },
     {
       "family": "Bradley Open",
@@ -18916,11 +18916,11 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "settled_actual",
-      "walkin_multiplier": 1.05,
+      "walkin_multiplier": 1.041,
       "walkin_source": "family",
-      "total_estimate": 279,
-      "total_ci_lower": 244,
-      "total_ci_upper": 320
+      "total_estimate": 277,
+      "total_ci_lower": 245,
+      "total_ci_upper": 313
     },
     {
       "family": "Eastern Chess Congress",
@@ -21984,11 +21984,11 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "settled_actual",
-      "walkin_multiplier": 1.039,
+      "walkin_multiplier": 1.031,
       "walkin_source": "family",
-      "total_estimate": 235,
-      "total_ci_lower": 219,
-      "total_ci_upper": 251
+      "total_estimate": 233,
+      "total_ci_lower": 222,
+      "total_ci_upper": 245
     },
     {
       "family": "New York State Championship",
@@ -31011,7 +31011,7 @@
       "walkin_source": "family",
       "total_estimate": 62,
       "total_ci_lower": 61,
-      "total_ci_upper": 63
+      "total_ci_upper": 62
     },
     {
       "family": "Central New York Open",
@@ -31478,7 +31478,7 @@
       "walkin_source": "family",
       "total_estimate": 129,
       "total_ci_lower": 127,
-      "total_ci_upper": 131
+      "total_ci_upper": 130
     },
     {
       "family": "Central New York Open",
@@ -31804,11 +31804,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.052,
+      "walkin_multiplier": 1.044,
       "walkin_source": "family",
-      "total_estimate": 306,
-      "total_ci_lower": 296,
-      "total_ci_upper": 317
+      "total_estimate": 304,
+      "total_ci_lower": 290,
+      "total_ci_upper": 318
     },
     {
       "family": "Chicago Class",
@@ -31893,11 +31893,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.052,
+      "walkin_multiplier": 1.044,
       "walkin_source": "family",
-      "total_estimate": 338,
-      "total_ci_lower": 326,
-      "total_ci_upper": 350
+      "total_estimate": 335,
+      "total_ci_lower": 320,
+      "total_ci_upper": 351
     },
     {
       "family": "Chicago Class",
@@ -31986,11 +31986,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.052,
+      "walkin_multiplier": 1.044,
       "walkin_source": "family",
-      "total_estimate": 402,
-      "total_ci_lower": 388,
-      "total_ci_upper": 416
+      "total_estimate": 399,
+      "total_ci_lower": 381,
+      "total_ci_upper": 418
     },
     {
       "family": "Chicago Class",
@@ -32083,11 +32083,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.052,
+      "walkin_multiplier": 1.044,
       "walkin_source": "family",
-      "total_estimate": 354,
-      "total_ci_lower": 342,
-      "total_ci_upper": 367
+      "total_estimate": 352,
+      "total_ci_lower": 336,
+      "total_ci_upper": 369
     },
     {
       "family": "Chicago Class",
@@ -32184,11 +32184,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.052,
+      "walkin_multiplier": 1.044,
       "walkin_source": "family",
-      "total_estimate": 347,
-      "total_ci_lower": 335,
-      "total_ci_upper": 359
+      "total_estimate": 344,
+      "total_ci_lower": 329,
+      "total_ci_upper": 361
     },
     {
       "family": "Chicago Class",
@@ -32457,11 +32457,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.052,
+      "walkin_multiplier": 1.044,
       "walkin_source": "family",
-      "total_estimate": 354,
-      "total_ci_lower": 342,
-      "total_ci_upper": 367
+      "total_estimate": 352,
+      "total_ci_lower": 336,
+      "total_ci_upper": 369
     },
     {
       "family": "Chicago Class",
@@ -32746,11 +32746,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.052,
+      "walkin_multiplier": 1.044,
       "walkin_source": "family",
-      "total_estimate": 294,
-      "total_ci_lower": 284,
-      "total_ci_upper": 305
+      "total_estimate": 292,
+      "total_ci_lower": 279,
+      "total_ci_upper": 306
     },
     {
       "family": "Chicago Class",
@@ -33059,11 +33059,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.052,
+      "walkin_multiplier": 1.044,
       "walkin_source": "family",
-      "total_estimate": 284,
-      "total_ci_lower": 274,
-      "total_ci_upper": 294
+      "total_estimate": 282,
+      "total_ci_lower": 269,
+      "total_ci_upper": 295
     },
     {
       "family": "Chicago Class",
@@ -33332,11 +33332,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.052,
+      "walkin_multiplier": 1.044,
       "walkin_source": "family",
-      "total_estimate": 309,
-      "total_ci_lower": 299,
-      "total_ci_upper": 320
+      "total_estimate": 307,
+      "total_ci_lower": 293,
+      "total_ci_upper": 322
     },
     {
       "family": "Chicago Open",
@@ -38124,11 +38124,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.05,
+      "walkin_multiplier": 1.041,
       "walkin_source": "family",
-      "total_estimate": 266,
-      "total_ci_lower": 232,
-      "total_ci_upper": 304
+      "total_estimate": 263,
+      "total_ci_lower": 233,
+      "total_ci_upper": 298
     },
     {
       "family": "Continental Open",
@@ -38213,11 +38213,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.05,
+      "walkin_multiplier": 1.041,
       "walkin_source": "family",
-      "total_estimate": 268,
-      "total_ci_lower": 234,
-      "total_ci_upper": 307
+      "total_estimate": 265,
+      "total_ci_lower": 235,
+      "total_ci_upper": 300
     },
     {
       "family": "Continental Open",
@@ -38306,11 +38306,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.05,
+      "walkin_multiplier": 1.041,
       "walkin_source": "family",
-      "total_estimate": 368,
-      "total_ci_lower": 321,
-      "total_ci_upper": 421
+      "total_estimate": 364,
+      "total_ci_lower": 322,
+      "total_ci_upper": 412
     },
     {
       "family": "Continental Open",
@@ -38403,11 +38403,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.05,
+      "walkin_multiplier": 1.041,
       "walkin_source": "family",
-      "total_estimate": 307,
-      "total_ci_lower": 268,
-      "total_ci_upper": 351
+      "total_estimate": 304,
+      "total_ci_lower": 269,
+      "total_ci_upper": 344
     },
     {
       "family": "Continental Open",
@@ -38504,11 +38504,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.05,
+      "walkin_multiplier": 1.041,
       "walkin_source": "family",
-      "total_estimate": 288,
-      "total_ci_lower": 251,
-      "total_ci_upper": 329
+      "total_estimate": 285,
+      "total_ci_lower": 252,
+      "total_ci_upper": 323
     },
     {
       "family": "Continental Open",
@@ -38781,11 +38781,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.05,
+      "walkin_multiplier": 1.041,
       "walkin_source": "family",
-      "total_estimate": 337,
-      "total_ci_lower": 294,
-      "total_ci_upper": 386
+      "total_estimate": 334,
+      "total_ci_lower": 295,
+      "total_ci_upper": 378
     },
     {
       "family": "Continental Open",
@@ -39082,11 +39082,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.05,
+      "walkin_multiplier": 1.041,
       "walkin_source": "family",
-      "total_estimate": 328,
-      "total_ci_lower": 286,
-      "total_ci_upper": 375
+      "total_estimate": 325,
+      "total_ci_lower": 287,
+      "total_ci_upper": 367
     },
     {
       "family": "Continental Open",
@@ -39323,11 +39323,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.05,
+      "walkin_multiplier": 1.041,
       "walkin_source": "family",
-      "total_estimate": 256,
-      "total_ci_lower": 224,
-      "total_ci_upper": 293
+      "total_estimate": 254,
+      "total_ci_lower": 225,
+      "total_ci_upper": 287
     },
     {
       "family": "Continental Open",
@@ -39620,11 +39620,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.05,
+      "walkin_multiplier": 1.041,
       "walkin_source": "family",
-      "total_estimate": 278,
-      "total_ci_lower": 243,
-      "total_ci_upper": 319
+      "total_estimate": 276,
+      "total_ci_lower": 244,
+      "total_ci_upper": 312
     },
     {
       "family": "DC International",
@@ -58785,11 +58785,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.039,
+      "walkin_multiplier": 1.031,
       "walkin_source": "family",
-      "total_estimate": 275,
-      "total_ci_lower": 257,
-      "total_ci_upper": 295
+      "total_estimate": 273,
+      "total_ci_lower": 260,
+      "total_ci_upper": 287
     },
     {
       "family": "Midwest Class Championships",
@@ -58874,11 +58874,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.039,
+      "walkin_multiplier": 1.031,
       "walkin_source": "family",
-      "total_estimate": 291,
-      "total_ci_lower": 272,
-      "total_ci_upper": 312
+      "total_estimate": 289,
+      "total_ci_lower": 275,
+      "total_ci_upper": 303
     },
     {
       "family": "Midwest Class Championships",
@@ -58967,11 +58967,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.039,
+      "walkin_multiplier": 1.031,
       "walkin_source": "family",
-      "total_estimate": 328,
-      "total_ci_lower": 307,
-      "total_ci_upper": 352
+      "total_estimate": 326,
+      "total_ci_lower": 310,
+      "total_ci_upper": 342
     },
     {
       "family": "Midwest Class Championships",
@@ -59064,11 +59064,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.039,
+      "walkin_multiplier": 1.031,
       "walkin_source": "family",
-      "total_estimate": 341,
-      "total_ci_lower": 318,
-      "total_ci_upper": 365
+      "total_estimate": 338,
+      "total_ci_lower": 322,
+      "total_ci_upper": 355
     },
     {
       "family": "Midwest Class Championships",
@@ -59165,11 +59165,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.039,
+      "walkin_multiplier": 1.031,
       "walkin_source": "family",
-      "total_estimate": 317,
-      "total_ci_lower": 296,
-      "total_ci_upper": 339
+      "total_estimate": 314,
+      "total_ci_lower": 300,
+      "total_ci_upper": 330
     },
     {
       "family": "Midwest Class Championships",
@@ -59482,11 +59482,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.039,
+      "walkin_multiplier": 1.031,
       "walkin_source": "family",
-      "total_estimate": 374,
-      "total_ci_lower": 350,
-      "total_ci_upper": 401
+      "total_estimate": 371,
+      "total_ci_lower": 354,
+      "total_ci_upper": 390
     },
     {
       "family": "Midwest Class Championships",
@@ -59771,11 +59771,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.039,
+      "walkin_multiplier": 1.031,
       "walkin_source": "family",
-      "total_estimate": 304,
-      "total_ci_lower": 284,
-      "total_ci_upper": 325
+      "total_estimate": 301,
+      "total_ci_lower": 287,
+      "total_ci_upper": 316
     },
     {
       "family": "Midwest Class Championships",
@@ -60096,11 +60096,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.039,
+      "walkin_multiplier": 1.031,
       "walkin_source": "family",
-      "total_estimate": 315,
-      "total_ci_lower": 294,
-      "total_ci_upper": 337
+      "total_estimate": 312,
+      "total_ci_lower": 298,
+      "total_ci_upper": 328
     },
     {
       "family": "Midwest Class Championships",
@@ -60397,11 +60397,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.039,
+      "walkin_multiplier": 1.031,
       "walkin_source": "family",
-      "total_estimate": 318,
-      "total_ci_lower": 297,
-      "total_ci_upper": 340
+      "total_estimate": 315,
+      "total_ci_lower": 300,
+      "total_ci_upper": 331
     },
     {
       "family": "National Chess Congress",
@@ -73498,7 +73498,7 @@
       "walkin_multiplier": 1.07,
       "walkin_source": "family",
       "total_estimate": 505,
-      "total_ci_lower": 497,
+      "total_ci_lower": 498,
       "total_ci_upper": 513
     },
     {
@@ -73840,7 +73840,7 @@
       "walkin_source": "family",
       "total_estimate": 476,
       "total_ci_lower": 469,
-      "total_ci_upper": 484
+      "total_ci_upper": 483
     },
     {
       "family": "Atlantic City Open",
@@ -77632,7 +77632,7 @@
       "walkin_source": "family",
       "total_estimate": 153,
       "total_ci_lower": 151,
-      "total_ci_upper": 156
+      "total_ci_upper": 155
     },
     {
       "family": "DC International",
@@ -78123,7 +78123,7 @@
       "walkin_source": "family",
       "total_estimate": 549,
       "total_ci_lower": 541,
-      "total_ci_upper": 558
+      "total_ci_upper": 557
     },
     {
       "family": "DC Open",
@@ -78215,8 +78215,8 @@
       "walkin_multiplier": 1.075,
       "walkin_source": "family",
       "total_estimate": 594,
-      "total_ci_lower": 585,
-      "total_ci_upper": 604
+      "total_ci_lower": 586,
+      "total_ci_upper": 603
     },
     {
       "family": "DC Open",
@@ -78413,7 +78413,7 @@
       "walkin_multiplier": 1.075,
       "walkin_source": "family",
       "total_estimate": 248,
-      "total_ci_lower": 244,
+      "total_ci_lower": 245,
       "total_ci_upper": 252
     },
     {
@@ -78762,7 +78762,7 @@
       "walkin_multiplier": 1.075,
       "walkin_source": "family",
       "total_estimate": 302,
-      "total_ci_lower": 297,
+      "total_ci_lower": 298,
       "total_ci_upper": 307
     },
     {
@@ -79063,7 +79063,7 @@
       "walkin_multiplier": 1.075,
       "walkin_source": "family",
       "total_estimate": 302,
-      "total_ci_lower": 297,
+      "total_ci_lower": 298,
       "total_ci_upper": 307
     },
     {
@@ -79409,7 +79409,7 @@
       "walkin_source": "family",
       "total_estimate": 335,
       "total_ci_lower": 330,
-      "total_ci_upper": 341
+      "total_ci_upper": 340
     },
     {
       "family": "DC Open",
@@ -88006,7 +88006,7 @@
       "walkin_source": "family",
       "total_estimate": 253,
       "total_ci_lower": 249,
-      "total_ci_upper": 257
+      "total_ci_upper": 256
     },
     {
       "family": "Washington Chess Congress",
@@ -91902,8 +91902,8 @@
       "walkin_multiplier": 1.022,
       "walkin_source": "family",
       "total_estimate": 152,
-      "total_ci_lower": 136,
-      "total_ci_upper": 170
+      "total_ci_lower": 141,
+      "total_ci_upper": 165
     },
     {
       "family": "World Open lower sections",
@@ -92183,8 +92183,8 @@
       "walkin_multiplier": 1.022,
       "walkin_source": "family",
       "total_estimate": 154,
-      "total_ci_lower": 138,
-      "total_ci_upper": 173
+      "total_ci_lower": 142,
+      "total_ci_upper": 167
     },
     {
       "family": "World Open lower sections",
@@ -92464,8 +92464,8 @@
       "walkin_multiplier": 1.022,
       "walkin_source": "family",
       "total_estimate": 138,
-      "total_ci_lower": 123,
-      "total_ci_upper": 154
+      "total_ci_lower": 127,
+      "total_ci_upper": 149
     },
     {
       "family": "World Open top 6 sections",
@@ -93046,11 +93046,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.041,
+      "walkin_multiplier": 1.04,
       "walkin_source": "family",
-      "total_estimate": 1379,
-      "total_ci_lower": 1326,
-      "total_ci_upper": 1433
+      "total_estimate": 1377,
+      "total_ci_lower": 1366,
+      "total_ci_upper": 1389
     },
     {
       "family": "World Open top 6 sections",
@@ -93547,11 +93547,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.041,
+      "walkin_multiplier": 1.04,
       "walkin_source": "family",
-      "total_estimate": 1244,
-      "total_ci_lower": 1197,
-      "total_ci_upper": 1293
+      "total_estimate": 1243,
+      "total_ci_lower": 1233,
+      "total_ci_upper": 1254
     },
     {
       "family": "World Open top 6 sections",
@@ -94088,52 +94088,52 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.041,
+      "walkin_multiplier": 1.04,
       "walkin_source": "family",
-      "total_estimate": 1213,
-      "total_ci_lower": 1167,
-      "total_ci_upper": 1261
+      "total_estimate": 1212,
+      "total_ci_lower": 1202,
+      "total_ci_upper": 1222
     }
   ],
-  "last_updated": "2026-11-02 15:16:33",
+  "last_updated": "2026-11-02 19:20:10",
   "is_stale": false,
   "counts_through": "2026-11-01",
   "alerts": [
     {
       "family": "Los Angeles Open",
       "status": "on_pace",
-      "actual": 216,
+      "actual": 221,
       "expected": 267,
-      "deviation_pct": -19.0,
+      "deviation_pct": -17.2,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-19%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-17%)"
     },
     {
       "family": "Kings Island Open",
       "status": "on_pace",
-      "actual": 95,
+      "actual": 97,
       "expected": 111,
-      "deviation_pct": -14.6,
+      "deviation_pct": -12.8,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-15%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-13%)"
     },
     {
       "family": "National Chess Congress",
       "status": "above_pace",
-      "actual": 135,
+      "actual": 136,
       "expected": 110,
-      "deviation_pct": 22.7,
+      "deviation_pct": 23.6,
       "n_years": 4,
-      "message": "Registrations are 22.7% above 4-year at-this-point pace"
+      "message": "Registrations are 23.6% above 4-year at-this-point pace"
     },
     {
       "family": "North American Open",
       "status": "on_pace",
-      "actual": 394,
+      "actual": 395,
       "expected": 364,
-      "deviation_pct": 8.4,
+      "deviation_pct": 8.7,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+8%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+9%)"
     },
     {
       "family": "Eastern Open",

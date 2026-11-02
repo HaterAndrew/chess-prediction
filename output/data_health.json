@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-01",
-  "scanned_at": "2026-11-01T07:39:45",
+  "generated": "2026-11-02",
+  "scanned_at": "2026-11-02T07:46:21",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -24,6 +24,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Eastern Open",
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Golden State Open",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
@@ -96,12 +102,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "George Washington Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Golden State Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {

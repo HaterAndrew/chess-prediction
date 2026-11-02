@@ -5,8 +5,9 @@ walk-forward (#191); FROZEN_HASH is shared.model_version.model_hash() of
 that code. Events starting after FROZEN_ON never informed a choice about the
 model, so the forecasts the frozen code published for them are graded apart
 from the rest of the live record. tests/test_holdout.py fails when a model
-source changes. A display-only change may add a verified equivalent source
-hash to FROZEN_HASHES, retaining the original forecasts. If any forecast moves,
+source changes. A forecast-equivalent display or coverage repair may add its
+verified source hash to FROZEN_HASHES, retaining the original forecasts. If a
+source change moves a forecast on identical inputs,
 the test is no longer sealed: start a new freeze on the day the change merges.
 """
 import pandas as pd
@@ -17,7 +18,10 @@ FROZEN_ON = '2026-09-27'
 FROZEN_HASH = 'e0e6631e4c8e940d'
 # Chart-only scrape tails (2026-11-02): all 412 cards' forecast fields and all
 # 1,086 walk-forward rows remained identical. Keep the original cohort too.
-FROZEN_HASHES = frozenset({FROZEN_HASH, 'e2b539beaa9c6f75'})
+# Coverage/chart cutoff repair: all 412 baseline forecasts are identical on
+# the same inputs, and all 11 original sealed predictions remain intact.
+# The separately recorded November 2 observations change inputs and outcomes.
+FROZEN_HASHES = frozenset({FROZEN_HASH, 'e2b539beaa9c6f75', '598f8e1fe4fd334a'})
 
 
 def sealed(records, frozen_on=FROZEN_ON, frozen_hash=FROZEN_HASH):

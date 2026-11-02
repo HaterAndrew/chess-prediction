@@ -58,8 +58,20 @@ The reconciler validates edition identity, official end date, aggregate counts a
 
 This changes data and may change forecasts and outcome grades. It does not tune the estimator or rewrite published prediction values. The prior maintenance report's forecast-equivalence result applies to its earlier chart-only release; this subsequent correction has a different scope.
 
-## Validation
+## Initial label-only validation
 
 The before/after pipeline comparison changed exactly eight final labels. All 412 current cards retained their point estimates, intervals, routes and tiers. Model source hash remained `e2b539beaa9c6f75`; the stored forecast ledger was unchanged. The sealed cohort retained all 11 records and their point/lower/upper values. Seven grades changed: four Eastern Class horizons (196 → 206) and three Midwest horizons (226 → 237).
 
 The walk-forward retained 1,086 records. Corrected training outcomes changed 33 point estimates and 39 graded finals. T−14 pooled MAE moved from 8.35% to 8.25%; coverage stayed 82.9%. These are retrospective data corrections, not evidence of an estimator improvement. Scrape observations and registration timestamps were not rewritten.
+
+## Completed-card observations
+
+The initial comparison above covered a label-only correction. A subsequent product check found that the site builder replaced current-season summary totals with the latest scrape counts before fitting and rendering. Completed events were absent from the current CCA index, leaving their old scrape totals on their cards.
+
+Eight public entry lists were fetched again on November 2. Their active/withdrawn totals matched the provenance CSV and were recorded as eight observations dated November 2 in daily_scrape.csv. All 4,146 earlier rows remain unchanged. These are current verification observations; they do not represent registrations added after the events. Historical chart and training-curve rows remain unchanged, including World Open's observed July endpoint of 1,066.
+
+A coverage-classification defect also surfaced: adding a much later observation revoked final status even when the event's closing day had already been observed. The fix keeps a completed watch window intact and retains the existing gap requirements when the close was missed. All 788 baseline edition labels remain unchanged; the three accidental downgrades are prevented. Estimator fitting and routing code are unchanged.
+
+The source repairs preserve all 412 baseline forecasts and intervals on identical inputs. Coverage/chart source hash `598f8e1fe4fd334a` is recorded alongside the previous equivalent hashes; the original September 27 freeze and stored predictions remain intact. Metadata fallback charts now stop at the official event end, consistent with the main chart path, rather than drawing late verification observations as registration history.
+
+With the eight new count observations applied separately, seven completed cards receive corrected totals (the eighth event is an excluded blitz side event). Eight upcoming cards change forecasts or intervals from the corrected training outcomes. For example, Los Angeles moves from 330 to 332, Kings Island from 343 to 344, and National Chess Congress from 670 to 672. All 11 original sealed record identities, predictions, intervals and corrected grades remain unchanged relative to the completed label correction. The estimator was not tuned.

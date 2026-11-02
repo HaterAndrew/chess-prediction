@@ -37,7 +37,10 @@ def watched_to_close(days, end):
     since = end - pd.Timedelta(days=WATCH_DAYS)
     before = [d for d in days if d < since]
     chain = before[-1:] + [d for d in days if since <= d <= end]
-    chain += [d for d in days if d > end][:1]
+    # Once the close itself was observed, a later audit observation cannot
+    # introduce a fictitious gap in the already-complete watch window.
+    if not chain or chain[-1] < end:
+        chain += [d for d in days if d > end][:1]
     if not chain or (chain[0] - since).days > CARRY_DAYS:
         return False
     return all((b - a).days <= CARRY_DAYS + 1 for a, b in zip(chain, chain[1:]))

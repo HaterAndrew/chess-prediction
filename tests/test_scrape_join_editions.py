@@ -162,3 +162,26 @@ def test_written_archive_and_scrape_both_stop_at_event_end():
     chart = sj.extend_chart_daily(daily, scrape, summary, calendar, written_daily=written)
     assert chart_series_start_date(1, chart, calendar.iloc[0]['start']) == '2026-07-04'
     assert build_chart_series(1, chart, 99) == [[0, 90], [1, 95]]
+
+
+def test_post_event_verification_updates_latest_counts_without_backdating_curves():
+    from corpus.scrape_curves import scrape_curves
+
+    before = _scrape([('2026-06-30', '2026 World Open, top 6 sections', 968, 968, 0),
+                      ('2026-07-05', '2026 World Open, top 6 sections', 1066, 1066, 0)])
+    after = pd.concat([before, _scrape([
+        ('2026-11-02', '2026 World Open, top 6 sections', 1111, 1067, 44)])], ignore_index=True)
+    summary = pd.DataFrame({'tid': [1], 'family': ['World Open top 6 sections'],
+                            'tournament_name': ['2026 World Open, top 6 sections'],
+                            'tournament_year': [2026], 'final_count': [1111]})
+    calendar = pd.DataFrame({'tid': [1], 'start': [pd.Timestamp('2026-07-01')],
+                             'end': [pd.Timestamp('2026-07-05')]})
+    daily = pd.DataFrame({'tid': [1], 'T': [10], 'cum_regs': [900]})
+    lookup = sj.counts_by_edition(sj.latest_by_edition(after))
+    assert lookup[('World Open, top 6 sections', 2026)] == {'net': 1067, 'gross': 1111, 'wd': 44}
+    pd.testing.assert_frame_equal(sj.extend_chart_daily(daily, before, summary, calendar),
+                                  sj.extend_chart_daily(daily, after, summary, calendar))
+    pd.testing.assert_frame_equal(scrape_curves(before, summary, calendar, set()),
+                                  scrape_curves(after, summary, calendar, set()))
+    assert sj.scrape_daily_series(after, 'World Open, top 6 sections', 2026, 1111,
+                                   end_date='2026-07-05') == ([[0, 968], [5, 1066]], '2026-06-30')

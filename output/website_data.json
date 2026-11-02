@@ -1,6 +1,6 @@
 {
   "generated": "2026-11-02",
-  "generated_time": "2026-11-02T02:42:10.581351-05:00",
+  "generated_time": "2026-11-02T10:16:46.426010-05:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). Beyond T-14 the point estimate is blended toward the family's most recent final count (0.40 at T<=28, 0.60 beyond), which measures better than the ensemble alone at those lead times. From T-14 in, it is averaged in log space, half and half, with the pickup forecast: the current count plus the entries last year's edition took after the same point. An event whose past finals have no registration curve moves toward its last final in log space instead (weight 1.0 beyond T-28, down to 0.3 at T-1), and one with no past final toward the spread of first-edition finals (beyond T-42, fully from T-60). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage; for an event with two or more past finals, or one moved toward its last final, each side is held to the year-over-year spread of finals. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration; inside two weeks the CI is sized around the pickup blend. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (146 family-years across 48 families).",
   "n_completed_in_training": 42,
@@ -15,13 +15,13 @@
       "early_bird_fee": null,
       "regular_fee": 128.0,
       "onsite_fee": null,
-      "current_count": 213,
-      "gross_count": 213,
+      "current_count": 216,
+      "gross_count": 216,
       "withdrawal_count": 3,
       "days_remaining": 4,
-      "point_estimate": 323,
-      "ci_lower": 289,
-      "ci_upper": 362,
+      "point_estimate": 326,
+      "ci_lower": 291,
+      "ci_upper": 364,
       "ci_level": 0.8,
       "historical": [
         {
@@ -773,7 +773,7 @@
         ],
         [
           182,
-          213
+          216
         ]
       ],
       "daily_start_date": "2026-05-04",
@@ -840,9 +840,9 @@
       "shadow_forecasts": [
         {
           "route": "metadata_pace",
-          "point": 290,
-          "ci_lower": 266,
-          "ci_upper": 315
+          "point": 294,
+          "ci_lower": 270,
+          "ci_upper": 319
         },
         {
           "route": "metadata_historical_avg",
@@ -853,12 +853,12 @@
       ],
       "pace_alert": {
         "family": "Los Angeles Open",
-        "status": "below_pace",
-        "actual": 213,
+        "status": "on_pace",
+        "actual": 216,
         "expected": 267,
-        "deviation_pct": -20.1,
+        "deviation_pct": -19.0,
         "n_years": 4,
-        "message": "Registrations are 20.1% below 4-year at-this-point pace"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-19%)"
       }
     },
     {
@@ -5137,8 +5137,8 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 0,
-      "gross_count": 0,
+      "current_count": 1,
+      "gross_count": 1,
       "withdrawal_count": 0,
       "days_remaining": 130,
       "point_estimate": 348,
@@ -5364,7 +5364,7 @@
         ],
         [
           46,
-          0
+          1
         ]
       ],
       "daily_start_date": "2026-09-17",
@@ -5425,12 +5425,12 @@
       "prediction_source": "metadata_historical_avg",
       "pace_alert": {
         "family": "Western Class Championships",
-        "status": "below_pace",
-        "actual": 0,
+        "status": "on_pace",
+        "actual": 1,
         "expected": 1,
-        "deviation_pct": -100.0,
+        "deviation_pct": 0.0,
         "n_years": 4,
-        "message": "Registrations are 100.0% below 4-year at-this-point pace"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
       }
     },
     {
@@ -6625,6 +6625,14 @@
         [
           188,
           307
+        ],
+        [
+          189,
+          326
+        ],
+        [
+          190,
+          359
         ]
       ],
       "daily_start_date": "2025-06-27",
@@ -6968,6 +6976,14 @@
         [
           149,
           530
+        ],
+        [
+          150,
+          553
+        ],
+        [
+          151,
+          564
         ]
       ],
       "daily_start_date": "2025-08-20",
@@ -7295,6 +7311,14 @@
         [
           117,
           354
+        ],
+        [
+          118,
+          376
+        ],
+        [
+          119,
+          387
         ]
       ],
       "daily_start_date": "2025-09-21",
@@ -7593,6 +7617,14 @@
         [
           166,
           180
+        ],
+        [
+          167,
+          191
+        ],
+        [
+          168,
+          209
         ]
       ],
       "daily_start_date": "2025-09-13",
@@ -8036,6 +8068,14 @@
         [
           148,
           467
+        ],
+        [
+          149,
+          483
+        ],
+        [
+          150,
+          492
         ]
       ],
       "daily_start_date": "2025-09-16",
@@ -8419,6 +8459,22 @@
         [
           160,
           400
+        ],
+        [
+          161,
+          411
+        ],
+        [
+          162,
+          421
+        ],
+        [
+          163,
+          424
+        ],
+        [
+          164,
+          424
         ]
       ],
       "daily_start_date": "2025-10-23",
@@ -8746,6 +8802,14 @@
         [
           80,
           288
+        ],
+        [
+          81,
+          302
+        ],
+        [
+          82,
+          318
         ]
       ],
       "daily_start_date": "2025-12-15",
@@ -9037,6 +9101,10 @@
         [
           123,
           178
+        ],
+        [
+          124,
+          200
         ]
       ],
       "daily_start_date": "2025-11-17",
@@ -9352,6 +9420,14 @@
         [
           110,
           195
+        ],
+        [
+          111,
+          196
+        ],
+        [
+          112,
+          198
         ]
       ],
       "daily_start_date": "2025-11-07",
@@ -9567,6 +9643,14 @@
         [
           76,
           54
+        ],
+        [
+          77,
+          56
+        ],
+        [
+          78,
+          61
         ]
       ],
       "daily_start_date": "2025-12-11",
@@ -10198,6 +10282,14 @@
         [
           143,
           1745
+        ],
+        [
+          144,
+          1749
+        ],
+        [
+          145,
+          1753
         ]
       ],
       "daily_start_date": "2025-10-12",
@@ -10749,6 +10841,18 @@
         [
           175,
           848
+        ],
+        [
+          176,
+          866
+        ],
+        [
+          177,
+          901
+        ],
+        [
+          178,
+          917
         ]
       ],
       "daily_start_date": "2025-11-27",
@@ -10940,9 +11044,405 @@
         [
           112,
           25
+        ],
+        [
+          113,
+          27
+        ],
+        [
+          114,
+          28
+        ],
+        [
+          122,
+          30
+        ],
+        [
+          124,
+          30
+        ],
+        [
+          125,
+          30
+        ],
+        [
+          126,
+          31
+        ],
+        [
+          127,
+          31
+        ],
+        [
+          128,
+          31
+        ],
+        [
+          129,
+          32
+        ],
+        [
+          130,
+          33
+        ],
+        [
+          131,
+          39
+        ],
+        [
+          132,
+          45
+        ],
+        [
+          133,
+          49
+        ],
+        [
+          134,
+          55
+        ],
+        [
+          135,
+          55
+        ],
+        [
+          136,
+          56
+        ],
+        [
+          138,
+          56
+        ],
+        [
+          139,
+          56
+        ],
+        [
+          140,
+          57
+        ],
+        [
+          141,
+          58
+        ],
+        [
+          142,
+          59
+        ],
+        [
+          143,
+          65
+        ],
+        [
+          144,
+          68
+        ],
+        [
+          145,
+          69
+        ],
+        [
+          146,
+          74
+        ],
+        [
+          147,
+          77
+        ],
+        [
+          148,
+          81
+        ],
+        [
+          149,
+          81
+        ],
+        [
+          150,
+          84
+        ],
+        [
+          151,
+          88
+        ],
+        [
+          152,
+          94
+        ],
+        [
+          153,
+          97
+        ],
+        [
+          154,
+          99
+        ],
+        [
+          155,
+          103
+        ],
+        [
+          156,
+          105
+        ],
+        [
+          157,
+          111
+        ],
+        [
+          158,
+          116
+        ],
+        [
+          159,
+          122
+        ],
+        [
+          160,
+          128
+        ],
+        [
+          161,
+          134
+        ],
+        [
+          162,
+          136
+        ],
+        [
+          163,
+          142
+        ],
+        [
+          164,
+          148
+        ],
+        [
+          165,
+          158
+        ],
+        [
+          166,
+          168
+        ],
+        [
+          167,
+          187
+        ],
+        [
+          168,
+          198
+        ],
+        [
+          169,
+          211
+        ],
+        [
+          170,
+          248
+        ],
+        [
+          171,
+          307
+        ],
+        [
+          172,
+          312
+        ],
+        [
+          173,
+          316
+        ],
+        [
+          174,
+          320
+        ],
+        [
+          175,
+          324
+        ],
+        [
+          176,
+          327
+        ],
+        [
+          177,
+          330
+        ],
+        [
+          178,
+          331
+        ],
+        [
+          179,
+          343
+        ],
+        [
+          181,
+          351
+        ],
+        [
+          182,
+          353
+        ],
+        [
+          183,
+          361
+        ],
+        [
+          184,
+          369
+        ],
+        [
+          185,
+          377
+        ],
+        [
+          186,
+          388
+        ],
+        [
+          187,
+          397
+        ],
+        [
+          188,
+          403
+        ],
+        [
+          189,
+          413
+        ],
+        [
+          190,
+          427
+        ],
+        [
+          191,
+          442
+        ],
+        [
+          192,
+          449
+        ],
+        [
+          193,
+          457
+        ],
+        [
+          194,
+          465
+        ],
+        [
+          195,
+          478
+        ],
+        [
+          196,
+          491
+        ],
+        [
+          197,
+          496
+        ],
+        [
+          198,
+          504
+        ],
+        [
+          199,
+          506
+        ],
+        [
+          200,
+          511
+        ],
+        [
+          201,
+          517
+        ],
+        [
+          202,
+          530
+        ],
+        [
+          203,
+          535
+        ],
+        [
+          204,
+          549
+        ],
+        [
+          205,
+          572
+        ],
+        [
+          206,
+          585
+        ],
+        [
+          207,
+          609
+        ],
+        [
+          208,
+          634
+        ],
+        [
+          209,
+          656
+        ],
+        [
+          210,
+          681
+        ],
+        [
+          211,
+          704
+        ],
+        [
+          212,
+          730
+        ],
+        [
+          213,
+          762
+        ],
+        [
+          214,
+          803
+        ],
+        [
+          215,
+          882
+        ],
+        [
+          216,
+          968
+        ],
+        [
+          217,
+          1003
+        ],
+        [
+          218,
+          1050
+        ],
+        [
+          219,
+          1063
+        ],
+        [
+          220,
+          1066
+        ],
+        [
+          221,
+          1066
         ]
       ],
-      "daily_start_date": "2026-03-11",
+      "daily_start_date": "2025-11-26",
       "registration_curve": [
         {
           "days_before": 120,
@@ -11045,9 +11545,261 @@
         [
           0,
           1
+        ],
+        [
+          20,
+          2
+        ],
+        [
+          80,
+          6
+        ],
+        [
+          81,
+          6
+        ],
+        [
+          82,
+          6
+        ],
+        [
+          83,
+          6
+        ],
+        [
+          84,
+          7
+        ],
+        [
+          85,
+          7
+        ],
+        [
+          86,
+          10
+        ],
+        [
+          87,
+          11
+        ],
+        [
+          88,
+          11
+        ],
+        [
+          89,
+          11
+        ],
+        [
+          90,
+          12
+        ],
+        [
+          91,
+          12
+        ],
+        [
+          92,
+          12
+        ],
+        [
+          93,
+          13
+        ],
+        [
+          94,
+          13
+        ],
+        [
+          95,
+          13
+        ],
+        [
+          96,
+          13
+        ],
+        [
+          97,
+          15
+        ],
+        [
+          98,
+          19
+        ],
+        [
+          99,
+          22
+        ],
+        [
+          100,
+          22
+        ],
+        [
+          101,
+          22
+        ],
+        [
+          102,
+          22
+        ],
+        [
+          103,
+          22
+        ],
+        [
+          104,
+          22
+        ],
+        [
+          105,
+          23
+        ],
+        [
+          106,
+          23
+        ],
+        [
+          107,
+          23
+        ],
+        [
+          109,
+          23
+        ],
+        [
+          110,
+          24
+        ],
+        [
+          111,
+          24
+        ],
+        [
+          112,
+          24
+        ],
+        [
+          113,
+          25
+        ],
+        [
+          114,
+          26
+        ],
+        [
+          115,
+          31
+        ],
+        [
+          116,
+          33
+        ],
+        [
+          117,
+          37
+        ],
+        [
+          118,
+          40
+        ],
+        [
+          119,
+          41
+        ],
+        [
+          120,
+          41
+        ],
+        [
+          121,
+          44
+        ],
+        [
+          122,
+          45
+        ],
+        [
+          123,
+          45
+        ],
+        [
+          124,
+          46
+        ],
+        [
+          125,
+          47
+        ],
+        [
+          126,
+          48
+        ],
+        [
+          127,
+          48
+        ],
+        [
+          128,
+          48
+        ],
+        [
+          129,
+          50
+        ],
+        [
+          130,
+          51
+        ],
+        [
+          131,
+          51
+        ],
+        [
+          132,
+          52
+        ],
+        [
+          133,
+          52
+        ],
+        [
+          134,
+          53
+        ],
+        [
+          135,
+          56
+        ],
+        [
+          136,
+          65
+        ],
+        [
+          137,
+          70
+        ],
+        [
+          138,
+          85
+        ],
+        [
+          139,
+          88
+        ],
+        [
+          140,
+          91
+        ],
+        [
+          141,
+          93
+        ],
+        [
+          142,
+          93
         ]
       ],
-      "daily_start_date": "2026-06-08",
+      "daily_start_date": "2026-02-06",
       "registration_curve": [
         {
           "days_before": 120,
@@ -11552,6 +12304,22 @@
         [
           202,
           106
+        ],
+        [
+          203,
+          107
+        ],
+        [
+          204,
+          107
+        ],
+        [
+          205,
+          107
+        ],
+        [
+          206,
+          107
         ]
       ],
       "daily_start_date": "2025-12-05",
@@ -11835,6 +12603,14 @@
         [
           86,
           163
+        ],
+        [
+          87,
+          172
+        ],
+        [
+          88,
+          195
         ]
       ],
       "daily_start_date": "2025-12-16",
@@ -12287,6 +13063,14 @@
         [
           91,
           103
+        ],
+        [
+          92,
+          109
+        ],
+        [
+          93,
+          109
         ]
       ],
       "daily_start_date": "2026-03-20",
@@ -12786,6 +13570,14 @@
         [
           125,
           172
+        ],
+        [
+          126,
+          184
+        ],
+        [
+          127,
+          188
         ]
       ],
       "daily_start_date": "2026-02-21",
@@ -13365,6 +14157,14 @@
         [
           134,
           274
+        ],
+        [
+          135,
+          286
+        ],
+        [
+          136,
+          288
         ]
       ],
       "daily_start_date": "2026-03-05",
@@ -13972,6 +14772,14 @@
         [
           157,
           197
+        ],
+        [
+          158,
+          209
+        ],
+        [
+          159,
+          209
         ]
       ],
       "daily_start_date": "2026-02-17",
@@ -14387,6 +15195,14 @@
         [
           88,
           196
+        ],
+        [
+          89,
+          206
+        ],
+        [
+          90,
+          206
         ]
       ],
       "daily_start_date": "2026-03-09",
@@ -14970,6 +15786,14 @@
         [
           146,
           156
+        ],
+        [
+          147,
+          169
+        ],
+        [
+          148,
+          170
         ]
       ],
       "daily_start_date": "2026-02-21",
@@ -15601,9 +16425,25 @@
         [
           147,
           329
+        ],
+        [
+          148,
+          352
+        ],
+        [
+          149,
+          367
+        ],
+        [
+          150,
+          380
+        ],
+        [
+          151,
+          394
         ]
       ],
-      "daily_start_date": "2026-03-06",
+      "daily_start_date": "2026-03-04",
       "registration_curve": [
         {
           "days_before": 120,
@@ -16016,6 +16856,14 @@
         [
           95,
           162
+        ],
+        [
+          96,
+          174
+        ],
+        [
+          97,
+          179
         ]
       ],
       "daily_start_date": "2026-03-02",
@@ -93247,18 +94095,18 @@
       "total_ci_upper": 1261
     }
   ],
-  "last_updated": "2026-11-02 07:41:49",
+  "last_updated": "2026-11-02 15:16:33",
   "is_stale": false,
   "counts_through": "2026-11-01",
   "alerts": [
     {
       "family": "Los Angeles Open",
-      "status": "below_pace",
-      "actual": 213,
+      "status": "on_pace",
+      "actual": 216,
       "expected": 267,
-      "deviation_pct": -20.1,
+      "deviation_pct": -19.0,
       "n_years": 4,
-      "message": "Registrations are 20.1% below 4-year at-this-point pace"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-19%)"
     },
     {
       "family": "Kings Island Open",
@@ -93343,12 +94191,12 @@
     },
     {
       "family": "Western Class Championships",
-      "status": "below_pace",
-      "actual": 0,
+      "status": "on_pace",
+      "actual": 1,
       "expected": 1,
-      "deviation_pct": -100.0,
+      "deviation_pct": 0.0,
       "n_years": 4,
-      "message": "Registrations are 100.0% below 4-year at-this-point pace"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+0%)"
     },
     {
       "family": "Mid-America Open",

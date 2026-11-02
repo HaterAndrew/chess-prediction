@@ -1,19 +1,13 @@
 {
   "generated": "2026-11-02",
-  "scanned_at": "2026-11-02T07:46:21",
+  "scanned_at": "2026-11-02T15:18:35",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
-    "MEDIUM": 1,
+    "MEDIUM": 0,
     "INFO": 26
   },
   "findings": [
-    {
-      "severity": "MEDIUM",
-      "mode": "daily-large-recent-gap",
-      "family": "World Open top 6 sections",
-      "message": "7-day gap before the final chart point (day 105 -> 112)"
-    },
     {
       "severity": "INFO",
       "mode": "roster-pending",

@@ -221,7 +221,8 @@ def main():
     def _scrape_daily_series(family_name, year, fallback_count):
         if not has_scrape:
             return [[0, int(fallback_count)]], None
-        return scrape_daily_series(scrape, family_name, year, fallback_count)
+        return scrape_daily_series(scrape, family_name, year, fallback_count,
+                                   end_date=get_event_end_date(family_name, year))
 
     # Canonical-aware so a metadata event ("... (in Connecticut)") isn't re-added
     # when the main path already emitted its folded form ("Eastern Class

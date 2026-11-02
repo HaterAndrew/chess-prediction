@@ -134,3 +134,14 @@ def test_a_relocated_edition_finds_its_dates_under_its_canonical_name():
     cal = event_calendar(summary, meta).set_index('tid')
     assert cal.loc[1, 'start'] == pd.Timestamp('2026-10-23')
     assert cal.loc[2, 'start'] == pd.Timestamp('2026-12-26'), "an exact match stays exact"
+
+
+def test_later_verification_cannot_revoke_an_observed_close():
+    end = pd.Timestamp('2026-10-18')
+    observed = list(pd.date_range('2026-10-04', end))
+    assert watched_to_close(observed, end)
+    assert watched_to_close([*observed, pd.Timestamp('2026-11-02')], end)
+    # A late outcome verification cannot fill a missing close or earlier gaps.
+    assert not watched_to_close([*observed[:-2], pd.Timestamp('2026-11-02')], end)
+    gapped = [d for d in observed if not pd.Timestamp('2026-10-08') <= d <= pd.Timestamp('2026-10-13')]
+    assert not watched_to_close([*gapped, pd.Timestamp('2026-11-02')], end)

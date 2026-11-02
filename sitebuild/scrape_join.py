@@ -137,7 +137,7 @@ def consecutive_zero_scrape_days(scrape, family, year, never_scraped):
     return streak
 
 
-def scrape_daily_series(scrape, family, year, fallback_count):
+def scrape_daily_series(scrape, family, year, fallback_count, end_date=None):
     """Real [day_index, cumulative_count] entry-bar history for one edition.
 
     Mirrors the main path's cummax cleaning. Falls back to a single point only
@@ -151,6 +151,8 @@ def scrape_daily_series(scrape, family, year, fallback_count):
     invariant as build_chart_series instead of going unchecked.
     """
     rows = _edition_rows(scrape, family, year).sort_values('date')
+    if end_date is not None:
+        rows = rows[rows['date'] <= pd.Timestamp(end_date)]
     if len(rows) < 2:
         return [[0, int(fallback_count)]], None
     min_date = rows['date'].min()

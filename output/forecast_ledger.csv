@@ -1668,3 +1668,37 @@ as_of_date,run_ts,origin,published,family,year,event_start,T,days_remaining,stat
 2026-11-03,2026-11-03 07:57:03,nightly,1,Mid-America Open,2027,2027-03-19,136,136,live,0,0,0,283,231,324,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,6dd1a966b471
 2026-11-03,2026-11-03 07:57:03,nightly,1,Southern Class Championships,2027,2027-03-19,136,136,live,2,2,0,214,182,261,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,6dd1a966b471
 2026-11-03,2026-11-03 07:57:03,nightly,1,Atlantic City Open,2027,2027-03-24,141,141,live,1,1,0,465,419,523,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,6dd1a966b471
+2026-11-04,2026-11-04 07:30:51,nightly,1,Los Angeles Open,2026,2026-11-06,2,2,live,267,267,5,322,293,354,0.8,model,roster-pending,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Los Angeles Open,2026,2026-11-06,2,2,live,267,267,5,293,275,313,0.8,metadata_pace,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Los Angeles Open,2026,2026-11-06,2,2,live,267,267,5,365,289,413,0.8,metadata_historical_avg,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,Kings Island Open,2026,2026-11-13,9,9,live,111,111,3,343,308,380,0.8,model,roster-pending,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Kings Island Open,2026,2026-11-13,9,9,live,111,111,3,276,240,317,0.8,metadata_pace,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Kings Island Open,2026,2026-11-13,9,9,live,111,111,3,346,318,364,0.8,metadata_historical_avg,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,National Chess Congress,2026,2026-11-27,23,23,live,149,149,5,671,600,749,0.8,model,roster-pending,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,National Chess Congress,2026,2026-11-27,23,23,live,149,149,5,1028,848,1057,0.8,metadata_pace,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,National Chess Congress,2026,2026-11-27,23,23,live,149,149,5,623,572,677,0.8,metadata_historical_avg,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,North American Open,2026,2026-12-26,52,52,live,402,402,8,1205,1116,1300,0.8,model,roster-pending,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,North American Open,2026,2026-12-26,52,52,live,402,402,8,1350,1180,1544,0.8,metadata_pace,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,North American Open,2026,2026-12-26,52,52,live,402,402,8,1081,946,1199,0.8,metadata_historical_avg,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,Eastern Open,2026,2026-12-26,52,52,live,18,18,0,381,343,422,0.8,model,roster-pending,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Eastern Open,2026,2026-12-26,52,52,live,18,18,0,568,317,606,0.8,metadata_pace,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Eastern Open,2026,2026-12-26,52,52,live,18,18,0,387,367,404,0.8,metadata_historical_avg,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,Boston Chess Congress,2027,2027-01-08,65,65,live,2,2,0,355,286,425,0.8,model,roster-pending,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Boston Chess Congress,2027,2027-01-08,65,65,live,2,2,0,162,270,391,0.8,metadata_pace,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Boston Chess Congress,2027,2027-01-08,65,65,live,2,2,0,338,278,387,0.8,metadata_historical_avg,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,Liberty Bell Open,2027,2027-01-15,72,72,live,4,4,0,566,457,677,0.8,model,roster-pending,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Liberty Bell Open,2027,2027-01-15,72,72,live,4,4,0,184,172,256,0.8,metadata_pace,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Liberty Bell Open,2027,2027-01-15,72,72,live,4,4,0,449,324,547,0.8,metadata_historical_avg,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,Golden State Open,2027,2027-01-15,72,72,live,1,1,0,381,307,456,0.8,model,roster-pending,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Golden State Open,2027,2027-01-15,72,72,live,1,1,0,163,273,387,0.8,metadata_pace,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,0,Golden State Open,2027,2027-01-15,72,72,live,1,1,0,316,274,382,0.8,metadata_historical_avg,,0,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,Southwest Class Championships,2027,2027-02-11,99,99,live,1,1,0,438,391,490,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,George Washington Open,2027,2027-02-26,114,114,live,1,1,0,264,225,313,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,Saratoga Tournament Of-The-Ages Open,2027,2027-02-26,114,114,live,0,0,0,100,70,130,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,New York State Senior Championship,2027,2027-02-26,114,114,live,0,0,0,100,70,130,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,New York State High School Championship,2027,2027-02-27,115,115,live,0,0,0,208,198,219,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,New York State Scholastic Championships Grades K-8,2027,2027-03-06,122,122,live,1,1,0,1505,1095,1772,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,Western Class Championships,2027,2027-03-12,128,128,live,1,1,0,348,285,405,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,Mid-America Open,2027,2027-03-19,135,135,live,0,0,0,283,231,324,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,Southern Class Championships,2027,2027-03-19,135,135,live,2,2,0,214,182,261,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,87eeb2052eda
+2026-11-04,2026-11-04 07:30:51,nightly,1,Atlantic City Open,2027,2027-03-24,140,140,live,1,1,0,465,419,523,0.8,metadata_historical_avg,roster-pending,1,0,n5v6,598f8e1fe4fd334a,87eeb2052eda

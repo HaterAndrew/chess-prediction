@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-05",
-  "scanned_at": "2026-11-05T07:58:43",
+  "generated": "2026-11-06",
+  "scanned_at": "2026-11-06T07:59:53",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -48,12 +48,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Liberty Bell Open",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Los Angeles Open",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
     },
     {
@@ -114,6 +108,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Indianapolis Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Los Angeles Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {

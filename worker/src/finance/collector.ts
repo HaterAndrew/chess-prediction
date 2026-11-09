@@ -4,6 +4,7 @@ import { collectBatch } from "./collect";
 import type { FinanceEnv } from "./collect";
 import { receiptValues } from "./store";
 import type { ReceiptCard } from "./types";
+import { isSessionHeartbeat, refreshSession } from "./session";
 
 export interface FinanceRequest {
   generated: string;
@@ -28,6 +29,12 @@ export default {
   // Even an accidental HTTP route cannot expose the RPC method or financial data.
   async fetch(): Promise<Response> { return new Response(null, { status: 404 }); },
   async scheduled(_controller: ScheduledController, env: FinanceEnv): Promise<void> {
+    if (isSessionHeartbeat(_controller.cron)) {
+      const status = await refreshSession(env);
+      console.log(JSON.stringify({ event: "finance_session_refresh", ok: status.ok, reason: status.reason }));
+      if (!status.ok) throw new Error("finance_session_refresh_failed");
+      return;
+    }
     try {
       const response = await fetch("https://chessentries.com/data/website_data.json", {
         redirect: "manual", signal: AbortSignal.timeout(20_000),

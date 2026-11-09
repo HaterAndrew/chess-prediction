@@ -55,6 +55,7 @@ id = "3a7c98e0906c4d9eb355647a5a77feb7"
 #   ANTHROPIC_API_KEY   the Ask tab's model key
 #   CCA_PROXY_KEY       shared secret gating /cca-tourlist for the nightly scrape
 #   ENTRY_VALUE_KEY     shared secret gating /entry-value (the organizer's view)
+#   ENTRY_VALUE_KEY_SECONDARY optional additional key; preserves the existing key
 
 # Previews: Workers Builds runs `wrangler preview` for every push to a branch
 # other than main, and wrangler refuses a configuration without this block.

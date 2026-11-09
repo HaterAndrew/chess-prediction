@@ -17,6 +17,7 @@ export interface Env {
   CCA_PROXY_KEY?: string;
   // Shared secret gating /entry-value (see value-route.ts).
   ENTRY_VALUE_KEY?: string;
+  ENTRY_VALUE_KEY_SECONDARY?: string;
   // Explicit rollout switch. Legacy remains visible while the collector runs in shadow.
   ENTRY_VALUE_MODE?: "legacy" | "receipts";
   // Private Worker service binding; production only. No Chess Action credentials here.

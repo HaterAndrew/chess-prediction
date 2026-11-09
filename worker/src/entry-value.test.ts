@@ -173,6 +173,31 @@ describe("handleEntryValue", () => {
     expect(body.events[0].value).toBe(5000);
   });
 
+  it("accepts the additional key while keeping the existing key", async () => {
+    const env = envWith({ ENTRY_VALUE_KEY_SECONDARY: "additional synthetic key" });
+    for (const key of ["correct horse", "additional synthetic key"]) {
+      const res = await handleEntryValue(env, get(key));
+      expect(res.status).toBe(200);
+      expect(res.headers.get("Cache-Control")).toBe("no-store");
+    }
+    expect((await handleEntryValue(env, get("wrong"))).status).toBe(401);
+  });
+
+  it("applies origin and limiter checks to the additional key", async () => {
+    const env = envWith({ ENTRY_VALUE_KEY_SECONDARY: "additional synthetic key" });
+    const foreign = get("additional synthetic key");
+    foreign.headers.set("Origin", "https://attacker.invalid");
+    expect((await handleEntryValue(env, foreign)).status).toBe(403);
+    expect((await handleEntryValue({ ...env, KV: undefined }, get("additional synthetic key"))).status).toBe(503);
+  });
+
+  it("keeps the additional key usable after wrong-guess limits are saturated", async () => {
+    const env = envWith({ ENTRY_VALUE_KEY_SECONDARY: "additional synthetic key" });
+    for (let i = 0; i < FAIL_LIMIT_PER_IP; i++) await handleEntryValue(env, get("wrong"));
+    expect((await handleEntryValue(env, get("wrong"))).status).toBe(429);
+    expect((await handleEntryValue(env, get("additional synthetic key"))).status).toBe(200);
+  });
+
   it("limits wrong guesses without locking out an authorized key holder", async () => {
     const env = envWith();
     for (let i = 0; i < FAIL_LIMIT_PER_IP; i++) await handleEntryValue(env, get("wrong"));

@@ -128,7 +128,7 @@ describe("native Worker source boundaries", () => {
     const bindings = { ALLOWED_ORIGIN: "https://local.test", ENTRY_VALUE_MODE: "receipts",
       TEST_DATA: { generated: asOf, tournaments: [card] } };
     rpcRuntime = new Miniflare(convertV4MiniflareOptions({ log: new Log(LogLevel.ERROR), workers: [
-      { ...publicScript, name: "public", bindings: { ...bindings, ENTRY_VALUE_KEY: "synthetic" }, kvNamespaces: { KV: "limiter" },
+      { ...publicScript, name: "public", bindings: { ...bindings, ENTRY_VALUE_KEY: "synthetic", ENTRY_VALUE_KEY_SECONDARY: "synthetic-secondary" }, kvNamespaces: { KV: "limiter" },
         serviceBindings: { FINANCE: { name: "finance", entrypoint: "ReceiptService" } } },
       { ...financeScript, name: "finance", kvNamespaces: { FINANCE_KV: "receipts" } },
       { ...publicScript, name: "preview", bindings, kvNamespaces: { KV: "preview-limiter" } },
@@ -142,6 +142,10 @@ describe("native Worker source boundaries", () => {
     expect(allowed.status).toBe(200);
     expect(allowed.headers.get("Cache-Control")).toBe("no-store");
     expect((await allowed.json()).events[0]).toMatchObject({ value: 20, basis: "chess_action_receipts" });
+    const additional = await rpcRuntime.dispatchFetch("https://local.test/entry-value", request("synthetic-secondary"));
+    expect(additional.status).toBe(200);
+    expect(additional.headers.get("Cache-Control")).toBe("no-store");
+    expect((await additional.json()).events[0]).toMatchObject({ value: 20, basis: "chess_action_receipts" });
     expect((await rpcRuntime.dispatchFetch("https://local.test/entry-value", request("wrong"))).status).toBe(401);
     expect((await rpcRuntime.dispatchFetch("https://local.test/entry-value", { headers: {
       "X-Value-Key": "synthetic", Origin: "https://attacker.invalid",
@@ -150,6 +154,7 @@ describe("native Worker source boundaries", () => {
     expect((await finance.fetch("https://local.test/entry-value")).status).toBe(404);
     const preview = await rpcRuntime.getWorker("preview");
     expect((await preview.fetch("https://local.test/entry-value", request("synthetic"))).status).toBe(403);
+    expect((await preview.fetch("https://local.test/entry-value", request("synthetic-secondary"))).status).toBe(403);
   }, 30_000);
   it("advances beyond failed early events and refreshes completed-only families", async () => {
     expect((await invoke("/scheduler", {})).body).toEqual({ attempted: 13, finished_attempted: true });

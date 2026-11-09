@@ -76,6 +76,12 @@ FAMILY_TO_CODE = {
     "Southwest Class Championships": "swcc",
     "George Washington Open": "gwo",
     "Western Class Championships": "wcc",
+    # The 2027 listing separates the senior and age-group events. Keep the
+    # older combined export family for its own editions.
+    "New York State Senior Championship With Young Adult Mi": "nyssc",
+    "New York State Senior Championship": "nyssc",
+    "New York State High School Championship": "nyssc-highschool",
+    "Saratoga Tournament Of-The-Ages Open": "nytoa",
     # Verified 2026-10-04 from the live 2026 flyers: so26 ("Southern Open"),
     # woam26 ("5th annual World Open Amateur"), wosa26 ("16th annual World
     # Open Senior Amateur") and wowc26 ("15th annual World Open Women's
@@ -101,7 +107,17 @@ UNMAPPED_CODES = {
     # Chicago Class Blitz, World Open Action (G/30), Blitz, Game/10, Game/7
     # Blitz and Game/50. eccb26 is the Eastern Class Blitz Championship.
     "chccb", "woac", "wob", "woq", "woseven", "wog50", "eccb",
+    "lbob", "swccb",
 }
+
+
+# Public 2027 flyers and the edition registry use separate senior/age-group
+# names; historical senior exports retain their combined, truncated label.
+SENIOR_FAMILY_TRANSITION = (
+    2027,
+    "New York State Senior Championship With Young Adult Mi",
+    "New York State Senior Championship",
+)
 
 # Blind-discovery probe list (moved verbatim from scrape_fees.TOURNAMENT_CODES).
 # The parked discrepancies vs FAMILY_TO_CODE were resolved 2026-07-31 by

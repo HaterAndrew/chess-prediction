@@ -50,7 +50,7 @@ def main(argv=None):
         parser.error('--kind subset needs --subset')
     before, after = pd.read_csv(args.before), pd.read_csv(args.after)
     table = horizon_table(before, args.by_season).join(
-        horizon_table(after, args.by_season), lsuffix='_before', rsuffix='_after')
+        horizon_table(after, args.by_season), suffixes=('_before', '_after'))
     print(table.to_string())
     verdict = judge(after.to_dict('records'), before.to_dict('records'),
                     band=args.band, kind=args.kind, subset=args.subset)

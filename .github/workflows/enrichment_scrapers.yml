@@ -30,7 +30,14 @@ jobs:
     timeout-minutes: 90
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node for the JavaScript regression tests
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
+        with:
+          node-version-file: .node-version
 
       - name: Set up Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
@@ -38,7 +45,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install -r requirements-dev.txt
+        run: pip install --require-hashes -r requirements-dev.txt
 
       - name: Run enrichment scrapers (warnings persisted)
         id: enrichment
@@ -46,7 +53,9 @@ jobs:
         # lines are harvested into output/audit_warnings.json (+ docs/) instead of
         # expiring with this Actions log. Output still streams live here. The
         # scraper arg preserves manual-dispatch granularity; scheduled runs do all.
-        run: PYTHONUNBUFFERED=1 python run_enrichment.py "${{ github.event.inputs.scraper || 'all' }}"
+        env:
+          SCRAPER: ${{ github.event.inputs.scraper || 'all' }}
+        run: PYTHONUNBUFFERED=1 python run_enrichment.py "$SCRAPER"
         timeout-minutes: 90
 
       # Quality gate (G1): shared code is tested before enrichment data is committed.
@@ -59,7 +68,10 @@ jobs:
       - name: Commit and push enrichment data
         id: commit
         if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          gh auth setup-git --hostname github.com
           git config user.name "CCA Bot"
           git config user.email "bot@users.noreply.github.com"
           # v5 Cat F: tournament_metadata.csv is the file merge_fees WRITES —

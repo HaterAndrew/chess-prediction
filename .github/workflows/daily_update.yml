@@ -18,7 +18,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node for the JavaScript regression tests
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
+        with:
+          node-version-file: .node-version
 
       - name: Set up Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
@@ -27,7 +34,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements-dev.txt
+          pip install --require-hashes -r requirements-dev.txt
 
       - name: Run scraper
         id: scrape
@@ -68,7 +75,10 @@ jobs:
         # H8: explicit success() guard (was emergent from an absent clause). This
         # is load-bearing — the gate above must be able to block the commit.
         if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          gh auth setup-git --hostname github.com
           git config user.name "CCA Bot"
           git config user.email "bot@users.noreply.github.com"
           # docs/data/*.js carry the embedded data since the L15 externalization
@@ -97,8 +107,10 @@ jobs:
       - name: Publish degraded-state banner on failure
         if: failure()
         env:
+          GH_TOKEN: ${{ github.token }}
           FAILED_STEP: ${{ steps.gate.outcome == 'failure' && 'test + lint gate' || steps.predict.outcome == 'failure' && 'prediction step' || steps.commit.outcome == 'failure' && 'commit step' || 'workflow setup' }}
         run: |
+          gh auth setup-git --hostname github.com
           cd "$GITHUB_WORKSPACE"
           git config user.name "CCA Bot"
           git config user.email "bot@users.noreply.github.com"

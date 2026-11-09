@@ -68,8 +68,9 @@ def candidate_urls(family, year):
     yy = str(year)[2:]
     out = []
     if code:
-        out.append(f"https://www.chesstour.com/{code}{yy}.htm")
-        out.append(f"https://www.chesstour.com/{code}{year}.htm")
+        from fees.urls import flyer_filename
+        out.append("https://www.chesstour.com/" + flyer_filename(code, yy))
+        out.append("https://www.chesstour.com/" + flyer_filename(code, year))
     return out
 
 

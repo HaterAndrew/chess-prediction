@@ -12,16 +12,12 @@ carries no year; resolve() adds the family-universe check and fails loud.
 Kept out of shared/ (a model source tree) and out of shared/editions.py,
 which tournament_aliases imports.
 """
-import re
-
 import pandas as pd
 
-from fees.codes import FAMILY_TO_CODE
+from fees.codes import FAMILY_TO_CODE, SENIOR_FAMILY_TRANSITION
+from fees.urls import flyer_parts
 from shared.editions import split_edition_name
 from tournament_aliases import STANDINGS_NAME_MAP, canonicalize_family, cca_family
-
-# A code can end in digits: wog5026.htm is code "wog50", year 26.
-FLYER_URL_RE = re.compile(r"/([a-z][a-z0-9]*?)(\d{2})\.htm")
 
 
 class UnresolvedKey(LookupError):
@@ -79,19 +75,22 @@ def fee_edition_key(url, table=None):
     """(family, year) for a chesstour flyer URL "<code><yy>.htm". Raises
     UnresolvedKey for a URL or code with no family, AmbiguousKey for a code
     that maps to two families."""
-    m = FLYER_URL_RE.search(str(url))
-    if not m:
+    parts = flyer_parts(url)
+    if not parts:
         raise UnresolvedKey(f"flyer URL {url!r} has no <code><yy>.htm page")
-    code, yy = m.group(1), int(m.group(2))
+    code, year = parts
     families = _code_families(FAMILY_TO_CODE if table is None else table).get(code)
     if not families:
         raise UnresolvedKey(f"flyer code {code!r} maps to no family in fees/codes.py")
+    boundary, previous, current = SENIOR_FAMILY_TRANSITION
+    if code == "nyssc" and families == {previous, current}:
+        return (current if year >= boundary else previous), year
     if len(families) > 1:
         raise AmbiguousKey(f"flyer code {code!r} maps to {sorted(families)}")
-    return families.pop(), 2000 + yy
+    return families.pop(), year
 
 
 def flyer_code(url):
     """The <code> of a flyer URL, or None."""
-    m = FLYER_URL_RE.search(str(url))
-    return m.group(1) if m else None
+    parts = flyer_parts(url)
+    return parts[0] if parts else None

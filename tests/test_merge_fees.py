@@ -47,6 +47,20 @@ def test_date_guard(tmp_path, monkeypatch, event_start, expected_filled):
     assert merge_fees.merge_fees(dry_run=True, first_season=2026) == expected_filled
 
 
+@pytest.mark.parametrize("flyer_start,expected", [("2026-08-02", 1), ("2025-08-02", 0)])
+@pytest.mark.parametrize("url", ["nyssc26-HighSchool.htm", "nyssc26-HighSchool.html?from=listing", "NYSSC26-HIGHSCHOOL.HTM"])
+def test_suffixed_flyer_merges_only_its_own_fees(tmp_path, monkeypatch, flyer_start, expected, url):
+    meta_csv = _setup(tmp_path, monkeypatch, flyer_start)
+    monkeypatch.setattr(merge_fees, "FAMILY_TO_CODE", {"TestFam": "nyssc-highschool"})
+    fees = pd.read_csv(merge_fees.FEES_CSV)
+    fees["url"] = "https://chesstour.com/" + url
+    other = fees.assign(url="https://chesstour.com/nyssc26.htm", regular_fee=999)
+    pd.concat([other, fees]).to_csv(merge_fees.FEES_CSV, index=False)
+    assert merge_fees.merge_fees(first_season=2026) == expected
+    fee = pd.read_csv(meta_csv).iloc[0]["regular_fee"]
+    assert fee == 100 if expected else pd.isna(fee)
+
+
 def test_unmapped_family_warns_loudly(tmp_path, monkeypatch, capsys):
     """v5 Cat F: a null-fee family with no FAMILY_TO_CODE entry was the only
     silent skip path in the merge — four events sat fee-less for months with

@@ -52,7 +52,7 @@ def load_actuals():
             lambda d: is_event_complete(d, today)
         )].drop(columns=['end_date'])
 
-    completed.rename(columns={'final_count': 'actual'}, inplace=True)
+    completed = completed.rename(columns={'final_count': 'actual'})
     return completed
 
 

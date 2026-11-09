@@ -69,12 +69,14 @@ _EARLY_BIRD_PHRASE_RE = re.compile(
 # includes \x96/\x97: cp1252 en/em-dash bytes survive as those control
 # chars when a flyer is decoded as latin-1 (ncc26 was the first to hit
 # this). The non-greedy gap stops at the first plausible year.
-_EVENT_DATE_RE = re.compile(
-    r'(?P<month>'
+_MONTH = (
     r'January|February|March|April|May|June|July|August|September|October|November|December'
     r'|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec'
-    r')\.?'
+)
+_EVENT_DATE_RE = re.compile(
+    rf'(?P<month>{_MONTH})\.?'
     r'\s+(?P<day>\d{1,2})'
+    rf'(?:\s*[-–—\x96\x97]\s*(?P<end_month>{_MONTH})\.?\s+\d{{1,2}})?'
     r'(?:[\s\-–—,\x96\x97]|\d|or|\([^()]{0,40}\))*?'
     r'(?P<year>20\d{2})',
     re.IGNORECASE,

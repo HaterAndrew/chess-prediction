@@ -4,8 +4,8 @@ One Cloudflare Worker serves the site and its API on one origin,
 https://chessentries.com. The static site under `docs/` is attached as
 Workers Static Assets: every path not listed in `run_worker_first` is answered
 by the asset layer directly, with the cache and security headers from
-`docs/_headers`. Four paths reach the Worker code: the Ask tab's model proxy,
-the health probe, and the two CCA fetch proxies.
+`docs/_headers`. Six paths reach the Worker code: the Ask tab's model proxy,
+the health probe, the two CCA fetch proxies, entry value and price.
 
 ## What it does
 
@@ -34,10 +34,10 @@ npm ci
 npm run dev                  # serves the whole site + API at http://localhost:8787
 ```
 
-Node 22 is required (`.mise.toml` at the repo root pins it). Secrets for local
+Node 22.12 or newer in the pinned Node 22 series is required (`.mise.toml` at the repo root pins it). Secrets for local
 runs go in `worker/.dev.vars` (`ANTHROPIC_API_KEY=…`, `CCA_PROXY_KEY=…`),
 which is gitignored. Without a KV namespace the rate-limit and daily-cap
-checks short-circuit to "allow"; without `ANTHROPIC_API_KEY`, `/ask` answers
+checks refuse requests; without `ANTHROPIC_API_KEY`, `/ask` answers
 503 with a keyword fallback.
 
 The plain static server (`python3 -m http.server -d docs 8000`) has no API;
@@ -81,7 +81,7 @@ npm run tail
 
 | Setting | Default | Notes |
 |---|---|---|
-| `[assets] directory` | `../docs` | The site. `run_worker_first` names the four API paths; everything else never invokes the Worker. |
+| `[assets] directory` | `../docs` | The site. `run_worker_first` names the six API paths; everything else never invokes the Worker. |
 | `ALLOWED_ORIGIN` | `https://chessentries.com,http://localhost:8080,http://127.0.0.1:8080` | Cross-origin allowlist. Same-origin requests need no entry. |
 | `MODEL` | `claude-sonnet-5-5` | Anthropic model id. Needs an entry in `MODEL_PRICING` (`src/limits.ts`) or `/ask` answers 503. The agent loop sends `output_config.effort`, so a model without effort support (Haiku 4.5) fails every call. Refusals fall back server-side (`fallbacks: "default"`); a fallback model the price table lacks is billed at its highest rates. |
 | `DAILY_BUDGET_USD` | `1.00` | Hard cap; 503 past this. Charges are recorded one KV key each and summed by prefix, so concurrent turns cannot lose updates. |

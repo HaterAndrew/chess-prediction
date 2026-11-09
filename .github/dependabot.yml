@@ -1,20 +1,49 @@
 version: 2
 updates:
-  - package-ecosystem: "pip"
-    directory: "/"
+  - package-ecosystem: pip
+    directory: /
     schedule:
-      interval: "weekly"
+      interval: daily
+    cooldown:
+      default-days: 7
+    allow:
+      - dependency-type: all
     groups:
-      # The numerical stack is pinned deliberately (model-output stability).
-      # Group its bumps so they arrive as one reviewable PR that must pass
-      # the full test gate, never as silent individual merges.
+      pip-security:
+        applies-to: security-updates
+        patterns: ["*"]
+      # Keep model-affecting numerical updates separate and reviewable.
       numerical:
-        patterns: ["pandas", "numpy", "scipy", "scikit-learn"]
-  - package-ecosystem: "npm"
-    directory: "/worker"
+        patterns: [pandas, numpy, scipy, scikit-learn]
+      pip:
+        patterns: ["*"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: npm
+    directory: /worker
     schedule:
-      interval: "weekly"
-  - package-ecosystem: "github-actions"
-    directory: "/"
+      interval: daily
+    cooldown:
+      default-days: 7
+    groups:
+      worker-security:
+        applies-to: security-updates
+        patterns: ["*"]
+      worker:
+        patterns: ["*"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "weekly"
+      interval: daily
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ["*"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]

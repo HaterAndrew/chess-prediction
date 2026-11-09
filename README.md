@@ -92,8 +92,15 @@ Two conventions the decomposition established:
 
 ## Running locally
 
+Use Python 3.12 and Node 22.12 or newer in the pinned Node 22 series (`.mise.toml`,
+`.node-version`). `requirements*.in` contains the selected dependencies;
+`requirements*.txt` contains the compiled, hash-checked locks. Refresh runtime,
+development and optional locks in that order with pip-tools. CI audits all three
+sets daily and on relevant pull requests. Numerical updates remain a separate
+Dependabot group because they can change model output.
+
 ```sh
-pip install -r requirements-dev.txt
+pip install --require-hashes -r requirements-dev.txt
 pytest
 ```
 

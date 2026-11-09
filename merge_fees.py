@@ -39,6 +39,7 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 from validate_fees import FAMILY_TO_CODE  # noqa: E402
 from shared.season import CURRENT_SEASON  # noqa: E402
 from fees.codes import flyer_code_for  # noqa: E402
+from fees.urls import flyer_parts  # noqa: E402
 
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 FEES_CSV = os.path.join(OUTPUT_DIR, "tournament_fees.csv")
@@ -138,7 +139,7 @@ def merge_fees(dry_run=False, today=None, first_season=None):
                       f"the card")
                 skipped += 1
             continue
-        match = fees[fees["url"].astype(str).str.contains(f"/{code}{YY}.", regex=False)]
+        match = fees[fees["url"].map(lambda url: flyer_parts(url) == (code, int(year)))]
         if len(match) == 0:
             continue
         fr = match.iloc[0]

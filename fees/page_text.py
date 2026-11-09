@@ -4,6 +4,7 @@ import re
 from datetime import datetime
 
 from fees.patterns import _EVENT_DATE_RE, _TITLE_GUESSES
+from fees.urls import flyer_parts
 
 
 def _clean(text):
@@ -54,10 +55,9 @@ def _normalise_date(raw, year_hint=None):
 
 def _guess_year_from_url(url):
     """Extract a 2-digit year suffix from a chesstour.com filename."""
-    m = re.search(r'(\d{2})\.htm', url)
-    if m:
-        yy = int(m.group(1))
-        return 2000 + yy if yy < 50 else 1900 + yy
+    parts = flyer_parts(url)
+    if parts:
+        return parts[1] if parts[1] < 2050 else parts[1] - 100
     return None
 
 
@@ -95,10 +95,25 @@ def _guess_event_start(html, year_hint):
     m = _EVENT_DATE_RE.search(text)
     if not m:
         return None
-    raw = f"{m.group('month').strip('.')} {m.group('day')} {m.group('year')}"
+    month = m.group("month").strip(".")
+    month = "Sep" if month.casefold() == "sept" else month
+    raw = f"{month} {m.group('day')} {m.group('year')}"
     for fmt in ("%B %d %Y", "%b %d %Y"):
         try:
             dt = datetime.strptime(raw, fmt)
+            if m.group("end_month"):
+                end_month = m.group("end_month").strip(".")
+                end_month = "Sep" if end_month.casefold() == "sept" else end_month
+                for month_fmt in ("%B", "%b"):
+                    try:
+                        end = datetime.strptime(end_month, month_fmt).month
+                        break
+                    except ValueError:
+                        continue
+                else:
+                    return None
+                if end < dt.month:
+                    dt = dt.replace(year=dt.year - 1)
             return dt.strftime("%Y-%m-%d")
         except ValueError:
             continue

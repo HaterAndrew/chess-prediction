@@ -62,12 +62,14 @@ export async function handleEntryValue(env: Env, request: Request): Promise<Resp
 
   if (request.method !== "GET") return reply({ error: "method_not_allowed" }, 405);
   if (!isOriginAllowed(env, request)) return reply({ error: "forbidden_origin" }, 403);
-  if (!env.ENTRY_VALUE_KEY) return reply({ error: "not_configured" }, 403);
+  const valueKeys = [env.ENTRY_VALUE_KEY, env.ENTRY_VALUE_KEY_SECONDARY]
+    .filter((key): key is string => Boolean(key));
+  if (!valueKeys.length) return reply({ error: "not_configured" }, 403);
   // An unavailable limiter means guesses cannot be bounded: refuse.
   if (!env.KV) return reply({ error: "limiter_unavailable" }, 503);
 
   const provided = request.headers.get(VALUE_KEY_HEADER) ?? "";
-  if (!provided || !timingSafeEqual(provided, env.ENTRY_VALUE_KEY)) {
+  if (!provided || !valueKeys.some(key => timingSafeEqual(provided, key))) {
     const keys = failKeys(request);
     const [ipFails, globalFails] = await Promise.all(keys.map((k) => count(env.KV!, k)));
     if (ipFails >= FAIL_LIMIT_PER_IP || globalFails >= FAIL_LIMIT_GLOBAL) return reply({ error: "too_many_attempts" }, 429);

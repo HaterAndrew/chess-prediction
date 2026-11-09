@@ -1,6 +1,6 @@
 {
   "generated": "2026-11-09",
-  "generated_time": "2026-11-09T17:18:18.530476-05:00",
+  "generated_time": "2026-11-09T14:16:33.188605-05:00",
   "model": "N5v4_Final",
   "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). Beyond T-14 the point estimate is blended toward the family's most recent final count (0.40 at T<=28, 0.60 beyond), which measures better than the ensemble alone at those lead times. From T-14 in, it is averaged in log space, half and half, with the pickup forecast: the current count plus the entries last year's edition took after the same point. An event whose past finals have no registration curve moves toward its last final in log space instead (weight 1.0 beyond T-28, down to 0.3 at T-1), and one with no past final toward the spread of first-edition finals (beyond T-42, fully from T-60). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage; for an event with two or more past finals, or one moved toward its last final, each side is held to the year-over-year spread of finals. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration; inside two weeks the CI is sized around the pickup blend. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (147 family-years across 48 families).",
   "n_completed_in_training": 43,
@@ -15,13 +15,13 @@
       "early_bird_fee": null,
       "regular_fee": 138.0,
       "onsite_fee": 160.0,
-      "current_count": 175,
-      "gross_count": 175,
+      "current_count": 171,
+      "gross_count": 171,
       "withdrawal_count": 3,
       "days_remaining": 4,
-      "point_estimate": 323,
-      "ci_lower": 288,
-      "ci_upper": 365,
+      "point_estimate": 320,
+      "ci_lower": 284,
+      "ci_upper": 360,
       "ci_level": 0.8,
       "historical": [
         {
@@ -765,7 +765,7 @@
         ],
         [
           180,
-          175
+          171
         ]
       ],
       "daily_start_date": "2026-05-13",
@@ -832,9 +832,9 @@
       "shadow_forecasts": [
         {
           "route": "metadata_pace",
-          "point": 294,
-          "ci_lower": 260,
-          "ci_upper": 333
+          "point": 287,
+          "ci_lower": 254,
+          "ci_upper": 325
         },
         {
           "route": "metadata_historical_avg",
@@ -843,16 +843,14 @@
           "ci_upper": 364
         }
       ],
-      "count_observed_at": "2026-11-09T22:17:41.261925+00:00",
-      "count_cohort_hash": "31fd06e1698a32d858d6c87ba48e3a19359d6f58d38a4aa5f66734cd37be2d3e",
       "pace_alert": {
         "family": "Kings Island Open",
         "status": "on_pace",
-        "actual": 175,
+        "actual": 171,
         "expected": 184,
-        "deviation_pct": -5.0,
+        "deviation_pct": -7.2,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-5%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-7%)"
       }
     },
     {
@@ -865,13 +863,13 @@
       "early_bird_fee": null,
       "regular_fee": 138.0,
       "onsite_fee": 160.0,
-      "current_count": 188,
-      "gross_count": 188,
+      "current_count": 186,
+      "gross_count": 186,
       "withdrawal_count": 5,
       "days_remaining": 18,
-      "point_estimate": 653,
-      "ci_lower": 584,
-      "ci_upper": 732,
+      "point_estimate": 652,
+      "ci_lower": 582,
+      "ci_upper": 730,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1647,7 +1645,7 @@
         ],
         [
           188,
-          188
+          186
         ]
       ],
       "daily_start_date": "2026-05-05",
@@ -1714,9 +1712,9 @@
       "shadow_forecasts": [
         {
           "route": "metadata_pace",
-          "point": 633,
-          "ci_lower": 553,
-          "ci_upper": 724
+          "point": 626,
+          "ci_lower": 547,
+          "ci_upper": 717
         },
         {
           "route": "metadata_historical_avg",
@@ -1725,16 +1723,14 @@
           "ci_upper": 677
         }
       ],
-      "count_observed_at": "2026-11-09T22:17:42.347646+00:00",
-      "count_cohort_hash": "46f6297b7586e28917c75daec33ecb7e151e64ec256b37baf85c28918231c7b1",
       "pace_alert": {
         "family": "National Chess Congress",
         "status": "on_pace",
-        "actual": 188,
+        "actual": 186,
         "expected": 161,
-        "deviation_pct": 16.8,
+        "deviation_pct": 15.5,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+17%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+16%)"
       }
     },
     {
@@ -2563,8 +2559,6 @@
           "ci_upper": 1199
         }
       ],
-      "count_observed_at": "2026-11-09T22:17:45.530280+00:00",
-      "count_cohort_hash": "fe31e287af1462cf24176446675c1a21fd60452729c59cbcf7a928b3e9c16d3c",
       "pace_alert": {
         "family": "North American Open",
         "status": "on_pace",
@@ -2984,8 +2978,6 @@
           "ci_upper": 404
         }
       ],
-      "count_observed_at": "2026-11-09T22:17:44.445744+00:00",
-      "count_cohort_hash": "6ddaee272db8ba775162f3fdfa88440d6007968781998cbbeb0ef7ef130ec3f2",
       "pace_alert": {
         "family": "Eastern Open",
         "status": "on_pace",
@@ -3006,9 +2998,9 @@
       "early_bird_fee": null,
       "regular_fee": 88.0,
       "onsite_fee": 100.0,
-      "current_count": 4,
-      "gross_count": 4,
-      "withdrawal_count": 1,
+      "current_count": 3,
+      "gross_count": 3,
+      "withdrawal_count": 0,
       "days_remaining": 60,
       "point_estimate": 354,
       "ci_lower": 286,
@@ -3261,7 +3253,7 @@
         ],
         [
           53,
-          4
+          3
         ]
       ],
       "daily_start_date": "2026-09-17",
@@ -3339,16 +3331,14 @@
           "ci_upper": 387
         }
       ],
-      "count_observed_at": "2026-11-09T22:17:46.586233+00:00",
-      "count_cohort_hash": "43be9d2d9fbdfc7df71fc773deb249168af75bddb7f82476ac411e4911ea7f49",
       "pace_alert": {
         "family": "Boston Chess Congress",
         "status": "below_pace",
-        "actual": 4,
+        "actual": 3,
         "expected": 10,
-        "deviation_pct": -60.0,
+        "deviation_pct": -70.0,
         "n_years": 4,
-        "message": "Registrations are 60.0% below 4-year at-this-point pace"
+        "message": "Registrations are 70.0% below 4-year at-this-point pace"
       }
     },
     {
@@ -3694,8 +3684,6 @@
           "ci_upper": 547
         }
       ],
-      "count_observed_at": "2026-11-09T22:17:48.793117+00:00",
-      "count_cohort_hash": "449cf6043618affcaab2ba0f668bdede63ddade3748e5d34505038437d2ee169",
       "pace_alert": {
         "family": "Liberty Bell Open",
         "status": "below_pace",
@@ -3865,8 +3853,6 @@
           "ci_upper": 382
         }
       ],
-      "count_observed_at": "2026-11-09T22:17:47.639990+00:00",
-      "count_cohort_hash": "58eae1ca59dabd0942196a7fd0466b7480ce3c4954133ac8dd6392d6c4275279",
       "pace_alert": {
         "family": "Golden State Open",
         "status": "below_pace",
@@ -4200,8 +4186,6 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-09T22:17:49.859765+00:00",
-      "count_cohort_hash": "cd93a6b6df56a7193f46c451fb1f396bcffadbaf5adcc3088caff37f1481b4f1",
       "pace_alert": {
         "family": "Southwest Class Championships",
         "status": "below_pace",
@@ -4530,8 +4514,6 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-09T22:17:52.703214+00:00",
-      "count_cohort_hash": "b032eacc5fb0f210671e2e074c830c912b5ddd0f0926a65130944d7b1dd284d3",
       "pace_alert": {
         "family": "George Washington Open",
         "status": "below_pace",
@@ -4621,9 +4603,7 @@
       "n_historical_editions": 0,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "New York State Senior Championship",
@@ -4724,9 +4704,7 @@
       "n_historical_editions": 0,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "New York State High School Championship",
@@ -4838,9 +4816,7 @@
       "n_historical_editions": 2,
       "low_confidence": true,
       "prediction_tier": "roster-pending",
-      "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-09T22:17:50.922205+00:00",
-      "count_cohort_hash": "ea49af1026c2199e09844595a835501714ec9d0c5549825ad17eb2299b50bed6"
+      "prediction_source": "metadata_historical_avg"
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -4973,8 +4949,6 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-09T22:17:54.848714+00:00",
-      "count_cohort_hash": "ea89f15fdbb6b54c008bbcc1ba0f03a70dac3413709c039551dcede4f4cf986d",
       "pace_alert": {
         "family": "New York State Scholastic Championships Grades K-8",
         "status": "below_pace",
@@ -5308,8 +5282,6 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-09T22:17:55.912201+00:00",
-      "count_cohort_hash": "6b6366bf471938cffdfab6f987f3533d2e5a2419fe2cb34b45b15366a496c87c",
       "pace_alert": {
         "family": "Western Class Championships",
         "status": "on_pace",
@@ -5643,8 +5615,6 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": null,
-      "count_cohort_hash": null,
       "pace_alert": {
         "family": "Mid-America Open",
         "status": "below_pace",
@@ -5978,8 +5948,6 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-09T22:17:58.364783+00:00",
-      "count_cohort_hash": "05052832e870e19818c91ed04fa11a9265a3c1093e987cb81f6521241f169061",
       "pace_alert": {
         "family": "Southern Class Championships",
         "status": "above_pace",
@@ -6313,8 +6281,6 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-09T22:17:59.840298+00:00",
-      "count_cohort_hash": "cbd17d1224c895d6894ce5311c2ec82b171acb20ccc82570b18dcc4c7c4d5a7b",
       "pace_alert": {
         "family": "Atlantic City Open",
         "status": "below_pace",
@@ -6674,9 +6640,7 @@
       "walkin_source": "family",
       "total_estimate": 373,
       "total_ci_lower": 358,
-      "total_ci_upper": 389,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 389
     },
     {
       "family": "Liberty Bell Open",
@@ -7027,9 +6991,7 @@
       "walkin_source": "family",
       "total_estimate": 583,
       "total_ci_lower": 566,
-      "total_ci_upper": 602,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 602
     },
     {
       "family": "Golden State Open",
@@ -7364,9 +7326,7 @@
       "walkin_source": "family",
       "total_estimate": 404,
       "total_ci_lower": 391,
-      "total_ci_upper": 417,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 417
     },
     {
       "family": "George Washington Open",
@@ -7672,9 +7632,7 @@
       "walkin_source": "family",
       "total_estimate": 217,
       "total_ci_lower": 208,
-      "total_ci_upper": 227,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 227
     },
     {
       "family": "Southwest Class Championships",
@@ -8125,9 +8083,7 @@
       "walkin_source": "family",
       "total_estimate": 508,
       "total_ci_lower": 504,
-      "total_ci_upper": 513,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 513
     },
     {
       "family": "Atlantic City Open",
@@ -8526,9 +8482,7 @@
       "walkin_source": "family",
       "total_estimate": 454,
       "total_ci_lower": 447,
-      "total_ci_upper": 461,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 461
     },
     {
       "family": "Western Class Championships",
@@ -8863,9 +8817,7 @@
       "walkin_source": "family",
       "total_estimate": 333,
       "total_ci_lower": 326,
-      "total_ci_upper": 340,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 340
     },
     {
       "family": "Mid-America Open",
@@ -9160,9 +9112,7 @@
       "walkin_source": "family",
       "total_estimate": 208,
       "total_ci_lower": 200,
-      "total_ci_upper": 216,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 216
     },
     {
       "family": "New York State High School Championship",
@@ -9485,9 +9435,7 @@
       "walkin_source": "family",
       "total_estimate": 208,
       "total_ci_lower": 200,
-      "total_ci_upper": 217,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 217
     },
     {
       "family": "New York State Senior Championship With Young Adult Mi",
@@ -9710,9 +9658,7 @@
       "walkin_source": "family",
       "total_estimate": 64,
       "total_ci_lower": 62,
-      "total_ci_upper": 67,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 67
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -10351,9 +10297,7 @@
       "walkin_source": "family",
       "total_estimate": 1846,
       "total_ci_lower": 1836,
-      "total_ci_upper": 1857,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1857
     },
     {
       "family": "Chicago Open",
@@ -10916,9 +10860,7 @@
       "walkin_source": "family",
       "total_estimate": 951,
       "total_ci_lower": 939,
-      "total_ci_upper": 964,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 964
     },
     {
       "family": "World Open top 6 sections",
@@ -11505,9 +11447,7 @@
       "walkin_source": "family",
       "total_estimate": 1156,
       "total_ci_lower": 1146,
-      "total_ci_upper": 1165,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1165
     },
     {
       "family": "World Open lower sections",
@@ -11864,9 +11804,7 @@
       "walkin_source": "family",
       "total_estimate": 98,
       "total_ci_lower": 91,
-      "total_ci_upper": 106,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 106
     },
     {
       "family": "DC International",
@@ -12389,9 +12327,7 @@
       "walkin_source": "family",
       "total_estimate": 115,
       "total_ci_lower": 113,
-      "total_ci_upper": 116,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 116
     },
     {
       "family": "Southern Class Championships",
@@ -12682,9 +12618,7 @@
       "walkin_source": "estimate",
       "total_estimate": 215,
       "total_ci_lower": 215,
-      "total_ci_upper": 215,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 215
     },
     {
       "family": "New York State Open",
@@ -13144,9 +13078,7 @@
       "walkin_source": "family",
       "total_estimate": 115,
       "total_ci_lower": 113,
-      "total_ci_upper": 117,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 117
     },
     {
       "family": "DC Open",
@@ -13653,9 +13585,7 @@
       "walkin_source": "family",
       "total_estimate": 202,
       "total_ci_lower": 199,
-      "total_ci_upper": 205,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 205
     },
     {
       "family": "Chicago Class",
@@ -14242,9 +14172,7 @@
       "walkin_source": "family",
       "total_estimate": 316,
       "total_ci_lower": 302,
-      "total_ci_upper": 331,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 331
     },
     {
       "family": "Bradley Open",
@@ -14859,9 +14787,7 @@
       "walkin_source": "family",
       "total_estimate": 219,
       "total_ci_lower": 204,
-      "total_ci_upper": 235,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 235
     },
     {
       "family": "Hartford Open",
@@ -15284,9 +15210,7 @@
       "walkin_source": "family",
       "total_estimate": 211,
       "total_ci_lower": 200,
-      "total_ci_upper": 223,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 223
     },
     {
       "family": "Pittsburgh Open",
@@ -15877,9 +15801,7 @@
       "walkin_source": "family",
       "total_estimate": 176,
       "total_ci_lower": 168,
-      "total_ci_upper": 185,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 185
     },
     {
       "family": "Pacific Coast Open",
@@ -16526,9 +16448,7 @@
       "walkin_source": "family",
       "total_estimate": 409,
       "total_ci_lower": 391,
-      "total_ci_upper": 427,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 427
     },
     {
       "family": "Cleveland Open",
@@ -16951,9 +16871,7 @@
       "walkin_source": "family",
       "total_estimate": 186,
       "total_ci_lower": 157,
-      "total_ci_upper": 219,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 219
     },
     {
       "family": "Atlantic Open",
@@ -17649,9 +17567,7 @@
       "walkin_source": "family",
       "total_estimate": 252,
       "total_ci_lower": 245,
-      "total_ci_upper": 260,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 260
     },
     {
       "family": "Central California Open",
@@ -18319,9 +18235,7 @@
       "walkin_source": "family",
       "total_estimate": 175,
       "total_ci_lower": 171,
-      "total_ci_upper": 180,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 180
     },
     {
       "family": "Continental Open",
@@ -18937,9 +18851,7 @@
       "walkin_source": "family",
       "total_estimate": 292,
       "total_ci_lower": 258,
-      "total_ci_upper": 330,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 330
     },
     {
       "family": "Eastern Chess Congress",
@@ -19783,9 +19695,7 @@
       "walkin_source": "family",
       "total_estimate": 466,
       "total_ci_lower": 458,
-      "total_ci_upper": 474,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 474
     },
     {
       "family": "Eastern Class Championships",
@@ -20601,9 +20511,7 @@
       "walkin_source": "estimate",
       "total_estimate": 227,
       "total_ci_lower": 227,
-      "total_ci_upper": 227,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 227
     },
     {
       "family": "Indianapolis Open",
@@ -21219,9 +21127,7 @@
       "walkin_source": "family",
       "total_estimate": 186,
       "total_ci_lower": 179,
-      "total_ci_upper": 194,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 194
     },
     {
       "family": "Los Angeles Open",
@@ -22093,9 +21999,7 @@
       "walkin_source": "family",
       "total_estimate": 317,
       "total_ci_lower": 313,
-      "total_ci_upper": 322,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 322
     },
     {
       "family": "Midwest Class Championships",
@@ -22883,9 +22787,7 @@
       "walkin_source": "family",
       "total_estimate": 244,
       "total_ci_lower": 233,
-      "total_ci_upper": 256,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 256
     },
     {
       "family": "New York State Championship",
@@ -23641,9 +23543,7 @@
       "walkin_source": "family",
       "total_estimate": 347,
       "total_ci_lower": 333,
-      "total_ci_upper": 361,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 361
     },
     {
       "family": "Southern Open",
@@ -24223,9 +24123,7 @@
       "walkin_source": "family",
       "total_estimate": 215,
       "total_ci_lower": 206,
-      "total_ci_upper": 225,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 225
     },
     {
       "family": "World Open Under 13 Championship",
@@ -24709,9 +24607,7 @@
       "walkin_source": "estimate",
       "total_estimate": 95,
       "total_ci_lower": 95,
-      "total_ci_upper": 95,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 95
     },
     {
       "family": "Atlantic Open",
@@ -24796,9 +24692,7 @@
       "walkin_source": "family",
       "total_estimate": 235,
       "total_ci_lower": 228,
-      "total_ci_upper": 243,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 243
     },
     {
       "family": "Atlantic Open",
@@ -24887,9 +24781,7 @@
       "walkin_source": "family",
       "total_estimate": 298,
       "total_ci_lower": 289,
-      "total_ci_upper": 307,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 307
     },
     {
       "family": "Atlantic Open",
@@ -24982,9 +24874,7 @@
       "walkin_source": "family",
       "total_estimate": 295,
       "total_ci_lower": 286,
-      "total_ci_upper": 304,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 304
     },
     {
       "family": "Atlantic Open",
@@ -25081,9 +24971,7 @@
       "walkin_source": "family",
       "total_estimate": 312,
       "total_ci_lower": 302,
-      "total_ci_upper": 321,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 321
     },
     {
       "family": "Atlantic Open",
@@ -25184,9 +25072,7 @@
       "walkin_source": "family",
       "total_estimate": 301,
       "total_ci_lower": 292,
-      "total_ci_upper": 310,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 310
     },
     {
       "family": "Atlantic Open",
@@ -25503,9 +25389,7 @@
       "walkin_source": "family",
       "total_estimate": 429,
       "total_ci_lower": 416,
-      "total_ci_upper": 442,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 442
     },
     {
       "family": "Atlantic Open",
@@ -25838,9 +25722,7 @@
       "walkin_source": "family",
       "total_estimate": 387,
       "total_ci_lower": 375,
-      "total_ci_upper": 398,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 398
     },
     {
       "family": "Atlantic Open",
@@ -26117,9 +25999,7 @@
       "walkin_source": "family",
       "total_estimate": 283,
       "total_ci_lower": 275,
-      "total_ci_upper": 292,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 292
     },
     {
       "family": "Atlantic Open",
@@ -26412,9 +26292,7 @@
       "walkin_source": "family",
       "total_estimate": 248,
       "total_ci_lower": 241,
-      "total_ci_upper": 256,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 256
     },
     {
       "family": "Bill Little Memorial",
@@ -26499,9 +26377,7 @@
       "walkin_source": "estimate",
       "total_estimate": 70,
       "total_ci_lower": 70,
-      "total_ci_upper": 70,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 70
     },
     {
       "family": "Bill Little Memorial",
@@ -26590,9 +26466,7 @@
       "walkin_source": "estimate",
       "total_estimate": 64,
       "total_ci_lower": 64,
-      "total_ci_upper": 64,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 64
     },
     {
       "family": "Bill Little Memorial",
@@ -26685,9 +26559,7 @@
       "walkin_source": "estimate",
       "total_estimate": 52,
       "total_ci_lower": 52,
-      "total_ci_upper": 52,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 52
     },
     {
       "family": "Boardwalk Open",
@@ -26772,9 +26644,7 @@
       "walkin_source": "estimate",
       "total_estimate": 127,
       "total_ci_lower": 127,
-      "total_ci_upper": 127,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 127
     },
     {
       "family": "Boston Chess Congress",
@@ -26859,9 +26729,7 @@
       "walkin_source": "family",
       "total_estimate": 234,
       "total_ci_lower": 224,
-      "total_ci_upper": 244,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 244
     },
     {
       "family": "Boston Chess Congress",
@@ -26950,9 +26818,7 @@
       "walkin_source": "family",
       "total_estimate": 251,
       "total_ci_lower": 241,
-      "total_ci_upper": 262,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 262
     },
     {
       "family": "Boston Chess Congress",
@@ -27045,9 +26911,7 @@
       "walkin_source": "family",
       "total_estimate": 216,
       "total_ci_lower": 207,
-      "total_ci_upper": 225,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 225
     },
     {
       "family": "Boston Chess Congress",
@@ -27144,9 +27008,7 @@
       "walkin_source": "family",
       "total_estimate": 246,
       "total_ci_lower": 236,
-      "total_ci_upper": 257,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 257
     },
     {
       "family": "Boston Chess Congress",
@@ -27247,9 +27109,7 @@
       "walkin_source": "family",
       "total_estimate": 281,
       "total_ci_lower": 269,
-      "total_ci_upper": 292,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 292
     },
     {
       "family": "Boston Chess Congress",
@@ -27566,9 +27426,7 @@
       "walkin_source": "family",
       "total_estimate": 298,
       "total_ci_lower": 286,
-      "total_ci_upper": 311,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 311
     },
     {
       "family": "Boston Chess Congress",
@@ -27917,9 +27775,7 @@
       "walkin_source": "family",
       "total_estimate": 406,
       "total_ci_lower": 390,
-      "total_ci_upper": 423,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 423
     },
     {
       "family": "Boston Chess Congress",
@@ -28224,9 +28080,7 @@
       "walkin_source": "family",
       "total_estimate": 355,
       "total_ci_lower": 341,
-      "total_ci_upper": 370,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 370
     },
     {
       "family": "Boston Chess Congress",
@@ -28551,9 +28405,7 @@
       "walkin_source": "family",
       "total_estimate": 398,
       "total_ci_lower": 382,
-      "total_ci_upper": 415,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 415
     },
     {
       "family": "Bradley Open",
@@ -28638,9 +28490,7 @@
       "walkin_source": "family",
       "total_estimate": 177,
       "total_ci_lower": 165,
-      "total_ci_upper": 190,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 190
     },
     {
       "family": "Bradley Open",
@@ -28729,9 +28579,7 @@
       "walkin_source": "family",
       "total_estimate": 155,
       "total_ci_lower": 144,
-      "total_ci_upper": 166,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 166
     },
     {
       "family": "Bradley Open",
@@ -28824,9 +28672,7 @@
       "walkin_source": "family",
       "total_estimate": 214,
       "total_ci_lower": 199,
-      "total_ci_upper": 229,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 229
     },
     {
       "family": "Bradley Open",
@@ -28923,9 +28769,7 @@
       "walkin_source": "family",
       "total_estimate": 181,
       "total_ci_lower": 169,
-      "total_ci_upper": 194,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 194
     },
     {
       "family": "Bradley Open",
@@ -29026,9 +28870,7 @@
       "walkin_source": "family",
       "total_estimate": 179,
       "total_ci_lower": 167,
-      "total_ci_upper": 192,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 192
     },
     {
       "family": "Bradley Open",
@@ -29285,9 +29127,7 @@
       "walkin_source": "family",
       "total_estimate": 238,
       "total_ci_lower": 221,
-      "total_ci_upper": 255,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 255
     },
     {
       "family": "Bradley Open",
@@ -29592,9 +29432,7 @@
       "walkin_source": "family",
       "total_estimate": 268,
       "total_ci_lower": 250,
-      "total_ci_upper": 288,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 288
     },
     {
       "family": "Bradley Open",
@@ -29867,9 +29705,7 @@
       "walkin_source": "family",
       "total_estimate": 283,
       "total_ci_lower": 263,
-      "total_ci_upper": 304,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 304
     },
     {
       "family": "Bradley Open",
@@ -30130,9 +29966,7 @@
       "walkin_source": "family",
       "total_estimate": 258,
       "total_ci_lower": 240,
-      "total_ci_upper": 277,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 277
     },
     {
       "family": "Central California Open",
@@ -30217,9 +30051,7 @@
       "walkin_source": "family",
       "total_estimate": 118,
       "total_ci_lower": 115,
-      "total_ci_upper": 121,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 121
     },
     {
       "family": "Central California Open",
@@ -30308,9 +30140,7 @@
       "walkin_source": "family",
       "total_estimate": 95,
       "total_ci_lower": 93,
-      "total_ci_upper": 98,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 98
     },
     {
       "family": "Central California Open",
@@ -30403,9 +30233,7 @@
       "walkin_source": "family",
       "total_estimate": 156,
       "total_ci_lower": 152,
-      "total_ci_upper": 159,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 159
     },
     {
       "family": "Central California Open",
@@ -30502,9 +30330,7 @@
       "walkin_source": "family",
       "total_estimate": 133,
       "total_ci_lower": 130,
-      "total_ci_upper": 136,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 136
     },
     {
       "family": "Central California Open",
@@ -30605,9 +30431,7 @@
       "walkin_source": "family",
       "total_estimate": 133,
       "total_ci_lower": 130,
-      "total_ci_upper": 136,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 136
     },
     {
       "family": "Central California Open",
@@ -30888,9 +30712,7 @@
       "walkin_source": "family",
       "total_estimate": 195,
       "total_ci_lower": 190,
-      "total_ci_upper": 200,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 200
     },
     {
       "family": "Central California Open",
@@ -31179,9 +31001,7 @@
       "walkin_source": "family",
       "total_estimate": 222,
       "total_ci_lower": 217,
-      "total_ci_upper": 227,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 227
     },
     {
       "family": "Central California Open",
@@ -31442,9 +31262,7 @@
       "walkin_source": "family",
       "total_estimate": 175,
       "total_ci_lower": 171,
-      "total_ci_upper": 180,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 180
     },
     {
       "family": "Central California Open",
@@ -31725,9 +31543,7 @@
       "walkin_source": "family",
       "total_estimate": 186,
       "total_ci_lower": 181,
-      "total_ci_upper": 190,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 190
     },
     {
       "family": "Central New York Open",
@@ -31812,9 +31628,7 @@
       "walkin_source": "family",
       "total_estimate": 66,
       "total_ci_lower": 65,
-      "total_ci_upper": 67,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 67
     },
     {
       "family": "Central New York Open",
@@ -31903,9 +31717,7 @@
       "walkin_source": "family",
       "total_estimate": 60,
       "total_ci_lower": 60,
-      "total_ci_upper": 61,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 61
     },
     {
       "family": "Central New York Open",
@@ -31998,9 +31810,7 @@
       "walkin_source": "family",
       "total_estimate": 62,
       "total_ci_lower": 61,
-      "total_ci_upper": 62,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 62
     },
     {
       "family": "Central New York Open",
@@ -32097,9 +31907,7 @@
       "walkin_source": "family",
       "total_estimate": 49,
       "total_ci_lower": 48,
-      "total_ci_upper": 49,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 49
     },
     {
       "family": "Central New York Open",
@@ -32200,9 +32008,7 @@
       "walkin_source": "family",
       "total_estimate": 43,
       "total_ci_lower": 43,
-      "total_ci_upper": 44,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 44
     },
     {
       "family": "Central New York Open",
@@ -32471,9 +32277,7 @@
       "walkin_source": "family",
       "total_estimate": 129,
       "total_ci_lower": 127,
-      "total_ci_upper": 130,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 130
     },
     {
       "family": "Central New York Open",
@@ -32718,9 +32522,7 @@
       "walkin_source": "family",
       "total_estimate": 150,
       "total_ci_lower": 148,
-      "total_ci_upper": 152,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 152
     },
     {
       "family": "Chicago Class",
@@ -32805,9 +32607,7 @@
       "walkin_source": "family",
       "total_estimate": 304,
       "total_ci_lower": 290,
-      "total_ci_upper": 318,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 318
     },
     {
       "family": "Chicago Class",
@@ -32896,9 +32696,7 @@
       "walkin_source": "family",
       "total_estimate": 335,
       "total_ci_lower": 320,
-      "total_ci_upper": 351,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 351
     },
     {
       "family": "Chicago Class",
@@ -32991,9 +32789,7 @@
       "walkin_source": "family",
       "total_estimate": 399,
       "total_ci_lower": 381,
-      "total_ci_upper": 418,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 418
     },
     {
       "family": "Chicago Class",
@@ -33090,9 +32886,7 @@
       "walkin_source": "family",
       "total_estimate": 352,
       "total_ci_lower": 336,
-      "total_ci_upper": 369,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 369
     },
     {
       "family": "Chicago Class",
@@ -33193,9 +32987,7 @@
       "walkin_source": "family",
       "total_estimate": 344,
       "total_ci_lower": 329,
-      "total_ci_upper": 361,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 361
     },
     {
       "family": "Chicago Class",
@@ -33468,9 +33260,7 @@
       "walkin_source": "family",
       "total_estimate": 352,
       "total_ci_lower": 336,
-      "total_ci_upper": 369,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 369
     },
     {
       "family": "Chicago Class",
@@ -33759,9 +33549,7 @@
       "walkin_source": "family",
       "total_estimate": 292,
       "total_ci_lower": 279,
-      "total_ci_upper": 306,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 306
     },
     {
       "family": "Chicago Class",
@@ -34074,9 +33862,7 @@
       "walkin_source": "family",
       "total_estimate": 282,
       "total_ci_lower": 269,
-      "total_ci_upper": 295,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 295
     },
     {
       "family": "Chicago Class",
@@ -34349,9 +34135,7 @@
       "walkin_source": "family",
       "total_estimate": 307,
       "total_ci_lower": 293,
-      "total_ci_upper": 322,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 322
     },
     {
       "family": "Chicago Open",
@@ -34436,9 +34220,7 @@
       "walkin_source": "family",
       "total_estimate": 803,
       "total_ci_lower": 792,
-      "total_ci_upper": 813,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 813
     },
     {
       "family": "Chicago Open",
@@ -34527,9 +34309,7 @@
       "walkin_source": "family",
       "total_estimate": 828,
       "total_ci_lower": 817,
-      "total_ci_upper": 839,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 839
     },
     {
       "family": "Chicago Open",
@@ -34622,9 +34402,7 @@
       "walkin_source": "family",
       "total_estimate": 916,
       "total_ci_lower": 904,
-      "total_ci_upper": 928,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 928
     },
     {
       "family": "Chicago Open",
@@ -34721,9 +34499,7 @@
       "walkin_source": "family",
       "total_estimate": 860,
       "total_ci_lower": 849,
-      "total_ci_upper": 871,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 871
     },
     {
       "family": "Chicago Open",
@@ -34824,9 +34600,7 @@
       "walkin_source": "family",
       "total_estimate": 874,
       "total_ci_lower": 863,
-      "total_ci_upper": 886,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 886
     },
     {
       "family": "Chicago Open",
@@ -35315,9 +35089,7 @@
       "walkin_source": "family",
       "total_estimate": 979,
       "total_ci_lower": 966,
-      "total_ci_upper": 992,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 992
     },
     {
       "family": "Chicago Open",
@@ -35866,9 +35638,7 @@
       "walkin_source": "family",
       "total_estimate": 996,
       "total_ci_lower": 983,
-      "total_ci_upper": 1009,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1009
     },
     {
       "family": "Chicago Open",
@@ -36381,9 +36151,7 @@
       "walkin_source": "family",
       "total_estimate": 892,
       "total_ci_lower": 880,
-      "total_ci_upper": 904,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 904
     },
     {
       "family": "Chicago Open",
@@ -36912,9 +36680,7 @@
       "walkin_source": "family",
       "total_estimate": 932,
       "total_ci_lower": 920,
-      "total_ci_upper": 945,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 945
     },
     {
       "family": "Cleveland Open",
@@ -36999,9 +36765,7 @@
       "walkin_source": "family",
       "total_estimate": 204,
       "total_ci_lower": 173,
-      "total_ci_upper": 241,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 241
     },
     {
       "family": "Cleveland Open",
@@ -37090,9 +36854,7 @@
       "walkin_source": "family",
       "total_estimate": 197,
       "total_ci_lower": 167,
-      "total_ci_upper": 233,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 233
     },
     {
       "family": "Cleveland Open",
@@ -37185,9 +36947,7 @@
       "walkin_source": "family",
       "total_estimate": 192,
       "total_ci_lower": 162,
-      "total_ci_upper": 227,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 227
     },
     {
       "family": "Cleveland Open",
@@ -37284,9 +37044,7 @@
       "walkin_source": "family",
       "total_estimate": 203,
       "total_ci_lower": 172,
-      "total_ci_upper": 240,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 240
     },
     {
       "family": "Cleveland Open",
@@ -37387,9 +37145,7 @@
       "walkin_source": "family",
       "total_estimate": 232,
       "total_ci_lower": 197,
-      "total_ci_upper": 274,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 274
     },
     {
       "family": "Cleveland Open",
@@ -37646,9 +37402,7 @@
       "walkin_source": "family",
       "total_estimate": 208,
       "total_ci_lower": 176,
-      "total_ci_upper": 246,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 246
     },
     {
       "family": "Cleveland Open",
@@ -37945,9 +37699,7 @@
       "walkin_source": "family",
       "total_estimate": 234,
       "total_ci_lower": 198,
-      "total_ci_upper": 277,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 277
     },
     {
       "family": "Cleveland Open",
@@ -38212,9 +37964,7 @@
       "walkin_source": "family",
       "total_estimate": 173,
       "total_ci_lower": 147,
-      "total_ci_upper": 205,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 205
     },
     {
       "family": "Cleveland Open",
@@ -38483,9 +38233,7 @@
       "walkin_source": "family",
       "total_estimate": 206,
       "total_ci_lower": 175,
-      "total_ci_upper": 244,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 244
     },
     {
       "family": "Continental Class",
@@ -38730,9 +38478,7 @@
       "walkin_source": "family",
       "total_estimate": 213,
       "total_ci_lower": 209,
-      "total_ci_upper": 216,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 216
     },
     {
       "family": "Continental Class Championships",
@@ -38817,9 +38563,7 @@
       "walkin_source": "estimate",
       "total_estimate": 233,
       "total_ci_lower": 233,
-      "total_ci_upper": 233,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 233
     },
     {
       "family": "Continental Class Championships",
@@ -38908,9 +38652,7 @@
       "walkin_source": "estimate",
       "total_estimate": 241,
       "total_ci_lower": 241,
-      "total_ci_upper": 241,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 241
     },
     {
       "family": "Continental Class Championships",
@@ -39003,9 +38745,7 @@
       "walkin_source": "estimate",
       "total_estimate": 260,
       "total_ci_lower": 260,
-      "total_ci_upper": 260,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 260
     },
     {
       "family": "Continental Class Championships",
@@ -39102,9 +38842,7 @@
       "walkin_source": "estimate",
       "total_estimate": 274,
       "total_ci_lower": 274,
-      "total_ci_upper": 274,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 274
     },
     {
       "family": "Continental Open",
@@ -39189,9 +38927,7 @@
       "walkin_source": "family",
       "total_estimate": 263,
       "total_ci_lower": 233,
-      "total_ci_upper": 298,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 298
     },
     {
       "family": "Continental Open",
@@ -39280,9 +39016,7 @@
       "walkin_source": "family",
       "total_estimate": 265,
       "total_ci_lower": 235,
-      "total_ci_upper": 300,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 300
     },
     {
       "family": "Continental Open",
@@ -39375,9 +39109,7 @@
       "walkin_source": "family",
       "total_estimate": 364,
       "total_ci_lower": 322,
-      "total_ci_upper": 412,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 412
     },
     {
       "family": "Continental Open",
@@ -39474,9 +39206,7 @@
       "walkin_source": "family",
       "total_estimate": 304,
       "total_ci_lower": 269,
-      "total_ci_upper": 344,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 344
     },
     {
       "family": "Continental Open",
@@ -39577,9 +39307,7 @@
       "walkin_source": "family",
       "total_estimate": 285,
       "total_ci_lower": 252,
-      "total_ci_upper": 323,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 323
     },
     {
       "family": "Continental Open",
@@ -39856,9 +39584,7 @@
       "walkin_source": "family",
       "total_estimate": 334,
       "total_ci_lower": 295,
-      "total_ci_upper": 378,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 378
     },
     {
       "family": "Continental Open",
@@ -40159,9 +39885,7 @@
       "walkin_source": "family",
       "total_estimate": 325,
       "total_ci_lower": 287,
-      "total_ci_upper": 367,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 367
     },
     {
       "family": "Continental Open",
@@ -40402,9 +40126,7 @@
       "walkin_source": "family",
       "total_estimate": 254,
       "total_ci_lower": 225,
-      "total_ci_upper": 287,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 287
     },
     {
       "family": "Continental Open",
@@ -40701,9 +40423,7 @@
       "walkin_source": "family",
       "total_estimate": 276,
       "total_ci_lower": 244,
-      "total_ci_upper": 312,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 312
     },
     {
       "family": "DC International",
@@ -40788,9 +40508,7 @@
       "walkin_source": "family",
       "total_estimate": 137,
       "total_ci_lower": 135,
-      "total_ci_upper": 139,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 139
     },
     {
       "family": "Eastern Chess Congress",
@@ -40875,9 +40593,7 @@
       "walkin_source": "family",
       "total_estimate": 121,
       "total_ci_lower": 119,
-      "total_ci_upper": 123,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 123
     },
     {
       "family": "Eastern Chess Congress",
@@ -40966,9 +40682,7 @@
       "walkin_source": "family",
       "total_estimate": 291,
       "total_ci_lower": 286,
-      "total_ci_upper": 296,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 296
     },
     {
       "family": "Eastern Chess Congress",
@@ -41061,9 +40775,7 @@
       "walkin_source": "family",
       "total_estimate": 418,
       "total_ci_lower": 410,
-      "total_ci_upper": 425,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 425
     },
     {
       "family": "Eastern Chess Congress",
@@ -41160,9 +40872,7 @@
       "walkin_source": "family",
       "total_estimate": 330,
       "total_ci_lower": 324,
-      "total_ci_upper": 336,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 336
     },
     {
       "family": "Eastern Chess Congress",
@@ -41263,9 +40973,7 @@
       "walkin_source": "family",
       "total_estimate": 364,
       "total_ci_lower": 358,
-      "total_ci_upper": 371,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 371
     },
     {
       "family": "Eastern Chess Congress",
@@ -41626,9 +41334,7 @@
       "walkin_source": "family",
       "total_estimate": 515,
       "total_ci_lower": 506,
-      "total_ci_upper": 524,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 524
     },
     {
       "family": "Eastern Chess Congress",
@@ -41969,9 +41675,7 @@
       "walkin_source": "family",
       "total_estimate": 550,
       "total_ci_lower": 541,
-      "total_ci_upper": 560,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 560
     },
     {
       "family": "Eastern Chess Congress",
@@ -42316,9 +42020,7 @@
       "walkin_source": "family",
       "total_estimate": 512,
       "total_ci_lower": 503,
-      "total_ci_upper": 520,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 520
     },
     {
       "family": "Eastern Chess Congress",
@@ -42699,9 +42401,7 @@
       "walkin_source": "family",
       "total_estimate": 508,
       "total_ci_lower": 500,
-      "total_ci_upper": 517,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 517
     },
     {
       "family": "Eastern Class Championships",
@@ -42986,9 +42686,7 @@
       "walkin_source": "estimate",
       "total_estimate": 253,
       "total_ci_lower": 253,
-      "total_ci_upper": 253,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 253
     },
     {
       "family": "Eastern Class Championships",
@@ -43285,9 +42983,7 @@
       "walkin_source": "estimate",
       "total_estimate": 283,
       "total_ci_lower": 283,
-      "total_ci_upper": 283,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 283
     },
     {
       "family": "Eastern Class Championships",
@@ -43548,9 +43244,7 @@
       "walkin_source": "estimate",
       "total_estimate": 223,
       "total_ci_lower": 223,
-      "total_ci_upper": 223,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 223
     },
     {
       "family": "Eastern Class Championships",
@@ -43831,9 +43525,7 @@
       "walkin_source": "estimate",
       "total_estimate": 215,
       "total_ci_lower": 215,
-      "total_ci_upper": 215,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 215
     },
     {
       "family": "Eastern Class Championships",
@@ -43918,9 +43610,7 @@
       "walkin_source": "estimate",
       "total_estimate": 235,
       "total_ci_lower": 235,
-      "total_ci_upper": 235,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 235
     },
     {
       "family": "Eastern Class Championships",
@@ -44009,9 +43699,7 @@
       "walkin_source": "estimate",
       "total_estimate": 277,
       "total_ci_lower": 277,
-      "total_ci_upper": 277,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 277
     },
     {
       "family": "Eastern Class Championships",
@@ -44104,9 +43792,7 @@
       "walkin_source": "estimate",
       "total_estimate": 298,
       "total_ci_lower": 298,
-      "total_ci_upper": 298,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 298
     },
     {
       "family": "Eastern Class Championships",
@@ -44203,9 +43889,7 @@
       "walkin_source": "estimate",
       "total_estimate": 306,
       "total_ci_lower": 306,
-      "total_ci_upper": 306,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 306
     },
     {
       "family": "Eastern Class Championships",
@@ -44306,9 +43990,7 @@
       "walkin_source": "estimate",
       "total_estimate": 242,
       "total_ci_lower": 242,
-      "total_ci_upper": 242,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 242
     },
     {
       "family": "Eastern Open",
@@ -44601,9 +44283,7 @@
       "walkin_source": "family",
       "total_estimate": 424,
       "total_ci_lower": 413,
-      "total_ci_upper": 435,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 435
     },
     {
       "family": "Eastern Open",
@@ -44904,9 +44584,7 @@
       "walkin_source": "family",
       "total_estimate": 385,
       "total_ci_lower": 375,
-      "total_ci_upper": 395,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 395
     },
     {
       "family": "Eastern Open",
@@ -45199,9 +44877,7 @@
       "walkin_source": "family",
       "total_estimate": 410,
       "total_ci_lower": 399,
-      "total_ci_upper": 421,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 421
     },
     {
       "family": "Eastern Open",
@@ -45522,9 +45198,7 @@
       "walkin_source": "family",
       "total_estimate": 408,
       "total_ci_lower": 397,
-      "total_ci_upper": 418,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 418
     },
     {
       "family": "Empire City Open",
@@ -45609,9 +45283,7 @@
       "walkin_source": "estimate",
       "total_estimate": 363,
       "total_ci_lower": 363,
-      "total_ci_upper": 363,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 363
     },
     {
       "family": "Empire City Open",
@@ -45700,9 +45372,7 @@
       "walkin_source": "estimate",
       "total_estimate": 437,
       "total_ci_lower": 437,
-      "total_ci_upper": 437,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 437
     },
     {
       "family": "Empire City Open",
@@ -45795,9 +45465,7 @@
       "walkin_source": "estimate",
       "total_estimate": 338,
       "total_ci_lower": 338,
-      "total_ci_upper": 338,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 338
     },
     {
       "family": "Empire City Open",
@@ -45894,9 +45562,7 @@
       "walkin_source": "estimate",
       "total_estimate": 328,
       "total_ci_lower": 328,
-      "total_ci_upper": 328,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 328
     },
     {
       "family": "Empire City Open",
@@ -45997,9 +45663,7 @@
       "walkin_source": "estimate",
       "total_estimate": 350,
       "total_ci_lower": 350,
-      "total_ci_upper": 350,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 350
     },
     {
       "family": "FIDE U2400 at Foxwoods",
@@ -46108,9 +45772,7 @@
       "walkin_source": "estimate",
       "total_estimate": 13,
       "total_ci_lower": 13,
-      "total_ci_upper": 13,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 13
     },
     {
       "family": "George Washington Open",
@@ -46195,9 +45857,7 @@
       "walkin_source": "family",
       "total_estimate": 250,
       "total_ci_lower": 239,
-      "total_ci_upper": 262,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 262
     },
     {
       "family": "George Washington Open",
@@ -46286,9 +45946,7 @@
       "walkin_source": "family",
       "total_estimate": 205,
       "total_ci_lower": 196,
-      "total_ci_upper": 214,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 214
     },
     {
       "family": "George Washington Open",
@@ -46381,9 +46039,7 @@
       "walkin_source": "family",
       "total_estimate": 236,
       "total_ci_lower": 226,
-      "total_ci_upper": 246,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 246
     },
     {
       "family": "George Washington Open",
@@ -46480,9 +46136,7 @@
       "walkin_source": "family",
       "total_estimate": 263,
       "total_ci_lower": 251,
-      "total_ci_upper": 275,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 275
     },
     {
       "family": "George Washington Open",
@@ -46807,9 +46461,7 @@
       "walkin_source": "family",
       "total_estimate": 358,
       "total_ci_lower": 343,
-      "total_ci_upper": 374,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 374
     },
     {
       "family": "George Washington Open",
@@ -47090,9 +46742,7 @@
       "walkin_source": "family",
       "total_estimate": 276,
       "total_ci_lower": 264,
-      "total_ci_upper": 289,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 289
     },
     {
       "family": "George Washington Open",
@@ -47389,9 +47039,7 @@
       "walkin_source": "family",
       "total_estimate": 260,
       "total_ci_lower": 248,
-      "total_ci_upper": 271,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 271
     },
     {
       "family": "Golden State Open",
@@ -47476,9 +47124,7 @@
       "walkin_source": "family",
       "total_estimate": 258,
       "total_ci_lower": 250,
-      "total_ci_upper": 266,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 266
     },
     {
       "family": "Golden State Open",
@@ -47567,9 +47213,7 @@
       "walkin_source": "family",
       "total_estimate": 272,
       "total_ci_lower": 264,
-      "total_ci_upper": 281,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 281
     },
     {
       "family": "Golden State Open",
@@ -47662,9 +47306,7 @@
       "walkin_source": "family",
       "total_estimate": 294,
       "total_ci_lower": 285,
-      "total_ci_upper": 304,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 304
     },
     {
       "family": "Golden State Open",
@@ -47761,9 +47403,7 @@
       "walkin_source": "family",
       "total_estimate": 301,
       "total_ci_lower": 291,
-      "total_ci_upper": 310,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 310
     },
     {
       "family": "Golden State Open",
@@ -47864,9 +47504,7 @@
       "walkin_source": "family",
       "total_estimate": 285,
       "total_ci_lower": 276,
-      "total_ci_upper": 294,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 294
     },
     {
       "family": "Golden State Open",
@@ -48131,9 +47769,7 @@
       "walkin_source": "family",
       "total_estimate": 287,
       "total_ci_lower": 278,
-      "total_ci_upper": 296,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 296
     },
     {
       "family": "Golden State Open",
@@ -48446,9 +48082,7 @@
       "walkin_source": "family",
       "total_estimate": 306,
       "total_ci_lower": 296,
-      "total_ci_upper": 316,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 316
     },
     {
       "family": "Golden State Open",
@@ -48709,9 +48343,7 @@
       "walkin_source": "family",
       "total_estimate": 306,
       "total_ci_lower": 296,
-      "total_ci_upper": 316,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 316
     },
     {
       "family": "Golden State Open",
@@ -49032,9 +48664,7 @@
       "walkin_source": "family",
       "total_estimate": 394,
       "total_ci_lower": 381,
-      "total_ci_upper": 406,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 406
     },
     {
       "family": "Hartford Open",
@@ -49119,9 +48749,7 @@
       "walkin_source": "family",
       "total_estimate": 111,
       "total_ci_lower": 105,
-      "total_ci_upper": 117,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 117
     },
     {
       "family": "Hartford Open",
@@ -49210,9 +48838,7 @@
       "walkin_source": "family",
       "total_estimate": 88,
       "total_ci_lower": 84,
-      "total_ci_upper": 93,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 93
     },
     {
       "family": "Hartford Open",
@@ -49305,9 +48931,7 @@
       "walkin_source": "family",
       "total_estimate": 128,
       "total_ci_lower": 121,
-      "total_ci_upper": 135,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 135
     },
     {
       "family": "Hartford Open",
@@ -49404,9 +49028,7 @@
       "walkin_source": "family",
       "total_estimate": 125,
       "total_ci_lower": 119,
-      "total_ci_upper": 132,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 132
     },
     {
       "family": "Hartford Open",
@@ -49507,9 +49129,7 @@
       "walkin_source": "family",
       "total_estimate": 113,
       "total_ci_lower": 107,
-      "total_ci_upper": 119,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 119
     },
     {
       "family": "Hartford Open",
@@ -49746,9 +49366,7 @@
       "walkin_source": "family",
       "total_estimate": 203,
       "total_ci_lower": 192,
-      "total_ci_upper": 214,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 214
     },
     {
       "family": "Hartford Open",
@@ -50009,9 +49627,7 @@
       "walkin_source": "family",
       "total_estimate": 229,
       "total_ci_lower": 217,
-      "total_ci_upper": 241,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 241
     },
     {
       "family": "Hartford Open",
@@ -50268,9 +49884,7 @@
       "walkin_source": "family",
       "total_estimate": 204,
       "total_ci_lower": 193,
-      "total_ci_upper": 215,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 215
     },
     {
       "family": "Hartford Open",
@@ -50547,9 +50161,7 @@
       "walkin_source": "family",
       "total_estimate": 194,
       "total_ci_lower": 184,
-      "total_ci_upper": 205,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 205
     },
     {
       "family": "Indianapolis Open",
@@ -50634,9 +50246,7 @@
       "walkin_source": "family",
       "total_estimate": 185,
       "total_ci_lower": 178,
-      "total_ci_upper": 193,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 193
     },
     {
       "family": "Indianapolis Open",
@@ -50725,9 +50335,7 @@
       "walkin_source": "family",
       "total_estimate": 193,
       "total_ci_lower": 185,
-      "total_ci_upper": 201,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 201
     },
     {
       "family": "Indianapolis Open",
@@ -50820,9 +50428,7 @@
       "walkin_source": "family",
       "total_estimate": 165,
       "total_ci_lower": 158,
-      "total_ci_upper": 172,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 172
     },
     {
       "family": "Indianapolis Open",
@@ -50919,9 +50525,7 @@
       "walkin_source": "family",
       "total_estimate": 198,
       "total_ci_lower": 190,
-      "total_ci_upper": 206,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 206
     },
     {
       "family": "Indianapolis Open",
@@ -51022,9 +50626,7 @@
       "walkin_source": "family",
       "total_estimate": 211,
       "total_ci_lower": 203,
-      "total_ci_upper": 220,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 220
     },
     {
       "family": "Indianapolis Open",
@@ -51277,9 +50879,7 @@
       "walkin_source": "family",
       "total_estimate": 189,
       "total_ci_lower": 182,
-      "total_ci_upper": 197,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 197
     },
     {
       "family": "Indianapolis Open",
@@ -51552,9 +51152,7 @@
       "walkin_source": "family",
       "total_estimate": 197,
       "total_ci_lower": 189,
-      "total_ci_upper": 205,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 205
     },
     {
       "family": "Indianapolis Open",
@@ -51815,9 +51413,7 @@
       "walkin_source": "family",
       "total_estimate": 176,
       "total_ci_lower": 169,
-      "total_ci_upper": 183,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 183
     },
     {
       "family": "Indianapolis Open",
@@ -52086,9 +51682,7 @@
       "walkin_source": "family",
       "total_estimate": 194,
       "total_ci_lower": 186,
-      "total_ci_upper": 202,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 202
     },
     {
       "family": "Kings Island Open",
@@ -52173,9 +51767,7 @@
       "walkin_source": "family",
       "total_estimate": 287,
       "total_ci_lower": 273,
-      "total_ci_upper": 301,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 301
     },
     {
       "family": "Kings Island Open",
@@ -52264,9 +51856,7 @@
       "walkin_source": "family",
       "total_estimate": 292,
       "total_ci_lower": 278,
-      "total_ci_upper": 306,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 306
     },
     {
       "family": "Kings Island Open",
@@ -52359,9 +51949,7 @@
       "walkin_source": "family",
       "total_estimate": 304,
       "total_ci_lower": 290,
-      "total_ci_upper": 319,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 319
     },
     {
       "family": "Kings Island Open",
@@ -52458,9 +52046,7 @@
       "walkin_source": "family",
       "total_estimate": 263,
       "total_ci_lower": 250,
-      "total_ci_upper": 276,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 276
     },
     {
       "family": "Kings Island Open",
@@ -52561,9 +52147,7 @@
       "walkin_source": "family",
       "total_estimate": 312,
       "total_ci_lower": 297,
-      "total_ci_upper": 327,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 327
     },
     {
       "family": "Kings Island Open",
@@ -52896,9 +52480,7 @@
       "walkin_source": "family",
       "total_estimate": 385,
       "total_ci_lower": 367,
-      "total_ci_upper": 404,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 404
     },
     {
       "family": "Kings Island Open",
@@ -53227,9 +52809,7 @@
       "walkin_source": "family",
       "total_estimate": 375,
       "total_ci_lower": 357,
-      "total_ci_upper": 393,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 393
     },
     {
       "family": "Kings Island Open",
@@ -53566,9 +53146,7 @@
       "walkin_source": "family",
       "total_estimate": 366,
       "total_ci_lower": 349,
-      "total_ci_upper": 384,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 384
     },
     {
       "family": "Kings Island Open",
@@ -53905,9 +53483,7 @@
       "walkin_source": "family",
       "total_estimate": 372,
       "total_ci_lower": 355,
-      "total_ci_upper": 391,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 391
     },
     {
       "family": "Liberty Bell Open",
@@ -53992,9 +53568,7 @@
       "walkin_source": "family",
       "total_estimate": 351,
       "total_ci_lower": 340,
-      "total_ci_upper": 362,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 362
     },
     {
       "family": "Liberty Bell Open",
@@ -54083,9 +53657,7 @@
       "walkin_source": "family",
       "total_estimate": 337,
       "total_ci_lower": 327,
-      "total_ci_upper": 348,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 348
     },
     {
       "family": "Liberty Bell Open",
@@ -54178,9 +53750,7 @@
       "walkin_source": "family",
       "total_estimate": 348,
       "total_ci_lower": 337,
-      "total_ci_upper": 359,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 359
     },
     {
       "family": "Liberty Bell Open",
@@ -54277,9 +53847,7 @@
       "walkin_source": "family",
       "total_estimate": 346,
       "total_ci_lower": 335,
-      "total_ci_upper": 356,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 356
     },
     {
       "family": "Liberty Bell Open",
@@ -54380,9 +53948,7 @@
       "walkin_source": "family",
       "total_estimate": 297,
       "total_ci_lower": 288,
-      "total_ci_upper": 306,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 306
     },
     {
       "family": "Liberty Bell Open",
@@ -54679,9 +54245,7 @@
       "walkin_source": "family",
       "total_estimate": 374,
       "total_ci_lower": 363,
-      "total_ci_upper": 386,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 386
     },
     {
       "family": "Liberty Bell Open",
@@ -55006,9 +54570,7 @@
       "walkin_source": "family",
       "total_estimate": 489,
       "total_ci_lower": 474,
-      "total_ci_upper": 505,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 505
     },
     {
       "family": "Liberty Bell Open",
@@ -55297,9 +54859,7 @@
       "walkin_source": "family",
       "total_estimate": 498,
       "total_ci_lower": 482,
-      "total_ci_upper": 513,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 513
     },
     {
       "family": "Liberty Bell Open",
@@ -55652,9 +55212,7 @@
       "walkin_source": "family",
       "total_estimate": 548,
       "total_ci_lower": 532,
-      "total_ci_upper": 565,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 565
     },
     {
       "family": "Los Angeles Open",
@@ -55739,9 +55297,7 @@
       "walkin_source": "family",
       "total_estimate": 177,
       "total_ci_lower": 175,
-      "total_ci_upper": 180,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 180
     },
     {
       "family": "Los Angeles Open",
@@ -55830,9 +55386,7 @@
       "walkin_source": "family",
       "total_estimate": 221,
       "total_ci_lower": 218,
-      "total_ci_upper": 224,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 224
     },
     {
       "family": "Los Angeles Open",
@@ -55925,9 +55479,7 @@
       "walkin_source": "family",
       "total_estimate": 261,
       "total_ci_lower": 258,
-      "total_ci_upper": 265,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 265
     },
     {
       "family": "Los Angeles Open",
@@ -56024,9 +55576,7 @@
       "walkin_source": "family",
       "total_estimate": 250,
       "total_ci_lower": 246,
-      "total_ci_upper": 254,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 254
     },
     {
       "family": "Los Angeles Open",
@@ -56427,9 +55977,7 @@
       "walkin_source": "family",
       "total_estimate": 374,
       "total_ci_lower": 369,
-      "total_ci_upper": 380,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 380
     },
     {
       "family": "Los Angeles Open",
@@ -56854,9 +56402,7 @@
       "walkin_source": "family",
       "total_estimate": 430,
       "total_ci_lower": 424,
-      "total_ci_upper": 437,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 437
     },
     {
       "family": "Los Angeles Open",
@@ -57233,9 +56779,7 @@
       "walkin_source": "family",
       "total_estimate": 427,
       "total_ci_lower": 421,
-      "total_ci_upper": 433,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 433
     },
     {
       "family": "Los Angeles Open",
@@ -57636,9 +57180,7 @@
       "walkin_source": "family",
       "total_estimate": 412,
       "total_ci_lower": 406,
-      "total_ci_upper": 418,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 418
     },
     {
       "family": "Manhattan Open",
@@ -57723,9 +57265,7 @@
       "walkin_source": "estimate",
       "total_estimate": 479,
       "total_ci_lower": 479,
-      "total_ci_upper": 479,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 479
     },
     {
       "family": "Manhattan Open",
@@ -57814,9 +57354,7 @@
       "walkin_source": "estimate",
       "total_estimate": 482,
       "total_ci_lower": 482,
-      "total_ci_upper": 482,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 482
     },
     {
       "family": "Manhattan Open",
@@ -57909,9 +57447,7 @@
       "walkin_source": "estimate",
       "total_estimate": 461,
       "total_ci_lower": 461,
-      "total_ci_upper": 461,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 461
     },
     {
       "family": "Manhattan Open",
@@ -58008,9 +57544,7 @@
       "walkin_source": "estimate",
       "total_estimate": 509,
       "total_ci_lower": 509,
-      "total_ci_upper": 509,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 509
     },
     {
       "family": "Manhattan Open",
@@ -58111,9 +57645,7 @@
       "walkin_source": "estimate",
       "total_estimate": 477,
       "total_ci_lower": 477,
-      "total_ci_upper": 477,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 477
     },
     {
       "family": "Mid-America Open",
@@ -58198,9 +57730,7 @@
       "walkin_source": "family",
       "total_estimate": 243,
       "total_ci_lower": 234,
-      "total_ci_upper": 253,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 253
     },
     {
       "family": "Mid-America Open",
@@ -58289,9 +57819,7 @@
       "walkin_source": "family",
       "total_estimate": 218,
       "total_ci_lower": 210,
-      "total_ci_upper": 227,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 227
     },
     {
       "family": "Mid-America Open",
@@ -58384,9 +57912,7 @@
       "walkin_source": "family",
       "total_estimate": 318,
       "total_ci_lower": 306,
-      "total_ci_upper": 331,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 331
     },
     {
       "family": "Mid-America Open",
@@ -58483,9 +58009,7 @@
       "walkin_source": "family",
       "total_estimate": 279,
       "total_ci_lower": 268,
-      "total_ci_upper": 289,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 289
     },
     {
       "family": "Mid-America Open",
@@ -58586,9 +58110,7 @@
       "walkin_source": "family",
       "total_estimate": 333,
       "total_ci_lower": 320,
-      "total_ci_upper": 346,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 346
     },
     {
       "family": "Mid-America Open",
@@ -58857,9 +58379,7 @@
       "walkin_source": "family",
       "total_estimate": 300,
       "total_ci_lower": 288,
-      "total_ci_upper": 311,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 311
     },
     {
       "family": "Mid-America Open",
@@ -59172,9 +58692,7 @@
       "walkin_source": "family",
       "total_estimate": 341,
       "total_ci_lower": 328,
-      "total_ci_upper": 354,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 354
     },
     {
       "family": "Mid-America Open",
@@ -59483,9 +59001,7 @@
       "walkin_source": "family",
       "total_estimate": 317,
       "total_ci_lower": 305,
-      "total_ci_upper": 329,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 329
     },
     {
       "family": "Mid-America Open",
@@ -59810,9 +59326,7 @@
       "walkin_source": "family",
       "total_estimate": 272,
       "total_ci_lower": 262,
-      "total_ci_upper": 283,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 283
     },
     {
       "family": "Midwest Chess Congress",
@@ -59989,9 +59503,7 @@
       "walkin_source": "estimate",
       "total_estimate": 89,
       "total_ci_lower": 89,
-      "total_ci_upper": 89,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 89
     },
     {
       "family": "Midwest Class Championships",
@@ -60076,9 +59588,7 @@
       "walkin_source": "family",
       "total_estimate": 273,
       "total_ci_lower": 260,
-      "total_ci_upper": 287,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 287
     },
     {
       "family": "Midwest Class Championships",
@@ -60167,9 +59677,7 @@
       "walkin_source": "family",
       "total_estimate": 289,
       "total_ci_lower": 275,
-      "total_ci_upper": 303,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 303
     },
     {
       "family": "Midwest Class Championships",
@@ -60262,9 +59770,7 @@
       "walkin_source": "family",
       "total_estimate": 326,
       "total_ci_lower": 310,
-      "total_ci_upper": 342,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 342
     },
     {
       "family": "Midwest Class Championships",
@@ -60361,9 +59867,7 @@
       "walkin_source": "family",
       "total_estimate": 338,
       "total_ci_lower": 322,
-      "total_ci_upper": 355,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 355
     },
     {
       "family": "Midwest Class Championships",
@@ -60464,9 +59968,7 @@
       "walkin_source": "family",
       "total_estimate": 314,
       "total_ci_lower": 300,
-      "total_ci_upper": 330,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 330
     },
     {
       "family": "Midwest Class Championships",
@@ -60783,9 +60285,7 @@
       "walkin_source": "family",
       "total_estimate": 371,
       "total_ci_lower": 354,
-      "total_ci_upper": 390,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 390
     },
     {
       "family": "Midwest Class Championships",
@@ -61074,9 +60574,7 @@
       "walkin_source": "family",
       "total_estimate": 301,
       "total_ci_lower": 287,
-      "total_ci_upper": 316,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 316
     },
     {
       "family": "Midwest Class Championships",
@@ -61401,9 +60899,7 @@
       "walkin_source": "family",
       "total_estimate": 312,
       "total_ci_lower": 298,
-      "total_ci_upper": 328,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 328
     },
     {
       "family": "Midwest Class Championships",
@@ -61704,9 +61200,7 @@
       "walkin_source": "family",
       "total_estimate": 315,
       "total_ci_lower": 300,
-      "total_ci_upper": 331,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 331
     },
     {
       "family": "National Chess Congress",
@@ -61791,9 +61285,7 @@
       "walkin_source": "family",
       "total_estimate": 601,
       "total_ci_lower": 573,
-      "total_ci_upper": 631,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 631
     },
     {
       "family": "National Chess Congress",
@@ -61882,9 +61374,7 @@
       "walkin_source": "family",
       "total_estimate": 623,
       "total_ci_lower": 594,
-      "total_ci_upper": 654,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 654
     },
     {
       "family": "National Chess Congress",
@@ -61977,9 +61467,7 @@
       "walkin_source": "family",
       "total_estimate": 676,
       "total_ci_lower": 644,
-      "total_ci_upper": 708,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 708
     },
     {
       "family": "National Chess Congress",
@@ -62076,9 +61564,7 @@
       "walkin_source": "family",
       "total_estimate": 548,
       "total_ci_lower": 522,
-      "total_ci_upper": 574,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 574
     },
     {
       "family": "National Chess Congress",
@@ -62179,9 +61665,7 @@
       "walkin_source": "family",
       "total_estimate": 576,
       "total_ci_lower": 549,
-      "total_ci_upper": 604,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 604
     },
     {
       "family": "National Chess Congress",
@@ -62558,9 +62042,7 @@
       "walkin_source": "family",
       "total_estimate": 635,
       "total_ci_lower": 605,
-      "total_ci_upper": 666,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 666
     },
     {
       "family": "National Chess Congress",
@@ -62957,9 +62439,7 @@
       "walkin_source": "family",
       "total_estimate": 666,
       "total_ci_lower": 635,
-      "total_ci_upper": 699,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 699
     },
     {
       "family": "National Chess Congress",
@@ -63360,9 +62840,7 @@
       "walkin_source": "family",
       "total_estimate": 650,
       "total_ci_lower": 620,
-      "total_ci_upper": 682,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 682
     },
     {
       "family": "National Chess Congress",
@@ -63751,9 +63229,7 @@
       "walkin_source": "family",
       "total_estimate": 738,
       "total_ci_lower": 704,
-      "total_ci_upper": 774,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 774
     },
     {
       "family": "New York State Championship",
@@ -63838,9 +63314,7 @@
       "walkin_source": "family",
       "total_estimate": 181,
       "total_ci_lower": 174,
-      "total_ci_upper": 188,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 188
     },
     {
       "family": "New York State Championship",
@@ -63929,9 +63403,7 @@
       "walkin_source": "family",
       "total_estimate": 199,
       "total_ci_lower": 191,
-      "total_ci_upper": 207,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 207
     },
     {
       "family": "New York State Championship",
@@ -64024,9 +63496,7 @@
       "walkin_source": "family",
       "total_estimate": 191,
       "total_ci_lower": 184,
-      "total_ci_upper": 199,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 199
     },
     {
       "family": "New York State Championship",
@@ -64123,9 +63593,7 @@
       "walkin_source": "family",
       "total_estimate": 197,
       "total_ci_lower": 189,
-      "total_ci_upper": 205,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 205
     },
     {
       "family": "New York State Championship",
@@ -64226,9 +63694,7 @@
       "walkin_source": "family",
       "total_estimate": 193,
       "total_ci_lower": 186,
-      "total_ci_upper": 201,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 201
     },
     {
       "family": "New York State Championship",
@@ -64525,9 +63991,7 @@
       "walkin_source": "family",
       "total_estimate": 330,
       "total_ci_lower": 317,
-      "total_ci_upper": 344,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 344
     },
     {
       "family": "New York State Championship",
@@ -64824,9 +64288,7 @@
       "walkin_source": "family",
       "total_estimate": 363,
       "total_ci_lower": 349,
-      "total_ci_upper": 378,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 378
     },
     {
       "family": "New York State Championship",
@@ -65131,9 +64593,7 @@
       "walkin_source": "family",
       "total_estimate": 341,
       "total_ci_lower": 327,
-      "total_ci_upper": 355,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 355
     },
     {
       "family": "New York State Championship",
@@ -65482,9 +64942,7 @@
       "walkin_source": "family",
       "total_estimate": 364,
       "total_ci_lower": 350,
-      "total_ci_upper": 379,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 379
     },
     {
       "family": "New York State High School Championship",
@@ -65817,9 +65275,7 @@
       "walkin_source": "family",
       "total_estimate": 230,
       "total_ci_lower": 221,
-      "total_ci_upper": 240,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 240
     },
     {
       "family": "New York State Open",
@@ -65904,9 +65360,7 @@
       "walkin_source": "family",
       "total_estimate": 74,
       "total_ci_lower": 73,
-      "total_ci_upper": 75,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 75
     },
     {
       "family": "New York State Open",
@@ -65995,9 +65449,7 @@
       "walkin_source": "family",
       "total_estimate": 106,
       "total_ci_lower": 104,
-      "total_ci_upper": 108,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 108
     },
     {
       "family": "New York State Open",
@@ -66090,9 +65542,7 @@
       "walkin_source": "family",
       "total_estimate": 91,
       "total_ci_lower": 89,
-      "total_ci_upper": 93,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 93
     },
     {
       "family": "New York State Open",
@@ -66313,9 +65763,7 @@
       "walkin_source": "family",
       "total_estimate": 80,
       "total_ci_lower": 79,
-      "total_ci_upper": 82,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 82
     },
     {
       "family": "New York State Open",
@@ -66540,9 +65988,7 @@
       "walkin_source": "family",
       "total_estimate": 88,
       "total_ci_lower": 86,
-      "total_ci_upper": 89,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 89
     },
     {
       "family": "New York State Open and Senior",
@@ -66627,9 +66073,7 @@
       "walkin_source": "estimate",
       "total_estimate": 103,
       "total_ci_lower": 103,
-      "total_ci_upper": 103,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 103
     },
     {
       "family": "New York State Open and Senior",
@@ -66718,9 +66162,7 @@
       "walkin_source": "estimate",
       "total_estimate": 85,
       "total_ci_lower": 85,
-      "total_ci_upper": 85,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 85
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -66805,9 +66247,7 @@
       "walkin_source": "family",
       "total_estimate": 1004,
       "total_ci_lower": 998,
-      "total_ci_upper": 1010,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1010
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -66896,9 +66336,7 @@
       "walkin_source": "family",
       "total_estimate": 1003,
       "total_ci_lower": 997,
-      "total_ci_upper": 1009,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1009
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -66991,9 +66429,7 @@
       "walkin_source": "family",
       "total_estimate": 1218,
       "total_ci_lower": 1210,
-      "total_ci_upper": 1225,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1225
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -67090,9 +66526,7 @@
       "walkin_source": "family",
       "total_estimate": 1295,
       "total_ci_lower": 1287,
-      "total_ci_upper": 1302,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1302
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -67193,9 +66627,7 @@
       "walkin_source": "family",
       "total_estimate": 1316,
       "total_ci_lower": 1308,
-      "total_ci_upper": 1323,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1323
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -67540,9 +66972,7 @@
       "walkin_source": "family",
       "total_estimate": 991,
       "total_ci_lower": 985,
-      "total_ci_upper": 997,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 997
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -68015,9 +67445,7 @@
       "walkin_source": "family",
       "total_estimate": 1631,
       "total_ci_lower": 1621,
-      "total_ci_upper": 1640,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1640
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -68658,9 +68086,7 @@
       "walkin_source": "family",
       "total_estimate": 1872,
       "total_ci_lower": 1861,
-      "total_ci_upper": 1883,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1883
     },
     {
       "family": "New York State Scholastic Championships Grades K-8",
@@ -69249,9 +68675,7 @@
       "walkin_source": "family",
       "total_estimate": 1861,
       "total_ci_lower": 1850,
-      "total_ci_upper": 1872,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1872
     },
     {
       "family": "New York State Scholastic Championships WAITLIST",
@@ -69340,9 +68764,7 @@
       "walkin_source": "estimate",
       "total_estimate": 191,
       "total_ci_lower": 191,
-      "total_ci_upper": 191,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 191
     },
     {
       "family": "New York State Senior Championship With Young Adult Mi",
@@ -69523,9 +68945,7 @@
       "walkin_source": "family",
       "total_estimate": 60,
       "total_ci_lower": 58,
-      "total_ci_upper": 63,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 63
     },
     {
       "family": "Niagara Falls Open",
@@ -69754,9 +69174,7 @@
       "walkin_source": "family",
       "total_estimate": 99,
       "total_ci_lower": 86,
-      "total_ci_upper": 114,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 114
     },
     {
       "family": "Niagara Falls Open",
@@ -70029,9 +69447,7 @@
       "walkin_source": "family",
       "total_estimate": 179,
       "total_ci_lower": 156,
-      "total_ci_upper": 206,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 206
     },
     {
       "family": "Niagara Falls Open",
@@ -70348,9 +69764,7 @@
       "walkin_source": "family",
       "total_estimate": 187,
       "total_ci_lower": 163,
-      "total_ci_upper": 214,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 214
     },
     {
       "family": "Niagara Falls Open",
@@ -70607,9 +70021,7 @@
       "walkin_source": "family",
       "total_estimate": 130,
       "total_ci_lower": 113,
-      "total_ci_upper": 149,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 149
     },
     {
       "family": "North American Open",
@@ -70694,9 +70106,7 @@
       "walkin_source": "family",
       "total_estimate": 751,
       "total_ci_lower": 733,
-      "total_ci_upper": 769,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 769
     },
     {
       "family": "North American Open",
@@ -70785,9 +70195,7 @@
       "walkin_source": "family",
       "total_estimate": 802,
       "total_ci_lower": 783,
-      "total_ci_upper": 821,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 821
     },
     {
       "family": "North American Open",
@@ -70880,9 +70288,7 @@
       "walkin_source": "family",
       "total_estimate": 838,
       "total_ci_lower": 818,
-      "total_ci_upper": 858,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 858
     },
     {
       "family": "North American Open",
@@ -70979,9 +70385,7 @@
       "walkin_source": "family",
       "total_estimate": 861,
       "total_ci_lower": 840,
-      "total_ci_upper": 881,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 881
     },
     {
       "family": "North American Open",
@@ -71082,9 +70486,7 @@
       "walkin_source": "family",
       "total_estimate": 904,
       "total_ci_lower": 882,
-      "total_ci_upper": 925,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 925
     },
     {
       "family": "North American Open",
@@ -71729,9 +71131,7 @@
       "walkin_source": "family",
       "total_estimate": 1121,
       "total_ci_lower": 1095,
-      "total_ci_upper": 1148,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1148
     },
     {
       "family": "North American Open",
@@ -72368,9 +71768,7 @@
       "walkin_source": "family",
       "total_estimate": 1167,
       "total_ci_lower": 1140,
-      "total_ci_upper": 1196,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1196
     },
     {
       "family": "North American Open",
@@ -73007,9 +72405,7 @@
       "walkin_source": "family",
       "total_estimate": 1154,
       "total_ci_lower": 1127,
-      "total_ci_upper": 1182,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1182
     },
     {
       "family": "North American Open",
@@ -73698,9 +73094,7 @@
       "walkin_source": "family",
       "total_estimate": 1315,
       "total_ci_lower": 1284,
-      "total_ci_upper": 1347,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1347
     },
     {
       "family": "Northeast Open",
@@ -73785,9 +73179,7 @@
       "walkin_source": "estimate",
       "total_estimate": 208,
       "total_ci_lower": 208,
-      "total_ci_upper": 208,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 208
     },
     {
       "family": "Northeast Open",
@@ -73876,9 +73268,7 @@
       "walkin_source": "estimate",
       "total_estimate": 196,
       "total_ci_lower": 196,
-      "total_ci_upper": 196,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 196
     },
     {
       "family": "Northeast Open",
@@ -73971,9 +73361,7 @@
       "walkin_source": "estimate",
       "total_estimate": 226,
       "total_ci_lower": 226,
-      "total_ci_upper": 226,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 226
     },
     {
       "family": "Northeast Open",
@@ -74070,9 +73458,7 @@
       "walkin_source": "estimate",
       "total_estimate": 189,
       "total_ci_lower": 189,
-      "total_ci_upper": 189,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 189
     },
     {
       "family": "Northeast Open",
@@ -74173,9 +73559,7 @@
       "walkin_source": "estimate",
       "total_estimate": 231,
       "total_ci_lower": 231,
-      "total_ci_upper": 231,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 231
     },
     {
       "family": "Northeast Open",
@@ -74432,9 +73816,7 @@
       "walkin_source": "estimate",
       "total_estimate": 250,
       "total_ci_lower": 250,
-      "total_ci_upper": 250,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 250
     },
     {
       "family": "Atlantic City Open",
@@ -74519,9 +73901,7 @@
       "walkin_source": "family",
       "total_estimate": 444,
       "total_ci_lower": 437,
-      "total_ci_upper": 451,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 451
     },
     {
       "family": "Atlantic City Open",
@@ -74918,9 +74298,7 @@
       "walkin_source": "family",
       "total_estimate": 505,
       "total_ci_lower": 498,
-      "total_ci_upper": 513,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 513
     },
     {
       "family": "Atlantic City Open",
@@ -75261,9 +74639,7 @@
       "walkin_source": "family",
       "total_estimate": 476,
       "total_ci_lower": 469,
-      "total_ci_upper": 483,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 483
     },
     {
       "family": "Atlantic City Open",
@@ -75616,9 +74992,7 @@
       "walkin_source": "family",
       "total_estimate": 498,
       "total_ci_lower": 490,
-      "total_ci_upper": 505,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 505
     },
     {
       "family": "Pacific Coast Open",
@@ -75703,9 +75077,7 @@
       "walkin_source": "family",
       "total_estimate": 211,
       "total_ci_lower": 201,
-      "total_ci_upper": 220,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 220
     },
     {
       "family": "Pacific Coast Open",
@@ -75794,9 +75166,7 @@
       "walkin_source": "family",
       "total_estimate": 222,
       "total_ci_lower": 212,
-      "total_ci_upper": 232,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 232
     },
     {
       "family": "Pacific Coast Open",
@@ -75889,9 +75259,7 @@
       "walkin_source": "family",
       "total_estimate": 241,
       "total_ci_lower": 230,
-      "total_ci_upper": 252,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 252
     },
     {
       "family": "Pacific Coast Open",
@@ -75988,9 +75356,7 @@
       "walkin_source": "family",
       "total_estimate": 254,
       "total_ci_lower": 243,
-      "total_ci_upper": 266,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 266
     },
     {
       "family": "Pacific Coast Open",
@@ -76091,9 +75457,7 @@
       "walkin_source": "family",
       "total_estimate": 239,
       "total_ci_lower": 228,
-      "total_ci_upper": 249,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 249
     },
     {
       "family": "Pacific Coast Open",
@@ -76434,9 +75798,7 @@
       "walkin_source": "family",
       "total_estimate": 357,
       "total_ci_lower": 341,
-      "total_ci_upper": 373,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 373
     },
     {
       "family": "Pacific Coast Open",
@@ -76789,9 +76151,7 @@
       "walkin_source": "family",
       "total_estimate": 418,
       "total_ci_lower": 400,
-      "total_ci_upper": 437,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 437
     },
     {
       "family": "Pacific Coast Open",
@@ -77136,9 +76496,7 @@
       "walkin_source": "family",
       "total_estimate": 375,
       "total_ci_lower": 358,
-      "total_ci_upper": 392,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 392
     },
     {
       "family": "Pacific Coast Open",
@@ -77531,9 +76889,7 @@
       "walkin_source": "family",
       "total_estimate": 406,
       "total_ci_lower": 388,
-      "total_ci_upper": 424,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 424
     },
     {
       "family": "Peter Henner Memorial",
@@ -77618,9 +76974,7 @@
       "walkin_source": "estimate",
       "total_estimate": 101,
       "total_ci_lower": 101,
-      "total_ci_upper": 101,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 101
     },
     {
       "family": "Peter Henner Memorial",
@@ -77709,9 +77063,7 @@
       "walkin_source": "estimate",
       "total_estimate": 109,
       "total_ci_lower": 109,
-      "total_ci_upper": 109,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 109
     },
     {
       "family": "Peter Henner Memorial",
@@ -77804,9 +77156,7 @@
       "walkin_source": "estimate",
       "total_estimate": 54,
       "total_ci_lower": 54,
-      "total_ci_upper": 54,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 54
     },
     {
       "family": "DC International",
@@ -77895,9 +77245,7 @@
       "walkin_source": "family",
       "total_estimate": 71,
       "total_ci_lower": 70,
-      "total_ci_upper": 72,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 72
     },
     {
       "family": "DC International",
@@ -77990,9 +77338,7 @@
       "walkin_source": "family",
       "total_estimate": 93,
       "total_ci_lower": 92,
-      "total_ci_upper": 95,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 95
     },
     {
       "family": "DC International",
@@ -78089,9 +77435,7 @@
       "walkin_source": "family",
       "total_estimate": 162,
       "total_ci_lower": 159,
-      "total_ci_upper": 164,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 164
     },
     {
       "family": "DC International",
@@ -78192,9 +77536,7 @@
       "walkin_source": "family",
       "total_estimate": 157,
       "total_ci_lower": 155,
-      "total_ci_upper": 160,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 160
     },
     {
       "family": "DC International",
@@ -78443,9 +77785,7 @@
       "walkin_source": "family",
       "total_estimate": 94,
       "total_ci_lower": 93,
-      "total_ci_upper": 96,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 96
     },
     {
       "family": "DC International",
@@ -78722,9 +78062,7 @@
       "walkin_source": "family",
       "total_estimate": 116,
       "total_ci_lower": 114,
-      "total_ci_upper": 117,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 117
     },
     {
       "family": "DC International",
@@ -79093,9 +78431,7 @@
       "walkin_source": "family",
       "total_estimate": 153,
       "total_ci_lower": 151,
-      "total_ci_upper": 155,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 155
     },
     {
       "family": "DC International",
@@ -79412,9 +78748,7 @@
       "walkin_source": "family",
       "total_estimate": 135,
       "total_ci_lower": 133,
-      "total_ci_upper": 137,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 137
     },
     {
       "family": "DC Open",
@@ -79499,9 +78833,7 @@
       "walkin_source": "family",
       "total_estimate": 553,
       "total_ci_lower": 545,
-      "total_ci_upper": 562,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 562
     },
     {
       "family": "DC Open",
@@ -79590,9 +78922,7 @@
       "walkin_source": "family",
       "total_estimate": 549,
       "total_ci_lower": 541,
-      "total_ci_upper": 557,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 557
     },
     {
       "family": "DC Open",
@@ -79685,9 +79015,7 @@
       "walkin_source": "family",
       "total_estimate": 594,
       "total_ci_lower": 586,
-      "total_ci_upper": 603,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 603
     },
     {
       "family": "DC Open",
@@ -79784,9 +79112,7 @@
       "walkin_source": "family",
       "total_estimate": 566,
       "total_ci_lower": 558,
-      "total_ci_upper": 575,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 575
     },
     {
       "family": "DC Open",
@@ -79887,9 +79213,7 @@
       "walkin_source": "family",
       "total_estimate": 248,
       "total_ci_lower": 245,
-      "total_ci_upper": 252,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 252
     },
     {
       "family": "DC Open",
@@ -80238,9 +79562,7 @@
       "walkin_source": "family",
       "total_estimate": 302,
       "total_ci_lower": 298,
-      "total_ci_upper": 307,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 307
     },
     {
       "family": "DC Open",
@@ -80541,9 +79863,7 @@
       "walkin_source": "family",
       "total_estimate": 302,
       "total_ci_lower": 298,
-      "total_ci_upper": 307,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 307
     },
     {
       "family": "DC Open",
@@ -80888,9 +80208,7 @@
       "walkin_source": "family",
       "total_estimate": 335,
       "total_ci_lower": 330,
-      "total_ci_upper": 340,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 340
     },
     {
       "family": "DC Open",
@@ -81235,9 +80553,7 @@
       "walkin_source": "family",
       "total_estimate": 349,
       "total_ci_lower": 344,
-      "total_ci_upper": 355,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 355
     },
     {
       "family": "Pittsburgh Open",
@@ -81322,9 +80638,7 @@
       "walkin_source": "family",
       "total_estimate": 141,
       "total_ci_lower": 135,
-      "total_ci_upper": 148,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 148
     },
     {
       "family": "Pittsburgh Open",
@@ -81413,9 +80727,7 @@
       "walkin_source": "family",
       "total_estimate": 110,
       "total_ci_lower": 105,
-      "total_ci_upper": 115,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 115
     },
     {
       "family": "Pittsburgh Open",
@@ -81508,9 +80820,7 @@
       "walkin_source": "family",
       "total_estimate": 117,
       "total_ci_lower": 112,
-      "total_ci_upper": 123,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 123
     },
     {
       "family": "Pittsburgh Open",
@@ -81607,9 +80917,7 @@
       "walkin_source": "family",
       "total_estimate": 135,
       "total_ci_lower": 129,
-      "total_ci_upper": 141,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 141
     },
     {
       "family": "Pittsburgh Open",
@@ -81710,9 +81018,7 @@
       "walkin_source": "family",
       "total_estimate": 182,
       "total_ci_lower": 174,
-      "total_ci_upper": 191,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 191
     },
     {
       "family": "Pittsburgh Open",
@@ -81965,9 +81271,7 @@
       "walkin_source": "family",
       "total_estimate": 202,
       "total_ci_lower": 193,
-      "total_ci_upper": 212,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 212
     },
     {
       "family": "Pittsburgh Open",
@@ -82252,9 +81556,7 @@
       "walkin_source": "family",
       "total_estimate": 190,
       "total_ci_lower": 181,
-      "total_ci_upper": 199,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 199
     },
     {
       "family": "Pittsburgh Open",
@@ -82507,9 +81809,7 @@
       "walkin_source": "family",
       "total_estimate": 172,
       "total_ci_lower": 164,
-      "total_ci_upper": 180,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 180
     },
     {
       "family": "Pittsburgh Open",
@@ -82774,9 +82074,7 @@
       "walkin_source": "family",
       "total_estimate": 158,
       "total_ci_lower": 150,
-      "total_ci_upper": 165,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 165
     },
     {
       "family": "Atlantic City Open",
@@ -83189,9 +82487,7 @@
       "walkin_source": "family",
       "total_estimate": 614,
       "total_ci_lower": 605,
-      "total_ci_upper": 624,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 624
     },
     {
       "family": "Schenectady Open",
@@ -83276,9 +82572,7 @@
       "walkin_source": "estimate",
       "total_estimate": 76,
       "total_ci_lower": 76,
-      "total_ci_upper": 76,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 76
     },
     {
       "family": "Schenectady Open at Proctors",
@@ -83363,9 +82657,7 @@
       "walkin_source": "estimate",
       "total_estimate": 52,
       "total_ci_lower": 52,
-      "total_ci_upper": 52,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 52
     },
     {
       "family": "Southern Chess Congress",
@@ -83450,9 +82742,7 @@
       "walkin_source": "estimate",
       "total_estimate": 219,
       "total_ci_lower": 219,
-      "total_ci_upper": 219,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 219
     },
     {
       "family": "Southern Class Championships",
@@ -83745,9 +83035,7 @@
       "walkin_source": "estimate",
       "total_estimate": 220,
       "total_ci_lower": 220,
-      "total_ci_upper": 220,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 220
     },
     {
       "family": "Southern Class Championships",
@@ -84088,9 +83376,7 @@
       "walkin_source": "estimate",
       "total_estimate": 290,
       "total_ci_lower": 290,
-      "total_ci_upper": 290,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 290
     },
     {
       "family": "Southern Class Championships",
@@ -84403,9 +83689,7 @@
       "walkin_source": "estimate",
       "total_estimate": 285,
       "total_ci_lower": 285,
-      "total_ci_upper": 285,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 285
     },
     {
       "family": "Southern Class Championships",
@@ -84694,9 +83978,7 @@
       "walkin_source": "estimate",
       "total_estimate": 187,
       "total_ci_lower": 187,
-      "total_ci_upper": 187,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 187
     },
     {
       "family": "Southern Class Championships",
@@ -84781,9 +84063,7 @@
       "walkin_source": "estimate",
       "total_estimate": 216,
       "total_ci_lower": 216,
-      "total_ci_upper": 216,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 216
     },
     {
       "family": "Southern Class Championships",
@@ -84872,9 +84152,7 @@
       "walkin_source": "estimate",
       "total_estimate": 185,
       "total_ci_lower": 185,
-      "total_ci_upper": 185,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 185
     },
     {
       "family": "Southern Class Championships",
@@ -84967,9 +84245,7 @@
       "walkin_source": "estimate",
       "total_estimate": 224,
       "total_ci_lower": 224,
-      "total_ci_upper": 224,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 224
     },
     {
       "family": "Southern Class Championships",
@@ -85066,9 +84342,7 @@
       "walkin_source": "estimate",
       "total_estimate": 191,
       "total_ci_lower": 191,
-      "total_ci_upper": 191,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 191
     },
     {
       "family": "Southern Class Championships",
@@ -85169,9 +84443,7 @@
       "walkin_source": "estimate",
       "total_estimate": 216,
       "total_ci_lower": 216,
-      "total_ci_upper": 216,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 216
     },
     {
       "family": "Southern Open",
@@ -85256,9 +84528,7 @@
       "walkin_source": "family",
       "total_estimate": 219,
       "total_ci_lower": 210,
-      "total_ci_upper": 229,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 229
     },
     {
       "family": "Southern Open",
@@ -85347,9 +84617,7 @@
       "walkin_source": "family",
       "total_estimate": 212,
       "total_ci_lower": 203,
-      "total_ci_upper": 222,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 222
     },
     {
       "family": "Southern Open",
@@ -85442,9 +84710,7 @@
       "walkin_source": "family",
       "total_estimate": 221,
       "total_ci_lower": 211,
-      "total_ci_upper": 230,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 230
     },
     {
       "family": "Southern Open",
@@ -85541,9 +84807,7 @@
       "walkin_source": "family",
       "total_estimate": 241,
       "total_ci_lower": 231,
-      "total_ci_upper": 252,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 252
     },
     {
       "family": "Southern Open",
@@ -85644,9 +84908,7 @@
       "walkin_source": "family",
       "total_estimate": 189,
       "total_ci_lower": 181,
-      "total_ci_upper": 198,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 198
     },
     {
       "family": "Southern Open",
@@ -85975,9 +85237,7 @@
       "walkin_source": "family",
       "total_estimate": 278,
       "total_ci_lower": 266,
-      "total_ci_upper": 291,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 291
     },
     {
       "family": "Southern Open",
@@ -86314,9 +85574,7 @@
       "walkin_source": "family",
       "total_estimate": 307,
       "total_ci_lower": 294,
-      "total_ci_upper": 321,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 321
     },
     {
       "family": "Southern Open",
@@ -86593,9 +85851,7 @@
       "walkin_source": "family",
       "total_estimate": 241,
       "total_ci_lower": 231,
-      "total_ci_upper": 252,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 252
     },
     {
       "family": "Southern Open",
@@ -86876,9 +86132,7 @@
       "walkin_source": "family",
       "total_estimate": 196,
       "total_ci_lower": 188,
-      "total_ci_upper": 205,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 205
     },
     {
       "family": "Southwest Class Championships",
@@ -86963,9 +86217,7 @@
       "walkin_source": "family",
       "total_estimate": 268,
       "total_ci_lower": 265,
-      "total_ci_upper": 270,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 270
     },
     {
       "family": "Southwest Class Championships",
@@ -87054,9 +86306,7 @@
       "walkin_source": "family",
       "total_estimate": 308,
       "total_ci_lower": 305,
-      "total_ci_upper": 311,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 311
     },
     {
       "family": "Southwest Class Championships",
@@ -87149,9 +86399,7 @@
       "walkin_source": "family",
       "total_estimate": 339,
       "total_ci_lower": 336,
-      "total_ci_upper": 342,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 342
     },
     {
       "family": "Southwest Class Championships",
@@ -87248,9 +86496,7 @@
       "walkin_source": "family",
       "total_estimate": 367,
       "total_ci_lower": 363,
-      "total_ci_upper": 370,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 370
     },
     {
       "family": "Southwest Class Championships",
@@ -87351,9 +86597,7 @@
       "walkin_source": "family",
       "total_estimate": 398,
       "total_ci_lower": 394,
-      "total_ci_upper": 402,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 402
     },
     {
       "family": "Southwest Class Championships",
@@ -87682,9 +86926,7 @@
       "walkin_source": "family",
       "total_estimate": 410,
       "total_ci_lower": 406,
-      "total_ci_upper": 414,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 414
     },
     {
       "family": "Southwest Class Championships",
@@ -88041,9 +87283,7 @@
       "walkin_source": "family",
       "total_estimate": 440,
       "total_ci_lower": 436,
-      "total_ci_upper": 444,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 444
     },
     {
       "family": "Southwest Class Championships",
@@ -88392,9 +87632,7 @@
       "walkin_source": "family",
       "total_estimate": 456,
       "total_ci_lower": 451,
-      "total_ci_upper": 460,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 460
     },
     {
       "family": "Southwest Class Championships",
@@ -88839,9 +88077,7 @@
       "walkin_source": "family",
       "total_estimate": 504,
       "total_ci_lower": 500,
-      "total_ci_upper": 509,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 509
     },
     {
       "family": "Stamford Open",
@@ -88926,9 +88162,7 @@
       "walkin_source": "estimate",
       "total_estimate": 151,
       "total_ci_lower": 151,
-      "total_ci_upper": 151,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 151
     },
     {
       "family": "Stamford Open",
@@ -89017,9 +88251,7 @@
       "walkin_source": "estimate",
       "total_estimate": 178,
       "total_ci_lower": 178,
-      "total_ci_upper": 178,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 178
     },
     {
       "family": "Stamford Open",
@@ -89112,9 +88344,7 @@
       "walkin_source": "estimate",
       "total_estimate": 150,
       "total_ci_lower": 150,
-      "total_ci_upper": 150,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 150
     },
     {
       "family": "Stamford Open",
@@ -89211,9 +88441,7 @@
       "walkin_source": "estimate",
       "total_estimate": 186,
       "total_ci_lower": 186,
-      "total_ci_upper": 186,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 186
     },
     {
       "family": "Washington Chess Congress",
@@ -89298,9 +88526,7 @@
       "walkin_source": "family",
       "total_estimate": 199,
       "total_ci_lower": 196,
-      "total_ci_upper": 202,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 202
     },
     {
       "family": "Washington Chess Congress",
@@ -89389,9 +88615,7 @@
       "walkin_source": "family",
       "total_estimate": 212,
       "total_ci_lower": 209,
-      "total_ci_upper": 215,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 215
     },
     {
       "family": "Washington Chess Congress",
@@ -89484,9 +88708,7 @@
       "walkin_source": "family",
       "total_estimate": 235,
       "total_ci_lower": 232,
-      "total_ci_upper": 239,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 239
     },
     {
       "family": "Washington Chess Congress",
@@ -89583,9 +88805,7 @@
       "walkin_source": "family",
       "total_estimate": 253,
       "total_ci_lower": 249,
-      "total_ci_upper": 256,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 256
     },
     {
       "family": "Washington Chess Congress",
@@ -89686,9 +88906,7 @@
       "walkin_source": "family",
       "total_estimate": 291,
       "total_ci_lower": 287,
-      "total_ci_upper": 296,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 296
     },
     {
       "family": "Washington Chess Congress",
@@ -89957,9 +89175,7 @@
       "walkin_source": "family",
       "total_estimate": 268,
       "total_ci_lower": 264,
-      "total_ci_upper": 272,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 272
     },
     {
       "family": "Western Class Championships",
@@ -90268,9 +89484,7 @@
       "walkin_source": "family",
       "total_estimate": 379,
       "total_ci_lower": 371,
-      "total_ci_upper": 388,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 388
     },
     {
       "family": "Western Class Championships",
@@ -90579,9 +89793,7 @@
       "walkin_source": "family",
       "total_estimate": 362,
       "total_ci_lower": 354,
-      "total_ci_upper": 370,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 370
     },
     {
       "family": "Western Class Championships",
@@ -90666,9 +89878,7 @@
       "walkin_source": "family",
       "total_estimate": 209,
       "total_ci_lower": 205,
-      "total_ci_upper": 214,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 214
     },
     {
       "family": "Western Class Championships",
@@ -90757,9 +89967,7 @@
       "walkin_source": "family",
       "total_estimate": 211,
       "total_ci_lower": 207,
-      "total_ci_upper": 216,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 216
     },
     {
       "family": "Western Class Championships",
@@ -90852,9 +90060,7 @@
       "walkin_source": "family",
       "total_estimate": 266,
       "total_ci_lower": 260,
-      "total_ci_upper": 272,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 272
     },
     {
       "family": "Western Class Championships",
@@ -90951,9 +90157,7 @@
       "walkin_source": "family",
       "total_estimate": 257,
       "total_ci_lower": 251,
-      "total_ci_upper": 262,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 262
     },
     {
       "family": "Western Class Championships",
@@ -91054,9 +90258,7 @@
       "walkin_source": "family",
       "total_estimate": 265,
       "total_ci_lower": 259,
-      "total_ci_upper": 271,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 271
     },
     {
       "family": "Western Class Championships",
@@ -91405,9 +90607,7 @@
       "walkin_source": "family",
       "total_estimate": 441,
       "total_ci_lower": 431,
-      "total_ci_upper": 451,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 451
     },
     {
       "family": "Western Class Championships",
@@ -91792,9 +90992,7 @@
       "walkin_source": "family",
       "total_estimate": 407,
       "total_ci_lower": 398,
-      "total_ci_upper": 416,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 416
     },
     {
       "family": "World Open Under 13 Championship",
@@ -91879,9 +91077,7 @@
       "walkin_source": "estimate",
       "total_estimate": 268,
       "total_ci_lower": 268,
-      "total_ci_upper": 268,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 268
     },
     {
       "family": "World Open Under 13 Championship",
@@ -91970,9 +91166,7 @@
       "walkin_source": "estimate",
       "total_estimate": 151,
       "total_ci_lower": 151,
-      "total_ci_upper": 151,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 151
     },
     {
       "family": "World Open Under 13 Championship",
@@ -92065,9 +91259,7 @@
       "walkin_source": "estimate",
       "total_estimate": 147,
       "total_ci_lower": 147,
-      "total_ci_upper": 147,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 147
     },
     {
       "family": "World Open Under 13 Championship",
@@ -92164,9 +91356,7 @@
       "walkin_source": "estimate",
       "total_estimate": 172,
       "total_ci_lower": 172,
-      "total_ci_upper": 172,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 172
     },
     {
       "family": "World Open Under 13 Championship",
@@ -92267,9 +91457,7 @@
       "walkin_source": "estimate",
       "total_estimate": 173,
       "total_ci_lower": 173,
-      "total_ci_upper": 173,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 173
     },
     {
       "family": "World Open Under 13 Championship",
@@ -92562,9 +91750,7 @@
       "walkin_source": "estimate",
       "total_estimate": 142,
       "total_ci_lower": 142,
-      "total_ci_upper": 142,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 142
     },
     {
       "family": "World Open Under 13 Championship",
@@ -92829,9 +92015,7 @@
       "walkin_source": "estimate",
       "total_estimate": 121,
       "total_ci_lower": 121,
-      "total_ci_upper": 121,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 121
     },
     {
       "family": "World Open Under 13 Championship",
@@ -93060,9 +92244,7 @@
       "walkin_source": "estimate",
       "total_estimate": 88,
       "total_ci_lower": 88,
-      "total_ci_upper": 88,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 88
     },
     {
       "family": "World Open Under 13 Championship",
@@ -93263,9 +92445,7 @@
       "walkin_source": "estimate",
       "total_estimate": 84,
       "total_ci_lower": 84,
-      "total_ci_upper": 84,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 84
     },
     {
       "family": "World Open lower sections",
@@ -93522,9 +92702,7 @@
       "walkin_source": "family",
       "total_estimate": 152,
       "total_ci_lower": 141,
-      "total_ci_upper": 165,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 165
     },
     {
       "family": "World Open lower sections",
@@ -93805,9 +92983,7 @@
       "walkin_source": "family",
       "total_estimate": 154,
       "total_ci_lower": 142,
-      "total_ci_upper": 167,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 167
     },
     {
       "family": "World Open lower sections",
@@ -94088,9 +93264,7 @@
       "walkin_source": "family",
       "total_estimate": 138,
       "total_ci_lower": 127,
-      "total_ci_upper": 149,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 149
     },
     {
       "family": "World Open top 6 sections",
@@ -94675,9 +93849,7 @@
       "walkin_source": "family",
       "total_estimate": 1377,
       "total_ci_lower": 1366,
-      "total_ci_upper": 1389,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1389
     },
     {
       "family": "World Open top 6 sections",
@@ -95178,9 +94350,7 @@
       "walkin_source": "family",
       "total_estimate": 1243,
       "total_ci_lower": 1233,
-      "total_ci_upper": 1254,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1254
     },
     {
       "family": "World Open top 6 sections",
@@ -95721,32 +94891,30 @@
       "walkin_source": "family",
       "total_estimate": 1212,
       "total_ci_lower": 1202,
-      "total_ci_upper": 1222,
-      "count_observed_at": null,
-      "count_cohort_hash": null
+      "total_ci_upper": 1222
     }
   ],
-  "last_updated": "2026-11-09 22:18:00",
-  "is_stale": false,
+  "last_updated": "2026-11-09 19:16:08",
+  "is_stale": true,
   "counts_through": "2026-11-08",
   "alerts": [
     {
       "family": "Kings Island Open",
       "status": "on_pace",
-      "actual": 175,
+      "actual": 171,
       "expected": 184,
-      "deviation_pct": -5.0,
+      "deviation_pct": -7.2,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-5%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (-7%)"
     },
     {
       "family": "National Chess Congress",
       "status": "on_pace",
-      "actual": 188,
+      "actual": 186,
       "expected": 161,
-      "deviation_pct": 16.8,
+      "deviation_pct": 15.5,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+17%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+16%)"
     },
     {
       "family": "North American Open",
@@ -95769,11 +94937,11 @@
     {
       "family": "Boston Chess Congress",
       "status": "below_pace",
-      "actual": 4,
+      "actual": 3,
       "expected": 10,
-      "deviation_pct": -60.0,
+      "deviation_pct": -70.0,
       "n_years": 4,
-      "message": "Registrations are 60.0% below 4-year at-this-point pace"
+      "message": "Registrations are 70.0% below 4-year at-this-point pace"
     },
     {
       "family": "Liberty Bell Open",
@@ -95856,5 +95024,8 @@
       "n_years": 4,
       "message": "Registrations are 42.9% below 4-year at-this-point pace"
     }
-  ]
+  ],
+  "pipeline_degraded": true,
+  "degraded_reason": "Nightly run failed at the commit step; showing the last published data",
+  "degraded_at": "2026-11-09 22:21:24"
 }

@@ -1,38 +1,8 @@
 {
-  "generated": "2026-11-09 22:18:00",
-  "count": 9,
-  "total_occurrences": 9,
+  "generated": "2026-11-09 21:46:50",
+  "count": 6,
+  "total_occurrences": 6,
   "warnings": [
-    {
-      "step": "Validate scraped data",
-      "text": "No readable entry list for Saratoga Tournament Of-The-Ages Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKifng==); withdrawals unknown, kept index count 0",
-      "count": 1,
-      "generated": "2026-11-09 22:18:00"
-    },
-    {
-      "step": "Validate scraped data",
-      "text": "No readable entry list for 2027 New York State Senior Championship (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKifnQ==); withdrawals unknown, kept index count 0",
-      "count": 1,
-      "generated": "2026-11-09 22:18:00"
-    },
-    {
-      "step": "Validate scraped data",
-      "text": "No readable entry list for 2027 Mid-America Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKefoQ==); withdrawals unknown, kept index count 0",
-      "count": 1,
-      "generated": "2026-11-09 22:18:00"
-    },
-    {
-      "step": "Refresh tournament summary",
-      "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 live predictions still run from scrape data, but the training corpus is frozen: newly scraped events carry no registration timestamps, so they can never join model training or 04e grading, and early-bird spike features stay absent. Re-export from the CCA admin.",
-      "count": 1,
-      "generated": "2026-11-09 22:18:00"
-    },
-    {
-      "step": "Scan prediction data health (data_health.py)",
-      "text": "data-health: 3 MEDIUM finding(s) \u2014 see output/data_health.json",
-      "count": 1,
-      "generated": "2026-11-09 22:18:00"
-    },
     {
       "step": "Enrichment: fees",
       "text": "fee-merge skipped New York State High School Championship: flyer nyssc-highschool27 date 2026-02-28 != metadata 2027-02-27 (>3d)",
@@ -56,6 +26,18 @@
       "text": "standings easternclass 2026: not imported, 'Eastern Class Championships' and 'Eastern Class Championships (in Connecticut)' both name the 2026 edition",
       "count": 1,
       "generated": "2026-11-09 21:46:50"
+    },
+    {
+      "step": "Refresh tournament summary",
+      "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 live predictions still run from scrape data, but the training corpus is frozen: newly scraped events carry no registration timestamps, so they can never join model training or 04e grading, and early-bird spike features stay absent. Re-export from the CCA admin.",
+      "count": 1,
+      "generated": "2026-11-09 19:16:08"
+    },
+    {
+      "step": "Scan prediction data health (data_health.py)",
+      "text": "data-health: 2 MEDIUM finding(s) \u2014 see output/data_health.json",
+      "count": 1,
+      "generated": "2026-11-09 19:16:08"
     }
   ]
 }

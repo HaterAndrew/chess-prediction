@@ -22,6 +22,7 @@ export interface ValueCard {
 
 export interface ValuePayload {
   generated: string;
+  is_stale?: boolean;
   tournaments: ValueCard[];
 }
 

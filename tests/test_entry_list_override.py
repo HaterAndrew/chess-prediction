@@ -74,6 +74,14 @@ def test_matching_page_overrides_gross(run):
     assert mismatches["mismatches"] == []
 
 
+def test_empty_entry_list_is_observed_and_can_prove_an_empty_cohort(run):
+    import hashlib
+    rows, mismatches = run({"EO26": _page(0, 0)}, [_t("2026 Eastern Open", 0)])
+    assert rows[0]['count_cohort_hash'] == hashlib.sha256(b'').hexdigest()
+    assert rows[0]['count_observed_at']
+    assert mismatches['mismatches'] == []
+
+
 def test_wrong_page_keeps_index_count_and_records_mismatch(run):
     # The 2026-10-20 failure: the page read belongs to a different event.
     rows, mismatches = run({"ECCO26": _page(196, 10)},

@@ -27,7 +27,8 @@ import time
 import csv
 import json
 import logging
-from datetime import date, datetime, timedelta
+import hashlib
+from datetime import date, datetime, timedelta, timezone
 from urllib.parse import urlsplit, parse_qs
 
 import requests
@@ -186,6 +187,21 @@ MISMATCH_TOLERANCE_PCT = 0.05
 MISMATCH_PATH = os.path.join(OUTPUT_DIR, "scrape_mismatches.json")
 
 
+class ObservedCounts(tuple):
+    """Preserve the two-count caller contract and attach verified cohort metadata."""
+
+    def __new__(cls, active, withdrawn, html):
+        obj = super().__new__(cls, (active, withdrawn))
+        ids = set(re.findall(r'id=["\']#bname_(\d+)["\']', html))
+        obj.observed_at = None
+        obj.cohort_hash = None
+        if len(ids) == active + (withdrawn or 0):
+            hashed = sorted(hashlib.sha256(i.encode()).hexdigest() for i in ids)
+            obj.observed_at = datetime.now(timezone.utc).isoformat()
+            obj.cohort_hash = hashlib.sha256('\n'.join(hashed).encode()).hexdigest()
+        return obj
+
+
 def _fetch_entry_list(session, url):
     """(active, withdrawn) off one entry-list page; withdrawn is None when the
     page shows only an active count. Returns None when the page is missing,
@@ -210,10 +226,10 @@ def _fetch_entry_list(session, url):
         return _fetch_entry_list(session, 'https://www.chessaction.com/tournaments/' + paths.pop())
     wd_match = _WD_PATTERN.search(resp.text)
     if wd_match:
-        return int(wd_match.group(1)), int(wd_match.group(2))
+        return ObservedCounts(int(wd_match.group(1)), int(wd_match.group(2)), resp.text)
     active_match = _ACTIVE_ONLY_PATTERN.search(resp.text)
     if active_match:
-        return int(active_match.group(1)), None
+        return ObservedCounts(int(active_match.group(1)), None, resp.text)
     return None
 
 
@@ -257,7 +273,7 @@ def scrape_withdrawals(tournaments):
         t['withdrawal_count'] = 0
         t['active_count'] = t['entry_count']
 
-        if not url or t['entry_count'] == 0:
+        if not url:
             continue
 
         # A name-derived WO URL does not identify a section group. Use only
@@ -290,6 +306,9 @@ def scrape_withdrawals(tournaments):
             continue
 
         t['active_count'] = active
+        if getattr(counts, 'cohort_hash', None):
+            t['count_observed_at'] = counts.observed_at
+            t['count_cohort_hash'] = counts.cohort_hash
         if withdrawn is not None:
             t['withdrawal_count'] = withdrawn
             # Entry list is authoritative once it agrees with the index card.
@@ -479,7 +498,8 @@ def load_existing_csv():
     return rows
 
 
-CSV_FIELDS = ['date', 'tournament_name', 'entry_count', 'active_count', 'withdrawal_count', 'url']
+CSV_FIELDS = ['date', 'tournament_name', 'entry_count', 'active_count', 'withdrawal_count', 'url',
+              'count_observed_at', 'count_cohort_hash']
 
 
 def save_csv(rows):
@@ -511,6 +531,8 @@ def update_csv(tournaments):
             'active_count': str(t.get('active_count', t['entry_count'])),
             'withdrawal_count': str(t.get('withdrawal_count', 0)),
             'url': t['url'],
+            'count_observed_at': t.get('count_observed_at', ''),
+            'count_cohort_hash': t.get('count_cohort_hash', ''),
         }
 
     all_rows = sorted(index.values(), key=lambda r: (r['date'], r['tournament_name']))

@@ -35,6 +35,16 @@ RATE_LIMIT_PER_MIN = "20"
 # Ceiling across every caller. The per-IP limit above cannot bind an attacker
 # who rotates addresses or drives the endpoint from other people's browsers.
 GLOBAL_RATE_LIMIT_PER_MIN = "60"
+# Change only after the private collector's shadow reconciliation passes.
+ENTRY_VALUE_MODE = "receipts"
+
+# Service calls are private to this account; the public Worker never holds
+# Chess Action credentials or binds the financial namespace. Previews do not
+# inherit service bindings. Provision the collector before enabling receipts.
+[[services]]
+binding = "FINANCE"
+service = "chess-finance"
+entrypoint = "ReceiptService"
 
 # KV namespace: rate-limit buckets + daily-cost counter
 [[kv_namespaces]]

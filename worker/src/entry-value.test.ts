@@ -117,6 +117,37 @@ function get(key?: string, ip = "203.0.113.7"): Request {
 }
 
 describe("handleEntryValue", () => {
+  it("never falls back to fee estimates when receipts mode is unconfigured", async () => {
+    const res = await handleEntryValue(envWith({ ENTRY_VALUE_MODE: "receipts" }), get("correct horse"));
+    expect(res.status).toBe(503);
+    expect(await res.json()).toEqual({ error: "receipts_not_configured" });
+  });
+
+  it("checks the key before calling the private financial service", async () => {
+    let calls = 0;
+    const env = envWith({ ENTRY_VALUE_MODE: "receipts", FINANCE: {
+      receipts: async () => { calls++; return { generated: GENERATED, mode: "receipts", events: [] }; },
+    } as unknown as NonNullable<Env["FINANCE"]> });
+    expect((await handleEntryValue(env, get("wrong"))).status).toBe(401);
+    expect(calls).toBe(0);
+    const request = get("correct horse");
+    request.headers.set("Origin", "https://attacker.invalid");
+    expect((await handleEntryValue(env, request)).status).toBe(403);
+    expect(calls).toBe(0);
+    const res = await handleEntryValue(env, get("correct horse"));
+    expect(res.status).toBe(200);
+    expect(res.headers.get("Cache-Control")).toBe("no-store");
+    expect(calls).toBe(1);
+  });
+
+  it("does not disclose private service errors", async () => {
+    const env = envWith({ ENTRY_VALUE_MODE: "receipts", FINANCE: {
+      receipts: async () => { throw new Error("synthetic-private-value"); },
+    } as unknown as NonNullable<Env["FINANCE"]> });
+    const res = await handleEntryValue(env, get("correct horse"));
+    expect(res.status).toBe(502);
+    expect(await res.text()).not.toContain("synthetic-private-value");
+  });
   it("is closed when the secret is unset (every Preview)", async () => {
     const res = await handleEntryValue(envWith({ ENTRY_VALUE_KEY: undefined }), get("anything"));
     expect(res.status).toBe(403);
@@ -142,11 +173,20 @@ describe("handleEntryValue", () => {
     expect(body.events[0].value).toBe(5000);
   });
 
-  it("locks an address out after repeated wrong keys, even with the right one", async () => {
+  it("limits wrong guesses without locking out an authorized key holder", async () => {
     const env = envWith();
     for (let i = 0; i < FAIL_LIMIT_PER_IP; i++) await handleEntryValue(env, get("wrong"));
-    expect((await handleEntryValue(env, get("correct horse"))).status).toBe(429);
+    expect((await handleEntryValue(env, get("wrong"))).status).toBe(429);
+    expect((await handleEntryValue(env, get("correct horse"))).status).toBe(200);
     expect((await handleEntryValue(env, get("correct horse", "198.51.100.9"))).status).toBe(200);
+  });
+
+  it("does not let unauthenticated global failures block the correct key", async () => {
+    const kv = { get: async (key: string) => key.startsWith("vf:global:") ? "50" : null,
+      put: async () => {} } as unknown as KVNamespace;
+    const env = envWith({ KV: kv });
+    expect((await handleEntryValue(env, get("wrong"))).status).toBe(429);
+    expect((await handleEntryValue(env, get("correct horse"))).status).toBe(200);
   });
 
   it("refuses other methods", async () => {

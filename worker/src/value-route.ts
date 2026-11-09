@@ -9,7 +9,8 @@
 import { timingSafeEqual } from "./cca-proxy";
 import type { Env } from "./env";
 import { entryValues, type ValuePayload } from "./entry-value";
-import { jsonResponse } from "./http";
+import { isOriginAllowed, jsonResponse } from "./http";
+import type { ReceiptCard } from "./finance/types";
 
 export const VALUE_KEY_HEADER = "X-Value-Key";
 // The link handed to the organizer. It lands on the page's own #value
@@ -60,27 +61,36 @@ export async function handleEntryValue(env: Env, request: Request): Promise<Resp
     jsonResponse(body, { status, headers: NO_STORE }, env, request);
 
   if (request.method !== "GET") return reply({ error: "method_not_allowed" }, 405);
+  if (!isOriginAllowed(env, request)) return reply({ error: "forbidden_origin" }, 403);
   if (!env.ENTRY_VALUE_KEY) return reply({ error: "not_configured" }, 403);
   // An unavailable limiter means guesses cannot be bounded: refuse.
   if (!env.KV) return reply({ error: "limiter_unavailable" }, 503);
 
-  const keys = failKeys(request);
-  const [ipFails, globalFails] = await Promise.all(keys.map((k) => count(env.KV!, k)));
-  if (ipFails >= FAIL_LIMIT_PER_IP || globalFails >= FAIL_LIMIT_GLOBAL) {
-    return reply({ error: "too_many_attempts" }, 429);
-  }
-
   const provided = request.headers.get(VALUE_KEY_HEADER) ?? "";
   if (!provided || !timingSafeEqual(provided, env.ENTRY_VALUE_KEY)) {
+    const keys = failKeys(request);
+    const [ipFails, globalFails] = await Promise.all(keys.map((k) => count(env.KV!, k)));
+    if (ipFails >= FAIL_LIMIT_PER_IP || globalFails >= FAIL_LIMIT_GLOBAL) return reply({ error: "too_many_attempts" }, 429);
     await recordFailure(env.KV, keys);
     return reply({ error: "wrong_key" }, 401);
   }
 
   try {
     const data = await loadPayload(env);
+    if (env.ENTRY_VALUE_MODE === "receipts") {
+      if (!env.FINANCE) return reply({ error: "receipts_not_configured" }, 503);
+      const tournaments = (data.tournaments as ReceiptCard[]).map(t => ({
+        family: t.family, year: t.year, status: t.status, event_start: t.event_start,
+        event_end: t.event_end, registration_close: t.registration_close, regular_fee: t.regular_fee,
+        current_count: t.current_count, point_estimate: t.point_estimate,
+        count_observed_at: t.count_observed_at, count_cohort_hash: t.count_cohort_hash,
+      }));
+      return reply(await env.FINANCE.receipts({ generated: data.generated, is_stale: data.is_stale, tournaments }), 200);
+    }
+    if (env.ENTRY_VALUE_MODE && env.ENTRY_VALUE_MODE !== "legacy") return reply({ error: "invalid_value_mode" }, 503);
     return reply({ generated: data.generated, events: entryValues(data) }, 200);
-  } catch (err) {
-    console.error("entry-value:", err);
+  } catch {
+    console.error(JSON.stringify({ event: "entry_value_failed", reason: "data_unavailable" }));
     return reply({ error: "data_unavailable" }, 502);
   }
 }

@@ -1,0 +1,23 @@
+name = "chess-finance"
+main = "src/finance/collector.ts"
+# Latest date supported by the project's pinned workerd binary.
+compatibility_date = "2026-10-30"
+workers_dev = false
+preview_urls = false
+
+[triggers]
+# Bounded nightly batches; each active event is collected once per day.
+crons = ["30 2-8 * * *"]
+
+[[kv_namespaces]]
+binding = "FINANCE_KV"
+id = "50bf72343d1946c891921a0b1d070baa"
+
+[observability]
+enabled = true
+
+[observability.traces]
+enabled = true
+
+# Secret: CHESS_ACTION_COOKIE from tools/finance_login.py. There is no password
+# login in scheduled work, so expiration never starts another email-code loop.

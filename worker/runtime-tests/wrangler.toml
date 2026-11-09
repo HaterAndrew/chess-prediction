@@ -1,0 +1,6 @@
+name = "chess-finance-runtime-tests"
+main = "worker.ts"
+# Latest date supported by the project's pinned workerd binary.
+compatibility_date = "2026-10-30"
+workers_dev = false
+preview_urls = false

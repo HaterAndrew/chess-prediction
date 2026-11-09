@@ -89,7 +89,7 @@ def backfill_date(date_str):
              "entry_count": str(t["entry_count"]),
              "active_count": str(t.get("active_count", t["entry_count"])),
              "withdrawal_count": str(t.get("withdrawal_count", 0)),
-             "url": t["url"]}
+             "url": t["url"], "count_observed_at": "", "count_cohort_hash": ""}
             for t in consolidated]
     logger.info("Scraped %d tournaments for %s", len(rows), date_str)
     return rows

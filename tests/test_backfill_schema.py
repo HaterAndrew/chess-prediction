@@ -42,7 +42,8 @@ def _write_scrape_csv(path, rows, fields=CSV_FIELDS):
 def _row(date, name, entries=100):
     return {"date": date, "tournament_name": name,
             "entry_count": str(entries), "active_count": str(entries),
-            "withdrawal_count": "0", "url": f"https://example.invalid/{name}"}
+            "withdrawal_count": "0", "url": f"https://example.invalid/{name}",
+            "count_observed_at": "", "count_cohort_hash": ""}
 
 
 def test_backfill_schema_is_not_a_local_copy():

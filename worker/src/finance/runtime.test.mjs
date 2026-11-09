@@ -151,6 +151,10 @@ describe("native Worker source boundaries", () => {
     expect(additional.status).toBe(200);
     expect(additional.headers.get("Cache-Control")).toBe("no-store");
     expect((await additional.json()).events[0]).toMatchObject({ value: 20, basis: "chess_action_receipts" });
+    await kv.put("receipts:Example%20Open:2026", JSON.stringify({ ...snapshot, registration_close: null }));
+    const unknownClose = await rpcRuntime.dispatchFetch("https://local.test/entry-value", request("synthetic"));
+    expect(unknownClose.status).toBe(200);
+    expect((await unknownClose.json()).events[0]).toMatchObject({ value: 20, missing: null });
     expect((await rpcRuntime.dispatchFetch("https://local.test/entry-value", request("wrong"))).status).toBe(401);
     expect((await rpcRuntime.dispatchFetch("https://local.test/entry-value", { headers: {
       "X-Value-Key": "synthetic", Origin: "https://attacker.invalid",
@@ -167,6 +171,9 @@ describe("native Worker source boundaries", () => {
   }, 30_000);
   it("advances beyond failed early events and refreshes completed-only families", async () => {
     expect((await invoke("/scheduler", {})).body).toEqual({ attempted: 13, finished_attempted: true });
+  });
+  it("retries repaired calendar failures without removing unrelated backoff", async () => {
+    expect((await invoke("/calendar-retry", {})).body).toEqual({ attempted: ["1"], unrelatedUnchanged: true, missingUnchanged: true });
   });
   it("exposes no financial HTTP endpoint, even if a route is accidentally added", async () => {
     expect((await invoke("/http-is-private", {})).body).toEqual({ status: 404 });

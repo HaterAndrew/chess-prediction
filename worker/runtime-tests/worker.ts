@@ -122,6 +122,29 @@ export default {
         Date.parse(`2026-11-09T0${hour}:30:00Z`), client()));
       return Response.json({ attempted, batches });
     }
+    if (new URL(request.url).pathname === "/calendar-retry") {
+      const attemptedAt = "2026-11-09T01:00:00Z";
+      const store = new Map<string, string>([
+        ["event_status:Legacy:2026", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: "event_calendar_missing" })],
+        ["event_status:Missing:2026", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: "event_calendar_missing" })],
+        ["event_status:Unrelated:2026", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: "unreconciled_payment_status" })],
+      ]);
+      const kv = { get: async (key: string) => store.get(key) ?? null,
+        put: async (key: string, value: string) => { store.set(key, value); } } as unknown as KVNamespace;
+      const source = new ChessActionClient();
+      source.resume = async () => "<select id='tournments'><option value='1'>2026 Legacy</option><option value='2'>2026 Missing</option><option value='3'>2026 Unrelated</option></select>";
+      const attempted: string[] = [];
+      source.request = async (_path, filters) => { attempted.push(filters!.tname); throw new Error("source_timeout"); };
+      const cards: ReceiptCard[] = [
+        { family: "Legacy", year: 2026, status: "live", current_count: 1, event_start: "2026-11-14", registration_close: null },
+        { family: "Missing", year: 2026, status: "live", current_count: 1 },
+        { family: "Unrelated", year: 2026, status: "live", current_count: 1, event_start: "2026-11-14" },
+      ];
+      await collectBatch({ FINANCE_KV: kv, CHESS_ACTION_COOKIE: "synthetic" }, cards,
+        Date.parse("2026-11-09T02:30:00Z"), source);
+      return Response.json({ attempted, unrelatedUnchanged: JSON.parse(store.get("event_status:Unrelated:2026")!).attempted_at === attemptedAt,
+        missingUnchanged: JSON.parse(store.get("event_status:Missing:2026")!).attempted_at === attemptedAt });
+    }
     if (new URL(request.url).pathname === "/scheduler") {
       const store = new Map<string, string>();
       const kv = { get: async (key: string | string[]) => Array.isArray(key) ? new Map(key.map(k => [k, store.get(k) ?? null])) : store.get(key) ?? null,

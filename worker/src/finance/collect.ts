@@ -7,7 +7,7 @@ import { parsePublicRegistrations } from "./public-cohort";
 import { OrderAcquisition } from "./order-cache";
 import { acquireCartRows, invoiceCacheKey } from "./orders";
 import { readHistory, readSnapshot, readCalibration, invalidHistory } from "./store";
-import { snapshotKey, validateSnapshot } from "./types";
+import { calendarDate, snapshotKey, validateSnapshot } from "./types";
 import type { ReceiptCard, ReceiptSnapshot } from "./types";
 
 export interface FinanceEnv {
@@ -95,7 +95,9 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
     let lastAttempt: { attempted_at?: string; ok?: boolean; reason?: string; resume?: boolean } = {};
     try { if (attemptRaw) lastAttempt = JSON.parse(attemptRaw); } catch { /* Rebuild malformed status from source. */ }
     // One failed attempt per UTC day prevents an unmapped event monopolizing every batch.
-    if (lastAttempt.ok === false && !lastAttempt.resume
+    const repairedCalendar = lastAttempt.reason === "event_calendar_missing" && calendarDate(card.event_start)
+      && (card.registration_close == null || calendarDate(card.registration_close));
+    if (lastAttempt.ok === false && !lastAttempt.resume && !repairedCalendar
         && Date.parse(lastAttempt.attempted_at ?? "") >= midnight) continue;
     const due = card.status === "live" || recent ? midnight : now - 7 * DAY;
     if (!previous || lastAttempt.ok === false || Date.parse(previous.source_as_of) < due

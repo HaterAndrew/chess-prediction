@@ -24,7 +24,7 @@ export interface ReceiptSnapshot {
   tournament_id: string;
   source_as_of: string;
   event_start: string;
-  registration_close: string;
+  registration_close: string | null;
   regular_fee_cents: number | null;
   registration_count: number;
   summary: ReceiptSummary;
@@ -73,6 +73,12 @@ export interface ReceiptValue {
 export const FINANCE_MAX_AGE_MS = 36 * 3_600_000;
 export const snapshotKey = (family: string, year: number) => `receipts:${encodeURIComponent(family)}:${year}`;
 
+export function calendarDate(value: unknown): value is string {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const time = Date.parse(value + "T00:00:00Z");
+  return Number.isFinite(time) && new Date(time).toISOString().slice(0, 10) === value;
+}
+
 export function cents(value: unknown): number {
   if (typeof value !== "number" && typeof value !== "string") throw new Error("invalid_money");
   const formatted = String(value).trim();
@@ -106,8 +112,8 @@ export function validateSnapshot(raw: unknown): ReceiptSnapshot {
   const s = raw as ReceiptSnapshot;
   if (s.schema !== 1 || typeof s.family !== "string" || !Number.isInteger(s.year)
       || !/^\d+$/.test(s.tournament_id) || !Number.isFinite(Date.parse(s.source_as_of))
-      || !/^\d{4}-\d{2}-\d{2}$/.test(s.event_start)
-      || !/^\d{4}-\d{2}-\d{2}$/.test(s.registration_close)
+      || !calendarDate(s.event_start)
+      || (s.registration_close !== null && !calendarDate(s.registration_close))
       || !s.summary || typeof s.summary !== "object" || !Array.isArray(s.cohort) || !Array.isArray(s.buckets)
       || !Number.isInteger(s.registration_count) || s.registration_count < 0
       || s.cohort.some(r => !r || !/^[a-f0-9]{64}$/.test(r.id) || !Number.isFinite(Date.parse(r.paid_at)))

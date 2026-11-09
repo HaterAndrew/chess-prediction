@@ -3,7 +3,8 @@ import { safeFailure } from "./collect";
 import type { FinanceEnv } from "./collect";
 import type { CollectorStatus } from "./store";
 
-const HEARTBEATS = ["*/10 0-1,9-23 * * *", "0,10,20,40,50 2-8 * * *"];
+// Retain the former expressions while already queued events finish rolling out.
+const HEARTBEATS = ["10,30,50 * * * *", "*/10 0-1,9-23 * * *", "0,10,20,40,50 2-8 * * *"];
 
 export const isSessionHeartbeat = (cron: string | undefined): boolean =>
   typeof cron === "string" && HEARTBEATS.includes(cron);

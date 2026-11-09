@@ -39,11 +39,14 @@ waiting. The probe never starts a new login or sends a code.
 
 An approved session's server-side lifetime is not documented or verified.
 Daily operation can run without a browser while that session remains valid.
-One bounded Orders-page read every ten minutes maintains activity between the
-nightly financial batches. Heartbeats avoid the financial batch's start slot,
+One bounded Orders-page read maintains activity between financial batches.
+Collection opportunities run every twenty minutes; session-only reads occupy
+the intervening ten-minute slots. Existing daily/weekly eligibility and failed-event
+backoff still apply, so a completed fresh collection is not repeated on every tick.
+Heartbeats avoid the financial batch's start slot,
 write only private session health, and never advance a payment snapshot's source
-date. A failed heartbeat marks older projections stale. This addresses idle
-expiry; it cannot bypass absolute expiry or an upstream sign-out.
+date. A failed heartbeat marks older projections stale. Periodic activity may
+avoid idle expiry; it cannot bypass absolute expiry or an upstream sign-out.
 Indefinite operation without reauthorization requires a supported machine feed
 or another vendor-supported authentication method. Do not disable two-factor
 authentication or automate reading authentication emails to hide expiry.
@@ -109,8 +112,9 @@ line of only the requested order IDs, applying the8 MB bound to retained rows;
 unrelated broad-query rows are discarded as each page is read. Bulk checkpoint reads use groups of at most 100 keys and
 an 8 MB retained-data envelope. These use the supported [bulk KV read API](https://developers.cloudflare.com/kv/api/read-key-value-pairs/). Oversized acquisition fails visibly without
 publishing partial results. These envelopes bound supported work; deployment
-capacity and daily refresh coverage require live validation. There are at most35 live-event slots per day while calibration is
-due, and complex shared orders can reduce that capacity. Check live inventory
+capacity and daily refresh coverage require live validation. There are 72 bounded
+collection opportunities daily; a large event may require several of them, and
+complex shared orders can reduce capacity. Check live inventory
 and real request costs before promising a daily refresh for every event.
 
 Family and pooled calibration caches fail independently, with fixed error logs.

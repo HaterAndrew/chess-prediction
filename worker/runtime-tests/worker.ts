@@ -16,7 +16,7 @@ export default {
       const kv = { put: async (key: string, value: string) => { store.set(key, value); } } as unknown as KVNamespace;
       let rejected = false;
       try {
-        await financeWorker.scheduled({ cron: "*/10 0-1,9-23 * * *" } as ScheduledController, { FINANCE_KV: kv });
+        await financeWorker.scheduled({ cron: "10,30,50 * * * *" } as ScheduledController, { FINANCE_KV: kv });
       } catch (error) {
         if (!(error instanceof Error) || error.message !== "finance_session_refresh_failed") throw error;
         rejected = true;

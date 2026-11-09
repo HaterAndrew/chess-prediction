@@ -11,9 +11,11 @@ const storage = () => {
 
 describe("approved-session heartbeat", () => {
   it("recognizes only the configured heartbeat schedules", () => {
+    expect(isSessionHeartbeat("10,30,50 * * * *")).toBe(true);
     expect(isSessionHeartbeat("*/10 0-1,9-23 * * *")).toBe(true);
     expect(isSessionHeartbeat("0,10,20,40,50 2-8 * * *")).toBe(true);
     expect(isSessionHeartbeat("30 2-8 * * *")).toBe(false);
+    expect(isSessionHeartbeat("0,20,40 * * * *")).toBe(false);
     expect(isSessionHeartbeat("")).toBe(false);
   });
 

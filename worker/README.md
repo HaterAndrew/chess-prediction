@@ -30,9 +30,12 @@ the health probe, the two CCA fetch proxies, entry value and price.
 
 ```sh
 cd worker
-npm ci
-npm run dev                  # serves the whole site + API at http://localhost:8787
+corepack npm ci --ignore-scripts
+corepack npm run dev                  # serves the whole site + API at http://localhost:8787
 ```
+
+CI uses Corepack with the hashed `packageManager` npm pin for provenance
+verification. Vulnerability and signature checks remain blocking.
 
 Node 22.12 or newer in the pinned Node 22 series is required (`.mise.toml` at the repo root pins it). Secrets for local
 runs go in `worker/.dev.vars` (`ANTHROPIC_API_KEY=…`, `CCA_PROXY_KEY=…`),

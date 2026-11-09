@@ -42,12 +42,13 @@ jobs:
           node-version-file: .node-version
           cache: npm
           cache-dependency-path: worker/package-lock.json
+      # Corepack uses the hashed packageManager pin for current provenance support.
       # Native binaries resolve from platform packages without install scripts.
-      - run: npm ci --ignore-scripts
-      - run: npm audit --audit-level=moderate
-      - run: npm audit signatures --json
-      - run: npm run typecheck
-      - run: npm test
+      - run: corepack npm ci --ignore-scripts
+      - run: corepack npm audit --audit-level=moderate
+      - run: corepack npm audit signatures --json
+      - run: corepack npm run typecheck
+      - run: corepack npm test
       # Validates wrangler.toml and the asset manifest under ../docs without
       # credentials or an upload; Workers Builds runs the real deploy on main.
-      - run: npx wrangler deploy --dry-run
+      - run: corepack npm exec -- wrangler deploy --dry-run

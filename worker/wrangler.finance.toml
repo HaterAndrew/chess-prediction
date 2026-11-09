@@ -7,7 +7,7 @@ preview_urls = false
 
 [triggers]
 # Bounded nightly batches; each active event is collected once per day.
-crons = ["30 2-8 * * *"]
+crons = ["30 2-8 * * *", "*/10 0-1,9-23 * * *", "0,10,20,40,50 2-8 * * *"]
 
 [[kv_namespaces]]
 binding = "FINANCE_KV"

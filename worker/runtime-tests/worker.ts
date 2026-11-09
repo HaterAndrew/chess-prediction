@@ -11,6 +11,18 @@ const syntheticInvoice = (event: string) => `<html><head></head><body><div id="i
 
 export default {
   async fetch(request: Request): Promise<Response> {
+    if (new URL(request.url).pathname === "/session-missing") {
+      const store = new Map<string, string>();
+      const kv = { put: async (key: string, value: string) => { store.set(key, value); } } as unknown as KVNamespace;
+      let rejected = false;
+      try {
+        await financeWorker.scheduled({ cron: "*/10 0-1,9-23 * * *" } as ScheduledController, { FINANCE_KV: kv });
+      } catch (error) {
+        if (!(error instanceof Error) || error.message !== "finance_session_refresh_failed") throw error;
+        rejected = true;
+      }
+      return Response.json({ rejected, session: JSON.parse(store.get("session:status")!), financial_status_written: store.has("collector:status") });
+    }
     if (new URL(request.url).pathname === "/scheduled") {
       const store = new Map<string, string>();
       const kv = { get: async (key: string | string[]) => Array.isArray(key) ? new Map(key.map(k => [k, store.get(k) ?? null])) : store.get(key) ?? null,

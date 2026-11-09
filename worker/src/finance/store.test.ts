@@ -21,6 +21,45 @@ async function data() {
 }
 
 describe("financial fault containment", () => {
+  it("refuses malformed session-health records instead of treating them as healthy", async () => {
+    const { card, map, kv } = await data();
+    for (const raw of ["invalid JSON", "null", "[]", JSON.stringify({ ok: "false", attempted_at: "2026-11-09T03:00:00.000Z", reason: null }),
+      JSON.stringify({ ok: false, attempted_at: "invalid date", reason: "source_login_expired" }),
+      JSON.stringify({ ok: true, attempted_at: "2026-11-09T03:00:00.000Z", reason: "unexpected" })]) {
+      map.set("session:status", raw);
+      await expect(receiptValues(kv, [card], Date.parse("2026-11-09T04:00:00Z"))).rejects.toThrow();
+    }
+  });
+
+  it("does not apply a session failure older than the financial snapshot", async () => {
+    const { card, map, kv } = await data();
+    map.set("session:status", JSON.stringify({ attempted_at: "2026-11-09T01:30:00.000Z", ok: false, reason: "source_login_expired" }));
+    expect((await receiptValues(kv, [card], Date.parse("2026-11-09T04:00:00Z")))[0])
+      .toMatchObject({ value: 20, stale: false, missing: null });
+  });
+
+  it("does not clear an existing collection failure after a healthy heartbeat", async () => {
+    const { card, map, kv } = await data();
+    map.set("collector:status", JSON.stringify({ attempted_at: "2026-11-09T03:00:00.000Z", ok: false, reason: "source_network_failed" }));
+    map.set("session:status", JSON.stringify({ attempted_at: "2026-11-09T03:30:00.000Z", ok: true, reason: null }));
+    expect((await receiptValues(kv, [card], Date.parse("2026-11-09T04:00:00Z")))[0])
+      .toMatchObject({ value: null, stale: true, missing: "collection_failed" });
+  });
+  it("retains the prior amount and source date after a newer session failure", async () => {
+    const { card, snapshot, map, kv } = await data();
+    const [projection] = await receiptValues(kv, [card], Date.parse("2026-11-09T03:00:00Z"));
+    map.set(snapshotKey(card.family, 2026), JSON.stringify({ ...snapshot, projection }));
+    map.set("session:status", JSON.stringify({ attempted_at: "2026-11-09T03:30:00.000Z", ok: false, reason: "source_login_expired" }));
+    expect((await receiptValues(kv, [card], Date.parse("2026-11-09T04:00:00Z")))[0])
+      .toEqual({ ...projection, stale: true, missing: "collection_failed" });
+  });
+
+  it("does not let a successful heartbeat refresh the financial source date", async () => {
+    const { card, map, kv } = await data();
+    map.set("session:status", JSON.stringify({ attempted_at: "2026-11-09T03:30:00.000Z", ok: true, reason: null }));
+    expect((await receiptValues(kv, [card], Date.parse("2026-11-09T04:00:00Z")))[0])
+      .toMatchObject({ value: 20, source_as_of: "2026-11-09T02:00:00Z", stale: false, missing: null });
+  });
   it("rejects a corrupt retained projection instead of displaying its amount", async () => {
     const { card, snapshot, map, kv } = await data();
     const [projection] = await receiptValues(kv, [card], Date.parse("2026-11-09T03:00:00Z"));
@@ -60,7 +99,7 @@ describe("financial fault containment", () => {
     expect(values[0]).toMatchObject({ value: 20, confidence: "pooled" });
     const projection = { ...values[0], value: 19, future_cents: 900 };
     map.set(snapshotKey(card.family, 2026), JSON.stringify({ ...snapshot, projection }));
-    map.set("collector:status", JSON.stringify({ attempted_at: "2026-11-09T02:30:00Z", ok: false, reason: "source_login_expired" }));
+    map.set("collector:status", JSON.stringify({ attempted_at: "2026-11-09T02:30:00.000Z", ok: false, reason: "source_login_expired" }));
     expect((await receiptValues(kv, [card], Date.parse("2026-11-09T03:00:00Z")))[0])
       .toMatchObject({ value: 19, stale: true, missing: "collection_failed" });
   });

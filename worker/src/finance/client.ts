@@ -3,6 +3,7 @@ export type SourceFetch = (url: string, init?: RequestInit) => Promise<Response>
 // @ts-expect-error plain ESM shared with the public proxy and Python parity gate.
 import { deriveEntryListCode, entryListUrl } from "../entrylist_codes.mjs";
 const ORIGIN = "https://chessaction.com";
+const AUTH_PATHS = new Set(["/login.php", "/admin/login.php", "/admin/vsecurelogin.php"]);
 const PATHS = new Set([
   "/login.php", "/index.php", "/user_profile.php",
   "/admin/login.php", "/admin/vsecurelogin.php", "/admin/index.php", "/admin/search.php",
@@ -65,6 +66,7 @@ export class ChessActionClient {
 
   async request(path: string, fields?: Record<string, string>, method = "GET"): Promise<string> {
     let url = new URL(path, ORIGIN + "/admin/");
+    const authenticationRequest = AUTH_PATHS.has(url.pathname);
     let body = fields && method === "POST" ? new URLSearchParams(fields).toString() : undefined;
     if (fields && method === "GET") url.search = new URLSearchParams(fields).toString();
     for (let redirects = 0; redirects <= 4; redirects++) {
@@ -92,7 +94,11 @@ export class ChessActionClient {
         const location = response.headers.get("Location");
         await response.body?.cancel();
         if (!location) throw new Error("source_redirect_failed");
-        url = new URL(location, url);
+        const target = new URL(location, url);
+        if (!authenticationRequest && target.origin === ORIGIN && AUTH_PATHS.has(target.pathname)) {
+          throw new Error("source_login_expired");
+        }
+        url = target;
         if (response.status === 303 || ((response.status === 301 || response.status === 302) && method === "POST")) {
           method = "GET"; body = undefined;
         }

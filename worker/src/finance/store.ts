@@ -5,6 +5,18 @@ import type { ReceiptCard, ReceiptSnapshot, ReceiptValue } from "./types";
 export interface StoredReceipt extends ReceiptSnapshot { projection?: ReceiptValue }
 export interface CollectorStatus { attempted_at: string; ok: boolean; reason: string | null }
 
+function sessionStatus(raw: string | null): CollectorStatus | null {
+  if (raw === null) return null;
+  const value = JSON.parse(raw) as Partial<CollectorStatus> | null;
+  if (!value || typeof value !== "object" || typeof value.ok !== "boolean"
+      || typeof value.attempted_at !== "string" || !Number.isFinite(Date.parse(value.attempted_at))
+      || new Date(value.attempted_at).toISOString() !== value.attempted_at
+      || (value.ok ? value.reason !== null : typeof value.reason !== "string" || !value.reason)) {
+    throw new Error("invalid_session_status");
+  }
+  return value as CollectorStatus;
+}
+
 export const invalidHistory = (error: unknown) => error instanceof SyntaxError || error instanceof Error
   && ["invalid_history", "invalid_snapshot", "summary_mismatch", "duplicate_registration"].includes(error.message);
 
@@ -49,8 +61,9 @@ export async function readCalibration(kv: KVNamespace, family: string): Promise<
 }
 
 export async function receiptValues(kv: KVNamespace, cards: ReceiptCard[], now = Date.now()): Promise<ReceiptValue[]> {
-  const statusRaw = await kv.get("collector:status");
+  const [statusRaw, sessionRaw] = await Promise.all([kv.get("collector:status"), kv.get("session:status")]);
   const status = statusRaw ? JSON.parse(statusRaw) as CollectorStatus : null;
+  const session = sessionStatus(sessionRaw);
   return Promise.all(cards.filter(c => c.status === "live").map(async card => {
     let snapshot: StoredReceipt | null = null;
     try {
@@ -63,6 +76,9 @@ export async function receiptValues(kv: KVNamespace, cards: ReceiptCard[], now =
       value = { ...value, value: null, stale: true, missing: "collection_failed" };
     }
     if (status?.ok === false && status.attempted_at >= (value.source_as_of ?? "")) {
+      value = { ...value, value: null, stale: true, missing: "collection_failed" };
+    }
+    if (session?.ok === false && session.attempted_at >= (value.source_as_of ?? "")) {
       value = { ...value, value: null, stale: true, missing: "collection_failed" };
     }
     // Only a previously validated projection is retained. Never synthesize a

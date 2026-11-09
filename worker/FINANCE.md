@@ -38,8 +38,13 @@ use the newest email from that invocation. Do not rerun it while its prompt is
 waiting. The probe never starts a new login or sends a code.
 
 An approved session's server-side lifetime is not documented or verified.
-Daily operation can run without a browser while that session remains valid;
-indefinite operation without reauthorization requires a supported machine feed
+Daily operation can run without a browser while that session remains valid.
+One bounded Orders-page read every ten minutes maintains activity between the
+nightly financial batches. Heartbeats avoid the financial batch's start slot,
+write only private session health, and never advance a payment snapshot's source
+date. A failed heartbeat marks older projections stale. This addresses idle
+expiry; it cannot bypass absolute expiry or an upstream sign-out.
+Indefinite operation without reauthorization requires a supported machine feed
 or another vendor-supported authentication method. Do not disable two-factor
 authentication or automate reading authentication emails to hide expiry.
 

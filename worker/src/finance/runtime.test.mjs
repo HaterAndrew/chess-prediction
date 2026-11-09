@@ -48,6 +48,11 @@ const summaryHtml = `<table><thead><tr>
 </tr></thead><tbody><tr><td>100.00</td><td>10.00</td><td>3.00</td><td>2.00</td><td>15.00</td><td>100.00</td></tr></tbody></table>`;
 
 describe("native Worker source boundaries", () => {
+  it("routes the heartbeat to session health without starting a financial batch", async () => {
+    expect((await invoke("/session-missing", {})).body).toMatchObject({
+      rejected: true, session: { ok: false, reason: "source_session_required" }, financial_status_written: false,
+    });
+  });
   it("proves invoice cart membership and rejects hidden or additional players", async () => {
     const player = (event, section, subtotal) => `<div class="invoicetname">Tournamen Name: ${event}</div><div class="invoicekey">Player's Name: Synthetic Person</div><div class="invoicekey">Section: ${section}</div><div class="invoicevaluesub">Sub Total</div><div class="invoicevalueextend">US $ ${subtotal}</div>`;
     const document = lines => `<html><head><script>/* Never executed */</script></head><body><div id="invoicecontents">${lines}<div class="invoicevaluesub">PayPal Contribution</div><div class="invoicevalueextend">US $0.00</div><div class="invoicevaluesub">Grand Total</div><div class="invoicevalueextend">US $10.00</div><div class="invoicefotter">Footer</div></div></body></html>`;
@@ -155,6 +160,10 @@ describe("native Worker source boundaries", () => {
     const preview = await rpcRuntime.getWorker("preview");
     expect((await preview.fetch("https://local.test/entry-value", request("synthetic"))).status).toBe(403);
     expect((await preview.fetch("https://local.test/entry-value", request("synthetic-secondary"))).status).toBe(403);
+    await kv.put("session:status", JSON.stringify({ ok: "false", attempted_at: "invalid", reason: null }));
+    const malformed = await rpcRuntime.dispatchFetch("https://local.test/entry-value", request("synthetic"));
+    expect(malformed.status).toBe(502);
+    expect(await malformed.json()).toEqual({ error: "data_unavailable" });
   }, 30_000);
   it("advances beyond failed early events and refreshes completed-only families", async () => {
     expect((await invoke("/scheduler", {})).body).toEqual({ attempted: 13, finished_attempted: true });

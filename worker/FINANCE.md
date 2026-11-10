@@ -40,8 +40,8 @@ waiting. The probe never starts a new login or sends a code.
 An approved session's server-side lifetime is not documented or verified.
 Daily operation can run without a browser while that session remains valid.
 One bounded Orders-page read maintains activity between financial batches.
-Collection opportunities run every twenty minutes; session-only reads occupy
-the intervening ten-minute slots. Existing daily/weekly eligibility and failed-event
+Money collection runs at minutes 0 and 20; registration training collection
+uses minute 40. Session-only reads occupy minutes 10, 30 and 50. Existing daily/weekly eligibility and failed-event
 backoff still apply, so a completed fresh collection is not repeated on every tick.
 Heartbeats avoid the financial batch's start slot,
 write only private session health, and never advance a payment snapshot's source
@@ -91,7 +91,8 @@ pre-split World Open combined financial records are excluded. Historical final
 reports cannot establish historical refund timing; use prospective snapshots
 for that validation.
 
-Financial batches run every twenty minutes, at most six events per batch.
+Financial batches run at minutes 0 and 20, at most six events per batch.
+The separate [registration training feed](REGISTRATIONS.md) uses minute 40.
 Active and recently completed events are revisited daily; older calibration
 events weekly. Only reconciled snapshots replace existing data. A previous
 validated projection may remain visible with an explicit stale marker.

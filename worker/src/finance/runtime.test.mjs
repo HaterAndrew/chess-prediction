@@ -49,6 +49,42 @@ const summaryHtml = `<table><thead><tr>
 </tr></thead><tbody><tr><td>100.00</td><td>10.00</td><td>3.00</td><td>2.00</td><td>15.00</td><td>100.00</td></tr></tbody></table>`;
 
 describe("native Worker source boundaries", () => {
+  it("resolves a yearless source name only through exact source identity, family and start date", async () => {
+    const card = { family: "Saratoga Tournament Of-The-Ages Open", year: 2027, status: "live", event_start: "2027-02-26" };
+    const options = [{ id: "4912", title: card.family }];
+    const html = `<input name="tid" value="4912"><input name="tourid" value="4912"><input name="tname" value="${card.family}"><input name="startson" value="2027-02-26"><input name="privateDiscount" value="PRIVATE">`;
+    expect((await invoke("/registration-edition", { card, options, html })).body).toEqual({ id: "4912", reads: 1 });
+    expect((await invoke("/registration-edition", { card, options: [{ id: "4912", title: "2027 " + card.family }], html: "not read" })).body).toEqual({ id: "4912", reads: 0 });
+    for (const invalid of [html.replace('value="2027-02-26"', 'value="2026-02-26"'), html.replace('value="4912"', 'value="999"'),
+      html.replace(card.family, "Another Open"), html + '<input name="tid" value="4912">']) {
+      expect((await invoke("/registration-edition", { card, options, html: invalid })).body.error).toMatch(/incompatible_edition|source_schema_changed/);
+    }
+    expect((await invoke("/registration-edition", { card, options: [...options, { id: "999", title: card.family }], html })).body).toEqual({ error: "ambiguous_tournament", reads: 0 });
+  });
+  it("retains last-good registration aggregates when a nonempty source loses every timestamp", async () => {
+    const result = (await invoke("/registration-null-timestamps", {})).body;
+    expect(result.result).toEqual({ collected: 0, failed: 1 });
+    expect(result.current).toMatchObject({ ok: false, reason: "registration_timestamps_missing" });
+    expect(result.current.data).toEqual(result.previous);
+    expect(result.current.data.ts_count).toBe(1);
+    expect(result.validation).toEqual({ collected: 0, failed: 1 });
+    expect(result.afterValidation).toMatchObject({ ok: false, reason: "registration_cache_invalid" });
+    expect(result.afterValidation.data).toEqual(result.previous);
+  });
+  it("retries an ordinary training report after a preceding report exhausted its invocation", async () => {
+    const result = (await invoke("/registration-retry", {})).body;
+    expect(result).toMatchObject({ first: { collected: 1, failed: 1 }, retry: true,
+      second: { collected: 1, failed: 0 }, totals: [10000, 10000] });
+    expect(result.puts).toBeLessThanOrEqual(24);
+  });
+  it("contains training failure and failed diagnostic writes without invalidating a valid money projection", async () => {
+    const result = (await invoke("/registration-failure-isolation", {})).body;
+    expect(result.before[0]).toMatchObject({ value: 20, missing: null, stale: false });
+    expect(result.after).toEqual(result.before);
+    expect(result.rejected).toBe(true); expect(result.financial_status_written).toBe(false);
+    expect(result.training_status_written).toBe(true); expect(result.puts).toBe(2);
+    expect(result.training_feed[0]).toMatchObject({ ok: false, reason: "collection_failed", data: { total: 1, ts_count: 1 } });
+  });
   it("bounds attempted writes and preserves publication ordering at every storage failure", async () => {
     const results = (await invoke("/quota-faults", {})).body;
     expect(results).toHaveLength(results[0].writes + 2);
@@ -98,6 +134,8 @@ describe("native Worker source boundaries", () => {
       expect(day.maximumBatch).toBeLessThanOrEqual(12);
       expect(day.maximumHeartbeat).toBe(1);
       expect(day.completed).toBe(36); expect(day.snapshots).toBe(36);
+      expect(day.trainingSlots).toBe(24); expect(day.moneySlots).toBe(48);
+      expect(day.trainingCompleted).toBe(36); expect(day.trainingSnapshots).toBe(36);
       expect(day.conserved).toBe(true); expect(day.checkpointWritesArePerEvent).toBe(true);
     }
   }, 30_000);
@@ -186,7 +224,7 @@ describe("native Worker source boundaries", () => {
     const bindings = { ALLOWED_ORIGIN: "https://local.test", ENTRY_VALUE_MODE: "receipts",
       TEST_DATA: { generated: asOf, tournaments: [card] } };
     rpcRuntime = new Miniflare(convertV4MiniflareOptions({ log: new Log(LogLevel.ERROR), workers: [
-      { ...publicScript, name: "public", bindings: { ...bindings, ENTRY_VALUE_KEY: "synthetic", ENTRY_VALUE_KEY_SECONDARY: "synthetic-secondary" }, kvNamespaces: { KV: "limiter" },
+      { ...publicScript, name: "public", bindings: { ...bindings, ENTRY_VALUE_KEY: "synthetic", ENTRY_VALUE_KEY_SECONDARY: "synthetic-secondary", CCA_PROXY_KEY: "synthetic-proxy" }, kvNamespaces: { KV: "limiter" },
         serviceBindings: { FINANCE: { name: "finance", entrypoint: "ReceiptService" } } },
       { ...financeScript, name: "finance", kvNamespaces: { FINANCE_KV: "receipts" } },
       { ...publicScript, name: "preview", bindings, kvNamespaces: { KV: "preview-limiter" } },
@@ -217,6 +255,35 @@ describe("native Worker source boundaries", () => {
     const preview = await rpcRuntime.getWorker("preview");
     expect((await preview.fetch("https://local.test/entry-value", request("synthetic"))).status).toBe(403);
     expect((await preview.fetch("https://local.test/entry-value", request("synthetic-secondary"))).status).toBe(403);
+    const registration = { version: 1, family: card.family, year: card.year, tournament_id: "123", source_as_of: asOf,
+      active: 1, withdrawn: 0, total: 1, ts_count: 1, first_reg: "2026-11-01 12:00:00", last_reg: "2026-11-01 12:00:00",
+      daily: [{ T: 0, daily_regs: 1 }], calendar_daily: [{ date: "2026-11-01", daily_regs: 1 }] };
+    await kv.put("registrations:Example%20Open:2026", JSON.stringify({ attempted_at: asOf, ok: true, reason: null,
+      data: registration, source_rows: ["PRIVATE ENVELOPE"] }));
+    const keysBefore = (await kv.list()).keys.map(k => k.name);
+    const feed = await rpcRuntime.dispatchFetch("https://local.test/registration-feed?tid=999", { headers: { "X-Proxy-Key": "synthetic-proxy" } });
+    expect(feed.status).toBe(200); expect(feed.headers.get("Cache-Control")).toBe("no-store");
+    const payload = await feed.json();
+    expect(payload.records).toHaveLength(1); expect(payload.records[0].data).toEqual(registration);
+    expect(JSON.stringify(payload)).not.toMatch(/PRIVATE|entry_cents|net_cents|cohort|paid_at/);
+    expect((await kv.list()).keys.map(k => k.name)).toEqual(keysBefore);
+    for (const headers of [{}, { "X-Proxy-Key": "wrong" }, { "X-Value-Key": "synthetic" }]) {
+      expect((await rpcRuntime.dispatchFetch("https://local.test/registration-feed", { headers })).status).toBe(403);
+    }
+    expect((await preview.fetch("https://local.test/registration-feed", { headers: { "X-Proxy-Key": "synthetic-proxy" } })).status).toBe(403);
+    expect((await finance.fetch("https://local.test/registration-feed")).status).toBe(404);
+    await kv.put("registration_collector:status", JSON.stringify({ attempted_at: new Date(now).toISOString(), ok: false, reason: "source_login_expired" }));
+    const failedFeed = await rpcRuntime.dispatchFetch("https://local.test/registration-feed", { headers: { "X-Proxy-Key": "synthetic-proxy" } });
+    const failedRecord = (await failedFeed.json()).records[0];
+    expect(failedRecord).toMatchObject({ ok: false, reason: "source_login_expired", data: registration });
+    // Financial projection remains good after the training-wide failure.
+    expect((await (await rpcRuntime.dispatchFetch("https://local.test/entry-value", request("synthetic"))).json()).events[0]).toMatchObject({ value: 20, missing: null });
+    await kv.put("registrations:Example%20Open:2026", JSON.stringify({ attempted_at: asOf, ok: true, reason: null,
+      data: { ...registration, email: "PRIVATE DATA" } }));
+    const damaged = await rpcRuntime.dispatchFetch("https://local.test/registration-feed", { headers: { "X-Proxy-Key": "synthetic-proxy" } });
+    const damagedPayload = await damaged.json();
+    expect(damagedPayload.records[0]).toMatchObject({ ok: false, reason: "registration_cache_invalid", data: null });
+    expect(JSON.stringify(damagedPayload)).not.toMatch(/PRIVATE|email/);
     await kv.put("session:status", JSON.stringify({ ok: "false", attempted_at: "invalid", reason: null }));
     const malformed = await rpcRuntime.dispatchFetch("https://local.test/entry-value", request("synthetic"));
     expect(malformed.status).toBe(502);

@@ -7,8 +7,8 @@ const AUTH_PATHS = new Set(["/login.php", "/admin/login.php", "/admin/vsecurelog
 const PATHS = new Set([
   "/login.php", "/index.php", "/user_profile.php",
   "/admin/login.php", "/admin/vsecurelogin.php", "/admin/index.php", "/admin/search.php",
-  "/admin/set_player_data_for_datatable.php",
-  "/admin/ajax_get_txn_total.php", "/admin/invoice.php",
+  "/admin/set_player_data_for_datatable.php", "/admin/ajaxRegistrationDataTable.php",
+  "/admin/ajax_get_txn_total.php", "/admin/invoice.php", "/admin/add_edit_tour.php",
 ]);
 const MAX_BYTES = 8_000_000;
 
@@ -71,9 +71,15 @@ export class ChessActionClient {
     if (fields && method === "GET") url.search = new URLSearchParams(fields).toString();
     for (let redirects = 0; redirects <= 4; redirects++) {
       if (url.origin !== ORIGIN || url.username || url.password || !PATHS.has(url.pathname)) throw new Error("source_destination_refused");
+      if (url.pathname === "/admin/add_edit_tour.php" && (method !== "GET"
+          || [...url.searchParams.keys()].join() !== "tid" || !/^\d{1,12}$/.test(url.searchParams.get("tid") ?? ""))) throw new Error("source_destination_refused");
       if (!this.remainingMs || ++this.requests > this.requestLimit) throw new Error("source_request_limit");
       const headers = new Headers({ "User-Agent": "Mozilla/5.0 ChessEntries/1.0",
         "Referer": ORIGIN + (["/login.php", "/admin/login.php", "/admin/vsecurelogin.php"].includes(path) ? path : "/admin/search.php") });
+      if (url.pathname === "/admin/ajaxRegistrationDataTable.php") {
+        headers.set("X-Requested-With", "XMLHttpRequest");
+        headers.set("Referer", ORIGIN + "/admin/registrations.php");
+      }
       if (this.cookies.size) headers.set("Cookie", [...this.cookies].map(([k, v]) => `${k}=${v}`).join("; "));
       if (body !== undefined) {
         headers.set("Content-Type", "application/x-www-form-urlencoded");
@@ -149,6 +155,11 @@ export class ChessActionClient {
     const search = await this.request("search.php");
     if (!/id\s*=\s*["']tournments["']/.test(search) || !search.includes("Continental Chess Association")) throw new Error("source_login_failed");
     return search;
+  }
+
+  async eventSettings(tournamentId: string): Promise<string> {
+    if (!/^\d{1,12}$/.test(tournamentId)) throw new Error("source_destination_refused");
+    return this.request("add_edit_tour.php", { tid: tournamentId });
   }
 
   async invoice(orderId: string): Promise<string> {

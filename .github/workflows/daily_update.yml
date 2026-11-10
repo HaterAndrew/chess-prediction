@@ -56,6 +56,9 @@ jobs:
 
       - name: Update predictions
         id: predict
+        env:
+          CCA_PROXY_URL: ${{ vars.CCA_PROXY_URL }}
+          CCA_PROXY_KEY: ${{ secrets.CCA_PROXY_KEY }}
         run: |
           cd "$GITHUB_WORKSPACE"
           python auto_update.py --skip-scrape ${{ steps.scrape.outcome == 'failure' && '--scrape-failed' || '' }}

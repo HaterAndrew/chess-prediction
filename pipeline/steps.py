@@ -78,6 +78,24 @@ def step_data_prep():
     so this step is safe to run even when the manual export is days old — but a
     badly stale export still hides newly-opened tournaments, so it warns.
     """
+    from dataprep.registration_feed import FeedError, refresh_feed, source_feed_enabled
+    if source_feed_enabled(config.OUTPUT_DIR):
+        try:
+            stats = refresh_feed(config.OUTPUT_DIR)
+            print(f"  Registration feed: {stats}")
+            if stats['failed'] or stats['stale'] or stats['empty']:
+                msg = (f"Registration feed incomplete: {stats['failed']} failed, "
+                       f"{stats['stale']} stale, {stats['empty']} without timestamps; "
+                       f"reasons={stats['failure_reasons']}; retained verified curves for those editions.")
+                print(f"  WARNING: {msg}")
+                warns._PIPELINE_WARNINGS.append({'step': 'Registration feed', 'text': msg})
+        except FeedError as error:
+            msg = str(error)
+            print(f"  WARNING: {msg}")
+            warns._PIPELINE_WARNINGS.append({'step': 'Registration feed', 'text': msg})
+        from reconcile_final_counts import reconcile_final_counts
+        reconcile_final_counts(config.OUTPUT_DIR)
+        return
     src = os.path.expanduser("~/Downloads/all_registrations.csv")
     if not os.path.exists(src):
         # The export only adds NEW tournaments to the roster — so without it the

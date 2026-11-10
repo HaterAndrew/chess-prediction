@@ -2,7 +2,7 @@
 import re
 from urllib.parse import urlsplit
 
-FLYER_RE = re.compile(r"([a-z][a-z0-9]*?)(\d{2})(?:-([a-z]+))?\.html?$", re.I)
+FLYER_RE = re.compile(r"([a-z][a-z0-9]*?)(\d{2})(?:-([a-z][a-z0-9]*))?\.html?$", re.I)
 
 
 def flyer_parts(url):

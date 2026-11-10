@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-10 16:10:54",
+  "generated": "2026-11-10 16:14:43",
   "count": 6,
   "total_occurrences": 6,
   "warnings": [
@@ -7,31 +7,31 @@
       "step": "Validate scraped data",
       "text": "No readable entry list for Saratoga Tournament Of-The-Ages Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKifng==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-10 13:01:10"
+      "generated": "2026-11-10 16:14:43"
     },
     {
       "step": "Validate scraped data",
       "text": "No readable entry list for 2027 New York State Senior Championship (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKifnQ==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-10 13:01:10"
+      "generated": "2026-11-10 16:14:43"
     },
     {
       "step": "Validate scraped data",
       "text": "No readable entry list for 2027 Mid-America Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKefoQ==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-10 13:01:10"
+      "generated": "2026-11-10 16:14:43"
     },
     {
-      "step": "Refresh tournament summary",
-      "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 live predictions still run from scrape data, but the training corpus is frozen: newly scraped events carry no registration timestamps, so they can never join model training or 04e grading, and early-bird spike features stay absent. Re-export from the CCA admin.",
+      "step": "Registration feed",
+      "text": "Registration feed incomplete: 52 failed, 0 stale, 0 without timestamps; reasons={'not_collected': 52}; retained verified curves for those editions.",
       "count": 1,
-      "generated": "2026-11-10 13:01:10"
+      "generated": "2026-11-10 16:14:43"
     },
     {
       "step": "Scan prediction data health (data_health.py)",
       "text": "data-health: 2 MEDIUM finding(s) \u2014 see output/data_health.json",
       "count": 1,
-      "generated": "2026-11-10 13:01:10"
+      "generated": "2026-11-10 16:14:43"
     },
     {
       "step": "Enrichment: fees",

@@ -1,11 +1,11 @@
 {
   "generated": "2026-11-10",
-  "scanned_at": "2026-11-10T13:05:18",
+  "scanned_at": "2026-11-10T16:17:18",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
     "MEDIUM": 2,
-    "INFO": 30
+    "INFO": 19
   },
   "findings": [
     {
@@ -71,67 +71,13 @@
     {
       "severity": "INFO",
       "mode": "roster-pending",
-      "family": "Atlantic Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Central California Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Continental Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Eastern Chess Congress",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Eastern Class Championships",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
       "family": "George Washington Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
-      "family": "Indianapolis Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Los Angeles Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
       "family": "Mid-America Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Midwest Class Championships",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "New York State Championship",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
     {
@@ -167,12 +113,6 @@
     {
       "severity": "INFO",
       "mode": "roster-pending",
-      "family": "Southern Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
       "family": "Southwest Class Championships",
       "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
     },
@@ -184,12 +124,6 @@
     },
     {
       "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "World Open Under 13 Championship",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
-    },
-    {
-      "severity": "INFO",
       "mode": "historical-no-curve",
       "family": "207 cards",
       "message": "historical editions lack day-by-day registration data (no timestamps captured)"
@@ -197,7 +131,7 @@
     {
       "severity": "INFO",
       "mode": "walkin-global-fallback",
-      "family": "69 cards",
+      "family": "59 cards",
       "message": "walk-in multiplier used the global 'estimate' fallback (no family-specific stats)"
     }
   ]

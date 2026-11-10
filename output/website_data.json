@@ -1,8 +1,8 @@
 {
   "generated": "2026-11-10",
-  "generated_time": "2026-11-10T08:01:34.629092-05:00",
+  "generated_time": "2026-11-10T11:15:00.112351-05:00",
   "model": "N5v4_Final",
-  "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). Beyond T-14 the point estimate is blended toward the family's most recent final count (0.40 at T<=28, 0.60 beyond), which measures better than the ensemble alone at those lead times. From T-14 in, it is averaged in log space, half and half, with the pickup forecast: the current count plus the entries last year's edition took after the same point. An event whose past finals have no registration curve moves toward its last final in log space instead (weight 1.0 beyond T-28, down to 0.3 at T-1), and one with no past final toward the spread of first-edition finals (beyond T-42, fully from T-60). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage; for an event with two or more past finals, or one moved toward its last final, each side is held to the year-over-year spread of finals. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration; inside two weeks the CI is sized around the pickup blend. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (147 family-years across 48 families).",
+  "model_description": "Ensemble model (N5v4): historical ratio (harmonic mean) + per-family pooled Huber regression (final ~ count_at_T + T). T anchored to event_start. T-dependent weights (ratio: 0.80 at T<=3, 0.55 at T<=7, 0.30 at T<=28, 0.15 at T>28). Beyond T-14 the point estimate is blended toward the family's most recent final count (0.40 at T<=28, 0.60 beyond), which measures better than the ensemble alone at those lead times. From T-14 in, it is averaged in log space, half and half, with the pickup forecast: the current count plus the entries last year's edition took after the same point. An event whose past finals have no registration curve moves toward its last final in log space instead (weight 1.0 beyond T-28, down to 0.3 at T-1), and one with no past final toward the spread of first-edition finals (beyond T-42, fully from T-60). 80% CI from lognormal prediction intervals, LOO-calibrated with T-dependent shrinkage; for an event with two or more past finals, or one moved toward its last final, each side is held to the year-over-year spread of finals. Rolling retraining on completed 2026 tournaments. Automated bias + CI recalibration; inside two weeks the CI is sized around the pickup blend. Walk-in multiplier: post-hoc adjustment using historical standings-to-prereg ratios (149 family-years across 49 families).",
   "n_completed_in_training": 43,
   "tournaments": [
     {
@@ -15,13 +15,13 @@
       "early_bird_fee": null,
       "regular_fee": 138.0,
       "onsite_fee": 160.0,
-      "current_count": 217,
-      "gross_count": 217,
+      "current_count": 223,
+      "gross_count": 223,
       "withdrawal_count": 4,
       "days_remaining": 3,
-      "point_estimate": 329,
-      "ci_lower": 287,
-      "ci_upper": 379,
+      "point_estimate": 334,
+      "ci_lower": 290,
+      "ci_upper": 385,
       "ci_level": 0.8,
       "historical": [
         {
@@ -769,7 +769,7 @@
         ],
         [
           181,
-          217
+          223
         ]
       ],
       "daily_start_date": "2026-05-13",
@@ -836,9 +836,9 @@
       "shadow_forecasts": [
         {
           "route": "metadata_pace",
-          "point": 364,
-          "ci_lower": 322,
-          "ci_upper": 413
+          "point": 375,
+          "ci_lower": 331,
+          "ci_upper": 424
         },
         {
           "route": "metadata_historical_avg",
@@ -847,16 +847,16 @@
           "ci_upper": 364
         }
       ],
-      "count_observed_at": "2026-11-10T13:00:50.938271+00:00",
-      "count_cohort_hash": "b6b01151111f66e6524dd494c1d48b81d5911ce7ddd37e679d8d02de473e572e",
+      "count_observed_at": "2026-11-10T16:14:23.602030+00:00",
+      "count_cohort_hash": "e73bdde2853c851f9af7ba3c5c742bf94d9b4416e13d0d7a8467d32d2c3863b0",
       "pace_alert": {
         "family": "Kings Island Open",
         "status": "on_pace",
-        "actual": 217,
+        "actual": 223,
         "expected": 214,
-        "deviation_pct": 1.5,
+        "deviation_pct": 4.3,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+2%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+4%)"
       }
     },
     {
@@ -869,13 +869,13 @@
       "early_bird_fee": null,
       "regular_fee": 138.0,
       "onsite_fee": 160.0,
-      "current_count": 195,
-      "gross_count": 195,
+      "current_count": 200,
+      "gross_count": 200,
       "withdrawal_count": 5,
       "days_remaining": 17,
-      "point_estimate": 652,
-      "ci_lower": 585,
-      "ci_upper": 725,
+      "point_estimate": 654,
+      "ci_lower": 586,
+      "ci_upper": 729,
       "ci_level": 0.8,
       "historical": [
         {
@@ -1655,7 +1655,7 @@
         ],
         [
           189,
-          195
+          200
         ]
       ],
       "daily_start_date": "2026-05-05",
@@ -1722,9 +1722,9 @@
       "shadow_forecasts": [
         {
           "route": "metadata_pace",
-          "point": 656,
-          "ci_lower": 574,
-          "ci_upper": 751
+          "point": 673,
+          "ci_lower": 588,
+          "ci_upper": 770
         },
         {
           "route": "metadata_historical_avg",
@@ -1733,16 +1733,16 @@
           "ci_upper": 677
         }
       ],
-      "count_observed_at": "2026-11-10T13:00:52.128064+00:00",
-      "count_cohort_hash": "c89f2eed4f08996cc33db53e51465b6534f6c07ef6a27a698e9703966758d587",
+      "count_observed_at": "2026-11-10T16:14:24.758937+00:00",
+      "count_cohort_hash": "ae1b3e36a6489b7178055969a630f8da708b8b7fe63dfbb987162b48b0f089fc",
       "pace_alert": {
         "family": "National Chess Congress",
         "status": "on_pace",
-        "actual": 195,
+        "actual": 200,
         "expected": 169,
-        "deviation_pct": 15.6,
+        "deviation_pct": 18.5,
         "n_years": 4,
-        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+16%)"
+        "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+18%)"
       }
     },
     {
@@ -1759,8 +1759,8 @@
       "gross_count": 431,
       "withdrawal_count": 9,
       "days_remaining": 46,
-      "point_estimate": 1201,
-      "ci_lower": 1122,
+      "point_estimate": 1200,
+      "ci_lower": 1121,
       "ci_upper": 1285,
       "ci_level": 0.8,
       "historical": [
@@ -2575,7 +2575,7 @@
           "ci_upper": 1199
         }
       ],
-      "count_observed_at": "2026-11-10T13:00:55.576294+00:00",
+      "count_observed_at": "2026-11-10T16:14:28.264018+00:00",
       "count_cohort_hash": "625b7422466ad18a1d92482aea38c565cd46fa9ee34fea10342cbd141c5137e7",
       "pace_alert": {
         "family": "North American Open",
@@ -2602,7 +2602,7 @@
       "withdrawal_count": 0,
       "days_remaining": 46,
       "point_estimate": 375,
-      "ci_lower": 345,
+      "ci_lower": 344,
       "ci_upper": 409,
       "ci_level": 0.8,
       "historical": [
@@ -3000,7 +3000,7 @@
           "ci_upper": 404
         }
       ],
-      "count_observed_at": "2026-11-10T13:00:54.384414+00:00",
+      "count_observed_at": "2026-11-10T16:14:27.094619+00:00",
       "count_cohort_hash": "6ddaee272db8ba775162f3fdfa88440d6007968781998cbbeb0ef7ef130ec3f2",
       "pace_alert": {
         "family": "Eastern Open",
@@ -3026,9 +3026,9 @@
       "gross_count": 4,
       "withdrawal_count": 0,
       "days_remaining": 59,
-      "point_estimate": 354,
-      "ci_lower": 286,
-      "ci_upper": 424,
+      "point_estimate": 353,
+      "ci_lower": 285,
+      "ci_upper": 422,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3359,7 +3359,7 @@
           "ci_upper": 387
         }
       ],
-      "count_observed_at": "2026-11-10T13:00:56.704589+00:00",
+      "count_observed_at": "2026-11-10T16:14:29.395085+00:00",
       "count_cohort_hash": "cfb351772320b14da081ac3d023fb503e59848a1a5e368bb92dfd5109d32af0d",
       "pace_alert": {
         "family": "Boston Chess Congress",
@@ -3385,9 +3385,9 @@
       "gross_count": 4,
       "withdrawal_count": 0,
       "days_remaining": 66,
-      "point_estimate": 561,
-      "ci_lower": 453,
-      "ci_upper": 671,
+      "point_estimate": 560,
+      "ci_lower": 452,
+      "ci_upper": 670,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3718,7 +3718,7 @@
           "ci_upper": 547
         }
       ],
-      "count_observed_at": "2026-11-10T13:00:58.972412+00:00",
+      "count_observed_at": "2026-11-10T16:14:31.670917+00:00",
       "count_cohort_hash": "449cf6043618affcaab2ba0f668bdede63ddade3748e5d34505038437d2ee169",
       "pace_alert": {
         "family": "Liberty Bell Open",
@@ -3744,9 +3744,9 @@
       "gross_count": 1,
       "withdrawal_count": 0,
       "days_remaining": 66,
-      "point_estimate": 378,
-      "ci_lower": 305,
-      "ci_upper": 452,
+      "point_estimate": 377,
+      "ci_lower": 304,
+      "ci_upper": 451,
       "ci_level": 0.8,
       "historical": [
         {
@@ -3893,7 +3893,7 @@
           "ci_upper": 382
         }
       ],
-      "count_observed_at": "2026-11-10T13:00:57.856610+00:00",
+      "count_observed_at": "2026-11-10T16:14:30.517492+00:00",
       "count_cohort_hash": "58eae1ca59dabd0942196a7fd0466b7480ce3c4954133ac8dd6392d6c4275279",
       "pace_alert": {
         "family": "Golden State Open",
@@ -4232,7 +4232,7 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-10T13:01:00.080424+00:00",
+      "count_observed_at": "2026-11-10T16:14:32.834657+00:00",
       "count_cohort_hash": "cd93a6b6df56a7193f46c451fb1f396bcffadbaf5adcc3088caff37f1481b4f1",
       "pace_alert": {
         "family": "Southwest Class Championships",
@@ -4566,7 +4566,7 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-10T13:01:03.300050+00:00",
+      "count_observed_at": "2026-11-10T16:14:35.934215+00:00",
       "count_cohort_hash": "b032eacc5fb0f210671e2e074c830c912b5ddd0f0926a65130944d7b1dd284d3",
       "pace_alert": {
         "family": "George Washington Open",
@@ -4883,7 +4883,7 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-10T13:01:01.290418+00:00",
+      "count_observed_at": "2026-11-10T16:14:33.975171+00:00",
       "count_cohort_hash": "dfa40983bb331ca4d3f15b89a2c834b7e18a446eea4eb58f83197eb9284182dd"
     },
     {
@@ -4895,8 +4895,8 @@
       "early_bird_fee": null,
       "regular_fee": null,
       "onsite_fee": null,
-      "current_count": 10,
-      "gross_count": 10,
+      "current_count": 11,
+      "gross_count": 11,
       "withdrawal_count": 0,
       "days_remaining": 116,
       "point_estimate": 1505,
@@ -4962,7 +4962,7 @@
         ],
         [
           6,
-          10
+          11
         ]
       ],
       "daily_start_date": "2026-11-04",
@@ -5021,16 +5021,16 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-10T13:01:05.563050+00:00",
-      "count_cohort_hash": "92cdd688656b32ecd9b7dfc1f6da8b4dd43d51afe143fcbe27a7c9306f5cdb9e",
+      "count_observed_at": "2026-11-10T16:14:38.241087+00:00",
+      "count_cohort_hash": "3d898220e93cf489ced493fc7d9f2da314516a7bd2e6fa6255eac60b5b2e5af2",
       "pace_alert": {
         "family": "New York State Scholastic Championships Grades K-8",
         "status": "below_pace",
-        "actual": 10,
+        "actual": 11,
         "expected": 54,
-        "deviation_pct": -81.7,
+        "deviation_pct": -79.8,
         "n_years": 4,
-        "message": "Registrations are 81.7% below 4-year at-this-point pace"
+        "message": "Registrations are 79.8% below 4-year at-this-point pace"
       }
     },
     {
@@ -5360,7 +5360,7 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-10T13:01:06.805693+00:00",
+      "count_observed_at": "2026-11-10T16:14:39.373737+00:00",
       "count_cohort_hash": "6b6366bf471938cffdfab6f987f3533d2e5a2419fe2cb34b45b15366a496c87c",
       "pace_alert": {
         "family": "Western Class Championships",
@@ -6038,7 +6038,7 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-10T13:01:09.051514+00:00",
+      "count_observed_at": "2026-11-10T16:14:42.124728+00:00",
       "count_cohort_hash": "05052832e870e19818c91ed04fa11a9265a3c1093e987cb81f6521241f169061",
       "pace_alert": {
         "family": "Southern Class Championships",
@@ -6377,7 +6377,7 @@
       "low_confidence": true,
       "prediction_tier": "roster-pending",
       "prediction_source": "metadata_historical_avg",
-      "count_observed_at": "2026-11-10T13:01:10.232358+00:00",
+      "count_observed_at": "2026-11-10T16:14:43.271694+00:00",
       "count_cohort_hash": "cbd17d1224c895d6894ce5311c2ec82b171acb20ccc82570b18dcc4c7c4d5a7b",
       "pace_alert": {
         "family": "Atlantic City Open",
@@ -17024,6 +17024,7 @@
       "year": 2026,
       "event_start": "2026-08-21",
       "event_end": "2026-08-23",
+      "registration_close": "2026-08-22",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": 148.0,
@@ -17066,594 +17067,194 @@
       "daily_data": [
         [
           0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          6,
-          0
-        ],
-        [
-          7,
-          0
-        ],
-        [
-          8,
-          0
-        ],
-        [
-          9,
-          0
-        ],
-        [
-          10,
-          1
-        ],
-        [
-          11,
-          1
-        ],
-        [
-          12,
-          1
-        ],
-        [
-          13,
-          1
-        ],
-        [
-          14,
-          1
-        ],
-        [
-          15,
-          1
-        ],
-        [
-          16,
-          1
-        ],
-        [
-          17,
-          1
-        ],
-        [
-          18,
-          1
-        ],
-        [
-          19,
-          1
-        ],
-        [
-          20,
-          1
-        ],
-        [
-          21,
-          1
-        ],
-        [
-          22,
-          1
-        ],
-        [
-          23,
-          1
-        ],
-        [
-          24,
-          1
-        ],
-        [
-          25,
-          1
-        ],
-        [
-          26,
-          1
-        ],
-        [
-          27,
-          1
-        ],
-        [
-          28,
           1
         ],
         [
           29,
-          1
-        ],
-        [
-          30,
-          1
-        ],
-        [
-          31,
-          1
-        ],
-        [
-          32,
-          1
-        ],
-        [
-          33,
-          1
-        ],
-        [
-          34,
-          1
-        ],
-        [
-          35,
-          1
-        ],
-        [
-          36,
-          1
-        ],
-        [
-          37,
-          1
-        ],
-        [
-          38,
-          1
-        ],
-        [
-          39,
-          1
-        ],
-        [
-          40,
-          2
-        ],
-        [
-          41,
-          2
-        ],
-        [
-          42,
-          2
-        ],
-        [
-          43,
-          2
-        ],
-        [
-          44,
-          2
-        ],
-        [
-          45,
-          2
-        ],
-        [
-          46,
-          2
-        ],
-        [
-          47,
-          2
-        ],
-        [
-          48,
-          2
-        ],
-        [
-          49,
-          2
-        ],
-        [
-          50,
-          2
-        ],
-        [
-          51,
-          2
-        ],
-        [
-          52,
-          2
-        ],
-        [
-          53,
-          2
-        ],
-        [
-          54,
-          2
-        ],
-        [
-          55,
-          2
-        ],
-        [
-          56,
-          2
-        ],
-        [
-          57,
-          2
-        ],
-        [
-          59,
-          2
-        ],
-        [
-          60,
-          2
-        ],
-        [
-          61,
-          2
-        ],
-        [
-          62,
-          2
-        ],
-        [
-          63,
-          2
-        ],
-        [
-          64,
-          2
-        ],
-        [
-          65,
-          2
-        ],
-        [
-          66,
-          2
-        ],
-        [
-          67,
-          2
-        ],
-        [
-          68,
-          2
-        ],
-        [
-          69,
-          2
-        ],
-        [
-          70,
-          2
-        ],
-        [
-          71,
-          2
-        ],
-        [
-          72,
-          2
-        ],
-        [
-          73,
-          2
-        ],
-        [
-          74,
-          2
-        ],
-        [
-          75,
-          2
-        ],
-        [
-          76,
-          2
-        ],
-        [
-          77,
-          2
-        ],
-        [
-          78,
-          2
-        ],
-        [
-          79,
           2
         ],
         [
           80,
-          2
-        ],
-        [
-          81,
-          2
-        ],
-        [
-          82,
-          2
-        ],
-        [
-          83,
-          2
-        ],
-        [
-          84,
-          2
-        ],
-        [
-          85,
-          2
-        ],
-        [
-          86,
-          2
-        ],
-        [
-          87,
-          2
-        ],
-        [
-          88,
-          2
-        ],
-        [
-          89,
           3
         ],
         [
-          90,
+          81,
           4
         ],
         [
-          91,
-          4
+          89,
+          5
         ],
         [
           92,
-          4
-        ],
-        [
-          93,
-          4
-        ],
-        [
-          94,
-          4
-        ],
-        [
-          95,
-          4
-        ],
-        [
-          96,
-          4
-        ],
-        [
-          97,
-          4
-        ],
-        [
-          98,
-          5
-        ],
-        [
-          99,
-          5
-        ],
-        [
-          100,
-          5
-        ],
-        [
-          101,
           7
         ],
         [
-          102,
+          93,
           9
         ],
         [
-          103,
-          9
+          94,
+          10
         ],
         [
-          104,
+          95,
           11
         ],
         [
-          105,
-          11
-        ],
-        [
-          106,
+          97,
           12
         ],
         [
-          107,
-          15
-        ],
-        [
-          108,
+          98,
           16
         ],
         [
-          109,
-          16
-        ],
-        [
-          110,
-          16
-        ],
-        [
-          111,
-          16
-        ],
-        [
-          112,
+          102,
           17
         ],
         [
-          113,
-          19
+          104,
+          20
         ],
         [
-          114,
+          105,
           22
         ],
         [
-          115,
-          22
+          107,
+          23
         ],
         [
-          117,
+          108,
           25
         ],
         [
-          118,
+          109,
           26
         ],
         [
-          119,
+          110,
           27
         ],
         [
-          120,
+          111,
           28
         ],
         [
-          121,
+          112,
           30
         ],
         [
-          122,
-          32
+          113,
+          33
         ],
         [
-          123,
+          114,
           34
         ],
         [
-          124,
+          115,
           37
         ],
         [
-          125,
+          116,
           45
         ],
         [
-          126,
+          117,
           47
         ],
         [
-          127,
+          118,
           50
         ],
         [
-          128,
+          119,
           53
         ],
         [
-          129,
+          120,
           57
         ],
         [
-          130,
-          60
+          121,
+          61
         ],
         [
-          131,
-          64
+          122,
+          65
         ],
         [
-          132,
+          123,
           68
         ],
         [
-          133,
+          124,
           70
         ],
         [
-          134,
-          77
+          125,
+          80
         ],
         [
-          135,
-          85
+          126,
+          87
         ],
         [
-          136,
+          127,
           88
         ],
         [
-          137,
-          96
+          128,
+          97
         ],
         [
-          138,
+          129,
           100
         ],
         [
-          139,
+          130,
           102
         ],
         [
-          140,
-          112
+          131,
+          115
         ],
         [
-          141,
-          122
+          132,
+          125
         ],
         [
-          142,
-          141
+          133,
+          143
         ],
         [
-          143,
-          168
+          134,
+          178
         ],
         [
-          144,
-          191
+          135,
+          200
         ],
         [
-          145,
-          204
+          136,
+          213
         ],
         [
-          146,
-          211
+          137,
+          227
         ],
         [
-          147,
-          228
+          138,
+          242
         ],
         [
-          148,
-          234
+          139,
+          242
         ]
       ],
-      "daily_start_date": "2026-03-28",
+      "daily_start_date": "2026-04-06",
       "registration_curve": [
         {
           "days_before": 120,
@@ -17705,10 +17306,12 @@
         }
       ],
       "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
       "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "settled_actual",
+      "prediction_tier": null,
+      "shadow_forecasts": [],
       "walkin_multiplier": 1.042,
       "walkin_source": "family",
       "total_estimate": 252,
@@ -17722,6 +17325,7 @@
       "year": 2026,
       "event_start": "2026-08-14",
       "event_end": "2026-08-16",
+      "registration_close": "2026-08-15",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": 98.0,
@@ -17764,566 +17368,170 @@
       "daily_data": [
         [
           0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          6,
-          0
-        ],
-        [
-          7,
-          0
-        ],
-        [
-          8,
-          0
-        ],
-        [
-          9,
-          1
-        ],
-        [
-          10,
-          1
-        ],
-        [
-          11,
-          1
-        ],
-        [
-          12,
-          1
-        ],
-        [
-          13,
-          1
-        ],
-        [
-          14,
-          1
-        ],
-        [
-          15,
-          1
-        ],
-        [
-          16,
-          1
-        ],
-        [
-          17,
-          1
-        ],
-        [
-          18,
-          1
-        ],
-        [
-          19,
-          1
-        ],
-        [
-          20,
-          1
-        ],
-        [
-          21,
-          1
-        ],
-        [
-          22,
           1
         ],
         [
           23,
-          1
-        ],
-        [
-          24,
-          1
+          2
         ],
         [
           25,
-          1
-        ],
-        [
-          26,
-          1
-        ],
-        [
-          27,
-          1
-        ],
-        [
-          28,
-          1
-        ],
-        [
-          29,
-          1
-        ],
-        [
-          30,
-          1
-        ],
-        [
-          31,
-          1
-        ],
-        [
-          32,
-          2
-        ],
-        [
-          33,
-          2
-        ],
-        [
-          34,
-          3
-        ],
-        [
-          35,
-          3
-        ],
-        [
-          36,
-          3
-        ],
-        [
-          37,
-          3
-        ],
-        [
-          38,
-          3
-        ],
-        [
-          39,
-          3
-        ],
-        [
-          40,
-          3
-        ],
-        [
-          41,
-          3
-        ],
-        [
-          42,
-          3
-        ],
-        [
-          43,
-          3
-        ],
-        [
-          44,
-          3
-        ],
-        [
-          45,
-          3
-        ],
-        [
-          46,
-          3
-        ],
-        [
-          47,
-          3
-        ],
-        [
-          48,
-          3
-        ],
-        [
-          49,
-          3
-        ],
-        [
-          50,
-          3
-        ],
-        [
-          51,
-          3
-        ],
-        [
-          52,
-          3
-        ],
-        [
-          53,
-          3
-        ],
-        [
-          54,
-          3
-        ],
-        [
-          55,
-          3
-        ],
-        [
-          56,
-          3
-        ],
-        [
-          57,
           3
         ],
         [
           59,
-          3
-        ],
-        [
-          60,
-          3
-        ],
-        [
-          61,
-          3
-        ],
-        [
-          62,
-          3
-        ],
-        [
-          63,
-          3
-        ],
-        [
-          64,
-          3
-        ],
-        [
-          65,
-          3
-        ],
-        [
-          66,
-          3
-        ],
-        [
-          67,
-          3
+          4
         ],
         [
           68,
-          3
-        ],
-        [
-          69,
-          3
-        ],
-        [
-          70,
-          3
-        ],
-        [
-          71,
-          3
-        ],
-        [
-          72,
-          3
-        ],
-        [
-          73,
-          3
-        ],
-        [
-          74,
-          3
-        ],
-        [
-          75,
-          3
+          5
         ],
         [
           76,
-          3
-        ],
-        [
-          77,
-          3
-        ],
-        [
-          78,
-          3
+          6
         ],
         [
           79,
-          3
-        ],
-        [
-          80,
-          3
-        ],
-        [
-          81,
-          3
+          7
         ],
         [
           82,
-          3
-        ],
-        [
-          83,
-          3
-        ],
-        [
-          84,
-          3
-        ],
-        [
-          85,
-          3
-        ],
-        [
-          86,
-          4
+          8
         ],
         [
           87,
-          4
-        ],
-        [
-          88,
-          5
-        ],
-        [
-          89,
-          5
+          10
         ],
         [
           90,
-          5
+          11
         ],
         [
           91,
-          6
-        ],
-        [
-          92,
-          6
-        ],
-        [
-          93,
-          6
-        ],
-        [
-          94,
-          6
-        ],
-        [
-          95,
-          6
-        ],
-        [
-          96,
-          8
-        ],
-        [
-          97,
-          8
-        ],
-        [
-          98,
-          8
-        ],
-        [
-          99,
-          9
-        ],
-        [
-          100,
-          11
-        ],
-        [
-          101,
-          11
-        ],
-        [
-          102,
-          11
-        ],
-        [
-          103,
-          12
-        ],
-        [
-          104,
-          12
-        ],
-        [
-          105,
           13
         ],
         [
-          106,
-          16
+          94,
+          14
         ],
         [
-          107,
-          17
+          95,
+          15
         ],
         [
-          108,
-          17
-        ],
-        [
-          109,
-          17
-        ],
-        [
-          110,
-          17
-        ],
-        [
-          111,
-          17
-        ],
-        [
-          112,
-          17
-        ],
-        [
-          113,
-          18
-        ],
-        [
-          114,
+          97,
           19
         ],
         [
-          115,
-          20
-        ],
-        [
-          117,
+          104,
           21
         ],
         [
-          118,
+          106,
+          22
+        ],
+        [
+          107,
           23
         ],
         [
-          119,
+          109,
           25
         ],
         [
-          120,
-          25
+          110,
+          27
         ],
         [
-          121,
-          29
+          111,
+          28
         ],
         [
-          122,
+          112,
           31
         ],
         [
-          123,
-          31
+          113,
+          33
         ],
         [
-          124,
-          36
+          114,
+          35
         ],
         [
-          125,
+          115,
           38
         ],
         [
-          126,
-          41
+          116,
+          40
         ],
         [
-          127,
+          117,
           45
         ],
         [
-          128,
-          50
+          118,
+          48
         ],
         [
-          129,
-          59
+          119,
+          54
         ],
         [
-          130,
-          65
+          120,
+          61
         ],
         [
-          131,
-          69
+          121,
+          68
         ],
         [
-          132,
-          74
+          122,
+          71
         ],
         [
-          133,
-          89
+          123,
+          81
         ],
         [
-          134,
-          97
+          124,
+          91
         ],
         [
-          135,
-          106
+          125,
+          104
         ],
         [
-          136,
+          126,
           115
         ],
         [
-          137,
-          124
+          127,
+          121
         ],
         [
-          138,
-          138
+          128,
+          135
         ],
         [
-          139,
-          150
+          129,
+          149
         ],
         [
-          140,
-          161
+          130,
+          158
         ],
         [
-          141,
-          165
+          131,
+          169
+        ],
+        [
+          132,
+          169
         ]
       ],
-      "daily_start_date": "2026-03-28",
+      "daily_start_date": "2026-04-06",
       "registration_curve": [
         {
           "days_before": 120,
@@ -18375,10 +17583,12 @@
         }
       ],
       "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
       "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "settled_actual",
+      "prediction_tier": null,
+      "shadow_forecasts": [],
       "walkin_multiplier": 1.037,
       "walkin_source": "family",
       "total_estimate": 175,
@@ -18392,6 +17602,7 @@
       "year": 2026,
       "event_start": "2026-08-13",
       "event_end": "2026-08-16",
+      "registration_close": "2026-08-15",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": 158.0,
@@ -18434,514 +17645,182 @@
       "daily_data": [
         [
           0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          6,
-          0
-        ],
-        [
-          7,
-          0
-        ],
-        [
-          8,
-          0
-        ],
-        [
-          9,
-          1
-        ],
-        [
-          10,
-          1
-        ],
-        [
-          11,
-          1
-        ],
-        [
-          12,
-          1
-        ],
-        [
-          13,
-          1
-        ],
-        [
-          14,
-          1
-        ],
-        [
-          15,
           1
         ],
         [
           16,
-          1
-        ],
-        [
-          17,
-          1
-        ],
-        [
-          18,
-          1
-        ],
-        [
-          19,
-          1
-        ],
-        [
-          20,
-          1
-        ],
-        [
-          21,
-          1
-        ],
-        [
-          22,
-          1
-        ],
-        [
-          23,
-          1
-        ],
-        [
-          24,
-          1
-        ],
-        [
-          25,
-          2
-        ],
-        [
-          26,
-          2
-        ],
-        [
-          27,
-          2
-        ],
-        [
-          28,
-          2
-        ],
-        [
-          29,
-          2
-        ],
-        [
-          30,
-          2
-        ],
-        [
-          31,
-          2
-        ],
-        [
-          32,
           2
         ],
         [
           33,
-          2
-        ],
-        [
-          34,
-          2
-        ],
-        [
-          35,
-          2
-        ],
-        [
-          36,
-          2
+          3
         ],
         [
           37,
-          2
-        ],
-        [
-          38,
-          2
-        ],
-        [
-          39,
-          2
-        ],
-        [
-          40,
-          2
+          4
         ],
         [
           41,
-          3
-        ],
-        [
-          42,
-          3
+          6
         ],
         [
           43,
-          3
+          7
         ],
         [
           44,
-          3
-        ],
-        [
-          46,
-          4
-        ],
-        [
-          47,
-          4
-        ],
-        [
-          48,
-          4
-        ],
-        [
-          49,
-          4
-        ],
-        [
-          50,
-          6
-        ],
-        [
-          51,
-          6
+          8
         ],
         [
           52,
-          8
-        ],
-        [
-          53,
-          8
+          10
         ],
         [
           54,
-          8
+          11
         ],
         [
           55,
-          8
-        ],
-        [
-          56,
-          8
-        ],
-        [
-          57,
-          8
-        ],
-        [
-          58,
-          8
-        ],
-        [
-          59,
-          8
-        ],
-        [
-          60,
-          9
-        ],
-        [
-          61,
-          10
-        ],
-        [
-          62,
-          10
-        ],
-        [
-          63,
-          12
-        ],
-        [
-          64,
-          12
-        ],
-        [
-          65,
-          12
-        ],
-        [
-          66,
-          12
-        ],
-        [
-          67,
-          12
-        ],
-        [
-          68,
           12
         ],
         [
           69,
-          12
-        ],
-        [
-          70,
-          12
-        ],
-        [
-          71,
-          12
+          13
         ],
         [
           72,
-          12
-        ],
-        [
-          73,
-          12
+          14
         ],
         [
           74,
-          12
-        ],
-        [
-          75,
-          12
+          16
         ],
         [
           76,
-          12
-        ],
-        [
-          77,
-          13
-        ],
-        [
-          78,
-          13
+          17
         ],
         [
           79,
-          13
-        ],
-        [
-          80,
-          14
-        ],
-        [
-          81,
-          14
-        ],
-        [
-          82,
-          15
-        ],
-        [
-          83,
-          16
-        ],
-        [
-          84,
-          16
+          19
         ],
         [
           85,
-          17
-        ],
-        [
-          86,
-          17
-        ],
-        [
-          87,
-          18
+          20
         ],
         [
           88,
-          19
-        ],
-        [
-          89,
-          19
-        ],
-        [
-          90,
-          19
-        ],
-        [
-          91,
-          19
-        ],
-        [
-          92,
-          19
-        ],
-        [
-          93,
-          19
-        ],
-        [
-          94,
-          20
-        ],
-        [
-          95,
-          20
-        ],
-        [
-          96,
-          20
-        ],
-        [
-          97,
           22
         ],
         [
-          98,
+          89,
           23
         ],
         [
-          99,
-          23
-        ],
-        [
-          100,
-          23
-        ],
-        [
-          101,
+          92,
           24
         ],
         [
-          102,
+          93,
           25
         ],
         [
-          104,
-          28
+          94,
+          27
         ],
         [
-          105,
+          96,
           29
         ],
         [
-          106,
+          97,
+          31
+        ],
+        [
+          98,
           33
         ],
         [
+          99,
+          35
+        ],
+        [
+          100,
+          42
+        ],
+        [
+          101,
+          49
+        ],
+        [
+          102,
+          55
+        ],
+        [
+          103,
+          61
+        ],
+        [
+          104,
+          67
+        ],
+        [
+          105,
+          74
+        ],
+        [
+          106,
+          82
+        ],
+        [
           107,
-          34
+          91
         ],
         [
           108,
-          38
+          103
         ],
         [
           109,
-          46
+          114
         ],
         [
           110,
-          51
+          122
         ],
         [
           111,
-          56
+          124
         ],
         [
           112,
-          64
+          138
         ],
         [
           113,
-          68
+          154
         ],
         [
           114,
-          73
+          182
         ],
         [
           115,
-          83
+          224
         ],
         [
           116,
-          94
+          255
         ],
         [
           117,
-          104
+          271
         ],
         [
           118,
-          116
-        ],
-        [
-          119,
-          121
-        ],
-        [
-          120,
-          127
-        ],
-        [
-          121,
-          141
-        ],
-        [
-          122,
-          156
-        ],
-        [
-          123,
-          195
-        ],
-        [
-          124,
-          235
-        ],
-        [
-          125,
-          249
-        ],
-        [
-          126,
-          261
-        ],
-        [
-          127,
-          266
-        ],
-        [
-          128,
-          266
+          280
         ]
       ],
-      "daily_start_date": "2026-04-10",
+      "daily_start_date": "2026-04-18",
       "registration_curve": [
         {
           "days_before": 120,
@@ -18993,10 +17872,12 @@
         }
       ],
       "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
       "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "settled_actual",
+      "prediction_tier": null,
+      "shadow_forecasts": [],
       "walkin_multiplier": 1.041,
       "walkin_source": "family",
       "total_estimate": 292,
@@ -19010,6 +17891,7 @@
       "year": 2026,
       "event_start": "2026-10-23",
       "event_end": "2026-10-25",
+      "registration_close": "2026-10-24",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": 138.0,
@@ -19052,491 +17934,55 @@
       "daily_data": [
         [
           0,
-          0
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          3,
-          1
-        ],
-        [
-          4,
-          1
-        ],
-        [
-          5,
-          1
-        ],
-        [
-          6,
-          1
-        ],
-        [
-          7,
-          1
-        ],
-        [
-          8,
-          1
-        ],
-        [
-          9,
-          1
-        ],
-        [
-          10,
           1
         ],
         [
           11,
-          1
-        ],
-        [
-          12,
-          1
-        ],
-        [
-          13,
-          1
-        ],
-        [
-          14,
-          1
-        ],
-        [
-          15,
-          1
-        ],
-        [
-          16,
-          1
-        ],
-        [
-          17,
-          1
-        ],
-        [
-          18,
-          1
-        ],
-        [
-          19,
-          1
-        ],
-        [
-          20,
-          1
-        ],
-        [
-          21,
-          1
-        ],
-        [
-          22,
-          1
-        ],
-        [
-          23,
-          1
-        ],
-        [
-          24,
-          1
-        ],
-        [
-          25,
-          1
-        ],
-        [
-          26,
-          1
-        ],
-        [
-          27,
-          1
-        ],
-        [
-          28,
-          1
-        ],
-        [
-          29,
-          1
-        ],
-        [
-          30,
-          1
-        ],
-        [
-          31,
-          1
-        ],
-        [
-          33,
-          1
-        ],
-        [
-          34,
-          1
-        ],
-        [
-          35,
-          1
-        ],
-        [
-          36,
-          1
-        ],
-        [
-          37,
-          1
-        ],
-        [
-          38,
-          1
-        ],
-        [
-          39,
-          1
-        ],
-        [
-          40,
-          1
-        ],
-        [
-          41,
-          1
-        ],
-        [
-          42,
-          2
-        ],
-        [
-          43,
-          2
-        ],
-        [
-          44,
-          2
-        ],
-        [
-          45,
-          2
-        ],
-        [
-          46,
-          2
-        ],
-        [
-          47,
-          2
-        ],
-        [
-          48,
-          2
-        ],
-        [
-          49,
-          2
-        ],
-        [
-          50,
-          2
-        ],
-        [
-          51,
-          2
-        ],
-        [
-          52,
-          2
-        ],
-        [
-          53,
-          2
-        ],
-        [
-          54,
-          2
-        ],
-        [
-          55,
-          2
-        ],
-        [
-          56,
-          2
-        ],
-        [
-          57,
-          2
-        ],
-        [
-          58,
-          2
-        ],
-        [
-          59,
-          2
-        ],
-        [
-          60,
-          2
-        ],
-        [
-          61,
-          2
-        ],
-        [
-          62,
-          2
-        ],
-        [
-          63,
-          2
-        ],
-        [
-          64,
-          2
-        ],
-        [
-          65,
-          2
-        ],
-        [
-          66,
-          2
-        ],
-        [
-          67,
-          2
-        ],
-        [
-          68,
-          2
-        ],
-        [
-          69,
-          2
-        ],
-        [
-          70,
-          2
-        ],
-        [
-          71,
-          2
-        ],
-        [
-          72,
-          2
-        ],
-        [
-          73,
-          2
-        ],
-        [
-          74,
-          2
-        ],
-        [
-          75,
-          2
-        ],
-        [
-          76,
-          2
-        ],
-        [
-          77,
-          2
-        ],
-        [
-          78,
-          2
-        ],
-        [
-          79,
-          2
-        ],
-        [
-          80,
-          2
-        ],
-        [
-          81,
-          2
-        ],
-        [
-          82,
-          2
-        ],
-        [
-          83,
-          2
-        ],
-        [
-          84,
-          2
-        ],
-        [
-          85,
-          2
-        ],
-        [
-          86,
-          2
-        ],
-        [
-          87,
-          2
-        ],
-        [
-          88,
-          2
-        ],
-        [
-          89,
           2
         ],
         [
           91,
-          2
-        ],
-        [
-          92,
-          3
-        ],
-        [
-          93,
           3
         ],
         [
           94,
-          3
-        ],
-        [
-          95,
-          4
-        ],
-        [
-          96,
-          4
-        ],
-        [
-          97,
-          4
-        ],
-        [
-          98,
           4
         ],
         [
           99,
-          4
-        ],
-        [
-          100,
           5
         ],
         [
           101,
-          5
-        ],
-        [
-          102,
           6
         ],
         [
-          103,
-          7
-        ],
-        [
-          104,
-          7
-        ],
-        [
-          105,
+          102,
           7
         ],
         [
           106,
-          7
-        ],
-        [
-          107,
-          7
+          8
         ],
         [
           108,
-          8
-        ],
-        [
-          109,
-          8
-        ],
-        [
-          110,
-          9
-        ],
-        [
-          111,
-          9
-        ],
-        [
-          112,
           9
         ],
         [
           113,
-          9
-        ],
-        [
-          114,
-          9
-        ],
-        [
-          115,
           10
         ],
         [
           116,
-          10
-        ],
-        [
-          117,
-          10
+          11
         ],
         [
           118,
-          11
+          12
         ],
         [
           119,
-          11
-        ],
-        [
-          120,
-          14
-        ],
-        [
-          121,
-          14
-        ],
-        [
-          122,
-          14
-        ],
-        [
-          123,
-          14
+          13
         ],
         [
           124,
@@ -19544,15 +17990,7 @@
         ],
         [
           125,
-          14
-        ],
-        [
-          126,
-          16
-        ],
-        [
-          127,
-          16
+          15
         ],
         [
           128,
@@ -19560,11 +17998,7 @@
         ],
         [
           129,
-          17
-        ],
-        [
-          130,
-          19
+          20
         ],
         [
           131,
@@ -19575,28 +18009,20 @@
           22
         ],
         [
-          133,
-          23
-        ],
-        [
           134,
           23
         ],
         [
-          135,
-          24
-        ],
-        [
           136,
-          24
+          29
         ],
         [
           137,
-          28
+          32
         ],
         [
           138,
-          33
+          34
         ],
         [
           139,
@@ -19604,39 +18030,31 @@
         ],
         [
           140,
-          36
-        ],
-        [
-          141,
-          40
+          39
         ],
         [
           142,
-          40
+          41
         ],
         [
           143,
-          42
-        ],
-        [
-          144,
           43
         ],
         [
-          145,
-          47
+          144,
+          46
         ],
         [
-          146,
-          49
+          145,
+          48
         ],
         [
           147,
-          49
+          50
         ],
         [
           148,
-          51
+          52
         ],
         [
           149,
@@ -19644,194 +18062,178 @@
         ],
         [
           150,
-          54
-        ],
-        [
-          151,
           55
         ],
         [
-          152,
-          57
+          151,
+          59
         ],
         [
-          153,
+          152,
           60
         ],
         [
           154,
-          60
-        ],
-        [
-          155,
           62
         ],
         [
           156,
-          62
+          66
         ],
         [
           157,
-          68
-        ],
-        [
-          158,
           71
         ],
         [
-          159,
+          158,
           75
         ],
         [
           160,
-          75
-        ],
-        [
-          161,
           80
         ],
         [
-          162,
+          161,
           88
         ],
         [
-          163,
+          162,
           89
         ],
         [
-          164,
+          163,
           100
         ],
         [
+          164,
+          109
+        ],
+        [
           165,
-          105
+          119
         ],
         [
           166,
-          118
+          126
         ],
         [
           167,
-          125
+          132
         ],
         [
           168,
-          131
+          141
         ],
         [
           169,
-          139
+          148
         ],
         [
           170,
-          146
+          150
         ],
         [
           171,
-          149
+          162
         ],
         [
           172,
-          157
+          174
         ],
         [
           173,
-          170
+          187
         ],
         [
           174,
-          183
+          203
         ],
         [
           175,
-          198
+          217
         ],
         [
           176,
-          214
+          228
         ],
         [
           177,
-          224
+          249
         ],
         [
           178,
-          243
+          278
         ],
         [
           179,
-          272
-        ],
-        [
-          180,
           337
         ],
         [
+          180,
+          404
+        ],
+        [
           181,
-          396
+          411
         ],
         [
           182,
-          399
+          422
         ],
         [
           183,
-          408
+          446
         ],
         [
           184,
-          428
-        ],
-        [
-          185,
-          429
+          446
         ]
       ],
-      "daily_start_date": "2026-04-23",
+      "daily_start_date": "2026-04-24",
       "registration_curve": [
         {
           "days_before": 120,
-          "cumulative_pct": 0.0
+          "cumulative_pct": 0.0039
         },
         {
           "days_before": 90,
-          "cumulative_pct": 0.0114
+          "cumulative_pct": 0.0103
         },
         {
           "days_before": 75,
-          "cumulative_pct": 0.0235
+          "cumulative_pct": 0.0186
         },
         {
           "days_before": 60,
-          "cumulative_pct": 0.0442
+          "cumulative_pct": 0.031
         },
         {
           "days_before": 42,
-          "cumulative_pct": 0.0955
+          "cumulative_pct": 0.0701
         },
         {
           "days_before": 28,
-          "cumulative_pct": 0.1686
+          "cumulative_pct": 0.1402
         },
         {
           "days_before": 21,
-          "cumulative_pct": 0.2321
+          "cumulative_pct": 0.2043
         },
         {
           "days_before": 14,
-          "cumulative_pct": 0.3226
+          "cumulative_pct": 0.2959
         },
         {
           "days_before": 7,
-          "cumulative_pct": 0.4855
+          "cumulative_pct": 0.4684
         },
         {
           "days_before": 3,
-          "cumulative_pct": 0.693
+          "cumulative_pct": 0.7415
         },
         {
           "days_before": 1,
-          "cumulative_pct": 0.9375
+          "cumulative_pct": 0.9661
         },
         {
           "days_before": 0,
@@ -19839,15 +18241,17 @@
         }
       ],
       "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
       "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "settled_actual",
-      "walkin_multiplier": 1.044,
+      "prediction_tier": null,
+      "shadow_forecasts": [],
+      "walkin_multiplier": 1.034,
       "walkin_source": "family",
-      "total_estimate": 466,
-      "total_ci_lower": 458,
-      "total_ci_upper": 474,
+      "total_estimate": 461,
+      "total_ci_lower": 456,
+      "total_ci_upper": 467,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
@@ -19856,6 +18260,7 @@
       "year": 2026,
       "event_start": "2026-10-16",
       "event_end": "2026-10-18",
+      "registration_close": "2026-10-17",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": 118.0,
@@ -19898,714 +18303,210 @@
       "daily_data": [
         [
           0,
-          0
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          3,
-          1
-        ],
-        [
-          4,
-          1
-        ],
-        [
-          5,
-          1
-        ],
-        [
-          6,
-          1
-        ],
-        [
-          7,
-          1
-        ],
-        [
-          8,
-          1
-        ],
-        [
-          9,
-          1
-        ],
-        [
-          10,
-          1
-        ],
-        [
-          11,
-          1
-        ],
-        [
-          12,
-          1
-        ],
-        [
-          13,
-          1
-        ],
-        [
-          14,
-          1
-        ],
-        [
-          15,
-          1
-        ],
-        [
-          16,
-          1
-        ],
-        [
-          17,
-          1
-        ],
-        [
-          18,
-          1
-        ],
-        [
-          19,
-          1
-        ],
-        [
-          20,
-          1
-        ],
-        [
-          21,
-          1
-        ],
-        [
-          22,
-          1
-        ],
-        [
-          23,
-          1
-        ],
-        [
-          24,
-          1
-        ],
-        [
-          25,
-          1
-        ],
-        [
-          26,
-          1
-        ],
-        [
-          27,
-          1
-        ],
-        [
-          28,
-          1
-        ],
-        [
-          29,
-          1
-        ],
-        [
-          30,
-          1
-        ],
-        [
-          31,
-          1
-        ],
-        [
-          33,
-          1
-        ],
-        [
-          34,
-          1
-        ],
-        [
-          35,
-          1
-        ],
-        [
-          36,
-          1
-        ],
-        [
-          37,
-          1
-        ],
-        [
-          38,
-          1
-        ],
-        [
-          39,
-          1
-        ],
-        [
-          40,
-          1
-        ],
-        [
-          41,
-          1
-        ],
-        [
-          42,
-          1
-        ],
-        [
-          43,
-          1
-        ],
-        [
-          44,
-          1
-        ],
-        [
-          45,
-          1
-        ],
-        [
-          46,
-          1
-        ],
-        [
-          47,
-          1
-        ],
-        [
-          48,
-          1
-        ],
-        [
-          49,
-          1
-        ],
-        [
-          50,
-          1
-        ],
-        [
-          51,
-          1
-        ],
-        [
-          52,
-          1
-        ],
-        [
-          53,
-          1
-        ],
-        [
-          54,
-          1
-        ],
-        [
-          55,
-          1
-        ],
-        [
-          56,
-          1
-        ],
-        [
-          57,
-          1
-        ],
-        [
-          58,
-          1
-        ],
-        [
-          59,
-          1
-        ],
-        [
-          60,
-          1
-        ],
-        [
-          61,
           1
         ],
         [
           62,
-          1
-        ],
-        [
-          63,
-          2
-        ],
-        [
-          64,
-          2
-        ],
-        [
-          65,
-          2
-        ],
-        [
-          66,
-          2
-        ],
-        [
-          67,
-          2
-        ],
-        [
-          68,
-          2
-        ],
-        [
-          69,
-          2
-        ],
-        [
-          70,
-          2
-        ],
-        [
-          71,
-          2
-        ],
-        [
-          72,
-          2
-        ],
-        [
-          73,
-          2
-        ],
-        [
-          74,
-          2
-        ],
-        [
-          75,
-          2
-        ],
-        [
-          76,
-          2
-        ],
-        [
-          77,
           2
         ],
         [
           78,
-          2
-        ],
-        [
-          79,
-          3
-        ],
-        [
-          80,
-          3
-        ],
-        [
-          81,
-          3
-        ],
-        [
-          82,
-          3
-        ],
-        [
-          83,
-          3
-        ],
-        [
-          84,
-          3
-        ],
-        [
-          85,
-          3
-        ],
-        [
-          86,
-          3
-        ],
-        [
-          87,
-          3
-        ],
-        [
-          88,
-          3
-        ],
-        [
-          89,
-          3
-        ],
-        [
-          91,
           3
         ],
         [
           92,
-          3
-        ],
-        [
-          93,
-          4
-        ],
-        [
-          94,
           4
         ],
         [
           95,
-          4
-        ],
-        [
-          96,
           5
         ],
         [
-          97,
-          6
-        ],
-        [
-          98,
-          6
-        ],
-        [
-          99,
-          6
-        ],
-        [
-          100,
+          96,
           6
         ],
         [
           101,
-          6
-        ],
-        [
-          102,
-          7
-        ],
-        [
-          103,
           7
         ],
         [
           104,
-          7
+          8
         ],
         [
           105,
-          8
-        ],
-        [
-          106,
-          8
-        ],
-        [
-          107,
-          9
-        ],
-        [
-          108,
-          9
-        ],
-        [
-          109,
-          9
-        ],
-        [
-          110,
-          9
-        ],
-        [
-          111,
-          9
-        ],
-        [
-          112,
-          9
-        ],
-        [
-          113,
-          9
-        ],
-        [
-          114,
-          9
-        ],
-        [
-          115,
-          9
-        ],
-        [
-          116,
-          9
-        ],
-        [
-          117,
-          9
-        ],
-        [
-          118,
           9
         ],
         [
           119,
-          9
-        ],
-        [
-          120,
           10
         ],
         [
           121,
-          10
-        ],
-        [
-          122,
           11
         ],
         [
-          123,
-          12
+          122,
+          14
         ],
         [
-          124,
+          123,
           15
         ],
         [
           125,
-          15
-        ],
-        [
-          126,
           16
         ],
         [
-          127,
+          126,
           17
         ],
         [
           128,
-          17
-        ],
-        [
-          129,
-          19
-        ],
-        [
-          130,
           19
         ],
         [
           131,
-          19
-        ],
-        [
-          132,
           20
         ],
         [
-          133,
-          22
-        ],
-        [
-          134,
-          22
-        ],
-        [
-          135,
+          132,
           22
         ],
         [
           136,
-          22
+          24
         ],
         [
           137,
-          22
-        ],
-        [
-          138,
           26
         ],
         [
+          138,
+          30
+        ],
+        [
           139,
-          30
-        ],
-        [
-          140,
-          30
-        ],
-        [
-          141,
           32
         ],
         [
           142,
-          32
+          35
         ],
         [
           143,
-          34
-        ],
-        [
-          144,
           36
         ],
         [
           145,
-          36
-        ],
-        [
-          146,
           39
         ],
         [
           147,
-          39
-        ],
-        [
-          148,
           40
         ],
         [
           149,
-          40
-        ],
-        [
-          150,
           42
         ],
         [
-          151,
+          150,
           47
         ],
         [
-          152,
-          49
-        ],
-        [
-          153,
-          49
-        ],
-        [
-          154,
-          49
-        ],
-        [
-          155,
+          151,
           50
         ],
         [
-          156,
+          152,
           51
         ],
         [
+          154,
+          52
+        ],
+        [
+          155,
+          53
+        ],
+        [
+          156,
+          54
+        ],
+        [
           157,
-          54
-        ],
-        [
-          158,
-          54
-        ],
-        [
-          159,
-          54
+          56
         ],
         [
           160,
-          54
+          57
         ],
         [
           161,
-          55
+          61
         ],
         [
           162,
-          59
+          65
         ],
         [
           163,
-          63
+          71
         ],
         [
           164,
-          69
+          75
         ],
         [
           165,
-          73
+          82
         ],
         [
           166,
-          79
+          85
         ],
         [
           167,
-          83
+          92
         ],
         [
           168,
-          89
+          94
         ],
         [
           169,
-          91
+          100
         ],
         [
           170,
-          97
+          104
         ],
         [
           171,
-          101
+          118
         ],
         [
           172,
-          113
+          141
         ],
         [
           173,
-          135
+          180
         ],
         [
           174,
-          169
+          190
         ],
         [
           175,
-          181
+          193
         ],
         [
           176,
-          183
-        ],
-        [
-          177,
-          194
-        ],
-        [
-          178,
-          196
+          206
         ]
       ],
-      "daily_start_date": "2026-04-23",
+      "daily_start_date": "2026-04-24",
       "registration_curve": [
         {
           "days_before": 120,
@@ -20657,15 +18558,17 @@
         }
       ],
       "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
       "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "settled_actual",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 227,
-      "total_ci_lower": 227,
-      "total_ci_upper": 227,
+      "prediction_tier": null,
+      "shadow_forecasts": [],
+      "walkin_multiplier": 1.071,
+      "walkin_source": "family",
+      "total_estimate": 221,
+      "total_ci_lower": 217,
+      "total_ci_upper": 224,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
@@ -20674,6 +18577,7 @@
       "year": 2026,
       "event_start": "2026-08-21",
       "event_end": "2026-08-23",
+      "registration_close": "2026-08-22",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": 118.0,
@@ -20716,514 +18620,150 @@
       "daily_data": [
         [
           0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          6,
-          0
-        ],
-        [
-          7,
-          0
-        ],
-        [
-          8,
-          0
-        ],
-        [
-          9,
-          0
-        ],
-        [
-          10,
-          0
-        ],
-        [
-          11,
-          0
-        ],
-        [
-          12,
-          0
-        ],
-        [
-          13,
-          0
-        ],
-        [
-          14,
-          0
-        ],
-        [
-          15,
-          0
-        ],
-        [
-          16,
-          0
-        ],
-        [
-          17,
-          0
-        ],
-        [
-          18,
-          0
-        ],
-        [
-          19,
-          0
-        ],
-        [
-          20,
-          0
-        ],
-        [
-          21,
-          0
+          1
         ],
         [
           22,
-          0
-        ],
-        [
-          23,
-          0
-        ],
-        [
-          24,
-          0
-        ],
-        [
-          25,
-          0
-        ],
-        [
-          26,
-          1
-        ],
-        [
-          27,
-          1
-        ],
-        [
-          28,
-          1
-        ],
-        [
-          29,
-          1
-        ],
-        [
-          30,
-          1
-        ],
-        [
-          31,
-          1
-        ],
-        [
-          32,
-          1
-        ],
-        [
-          33,
-          1
-        ],
-        [
-          34,
-          1
-        ],
-        [
-          35,
-          1
-        ],
-        [
-          36,
-          1
-        ],
-        [
-          37,
-          1
-        ],
-        [
-          39,
-          1
-        ],
-        [
-          40,
-          1
-        ],
-        [
-          41,
-          1
-        ],
-        [
-          42,
-          1
-        ],
-        [
-          43,
-          1
-        ],
-        [
-          44,
-          1
+          3
         ],
         [
           45,
-          1
-        ],
-        [
-          46,
-          1
-        ],
-        [
-          47,
-          1
-        ],
-        [
-          48,
-          3
-        ],
-        [
-          49,
-          3
-        ],
-        [
-          50,
-          3
-        ],
-        [
-          51,
-          3
-        ],
-        [
-          52,
-          3
-        ],
-        [
-          53,
-          3
-        ],
-        [
-          54,
-          3
-        ],
-        [
-          55,
-          3
+          4
         ],
         [
           56,
-          3
-        ],
-        [
-          57,
-          3
-        ],
-        [
-          58,
-          3
+          5
         ],
         [
           59,
-          3
+          6
         ],
         [
           60,
-          3
-        ],
-        [
-          61,
-          3
-        ],
-        [
-          62,
-          3
-        ],
-        [
-          63,
-          3
-        ],
-        [
-          64,
-          3
-        ],
-        [
-          65,
-          3
-        ],
-        [
-          66,
-          3
-        ],
-        [
-          67,
-          3
-        ],
-        [
-          68,
-          3
-        ],
-        [
-          69,
-          3
-        ],
-        [
-          70,
-          3
-        ],
-        [
-          71,
-          4
-        ],
-        [
-          72,
-          4
-        ],
-        [
-          73,
-          4
-        ],
-        [
-          74,
-          4
-        ],
-        [
-          75,
-          4
-        ],
-        [
-          76,
-          4
-        ],
-        [
-          77,
-          4
-        ],
-        [
-          78,
-          4
-        ],
-        [
-          79,
-          4
-        ],
-        [
-          80,
-          4
-        ],
-        [
-          81,
-          4
-        ],
-        [
-          82,
-          5
-        ],
-        [
-          83,
-          5
-        ],
-        [
-          84,
-          5
-        ],
-        [
-          85,
-          5
-        ],
-        [
-          86,
           7
         ],
         [
-          87,
+          61,
           8
         ],
         [
-          88,
-          8
-        ],
-        [
-          89,
+          63,
           11
         ],
         [
-          90,
-          11
-        ],
-        [
-          91,
-          11
-        ],
-        [
-          92,
-          11
-        ],
-        [
-          93,
-          11
-        ],
-        [
-          94,
+          68,
           12
         ],
         [
-          95,
-          12
+          70,
+          14
         ],
         [
-          97,
-          19
-        ],
-        [
-          98,
+          71,
           20
         ],
         [
-          99,
-          20
+          76,
+          23
         ],
         [
-          100,
-          20
-        ],
-        [
-          101,
-          20
-        ],
-        [
-          102,
-          22
-        ],
-        [
-          103,
+          77,
           27
         ],
         [
-          104,
+          78,
           29
         ],
         [
-          105,
-          33
+          79,
+          34
         ],
         [
-          106,
-          37
-        ],
-        [
-          107,
-          37
-        ],
-        [
-          108,
+          80,
           38
         ],
         [
-          109,
-          41
+          82,
+          40
         ],
         [
-          110,
+          83,
           43
         ],
         [
-          111,
-          47
+          84,
+          45
         ],
         [
-          112,
-          48
-        ],
-        [
-          113,
+          85,
           49
         ],
         [
-          114,
-          55
+          87,
+          53
         ],
         [
-          115,
-          61
+          88,
+          58
         ],
         [
-          116,
-          64
+          89,
+          63
         ],
         [
-          117,
-          67
+          90,
+          66
         ],
         [
-          118,
-          70
+          91,
+          68
         ],
         [
-          119,
-          72
+          92,
+          71
         ],
         [
-          120,
-          79
+          93,
+          76
         ],
         [
-          121,
-          92
+          94,
+          82
         ],
         [
-          122,
-          102
+          95,
+          93
         ],
         [
-          123,
-          114
+          96,
+          109
         ],
         [
-          124,
-          142
+          97,
+          117
         ],
         [
-          125,
-          153
+          98,
+          152
         ],
         [
-          126,
+          99,
           156
         ],
         [
-          127,
-          174
+          100,
+          165
         ],
         [
-          128,
-          175
+          101,
+          180
+        ],
+        [
+          102,
+          180
         ]
       ],
-      "daily_start_date": "2026-04-17",
+      "daily_start_date": "2026-05-13",
       "registration_curve": [
         {
           "days_before": 120,
@@ -21275,10 +18815,12 @@
         }
       ],
       "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
       "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "settled_actual",
+      "prediction_tier": null,
+      "shadow_forecasts": [],
       "walkin_multiplier": 1.035,
       "walkin_source": "family",
       "total_estimate": 186,
@@ -21292,6 +18834,7 @@
       "year": 2026,
       "event_start": "2026-11-06",
       "event_end": "2026-11-08",
+      "registration_close": "2026-11-07",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": 128.0,
@@ -21334,770 +18877,258 @@
       "daily_data": [
         [
           0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          1
-        ],
-        [
-          5,
-          1
-        ],
-        [
-          6,
-          1
-        ],
-        [
-          7,
-          1
-        ],
-        [
-          8,
-          1
-        ],
-        [
-          9,
-          1
-        ],
-        [
-          10,
-          1
-        ],
-        [
-          11,
-          1
-        ],
-        [
-          12,
-          1
-        ],
-        [
-          13,
-          1
-        ],
-        [
-          14,
-          1
-        ],
-        [
-          15,
-          1
-        ],
-        [
-          16,
-          1
-        ],
-        [
-          17,
-          1
-        ],
-        [
-          18,
-          1
-        ],
-        [
-          19,
-          1
-        ],
-        [
-          20,
-          1
-        ],
-        [
-          21,
-          1
-        ],
-        [
-          22,
-          1
-        ],
-        [
-          23,
-          1
-        ],
-        [
-          24,
-          1
-        ],
-        [
-          26,
-          1
-        ],
-        [
-          27,
-          1
-        ],
-        [
-          28,
-          1
-        ],
-        [
-          29,
-          1
-        ],
-        [
-          30,
-          1
-        ],
-        [
-          31,
-          1
-        ],
-        [
-          32,
-          1
-        ],
-        [
-          33,
-          1
-        ],
-        [
-          34,
-          1
-        ],
-        [
-          35,
-          1
-        ],
-        [
-          36,
-          1
-        ],
-        [
-          37,
-          1
-        ],
-        [
-          38,
-          1
-        ],
-        [
-          39,
-          1
-        ],
-        [
-          40,
-          1
-        ],
-        [
-          41,
-          1
-        ],
-        [
-          42,
-          1
-        ],
-        [
-          43,
-          1
-        ],
-        [
-          44,
-          1
-        ],
-        [
-          45,
-          1
-        ],
-        [
-          46,
-          1
-        ],
-        [
-          47,
-          1
-        ],
-        [
-          48,
-          1
-        ],
-        [
-          49,
           1
         ],
         [
           50,
-          1
-        ],
-        [
-          51,
-          1
-        ],
-        [
-          52,
-          1
-        ],
-        [
-          53,
-          1
-        ],
-        [
-          54,
-          2
-        ],
-        [
-          55,
-          2
-        ],
-        [
-          56,
-          2
-        ],
-        [
-          57,
-          2
-        ],
-        [
-          58,
-          2
-        ],
-        [
-          59,
-          2
-        ],
-        [
-          60,
-          2
-        ],
-        [
-          61,
-          2
-        ],
-        [
-          62,
-          2
-        ],
-        [
-          63,
-          2
-        ],
-        [
-          64,
-          2
-        ],
-        [
-          65,
-          2
-        ],
-        [
-          66,
-          2
-        ],
-        [
-          67,
-          2
-        ],
-        [
-          68,
-          2
-        ],
-        [
-          69,
-          2
-        ],
-        [
-          70,
-          2
-        ],
-        [
-          71,
-          2
-        ],
-        [
-          72,
-          2
-        ],
-        [
-          73,
-          2
-        ],
-        [
-          74,
-          2
-        ],
-        [
-          75,
-          2
-        ],
-        [
-          76,
-          2
-        ],
-        [
-          77,
-          2
-        ],
-        [
-          78,
-          2
-        ],
-        [
-          79,
-          2
-        ],
-        [
-          80,
-          2
-        ],
-        [
-          81,
-          2
-        ],
-        [
-          82,
-          2
-        ],
-        [
-          84,
-          2
-        ],
-        [
-          85,
-          2
-        ],
-        [
-          86,
-          2
-        ],
-        [
-          87,
-          2
-        ],
-        [
-          88,
-          2
-        ],
-        [
-          89,
-          2
-        ],
-        [
-          90,
-          2
-        ],
-        [
-          91,
-          2
-        ],
-        [
-          92,
           2
         ],
         [
           93,
-          2
-        ],
-        [
-          94,
-          2
-        ],
-        [
-          95,
-          2
-        ],
-        [
-          96,
-          2
-        ],
-        [
-          97,
-          3
-        ],
-        [
-          98,
           3
         ],
         [
           99,
-          3
+          4
         ],
         [
           100,
-          3
-        ],
-        [
-          101,
-          3
-        ],
-        [
-          102,
-          3
+          5
         ],
         [
           103,
-          3
-        ],
-        [
-          104,
-          5
-        ],
-        [
-          105,
-          5
+          6
         ],
         [
           106,
-          5
-        ],
-        [
-          107,
-          5
+          7
         ],
         [
           108,
-          6
-        ],
-        [
-          109,
-          6
-        ],
-        [
-          110,
-          7
-        ],
-        [
-          111,
-          7
-        ],
-        [
-          112,
-          7
-        ],
-        [
-          113,
-          8
-        ],
-        [
-          114,
           8
         ],
         [
           115,
-          8
-        ],
-        [
-          116,
-          8
-        ],
-        [
-          117,
-          8
+          9
         ],
         [
           118,
-          8
-        ],
-        [
-          119,
-          9
-        ],
-        [
-          120,
-          9
-        ],
-        [
-          121,
-          9
-        ],
-        [
-          122,
-          10
-        ],
-        [
-          123,
-          10
-        ],
-        [
-          124,
           10
         ],
         [
           125,
-          10
-        ],
-        [
-          126,
-          10
-        ],
-        [
-          127,
-          10
-        ],
-        [
-          128,
-          10
-        ],
-        [
-          129,
-          10
-        ],
-        [
-          130,
           11
         ],
         [
-          131,
+          126,
           13
         ],
         [
-          132,
+          127,
           14
         ],
         [
-          133,
-          14
+          128,
+          15
         ],
         [
-          134,
-          16
-        ],
-        [
-          135,
-          16
-        ],
-        [
-          136,
+          130,
           17
         ],
         [
-          137,
+          132,
           18
         ],
         [
+          133,
+          19
+        ],
+        [
+          134,
+          22
+        ],
+        [
+          135,
+          24
+        ],
+        [
+          136,
+          27
+        ],
+        [
           138,
-          20
-        ],
-        [
-          139,
-          23
-        ],
-        [
-          140,
-          26
-        ],
-        [
-          141,
-          26
+          28
         ],
         [
           142,
-          27
-        ],
-        [
-          143,
-          27
+          30
         ],
         [
           144,
-          27
-        ],
-        [
-          145,
-          27
-        ],
-        [
-          146,
-          29
-        ],
-        [
-          147,
-          29
-        ],
-        [
-          148,
-          32
-        ],
-        [
-          149,
           34
         ],
         [
-          150,
-          39
+          145,
+          36
         ],
         [
-          151,
-          39
-        ],
-        [
-          152,
+          146,
           40
         ],
         [
-          153,
+          147,
           41
         ],
         [
-          154,
-          41
+          148,
+          42
         ],
         [
-          155,
-          41
+          150,
+          43
         ],
         [
-          156,
+          151,
           44
         ],
         [
-          157,
-          45
+          152,
+          47
         ],
         [
-          158,
-          46
+          153,
+          48
         ],
         [
-          159,
-          50
+          154,
+          49
         ],
         [
-          160,
-          53
-        ],
-        [
-          161,
+          155,
           54
         ],
         [
-          162,
+          156,
           56
         ],
         [
-          163,
-          56
+          157,
+          57
         ],
         [
-          164,
+          158,
           59
         ],
         [
-          165,
-          62
-        ],
-        [
-          166,
+          160,
           63
         ],
         [
-          167,
-          69
+          161,
+          66
         ],
         [
-          168,
-          72
+          162,
+          67
         ],
         [
-          169,
+          163,
+          73
+        ],
+        [
+          164,
           75
         ],
         [
-          170,
-          75
-        ],
-        [
-          171,
+          165,
           78
         ],
         [
-          172,
-          85
+          167,
+          82
         ],
         [
-          173,
-          89
+          168,
+          88
         ],
         [
-          174,
-          90
+          169,
+          92
         ],
         [
-          175,
-          98
+          170,
+          93
         ],
         [
-          176,
+          171,
           103
         ],
         [
-          177,
+          172,
           106
         ],
         [
-          178,
-          115
+          173,
+          111
+        ],
+        [
+          174,
+          118
+        ],
+        [
+          175,
+          128
+        ],
+        [
+          176,
+          142
+        ],
+        [
+          177,
+          148
         ],
         [
           179,
-          124
+          158
         ],
         [
           180,
-          134
+          166
         ],
         [
           181,
-          145
+          183
         ],
         [
           182,
-          145
+          221
         ],
         [
           183,
-          155
+          248
         ],
         [
           184,
-          163
+          269
         ],
         [
           185,
-          177
+          280
         ],
         [
           186,
-          218
+          290
         ],
         [
           187,
-          243
+          306
         ],
         [
           188,
-          262
-        ],
-        [
-          189,
-          273
-        ],
-        [
-          190,
-          282
-        ],
-        [
-          191,
-          291
-        ],
-        [
-          192,
-          295
+          306
         ]
       ],
-      "daily_start_date": "2026-04-30",
+      "daily_start_date": "2026-05-04",
       "registration_curve": [
         {
           "days_before": 120,
@@ -22149,10 +19180,12 @@
         }
       ],
       "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
       "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "settled_actual",
+      "prediction_tier": null,
+      "shadow_forecasts": [],
       "walkin_multiplier": 1.037,
       "walkin_source": "family",
       "total_estimate": 317,
@@ -22166,6 +19199,7 @@
       "year": 2026,
       "event_start": "2026-10-09",
       "event_end": "2026-10-11",
+      "registration_close": "2026-10-10",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": 118.0,
@@ -22208,686 +19242,186 @@
       "daily_data": [
         [
           0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          2
-        ],
-        [
-          4,
-          2
-        ],
-        [
-          5,
-          2
-        ],
-        [
-          6,
-          2
-        ],
-        [
-          7,
-          2
-        ],
-        [
-          8,
-          2
-        ],
-        [
-          9,
-          2
-        ],
-        [
-          10,
-          2
-        ],
-        [
-          11,
-          2
-        ],
-        [
-          12,
-          2
-        ],
-        [
-          13,
-          2
-        ],
-        [
-          14,
-          2
-        ],
-        [
-          15,
-          2
-        ],
-        [
-          16,
-          2
-        ],
-        [
-          17,
-          2
-        ],
-        [
-          18,
-          2
-        ],
-        [
-          19,
-          2
-        ],
-        [
-          20,
-          2
-        ],
-        [
-          21,
-          2
-        ],
-        [
-          22,
-          2
-        ],
-        [
-          23,
-          2
-        ],
-        [
-          24,
-          2
-        ],
-        [
-          25,
-          2
-        ],
-        [
-          26,
-          2
-        ],
-        [
-          27,
-          2
-        ],
-        [
-          28,
-          2
-        ],
-        [
-          29,
-          2
-        ],
-        [
-          30,
-          2
-        ],
-        [
-          31,
-          2
-        ],
-        [
-          33,
-          2
-        ],
-        [
-          34,
-          2
-        ],
-        [
-          35,
           2
         ],
         [
           36,
-          2
-        ],
-        [
-          37,
-          2
-        ],
-        [
-          38,
-          3
-        ],
-        [
-          39,
-          3
-        ],
-        [
-          40,
-          3
-        ],
-        [
-          41,
-          3
-        ],
-        [
-          42,
-          3
-        ],
-        [
-          43,
-          3
-        ],
-        [
-          44,
-          3
-        ],
-        [
-          45,
-          3
-        ],
-        [
-          46,
-          3
-        ],
-        [
-          47,
-          3
-        ],
-        [
-          48,
-          3
-        ],
-        [
-          49,
-          3
-        ],
-        [
-          50,
-          3
-        ],
-        [
-          51,
-          3
-        ],
-        [
-          52,
-          3
-        ],
-        [
-          53,
-          3
-        ],
-        [
-          54,
-          3
-        ],
-        [
-          55,
-          3
-        ],
-        [
-          56,
-          3
-        ],
-        [
-          57,
-          3
-        ],
-        [
-          58,
-          3
-        ],
-        [
-          59,
-          3
-        ],
-        [
-          60,
-          3
-        ],
-        [
-          61,
-          3
-        ],
-        [
-          62,
-          3
-        ],
-        [
-          63,
-          3
-        ],
-        [
-          64,
-          3
-        ],
-        [
-          65,
-          3
-        ],
-        [
-          66,
-          3
-        ],
-        [
-          67,
-          3
-        ],
-        [
-          68,
-          3
-        ],
-        [
-          69,
-          3
-        ],
-        [
-          70,
-          3
-        ],
-        [
-          71,
-          3
-        ],
-        [
-          72,
-          3
-        ],
-        [
-          73,
-          3
-        ],
-        [
-          74,
-          3
-        ],
-        [
-          75,
-          3
-        ],
-        [
-          76,
-          3
-        ],
-        [
-          77,
-          3
-        ],
-        [
-          78,
-          3
-        ],
-        [
-          79,
-          3
-        ],
-        [
-          80,
-          3
-        ],
-        [
-          81,
-          3
-        ],
-        [
-          82,
-          3
-        ],
-        [
-          83,
-          3
-        ],
-        [
-          84,
-          3
-        ],
-        [
-          85,
-          3
-        ],
-        [
-          86,
-          3
-        ],
-        [
-          87,
-          3
-        ],
-        [
-          88,
-          3
-        ],
-        [
-          89,
-          3
-        ],
-        [
-          91,
-          3
-        ],
-        [
-          92,
-          3
-        ],
-        [
-          93,
-          3
-        ],
-        [
-          94,
-          3
-        ],
-        [
-          95,
-          3
-        ],
-        [
-          96,
           3
         ],
         [
           97,
-          3
-        ],
-        [
-          98,
-          3
-        ],
-        [
-          99,
-          3
-        ],
-        [
-          100,
           4
         ],
         [
           101,
-          4
-        ],
-        [
-          102,
-          4
+          5
         ],
         [
           103,
-          5
-        ],
-        [
-          104,
-          5
-        ],
-        [
-          105,
           8
         ],
         [
-          106,
+          104,
           9
         ],
         [
           107,
-          9
+          10
         ],
         [
           108,
-          9
+          12
         ],
         [
           109,
-          9
-        ],
-        [
-          110,
-          11
-        ],
-        [
-          111,
-          12
-        ],
-        [
-          112,
-          12
-        ],
-        [
-          113,
-          12
+          13
         ],
         [
           114,
-          12
-        ],
-        [
-          115,
-          12
-        ],
-        [
-          116,
-          12
-        ],
-        [
-          117,
-          13
-        ],
-        [
-          118,
-          13
-        ],
-        [
-          119,
-          13
-        ],
-        [
-          120,
-          13
+          14
         ],
         [
           121,
-          13
+          15
         ],
         [
           122,
-          14
-        ],
-        [
-          123,
-          14
-        ],
-        [
-          124,
-          16
-        ],
-        [
-          125,
-          16
-        ],
-        [
-          126,
           17
         ],
         [
-          127,
-          18
-        ],
-        [
-          128,
-          18
-        ],
-        [
-          129,
+          124,
           19
         ],
         [
-          130,
+          127,
           20
         ],
         [
-          131,
+          128,
           21
         ],
         [
-          132,
-          21
-        ],
-        [
-          133,
-          21
-        ],
-        [
-          134,
-          21
-        ],
-        [
-          135,
+          129,
           22
         ],
         [
+          133,
+          23
+        ],
+        [
+          134,
+          25
+        ],
+        [
           136,
-          24
+          29
         ],
         [
           137,
-          24
-        ],
-        [
-          138,
-          27
+          32
         ],
         [
           139,
-          31
-        ],
-        [
-          140,
-          31
+          33
         ],
         [
           141,
-          32
+          35
         ],
         [
           142,
-          32
-        ],
-        [
-          143,
-          34
+          39
         ],
         [
           144,
-          37
+          43
         ],
         [
           145,
-          38
-        ],
-        [
-          146,
-          42
+          45
         ],
         [
           147,
-          44
+          47
         ],
         [
           148,
-          44
-        ],
-        [
-          149,
-          46
+          50
         ],
         [
           150,
-          48
-        ],
-        [
-          151,
-          48
-        ],
-        [
-          152,
-          50
-        ],
-        [
-          153,
-          50
-        ],
-        [
-          154,
           52
         ],
         [
-          155,
+          152,
           54
         ],
         [
+          153,
+          57
+        ],
+        [
+          154,
+          60
+        ],
+        [
+          155,
+          62
+        ],
+        [
           156,
-          56
+          67
         ],
         [
           157,
-          63
+          70
         ],
         [
           158,
-          63
+          74
         ],
         [
           159,
-          66
+          83
         ],
         [
           160,
-          69
+          91
         ],
         [
           161,
-          77
+          105
         ],
         [
           162,
-          86
+          118
         ],
         [
           163,
-          101
+          144
         ],
         [
           164,
-          114
+          179
         ],
         [
           165,
-          137
-        ],
-        [
-          166,
-          166
-        ],
-        [
-          167,
-          195
-        ],
-        [
-          168,
           201
         ],
         [
-          169,
-          215
+          166,
+          206
         ],
         [
-          170,
-          224
+          167,
+          221
         ],
         [
-          171,
-          226
+          168,
+          237
         ]
       ],
-      "daily_start_date": "2026-04-23",
+      "daily_start_date": "2026-04-25",
       "registration_curve": [
         {
           "days_before": 120,
@@ -22939,10 +19473,12 @@
         }
       ],
       "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
       "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "settled_actual",
+      "prediction_tier": null,
+      "shadow_forecasts": [],
       "walkin_multiplier": 1.031,
       "walkin_source": "family",
       "total_estimate": 244,
@@ -22956,6 +19492,7 @@
       "year": 2026,
       "event_start": "2026-09-04",
       "event_end": "2026-09-07",
+      "registration_close": "2026-09-06",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": 118.0,
@@ -22998,654 +19535,254 @@
       "daily_data": [
         [
           0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          6,
-          0
-        ],
-        [
-          7,
-          0
-        ],
-        [
-          8,
-          0
-        ],
-        [
-          9,
-          0
-        ],
-        [
-          10,
           1
         ],
         [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
           11,
-          2
-        ],
-        [
-          12,
-          2
-        ],
-        [
-          13,
-          3
-        ],
-        [
-          14,
-          3
-        ],
-        [
-          15,
-          3
-        ],
-        [
-          16,
-          3
-        ],
-        [
-          17,
-          3
-        ],
-        [
-          18,
-          3
-        ],
-        [
-          19,
-          3
-        ],
-        [
-          20,
-          3
-        ],
-        [
-          21,
-          5
-        ],
-        [
-          22,
-          5
-        ],
-        [
-          23,
-          5
-        ],
-        [
-          24,
-          5
-        ],
-        [
-          25,
-          5
-        ],
-        [
-          26,
-          5
-        ],
-        [
-          27,
-          5
-        ],
-        [
-          28,
-          5
-        ],
-        [
-          29,
           5
         ],
         [
           30,
-          5
-        ],
-        [
-          31,
-          5
-        ],
-        [
-          32,
-          5
+          6
         ],
         [
           33,
-          5
-        ],
-        [
-          34,
-          5
-        ],
-        [
-          35,
-          5
-        ],
-        [
-          36,
-          5
-        ],
-        [
-          37,
-          5
-        ],
-        [
-          38,
-          5
-        ],
-        [
-          39,
-          5
-        ],
-        [
-          40,
-          6
-        ],
-        [
-          41,
-          6
+          7
         ],
         [
           42,
-          6
-        ],
-        [
-          43,
-          7
-        ],
-        [
-          44,
-          7
-        ],
-        [
-          45,
-          7
-        ],
-        [
-          46,
-          7
-        ],
-        [
-          47,
-          7
-        ],
-        [
-          48,
-          7
-        ],
-        [
-          49,
-          7
-        ],
-        [
-          50,
-          7
-        ],
-        [
-          51,
-          7
-        ],
-        [
-          52,
-          8
-        ],
-        [
-          53,
-          8
-        ],
-        [
-          54,
-          8
-        ],
-        [
-          55,
-          8
-        ],
-        [
-          56,
-          8
-        ],
-        [
-          57,
-          8
-        ],
-        [
-          59,
-          8
-        ],
-        [
-          60,
-          8
-        ],
-        [
-          61,
-          8
-        ],
-        [
-          62,
-          8
-        ],
-        [
-          63,
           8
         ],
         [
           64,
-          8
-        ],
-        [
-          65,
-          8
-        ],
-        [
-          66,
-          8
-        ],
-        [
-          67,
-          8
-        ],
-        [
-          68,
-          8
-        ],
-        [
-          69,
-          8
-        ],
-        [
-          70,
-          8
-        ],
-        [
-          71,
-          8
-        ],
-        [
-          72,
-          8
-        ],
-        [
-          73,
-          8
-        ],
-        [
-          74,
-          9
-        ],
-        [
-          75,
-          9
-        ],
-        [
-          76,
-          9
-        ],
-        [
-          77,
           9
         ],
         [
           78,
-          9
-        ],
-        [
-          79,
-          9
-        ],
-        [
-          80,
-          9
-        ],
-        [
-          81,
-          9
-        ],
-        [
-          82,
-          9
-        ],
-        [
-          83,
-          9
+          10
         ],
         [
           84,
-          9
-        ],
-        [
-          85,
-          9
-        ],
-        [
-          86,
-          9
-        ],
-        [
-          87,
-          9
-        ],
-        [
-          88,
-          10
-        ],
-        [
-          89,
-          10
-        ],
-        [
-          90,
-          10
-        ],
-        [
-          91,
-          10
-        ],
-        [
-          92,
-          10
+          11
         ],
         [
           93,
-          10
-        ],
-        [
-          94,
-          11
-        ],
-        [
-          95,
-          11
-        ],
-        [
-          96,
-          11
-        ],
-        [
-          97,
-          11
-        ],
-        [
-          98,
-          11
-        ],
-        [
-          99,
-          11
-        ],
-        [
-          100,
-          11
-        ],
-        [
-          101,
-          11
-        ],
-        [
-          102,
-          11
-        ],
-        [
-          103,
           12
         ],
         [
-          104,
+          94,
           15
         ],
         [
-          105,
-          15
-        ],
-        [
-          106,
+          96,
           16
         ],
         [
-          107,
-          16
-        ],
-        [
-          108,
-          16
-        ],
-        [
-          109,
-          16
-        ],
-        [
-          110,
+          100,
           17
         ],
         [
-          111,
+          102,
           18
         ],
         [
-          112,
-          18
-        ],
-        [
-          113,
-          18
-        ],
-        [
-          114,
+          104,
           20
         ],
         [
-          115,
+          105,
           21
         ],
         [
-          117,
+          107,
           22
         ],
         [
-          118,
+          108,
           24
         ],
         [
-          119,
-          24
-        ],
-        [
-          120,
+          110,
           25
         ],
         [
-          121,
+          111,
           27
         ],
         [
-          122,
-          27
-        ],
-        [
-          123,
+          113,
           28
         ],
         [
-          124,
+          114,
           30
         ],
         [
-          125,
-          30
+          116,
+          31
         ],
         [
-          126,
-          32
+          117,
+          35
         ],
         [
-          127,
-          34
-        ],
-        [
-          128,
+          118,
           39
         ],
         [
-          129,
-          39
-        ],
-        [
-          130,
+          119,
           40
         ],
         [
-          131,
+          120,
           41
         ],
         [
-          132,
+          121,
           42
         ],
         [
-          133,
-          44
+          122,
+          43
         ],
         [
-          134,
+          123,
           45
         ],
         [
-          135,
-          47
+          124,
+          46
         ],
         [
-          136,
-          50
+          125,
+          48
         ],
         [
-          137,
-          59
+          126,
+          51
         ],
         [
-          138,
-          63
+          127,
+          58
         ],
         [
-          139,
-          69
+          128,
+          64
         ],
         [
-          140,
-          71
+          129,
+          70
         ],
         [
-          141,
-          76
+          130,
+          72
         ],
         [
-          142,
+          131,
+          77
+        ],
+        [
+          132,
           80
         ],
         [
-          143,
-          88
+          133,
+          89
         ],
         [
-          144,
-          92
+          134,
+          93
         ],
         [
-          145,
-          100
+          135,
+          101
         ],
         [
-          146,
-          108
+          136,
+          109
         ],
         [
-          147,
+          137,
           114
         ],
         [
-          148,
-          124
+          138,
+          121
         ],
         [
-          149,
-          126
+          139,
+          127
         ],
         [
-          150,
-          134
+          140,
+          135
         ],
         [
-          151,
-          147
+          141,
+          149
         ],
         [
-          152,
-          156
+          142,
+          155
         ],
         [
-          153,
-          165
+          143,
+          162
         ],
         [
-          154,
+          144,
           176
         ],
         [
-          155,
-          183
+          145,
+          185
         ],
         [
-          156,
-          198
+          146,
+          197
         ],
         [
-          157,
-          227
+          147,
+          221
         ],
         [
-          158,
-          279
+          148,
+          271
         ],
         [
-          159,
-          287
+          149,
+          290
         ],
         [
-          160,
-          295
+          150,
+          299
         ],
         [
-          161,
-          315
+          151,
+          318
         ],
         [
-          162,
-          325
+          152,
+          332
         ],
         [
-          163,
-          325
+          153,
+          332
+        ],
+        [
+          154,
+          332
         ]
       ],
-      "daily_start_date": "2026-03-28",
+      "daily_start_date": "2026-04-06",
       "registration_curve": [
         {
           "days_before": 120,
@@ -23697,10 +19834,12 @@
         }
       ],
       "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
       "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "settled_actual",
+      "prediction_tier": null,
+      "shadow_forecasts": [],
       "walkin_multiplier": 1.045,
       "walkin_source": "family",
       "total_estimate": 347,
@@ -23714,6 +19853,7 @@
       "year": 2026,
       "event_start": "2026-07-17",
       "event_end": "2026-07-19",
+      "registration_close": "2026-07-18",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": 128.0,
@@ -23756,478 +19896,202 @@
       "daily_data": [
         [
           0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          6,
-          0
-        ],
-        [
-          7,
-          0
-        ],
-        [
-          8,
-          0
-        ],
-        [
-          9,
-          0
-        ],
-        [
-          10,
-          0
-        ],
-        [
-          11,
-          0
-        ],
-        [
-          12,
-          0
-        ],
-        [
-          13,
-          0
-        ],
-        [
-          14,
-          0
-        ],
-        [
-          15,
-          0
-        ],
-        [
-          16,
-          0
-        ],
-        [
-          17,
-          0
-        ],
-        [
-          18,
-          0
-        ],
-        [
-          19,
-          0
-        ],
-        [
-          20,
-          0
-        ],
-        [
-          21,
-          0
-        ],
-        [
-          22,
-          0
-        ],
-        [
-          23,
-          0
-        ],
-        [
-          24,
-          0
-        ],
-        [
-          25,
-          0
-        ],
-        [
-          26,
-          0
-        ],
-        [
-          27,
-          0
-        ],
-        [
-          28,
-          0
-        ],
-        [
-          29,
-          0
-        ],
-        [
-          30,
-          0
-        ],
-        [
-          31,
-          0
-        ],
-        [
-          32,
-          0
-        ],
-        [
-          33,
-          0
-        ],
-        [
-          34,
-          0
-        ],
-        [
-          35,
-          0
-        ],
-        [
-          36,
           1
         ],
         [
-          37,
+          1,
           2
         ],
         [
-          38,
+          2,
           3
         ],
         [
-          39,
+          3,
           4
         ],
         [
-          40,
-          4
-        ],
-        [
-          41,
-          4
-        ],
-        [
-          42,
-          4
-        ],
-        [
-          43,
-          4
-        ],
-        [
-          44,
-          4
-        ],
-        [
-          45,
-          4
-        ],
-        [
-          46,
-          4
-        ],
-        [
-          47,
-          4
-        ],
-        [
-          48,
-          4
-        ],
-        [
-          49,
-          4
-        ],
-        [
-          50,
-          4
-        ],
-        [
-          51,
-          4
-        ],
-        [
-          52,
-          4
-        ],
-        [
-          53,
+          17,
           5
         ],
         [
-          54,
-          5
-        ],
-        [
-          55,
+          19,
           6
         ],
         [
-          56,
-          6
-        ],
-        [
-          57,
+          20,
           7
         ],
         [
-          58,
-          7
-        ],
-        [
-          59,
+          23,
           8
         ],
         [
-          60,
-          8
-        ],
-        [
-          61,
-          8
-        ],
-        [
-          62,
+          26,
           9
         ],
         [
-          64,
+          28,
           11
         ],
         [
-          65,
-          11
-        ],
-        [
-          66,
-          11
-        ],
-        [
-          67,
-          11
-        ],
-        [
-          68,
-          11
-        ],
-        [
-          69,
+          33,
           12
         ],
         [
-          70,
+          34,
           13
         ],
         [
-          71,
+          35,
           14
         ],
         [
-          72,
+          36,
           17
         ],
         [
-          73,
-          17
-        ],
-        [
-          74,
+          38,
           18
         ],
         [
-          75,
+          39,
           19
         ],
         [
-          76,
+          40,
           20
         ],
         [
-          77,
-          20
-        ],
-        [
-          78,
+          42,
           22
         ],
         [
-          79,
-          22
-        ],
-        [
-          80,
-          22
-        ],
-        [
-          81,
-          22
-        ],
-        [
-          82,
+          46,
           25
         ],
         [
-          83,
+          47,
           27
         ],
         [
-          84,
+          48,
           29
         ],
         [
-          85,
-          29
-        ],
-        [
-          86,
-          29
-        ],
-        [
-          87,
-          29
-        ],
-        [
-          88,
+          51,
           30
         ],
         [
-          89,
+          53,
           31
         ],
         [
-          90,
-          31
-        ],
-        [
-          91,
-          34
-        ],
-        [
-          92,
+          55,
           35
         ],
         [
-          93,
+          57,
           37
         ],
         [
-          94,
+          58,
           38
         ],
         [
-          95,
-          38
-        ],
-        [
-          96,
+          60,
           39
         ],
         [
-          97,
+          61,
           42
         ],
         [
-          98,
+          62,
           43
         ],
         [
-          99,
+          63,
           48
         ],
         [
-          100,
+          64,
           50
         ],
         [
-          101,
+          65,
           58
         ],
         [
-          102,
+          66,
           62
         ],
         [
-          103,
+          67,
           63
         ],
         [
-          104,
+          68,
           67
         ],
         [
-          105,
+          69,
           77
         ],
         [
-          106,
+          70,
           87
         ],
         [
-          107,
+          71,
           92
         ],
         [
-          108,
+          72,
           101
         ],
         [
-          109,
+          73,
           103
         ],
         [
-          110,
-          117
+          74,
+          119
         ],
         [
-          111,
-          126
+          75,
+          127
         ],
         [
-          112,
-          140
+          76,
+          142
         ],
         [
-          113,
-          158
+          77,
+          160
         ],
         [
-          114,
-          172
+          78,
+          174
         ],
         [
-          115,
-          175
+          79,
+          178
         ],
         [
-          116,
-          181
+          80,
+          186
         ],
         [
-          117,
-          197
+          81,
+          206
         ],
         [
-          118,
-          200
+          82,
+          206
         ]
       ],
-      "daily_start_date": "2026-03-23",
+      "daily_start_date": "2026-04-28",
       "registration_curve": [
         {
           "days_before": 120,
@@ -24279,10 +20143,12 @@
         }
       ],
       "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
       "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "settled_actual",
+      "prediction_tier": null,
+      "shadow_forecasts": [],
       "walkin_multiplier": 1.045,
       "walkin_source": "family",
       "total_estimate": 215,
@@ -24296,6 +20162,7 @@
       "year": 2026,
       "event_start": "2026-06-29",
       "event_end": "2026-06-30",
+      "registration_close": "2026-06-29",
       "early_bird_deadline": null,
       "early_bird_fee": null,
       "regular_fee": 58.0,
@@ -24338,382 +20205,150 @@
       "daily_data": [
         [
           0,
-          0
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          5,
-          0
-        ],
-        [
-          6,
-          0
-        ],
-        [
-          7,
-          0
+          2
         ],
         [
           8,
-          0
-        ],
-        [
-          9,
-          0
-        ],
-        [
-          10,
-          2
+          3
         ],
         [
           11,
-          2
-        ],
-        [
-          12,
-          2
-        ],
-        [
-          13,
-          2
-        ],
-        [
-          14,
-          2
-        ],
-        [
-          15,
-          2
-        ],
-        [
-          16,
-          2
-        ],
-        [
-          17,
-          2
+          4
         ],
         [
           18,
-          3
-        ],
-        [
-          19,
-          3
-        ],
-        [
-          20,
-          3
-        ],
-        [
-          21,
-          4
-        ],
-        [
-          22,
-          4
-        ],
-        [
-          23,
-          4
-        ],
-        [
-          24,
-          4
+          5
         ],
         [
           25,
-          4
-        ],
-        [
-          26,
-          4
-        ],
-        [
-          27,
-          4
-        ],
-        [
-          28,
-          5
-        ],
-        [
-          29,
-          5
-        ],
-        [
-          30,
-          5
-        ],
-        [
-          31,
-          5
-        ],
-        [
-          32,
-          5
-        ],
-        [
-          33,
-          5
-        ],
-        [
-          34,
-          5
-        ],
-        [
-          35,
           6
         ],
         [
-          36,
+          26,
           8
         ],
         [
-          37,
-          8
-        ],
-        [
-          38,
+          28,
           9
         ],
         [
-          39,
-          9
-        ],
-        [
-          40,
+          30,
           10
         ],
         [
-          41,
+          31,
           11
         ],
         [
-          42,
-          11
-        ],
-        [
-          43,
-          11
-        ],
-        [
-          44,
+          34,
           13
         ],
         [
-          45,
+          35,
           14
         ],
         [
-          46,
-          14
-        ],
-        [
-          47,
-          14
-        ],
-        [
-          48,
-          14
-        ],
-        [
-          49,
+          39,
           17
         ],
         [
-          50,
-          17
+          42,
+          18
         ],
         [
           51,
-          17
+          20
         ],
         [
           52,
-          18
-        ],
-        [
-          53,
-          18
+          21
         ],
         [
           54,
-          18
-        ],
-        [
-          55,
-          18
+          22
         ],
         [
           56,
-          18
-        ],
-        [
-          57,
-          18
-        ],
-        [
-          59,
-          18
-        ],
-        [
-          60,
-          18
-        ],
-        [
-          61,
-          18
-        ],
-        [
-          62,
-          21
-        ],
-        [
-          63,
-          21
-        ],
-        [
-          64,
-          22
-        ],
-        [
-          65,
-          22
-        ],
-        [
-          66,
           29
         ],
         [
-          67,
+          57,
           31
         ],
         [
-          68,
-          31
-        ],
-        [
-          69,
+          59,
           33
         ],
         [
-          70,
+          60,
           34
         ],
         [
-          71,
-          34
-        ],
-        [
-          72,
+          62,
           35
         ],
         [
-          73,
+          63,
           36
         ],
         [
-          74,
+          64,
           37
         ],
         [
-          75,
-          37
-        ],
-        [
-          76,
+          66,
           39
         ],
         [
-          77,
-          39
-        ],
-        [
-          78,
-          39
-        ],
-        [
-          79,
-          40
-        ],
-        [
-          80,
+          69,
           41
         ],
         [
-          81,
-          41
-        ],
-        [
-          82,
+          72,
           42
         ],
         [
+          73,
+          45
+        ],
+        [
+          74,
+          47
+        ],
+        [
+          76,
+          53
+        ],
+        [
+          77,
+          59
+        ],
+        [
+          78,
+          62
+        ],
+        [
+          79,
+          65
+        ],
+        [
+          80,
+          70
+        ],
+        [
+          81,
+          78
+        ],
+        [
+          82,
+          79
+        ],
+        [
           83,
-          44
-        ],
-        [
-          84,
-          44
-        ],
-        [
-          85,
-          46
-        ],
-        [
-          86,
-          52
-        ],
-        [
-          87,
-          57
-        ],
-        [
-          88,
-          60
-        ],
-        [
-          89,
-          64
-        ],
-        [
-          90,
-          69
-        ],
-        [
-          91,
-          76
-        ],
-        [
-          92,
-          77
-        ],
-        [
-          93,
-          81
-        ],
-        [
-          94,
-          82
+          86
         ]
       ],
-      "daily_start_date": "2026-03-28",
+      "daily_start_date": "2026-04-07",
       "registration_curve": [
         {
           "days_before": 120,
@@ -24765,10 +20400,12 @@
         }
       ],
       "status": "complete",
+      "prediction_source": "final",
+      "prior_year_pace": null,
+      "low_confidence": false,
       "n_historical_editions": 5,
-      "low_confidence": true,
-      "prediction_tier": "roster-pending",
-      "prediction_source": "settled_actual",
+      "prediction_tier": null,
+      "shadow_forecasts": [],
       "walkin_multiplier": 1.1,
       "walkin_source": "estimate",
       "total_estimate": 95,
@@ -24780,7 +20417,7 @@
     {
       "family": "Atlantic Open",
       "year": 2015,
-      "event_start": "2015-08-26",
+      "event_start": "2015-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -24867,7 +20504,7 @@
     {
       "family": "Atlantic Open",
       "year": 2016,
-      "event_start": "2016-08-26",
+      "event_start": "2016-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -24958,7 +20595,7 @@
     {
       "family": "Atlantic Open",
       "year": 2017,
-      "event_start": "2017-08-26",
+      "event_start": "2017-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -25053,7 +20690,7 @@
     {
       "family": "Atlantic Open",
       "year": 2018,
-      "event_start": "2018-08-26",
+      "event_start": "2018-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -25152,7 +20789,7 @@
     {
       "family": "Atlantic Open",
       "year": 2019,
-      "event_start": "2019-08-26",
+      "event_start": "2019-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -30201,7 +25838,7 @@
     {
       "family": "Central California Open",
       "year": 2015,
-      "event_start": "2015-08-20",
+      "event_start": "2015-08-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -30288,7 +25925,7 @@
     {
       "family": "Central California Open",
       "year": 2016,
-      "event_start": "2016-08-20",
+      "event_start": "2016-08-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -30379,7 +26016,7 @@
     {
       "family": "Central California Open",
       "year": 2017,
-      "event_start": "2017-08-20",
+      "event_start": "2017-08-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -30474,7 +26111,7 @@
     {
       "family": "Central California Open",
       "year": 2018,
-      "event_start": "2018-08-20",
+      "event_start": "2018-08-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -30573,7 +26210,7 @@
     {
       "family": "Central California Open",
       "year": 2019,
-      "event_start": "2019-08-20",
+      "event_start": "2019-08-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -40859,7 +36496,7 @@
     {
       "family": "Eastern Chess Congress",
       "year": 2015,
-      "event_start": "2015-10-26",
+      "event_start": "2015-10-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -40935,18 +36572,18 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.044,
+      "walkin_multiplier": 1.034,
       "walkin_source": "family",
-      "total_estimate": 121,
+      "total_estimate": 120,
       "total_ci_lower": 119,
-      "total_ci_upper": 123,
+      "total_ci_upper": 121,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
     {
       "family": "Eastern Chess Congress",
       "year": 2016,
-      "event_start": "2016-10-26",
+      "event_start": "2016-10-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -41026,18 +36663,18 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.044,
+      "walkin_multiplier": 1.034,
       "walkin_source": "family",
-      "total_estimate": 291,
-      "total_ci_lower": 286,
-      "total_ci_upper": 296,
+      "total_estimate": 289,
+      "total_ci_lower": 285,
+      "total_ci_upper": 292,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
     {
       "family": "Eastern Chess Congress",
       "year": 2017,
-      "event_start": "2017-10-26",
+      "event_start": "2017-10-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -41121,18 +36758,18 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.044,
+      "walkin_multiplier": 1.034,
       "walkin_source": "family",
-      "total_estimate": 418,
-      "total_ci_lower": 410,
-      "total_ci_upper": 425,
+      "total_estimate": 414,
+      "total_ci_lower": 409,
+      "total_ci_upper": 419,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
     {
       "family": "Eastern Chess Congress",
       "year": 2018,
-      "event_start": "2018-10-26",
+      "event_start": "2018-10-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -41220,18 +36857,18 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.044,
+      "walkin_multiplier": 1.034,
       "walkin_source": "family",
-      "total_estimate": 330,
-      "total_ci_lower": 324,
-      "total_ci_upper": 336,
+      "total_estimate": 327,
+      "total_ci_lower": 323,
+      "total_ci_upper": 331,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
     {
       "family": "Eastern Chess Congress",
       "year": 2019,
-      "event_start": "2019-10-26",
+      "event_start": "2019-10-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -41323,11 +36960,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.044,
+      "walkin_multiplier": 1.034,
       "walkin_source": "family",
-      "total_estimate": 364,
-      "total_ci_lower": 358,
-      "total_ci_upper": 371,
+      "total_estimate": 361,
+      "total_ci_lower": 357,
+      "total_ci_upper": 365,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
@@ -41686,11 +37323,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.044,
+      "walkin_multiplier": 1.034,
       "walkin_source": "family",
-      "total_estimate": 515,
-      "total_ci_lower": 506,
-      "total_ci_upper": 524,
+      "total_estimate": 510,
+      "total_ci_lower": 504,
+      "total_ci_upper": 516,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
@@ -42029,11 +37666,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.044,
+      "walkin_multiplier": 1.034,
       "walkin_source": "family",
-      "total_estimate": 550,
-      "total_ci_lower": 541,
-      "total_ci_upper": 560,
+      "total_estimate": 545,
+      "total_ci_lower": 539,
+      "total_ci_upper": 551,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
@@ -42376,11 +38013,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.044,
+      "walkin_multiplier": 1.034,
       "walkin_source": "family",
-      "total_estimate": 512,
-      "total_ci_lower": 503,
-      "total_ci_upper": 520,
+      "total_estimate": 507,
+      "total_ci_lower": 501,
+      "total_ci_upper": 513,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
@@ -42759,11 +38396,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.044,
+      "walkin_multiplier": 1.034,
       "walkin_source": "family",
-      "total_estimate": 508,
-      "total_ci_lower": 500,
-      "total_ci_upper": 517,
+      "total_estimate": 504,
+      "total_ci_lower": 498,
+      "total_ci_upper": 510,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
@@ -43046,11 +38683,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 253,
-      "total_ci_lower": 253,
-      "total_ci_upper": 253,
+      "walkin_multiplier": 1.071,
+      "walkin_source": "family",
+      "total_estimate": 246,
+      "total_ci_lower": 243,
+      "total_ci_upper": 250,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
@@ -43345,11 +38982,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 283,
-      "total_ci_lower": 283,
-      "total_ci_upper": 283,
+      "walkin_multiplier": 1.071,
+      "walkin_source": "family",
+      "total_estimate": 275,
+      "total_ci_lower": 271,
+      "total_ci_upper": 279,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
@@ -43608,11 +39245,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 223,
-      "total_ci_lower": 223,
-      "total_ci_upper": 223,
+      "walkin_multiplier": 1.071,
+      "walkin_source": "family",
+      "total_estimate": 217,
+      "total_ci_lower": 214,
+      "total_ci_upper": 221,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
@@ -43891,18 +39528,18 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 215,
-      "total_ci_lower": 215,
-      "total_ci_upper": 215,
+      "walkin_multiplier": 1.071,
+      "walkin_source": "family",
+      "total_estimate": 209,
+      "total_ci_lower": 206,
+      "total_ci_upper": 212,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
     {
       "family": "Eastern Class Championships",
       "year": 2015,
-      "event_start": "2015-05-13",
+      "event_start": "2015-06-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -43978,18 +39615,18 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 235,
-      "total_ci_lower": 235,
-      "total_ci_upper": 235,
+      "walkin_multiplier": 1.071,
+      "walkin_source": "family",
+      "total_estimate": 229,
+      "total_ci_lower": 226,
+      "total_ci_upper": 233,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
     {
       "family": "Eastern Class Championships",
       "year": 2016,
-      "event_start": "2016-05-13",
+      "event_start": "2016-06-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -44069,18 +39706,18 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 277,
-      "total_ci_lower": 277,
-      "total_ci_upper": 277,
+      "walkin_multiplier": 1.071,
+      "walkin_source": "family",
+      "total_estimate": 270,
+      "total_ci_lower": 266,
+      "total_ci_upper": 274,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
     {
       "family": "Eastern Class Championships",
       "year": 2017,
-      "event_start": "2017-05-13",
+      "event_start": "2017-06-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -44164,18 +39801,18 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 298,
-      "total_ci_lower": 298,
-      "total_ci_upper": 298,
+      "walkin_multiplier": 1.071,
+      "walkin_source": "family",
+      "total_estimate": 290,
+      "total_ci_lower": 286,
+      "total_ci_upper": 295,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
     {
       "family": "Eastern Class Championships",
       "year": 2018,
-      "event_start": "2018-05-13",
+      "event_start": "2018-06-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -44263,18 +39900,18 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 306,
-      "total_ci_lower": 306,
-      "total_ci_upper": 306,
+      "walkin_multiplier": 1.071,
+      "walkin_source": "family",
+      "total_estimate": 298,
+      "total_ci_lower": 293,
+      "total_ci_upper": 302,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
     {
       "family": "Eastern Class Championships",
       "year": 2019,
-      "event_start": "2019-05-13",
+      "event_start": "2019-06-17",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -44366,11 +40003,11 @@
         }
       ],
       "status": "historical",
-      "walkin_multiplier": 1.1,
-      "walkin_source": "estimate",
-      "total_estimate": 242,
-      "total_ci_lower": 242,
-      "total_ci_upper": 242,
+      "walkin_multiplier": 1.071,
+      "walkin_source": "family",
+      "total_estimate": 236,
+      "total_ci_lower": 232,
+      "total_ci_upper": 239,
       "count_observed_at": null,
       "count_cohort_hash": null
     },
@@ -50618,7 +46255,7 @@
     {
       "family": "Indianapolis Open",
       "year": 2015,
-      "event_start": "2015-08-26",
+      "event_start": "2015-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -50705,7 +46342,7 @@
     {
       "family": "Indianapolis Open",
       "year": 2016,
-      "event_start": "2016-08-26",
+      "event_start": "2016-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -50796,7 +46433,7 @@
     {
       "family": "Indianapolis Open",
       "year": 2017,
-      "event_start": "2017-08-26",
+      "event_start": "2017-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -50891,7 +46528,7 @@
     {
       "family": "Indianapolis Open",
       "year": 2018,
-      "event_start": "2018-08-26",
+      "event_start": "2018-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -50990,7 +46627,7 @@
     {
       "family": "Indianapolis Open",
       "year": 2019,
-      "event_start": "2019-08-26",
+      "event_start": "2019-08-25",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -79748,7 +75385,7 @@
       "walkin_multiplier": 1.075,
       "walkin_source": "family",
       "total_estimate": 594,
-      "total_ci_lower": 586,
+      "total_ci_lower": 585,
       "total_ci_upper": 603,
       "count_observed_at": null,
       "count_cohort_hash": null
@@ -80301,7 +75938,7 @@
       "walkin_multiplier": 1.075,
       "walkin_source": "family",
       "total_estimate": 302,
-      "total_ci_lower": 298,
+      "total_ci_lower": 297,
       "total_ci_upper": 307,
       "count_observed_at": null,
       "count_cohort_hash": null
@@ -80604,7 +76241,7 @@
       "walkin_multiplier": 1.075,
       "walkin_source": "family",
       "total_estimate": 302,
-      "total_ci_lower": 298,
+      "total_ci_lower": 297,
       "total_ci_upper": 307,
       "count_observed_at": null,
       "count_cohort_hash": null
@@ -85240,7 +80877,7 @@
     {
       "family": "Southern Open",
       "year": 2015,
-      "event_start": "2015-07-24",
+      "event_start": "2015-07-22",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -85327,7 +80964,7 @@
     {
       "family": "Southern Open",
       "year": 2016,
-      "event_start": "2016-07-24",
+      "event_start": "2016-07-22",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -85418,7 +81055,7 @@
     {
       "family": "Southern Open",
       "year": 2017,
-      "event_start": "2017-07-24",
+      "event_start": "2017-07-22",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -85513,7 +81150,7 @@
     {
       "family": "Southern Open",
       "year": 2018,
-      "event_start": "2018-07-24",
+      "event_start": "2018-07-22",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -85612,7 +81249,7 @@
     {
       "family": "Southern Open",
       "year": 2019,
-      "event_start": "2019-07-24",
+      "event_start": "2019-07-22",
       "event_end": null,
       "early_bird_deadline": null,
       "early_bird_fee": null,
@@ -95790,27 +91427,27 @@
       "count_cohort_hash": null
     }
   ],
-  "last_updated": "2026-11-10 13:01:10",
+  "last_updated": "2026-11-10 16:14:43",
   "is_stale": false,
   "counts_through": "2026-11-09",
   "alerts": [
     {
       "family": "Kings Island Open",
       "status": "on_pace",
-      "actual": 217,
+      "actual": 223,
       "expected": 214,
-      "deviation_pct": 1.5,
+      "deviation_pct": 4.3,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+2%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+4%)"
     },
     {
       "family": "National Chess Congress",
       "status": "on_pace",
-      "actual": 195,
+      "actual": 200,
       "expected": 169,
-      "deviation_pct": 15.6,
+      "deviation_pct": 18.5,
       "n_years": 4,
-      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+16%)"
+      "message": "Registrations are tracking within normal range vs 4-year at-this-point pace (+18%)"
     },
     {
       "family": "North American Open",
@@ -95878,11 +91515,11 @@
     {
       "family": "New York State Scholastic Championships Grades K-8",
       "status": "below_pace",
-      "actual": 10,
+      "actual": 11,
       "expected": 54,
-      "deviation_pct": -81.7,
+      "deviation_pct": -79.8,
       "n_years": 4,
-      "message": "Registrations are 81.7% below 4-year at-this-point pace"
+      "message": "Registrations are 79.8% below 4-year at-this-point pace"
     },
     {
       "family": "Western Class Championships",

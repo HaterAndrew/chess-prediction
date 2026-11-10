@@ -23,6 +23,18 @@ const summary = (extra: Partial<ReceiptSummary> = {}): ReceiptSummary => ({
 });
 
 describe("native order accounting", () => {
+  it("refuses normalized impossible payment dates and midnight overflow", async () => {
+    for (const extra of [{ payment_date: "2027-02-30" }, { payment_time: "24:00:00" }]) {
+      await expect(buildReceiptSnapshot(await card(), "123", [row(extra)], summary(), AS_OF,
+        async (_transaction, expected) => expected)).rejects.toThrow("payment_date_missing");
+    }
+  });
+  it("collects live receipts without inventing an unknown closing date", async () => {
+    const result = await buildReceiptSnapshot({ ...await card(), registration_close: null }, "123", [row()],
+      summary(), AS_OF, async (_transaction, expected) => expected);
+    expect(result.registration_close).toBeNull();
+    expect(result.summary.net_cents).toBe(1000);
+  });
   it("refuses an unverified secondary membership even when a discount offsets it", async () => {
     await expect(buildReceiptSnapshot(await card(), "123", [row({ secmembership_amount: "1.00" })], summary(), AS_OF, async (_transaction, expected) => expected))
       .rejects.toThrow("secondary_membership_requires_reconciliation");

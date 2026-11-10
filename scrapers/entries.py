@@ -270,6 +270,8 @@ def scrape_withdrawals(tournaments):
 
     for t in tournaments:
         url = _entry_list_url(t)
+        t.pop('count_observed_at', None)
+        t.pop('count_cohort_hash', None)
         t['withdrawal_count'] = 0
         t['active_count'] = t['entry_count']
 
@@ -306,7 +308,11 @@ def scrape_withdrawals(tournaments):
             continue
 
         t['active_count'] = active
-        if getattr(counts, 'cohort_hash', None):
+        # Active-only pages cannot prove a larger gross registration set.
+        # Explicit withdrawal totals replace the index count below; an unknown
+        # withdrawal total leaves that index count unchanged.
+        cohort_gross = list_gross if withdrawn is not None else t['entry_count']
+        if getattr(counts, 'cohort_hash', None) and list_gross == cohort_gross:
             t['count_observed_at'] = counts.observed_at
             t['count_cohort_hash'] = counts.cohort_hash
         if withdrawn is not None:

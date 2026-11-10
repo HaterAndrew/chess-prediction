@@ -2,7 +2,7 @@ import { allocateCents } from "./allocation";
 import { normalizeFamily } from "./editions";
 import { matchPublicRegistrations } from "./public-cohort";
 import type { PublicRegistration } from "./public-cohort";
-import { cents, cohortHash, sha256 } from "./types";
+import { calendarDate, cents, cohortHash, sha256 } from "./types";
 import type { ReceiptBucket, ReceiptCard, ReceiptSnapshot, ReceiptSummary } from "./types";
 
 type Row = Record<string, unknown>;
@@ -18,7 +18,7 @@ const manualCash = (r: Row) => text(r.status) === "Manual" && text(r.payment_typ
 function paidAt(row: Row): string {
   const date = text(row.payment_date);
   const time = text(row.payment_time);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !/^\d{2}:\d{2}:\d{2}$/.test(time)) throw new Error("payment_date_missing");
+  if (!calendarDate(date) || !/^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/.test(time)) throw new Error("payment_date_missing");
   const iso = `${date}T${time}Z`;
   if (!Number.isFinite(Date.parse(iso))) throw new Error("payment_date_missing");
   return iso;
@@ -81,7 +81,7 @@ export async function buildReceiptSnapshot(
   sourceAsOf: string, loadOrder: (transaction: string, expected: Row[]) => Promise<Row[]>,
   loadPublic?: () => Promise<PublicRegistration[]>,
 ): Promise<ReceiptSnapshot> {
-  if (!card.event_start || !card.registration_close) throw new Error("event_calendar_missing");
+  if (!calendarDate(card.event_start) || (card.registration_close != null && !calendarDate(card.registration_close))) throw new Error("event_calendar_missing");
   rows.forEach(assertRow);
   if (rows.some(row => !belongs(row, card))) throw new Error("report_edition_mismatch");
   const discounts = (r: Row) => money(r.public_discount_amount) + money(r.discount_amount);
@@ -233,7 +233,7 @@ export async function buildReceiptSnapshot(
   }
   return {
     schema: 1, family: card.family, year: card.year, tournament_id: tournamentId, source_as_of: sourceAsOf,
-    event_start: card.event_start, registration_close: card.registration_close,
+    event_start: card.event_start, registration_close: card.registration_close ?? null,
     regular_fee_cents: typeof card.regular_fee === "number" && card.regular_fee > 0 ? cents(card.regular_fee) : null,
     registration_count: rows.filter(r => !deleted(r)).length,
     summary: receivedSummary,

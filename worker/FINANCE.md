@@ -117,6 +117,14 @@ collection opportunities daily; a large event may require several of them, and
 complex shared orders can reduce capacity. Check live inventory
 and real request costs before promising a daily refresh for every event.
 
+An open event can have recorded receipts before its registration closing date
+is published. Its snapshot keeps that date null; it cannot be used as historical
+calibration until a closing date is known. Calendar dates must exist in the UTC
+calendar, and payment times cannot overflow into another day. Legacy calendar
+failures retry when their required dates are now available; unrelated failures
+retain daily backoff. An active-only public identity set is never labeled as
+the larger gross registration cohort retained from the index.
+
 Family and pooled calibration caches fail independently, with fixed error logs.
 A damaged derived pooled cache is rebuilt from validated family history and a
 fresh reconciled source snapshot; other families return as they refresh.

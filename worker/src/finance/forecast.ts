@@ -36,7 +36,7 @@ export async function receiptForecast(
   const horizon = (Date.parse(snapshot.event_start + "T00:00:00Z") - sourceTime) / DAY;
   // Never train on the target/future edition, or an event still taking entries.
   const eligible = history.filter(h => (h.family === card.family ? h.year < card.year : h.year <= card.year)
-    && Date.parse(h.registration_close + "T23:59:59Z") < sourceTime
+    && h.registration_close !== null && Date.parse(h.registration_close + "T23:59:59Z") < sourceTime
     && h.registration_count > 0 && h.regular_fee_cents && h.summary.net_cents >= 0);
   let selected = eligible.filter(h => h.family === card.family).sort((a, b) => b.year - a.year).slice(0, 2);
   out.confidence = selected.length ? "family" : "pooled";

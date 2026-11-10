@@ -28,6 +28,14 @@ async function example() {
 }
 
 describe("final recorded receipts", () => {
+  it("forecasts an open target with an unknown closing date but excludes undated history", async () => {
+    const { card, snapshot, history } = await example();
+    const openTarget = { ...snapshot, registration_close: null };
+    expect(validateSnapshot(openTarget)).toBe(openTarget);
+    expect((await receiptForecast(card, openTarget, [history], NOW)).value).toBe(90);
+    expect((await receiptForecast(card, openTarget, [{ ...history, registration_close: null }], NOW)).missing).toBe("no_history");
+    expect(() => validateSnapshot({ ...snapshot, registration_close: "unknown" })).toThrow("invalid_snapshot");
+  });
   it("adds future receipts and only the remaining cash refund reserve", async () => {
     const { card, snapshot, history } = await example();
     expect(await receiptForecast(card, snapshot, [history], NOW)).toMatchObject({
@@ -98,5 +106,14 @@ describe("monetary contracts", () => {
     expect(validateSnapshot(snapshot)).toBe(snapshot);
     snapshot.summary.net_cents++;
     expect(() => validateSnapshot(snapshot)).toThrow("summary_mismatch");
+  });
+  it("rejects impossible start and closing dates", async () => {
+    const { snapshot } = await example();
+    for (const field of ["event_start", "registration_close"]) {
+      for (const date of ["2027-02-30", "2027-13-01", "2027-04-31"]) {
+        expect(() => validateSnapshot({ ...snapshot, [field]: date })).toThrow("invalid_snapshot");
+      }
+    }
+    expect(validateSnapshot({ ...snapshot, registration_close: "2028-02-29" }).registration_close).toBe("2028-02-29");
   });
 });

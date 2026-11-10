@@ -16,6 +16,7 @@ export interface FinanceEnv {
   CHESS_ACTION_COOKIE?: string;
 }
 
+const SOURCE_POLICY_VERSION = 2;
 const DAY = 86_400_000;
 const SOURCE_ERRORS = new Set([
   "source_login_expired", "source_login_failed", "source_session_invalid", "source_network_failed",
@@ -97,17 +98,21 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
     if (card.status !== "live" && !recent && !poolSeeds.has(`${card.family}|${card.year}`)
         && !(families.has(card.family) && priorYears.get(card.family)?.includes(card.year))) continue;
     let previous: Awaited<ReturnType<typeof readSnapshot>> = null;
-    try { previous = await readSnapshot(env.FINANCE_KV, card.family, card.year); } catch { /* Recollect this damaged record; other events remain independent. */ }
+    try { previous = await readSnapshot(env.FINANCE_KV, card.family, card.year, now); } catch { /* Recollect this damaged record; other events remain independent. */ }
     const attemptRaw = await env.FINANCE_KV.get(`event_status:${encodeURIComponent(card.family)}:${card.year}`);
-    let lastAttempt: { attempted_at?: string; ok?: boolean; reason?: string; resume?: boolean } = {};
+    let lastAttempt: { attempted_at?: string; ok?: boolean; reason?: string; resume?: boolean; source_policy_version?: number } = {};
     try { if (attemptRaw) lastAttempt = JSON.parse(attemptRaw); } catch { /* Rebuild malformed status from source. */ }
     // One failed attempt per UTC day prevents an unmapped event monopolizing every batch.
     const repairedCalendar = lastAttempt.reason === "event_calendar_missing" && calendarDate(card.event_start)
       && (card.registration_close == null || calendarDate(card.registration_close));
-    if (lastAttempt.ok === false && !lastAttempt.resume && !repairedCalendar
+    const repairedPolicy = lastAttempt.source_policy_version !== SOURCE_POLICY_VERSION
+      && ["public_registration_schema_changed", "public_registration_unavailable", "unreconciled_payment_status", "invoice_schema_changed", "receipt_reconciliation_failed"].includes(lastAttempt.reason ?? "");
+    const repairCohort = !!previous && previous.source_policy_version !== SOURCE_POLICY_VERSION
+      && previous.cohort.length !== previous.registration_count && !!card.count_cohort_hash && !!card.count_observed_at;
+    if (lastAttempt.ok === false && !lastAttempt.resume && !repairedCalendar && !repairedPolicy
         && Date.parse(lastAttempt.attempted_at ?? "") >= midnight) continue;
     const due = card.status === "live" || recent ? midnight : now - 7 * DAY;
-    if (!previous || lastAttempt.ok === false || Date.parse(previous.source_as_of) < due
+    if (!previous || repairCohort || lastAttempt.ok === false || Date.parse(previous.source_as_of) < due
         || Date.parse(card.count_observed_at ?? "") > Date.parse(previous.source_as_of)) {
       needed.push({ card, previous, priority: card.status === "live" ? 0 : recent ? 1 : 2, attempted: lastAttempt.attempted_at ?? "" });
     }
@@ -148,14 +153,14 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
       validateSnapshot(snapshot);
       // Proof persistence and its retirement fence precede financial publication.
       await acquisition.checkpoint(true);
-      const stored = { ...snapshot, previous_net_cents: previous?.summary.net_cents ?? null,
+      const stored = { ...snapshot, source_policy_version: SOURCE_POLICY_VERSION, previous_net_cents: previous?.summary.net_cents ?? null,
         previous_as_of: previous?.source_as_of ?? null, projection: previous?.projection };
       if (card.status !== "live") await rememberHistory(env.FINANCE_KV, snapshot);
       const history = await readCalibration(env.FINANCE_KV, card.family);
       const projection = await receiptForecast(card, stored, history, Date.parse(sourceAsOf));
       if (!projection.missing) stored.projection = projection;
       await env.FINANCE_KV.put(snapshotKey(card.family, card.year), JSON.stringify(stored));
-      await env.FINANCE_KV.put(statusKey, JSON.stringify({ attempted_at: attemptedAt, ok: true, reason: null }));
+      await env.FINANCE_KV.put(statusKey, JSON.stringify({ attempted_at: attemptedAt, ok: true, reason: null, source_policy_version: SOURCE_POLICY_VERSION }));
       collected++;
     } catch (error) {
       const reason = safeFailure(error);
@@ -163,7 +168,7 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
       // Persist partial progress BEFORE claiming the next run can resume it.
       // A rejected checkpoint promise propagates without retrying its KV write.
       await acquisition.checkpoint();
-      await env.FINANCE_KV.put(statusKey, JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: safeFailure(error),
+      await env.FINANCE_KV.put(statusKey, JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: safeFailure(error), source_policy_version: SOURCE_POLICY_VERSION,
         resume: refresh || ["source_request_limit", "order_cache_read_limit"].includes(reason)
           && (acquisition.progressed > 0 || reason === "source_request_limit" && leftoverSourceBudget) }));
       failed++;

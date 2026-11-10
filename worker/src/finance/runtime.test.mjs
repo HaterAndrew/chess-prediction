@@ -161,11 +161,77 @@ describe("native Worker source boundaries", () => {
     expect((await invoke("/invoice-proof", { html: document(one).replace('class="invoicefotter"', 'class="unknown"'), expected })).body.error).toBe("invoice_schema_changed");
     expect((await invoke("/invoice-proof", { html: document(one), expected: [{ ...expected[0], order_value: "11.00" }] })).body.error).toBe("order_reconciliation_failed");
   });
+  it("uses verified net receipts for the single-approved-order discount variant", async () => {
+    const document = (body) => `<html><head></head><body><div id="invoicecontents">${body}<div class="invoicefotter">Footer</div></div></body></html>`;
+    const line = `<div class="invoicetname">Tournamen Name: 2026 Example Open</div><div class="invoicekey">Player's Name: Synthetic</div><div class="invoicekey">Section: Open</div><div class="invoicekey">Discount(if applicable):</div><div class="invoicevaluesub">US $2.00</div><div class="invoicevaluesub">Sub Total</div><div class="invoicevalueextend">US $8.00</div>`;
+    const tail = `<div class="invoicevaluesub">PayPal Contribution</div><div class="invoicevalueextend">US $0.00</div><div class="invoicevaluesub">Grand Total</div><div class="invoicevalueextend">US $10.00</div>`;
+    const expected = [{tournament:"2026 Example Open",section:"Open",order_id:"1",status:"Approved",order_value:"10.00",section_amount:"10.00",membership_amount:"0.00",other_fees:"0.00",paypal_credit_card_fee_contribution:"0.00"}];
+    const html=document(line+tail);
+    expect((await invoke("/invoice-proof-detail", {html,expected})).body).toMatchObject({whole:true,totals:{"2026 Example Open":800}});
+    expect((await invoke("/invoice-proof-detail", {html,expected})).body.adjustments).toEqual({"2026 Example Open":{variant:"single_approved_discount_net_v1",discount_cents:200,net_order_cents:800}});
+    for(const signed of ["-US $2.00","US -$2.00","US $-2.00"]){
+      expect((await invoke("/invoice-proof-detail",{html:html.replace("US $2.00",signed),expected})).body).toMatchObject({whole:true,totals:{"2026 Example Open":800}});
+    }
+    expect((await invoke("/invoice-proof-detail",{html:html.replace("US $2.00","-US $-2.00"),expected})).body.error).toBe("invoice_schema_changed");
+    for(const bad of [
+      html.replace("US $2.00","US $1.00"),
+      html.replace("Discount(if applicable):","Unverified adjustment:"),
+      html.replace("US $8.00","US $12.00"),
+      html.replace('<div class="invoicekey">Discount(if applicable):</div><div class="invoicevaluesub">US $2.00</div>', ''),
+      html.replace('<div class="invoicevaluesub">Sub Total</div>', '<div class="invoicekey">Discount(if applicable):</div><div class="invoicevaluesub">US $2.00</div><div class="invoicevaluesub">Sub Total</div>'),
+      html.replace('</div></body>', '<template><div class="invoicekey">Section: Hidden</div></template></div></body>'),
+    ]){
+      expect((await invoke("/invoice-proof-detail",{html:bad,expected})).body.error).toBe("invoice_schema_changed");
+    }
+    for(const row of [{...expected[0],status:"Manual"},{...expected[0],section_amount:"9.00"},{...expected[0],order_id:""}]){
+      expect((await invoke("/invoice-proof-detail",{html,expected:[row]})).body.error).toBe("invoice_schema_changed");
+    }
+    expect((await invoke("/invoice-proof-detail",{html,expected:[{...expected[0],order_value:"11.00"}]})).body.error).toBe("order_reconciliation_failed");
+    expect((await invoke("/invoice-proof-detail",{html,expected:[...expected,{...expected[0],order_id:"2"}]})).body.whole).toBe(false);
+    const renamed = `<div class="unknown-event">Tournamen Name: 2026 Another Open</div><div class="unknown-player">Player's Name: Other Synthetic</div><div class="unknown-section">Section: Open</div><div class="unknown-subtotal">Sub Total</div><div class="unknown-amount">US $2.00</div>`;
+    expect((await invoke("/invoice-proof-detail",{html:document(line+renamed+tail),expected})).body.error).toBe("invoice_schema_changed");
+    const outside=`<html><head></head><body><div id="invoicecontents">${line}${tail}<div class="invoicefotter">Footer</div></div>${renamed}</body></html>`;
+    expect((await invoke("/invoice-proof-detail",{html:outside,expected})).body.error).toBe("invoice_schema_changed");
+    expect((await invoke("/invoice-proof-detail",{html:document('<div>Metadata $123</div>'+line+tail),expected})).body).toMatchObject({whole:true,totals:{"2026 Example Open":800}});
+
+    const unknownBody=(line+tail).replaceAll('class="invoice','class="unknown-invoice').replace('2026 Example Open','2026 Another Open');
+    const headCart=`<html><head><template><div id="invoicecontents">${line}${tail}<div class="invoicefotter">Footer</div></div></template></head><body><div>${unknownBody}</div></body></html>`;
+    expect((await invoke("/invoice-proof-detail",{html:headCart,expected})).body.error).toBe("invoice_schema_changed");
+    const balanced=html.replace("US $8.00","US $10.00");
+    expect((await invoke("/invoice-proof-detail",{html:balanced,expected})).body).toEqual({whole:true,totals:{"2026 Example Open":1000},adjustments:{}});
+    for(const invalid of ["US $1,23","US $999999999999999999999.00"]){
+      expect((await invoke("/invoice-proof-detail",{html:balanced.replace("US $2.00",invalid),expected})).body.whole).toBe(true);
+      expect((await invoke("/invoice-proof-detail",{html:html.replace("US $2.00",invalid),expected})).body.error).toBe("invoice_schema_changed");
+    }
+    const duplicateBalanced=balanced.replace('<div class="invoicevaluesub">Sub Total</div>', '<div class="invoicekey">Discount(if applicable):</div><div class="invoicevaluesub">US $2.00</div><div class="invoicevaluesub">Sub Total</div>');
+    expect((await invoke("/invoice-proof-detail",{html:duplicateBalanced,expected})).body.whole).toBe(true);
+
+  });
   it("reads public registration IDs without retaining names", async () => {
     const headers = ["Player's Name", "Player's Name", "FIDE ID", "FIDE Rating", "USCF ID", "USCF Rating", "State", "Section", "Schedule", "Bye(s)"];
     const html = `<table><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr><tr><td><span id="#bname_101">Synthetic, Player</span></td><td><span id="#bname_101">Player Synthetic</span></td><td>1234567 [USA]</td><td>1000</td><td>12345678</td><td>1000</td><td>CA</td><td>Open</td><td>3 Day</td><td></td></tr></table>`;
     expect((await invoke("/public-cohort", { html })).body).toEqual([{ id: "101", uscf: "12345678", fide: "1234567" }]);
     expect((await invoke("/public-cohort", { html: html.replace("USCF ID", "Unknown") })).body.error).toBe("public_registration_schema_changed");
+  });
+  it("reads the scholastic team/school/grade layout without accepting unknown columns", async () => {
+    const headers = ["Player's Name", "Player's Name", "FIDE ID", "FIDE Rating", "USCF ID", "USCF Rating", "State", "Section", "Team Code", "School", "Grade", "Bye(s)"];
+    const cells = ['<span id="#bname_101">Synthetic</span>', '<span id="#bname_101">Synthetic</span>', "1234567 [USA]", "1000", "12345678", "1000", "NY", "Open", "TEAM", "School", "8", ""];
+    const html = `<table><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr><tr>${cells.map(c => `<td>${c}</td>`).join("")}</tr></table>`;
+    expect((await invoke("/public-cohort", { html })).body).toEqual([{ id: "101", uscf: "12345678", fide: "1234567" }]);
+    expect((await invoke("/public-cohort", { html: html.replace("Team Code", "Unknown") })).body.error).toBe("public_registration_schema_changed");
+    const prefix = `<table><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr></table>`;
+    expect((await invoke("/public-cohort", {html:prefix+html.replace("Team Code", "Unknown")})).body.error).toBe("public_registration_schema_changed");
+    expect((await invoke("/public-cohort", { html: html.replace("<td>8</td>", "") })).body.error).toBe("public_registration_schema_changed");
+  });
+  it("keeps only request-local name digests for unrated public registrations", async () => {
+    const headers = ["Player's Name", "Player's Name", "FIDE ID", "FIDE Rating", "USCF ID", "USCF Rating", "State", "Section", "Team Code", "School", "Grade", "Bye(s)"];
+    const cells = ['<span id="#bname_101">Player, Synthetic</span>', '<span id="#bname_101">Synthetic Player</span>', "", "", "", "", "NY", "Open", "TEAM", "School", "8", ""];
+    const html = `<table><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr><tr>${cells.map(c => `<td>${c}</td>`).join("")}</tr></table>`;
+    const result = (await invoke("/public-cohort", { html })).body;
+    expect(result).toEqual([{ id: "101", uscf: "", fide: "", name_hash: createHash("sha256").update("synthetic player").digest("hex") }]);
+    expect(JSON.stringify(result)).not.toContain("Synthetic");
+    const malformed = html.replace("<td></td><td></td><td></td>", "<td></td><td></td><td>1234567</td>");
+    expect((await invoke("/public-cohort", {html:malformed})).body[0]).not.toHaveProperty("name_hash");
   });
   it("keeps the admin cookie out of public-list requests", async () => {
     const result = await invoke("/public-fetch", { replies: [
@@ -190,6 +256,9 @@ describe("native Worker source boundaries", () => {
     expect(["2", "3"]).toContain(result.attempted[0]);
     expect(result.attempted[1]).toBe("1");
     expect(result.batches).toEqual([{ collected: 1, failed: 0 }, { collected: 1, failed: 0 }]);
+  });
+  it("retries repaired source-policy failures once without disabling daily backoff", async () => {
+    expect((await invoke("/source-policy-retry", {})).body).toEqual({first:{collected:0,failed:1},second:{collected:0,failed:0},attempts:1});
   });
   it("attempts reserved calibration before live work can exhaust the request budget", async () => {
     expect((await invoke("/budget-priority", {})).body).toEqual({ attempted: ["2"] });

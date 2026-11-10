@@ -21,6 +21,24 @@ async function data() {
 }
 
 describe("financial fault containment", () => {
+  it("reads and retains projections matched to a later model observation", async () => {
+    const { card, snapshot, map, kv } = await data();
+    card.count_observed_at = "2026-11-09T02:30:00Z";
+    const [projection] = await receiptValues(kv, [card], Date.parse("2026-11-09T03:00:00Z"));
+    expect(projection).toMatchObject({ value: 20, missing: null, source_as_of: snapshot.source_as_of, model_observed_at: card.count_observed_at });
+    map.set(snapshotKey(card.family, 2026), JSON.stringify({ ...snapshot, projection }));
+    expect((await receiptValues(kv, [card], Date.parse("2026-11-09T03:00:00Z")))[0]).toEqual(projection);
+    map.set("session:status", JSON.stringify({ attempted_at: "2026-11-09T03:30:00.000Z", ok: false, reason: "source_login_expired" }));
+    expect((await receiptValues(kv, [card], Date.parse("2026-11-09T04:00:00Z")))[0]).toEqual({ ...projection, stale: true, missing: "collection_failed" });
+  });
+  it("rejects a retained projection with a future model observation on the fallback path", async () => {
+    const { card, snapshot, map, kv } = await data();
+    const [projection] = await receiptValues(kv, [card], Date.parse("2026-11-09T03:00:00Z"));
+    map.set(snapshotKey(card.family, 2026), JSON.stringify({ ...snapshot, projection: { ...projection, model_observed_at: "2026-11-09T04:00:00Z" } }));
+    map.set("history:pooled", "invalid JSON");
+    map.set(`history:${encodeURIComponent(card.family)}`, "invalid JSON");
+    expect((await receiptValues(kv, [card], Date.parse("2026-11-09T03:00:00Z")))[0]).toMatchObject({ value: null, missing: "invalid_receipts", stale: true });
+  });
   it("retires a cached money projection when the attendance forecast is unavailable", async () => {
     const { card, snapshot, map, kv } = await data();
     const [projection] = await receiptValues(kv, [card], Date.parse("2026-11-09T03:00:00Z"));

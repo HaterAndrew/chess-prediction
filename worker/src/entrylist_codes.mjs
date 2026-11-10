@@ -7,6 +7,7 @@
 // here or in scrape_entries.py, the parity test fails until both match.
 
 export const ENTRY_LIST_CODES = {
+  "new york state scholastic championships grades k-8": "NYSSC",
   "atlantic city open": "ACO",
   "atlantic open": "AO",
   "world open": "WO",

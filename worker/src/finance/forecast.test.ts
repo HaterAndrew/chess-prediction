@@ -52,6 +52,22 @@ describe("final recorded receipts", () => {
     expect(result.future_cents).toBe(4000);
     expect(result.value).toBe(90);
   });
+  it("accepts a newer model observation only when the exact recorded cohort still matches", async () => {
+    const { card, snapshot, history } = await example();
+    card.count_observed_at = "2026-11-09T02:45:00Z";
+    expect(await receiptForecast(card, snapshot, [history], NOW)).toMatchObject({ value: 90, missing: null });
+    const wrong = { ...card, count_cohort_hash: await cohortHash([await sha256("different")]) };
+    expect((await receiptForecast(wrong, snapshot, [history], NOW)).missing).toBe("unmatched_count");
+    expect((await receiptForecast({ ...card, count_cohort_hash: null }, snapshot, [history], NOW)).missing).toBe("unmatched_count");
+    expect((await receiptForecast({ ...card, count_observed_at: "2026-11-07T01:00:00Z" }, snapshot, [history], NOW)).missing).toBe("stale_source");
+    expect((await receiptForecast(card, { ...snapshot, source_as_of: "2026-11-09T04:00:00Z" }, [history], NOW)).missing).toBe("unmatched_count");
+    expect(await receiptForecast({ ...card, count_observed_at: "2026-11-09T00:30:00Z" },
+      { ...snapshot, source_as_of: "2026-11-08T23:30:00Z" }, [history], NOW)).toMatchObject({ value: 90, missing: null,
+        source_as_of: "2026-11-08T23:30:00Z", model_observed_at: "2026-11-09T00:30:00Z" });
+    expect((await receiptForecast({ ...card, current_count: 6 }, snapshot, [history], NOW)).missing).toBe("unmatched_count");
+    expect((await receiptForecast(card, snapshot, [history], NOW + 48 * 3600000)).missing).toBe("stale_source");
+    expect((await receiptForecast({ ...card, count_observed_at: "2026-11-09T04:00:00Z" }, snapshot, [history], NOW)).missing).toBe("unmatched_count");
+  });
   it("refuses an equally sized but different registration cohort", async () => {
     const { card, snapshot, history } = await example();
     snapshot.cohort[0].id = await sha256("unrelated");

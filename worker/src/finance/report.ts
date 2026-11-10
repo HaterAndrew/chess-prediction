@@ -2,7 +2,7 @@ import { allocateCents } from "./allocation";
 import { normalizeFamily } from "./editions";
 import { matchPublicRegistrations } from "./public-cohort";
 import type { PublicRegistration } from "./public-cohort";
-import { calendarDate, cents, cohortHash, sha256 } from "./types";
+import { calendarDate, cents, cohortHash, sha256, INVOICE_DISCOUNT_VARIANT } from "./types";
 import type { ReceiptBucket, ReceiptCard, ReceiptSnapshot, ReceiptSummary } from "./types";
 
 type Row = Record<string, unknown>;
@@ -14,6 +14,12 @@ const freeRegistration = (r: Row) => text(r.status) === "Free Registration"
   && [r.section_amount, r.membership_amount, r.paypal_credit_card_fee_contribution, r.other_fees, r.order_value].every(v => money(v) === 0);
 const manualCash = (r: Row) => text(r.status) === "Manual" && text(r.payment_type) === "0"
   && text(r.paypal_trans_id).toLowerCase() === "cash";
+
+// An explicit Manual/Free entry is waived,
+// even when its face fee and recorded order total remain positive.
+const manualFree = (r: Row) => text(r.status) === "Manual" && text(r.payment_type) === "0"
+  && text(r.paypal_trans_id).toLowerCase() === "free" && r.is_refunded === ""
+  && [r.membership_amount, r.secmembership_amount, r.paypal_credit_card_fee_contribution, r.other_fees].every(v => money(v) === 0);
 
 function paidAt(row: Row): string {
   const date = text(row.payment_date);
@@ -41,7 +47,7 @@ function assertRow(row: Row): void {
   if (money(row.secmembership_amount) > 0) throw new Error("secondary_membership_requires_reconciliation");
   // Non-Declined is a query category, not proof of paid status. Unknown states
   // cannot be subtracted from a summary whose inclusion rules are unverified.
-  if (text(row.status) !== "Approved" && !freeRegistration(row) && !manualCash(row)) throw new Error("unreconciled_payment_status");
+  if (text(row.status) !== "Approved" && !freeRegistration(row) && !manualCash(row) && !manualFree(row)) throw new Error("unreconciled_payment_status");
   if (/credit|transfer/i.test(text(row.paypal_trans_id)) && money(row.order_value)) throw new Error("credit_provenance_required");
   paidAt(row);
 }
@@ -65,7 +71,7 @@ async function sourceCohort(rows: Row[], card: ReceiptCard, loadPublic?: () => P
     if (observed.length === card.current_count && await cohortHash(observed.map(r => r.id)) === card.count_cohort_hash) matches.push(cohort);
   }
   if (!matches.length && loadPublic) {
-    const ids = matchPublicRegistrations(registrations, await loadPublic());
+    const ids = await matchPublicRegistrations(registrations, await loadPublic());
     if (ids && ids.length === registrations.length) {
       const cohort = await Promise.all(registrations.map(async (r, i) => ({ id: await sha256(ids[i]), paid_at: paidAt(r) })));
       const observed = cohort.filter(r => Date.parse(r.paid_at) <= Date.parse(card.count_observed_at!));
@@ -113,6 +119,8 @@ export async function buildReceiptSnapshot(
   }
   const contribution = new Map<Row, number>();
   const orderReports = new Map<string, Promise<Row[]>>();
+  let freeInvoiceDifference = 0;
+  let invoiceDiscountTotal = 0;
   for (const [key, part] of groups) {
     const values = new Set(part.map(r => money(r.paypal_credit_card_fee_contribution)).filter(n => n > 0));
     const totals = new Set(part.map(r => money(r.order_value)));
@@ -138,15 +146,35 @@ export async function buildReceiptSnapshot(
     const rawCash = (r: Row) => money(r.section_amount) + money(r.membership_amount) + money(r.other_fees);
     const fullRaw = full.reduce((n, r) => n + rawCash(r), 0);
     const fullDiscounts = full.reduce((n, r) => n + discounts(r), 0);
-    const expectedCash = [...totals][0] - totalContribution;
-    const subtract = fullRaw !== expectedCash;
-    const cashOnlyOrder = full.some(manualCash) && full.every(r => manualCash(r) || freeRegistration(r));
-    const manualCorrection = cashOnlyOrder && full.every(r => belongs(r, card));
-    const inferDiscount = !cashOnlyOrder && fullDiscounts === 0 && fullRaw > expectedCash;
+    const freeOnlyOrder = full.every(manualFree);
+    if (full.some(manualFree) && !freeOnlyOrder) throw new Error("shared_order_reconciliation_failed");
     const hasInvoice = full.some(r => r.invoice_event_subtotal_cents !== undefined);
     if (hasInvoice && (full.some(r => !Number.isSafeInteger(r.invoice_event_subtotal_cents) || Number(r.invoice_event_subtotal_cents) < 0)
         || new Set(full.map(paidAt)).size !== 1)) throw new Error("order_reconciliation_failed");
-    if (cashOnlyOrder && !manualCorrection) throw new Error("shared_order_reconciliation_failed");
+    let netOrderTotal = [...totals][0];
+    if (full.some(r => r.invoice_discount_variant !== undefined || r.invoice_discount_cents !== undefined || r.invoice_net_order_cents !== undefined)) {
+      const row = full[0];
+      const gap = row.invoice_discount_cents;
+      const net = row.invoice_net_order_cents;
+      if (full.length !== 1 || !belongs(row, card) || row.status !== "Approved" || row.invoice_discount_variant !== INVOICE_DISCOUNT_VARIANT
+          || !Number.isSafeInteger(gap) || Number(gap) <= 0 || !hasInvoice || !Number.isSafeInteger(net) || Number(net) < 0
+          || Number(net) + Number(gap) !== [...totals][0] || Number(row.invoice_event_subtotal_cents) + totalContribution !== net) {
+        throw new Error("invoice_schema_changed");
+      }
+      invoiceDiscountTotal += Number(gap);
+      netOrderTotal = Number(net);
+    }
+    const expectedCash = freeOnlyOrder ? 0 : netOrderTotal - totalContribution;
+    const subtract = fullRaw !== expectedCash;
+    const cashOnlyOrder = full.some(manualCash) && full.every(r => manualCash(r) || freeRegistration(r));
+    const manualCorrection = (cashOnlyOrder || freeOnlyOrder) && full.every(r => belongs(r, card));
+    const inferDiscount = !cashOnlyOrder && !freeOnlyOrder && fullDiscounts === 0 && fullRaw > expectedCash;
+    if (freeOnlyOrder) {
+      const subtotals = new Set(full.map(r => hasInvoice ? Number(r.invoice_event_subtotal_cents) : money(r.order_value)));
+      if (subtotals.size !== 1) throw new Error("order_reconciliation_failed");
+      freeInvoiceDifference += [...subtotals][0];
+    }
+    if ((cashOnlyOrder || freeOnlyOrder) && !manualCorrection) throw new Error("shared_order_reconciliation_failed");
     const distributeEntry = hasInvoice || manualCorrection || inferDiscount;
     if (distributeEntry) {
       if (manualCorrection && full.length !== part.length) throw new Error("shared_order_reconciliation_failed");
@@ -161,7 +189,7 @@ export async function buildReceiptSnapshot(
         const eventRows = lines.map(line => line.row);
         const values = new Set(eventRows.map(r => Number(r.invoice_event_subtotal_cents)));
         if (hasInvoice && values.size !== 1) throw new Error("order_reconciliation_failed");
-        const subtotal = hasInvoice ? [...values][0] : expectedCash;
+        const subtotal = freeOnlyOrder ? 0 : hasInvoice ? [...values][0] : expectedCash;
         invoiceCash += subtotal;
         const nonEntryCash = eventRows.reduce((n, r) => n + money(r.membership_amount) + money(r.other_fees), 0);
         const receivedEntryCash = subtotal - nonEntryCash;
@@ -183,6 +211,12 @@ export async function buildReceiptSnapshot(
         cashEntries.set(r, values.shift()!);
       }
     } else if (expectedCash < 0 || (subtract && fullRaw - fullDiscounts !== expectedCash)) throw new Error("shared_order_reconciliation_failed");
+    // This proof identifies the entire single-player, single-event order.
+    // Its contribution has an owner even when the entry is fully discounted.
+    if (full.length === 1 && part.length === 1 && full[0].invoice_discount_variant === INVOICE_DISCOUNT_VARIANT) {
+      contribution.set(part[0], totalContribution);
+      continue;
+    }
     const originalCash = (r: Row) => {
       const cash = distributeEntry ? entry(r) + money(r.membership_amount) + money(r.other_fees)
         : rawCash(r) - (subtract ? discounts(r) : 0);
@@ -223,10 +257,16 @@ export async function buildReceiptSnapshot(
   }
   const recordedEntry = [...buckets.values()].reduce((n, b) => n + b.entry_cents, 0);
   const manualFaceDifference = rows.filter(manualCash).reduce((n, r) => n + sourceEntry(r) - entry(r), 0);
+  const freeFaceDifference = rows.filter(manualFree).reduce((n, r) => n + sourceEntry(r) - entry(r), 0);
   const manualAdjustment = summary.entry_cents - recordedEntry;
-  // A native summary may already include the manual discount. Only its actual
-  // discrepancy may be corrected, and only by the independently proven cash gap.
-  if (manualAdjustment !== 0 && manualAdjustment !== manualFaceDifference) throw new Error("receipt_reconciliation_failed");
+  // Native cash may already be net while waived orders still appear at face
+  // or invoice price. Prove the two adjustments independently; never attribute
+  // an unexplained or ambiguous native-summary gap to an arbitrary correction.
+  const corrections = [...new Set([0, manualFaceDifference])].flatMap(cash =>
+    [...new Set([0, freeFaceDifference, freeInvoiceDifference])].map(free => ({ cash, free })))
+    .filter(({ cash, free }) => cash >= 0 && free >= 0 && cash + free === manualAdjustment);
+  if (corrections.length !== 1) throw new Error("receipt_reconciliation_failed");
+  const correction = corrections[0];
   const receivedSummary = { ...summary, entry_cents: recordedEntry, net_cents: summary.net_cents - manualAdjustment };
   for (const field of ["entry_cents", "membership_cents", "contribution_cents", "other_cents"] as const) {
     if ([...buckets.values()].reduce((n, b) => n + b[field], 0) !== receivedSummary[field]) throw new Error("receipt_reconciliation_failed");
@@ -237,7 +277,10 @@ export async function buildReceiptSnapshot(
     regular_fee_cents: typeof card.regular_fee === "number" && card.regular_fee > 0 ? cents(card.regular_fee) : null,
     registration_count: rows.filter(r => !deleted(r)).length,
     summary: receivedSummary,
-    ...(manualAdjustment ? { native_summary: summary, manual_cash_adjustment_cents: manualAdjustment } : {}),
+    ...(manualAdjustment ? { native_summary: summary, manual_cash_adjustment_cents: correction.cash,
+      manual_free_adjustment_cents: correction.free } : {}),
+    ...(invoiceDiscountTotal ? { invoice_discount_variant: INVOICE_DISCOUNT_VARIANT,
+      invoice_discount_cents: invoiceDiscountTotal } : {}),
     cohort: await sourceCohort(rows, card, loadPublic), buckets: [...buckets.values()],
     previous_net_cents: null, previous_as_of: null,
   };

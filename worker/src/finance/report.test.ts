@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildReceiptSnapshot } from "./report";
-import { cohortHash, sha256 } from "./types";
+import { cohortHash, sha256, validateSnapshot } from "./types";
 import { matchTournament } from "./editions";
 import { receiptForecast } from "./forecast";
 import type { ReceiptCard, ReceiptSummary } from "./types";
@@ -83,6 +83,16 @@ describe("native order accounting", () => {
       async () => [{ id: "102", uscf: "12345678", fide: "" }]);
     expect(mismatch.cohort).toEqual([]);
   });
+  it("proves an unrated name join against the public-ID cohort without persisting the name digest", async () => {
+    const source = row({ uscf_id: "", fide_id: "", player_first_name: "Synthetic", player_last_name: "Player" });
+    delete (source as Record<string, unknown>).player_id;
+    const target = { ...await card(), count_cohort_hash: await cohortHash([await sha256("101")]) };
+    const result = await buildReceiptSnapshot(target, "123", [source], summary(), AS_OF, async (_transaction, expected) => expected,
+      async () => [{ id: "101", uscf: "", fide: "", name_hash: await sha256("synthetic player") }]);
+    expect(result.cohort).toEqual([{ id: await sha256("101"), paid_at: "2026-11-08T12:00:00Z" }]);
+    expect(JSON.stringify(result)).not.toContain("Synthetic");
+    expect(JSON.stringify(result)).not.toContain("name_hash");
+  });
   it("uses recorded manual cash and retains the native fee discrepancy explicitly", async () => {
     const cash = row({ status: "Manual", payment_type: "0", paypal_trans_id: "Cash",
       section_amount: "128.00", order_value: "123.00" });
@@ -92,6 +102,87 @@ describe("native order accounting", () => {
     expect(result.native_summary!.net_cents).toBe(12800);
     expect(result.manual_cash_adjustment_cents).toBe(500);
     expect(result.buckets[0]).toMatchObject({ registrations: 1, entry_cents: 12300 });
+  });
+  it("honors explicitly free manual entries as zero cash despite positive source fees and totals", async () => {
+    const free = row({ status: "Manual", payment_type: "0", paypal_trans_id: "Free", section_amount: "100.00", order_value: "100.00" });
+    const result = await buildReceiptSnapshot(await card(), "123", [free], summary({ entry_cents: 10000, net_cents: 10000 }), AS_OF, async () => [free]);
+    expect(result.summary.net_cents).toBe(0);
+    expect(result.buckets[0]).toMatchObject({ registrations: 1, entry_cents: 0 });
+    expect(result.manual_free_adjustment_cents).toBe(10000);
+    expect(validateSnapshot(result)).toBe(result);
+    expect(() => validateSnapshot({ ...result, manual_free_adjustment_cents: 9999 })).toThrow("invalid_snapshot");
+    expect(result.native_summary!.net_cents).toBe(10000);
+    await expect(buildReceiptSnapshot(await card(), "123", [{ ...free, membership_amount: "1.00" }], summary(), AS_OF, async () => [free])).rejects.toThrow("unreconciled_payment_status");
+    await expect(buildReceiptSnapshot(await card(), "123", [{ ...free, paypal_trans_id: "Free due tomorrow" }], summary(), AS_OF, async () => [free])).rejects.toThrow("unreconciled_payment_status");
+  });
+  it("reconciles native net cash independently from a separately included free order", async () => {
+    const cash = row({ status: "Manual", payment_type: "0", paypal_trans_id: "Cash", section_amount: "128.00", order_value: "123.00" });
+    const free = row({ order_id: "901", player_id: "2", status: "Manual", payment_type: "0", paypal_trans_id: "Free", section_amount: "100.00", order_value: "100.00" });
+    const result = await buildReceiptSnapshot(await card(), "123", [cash, free], summary({ entry_cents: 22300, net_cents: 22300 }), AS_OF,
+      async (_transaction, expected) => expected.map(r => ({ ...r, invoice_event_subtotal_cents: r.order_id === "900" ? 12300 : 10000 })));
+    expect(result.summary.net_cents).toBe(12300);
+    expect(result.manual_cash_adjustment_cents).toBe(0);
+    expect(result.manual_free_adjustment_cents).toBe(10000);
+    expect(validateSnapshot(result)).toBe(result);
+  });
+  it("reconciles a discounted free order using its invoice rather than its face price", async () => {
+    const free = row({ status: "Manual", payment_type: "0", paypal_trans_id: "Free", section_amount: "128.00", order_value: "123.00" });
+    const result = await buildReceiptSnapshot(await card(), "123", [free], summary({ entry_cents: 12300, net_cents: 12300 }), AS_OF,
+      async () => [{ ...free, invoice_event_subtotal_cents: 12300 }]);
+    expect(result.summary.net_cents).toBe(0);
+    expect(result.manual_free_adjustment_cents).toBe(12300);
+    expect(validateSnapshot(result)).toBe(result);
+  });
+  it("refuses ambiguous, unexplained and mixed paid/free order corrections", async () => {
+    const cash = row({ status:"Manual",payment_type:"0",paypal_trans_id:"Cash",section_amount:"128.00",order_value:"123.00" });
+    const free = row({ order_id:"901",player_id:"2",status:"Manual",payment_type:"0",paypal_trans_id:"Free",section_amount:"128.00",order_value:"123.00" });
+    for (const native of [25100,25000]) {
+      await expect(buildReceiptSnapshot(await card(),"123",[cash,free],summary({entry_cents:native,net_cents:native}),AS_OF,
+        async (_transaction,expected)=>expected.map(r=>({...r,invoice_event_subtotal_cents:12300}))))
+        .rejects.toThrow("receipt_reconciliation_failed");
+    }
+    const mixedFree={...free,order_id:"900"};
+    await expect(buildReceiptSnapshot(await card(),"123",[cash,mixedFree],summary({entry_cents:25600,net_cents:25600}),AS_OF,
+      async()=>[cash,mixedFree])).rejects.toThrow("shared_order_reconciliation_failed");
+  });
+  it("uses verified net card receipts once and retains the raw-order discount evidence", async () => {
+    const source=row({section_amount:"10.00",order_value:"10.00"});
+    const proof={...source,invoice_event_subtotal_cents:800,invoice_discount_variant:"single_approved_discount_net_v1",invoice_discount_cents:200,invoice_net_order_cents:800};
+    const result=await buildReceiptSnapshot(await card(),"123",[source],summary({entry_cents:800,net_cents:800}),AS_OF,async()=>[proof]);
+    expect(result.summary.net_cents).toBe(800);
+    expect(result.buckets[0].entry_cents).toBe(800);
+    expect(result.invoice_discount_cents).toBe(200);
+    expect(validateSnapshot(result)).toBe(result);
+    expect(()=>validateSnapshot({...result,invoice_discount_variant:"unknown"})).toThrow("invalid_snapshot");
+    await expect(buildReceiptSnapshot(await card(),"123",[source],summary(),AS_OF,async()=>[proof])).rejects.toThrow("receipt_reconciliation_failed");
+    const alreadyNet={...source,order_value:"8.00"};
+    expect((await buildReceiptSnapshot(await card(),"123",[alreadyNet],summary({entry_cents:800,net_cents:800}),AS_OF,
+      async()=>[{...alreadyNet,invoice_event_subtotal_cents:800}])).summary.net_cents).toBe(800);
+  });
+  it("keeps membership and contribution amounts when applying a verified entry discount", async () => {
+    const source=row({section_amount:"10.00",membership_amount:"2.00",paypal_credit_card_fee_contribution:"1.00",order_value:"13.00"});
+    const proof={...source,invoice_event_subtotal_cents:1000,invoice_discount_variant:"single_approved_discount_net_v1",invoice_discount_cents:200,invoice_net_order_cents:1100};
+    const result=await buildReceiptSnapshot(await card(),"123",[source],summary({entry_cents:800,membership_cents:200,contribution_cents:100,net_cents:1100}),AS_OF,async()=>[proof]);
+    expect(result.summary).toMatchObject({entry_cents:800,membership_cents:200,contribution_cents:100,net_cents:1100});
+    expect(result.invoice_discount_cents).toBe(200);
+  });
+  it("accepts a fully discounted Approved order as known zero net revenue", async () => {
+    const source=row({section_amount:"10.00",order_value:"10.00"});
+    const proof={...source,invoice_event_subtotal_cents:0,invoice_discount_variant:"single_approved_discount_net_v1",invoice_discount_cents:1000,invoice_net_order_cents:0};
+    const result=await buildReceiptSnapshot(await card(),"123",[source],summary({entry_cents:0,net_cents:0}),AS_OF,async()=>[proof]);
+    expect(result.summary.net_cents).toBe(0);
+    expect(result.buckets[0]).toMatchObject({registrations:1,entry_cents:0});
+    expect(validateSnapshot(result)).toBe(result);
+  });
+  it("retains a contribution on a fully discounted single-player order", async () => {
+    const source=row({section_amount:"10.00",paypal_credit_card_fee_contribution:"1.00",order_value:"11.00"});
+    const proof={...source,invoice_event_subtotal_cents:0,invoice_discount_variant:"single_approved_discount_net_v1",invoice_discount_cents:1000,invoice_net_order_cents:100};
+    const result=await buildReceiptSnapshot(await card(),"123",[source],summary({entry_cents:0,contribution_cents:100,net_cents:100}),AS_OF,async()=>[proof]);
+    expect(result.summary).toMatchObject({entry_cents:0,contribution_cents:100,net_cents:100});
+    expect(result.buckets[0]).toMatchObject({registrations:1,entry_cents:0,contribution_cents:100});
+    expect(validateSnapshot(result)).toBe(result);
+    const value=await receiptForecast(await card(),result,[],Date.parse(AS_OF));
+    expect(value.actual_cents).toBe(100);
   });
   it("reads a repeated cash transaction label once and keeps orders distinct", async () => {
     const first = row({ status: "Manual", payment_type: "0", paypal_trans_id: "Cash", section_amount: "128.00", order_value: "123.00" });

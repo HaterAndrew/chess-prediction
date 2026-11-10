@@ -2,7 +2,7 @@ import { receiptForecast } from "./forecast";
 import { snapshotKey, validateSnapshot } from "./types";
 import type { ReceiptCard, ReceiptSnapshot, ReceiptValue } from "./types";
 
-export interface StoredReceipt extends ReceiptSnapshot { projection?: ReceiptValue }
+export interface StoredReceipt extends ReceiptSnapshot { projection?: ReceiptValue; source_policy_version?: number }
 export interface CollectorStatus { attempted_at: string; ok: boolean; reason: string | null }
 
 function sessionStatus(raw: string | null): CollectorStatus | null {
@@ -20,7 +20,7 @@ function sessionStatus(raw: string | null): CollectorStatus | null {
 export const invalidHistory = (error: unknown) => error instanceof SyntaxError || error instanceof Error
   && ["invalid_history", "invalid_snapshot", "summary_mismatch", "duplicate_registration"].includes(error.message);
 
-export async function readSnapshot(kv: KVNamespace, family: string, year: number): Promise<StoredReceipt | null> {
+export async function readSnapshot(kv: KVNamespace, family: string, year: number, now = Date.now()): Promise<StoredReceipt | null> {
   const raw = await kv.get(snapshotKey(family, year));
   if (raw === null) return null;
   const snapshot: StoredReceipt = validateSnapshot(JSON.parse(raw));
@@ -31,7 +31,7 @@ export async function readSnapshot(kv: KVNamespace, family: string, year: number
       || ![p.actual_cents, p.future_cents, p.refund_reserve_cents].every(n => Number.isSafeInteger(n) && n! >= 0)
       || !Number.isFinite(p.value) || p.value !== (p.actual_cents! + p.future_cents! - p.refund_reserve_cents!) / 100
       || !Number.isFinite(Date.parse(p.source_as_of ?? "")) || !Number.isFinite(Date.parse(p.model_observed_at ?? ""))
-      || Date.parse(p.model_observed_at!) > Date.parse(p.source_as_of!)
+      || Date.parse(p.model_observed_at!) > now + 60_000 || Date.parse(p.source_as_of!) > now + 60_000
       || Date.parse(p.source_as_of!) > Date.parse(snapshot.source_as_of)
       || p.last_day !== null && (!p.last_day || !Number.isFinite(p.last_day.value)
         || !Number.isSafeInteger(p.last_day.span) || p.last_day.span <= 0))) throw new Error("invalid_snapshot");
@@ -67,7 +67,7 @@ export async function receiptValues(kv: KVNamespace, cards: ReceiptCard[], now =
   return Promise.all(cards.filter(c => c.status === "live").map(async card => {
     let snapshot: StoredReceipt | null = null;
     try {
-    snapshot = await readSnapshot(kv, card.family, card.year);
+    snapshot = await readSnapshot(kv, card.family, card.year, now);
     // A withdrawn attendance forecast retires its cached money projection.
     // Preserve recorded receipts, but do not revive an unsupported estimate.
     if (!Number.isInteger(card.point_estimate) || card.point_estimate! < 0) {

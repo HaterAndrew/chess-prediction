@@ -1,3 +1,6 @@
+export const INVOICE_DISCOUNT_VARIANT = "single_approved_discount_net_v1" as const;
+export interface InvoiceDiscountEvidence { variant: typeof INVOICE_DISCOUNT_VARIANT; discount_cents: number; net_order_cents: number }
+
 // Monetary fields are integer USD cents. These types contain no customer data.
 export interface ReceiptSummary {
   entry_cents: number;
@@ -32,6 +35,9 @@ export interface ReceiptSnapshot {
   // and the explicit correction; cash order totals own the receipt amount.
   native_summary?: ReceiptSummary;
   manual_cash_adjustment_cents?: number;
+  manual_free_adjustment_cents?: number;
+  invoice_discount_variant?: typeof INVOICE_DISCOUNT_VARIANT;
+  invoice_discount_cents?: number;
   // One id/time per registration, hashed before storage; no names or contact data.
   cohort: Array<{ id: string; paid_at: string }>;
   buckets: ReceiptBucket[];
@@ -124,13 +130,20 @@ export function validateSnapshot(raw: unknown): ReceiptSnapshot {
     throw new Error("invalid_snapshot");
   }
   reconcileSummary(s.summary);
-  if (s.native_summary !== undefined || s.manual_cash_adjustment_cents !== undefined) {
-    const adjustment = s.manual_cash_adjustment_cents;
-    if (!s.native_summary || !Number.isSafeInteger(adjustment) || adjustment! < 0) throw new Error("invalid_snapshot");
+  if (s.native_summary !== undefined || s.manual_cash_adjustment_cents !== undefined || s.manual_free_adjustment_cents !== undefined) {
+    const cash = s.manual_cash_adjustment_cents ?? 0;
+    const free = s.manual_free_adjustment_cents ?? 0;
+    const adjustment = cash + free;
+    if (!Number.isSafeInteger(cash) || cash < 0 || !Number.isSafeInteger(free) || free < 0
+        || !s.native_summary || !Number.isSafeInteger(adjustment) || adjustment! < 0) throw new Error("invalid_snapshot");
     reconcileSummary(s.native_summary);
     for (const field of ["entry_cents", "membership_cents", "contribution_cents", "other_cents", "refunded_cents", "net_cents"] as const) {
       if (s.native_summary[field] - (field === "entry_cents" || field === "net_cents" ? adjustment! : 0) !== s.summary[field]) throw new Error("invalid_snapshot");
     }
+  }
+  if (s.invoice_discount_variant !== undefined || s.invoice_discount_cents !== undefined) {
+    if (s.invoice_discount_variant !== INVOICE_DISCOUNT_VARIANT || !Number.isSafeInteger(s.invoice_discount_cents)
+        || s.invoice_discount_cents! <= 0) throw new Error("invalid_snapshot");
   }
   if (new Set(s.cohort.map(r => r.id)).size !== s.cohort.length) throw new Error("duplicate_registration");
   return s;

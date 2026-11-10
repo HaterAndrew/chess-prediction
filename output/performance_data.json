@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-09",
+  "generated": "2026-11-10",
   "model": "N5v4_Final",
   "n_tournaments": 32,
   "grade": "A-",
@@ -3979,7 +3979,7 @@
     }
   ],
   "n_corpus_tournaments": 790,
-  "n_entry_records": 197871,
+  "n_entry_records": 197884,
   "corpus_year_min": 2012,
   "corpus_year_max": 2027,
   "corpus_year_span": 16,

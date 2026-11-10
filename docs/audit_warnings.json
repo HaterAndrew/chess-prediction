@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-09 22:24:26",
+  "generated": "2026-11-10 00:03:51",
   "count": 9,
   "total_occurrences": 9,
   "warnings": [
@@ -7,31 +7,31 @@
       "step": "Validate scraped data",
       "text": "No readable entry list for Saratoga Tournament Of-The-Ages Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKifng==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-09 22:24:26"
+      "generated": "2026-11-10 00:03:51"
     },
     {
       "step": "Validate scraped data",
       "text": "No readable entry list for 2027 New York State Senior Championship (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKifnQ==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-09 22:24:26"
+      "generated": "2026-11-10 00:03:51"
     },
     {
       "step": "Validate scraped data",
       "text": "No readable entry list for 2027 Mid-America Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKefoQ==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-09 22:24:26"
+      "generated": "2026-11-10 00:03:51"
     },
     {
       "step": "Refresh tournament summary",
       "text": "all_registrations.csv export missing at /home/runner/Downloads/all_registrations.csv \u2014 live predictions still run from scrape data, but the training corpus is frozen: newly scraped events carry no registration timestamps, so they can never join model training or 04e grading, and early-bird spike features stay absent. Re-export from the CCA admin.",
       "count": 1,
-      "generated": "2026-11-09 22:24:26"
+      "generated": "2026-11-10 00:03:51"
     },
     {
       "step": "Scan prediction data health (data_health.py)",
       "text": "data-health: 3 MEDIUM finding(s) \u2014 see output/data_health.json",
       "count": 1,
-      "generated": "2026-11-09 22:24:26"
+      "generated": "2026-11-10 00:03:51"
     },
     {
       "step": "Enrichment: fees",

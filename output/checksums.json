@@ -4,91 +4,91 @@
       "filename": "daily_registration_counts.csv",
       "sha256": "c131de1b6f6d5a2a0d01888d3032c0927e471df2e3706123e874e9fa1370286d",
       "row_count": 13968,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "daily_scrape.csv",
-      "sha256": "dbf5951356183de2ce8e3b391e6b8e17acdd96877da17b2948df3ab99abc6ca9",
+      "sha256": "045f42b2ffefe20a6802168ca376e4977f3a228afd01cb4fdc6b21dc2fb6c7b6",
       "row_count": 4301,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "edition_registry.csv",
       "sha256": "3387c86cf56c30e879731e0103d186955be5c598a5d8c80c1258483e97e19ed3",
       "row_count": 1131,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "final_count_corrections.csv",
       "sha256": "676a1df0e8ee0327a0c4195a8bf63c96634104efd1fe8ba227d36fc1b407ca45",
       "row_count": 8,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "forecast_ledger.csv",
-      "sha256": "f65f151b848f8809a5cf8ea78c78971e7cbe5f332031e4a172810b9620d88c85",
-      "row_count": 2081,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "sha256": "f11dba1f1b80c31a34efd236ee586524bf4c6334d99c87659586f236e9f7e35f",
+      "row_count": 2050,
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "forecast_ledger_backfill.csv",
       "sha256": "326b33f00d74c85640795de37a1f5a6c214ad8c316e9b50a231410f11f52651b",
       "row_count": 4654,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "historical_standings.csv",
       "sha256": "30e0fbb551da2de6ed5a292ce6a9d291b4828ad5920eaf182213e0b7e844af1a",
       "row_count": 888,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "historical_tournaments.csv",
       "sha256": "a78b46ac505bf403165d17faa8f4613ca222a08e85eb5a4c5d693316d9e015a9",
       "row_count": 754,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "tournament_fees.csv",
       "sha256": "0db1fcc3269761dbace16b076a30dd4382ed6ddce6af28ce4a9788f9b91c93cb",
       "row_count": 114,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "tournament_metadata.csv",
       "sha256": "fa1a2b4e71d65b797ae64d9085daf9c9618a7c3d067bad49ba49750907a03b3d",
       "row_count": 337,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "tournament_summary.csv",
       "sha256": "4b377ecdb78fed2c18758d63609caaa2a55ba7637e601f6ca295f4976212f86f",
       "row_count": 790,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "update_log.csv",
-      "sha256": "0750eed0b1ac4f4ef5b8e607ea8e38d11f7faa64e14acfd409aae7ccf4e644e4",
-      "row_count": 5344,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "sha256": "ea5cc998e7bc5bbdb53dcf507a6698cea86adc4dc8026eb75036f5b60bbaeecf",
+      "row_count": 5292,
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "walk_forward_records.csv",
-      "sha256": "2e5a26370624a3ff021ebcff9b49f6c4c222c67005d63a7105f1bf867d58ee45",
+      "sha256": "4ba149201f1295001813a2a491f4c5cd86d291a1737c1f3df6fd9d7f94ddb350",
       "row_count": 1102,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "walk_in_family_stats.csv",
       "sha256": "773a379f43c3dc6f596ae90587f36d7cdd5ddf3425f12362609dc6ac6079b084",
       "row_count": 49,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     },
     {
       "filename": "walk_in_multipliers.csv",
       "sha256": "cb9596fbd0e9a5f6960889de614aeb0de40a6c2b0025e618a879f50c37489c28",
       "row_count": 451,
-      "timestamp": "2026-11-10T16:48:01Z"
+      "timestamp": "2026-11-10T16:17:19Z"
     }
   ]
 }

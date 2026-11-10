@@ -200,3 +200,34 @@ def test_production_table_maps_the_three_class_and_open_flyers():
     assert FAMILY_TO_CODE["Southwest Class Championships"] == "swcc"
     assert FAMILY_TO_CODE["George Washington Open"] == "gwo"
     assert FAMILY_TO_CODE["Western Class Championships"] == "wcc"
+
+
+@pytest.mark.parametrize("event_start,expected", [("2027-03-06", 1), ("2026-03-07", 0), ("", 0)])
+def test_k8_merge_cannot_take_senior_or_high_school_fees(tmp_path, monkeypatch, event_start, expected):
+    family = "New York State Scholastic Championships Grades K-8"
+    meta = pd.DataFrame([{ "family": family, "year": 2027, "start_date": "2027-03-06",
+      "regular_fee": "", "onsite_fee": "", "early_bird_fee": "", "early_bird_deadline": "" }])
+    meta_csv = tmp_path / "metadata.csv"
+    fees_csv = tmp_path / "fees.csv"
+    meta.to_csv(meta_csv, index=False)
+    def flyer(filename, start, regular):
+        return { "year": 2027, "url": "https://www.chesstour.com/" + filename, "event_start": start,
+          "regular_fee": regular, "onsite_fee": regular + 20, "early_bird_fee": "", "early_bird_deadline": "", "eb_demoted_reason": "" }
+    # Senior/HS deliberately first and within the date guard: only the exact K8 identity may join.
+    pd.DataFrame([flyer("nyssc27.htm", "2027-03-06", 108), flyer("nyssc27-HighSchool.htm", "2027-03-06", 126),
+      flyer("nyssc27-k8.htm", event_start, 120)]).to_csv(fees_csv, index=False)
+    monkeypatch.setattr(merge_fees, "META_CSV", str(meta_csv))
+    monkeypatch.setattr(merge_fees, "FEES_CSV", str(fees_csv))
+    assert merge_fees.merge_fees(today="2026-11-10", first_season=2026) == expected
+    actual = pd.read_csv(meta_csv).iloc[0]["regular_fee"]
+    assert actual == 120 if expected else pd.isna(actual)
+
+
+def test_k8_missing_flyer_leaves_fee_unavailable(tmp_path, monkeypatch):
+    meta_csv = _setup(tmp_path, monkeypatch, "2026-08-02")
+    monkeypatch.setattr(merge_fees, "FAMILY_TO_CODE", {"TestFam": "nyssc-k8"})
+    fees = pd.read_csv(merge_fees.FEES_CSV)
+    fees["url"] = "https://www.chesstour.com/nyssc26.htm"
+    fees.to_csv(merge_fees.FEES_CSV, index=False)
+    assert merge_fees.merge_fees(first_season=2026) == 0
+    assert pd.isna(pd.read_csv(meta_csv).iloc[0]["regular_fee"])

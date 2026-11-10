@@ -81,6 +81,8 @@ FAMILY_TO_CODE = {
     "New York State Senior Championship With Young Adult Mi": "nyssc",
     "New York State Senior Championship": "nyssc",
     "New York State High School Championship": "nyssc-highschool",
+    # The separate official nyssc26-k8.htm flyer is for grades K-8.
+    "New York State Scholastic Championships Grades K-8": "nyssc-k8",
     "Saratoga Tournament Of-The-Ages Open": "nytoa",
     # Verified 2026-10-04 from the live 2026 flyers: so26 ("Southern Open"),
     # woam26 ("5th annual World Open Amateur"), wosa26 ("16th annual World

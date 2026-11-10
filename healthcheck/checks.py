@@ -255,11 +255,11 @@ def scan(data, ctx):
                        if t.get("prediction_source") == "model"}):
         report.add("INFO", "roster-pending", fam,
                    "model prediction from live scrape — not in trained roster yet "
-                   "(joins training after the next all_registrations.csv export)")
+                   "(pending verified registration timestamps)")
     for fam in sorted({t.get("family") for t in rp_cards
                        if t.get("prediction_source") != "model"}):
         report.add("INFO", "roster-pending", fam,
-                   "interim estimate — not in trained roster yet (pending fresh all_registrations.csv export)")
+                   "interim estimate — not in trained roster yet (pending verified registration timestamps)")
 
     no_curve = sum(
         1 for t in tournaments

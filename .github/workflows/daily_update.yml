@@ -6,8 +6,7 @@ on:
   workflow_dispatch:  # allow manual trigger
 
 permissions:
-  contents: write
-  issues: write
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,6 +14,12 @@ concurrency:
 
 jobs:
   scrape-and-update:
+    concurrency:
+      group: publish-worker-data
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      issues: write
     runs-on: ubuntu-latest
 
     steps:
@@ -88,7 +93,7 @@ jobs:
           # (three files since 2026-09) — the build writes them, so they MUST be
           # committed or the deployed data goes stale. output/data_health.json + audit/data-health
           # persist the freshness scan (H1) instead of expiring with the run log.
-          git add output/daily_scrape.csv output/website_data.json output/performance_data.json docs/index.html docs/sw.js docs/data/tournaments.js docs/data/performance_data.js docs/data/website_data.json docs/audit_warnings.json output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv output/tournament_metadata.csv output/walk_in_family_stats.csv output/walk_in_multipliers.csv output/tournament_summary.csv output/daily_registration_counts.csv output/update_log.csv output/forecast_ledger.csv output/walk_forward_records.csv output/edition_registry.csv output/checksums.json output/audit_warnings.json output/data_health.json output/scrape_health.json
+          git add output/forecast_candidate.json output/daily_scrape.csv output/website_data.json output/performance_data.json docs/index.html docs/sw.js docs/data/tournaments.js docs/data/performance_data.js docs/data/website_data.json docs/audit_warnings.json output/historical_tournaments.csv output/historical_standings.csv output/tournament_fees.csv output/tournament_metadata.csv output/walk_in_family_stats.csv output/walk_in_multipliers.csv output/tournament_summary.csv output/daily_registration_counts.csv output/update_log.csv output/forecast_ledger.csv output/walk_forward_records.csv output/edition_registry.csv output/checksums.json output/audit_warnings.json output/data_health.json output/scrape_health.json
           git add audit/data-health/ 2>/dev/null || true
           git diff --cached --quiet || git commit -m "Daily update: $(date +%Y-%m-%d)"
           git pull --rebase || git pull --no-rebase
@@ -108,6 +113,7 @@ jobs:
       # restores from the remote branch, not HEAD: a failed push leaves HEAD
       # on a local commit of data that was never published.
       - name: Publish degraded-state banner on failure
+        id: degraded
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
@@ -129,6 +135,30 @@ jobs:
           git diff --cached --quiet || git commit -m "Pipeline degraded: mark data stale ($(date +%Y-%m-%d))"
           git pull --rebase || git pull --no-rebase
           git push
+
+      - name: Request build and verify published data
+        id: publish
+        if: always() && github.repository == 'HaterAndrew/chess-prediction' && github.ref == 'refs/heads/main' && (steps.commit.outcome == 'success' || steps.degraded.outcome == 'success')
+        env:
+          CLOUDFLARE_DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
+        run: python -m pipeline.deploy_hook
+      - name: Commit confirmed publication provenance
+        if: always() && steps.publish.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh auth setup-git --hostname github.com
+          git config user.name "CCA Bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add output/forecast_ledger.csv output/checksums.json
+          if [ -f output/forecast_publications.json ]; then
+            git add output/forecast_publications.json
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m "Record verified site publication"
+            git pull --rebase
+            git push
+          fi
 
       - name: Pipeline summary
         if: always()

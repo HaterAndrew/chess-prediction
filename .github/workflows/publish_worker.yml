@@ -1,0 +1,52 @@
+name: Publish Worker Data
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-worker-data
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    permissions:
+      contents: write
+    if: github.repository == 'HaterAndrew/chess-prediction' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # Always use trusted main, including the data commit the upstream job
+      # published. Never execute an upstream artifact or untrusted branch.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: '3.12'
+      # Failed upstream runs can publish a degraded marker. Deploy the actual
+      # committed main data in that case as well as after a successful refresh.
+      - name: Request build and verify published data
+        env:
+          CLOUDFLARE_DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
+        run: python -m pipeline.deploy_hook
+      - name: Commit confirmed publication provenance
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh auth setup-git --hostname github.com
+          git config user.name "CCA Bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add output/forecast_ledger.csv output/checksums.json
+          if [ -f output/forecast_publications.json ]; then
+            git add output/forecast_publications.json
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m "Record verified site publication"
+            git pull --rebase
+            git push
+          fi

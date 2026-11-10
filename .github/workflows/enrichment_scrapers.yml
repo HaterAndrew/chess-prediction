@@ -17,8 +17,7 @@ on:
           - historical
 
 permissions:
-  contents: write
-  issues: write
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -26,6 +25,12 @@ concurrency:
 
 jobs:
   enrichment:
+    concurrency:
+      group: publish-worker-data
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      issues: write
     runs-on: ubuntu-latest
     timeout-minutes: 90
 
@@ -85,6 +90,30 @@ jobs:
           git diff --cached --quiet || git commit -m "Enrichment data update: $(date +%Y-%m-%d)"
           git pull --rebase || git pull --no-rebase
           git push
+
+      - name: Request build and verify published data
+        id: publish
+        if: always() && github.repository == 'HaterAndrew/chess-prediction' && github.ref == 'refs/heads/main' && steps.commit.outcome == 'success'
+        env:
+          CLOUDFLARE_DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
+        run: python -m pipeline.deploy_hook
+      - name: Commit confirmed publication provenance
+        if: always() && steps.publish.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh auth setup-git --hostname github.com
+          git config user.name "CCA Bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add output/forecast_ledger.csv output/checksums.json
+          if [ -f output/forecast_publications.json ]; then
+            git add output/forecast_publications.json
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m "Record verified site publication"
+            git pull --rebase
+            git push
+          fi
 
       - name: Pipeline summary
         if: always()

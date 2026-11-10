@@ -97,3 +97,15 @@ def test_the_workflow_restores_from_the_remote_and_names_the_failed_step():
     assert banner.index("git fetch") < banner.index("pipeline.publish_degraded")
     assert "steps.gate.outcome == 'failure'" in banner
     assert 'if not degraded.get("pipeline_degraded")' not in banner
+
+
+def test_failure_restores_the_tracked_pending_candidate_before_rebase(tmp_path):
+    repo, _ = _published_repo(tmp_path)
+    candidate = repo / 'output/forecast_candidate.json'
+    candidate.write_text('{"published_baseline":true}')
+    for args in [['add', 'output/forecast_candidate.json'], ['commit', '-q', '-m', 'candidate baseline']]:
+        subprocess.run(['git', '-C', str(repo), '-c', 'user.name=t', '-c', 'user.email=t@t', *args],
+                       check=True, capture_output=True)
+    candidate.write_text('{"untested_candidate":true}')
+    pd_mod.publish(str(repo), 'test + lint gate', TONIGHT)
+    assert json.loads(candidate.read_text()) == {'published_baseline': True}

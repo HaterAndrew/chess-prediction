@@ -7,9 +7,11 @@ about an event on a given date, from which model, so a forecast can be judged
 against the final it was made before.
 """
 import csv
+import hashlib
 import json
 import os
 from datetime import date
+from pathlib import Path
 
 from pipeline import config
 from shared.model_version import MODEL_LABEL, code_commit, model_hash
@@ -116,12 +118,21 @@ def append_ledger(rows, path):
 
 
 def step_record_forecasts():
-    """Append tonight's published forecasts to the ledger."""
+    """Stage CI forecasts for deployment confirmation; record local runs only."""
     with open(config.WEBSITE_JSON) as fh:
         website = json.load(fh)
     origin = run_origin()
     rows = ledger_rows(website, run_ts=config.RUN_TS, model_label=MODEL_LABEL,
                        model_hash=model_hash(), code_commit=code_commit(), origin=origin)
+    if origin == 'nightly':
+        asset = Path(config.SITE_DATA_JSON).read_bytes()
+        candidate = {'schema': 1, 'asset_sha256': hashlib.sha256(asset).hexdigest(),
+                     'run_ts': config.RUN_TS, 'model_label': MODEL_LABEL,
+                     'model_hash': model_hash(), 'code_commit': code_commit(), 'rows': rows}
+        target = Path(config.FORECAST_LEDGER).with_name('forecast_candidate.json')
+        target.write_text(json.dumps(candidate, indent=2) + '\n')
+        print(f"  Staged {len(rows)} forecasts; publication awaits live verification")
+        return len(rows)
     n = append_ledger(rows, config.FORECAST_LEDGER)
     published = sum(1 for r in rows if r['published'])
     print(f"  Recorded {published} published and {n - published} unpublished "

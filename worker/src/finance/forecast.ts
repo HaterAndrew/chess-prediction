@@ -23,9 +23,12 @@ export async function receiptForecast(
   const sourceTime = Date.parse(snapshot.source_as_of);
   const modelTime = Date.parse(card.count_observed_at ?? "");
   out.stale = now - sourceTime > FINANCE_MAX_AGE_MS || now - modelTime > FINANCE_MAX_AGE_MS;
-  if (out.stale || sourceTime > now + 60_000 || !Number.isFinite(modelTime) || modelTime > sourceTime) {
+  if (out.stale || sourceTime > now + 60_000 || !Number.isFinite(modelTime) || modelTime > now + 60_000) {
     return fail(out.stale ? "stale_source" : "unmatched_count");
   }
+  // Independent refreshes may observe the same exact identity set in either order.
+  // Freshness and the count/hash proof below own compatibility; wall-clock order
+  // alone must not invalidate unchanged registrations.
   const observed = snapshot.cohort.filter(r => Date.parse(r.paid_at) <= modelTime);
   if (snapshot.cohort.length !== snapshot.registration_count || observed.length !== card.current_count || !card.count_cohort_hash
       || await cohortHash(observed.map(r => r.id)) !== card.count_cohort_hash) return fail("unmatched_count");

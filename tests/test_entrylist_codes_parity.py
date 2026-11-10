@@ -29,6 +29,7 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MJS_PATH = os.path.join(PROJECT_DIR, "worker", "src", "entrylist_codes.mjs")
 
 DERIVATION_CASES = [
+    "2027 New York State Scholastic Championships Grades K-8",
     "southern open",
     "2026 Southern Open",
     "world open",
@@ -84,3 +85,7 @@ def test_derivation_matches_python():
 def test_url_construction():
     js = _run_mjs()
     assert js["sample_url"] == ENTRY_LIST_URL_TEMPLATE.format(code="SO", yy="26")
+
+
+def test_scholastic_k8_uses_the_official_list_code():
+    assert _derive_entry_list_code("2027 New York State Scholastic Championships Grades K-8") == "NYSSC"

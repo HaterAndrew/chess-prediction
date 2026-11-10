@@ -74,13 +74,36 @@ invoice layouts, hidden markers and unverified cross-event cash carts fail
 visibly. Financial checkpoints use a separate evidence version so older cached
 rows cannot bypass these checks. Source payment dates
 are explicitly UTC. Recorded Manual cash order totals count as received; the
-native fee summary and any cash correction are retained together. Secondary
+native fee summary and any cash correction are retained together. Explicit
+Manual/Free orders count as zero received even when source face fees and order
+totals remain positive; this explicit override has its own
+`manual_free_adjustment_cents` provenance. Only complete same-event free orders
+without ancillary charges or refunds qualify; mixed or unknown orders fail. Secondary
 membership charges require reconciliation before an event can be accepted.
+For Approved card orders, forecasts use net charges after verified discounts,
+matching the event summary. A one-player invoice can show that net subtotal
+while its printed Grand Total and recorded order total remain gross. One
+unambiguous signed discount must explain the entire positive gap; the exact
+whole cart, source gross components and native net summary must all agree.
+Already-net orders are never discounted twice. Raw gross order amounts remain
+in the private proof cache alongside a fixed discount variant, verified cents
+and the net order basis. Manual cash uses its recorded order total, and explicit
+Manual/Free entries contribute zero.
 Registration identities are accepted only when a source identifier column
 reproduces the public scrape's registration-set hash, or when a unique federation
-ID joins source rows to the public registration IDs and reproduces that hash. Equal row counts do not
+ID joins source rows to the public registration IDs and reproduces that hash.
+When both sides lack federation IDs, a unique exact normalized first/last-name
+digest can establish the join. Names and name digests stay in request memory;
+snapshots retain only hashed public registration IDs. Ambiguous names and
+contradictory federation IDs cannot use this path. Equal row counts do not
 establish that match. Legacy scrape records without a hash remain usable for
 attendance but cannot authorize a receipts forecast.
+
+Independent count and financial refreshes may occur in either order when the
+exact cohort still matches. Both observations must remain fresh and cannot lie
+in the future; the financial source timestamp is never advanced by a model refresh.
+A source-policy version permits one retry of repaired schema/payment failures
+and incomplete old cohort proofs, then restores ordinary daily backoff.
 
 The projection adds receipts expected from remaining advance registrations to
 actual net receipts. Receipt yield includes zero-payment registrations and is

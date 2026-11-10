@@ -1,4 +1,4 @@
-import { cents, sha256 } from "./types";
+import { cents, sha256, INVOICE_DISCOUNT_VARIANT } from "./types";
 
 type Row = Record<string, unknown>;
 const MONEY = ["section_amount", "membership_amount", "secmembership_amount", "other_fees", "order_value", "paypal_credit_card_fee_contribution", "public_discount_amount", "discount_amount"] as const;
@@ -18,7 +18,11 @@ function financialRow(row: Row): Row {
   result.status = ["Approved", "Manual", "Free Registration", "Pending", "Declined"].includes(status) ? status : "Unrecognized";
   const transaction = text(row.paypal_trans_id);
   result.paypal_trans_id = /credit/i.test(transaction) ? "Credit" : /transfer/i.test(transaction) ? "Transfer"
-    : transaction.toLowerCase() === "cash" ? "Cash" : "";
+    : transaction.toLowerCase() === "cash" ? "Cash" : transaction.toLowerCase() === "free" ? "Free" : "";
+  const refund = status === "Manual" && transaction.toLowerCase() === "free" && row.is_refunded !== ""
+    ? row.is_refunded === "Refunded" ? "Refunded" : "Unrecognized"
+    : text(row.is_refunded);
+  result.is_refunded = refund === "" ? "" : refund === "Refunded" ? "Refunded" : "Unrecognized";
   for (const key of MONEY) {
     const amount = row[key] === "" || row[key] === null || row[key] === undefined ? 0 : cents(row[key]);
     result[key] = `${Math.floor(amount / 100)}.${String(amount % 100).padStart(2, "0")}`;
@@ -26,6 +30,17 @@ function financialRow(row: Row): Row {
   if (row.invoice_event_subtotal_cents !== undefined) {
     if (!Number.isSafeInteger(row.invoice_event_subtotal_cents) || Number(row.invoice_event_subtotal_cents) < 0) throw new Error("invoice_schema_changed");
     result.invoice_event_subtotal_cents = row.invoice_event_subtotal_cents;
+  }
+  if (row.invoice_discount_variant !== undefined || row.invoice_discount_cents !== undefined || row.invoice_net_order_cents !== undefined) {
+    const gap = row.invoice_discount_cents;
+    const net = row.invoice_net_order_cents;
+    if (row.invoice_discount_variant !== INVOICE_DISCOUNT_VARIANT || status !== "Approved"
+        || !Number.isSafeInteger(gap) || Number(gap) <= 0 || !Number.isSafeInteger(result.invoice_event_subtotal_cents)
+        || !Number.isSafeInteger(net) || Number(net) < 0 || Number(net) + Number(gap) !== cents(result.order_value)
+        || Number(result.invoice_event_subtotal_cents) + cents(result.paypal_credit_card_fee_contribution) !== net) throw new Error("invoice_schema_changed");
+    result.invoice_discount_variant = INVOICE_DISCOUNT_VARIANT;
+    result.invoice_discount_cents = gap;
+    result.invoice_net_order_cents = net;
   }
   return result;
 }
@@ -36,6 +51,9 @@ function signature(row: Row): string {
   // position can differ between the selected-event and full-order reports.
   delete normalized.paypal_credit_card_fee_contribution;
   delete normalized.invoice_event_subtotal_cents;
+  delete normalized.invoice_discount_variant;
+  delete normalized.invoice_discount_cents;
+  delete normalized.invoice_net_order_cents;
   return JSON.stringify(normalized);
 }
 

@@ -239,3 +239,15 @@ describe("financial acquisition checkpoints", () => {
       .rejects.toThrow("storage_offline");
   });
 });
+
+it("retains only validated net-discount evidence across checkpoint reuse", async () => {
+  const {kv}=storage();const row=source({section_amount:"10.00",order_value:"10.00"});
+  const proof={...row,invoice_event_subtotal_cents:800,invoice_discount_variant:"single_approved_discount_net_v1",invoice_discount_cents:200,invoice_net_order_cents:800};
+  const first=new OrderAcquisition(kv,"Example Open|2026");
+  await first.rows("invoice:2:1",[row],async()=>[proof]);await first.checkpoint();
+  const second=new OrderAcquisition(kv,"Example Open|2026");
+  expect((await second.rows("invoice:2:1",[row],async()=>{throw Error("unexpected_source_read");}))[0]).toMatchObject({invoice_event_subtotal_cents:800,invoice_discount_variant:"single_approved_discount_net_v1",invoice_discount_cents:200,invoice_net_order_cents:800});
+  for(const bad of [{invoice_discount_variant:"unknown"},{invoice_discount_cents:-1},{invoice_discount_cents:1001},{invoice_net_order_cents:900}]){
+    await expect(new OrderAcquisition(storage().kv,"Example Open|2026").rows("invoice:2:1",[row],async()=>[{...proof,...bad}])).rejects.toThrow("invoice_schema_changed");
+  }
+});

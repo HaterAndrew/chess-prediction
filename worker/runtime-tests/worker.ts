@@ -6,6 +6,7 @@ import financeWorker from "../src/finance/collector";
 import { collectBatch } from "../src/finance/collect";
 import { invoiceContainsWholeOrder } from "../src/finance/invoice";
 import { parsePublicRegistrations } from "../src/finance/public-cohort";
+import type { InvoiceDiscountEvidence } from "../src/finance/types";
 import type { ReceiptCard } from "../src/finance/types";
 import { quotaDays, quotaFaults, zeroProgress, leftoverBudget, resumePersistence } from "./kv-budget";
 import type { DailySlot } from "./kv-budget";
@@ -90,6 +91,22 @@ export default {
       return Response.json({ first, freshAfterFailure, second,
         historyPresent: store.has("history:pooled"), snapshotPresent: store.has("receipts:Example%20Open:2026") });
     }
+    if (new URL(request.url).pathname === "/source-policy-retry") {
+      const store = new Map<string,string>();
+      const statusKey = "event_status:Example%20Open:2026";
+      store.set(statusKey, JSON.stringify({ attempted_at: "2026-11-09T01:00:00.000Z", ok: false, reason: "public_registration_schema_changed" }));
+      const kv = { get: async (key: string) => store.get(key) ?? null,
+        put: async (key: string, value: string) => { store.set(key, value); } } as unknown as KVNamespace;
+      let attempts = 0;
+      const client = () => { const c = new ChessActionClient();
+        c.resume = async () => "<select id='tournments'><option value='123'>2026 Example Open</option></select>";
+        c.request = async () => { attempts++; throw new Error("public_registration_schema_changed"); };
+        return c; };
+      const cards:ReceiptCard[]=[{ family: "Example Open",year:2026,status:"live",current_count:1,event_start:"2026-11-14" }];
+      const first=await collectBatch({FINANCE_KV:kv,CHESS_ACTION_COOKIE:"synthetic"},cards,Date.parse("2026-11-09T02:30:00Z"),client());
+      const second=await collectBatch({FINANCE_KV:kv,CHESS_ACTION_COOKIE:"synthetic"},cards,Date.parse("2026-11-09T03:00:00Z"),client());
+      return Response.json({first,second,attempts});
+    }
     if (new URL(request.url).pathname === "/budget-priority") {
       const store = new Map<string, string>();
       const kv = { get: async (key: string | string[]) => Array.isArray(key) ? new Map(key.map(k => [k, store.get(k) ?? null])) : store.get(key) ?? null,
@@ -141,7 +158,7 @@ export default {
       const store = new Map<string, string>([
         ["event_status:Legacy:2026", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: "event_calendar_missing" })],
         ["event_status:Missing:2026", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: "event_calendar_missing" })],
-        ["event_status:Unrelated:2026", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: "unreconciled_payment_status" })],
+        ["event_status:Unrelated:2026", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: "unreconciled_payment_status", source_policy_version: 2 })],
       ]);
       const kv = { get: async (key: string) => store.get(key) ?? null,
         put: async (key: string, value: string) => { store.set(key, value); } } as unknown as KVNamespace;
@@ -182,6 +199,11 @@ export default {
     }
     const body = await request.json() as { html: string; expected?: Record<string, unknown>[]; replies?: Array<{ text: string; status?: number; location?: string; cookie?: string }> };
     try {
+      if (new URL(request.url).pathname === "/invoice-proof-detail") {
+        const totals = new Map<string,number>(); const adjustments = new Map<string,InvoiceDiscountEvidence>();
+        const whole = await invoiceContainsWholeOrder(body.html,body.expected??[],totals,adjustments);
+        return Response.json({whole,totals:Object.fromEntries(totals),adjustments:Object.fromEntries(adjustments)});
+      }
       if (new URL(request.url).pathname === "/invoice-proof") return Response.json({ whole: await invoiceContainsWholeOrder(body.html, body.expected ?? []) });
       if (new URL(request.url).pathname === "/summary") return Response.json(await parseSummary(body.html));
       if (new URL(request.url).pathname === "/options") return Response.json(await tournamentOptions(body.html));

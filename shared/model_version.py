@@ -16,7 +16,8 @@ from shared.paths import PROJECT_DIR
 # n5v6 (2026-09-27): the year-over-year range cap (#185), a known last final
 # for events without curves (#187), the new-event prior (#189) and short
 # ranges sized around the pickup blend (#191).
-MODEL_LABEL = "n5v6"
+# n5v7 (2026-11-10): unavailable forecasts without completed history; separate evaluation period.
+MODEL_LABEL = "n5v7"
 
 # Everything between the scraped count and the published card: the corpus
 # loader, the forecast entry point and its routes, the engine, the card

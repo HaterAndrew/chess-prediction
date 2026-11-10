@@ -39,18 +39,28 @@ function _liveRoutes(live) {
 
 // The sealed test (perf/holdout.py): what the frozen model published for
 // events that started after it froze. Drawn once one of them has finished.
-function _liveSealed(h) {
-  if (!h || !h.n_records) return '';
+function _liveSealed(h, label = 'Sealed test', archivedOn = null, showWaiting = false) {
+  if (!h) return '';
+  if (!h.n_records) return showWaiting
+    ? `<p class="perf-table-key">${esc(label)}: frozen on ${esc(h.frozen_on)}. No finished events have graded forecasts yet.</p>`
+    : '';
   const rows = Object.entries(h.pooled || {})
     .sort((a, b) => Number(b[0]) - Number(a[0]))
     .map(([T, m]) => _liveRow(T, m)).join('');
-  return `<p class="perf-table-key">Sealed test: ${h.n_records} forecasts of ${h.n_events} finished
+  return `<p class="perf-table-key">${esc(label)}: ${h.n_records} forecasts of ${h.n_events} finished
       event${h.n_events === 1 ? '' : 's'} that started after the model froze on ${h.frozen_on}, so none
-      of them informed a change to it.</p>
+      of them informed a change to it.${archivedOn ? ` Results archived on ${esc(archivedOn)}.` : ''}</p>
     <table class="perf-table perf-live-table">
       <thead><tr><th>Lead Time</th><th>Average Miss</th><th>Typical Miss</th><th>Inside the Range</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
+}
+
+function _liveEvaluationPeriods(live) {
+  if (!live) return '';
+  if (!Array.isArray(live.evaluation_periods)) return _liveSealed(live.holdout);
+  return live.evaluation_periods.map(period =>
+    _liveSealed(period.results, period.label, period.archived_on, true)).join('');
 }
 
 function perfDrawLive(data) {
@@ -58,7 +68,7 @@ function perfDrawLive(data) {
   if (!el) return;
   const live = data && data.live_record;
   if (!live || !live.n_records) {
-    el.innerHTML = '<div class="empty">No published forecast has a final yet.</div>';
+    el.innerHTML = '<div class="empty">No forecasts in the current ledger have a final yet.</div>' + _liveEvaluationPeriods(live);
     return;
   }
   const p = live.protocol || {};
@@ -74,5 +84,5 @@ function perfDrawLive(data) {
       <tbody>${rows}</tbody>
     </table>
     <p class="perf-table-key">n is the forecasts graded at that lead time. Typical miss is the median, above zero when forecasts ran high; the small figures under it and under inside the range are 95% intervals. Inside the range in red: its interval sits wholly below the 80% target.</p>
-    ${_liveSealed(live.holdout)}`;
+    ${_liveEvaluationPeriods(live)}`;
 }

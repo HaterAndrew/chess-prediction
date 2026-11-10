@@ -3,6 +3,7 @@ and any change to the model's sources is caught before it can unseal it."""
 import pandas as pd
 
 from perf.holdout import FROZEN_HASH, FROZEN_HASHES, FROZEN_ON, holdout_block, sealed
+from perf.evaluation_periods import CURRENT_FROZEN_HASH
 from perf.live_record import last_run_per_day, match_forecasts
 from shared.model_version import model_hash
 
@@ -31,10 +32,10 @@ def test_the_block_names_the_freeze_and_scores_like_the_live_record():
 
 
 def test_the_model_is_frozen():
-    assert model_hash() in FROZEN_HASHES, (
-        "A model source changed after the freeze (perf/holdout.py). If every forecast "
-        "is unchanged, record its verified equivalent hash; if any moved, the sealed test is over: "
-        "move FROZEN_ON to the day the change merges as well.")
+    assert model_hash() == CURRENT_FROZEN_HASH, (
+        "A model source changed after the current freeze (perf/evaluation_periods.py). "
+        "Review forecast equivalence or start a new period; preserve the original archive.")
+    assert CURRENT_FROZEN_HASH not in FROZEN_HASHES
 
 
 def test_equivalent_display_sources_keep_old_and_new_forecasts():

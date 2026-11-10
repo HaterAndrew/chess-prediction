@@ -47,14 +47,14 @@ function _cardPaceTag(t) {
 function seasonCard({ t, i }, act) {
   const isSelected = i === selectedIndex;
   const pct = t.point_estimate > 0 ? (t.current_count / t.point_estimate * 100).toFixed(0) : 0;
-  return `<div class="mini-card${isSelected ? ' mini-card-active' : ''}" data-act="${act}" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="button" aria-label="${esc(t.family)} ${t.year}: ${fmt(t.point_estimate)} predicted" aria-current="${isSelected ? 'true' : 'false'}">
+  return `<div class="mini-card${isSelected ? ' mini-card-active' : ''}" data-act="${act}" data-idx="${i}" data-keyable="1" data-keys="enter" tabindex="0" role="button" aria-label="${esc(t.family)} ${t.year}: ${fmt(t.current_count)} registered; ${hasForecast(t) ? fmt(t.point_estimate) + ' predicted' : 'forecast unavailable'}" aria-current="${isSelected ? 'true' : 'false'}">
     <div class="mini-card-header">
       <span class="mini-card-name" title="${esc(t.family)} ${t.year}">${esc(t.family)}</span>
       <div class="mini-card-chips">${_cardDeltaChip(t)}<span class="tag tag-live"><span class="live-dot"></span>T-${t.days_remaining}</span></div>
     </div>
-    <div class="mini-card-figure"><span class="mini-card-number">${fmt(t.point_estimate)}</span>${_cardPaceTag(t)}</div>
+    <div class="mini-card-figure"><span class="mini-card-number">${hasForecast(t) ? fmt(t.point_estimate) : '–'}</span>${hasForecast(t) ? _cardPaceTag(t) : '<span class="tag">Forecast unavailable</span>'}</div>
     <div class="mini-card-details">${fmt(t.current_count)} registered · ${fmtDate(t.event_start)}</div>
-    <div class="rule-bar" aria-hidden="true"><div class="rule-bar-fill" style="width:${pct}%"></div></div>
+    ${hasForecast(t) ? `<div class="rule-bar" aria-hidden="true"><div class="rule-bar-fill" style="width:${pct}%"></div></div>` : ''}
   </div>`;
 }
 

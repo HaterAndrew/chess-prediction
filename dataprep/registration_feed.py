@@ -183,9 +183,12 @@ def merge_feed(output_dir, body, now=None):
             stats["preserved"] += 1
             continue
         if pd.notna(provenance):
+            # Older reconciliation runs inferred this nullable identifier as
+            # float and wrote an exact integer ID with '.0'. Accept only that
+            # known CSV encoding of the same ID, never a different identity.
             _require(
                 str(original.get("registration_source_tournament_id"))
-                == x["tournament_id"]
+                in (x["tournament_id"], x["tournament_id"] + ".0")
             )
         if pd.notna(provenance):
             previous_source = _time(str(provenance), True)

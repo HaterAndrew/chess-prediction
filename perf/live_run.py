@@ -5,9 +5,10 @@ import pandas as pd
 
 from shared.paths import OUTPUT_DIR
 
-from perf.holdout import holdout_block
+from perf.evaluation_periods import evaluation_blocks, load_original_evaluation
 from perf.live_record import last_run_per_day, match_forecasts, summarize_live
 from perf.wf_events import finished_events
+from pipeline.ledger import LEDGER_FIELDS
 
 # The backfill (published before the ledger existed) and the nightly ledger.
 LEDGER_FILES = ('forecast_ledger_backfill.csv', 'forecast_ledger.csv')
@@ -27,17 +28,26 @@ def live_record_block(corpus, today, output_dir=OUTPUT_DIR):
     for path in missing:
         print(f"WARNING: live record: {os.path.basename(path)} is missing")
     if ledger is None:
-        return {'n_records': 0}
+        ledger = pd.DataFrame(columns=LEDGER_FIELDS)
     runs = last_run_per_day(ledger)
-    records = match_forecasts(runs, finished_events(corpus, today))
-    first, last = runs['as_of'].min().strftime('%Y-%m-%d'), runs['as_of'].max().strftime('%Y-%m-%d')
+    events = finished_events(corpus, today)
+    unavailable = []
+    records = match_forecasts(runs, events, unavailable=unavailable)
+    first = runs['as_of'].min().strftime('%Y-%m-%d') if not runs.empty else None
+    last = runs['as_of'].max().strftime('%Y-%m-%d') if not runs.empty else None
     block = summarize_live(records, first, last)
-    block['holdout'] = holdout_block(records, first, last)
+    block['n_unavailable_forecasts'] = len(unavailable)
+    block['evaluation_periods'] = evaluation_blocks(ledger, events, load_original_evaluation())
+    # Preserve the original payload for consumers of the existing field.
+    block['holdout'] = block['evaluation_periods'][0]['results']
     if block['n_invalid_ranges']:
         print(f"WARNING: live record: {block['n_invalid_ranges']} published forecast(s) "
               f"have a range that does not hold the point; not scored")
     print(f"  Live record: {block['n_records']} published forecasts of "
           f"{block.get('n_events', 0)} finished events")
+    if unavailable:
+        print(f"  Live record: {len(unavailable)} unavailable forecast(s) not scored; "
+              "no older forecast substituted")
     sealed = block['holdout']
     print(f"  Sealed test (frozen {sealed['frozen_on']}): {sealed['n_records']} forecasts of "
           f"{sealed.get('n_events', 0)} finished events")

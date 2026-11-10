@@ -47,6 +47,7 @@ function _receiptCell(ev) {
     unmatched_count: 'Payment records do not match the entry forecast’s registration set.',
     stale_source: 'The payment or entry source needs a fresh update.',
     no_history: 'Not enough verified payment history to predict the final total.',
+    no_forecast: 'The entry forecast is unavailable.',
     no_fee: 'The current entry price is missing.',
     collection_failed: 'The latest payment collection failed.',
   };

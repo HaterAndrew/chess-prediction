@@ -114,8 +114,11 @@ function renderAllTournaments() {
         if (xa === null || xb === null) return (xa === null ? 1 : 0) - (xb === null ? 1 : 0);
         return dir * (xa - xb);
       }
-      case 'predicted': return dir * (ta.point_estimate - tb.point_estimate);
+      case 'predicted':
+        if (!hasForecast(ta) || !hasForecast(tb)) return Number(!hasForecast(ta)) - Number(!hasForecast(tb));
+        return dir * (ta.point_estimate - tb.point_estimate);
       case 'progress': {
+        if (!hasForecast(ta) || !hasForecast(tb)) return Number(!hasForecast(ta)) - Number(!hasForecast(tb));
         const pa = ta.point_estimate > 0 ? ta.current_count / ta.point_estimate : 0;
         const pb = tb.point_estimate > 0 ? tb.current_count / tb.point_estimate : 0;
         return dir * (pa - pb);
@@ -154,9 +157,9 @@ function renderAllTournaments() {
       <td data-label="Event Date" class="num">${fmtDate(t.event_start)}${t.event_end ? ' – ' + fmtDate(t.event_end) : ''}</td>
       <td data-label="Current"><span class="td-current">${fmt(t.current_count)}</span>${paceStr}</td>
       <td data-label="Last day" class="num">${_lastDayCell(t)}</td>
-      <td data-label="Predicted" class="td-predicted">${fmt(t.point_estimate)}</td>
+      <td data-label="Predicted" class="td-predicted">${hasForecast(t) ? fmt(t.point_estimate) : 'Unavailable'}</td>
       <td data-label="Likely Range" class="td-range">${ci}</td>
-      <td data-label="Progress"><span class="td-progress"><span class="pace-bar-wrap" aria-hidden="true"><span class="pace-bar-fill" style="width:${pct}%"></span></span><span class="td-pct">${pct}%</span></span></td>${entryValueOn() ? valueCell(t) : ''}
+      <td data-label="Progress">${hasForecast(t) && t.point_estimate > 0 ? `<span class="td-progress"><span class="pace-bar-wrap" aria-hidden="true"><span class="pace-bar-fill" style="width:${pct}%"></span></span><span class="td-pct">${pct}%</span></span>` : '–'}</td>${entryValueOn() ? valueCell(t) : ''}
     </tr>`;
   }).join('');
   if (active.length === 0) {

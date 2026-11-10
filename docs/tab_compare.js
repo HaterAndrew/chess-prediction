@@ -87,8 +87,8 @@ function renderCompareTab() {
         return `<span class="pill pill-${kind}">${t.status === 'live' ? '<span class="live-dot"></span>' : ''}${s}</span>`;
       }},
       { label: 'Current Count', fn: t => fmt(t.current_count) },
-      { label: 'Predicted Final', live: true, fn: t => fmt(t.point_estimate) },
-      { label: 'CI Range', live: true, fn: t => t.ci_lower && t.ci_upper ? `${fmt(t.ci_lower)} – ${fmt(t.ci_upper)}` : '—' },
+      { label: 'Predicted Final', live: true, fn: t => hasForecast(t) ? fmt(t.point_estimate) : 'Unavailable' },
+      { label: 'CI Range', live: true, fn: t => Number.isFinite(t.ci_lower) && Number.isFinite(t.ci_upper) ? `${fmt(t.ci_lower)} – ${fmt(t.ci_upper)}` : '—' },
       { label: 'Days Remaining', live: true, fn: t => t.days_remaining != null ? t.days_remaining : '—' },
       { label: 'Historical Avg', fn: t => t.historical && t.historical.length > 0 ? fmt(Math.round(t.historical.reduce((s, h) => s + h.count, 0) / t.historical.length)) : '—' },
       // The payload field is event_start. Reading a non-existent event_date
@@ -107,8 +107,8 @@ function renderCompareTab() {
     statsHTML += '</tbody></table></div>';
 
     // Insight: compare predicted finals
-    const preds = selected.map(s => ({ name: s.t.family, pred: s.t.point_estimate || 0 }));
-    const maxPred = preds.reduce((a, b) => a.pred > b.pred ? a : b);
+    const preds = selected.filter(s => hasForecast(s.t)).map(s => ({ name: s.t.family, pred: s.t.point_estimate }));
+    const maxPred = preds.reduce((a, b) => a.pred > b.pred ? a : b, { pred: 0 });
     const insights = [];
     preds.forEach(p => {
       if (p.name !== maxPred.name && maxPred.pred > 0 && p.pred > 0) {

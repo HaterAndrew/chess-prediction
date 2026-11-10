@@ -24,8 +24,10 @@ function renderHero(t) {
 // The figure counts up on the first load only; a later switch lands on the
 // value, so moving between tournaments reads as a change, not a replay.
 let _heroCounted = false;
+let _heroFrame = 0;
 
 function _renderHeroFigure(t, done) {
+  const frame = ++_heroFrame;
   const statusPrefix = t.status === 'historical' ? `${t.year} ` : '';
   const heroLabel = document.getElementById('heroLabel');
   heroLabel.textContent = done ? `${statusPrefix}Final Entries` : 'Predicted Final Entries';
@@ -33,6 +35,13 @@ function _renderHeroFigure(t, done) {
   // A forecast sits under the highlighter; a final count is a fact in ink.
   heroNum.classList.toggle('hero-number-final', done);
   const target = t.point_estimate;
+  if (!hasForecast(t)) {
+    heroLabel.textContent = 'Forecast unavailable';
+    heroNum.textContent = '–';
+    const announce = document.getElementById('heroAnnounce');
+    if (announce) announce.textContent = 'Forecast unavailable: no completed editions on record.';
+    return;
+  }
   // #heroNumber is aria-hidden and the tween writes it every frame; the value
   // reaches assistive tech once, from this dedicated live region, with the
   // label included so the number is not announced bare (2026-09-07 review).
@@ -43,6 +52,7 @@ function _renderHeroFigure(t, done) {
   const duration = 600;
   const start = performance.now();
   (function animHero(now) {
+    if (frame !== _heroFrame) return;
     const p = Math.min(((now || performance.now()) - start) / duration, 1);
     const ease = 1 - Math.pow(1 - p, 3);
     heroNum.textContent = fmt(Math.round(target * ease));
@@ -94,6 +104,7 @@ function _confidenceReason(t) {
 // its caption. A completed tournament's figure is its final count, with
 // nothing to bracket.
 function _heroRangeHTML(t, done) {
+  if (!hasForecast(t)) return '<div class="range-caption">No completed editions on record.</div>';
   if (t.ci_lower === t.ci_upper) return '';
   const ciLevel = Math.round((t.ci_level || .8) * 100);
   const lo = t.ci_lower, hi = t.ci_upper, pe = t.point_estimate;

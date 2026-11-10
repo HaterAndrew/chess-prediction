@@ -21,6 +21,22 @@ async function data() {
 }
 
 describe("financial fault containment", () => {
+  it("retires a cached money projection when the attendance forecast is unavailable", async () => {
+    const { card, snapshot, map, kv } = await data();
+    const [projection] = await receiptValues(kv, [card], Date.parse("2026-11-09T03:00:00Z"));
+    map.set(snapshotKey(card.family, 2026), JSON.stringify({ ...snapshot, projection }));
+    expect((await receiptValues(kv, [{ ...card, point_estimate: 0 }], Date.parse("2026-11-09T04:00:00Z")))[0])
+      .toMatchObject({ value: 10, future_cents: 0, actual_cents: 1000, missing: null });
+    for (const failed of [false, true]) {
+      if (failed) {
+        map.set("session:status", JSON.stringify({ attempted_at: "2026-11-09T03:30:00.000Z", ok: false, reason: "source_login_expired" }));
+        map.set("history:pooled", "invalid JSON");
+        map.set(`history:${encodeURIComponent(card.family)}`, "invalid JSON");
+      }
+      expect((await receiptValues(kv, [{ ...card, point_estimate: null }], Date.parse("2026-11-09T04:00:00Z")))[0])
+        .toMatchObject({ value: null, future_cents: null, refund_reserve_cents: null, actual_cents: 1000, missing: "no_forecast" });
+    }
+  });
   it("refuses malformed session-health records instead of treating them as healthy", async () => {
     const { card, map, kv } = await data();
     for (const raw of ["invalid JSON", "null", "[]", JSON.stringify({ ok: "false", attempted_at: "2026-11-09T03:00:00.000Z", reason: null }),

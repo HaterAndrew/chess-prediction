@@ -41,8 +41,8 @@ def _record(ev, T, row):
             'route': row['route'], 'model_hash': row['model_hash']}
 
 
-def match_forecasts(runs, events, horizons=T_POINTS):
-    """The published forecast for each finished event at each horizon it has one."""
+def match_forecasts(runs, events, horizons=T_POINTS, *, unavailable=None):
+    """Select the published row first; an unavailable row never revives an older forecast."""
     by_key = dict(tuple(runs.groupby('key')))
     records = []
     for _, ev in events.iterrows():
@@ -53,7 +53,13 @@ def match_forecasts(runs, events, horizons=T_POINTS):
             d = ev['start'] - pd.Timedelta(days=T)
             seen = rows[(rows['as_of'] <= d) & (rows['as_of'] >= d - pd.Timedelta(days=MATCH_DAYS))]
             if not seen.empty:
-                records.append(_record(ev, T, seen.loc[seen['as_of'].idxmax()]))
+                selected = seen.loc[seen['as_of'].idxmax()]
+                if pd.isna(selected['point']):
+                    if unavailable is not None:
+                        unavailable.append({'family': ev['family'], 'year': int(ev['tournament_year']),
+                                            'T': T, 'as_of_date': selected['as_of'].strftime('%Y-%m-%d')})
+                    continue
+                records.append(_record(ev, T, selected))
     return records
 
 

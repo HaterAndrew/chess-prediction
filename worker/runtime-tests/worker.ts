@@ -6,11 +6,22 @@ import { collectBatch } from "../src/finance/collect";
 import { invoiceContainsWholeOrder } from "../src/finance/invoice";
 import { parsePublicRegistrations } from "../src/finance/public-cohort";
 import type { ReceiptCard } from "../src/finance/types";
+import { quotaDays, quotaFaults, zeroProgress, leftoverBudget, resumePersistence } from "./kv-budget";
+import type { DailySlot } from "./kv-budget";
 
 const syntheticInvoice = (event: string) => `<html><head></head><body><div id="invoicecontents"><div class="invoicetname">Tournamen Name: ${event}</div><div class="invoicekey">Player's Name: Synthetic</div><div class="invoicekey">Section: </div><div class="invoicevaluesub">Sub Total</div><div class="invoicevalueextend">US $10.00</div><div class="invoicevaluesub">PayPal Contribution</div><div class="invoicevalueextend">US $0.00</div><div class="invoicevaluesub">Grand Total</div><div class="invoicevalueextend">US $10.00</div><div class="invoicefotter">Footer</div></div></body></html>`;
 
 export default {
   async fetch(request: Request): Promise<Response> {
+    if (new URL(request.url).pathname === "/quota-days") {
+      return Response.json(await quotaDays(await request.json() as DailySlot[], syntheticInvoice));
+    }
+    if (new URL(request.url).pathname === "/quota-faults") {
+      return Response.json(await quotaFaults(syntheticInvoice));
+    }
+    if (new URL(request.url).pathname === "/leftover-budget") return Response.json(await leftoverBudget(syntheticInvoice));
+    if (new URL(request.url).pathname === "/resume-persistence") return Response.json(await resumePersistence(syntheticInvoice));
+    if (new URL(request.url).pathname === "/zero-progress") return Response.json(await zeroProgress(syntheticInvoice));
     if (new URL(request.url).pathname === "/session-missing") {
       const store = new Map<string, string>();
       const kv = { put: async (key: string, value: string) => { store.set(key, value); } } as unknown as KVNamespace;

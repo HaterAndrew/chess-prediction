@@ -1,11 +1,12 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { Miniflare, Log, LogLevel, convertV4MiniflareOptions } from "miniflare";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, readdirSync } from "node:fs";
+import { mkdtempSync, readdirSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
+import { isSessionHeartbeat } from "./session";
 
 let runtime;
 let rpcRuntime;
@@ -48,6 +49,58 @@ const summaryHtml = `<table><thead><tr>
 </tr></thead><tbody><tr><td>100.00</td><td>10.00</td><td>3.00</td><td>2.00</td><td>15.00</td><td>100.00</td></tr></tbody></table>`;
 
 describe("native Worker source boundaries", () => {
+  it("bounds attempted writes and preserves publication ordering at every storage failure", async () => {
+    const results = (await invoke("/quota-faults", {})).body;
+    expect(results).toHaveLength(results[0].writes + 2);
+    for (const result of results) {
+      expect(result.failureReached).toBe(result.failAt !== 0);
+      expect(result.writes).toBeLessThanOrEqual(12);
+      expect(result.unpersistedResume).toBe(false);
+      expect(result.publicationWithoutFence).toBe(false);
+    }
+    expect(results.some(result => result.trace.filter(key => key === "collector").length === 2)).toBe(true);
+  });
+  it("defers ordinary shared carts exhausted by leftover invocation requests", async () => {
+    expect((await invoke("/leftover-budget", {})).body).toEqual({ first: { collected: 1, failed: 1 }, resume: true,
+      second: { collected: 1, failed: 0 }, net: 1000 });
+  });
+  it("requires newly staged proofs to persist before claiming resumable progress", async () => {
+    expect((await invoke("/resume-persistence", {})).body).toEqual([
+      { failCheckpoint: false, rejected: false, attempts: 2, beforeProofs: 1, afterProofs: 2, resume: true },
+      { failCheckpoint: true, rejected: true, attempts: 2, beforeProofs: 1, afterProofs: 1, resume: null },
+    ]);
+  });
+  it("does not retry indefinitely when only an unchanged prefix can be reused", async () => {
+    expect((await invoke("/zero-progress", {})).body).toEqual([
+      { result: { collected: 0, failed: 1 }, resume: true },
+      { result: { collected: 0, failed: 1 }, resume: false },
+      { result: { collected: 0, failed: 0 }, resume: false },
+    ]);
+  });
+  it("stays within the free daily write allowance during bootstrap and next-day collection", async () => {
+    const config = readFileSync(new URL("../../wrangler.finance.toml", import.meta.url), "utf8");
+    const schedules = JSON.parse(/^crons\s*=\s*(\[[^\n]+\])/m.exec(config)[1]);
+    const slots = [];
+    for (const cron of schedules) {
+      const [minutes, hours, ...calendar] = cron.split(" ");
+      expect(hours).toBe("*"); expect(calendar).toEqual(["*", "*", "*"]);
+      for (let hour = 0; hour < 24; hour++) for (const minute of minutes.split(",").map(Number)) {
+        slots.push({ minute: hour * 60 + minute, heartbeat: isSessionHeartbeat(cron) });
+      }
+    }
+    slots.sort((a, b) => a.minute - b.minute);
+    expect(slots.filter(slot => !slot.heartbeat)).toHaveLength(72);
+    expect(slots.filter(slot => slot.heartbeat)).toHaveLength(72);
+    const result = (await invoke("/quota-days", slots)).body;
+    console.info("quota_rehearsal", JSON.stringify(result));
+    for (const day of result.days) {
+      expect(day.writes).toBeLessThanOrEqual(936);
+      expect(day.maximumBatch).toBeLessThanOrEqual(12);
+      expect(day.maximumHeartbeat).toBe(1);
+      expect(day.completed).toBe(36); expect(day.snapshots).toBe(36);
+      expect(day.conserved).toBe(true); expect(day.checkpointWritesArePerEvent).toBe(true);
+    }
+  }, 30_000);
   it("routes the heartbeat to session health without starting a financial batch", async () => {
     expect((await invoke("/session-missing", {})).body).toMatchObject({
       rejected: true, session: { ok: false, reason: "source_session_required" }, financial_status_written: false,

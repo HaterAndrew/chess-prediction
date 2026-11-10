@@ -91,7 +91,7 @@ pre-split World Open combined financial records are excluded. Historical final
 reports cannot establish historical refund timing; use prospective snapshots
 for that validation.
 
-Nightly batches run at 02:30 through 08:30 UTC, at most six events per batch.
+Financial batches run every twenty minutes, at most six events per batch.
 Active and recently completed events are revisited daily; older calibration
 events weekly. Only reconciled snapshots replace existing data. A previous
 validated projection may remain visible with an explicit stale marker.
@@ -99,23 +99,45 @@ Even-hour batches give calibration first access; odd-hour batches give live
 events first access. Costly reports cannot permanently monopolize either
 class. Failed events back off until the next UTC day; remaining work
 stays due. A batch that reaches its request or overall time limit after saving
-new financial checkpoints remains resumable. Checkpoints retain financial fields
+new financial checkpoints remains resumable. A report exhausted by requests used
+by an earlier event retries with a fresh invocation budget. Checkpoints retain financial fields
 only, with no names, contact details, federation IDs or transaction strings.
 Fresh target rows must reproduce their exact financial multiset before reuse.
-Cross-event cart evidence expires after 24 hours. Published snapshots retire prior
-acquisition epochs independently of housekeeping markers.
+Cross-event cart evidence expires after 24 hours. Complete checkpoints and an
+immutable per-generation retirement marker are persisted before history or snapshot
+publication. A delayed partial writer cannot erase that marker. KV visibility is
+eventually consistent; overlapping attempts may require refetching cached progress.
+A reconciliation contradiction involving reused evidence starts one bounded fresh
+generation per UTC day and records a separate immutable invalidation marker
+before saving the reset. Readers discard that generation even if a delayed writer
+restores its root. Fresh evidence that still disagrees remains unavailable.
 
 Each invocation has at most 42 source requests,60 seconds per source request and
 8 minutes overall. Target player reports are bounded to8 MB across all pages, with at most
 10,000 processed rows. A transaction-filtered cross-event lookup retains every
 line of only the requested order IDs, applying the8 MB bound to retained rows;
-unrelated broad-query rows are discarded as each page is read. Bulk checkpoint reads use groups of at most 100 keys and
-an 8 MB retained-data envelope. These use the supported [bulk KV read API](https://developers.cloudflare.com/kv/api/read-key-value-pairs/). Oversized acquisition fails visibly without
+unrelated broad-query rows are discarded as each page is read. Each report attempt
+buffers verified financial proofs into one packed checkpoint, bounded to 8 MB.
+Legacy records are read without deletion, at most 128 streamed values per attempt;
+streamed legacy bytes plus retained proofs share that envelope. Migrated proofs
+keep their original acquisition time and never gain extended pending eligibility.
+A partial checkpoint must be saved before an attempt is marked resumable. Reusing
+an unchanged pending prefix does not count as new progress. Oversized acquisition fails visibly without
 publishing partial results. These envelopes bound supported work; deployment
 capacity and daily refresh coverage require live validation. There are 72 bounded
 collection opportunities daily; a large event may require several of them, and
 complex shared orders can reduce capacity. Check live inventory
 and real request costs before promising a daily refresh for every event.
+
+The collector permits at most 12 underlying KV write attempts per financial run,
+including failed writes and the outer failure-status path. Reports that cannot fit
+their checkpoint, retirement marker, history, snapshot and status writes remain due
+for another batch. At the configured 72 financial and 72 session-health runs daily,
+the nominal automated ceiling is 936 write attempts. Public Ask and wrong-key
+controls, manual runs, duplicate invocations and other namespaces are additional
+account usage; this is not an atomic account-wide quota. Existing authorization
+and spending limits remain enabled. Current usage already over quota cannot be
+recovered until Cloudflare's daily reset.
 
 An open event can have recorded receipts before its registration closing date
 is published. Its snapshot keeps that date null; it cannot be used as historical

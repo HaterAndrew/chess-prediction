@@ -8,6 +8,7 @@ import { OrderAcquisition } from "./order-cache";
 import { acquireCartRows, invoiceCacheKey } from "./orders";
 import { readHistory, readSnapshot, readCalibration, invalidHistory } from "./store";
 import { calendarDate, snapshotKey, validateSnapshot } from "./types";
+import { FinanceWriteBudget } from "./write-budget";
 import type { ReceiptCard, ReceiptSnapshot } from "./types";
 
 export interface FinanceEnv {
@@ -29,7 +30,10 @@ const SOURCE_ERRORS = new Set([
   "report_edition_mismatch", "ambiguous_registration_identity", "invalid_money", "invalid_snapshot",
   "public_registration_unavailable", "public_registration_schema_changed",
   "secondary_membership_requires_reconciliation", "order_cache_capacity_exceeded", "invoice_schema_changed",
+  "order_cache_read_limit",
 ]);
+const RECONCILIATION_ERRORS = new Set(["entry_reconciliation_failed", "discount_reconciliation_failed",
+  "order_reconciliation_failed", "shared_order_reconciliation_failed", "receipt_reconciliation_failed"]);
 export const safeFailure = (error: unknown) => error instanceof Error && SOURCE_ERRORS.has(error.message) ? error.message : "collection_failed";
 
 async function rememberHistory(kv: KVNamespace, snapshot: ReceiptSnapshot): Promise<void> {
@@ -53,8 +57,10 @@ async function rememberHistory(kv: KVNamespace, snapshot: ReceiptSnapshot): Prom
   }
 }
 
-export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = Date.now(), client = new ChessActionClient()): Promise<{ collected: number; failed: number }> {
+export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = Date.now(), client = new ChessActionClient(),
+  writes = new FinanceWriteBudget(env.FINANCE_KV)): Promise<{ collected: number; failed: number }> {
   if (!env.FINANCE_KV) throw new Error("finance_storage_missing");
+  env = { ...env, FINANCE_KV: writes.kv };
   const attemptedAt = new Date(now).toISOString();
   const wallStartedAt = Date.now();
   // A fresh password login sends email codes. It is deliberately never used by
@@ -70,6 +76,7 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
     await env.FINANCE_KV.put("collector:status", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: safeFailure(error) }));
     return { collected: 0, failed: 1 };
   }
+  const freshEventRequests = client.remainingRequests;
   const needed: Array<{ card: ReceiptCard; previous: Awaited<ReturnType<typeof readSnapshot>>; priority: number; attempted: string }> = [];
   const midnight = Date.parse(attemptedAt.slice(0, 10) + "T00:00:00Z");
   const families = new Set(cards.filter(c => c.status === "live").map(c => c.family));
@@ -118,7 +125,10 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
   const batch = calibration ? calibrationFirst ? [calibration, ...other] : [...other, calibration] : needed.slice(0, 6);
   for (const { card, previous } of batch) {
     // Leave unstarted work due for the next batch, rather than marking it failed.
-    if (client.remainingRequests < 4) break;
+    // Include a possible failure-status attempt and the final collector status.
+    const maximumEventWrites = card.status === "live" ? 5 : 7;
+    if (client.remainingRequests < 4 || writes.remaining < maximumEventWrites + 1) break;
+    const leftoverSourceBudget = client.remainingRequests < freshEventRequests;
     const statusKey = `event_status:${encodeURIComponent(card.family)}:${card.year}`;
     const acquisition = new OrderAcquisition(env.FINANCE_KV, `${card.family}|${card.year}`, Date.now, previous?.source_as_of);
     try {
@@ -136,6 +146,8 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
         (transaction, expected) => acquireCartRows(client, acquisition, transaction, expected),
         async () => parsePublicRegistrations(await client.publicEntryList(card.family, card.year)));
       validateSnapshot(snapshot);
+      // Proof persistence and its retirement fence precede financial publication.
+      await acquisition.checkpoint(true);
       const stored = { ...snapshot, previous_net_cents: previous?.summary.net_cents ?? null,
         previous_as_of: previous?.source_as_of ?? null, projection: previous?.projection };
       if (card.status !== "live") await rememberHistory(env.FINANCE_KV, snapshot);
@@ -143,14 +155,19 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
       const projection = await receiptForecast(card, stored, history, Date.parse(sourceAsOf));
       if (!projection.missing) stored.projection = projection;
       await env.FINANCE_KV.put(snapshotKey(card.family, card.year), JSON.stringify(stored));
-      await acquisition.committed();
       await env.FINANCE_KV.put(statusKey, JSON.stringify({ attempted_at: attemptedAt, ok: true, reason: null }));
       collected++;
     } catch (error) {
+      const reason = safeFailure(error);
+      const refresh = RECONCILIATION_ERRORS.has(reason) && acquisition.refreshAfterContradiction();
+      // Persist partial progress BEFORE claiming the next run can resume it.
+      // A rejected checkpoint promise propagates without retrying its KV write.
+      await acquisition.checkpoint();
       await env.FINANCE_KV.put(statusKey, JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: safeFailure(error),
-        resume: safeFailure(error) === "source_request_limit" && acquisition.progressed > 0 }));
+        resume: refresh || ["source_request_limit", "order_cache_read_limit"].includes(reason)
+          && (acquisition.progressed > 0 || reason === "source_request_limit" && leftoverSourceBudget) }));
       failed++;
-      if (safeFailure(error) === "source_request_limit") break;
+      if (["source_request_limit", "order_cache_read_limit"].includes(reason)) break;
     }
   }
   await env.FINANCE_KV.put("collector:status", JSON.stringify({ attempted_at: attemptedAt, ok: true, reason: null }));

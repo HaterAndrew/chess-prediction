@@ -24,6 +24,7 @@ it("resumes a repeated Cash label at the next independently verified order", asy
   await first.prefetch(expected.map(invoiceCacheKey));
   await expect(acquireCartRows(client, first, "Cash", expected)).rejects.toThrow("source_request_limit");
   expect(first.progressed).toBe(2);
+  await first.checkpoint();
   calls = 0;
   const second = new OrderAcquisition(kv, "Example Open|2026");
   await second.prefetch(expected.map(invoiceCacheKey));

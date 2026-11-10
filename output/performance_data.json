@@ -7489,8 +7489,8 @@
           "protocol": {
             "source": "forecast ledger and its backfill",
             "match_days": 3,
-            "first_date": null,
-            "last_date": null
+            "first_date": "2026-11-10",
+            "last_date": "2026-11-10"
           },
           "n_records": 0,
           "n_invalid_ranges": 0

@@ -5,6 +5,8 @@ import type { FinanceEnv } from "./collect";
 import { receiptValues } from "./store";
 import type { ReceiptCard } from "./types";
 import { isSessionHeartbeat, refreshSession } from "./session";
+import { ChessActionClient } from "./client";
+import { FinanceWriteBudget } from "./write-budget";
 
 export interface FinanceRequest {
   generated: string;
@@ -35,6 +37,7 @@ export default {
       if (!status.ok) throw new Error("finance_session_refresh_failed");
       return;
     }
+    const writes = new FinanceWriteBudget(env.FINANCE_KV);
     try {
       const response = await fetch("https://chessentries.com/data/website_data.json", {
         redirect: "manual", signal: AbortSignal.timeout(20_000),
@@ -42,10 +45,10 @@ export default {
       if (!response.ok) throw new Error("forecast_source_unavailable");
       const data = JSON.parse(await boundedText(response)) as FinanceRequest;
       if (data.is_stale || !Array.isArray(data.tournaments) || data.tournaments.length > 2000) throw new Error("forecast_source_unavailable");
-      const result = await collectBatch(env, data.tournaments);
+      const result = await collectBatch(env, data.tournaments, Date.now(), new ChessActionClient(), writes);
       console.log(JSON.stringify({ event: "finance_collection", ...result }));
     } catch {
-      await env.FINANCE_KV.put("collector:status", JSON.stringify({ attempted_at: new Date().toISOString(), ok: false, reason: "collection_failed" }));
+      await writes.kv.put("collector:status", JSON.stringify({ attempted_at: new Date().toISOString(), ok: false, reason: "collection_failed" }));
       console.error(JSON.stringify({ event: "finance_collection_failed" }));
       throw new Error("finance_collection_failed");
     }

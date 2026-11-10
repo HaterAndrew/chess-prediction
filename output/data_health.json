@@ -1,19 +1,13 @@
 {
   "generated": "2026-11-10",
-  "scanned_at": "2026-11-10T00:08:45",
+  "scanned_at": "2026-11-10T08:31:46",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
-    "MEDIUM": 3,
+    "MEDIUM": 2,
     "INFO": 30
   },
   "findings": [
-    {
-      "severity": "MEDIUM",
-      "mode": "large-withdrawal-gap",
-      "family": "Boston Chess Congress",
-      "message": "1 of 4 scraped entries withdrawn (25%) as of 2026-11-10"
-    },
     {
       "severity": "MEDIUM",
       "mode": "no-history-default",

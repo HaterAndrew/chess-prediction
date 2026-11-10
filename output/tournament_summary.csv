@@ -775,7 +775,7 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 4427,2026 National Chess Congress,National Chess Congress,2026.0,200,False,0,,,False,False,,False,,,True,,
 4428,2026 New York State Championship,New York State Championship,2026.0,332,True,332,2026-04-06 02:54:09,2026-09-05 21:42:28,False,False,2026-09-05 21:42:28,False,58.0,3.0,False,2026-11-10T14:25:37.782Z,4476.0
 4429,2026 North American Blitz Championship,North American Blitz Championship,2026.0,16,False,0,,,False,False,,False,,,True,,
-4430,2026 North American Open,North American Open,2026.0,431,False,0,,,False,False,,False,,,True,,
+4430,2026 North American Open,North American Open,2026.0,432,False,0,,,False,False,,False,,,True,,
 4431,2026 Southern Open,Southern Open,2026.0,206,True,206,2026-04-27 21:50:19,2026-07-18 06:02:23,False,False,2026-07-18 06:02:23,False,64.0,1.0,False,2026-11-10T14:26:08.740Z,4416.0
 4432,2026 World Open Under 13 Championship,World Open Under 13 Championship,2026.0,86,True,86,2026-04-06 22:47:56,2026-06-29 08:47:32,False,False,2026-06-29 08:47:32,False,57.0,1.0,False,2026-11-10T14:26:39.596Z,4398.0
 4433,2026 Eastern Open,Eastern Open,2026.0,18,False,0,,,False,False,,False,,,True,,
@@ -787,5 +787,5 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 4439,2027 Southwest Class Championships,Southwest Class Championships,2027.0,1,False,0,,,False,False,,False,,,True,,
 4440,2027 Golden State Open,Golden State Open,2027.0,1,False,0,,,False,False,,False,,,True,,
 4441,2027 Western Class Championshps,Western Class Championships,2027.0,1,False,0,,,False,False,,False,,,True,,
-4442,2027 New York State Scholastic Championships Grades K-8,New York State Scholastic Championships Grades K-8,2027.0,11,False,0,,,False,False,,False,,,True,,
+4442,2027 New York State Scholastic Championships Grades K-8,New York State Scholastic Championships Grades K-8,2027.0,12,False,0,,,False,False,,False,,,True,,
 4443,2027 New York State High School Championship,New York State High School Championship,2027.0,3,False,0,,,False,False,,False,,,True,,

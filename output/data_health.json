@@ -1,6 +1,6 @@
 {
   "generated": "2026-11-10",
-  "scanned_at": "2026-11-10T16:17:18",
+  "scanned_at": "2026-11-10T16:58:40",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -24,103 +24,103 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Boston Chess Congress",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Eastern Open",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Golden State Open",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Kings Island Open",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Liberty Bell Open",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "National Chess Congress",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "North American Open",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (joins training after the next all_registrations.csv export)"
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Atlantic City Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "George Washington Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Mid-America Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "New York State High School Championship",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "New York State Scholastic Championships Grades K-8",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "New York State Senior Championship",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Saratoga Tournament Of-The-Ages Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Southern Class Championships",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Southwest Class Championships",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Western Class Championships",
-      "message": "interim estimate \u2014 not in trained roster yet (pending fresh all_registrations.csv export)"
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
       "severity": "INFO",

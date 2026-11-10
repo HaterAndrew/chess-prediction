@@ -69,12 +69,19 @@ export async function handleEntryValue(env: Env, request: Request): Promise<Resp
   if (!env.KV) return reply({ error: "limiter_unavailable" }, 503);
 
   const provided = request.headers.get(VALUE_KEY_HEADER) ?? "";
-  if (!provided || !valueKeys.some(key => timingSafeEqual(provided, key))) {
-    const keys = failKeys(request);
-    const [ipFails, globalFails] = await Promise.all(keys.map((k) => count(env.KV!, k)));
-    if (ipFails >= FAIL_LIMIT_PER_IP || globalFails >= FAIL_LIMIT_GLOBAL) return reply({ error: "too_many_attempts" }, 429);
-    await recordFailure(env.KV, keys);
-    return reply({ error: "wrong_key" }, 401);
+  // An absent key cannot match any configured secret and is not a guess.
+  if (!provided) return reply({ error: "wrong_key" }, 401);
+  if (!valueKeys.some(key => timingSafeEqual(provided, key))) {
+    try {
+      const keys = failKeys(request);
+      const [ipFails, globalFails] = await Promise.all(keys.map((k) => count(env.KV!, k)));
+      if (ipFails >= FAIL_LIMIT_PER_IP || globalFails >= FAIL_LIMIT_GLOBAL) return reply({ error: "too_many_attempts" }, 429);
+      await recordFailure(env.KV, keys);
+      return reply({ error: "wrong_key" }, 401);
+    } catch {
+      console.error(JSON.stringify({ event: "entry_value_failed", reason: "limiter_unavailable" }));
+      return reply({ error: "limiter_unavailable" }, 503);
+    }
   }
 
   try {

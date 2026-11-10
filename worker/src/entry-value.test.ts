@@ -117,6 +117,32 @@ function get(key?: string, ip = "203.0.113.7"): Request {
 }
 
 describe("handleEntryValue", () => {
+  it("rejects an absent key without spending limiter reads or writes", async () => {
+    let reads = 0; let writes = 0;
+    const kv = { get: async () => { reads++; throw new Error("unavailable"); },
+      put: async () => { writes++; throw new Error("unavailable"); } } as unknown as KVNamespace;
+    const response = await handleEntryValue(envWith({ KV: kv }), get());
+    expect(response.status).toBe(401);
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(reads).toBe(0); expect(writes).toBe(0);
+  });
+  it("fails closed when wrong-key limiter reads or either write fail", async () => {
+    for (const failure of ["read", "first_write", "second_write"]) {
+      let writes = 0; let calls = 0;
+      const kv = { get: async () => { if (failure === "read") throw new Error("synthetic-private-failure"); return null; },
+        put: async () => { writes++; if (writes === (failure === "first_write" ? 1 : 2)) throw new Error("synthetic-private-failure"); } } as unknown as KVNamespace;
+      const env = envWith({ KV: kv, ENTRY_VALUE_MODE: "receipts", FINANCE: {
+        receipts: async () => { calls++; return { generated: GENERATED, mode: "receipts", events: [] }; },
+      } as unknown as NonNullable<Env["FINANCE"]> });
+      const response = await handleEntryValue(env, get("wrong"));
+      expect(response.status).toBe(503);
+      expect(response.headers.get("Cache-Control")).toBe("no-store");
+      expect(await response.json()).toEqual({ error: "limiter_unavailable" });
+      expect(calls).toBe(0);
+      expect((await handleEntryValue(env, get("correct horse"))).status).toBe(200);
+      expect(calls).toBe(1);
+    }
+  });
   it("never falls back to fee estimates when receipts mode is unconfigured", async () => {
     const res = await handleEntryValue(envWith({ ENTRY_VALUE_MODE: "receipts" }), get("correct horse"));
     expect(res.status).toBe(503);

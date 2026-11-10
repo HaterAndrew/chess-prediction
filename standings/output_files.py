@@ -5,6 +5,7 @@ import os
 import pandas as pd
 
 from registry.keys import summary_edition_key
+from tournament_aliases import canonicalize_family
 from standings.importer import COLUMNS
 
 STANDINGS_CSV = "historical_standings.csv"
@@ -14,8 +15,16 @@ def spelling_years(output_dir):
     """{family spelling: years} across the summary and the metadata."""
     summary = pd.read_csv(os.path.join(output_dir, "tournament_summary.csv"))
     meta = pd.read_csv(os.path.join(output_dir, "tournament_metadata.csv"))
-    pairs = pd.concat([summary[["family", "tournament_year"]].set_axis(["family", "year"], axis=1),
-                       meta[["family", "year"]]]).dropna()
+    summary_pairs = summary[["family", "tournament_year"]].set_axis(["family", "year"], axis=1).dropna()
+    # Summary owns the model's spelling for an existing edition. A venue alias
+    # in metadata supplies dates, not a competing standings identity.
+    owned = {(canonicalize_family(family), int(year)) for family, year in summary_pairs.itertuples(index=False, name=None)}
+    metadata_pairs = meta[["family", "year"]].dropna()
+    metadata_pairs = metadata_pairs[[
+        (canonicalize_family(family), int(year)) not in owned
+        for family, year in metadata_pairs.itertuples(index=False, name=None)
+    ]]
+    pairs = pd.concat([summary_pairs, metadata_pairs])
     years = {}
     for family, year in zip(pairs["family"], pairs["year"]):
         years.setdefault(family, set()).add(int(year))

@@ -234,3 +234,70 @@ def test_committed_rows_the_rebuild_lacks_are_kept_and_marked():
     editions = [FolderEdition("pittsburgh", 2026, ()), FolderEdition("pittsburgh", 2025, ())]
     assert [e.year for e in _complete(editions, skipped)] == [2025]
     assert skipped and "Under 2100" in skipped[0]
+
+
+@pytest.mark.parametrize("family,venue,slug", [
+    ("Eastern Chess Congress", "Eastern Chess Congress (in New Jersey)", "easternchesscongress"),
+    ("Eastern Class Championships", "Eastern Class Championships (in Connecticut)", "easternclass"),
+])
+def test_summary_owned_spelling_imports_its_metadata_venue_alias(tmp_path, family, venue, slug):
+    import pandas as pd
+    from standings.output_files import spelling_years
+    from scrapers.standings import _editions_to_read
+    from registry.keys import summary_edition_key
+    pd.DataFrame([{"family": family, "tournament_year": 2026}]).to_csv(tmp_path / "tournament_summary.csv", index=False)
+    pd.DataFrame([{"family": venue, "year": 2026}, {"family": "New Open", "year": 2027}]).to_csv(tmp_path / "tournament_metadata.csv", index=False)
+    years = spelling_years(tmp_path)
+    assert years == {family: {2026}, "New Open": {2027}}
+    folders = [Folder(slug, (family,))]
+    owned = folder_spellings(folders, years, canonicalize_family)
+    key = summary_edition_key(venue, 2026)
+    wanted, unmatched = _editions_to_read({key: venue}, owned, years)
+    assert wanted == {(slug, 2026): {key}} and unmatched == []
+    report = build_rows([FolderEdition(slug, 2026, (Section("Open", _players("00000001", "00000002")),))],
+                        folders, owned, years)
+    assert _totals(report) == {(family, 2026): 2}
+    assert not report.notes
+
+
+def test_conflicting_summary_spellings_still_refuse_a_join(tmp_path):
+    import pandas as pd
+    from standings.output_files import spelling_years
+    names = ["Eastern Chess Congress", "Eastern Chess Congress (in New Jersey)"]
+    pd.DataFrame([{"family": name, "tournament_year": 2026}for name in names]).to_csv(tmp_path / "tournament_summary.csv", index=False)
+    pd.DataFrame([{"family": names[0], "year": 2026}]).to_csv(tmp_path / "tournament_metadata.csv", index=False)
+    years = spelling_years(tmp_path)
+    with pytest.raises(SpellingTie):
+        spelling_for(set(years), years, 2026)
+
+
+def test_venue_alias_does_not_choose_between_competing_folders():
+    from scrapers.standings import _slug_of
+    assert _slug_of("Eastern Chess Congress (in Ohio)", {
+        "one": {"Eastern Chess Congress"}, "two": {"Eastern Chess Congress (in New Jersey)"}})is None
+
+
+def test_edition_owner_beats_another_years_exact_folder_spelling(tmp_path):
+    import pandas as pd
+    from standings.output_files import spelling_years
+    from scrapers.standings import _editions_to_read
+    from registry.keys import summary_edition_key
+    pd.DataFrame([{"family": "DC International", "tournament_year": 2026},
+                  {"family": "Philadelphia International", "tournament_year": 2025}]).to_csv(tmp_path / "tournament_summary.csv", index=False)
+    pd.DataFrame([{"family": "Philadelphia International", "year": 2026}]).to_csv(tmp_path / "tournament_metadata.csv", index=False)
+    years = spelling_years(tmp_path)
+    folders = [Folder("dcinternational", ("DC International",)), Folder("international", ("Philadelphia International",))]
+    owned = folder_spellings(folders, years, canonicalize_family)
+    key = summary_edition_key("DC International", 2026)
+    assert key == summary_edition_key("Philadelphia International", 2026)
+    wanted, unmatched = _editions_to_read({key: "Philadelphia International"}, owned, years)
+    assert wanted == {("dcinternational", 2026): {key}} and unmatched == []
+
+
+def test_ambiguous_edition_ownership_stays_unmatched():
+    from scrapers.standings import _editions_to_read
+    key = (canonicalize_family("Eastern Chess Congress"), 2026)
+    names = {"Eastern Chess Congress", "Eastern Chess Congress (in New Jersey)"}
+    wanted, unmatched = _editions_to_read({key: "Eastern Chess Congress"},
+                                         {"eastern": names}, {name: {2026} for name in names})
+    assert wanted == {} and unmatched == ["Eastern Chess Congress 2026"]

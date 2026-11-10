@@ -1,3 +1,4 @@
+import { collectRegistrations } from "../src/finance/registration-collect";
 import { collectBatch } from "../src/finance/collect";
 import { ChessActionClient } from "../src/finance/client";
 import { refreshSession } from "../src/finance/session";
@@ -12,7 +13,7 @@ export async function quotaDays(slots: DailySlot[], invoice: (event: string) => 
   const realNow = Date.now;
   let tick = Date.parse("2026-11-09T00:00:00Z");
   let writes = 0;
-  const kv = { get: async (key: string) => store.get(key) ?? null,
+  const kv = { get: async (key: string | string[]) => Array.isArray(key) ? new Map(key.map(k => [k, store.get(k) ?? null])) : store.get(key) ?? null,
     put: async (key: string, value: string) => { writes++; store.set(key, value); } } as unknown as KVNamespace;
   const cards: ReceiptCard[] = Array.from({ length: 36 }, (_, i) => ({ family: `Quota ${i} Open`, year: 2026,
     status: "live", current_count: 32, point_estimate: 40, regular_fee: 10, event_start: "2026-11-14" }));
@@ -23,8 +24,16 @@ export async function quotaDays(slots: DailySlot[], invoice: (event: string) => 
     const use = () => { if (--remaining < 0) throw new Error("source_request_limit"); };
     Object.defineProperty(source, "remainingRequests", { get: () => Math.max(0, remaining) });
     source.resume = async () => { use(); return options; };
-    source.request = async () => {
+    source.request = async (path, fields) => {
       use();
+      if (path === "ajaxRegistrationDataTable.php") {
+        const rows = fields!.status === "active" ? Array.from({ length: 32 }, (_, i) => ({
+          tourid: fields!.tournment, eventId: String(i + 1),
+          createdAt: '<span title="2026-11-01 12:00:00 UTC">2026-11-01 12:00:00<br />(GMT+00:00)</span>',
+        })) : [];
+        return JSON.stringify({ iTotalRecords: rows.length, iTotalDisplayRecords: rows.length,
+          aaData: rows.slice(0, Number(fields!.length)) });
+      }
       return `<table><thead><tr><th>Tournament fees ($) [Cart Discounts deducted]</th><th>Primary membership fees ($)</th><th>PayPal/Credit Card Fee Contributions ($)</th><th>Other fees ($)</th><th>Refunded ($)</th><th>Gross Revenue ($)</th></tr></thead><tbody><tr><td>320.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>320.00</td></tr></tbody></table>`;
     };
     source.playerRows = async id => {
@@ -42,7 +51,7 @@ export async function quotaDays(slots: DailySlot[], invoice: (event: string) => 
     Date.now = () => tick;
     for (let day = 0; day < 2; day++) {
       const initial = writes;
-      let maximumBatch = 0; let maximumHeartbeat = 0; let completed = 0;
+      let maximumBatch = 0; let maximumHeartbeat = 0; let completed = 0; let trainingCompleted = 0; let trainingSlots = 0; let moneySlots = 0;
       for (const slot of slots) {
         tick = Date.parse("2026-11-09T00:00:00Z") + day * 86_400_000 + slot.minute * 60_000;
         const before = writes;
@@ -50,14 +59,21 @@ export async function quotaDays(slots: DailySlot[], invoice: (event: string) => 
           const health = new ChessActionClient(); health.resume = async () => options;
           await refreshSession({ FINANCE_KV: kv, CHESS_ACTION_COOKIE: "session=synthetic" }, tick, health);
           maximumHeartbeat = Math.max(maximumHeartbeat, writes - before);
+        } else if (slot.minute % 60 === 40) {
+          trainingSlots++;
+          const result = await collectRegistrations({ FINANCE_KV: kv, CHESS_ACTION_COOKIE: "session=synthetic" }, cards, tick, client());
+          trainingCompleted += result.collected;
+          maximumBatch = Math.max(maximumBatch, writes - before);
         } else {
+          moneySlots++;
           const result = await collectBatch({ FINANCE_KV: kv, CHESS_ACTION_COOKIE: "session=synthetic" }, cards, tick, client());
           completed += result.collected;
           maximumBatch = Math.max(maximumBatch, writes - before);
         }
       }
       const snapshots = [...store.entries()].filter(([key]) => key.startsWith("receipts:")).map(([, raw]) => JSON.parse(raw));
-      days.push({ writes: writes - initial, maximumBatch, maximumHeartbeat, completed,
+      days.push({ writes: writes - initial, maximumBatch, maximumHeartbeat, completed, trainingCompleted, trainingSlots, moneySlots,
+        trainingSnapshots: [...store.keys()].filter(key => key.startsWith("registrations:")).length,
         snapshots: snapshots.length, conserved: snapshots.every(value => value.summary.net_cents === 32000),
         checkpointWritesArePerEvent: [...store.keys()].filter(key => key.startsWith("order_checkpoint:")).length === 36 });
     }

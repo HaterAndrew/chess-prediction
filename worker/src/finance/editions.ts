@@ -10,7 +10,7 @@ export function normalizeFamily(name: string): string {
   return (entry?.[1] ?? stripped).replaceAll(",", "").replace(/\s+/g, " ").toLowerCase();
 }
 
-export function matchTournament(card: ReceiptCard, options: Array<{ id: string; title: string }>): string {
+export function matchTournament(card: Pick<ReceiptCard, "family" | "year">, options: Array<{ id: string; title: string }>): string {
   if (card.year < 2023 && /world open.*(?:top 6|lower sections)/i.test(card.family)) throw new Error("incompatible_edition");
   const matches = options.filter(option => {
     const parts = /^(\d{4})\s+(.+)$/.exec(option.title.trim());

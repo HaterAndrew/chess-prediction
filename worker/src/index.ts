@@ -10,6 +10,8 @@ import { checkDailyBudget, checkGlobalRateLimit, checkRateLimit, pricingFor, rec
 import { proxyCcaEntryList, proxyCcaTourList } from "./cca-proxy";
 import { handleEntryValue, PRICE_PATH, priceRedirect } from "./value-route";
 
+import { handleRegistrationFeed } from "./registration-feed";
+
 export type { Env };
 
 export default {
@@ -22,6 +24,7 @@ export default {
     if (url.pathname === "/health") {
       return jsonResponse({ ok: true, model: env.MODEL, file_id: cachedFileId() }, { status: 200 }, env, request);
     }
+    if (url.pathname === "/registration-feed") return handleRegistrationFeed(env, request);
     if (url.pathname === "/cca-tourlist") {
       return proxyCcaTourList(env, request);
     }

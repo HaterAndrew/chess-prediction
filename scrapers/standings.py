@@ -45,14 +45,20 @@ def _slug_of(family, spellings):
     if canonicalize_family(family) in {canonicalize_family(TOP6), canonicalize_family(LOWER)}:
         return WORLD_OPEN
     slugs = sorted(slug for slug, owned in spellings.items() if family in owned)
+    if not slugs:
+        canonical = canonicalize_family(family)
+        slugs = sorted(slug for slug, owned in spellings.items()
+                       if any(canonicalize_family(name) == canonical for name in owned))
     return slugs[0] if len(slugs) == 1 else None
 
 
-def _editions_to_read(due, spellings):
+def _editions_to_read(due, spellings, years):
     """{(slug, year): edition keys}, and the due families with no event."""
     wanted, unmatched = {}, []
     for key, family in sorted(due.items()):
-        slug = _slug_of(family, spellings)
+        owners = [name for name, editions in years.items()
+                  if key[1] in editions and canonicalize_family(name) == key[0]]
+        slug = _slug_of(owners[0], spellings) if len(owners) == 1 else None
         if slug is None:
             unmatched.append(f"{family} {key[1]}")
         else:
@@ -96,7 +102,7 @@ def scrape_all(output_dir=OUTPUT_DIR, today=None):
     folders = [Folder(slug, (name, legacy_standings_name(slug))) for slug, name in events.items()]
     years = spelling_years(output_dir)
     spellings = folder_spellings(folders, years, canonicalize_family)
-    wanted, unmatched = _editions_to_read(due, spellings)
+    wanted, unmatched = _editions_to_read(due, spellings, years)
     if unmatched:
         print(f"{len(unmatched)} ended edition(s) have no chessevents event: {'; '.join(unmatched)}")
     added = []

@@ -6,6 +6,9 @@ import { receiptValues } from "./store";
 import type { ReceiptCard } from "./types";
 import { isSessionHeartbeat, refreshSession } from "./session";
 import { ChessActionClient } from "./client";
+import { collectRegistrations, isRegistrationTick } from "./registration-collect";
+import type { RegistrationCard } from "./registrations";
+import { registrationFeedRecords } from "./registration-store";
 import { FinanceWriteBudget } from "./write-budget";
 
 export interface FinanceRequest {
@@ -17,6 +20,13 @@ export interface FinanceRequest {
 // RPC is available to configured service bindings, never HTTP callers.
 export class ReceiptService extends WorkerEntrypoint<FinanceEnv> {
   async fetch(): Promise<Response> { return new Response(null, { status: 404 }); }
+
+  async registrations(cards: RegistrationCard[]) {
+    if (!Array.isArray(cards) || cards.length > 2000 || JSON.stringify(cards).length > 1_000_000) throw new Error("invalid_request");
+    return { version: 1 as const, generated: new Date().toISOString(), records: (await registrationFeedRecords(this.env.FINANCE_KV, cards)).map(r => ({
+      family: r.family, year: r.year, attempted_at: r.attempted_at, ok: r.ok, reason: r.reason, data: r.data,
+    })) };
+  }
 
   async receipts(body: FinanceRequest) {
     if (!body || !Array.isArray(body.tournaments) || body.tournaments.length > 2000
@@ -37,6 +47,7 @@ export default {
       if (!status.ok) throw new Error("finance_session_refresh_failed");
       return;
     }
+    const training = isRegistrationTick(_controller.scheduledTime);
     const writes = new FinanceWriteBudget(env.FINANCE_KV);
     try {
       const response = await fetch("https://chessentries.com/data/website_data.json", {
@@ -45,12 +56,14 @@ export default {
       if (!response.ok) throw new Error("forecast_source_unavailable");
       const data = JSON.parse(await boundedText(response)) as FinanceRequest;
       if (data.is_stale || !Array.isArray(data.tournaments) || data.tournaments.length > 2000) throw new Error("forecast_source_unavailable");
-      const result = await collectBatch(env, data.tournaments, Date.now(), new ChessActionClient(), writes);
-      console.log(JSON.stringify({ event: "finance_collection", ...result }));
+      const result = training
+        ? await collectRegistrations(env, data.tournaments, Date.now(), new ChessActionClient(), writes)
+        : await collectBatch(env, data.tournaments, Date.now(), new ChessActionClient(), writes);
+      console.log(JSON.stringify({ event: training ? "registration_collection" : "finance_collection", ...result }));
     } catch {
-      await writes.kv.put("collector:status", JSON.stringify({ attempted_at: new Date().toISOString(), ok: false, reason: "collection_failed" }));
-      console.error(JSON.stringify({ event: "finance_collection_failed" }));
-      throw new Error("finance_collection_failed");
+      await writes.kv.put(training ? "registration_collector:status" : "collector:status", JSON.stringify({ attempted_at: new Date().toISOString(), ok: false, reason: "collection_failed" }));
+      console.error(JSON.stringify({ event: training ? "registration_collection_failed" : "finance_collection_failed" }));
+      throw new Error(training ? "registration_collection_failed" : "finance_collection_failed");
     }
   },
 };

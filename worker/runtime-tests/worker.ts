@@ -1,4 +1,5 @@
 // Local runtime harness only; neither production configuration references it.
+import { registrationRuntime } from "./registration";
 import { ChessActionClient } from "../src/finance/client";
 import { parseSummary, tournamentOptions } from "../src/finance/html";
 import financeWorker from "../src/finance/collector";
@@ -13,6 +14,8 @@ const syntheticInvoice = (event: string) => `<html><head></head><body><div id="i
 
 export default {
   async fetch(request: Request): Promise<Response> {
+    const registration = await registrationRuntime(request);
+    if (registration) return registration;
     if (new URL(request.url).pathname === "/quota-days") {
       return Response.json(await quotaDays(await request.json() as DailySlot[], syntheticInvoice));
     }

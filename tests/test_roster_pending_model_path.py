@@ -96,6 +96,11 @@ def test_step_data_prep_runs_reconcile_after_rebuild(monkeypatch, tmp_path):
         lambda *a, **kw: calls.append(("reconcile", a)),
     )
     monkeypatch.setattr(pipeline.warns, "_PIPELINE_WARNINGS", [])
+    # This test owns the legacy export path; do not inherit a collected
+    # corpus from the repository's generated output.
+    import pipeline.config
+    monkeypatch.setattr(pipeline.config, "OUTPUT_DIR", str(tmp_path))
+    pd.DataFrame({"tid": [1]}).to_csv(tmp_path / "tournament_summary.csv", index=False)
 
     auto_update.step_data_prep()
 

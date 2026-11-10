@@ -88,6 +88,7 @@ def test_append_refuses_a_file_under_another_header(tmp_path):
 
 
 def test_step_records_tonights_live_cards(tmp_path, monkeypatch):
+    monkeypatch.delenv('GITHUB_ACTIONS', raising=False)
     website = tmp_path / "website_data.json"
     website.write_text(json.dumps(_website(_card(), _card(family="B", status="complete"))))
     monkeypatch.setattr(config, "WEBSITE_JSON", str(website))
@@ -117,16 +118,21 @@ def test_run_origin_is_nightly_only_on_github_actions():
     assert ledger.run_origin({}) == "local"
 
 
-def test_step_records_ci_runs_as_published(tmp_path, monkeypatch):
+def test_step_stages_ci_runs_until_publication(tmp_path, monkeypatch):
     website = tmp_path / "website_data.json"
     website.write_text(json.dumps(_website(_card())))
     monkeypatch.setattr(config, "WEBSITE_JSON", str(website))
     monkeypatch.setattr(config, "FORECAST_LEDGER", str(tmp_path / "forecast_ledger.csv"))
     monkeypatch.setenv("GITHUB_ACTIONS", "true")
+    monkeypatch.setattr(config, "SITE_DATA_JSON", str(website))
+    before = b'old ledger bytes'
+    (tmp_path / 'forecast_ledger.csv').write_bytes(before)
     ledger.step_record_forecasts()
-    with open(tmp_path / "forecast_ledger.csv", newline="") as fh:
-        row = next(csv.DictReader(fh))
-    assert (row["origin"], row["published"]) == ("nightly", "1")
+    candidate = json.loads((tmp_path / 'forecast_candidate.json').read_bytes())
+    row = candidate['rows'][0]
+    assert (row['origin'], row['published']) == ('nightly', 1)
+    assert (tmp_path / 'forecast_ledger.csv').read_bytes() == before
+
 
 
 def test_no_ledger_flag_skips_recording():

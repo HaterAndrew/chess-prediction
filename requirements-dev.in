@@ -13,4 +13,4 @@ PyYAML==6.0.3
 # Native security gate for all three locked dependency sets.
 pip-audit==2.10.1
 # GitHub Actions security checks.
-zizmor==1.31.1
+zizmor==1.32.0

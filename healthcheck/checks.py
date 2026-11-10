@@ -209,6 +209,10 @@ def scan(data, ctx):
             report.add("MEDIUM", "sparse-history-hidden", fam,
                        f"n_historical_editions={nhe} but low_confidence=False")
 
+        if pe is None and t.get("prediction_source") == "insufficient_history":
+            report.add("INFO", "forecast-unavailable", fam,
+                       "No completed editions on record; observed counts remain available")
+
         # Mode 4a/5c: pure no-history default guess.
         if pe == 100 and lo == 70 and hi == 130 and not hc:
             report.add("MEDIUM", "no-history-default", fam,

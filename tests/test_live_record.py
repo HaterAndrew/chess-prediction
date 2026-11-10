@@ -67,3 +67,18 @@ def test_scores_split_by_route_and_version_and_bad_ranges_are_counted():
 def test_no_published_forecast_gives_an_empty_block():
     block = summarize_live([], '2026-06-16', '2026-06-27')
     assert block['n_records'] == 0 and 'pooled' not in block
+
+
+def test_unavailable_latest_run_blocks_same_day_and_earlier_day_forecasts():
+    unavailable = {**_row('2026-06-16', 950, '2026-06-16 18:00:00'),
+                   'point': None, 'ci_lower': None, 'ci_upper': None,
+                   'route': 'insufficient_history'}
+    assert _match([_row('2026-06-15', 900),
+                   _row('2026-06-16', 950, '2026-06-16 01:00:00'), unavailable]) == []
+
+
+def test_unavailable_latest_day_is_not_replaced_by_an_earlier_day():
+    unavailable = {**_row('2026-06-16', 950),
+                   'point': None, 'ci_lower': None, 'ci_upper': None,
+                   'route': 'insufficient_history'}
+    assert _match([_row('2026-06-15', 900), unavailable]) == []

@@ -139,7 +139,7 @@ def finalize_cards(completed_tids, prod_model, tournaments_out):
                       f"or had no ratios. Family coverage is degraded.")
     for t in tournaments_out:
         ci = f"[{t['ci_lower']}, {t['ci_upper']}]"
-        print(f"  {t['status']:12s} {t['family']:45s}  yr={t['year']}  count={t['current_count']:>5}  pred={t['point_estimate']:>5}  CI={ci:>15}  days={t['days_remaining']:>3}")
+        print(f"  {t['status']:12s} {t['family']:45s}  yr={t['year']}  count={t['current_count']:>5}  pred={str(t['point_estimate']) if t['point_estimate'] is not None else '—':>5}  CI={ci:>15}  days={t['days_remaining']:>3}")
 
     # Save
     out_path = os.path.join(OUTPUT_DIR, "website_data.json")

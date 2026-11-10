@@ -160,12 +160,16 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
         # candidate (summary uses 01_data_prep's canonical form, which can differ
         # from the FAMILY_GROUPS head, e.g. "World Open Under 13").
         curve = fitted.curve_for(mfamily)
-        forecast = forecast_event(
-            Event(mfamily, in_roster=False, canonical=canon_family,
-                  names=tuple(hist_families)),
-            Observation(current_count, days_to_start), fitted, hist_counts)
-        point_estimate, ci_lo, ci_hi = forecast.point, forecast.low, forecast.high
-        prediction_source = forecast.route
+        if hist_counts:
+            forecast = forecast_event(
+                Event(mfamily, in_roster=False, canonical=canon_family,
+                      names=tuple(hist_families)),
+                Observation(current_count, days_to_start), fitted, hist_counts)
+            point_estimate, ci_lo, ci_hi = forecast.point, forecast.low, forecast.high
+            prediction_source = forecast.route
+        else:
+            point_estimate = ci_lo = ci_hi = None
+            prediction_source = "insufficient_history"
         reg_curve = []
         for db in [120, 90, 75, 60, 42, 28, 21, 14, 7, 3, 1, 0]:
             pct = curve.get(db, 0)

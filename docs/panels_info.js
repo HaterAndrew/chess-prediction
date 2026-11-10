@@ -129,8 +129,8 @@ function renderProgress(t) {
   }
   const elapsed = Math.max(0, totalDays - t.days_remaining);
   const timePct = Math.min(100, (elapsed / totalDays * 100)).toFixed(0);
-  const regPct = Math.min(100, (t.current_count / t.point_estimate * 100)).toFixed(0);
-  cur.innerHTML = _foldHTML(regPct, 'forecast');
+  const regPct = hasForecast(t) && t.point_estimate > 0 ? Math.min(100, (t.current_count / t.point_estimate * 100)).toFixed(0) : null;
+  cur.innerHTML = regPct !== null ? _foldHTML(regPct, 'forecast') : '';
   days.innerHTML = _foldHTML(timePct, 'registration window');
 }
 
@@ -179,7 +179,7 @@ function _milestoneStops(t) {
 function renderMilestones(t) {
   const el = document.getElementById('milestoneStrip');
   if (!el) return;
-  if (isDone(t) || !t.event_start || _eventStarted(t)) { el.innerHTML = ''; return; }
+  if (isDone(t) || !hasForecast(t) || !t.event_start || _eventStarted(t)) { el.innerHTML = ''; return; }
   const stops = _milestoneStops(t);
   el.innerHTML = `<div class="ms-strip" role="list" aria-label="Milestones" style="--stops:${stops.length}">
     <div class="ms-line" aria-hidden="true"></div>` +

@@ -37,6 +37,7 @@ Key fields on each tournament record:
 - \`family\`, \`year\`, \`event_start\`, \`event_end\`
 - Lifecycle \`status\`: live = currently registering, complete = event ended with final count, historical = past event from prior years
 - \`current_count\` and \`gross_count\` both count gross entries: active plus withdrawn, excluding deleted or rejected registrations. \`withdrawal_count\` is already included; NEVER add it again. Active entries = gross_count minus withdrawal_count.
+- A null \`point_estimate\` means the forecast is unavailable. Report the observed count and do not invent a forecast or interpret null as zero.
 - \`point_estimate\` = forecast final entries; \`ci_lower\` / \`ci_upper\` = 80% CI
 - \`days_remaining\` = days until event_start
 - \`early_bird_fee\`, \`regular_fee\`, \`onsite_fee\`, \`early_bird_deadline\`

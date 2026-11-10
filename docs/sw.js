@@ -43,7 +43,7 @@ const OFFLINE_FALLBACKS = [
   'boot.js?v=cc39f2ee1b',
   'vendor/chart.umd.min.js?v=48444a82d4',
   'vendor/chartjs-adapter-date-fns.bundle.min.js?v=ea7ab30d26',
-  'site.js?v=a65536dbb4',
+  'site.js?v=2d47f27cb1',
   'manifest.json',
   'icons/icon-192.png'
 ];

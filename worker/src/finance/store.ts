@@ -68,6 +68,11 @@ export async function receiptValues(kv: KVNamespace, cards: ReceiptCard[], now =
     let snapshot: StoredReceipt | null = null;
     try {
     snapshot = await readSnapshot(kv, card.family, card.year);
+    // A withdrawn attendance forecast retires its cached money projection.
+    // Preserve recorded receipts, but do not revive an unsupported estimate.
+    if (!Number.isInteger(card.point_estimate) || card.point_estimate! < 0) {
+      return receiptForecast(card, snapshot, [], now);
+    }
     const history = await readCalibration(kv, card.family);
     let value = await receiptForecast(card, snapshot, history, now);
     const eventStatusRaw = await kv.get(`event_status:${encodeURIComponent(card.family)}:${card.year}`);

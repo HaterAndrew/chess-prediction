@@ -387,3 +387,42 @@ def test_worker_and_python_failure_reason_contracts_stay_in_sync():
         x = feed(snapshot())
         x["records"][0].update(ok=False, reason=reason)
         assert validate_feed(x, NOW)[0]["reason"] == reason
+
+
+def test_source_identity_survives_reconcile_and_repairs_legacy_float_encoding(tmp_path):
+    from reconcile_final_counts import reconcile_final_counts
+
+    inputs(tmp_path)
+    merge_feed(tmp_path, feed(snapshot()), NOW)
+    path = tmp_path / 'tournament_summary.csv'
+    pd.DataFrame([{'tournament_name': '2026 Example Open', 'entry_count': 7}]).to_csv(
+        tmp_path / 'daily_scrape.csv', index=False)
+    reconcile_final_counts(tmp_path, verbose=False)
+    summary = pd.read_csv(path, dtype={'registration_source_tournament_id': 'string'})
+    assert summary.loc[summary.family == 'Example Open', 'registration_source_tournament_id'].iloc[0] == '123'
+    # Reproduce the already-published numeric CSV round trip before the fix.
+    pd.read_csv(path).to_csv(path, index=False)
+    assert '123.0' in path.read_text()
+    assert merge_feed(tmp_path, feed(snapshot()), NOW)['imported'] == 0
+    pd.DataFrame([{'tournament_name': '2026 Example Open', 'entry_count': 8}]).to_csv(
+        tmp_path / 'daily_scrape.csv', index=False)
+    reconcile_final_counts(tmp_path, verbose=False)
+    summary = pd.read_csv(path, dtype={'registration_source_tournament_id': 'string'})
+    assert summary.loc[summary.family == 'Example Open', 'registration_source_tournament_id'].iloc[0] == '123.0'
+    assert merge_feed(tmp_path, feed(snapshot()), NOW)['imported'] == 0
+    changed = snapshot(tid='124')
+    changed['source_as_of'] = '2026-11-10T11:30:00.000Z'
+    with pytest.raises(FeedError):
+        merge_feed(tmp_path, feed(changed), NOW)
+
+
+@pytest.mark.parametrize('stored', ['123.5', '1.23e2', '123x', '0123.0'])
+def test_legacy_identity_repair_is_narrow(tmp_path, stored):
+    inputs(tmp_path)
+    merge_feed(tmp_path, feed(snapshot()), NOW)
+    path = tmp_path / 'tournament_summary.csv'
+    summary = pd.read_csv(path, dtype={'registration_source_tournament_id': 'string'})
+    summary.loc[summary.family == 'Example Open', 'registration_source_tournament_id'] = stored
+    summary.to_csv(path, index=False)
+    with pytest.raises(FeedError):
+        merge_feed(tmp_path, feed(snapshot()), NOW)

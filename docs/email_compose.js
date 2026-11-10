@@ -24,6 +24,7 @@ function emailFormatTournament(t, len) {
   const avg = emailHistAvg(t);
   const pace = t.prior_year_pace;
   const name = t.family.toUpperCase();
+  if (!hasForecast(t)) return `${name}:  We are at ${t.current_count} entries. Forecast unavailable: no completed editions on record.`;
   const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
   const parts = [];
 
@@ -110,10 +111,11 @@ function emailFormatTournament(t, len) {
 }
 
 function emailOverallTheme(selected) {
+  if (selected.length && selected.every(t => !hasForecast(t))) return 'Forecasts unavailable for the selected events.';
   let ahead = 0, behind = 0;
   selected.forEach(t => {
     const ly = emailLastYear(t);
-    if (!ly) return;
+    if (!ly || !hasForecast(t)) return;
     const pct = (t.point_estimate - ly.count) / ly.count;
     if (pct > 0.05) ahead++;
     else if (pct < -0.05) behind++;
@@ -131,7 +133,7 @@ function emailComputeHighlights(selected) {
   const h = { biggestUp: null, biggestDown: null, fastestPace: null, behindPace: [] };
   selected.forEach(t => {
     const ly = emailLastYear(t);
-    if (ly && ly.count > 0 && t.point_estimate) {
+    if (ly && ly.count > 0 && hasForecast(t)) {
       const pct = (t.point_estimate - ly.count) / ly.count;
       if (!h.biggestUp || pct > h.biggestUp.pct) h.biggestUp = { t, pct };
       if (!h.biggestDown || pct < h.biggestDown.pct) h.biggestDown = { t, pct };
@@ -198,6 +200,7 @@ function emailHTMLTournament(t, len) {
   const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
   const parts = [];
   const name = esc(t.family);
+  if (!hasForecast(t)) return `<h3>${name}</h3><p>We are at ${esc(fmt(t.current_count))} entries. Forecast unavailable: no completed editions on record.</p>`;
   const B = v => `<strong style="color:${EM.text}">${esc(String(v))}</strong>`;
   const colorFor = pct => pct > 0 ? EM.green : pct < 0 ? EM.red : EM.text;
 

@@ -36,6 +36,7 @@ function fmt(n) {
   const [whole, frac] = String(Math.abs(n)).split('.');
   return neg + whole.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (frac ? '.' + frac : '');
 }
+function hasForecast(t) { return Number.isFinite(t.point_estimate); }
 function isDone(t) { return t.status === 'complete' || t.status === 'historical'; }
 
 // An "early bird" only exists when there's an actual price hike BETWEEN an
@@ -165,6 +166,7 @@ function assessDataFreshness(data, now) {
 if (typeof globalThis !== 'undefined') {
   globalThis.fmt = fmt;
   globalThis.isDone = isDone;
+  globalThis.hasForecast = hasForecast;
   globalThis.EARLY_BIRD_MIN_GAP_DAYS = EARLY_BIRD_MIN_GAP_DAYS;
   globalThis.hasValidEarlyBird = hasValidEarlyBird;
   globalThis.fmtDate = fmtDate;
@@ -180,7 +182,7 @@ if (typeof globalThis !== 'undefined') {
 }
 if (typeof module !== 'undefined') {
   module.exports = {
-    fmt, isDone, EARLY_BIRD_MIN_GAP_DAYS, hasValidEarlyBird,
+    fmt, isDone, hasForecast, EARLY_BIRD_MIN_GAP_DAYS, hasValidEarlyBird,
     fmtDate, fmtDateLong, fmtDateTimeLong, addDays, daysBetween,
     countsThrough, interpCurve, getPaceAlert,
     STALE_AFTER_HOURS, assessDataFreshness,

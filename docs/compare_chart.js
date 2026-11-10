@@ -89,6 +89,7 @@ function _compareLabel(selected) {
   const anyLive = selected.some(s => s.t.status === 'live');
   const parts = selected.map(({ t }) => t.status === 'live' && t.point_estimate > 0
     ? `${t.family} ${t.year} at ${Math.round(t.current_count / t.point_estimate * 100)}% of its forecast with ${t.days_remaining} days to go`
+    : t.status === 'live' ? `${t.family} ${t.year} has ${fmt(t.current_count)} registered; ${hasForecast(t) ? 'forecast ' + fmt(t.point_estimate) : 'forecast unavailable'}`
     : `${t.family} ${t.year} finished with ${fmt(t.current_count)} entries`);
   return `Registrations by days before each event as a share of the final${anyLive ? ' (the forecast, for a live event)' : ''}: ${parts.join('; ')}.`;
 }
@@ -102,7 +103,11 @@ function renderCompareChart(selected) {
   const picked = new Set(selected.map(s => `${s.t.family}|${s.t.year}`));
   const datasets = selected.flatMap((s, ci) => _compareDatasets(s.t, ci, picked));
   if (!datasets.length) {
-    const message = 'No registration data for these picks.';
+    const message = selected.every(s => s.t.status === 'live' && !hasForecast(s.t))
+      ? 'Forecasts unavailable for these picks; registered counts are shown above.'
+      : selected.some(s => s.t.status === 'live' && s.t.point_estimate === 0)
+      ? 'Percentage comparison unavailable for a zero forecast; counts are shown above.'
+      : 'No registration data for these picks.';
     const note = document.createElement('div');
     note.className = 'chart-tile-empty';
     note.textContent = message;

@@ -1,0 +1,571 @@
+{
+  "schema_version": 1,
+  "archived_on": "2026-11-10",
+  "source_commit": "3067563d23987a55c577254dcc6d68238c598478",
+  "source_ledger_sha256": {
+    "forecast_ledger.csv": "f11dba1f1b80c31a34efd236ee586524bf4c6334d99c87659586f236e9f7e35f",
+    "forecast_ledger_backfill.csv": "326b33f00d74c85640795de37a1f5a6c214ad8c316e9b50a231410f11f52651b"
+  },
+  "results": {
+    "frozen_on": "2026-09-27",
+    "model_hash": "e0e6631e4c8e940d",
+    "model_hashes": [
+      "598f8e1fe4fd334a",
+      "e0e6631e4c8e940d",
+      "e2b539beaa9c6f75"
+    ],
+    "protocol": {
+      "source": "forecast ledger and its backfill",
+      "match_days": 3,
+      "first_date": "2026-03-23",
+      "last_date": "2026-11-10"
+    },
+    "n_records": 16,
+    "n_invalid_ranges": 0,
+    "n_events": 4,
+    "pooled": {
+      "28": {
+        "n": 1,
+        "n_events": 1,
+        "mae_pct": 22.22,
+        "median_error_pct": 22.22,
+        "median_error_ci": [
+          22.22,
+          22.22
+        ],
+        "coverage": 0.0,
+        "coverage_ci": [
+          0.0,
+          79.3
+        ],
+        "below_pct": 100.0,
+        "above_pct": 0.0,
+        "ale": {
+          "mean": 0.2007,
+          "se": null
+        },
+        "lis": {
+          "mean": 1.3125,
+          "se": null
+        },
+        "baselines": {}
+      },
+      "14": {
+        "n": 3,
+        "n_events": 3,
+        "mae_pct": 5.75,
+        "median_error_pct": 1.94,
+        "median_error_ci": [
+          -2.24,
+          13.07
+        ],
+        "coverage": 66.7,
+        "coverage_ci": [
+          20.8,
+          93.9
+        ],
+        "below_pct": 33.3,
+        "above_pct": 0.0,
+        "ale": {
+          "mean": 0.0549,
+          "se": 0.0278
+        },
+        "lis": {
+          "mean": 0.3204,
+          "se": 0.1075
+        },
+        "baselines": {}
+      },
+      "7": {
+        "n": 4,
+        "n_events": 4,
+        "mae_pct": 6.37,
+        "median_error_pct": 7.55,
+        "median_error_ci": [
+          0.22,
+          10.13
+        ],
+        "coverage": 100.0,
+        "coverage_ci": [
+          51.0,
+          100.0
+        ],
+        "below_pct": 0.0,
+        "above_pct": 0.0,
+        "ale": {
+          "mean": 0.0611,
+          "se": 0.0181
+        },
+        "lis": {
+          "mean": 0.2078,
+          "se": 0.0068
+        },
+        "baselines": {}
+      },
+      "3": {
+        "n": 4,
+        "n_events": 4,
+        "mae_pct": 6.08,
+        "median_error_pct": 6.44,
+        "median_error_ci": [
+          0.67,
+          10.68
+        ],
+        "coverage": 100.0,
+        "coverage_ci": [
+          51.0,
+          100.0
+        ],
+        "below_pct": 0.0,
+        "above_pct": 0.0,
+        "ale": {
+          "mean": 0.0582,
+          "se": 0.02
+        },
+        "lis": {
+          "mean": 0.2732,
+          "se": 0.0038
+        },
+        "baselines": {}
+      },
+      "1": {
+        "n": 4,
+        "n_events": 4,
+        "mae_pct": 6.79,
+        "median_error_pct": 3.79,
+        "median_error_ci": [
+          1.12,
+          18.45
+        ],
+        "coverage": 75.0,
+        "coverage_ci": [
+          30.1,
+          95.4
+        ],
+        "below_pct": 25.0,
+        "above_pct": 0.0,
+        "ale": {
+          "mean": 0.0637,
+          "se": 0.0311
+        },
+        "lis": {
+          "mean": 0.3686,
+          "se": 0.1751
+        },
+        "baselines": {}
+      }
+    },
+    "by_route": {
+      "model": {
+        "28": {
+          "n": 1,
+          "n_events": 1,
+          "mae_pct": 22.22,
+          "median_error_pct": 22.22,
+          "median_error_ci": [
+            22.22,
+            22.22
+          ],
+          "coverage": 0.0,
+          "coverage_ci": [
+            0.0,
+            79.3
+          ],
+          "below_pct": 100.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.2007,
+            "se": null
+          },
+          "lis": {
+            "mean": 1.3125,
+            "se": null
+          },
+          "baselines": {}
+        },
+        "14": {
+          "n": 3,
+          "n_events": 3,
+          "mae_pct": 5.75,
+          "median_error_pct": 1.94,
+          "median_error_ci": [
+            -2.24,
+            13.07
+          ],
+          "coverage": 66.7,
+          "coverage_ci": [
+            20.8,
+            93.9
+          ],
+          "below_pct": 33.3,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.0549,
+            "se": 0.0278
+          },
+          "lis": {
+            "mean": 0.3204,
+            "se": 0.1075
+          },
+          "baselines": {}
+        },
+        "7": {
+          "n": 4,
+          "n_events": 4,
+          "mae_pct": 6.37,
+          "median_error_pct": 7.55,
+          "median_error_ci": [
+            0.22,
+            10.13
+          ],
+          "coverage": 100.0,
+          "coverage_ci": [
+            51.0,
+            100.0
+          ],
+          "below_pct": 0.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.0611,
+            "se": 0.0181
+          },
+          "lis": {
+            "mean": 0.2078,
+            "se": 0.0068
+          },
+          "baselines": {}
+        },
+        "3": {
+          "n": 4,
+          "n_events": 4,
+          "mae_pct": 6.08,
+          "median_error_pct": 6.44,
+          "median_error_ci": [
+            0.67,
+            10.68
+          ],
+          "coverage": 100.0,
+          "coverage_ci": [
+            51.0,
+            100.0
+          ],
+          "below_pct": 0.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.0582,
+            "se": 0.02
+          },
+          "lis": {
+            "mean": 0.2732,
+            "se": 0.0038
+          },
+          "baselines": {}
+        },
+        "1": {
+          "n": 4,
+          "n_events": 4,
+          "mae_pct": 6.79,
+          "median_error_pct": 3.79,
+          "median_error_ci": [
+            1.12,
+            18.45
+          ],
+          "coverage": 75.0,
+          "coverage_ci": [
+            30.1,
+            95.4
+          ],
+          "below_pct": 25.0,
+          "above_pct": 0.0,
+          "ale": {
+            "mean": 0.0637,
+            "se": 0.0311
+          },
+          "lis": {
+            "mean": 0.3686,
+            "se": 0.1751
+          },
+          "baselines": {}
+        }
+      }
+    },
+    "eras": [
+      {
+        "model_hash": "e0e6631e4c8e940d",
+        "first": "2026-10-02",
+        "last": "2026-10-30",
+        "n": 14,
+        "n_events": 4,
+        "mae_pct": 7.87,
+        "coverage": 78.6
+      },
+      {
+        "model_hash": "598f8e1fe4fd334a",
+        "first": "2026-11-03",
+        "last": "2026-11-05",
+        "n": 2,
+        "n_events": 1,
+        "mae_pct": 3.1,
+        "coverage": 100.0
+      }
+    ]
+  },
+  "records": [
+    {
+      "season": 2026,
+      "tid": 4421,
+      "family": "Eastern Chess Congress",
+      "T": 14,
+      "forecast_date": "2026-10-09",
+      "as_of_date": "2026-10-09",
+      "point": 436.0,
+      "low": 400.0,
+      "high": 476.0,
+      "final": 446,
+      "log_error": -0.0226767086710297,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4421,
+      "family": "Eastern Chess Congress",
+      "T": 7,
+      "forecast_date": "2026-10-16",
+      "as_of_date": "2026-10-16",
+      "point": 447.0,
+      "low": 402.0,
+      "high": 498.0,
+      "final": 446,
+      "log_error": 0.00223964259350466,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4421,
+      "family": "Eastern Chess Congress",
+      "T": 3,
+      "forecast_date": "2026-10-20",
+      "as_of_date": "2026-10-20",
+      "point": 449.0,
+      "low": 391.0,
+      "high": 514.0,
+      "final": 446,
+      "log_error": 0.006703935722190134,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4421,
+      "family": "Eastern Chess Congress",
+      "T": 1,
+      "forecast_date": "2026-10-22",
+      "as_of_date": "2026-10-22",
+      "point": 451.0,
+      "low": 418.0,
+      "high": 490.0,
+      "final": 446,
+      "log_error": 0.011148387482614201,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4422,
+      "family": "Eastern Class Championships",
+      "T": 14,
+      "forecast_date": "2026-10-02",
+      "as_of_date": "2026-10-02",
+      "point": 210.0,
+      "low": 190.0,
+      "high": 233.0,
+      "final": 206,
+      "log_error": 0.019231361927887592,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4422,
+      "family": "Eastern Class Championships",
+      "T": 7,
+      "forecast_date": "2026-10-09",
+      "as_of_date": "2026-10-09",
+      "point": 225.0,
+      "low": 200.0,
+      "high": 251.0,
+      "final": 206,
+      "log_error": 0.08822423341483901,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4422,
+      "family": "Eastern Class Championships",
+      "T": 3,
+      "forecast_date": "2026-10-13",
+      "as_of_date": "2026-10-13",
+      "point": 228.0,
+      "low": 198.0,
+      "high": 263.0,
+      "final": 206,
+      "log_error": 0.10146946016485965,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4422,
+      "family": "Eastern Class Championships",
+      "T": 1,
+      "forecast_date": "2026-10-15",
+      "as_of_date": "2026-10-15",
+      "point": 244.0,
+      "low": 223.0,
+      "high": 267.0,
+      "final": 206,
+      "log_error": 0.16929205650362072,
+      "in_range": 0,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4425,
+      "family": "Los Angeles Open",
+      "T": 28,
+      "forecast_date": "2026-10-09",
+      "as_of_date": "2026-10-09",
+      "point": 374.0,
+      "low": 343.0,
+      "high": 407.0,
+      "final": 306,
+      "log_error": 0.20067069546215124,
+      "in_range": 0,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4425,
+      "family": "Los Angeles Open",
+      "T": 14,
+      "forecast_date": "2026-10-23",
+      "as_of_date": "2026-10-23",
+      "point": 346.0,
+      "low": 319.0,
+      "high": 377.0,
+      "final": 306,
+      "log_error": 0.12285367310534347,
+      "in_range": 0,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4425,
+      "family": "Los Angeles Open",
+      "T": 7,
+      "forecast_date": "2026-10-30",
+      "as_of_date": "2026-10-30",
+      "point": 337.0,
+      "low": 306.0,
+      "high": 372.0,
+      "final": 306,
+      "log_error": 0.09649782839998103,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4425,
+      "family": "Los Angeles Open",
+      "T": 3,
+      "forecast_date": "2026-11-03",
+      "as_of_date": "2026-11-03",
+      "point": 316.0,
+      "low": 277.0,
+      "high": 360.0,
+      "final": 306,
+      "log_error": 0.03215711163453144,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "598f8e1fe4fd334a"
+    },
+    {
+      "season": 2026,
+      "tid": 4425,
+      "family": "Los Angeles Open",
+      "T": 1,
+      "forecast_date": "2026-11-05",
+      "as_of_date": "2026-11-05",
+      "point": 315.0,
+      "low": 289.0,
+      "high": 345.0,
+      "final": 306,
+      "log_error": 0.028987536873252187,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "598f8e1fe4fd334a"
+    },
+    {
+      "season": 2026,
+      "tid": 4426,
+      "family": "Midwest Class Championships",
+      "T": 7,
+      "forecast_date": "2026-10-02",
+      "as_of_date": "2026-10-02",
+      "point": 251.0,
+      "low": 228.0,
+      "high": 277.0,
+      "final": 237,
+      "log_error": 0.05739279799665265,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4426,
+      "family": "Midwest Class Championships",
+      "T": 3,
+      "forecast_date": "2026-10-06",
+      "as_of_date": "2026-10-06",
+      "point": 260.0,
+      "low": 226.0,
+      "high": 297.0,
+      "final": 237,
+      "log_error": 0.09262148988039648,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    },
+    {
+      "season": 2026,
+      "tid": 4426,
+      "family": "Midwest Class Championships",
+      "T": 1,
+      "forecast_date": "2026-10-08",
+      "as_of_date": "2026-10-08",
+      "point": 248.0,
+      "low": 228.0,
+      "high": 269.0,
+      "final": 237,
+      "log_error": 0.045368605029851086,
+      "in_range": 1,
+      "route": "model",
+      "model_hash": "e0e6631e4c8e940d"
+    }
+  ]
+}

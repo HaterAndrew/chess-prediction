@@ -130,7 +130,7 @@ function renderChart(t) {
   });
 
   // Projection + CI band for live
-  if (!isDone(t) && t.registration_curve) {
+  if (!isDone(t) && hasForecast(t) && t.registration_curve) {
     const projData = [];
     const todayDB = t.days_remaining;
     const todayPct = interpCurve(t.registration_curve, todayDB);
@@ -352,7 +352,7 @@ function renderChart(t) {
       const g = c.ctx;
       const boxH = 18, padX = 5, gap = 8;
       const labels = [];
-      if (!isDone(t) && t.point_estimate) {
+      if (!isDone(t) && hasForecast(t)) {
         labels.push({ y: yS.getPixelForValue(t.point_estimate), text: '~' + fmt(t.point_estimate),
                       color: PALETTE.text, font: chartLabelFont(12, 'bold'), dot: true });
       } else if (isDone(t) && actualData.length) {
@@ -678,7 +678,7 @@ function renderChart(t) {
             },
             footer(items) {
               if (!items.length) return '';
-              if (t.point_estimate && !isDone(t)) {
+              if (hasForecast(t) && !isDone(t)) {
                 return `Predicted final: ${fmt(t.point_estimate)}`;
               }
               return '';
@@ -724,7 +724,7 @@ function renderChart(t) {
   // they follow the theme.
   const ciPct = Math.round((t.ci_level || .8) * 100);
   let legendHtml = '<div class="legend-item"><div class="legend-swatch"></div>Actual</div>';
-  if (!isDone(t)) {
+  if (!isDone(t) && hasForecast(t)) {
     legendHtml += '<div class="legend-item"><div class="legend-swatch dashed"></div>Projected</div>';
     legendHtml += `<div class="legend-item"><div class="legend-swatch band"></div>${ciPct}% Range</div>`;
   }
@@ -764,6 +764,7 @@ function _describeMainChart(t, canvas, d) {
   const last = d.lastYear ? `; last year finished at ${fmt(d.lastYear.count)}` : '';
   const label = isDone(t)
     ? `${name}: ${fmt(t.current_count)} final entries, event ${fmtDate(t.event_start)}${last}.`
+    : !hasForecast(t) ? `${name}: ${fmt(t.current_count)} registered; forecast unavailable.`
     : `${name}: ${fmt(t.current_count)} registered through ${fmtDate(TOURNAMENT_DATA.counts_through)}; forecast ~${fmt(t.point_estimate)} by ${fmtDate(t.event_start)}, ${d.ciPct}% range ${fmt(t.ci_lower)} to ${fmt(t.ci_upper)}${last}.`;
   const find = l => (d.datasets.find(x => x.label === l) || {}).data;
   const proj = find('Projected'), up = find('CI Upper'), lo = find('CI Lower');

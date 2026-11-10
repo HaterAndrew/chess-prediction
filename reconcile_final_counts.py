@@ -124,7 +124,7 @@ def reconcile_final_counts(output_dir=OUTPUT_DIR, verbose=True, as_of=None):
             print(f"  Reconcile skipped — {scrape_path} not found.")
         return 0
 
-    summary = pd.read_csv(summary_path)
+    summary = pd.read_csv(summary_path, dtype={"registration_source_tournament_id": "string"})
     scrape = pd.read_csv(scrape_path)
 
     # Peak entry_count per tournament_name (gross, includes withdrawn — matches

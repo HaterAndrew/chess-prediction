@@ -62,6 +62,12 @@ describe("final recorded receipts", () => {
     expect((await receiptForecast(card, null, [], NOW)).missing).toBe("no_receipts");
     expect((await receiptForecast(card, snapshot, [], NOW)).missing).toBe("no_history");
   });
+  it("retains recorded actuals without inventing future receipts for an unavailable forecast", async () => {
+    const { card, snapshot, history } = await example();
+    expect(await receiptForecast({ ...card, point_estimate: null }, snapshot, [history], NOW)).toMatchObject({
+      value: null, actual_cents: 4500, future_cents: null, refund_reserve_cents: null, missing: "no_forecast",
+    });
+  });
   it("rejects stale data, unknown observation times and future training editions", async () => {
     const { card, snapshot, history } = await example();
     expect((await receiptForecast(card, snapshot, [history], NOW + 48 * 3600000)).missing).toBe("stale_source");

@@ -2,26 +2,36 @@ import { collectRegistrations } from "../src/finance/registration-collect";
 import { collectBatch } from "../src/finance/collect";
 import { ChessActionClient } from "../src/finance/client";
 import { refreshSession } from "../src/finance/session";
-import type { ReceiptCard } from "../src/finance/types";
+import { cohortHash, sha256, type ReceiptCard } from "../src/finance/types";
 import { FinanceWriteBudget } from "../src/finance/write-budget";
 
 export interface DailySlot { minute: number; heartbeat: boolean }
 
 /** Run the actual collector/checkpoint/publication paths against counted KV. */
-export async function quotaDays(slots: DailySlot[], invoice: (event: string) => string) {
+export async function quotaDays(slots: DailySlot[], invoice: (event: string) => string, backlog = false) {
   const store = new Map<string, string>();
   const realNow = Date.now;
   let tick = Date.parse("2026-11-09T00:00:00Z");
   let writes = 0;
+  let maximumSourceRequests = 0;
   const kv = { get: async (key: string | string[]) => Array.isArray(key) ? new Map(key.map(k => [k, store.get(k) ?? null])) : store.get(key) ?? null,
     put: async (key: string, value: string) => { writes++; store.set(key, value); } } as unknown as KVNamespace;
-  const cards: ReceiptCard[] = Array.from({ length: 36 }, (_, i) => ({ family: `Quota ${i} Open`, year: 2026,
-    status: "live", current_count: 32, point_estimate: 40, regular_fee: 10, event_start: "2026-11-14" }));
+  const counts = backlog ? [267, 205, 436, ...Array(14).fill(3), ...Array(12).fill(400)] : Array(36).fill(32);
+  const cards: ReceiptCard[] = counts.map((count, i) => ({ family: `Quota ${i} Open`, year: 2026,
+    status: backlog && i >= 17 ? "complete" : "live", current_count: count, point_estimate: count + 8,
+    regular_fee: 10, event_start: backlog && i >= 17 ? "2026-11-07" : "2026-11-14",
+    ...(backlog && i >= 17 ? { event_end: "2026-11-08" } : {}) }));
+  if (backlog) for (const card of cards.filter(c => c.status === "live")) {
+    card.count_cohort_hash = await cohortHash(await Promise.all(Array.from({ length: card.current_count }, (_, i) => sha256(String(i + 1)))));
+  }
   const options = `<select id='tournments'>${cards.map((card, i) => `<option value='${i + 1}'>2026 ${card.family}</option>`).join("")}</select>`;
   const client = () => {
-    const source = new ChessActionClient();
+    const source = new ChessActionClient(async () => { throw new Error("unexpected_source_fetch"); });
     let remaining = 42; let selected = 0;
-    const use = () => { if (--remaining < 0) throw new Error("source_request_limit"); };
+    const use = () => {
+      if (--remaining < 0) throw new Error("source_request_limit");
+      maximumSourceRequests = Math.max(maximumSourceRequests, 42 - remaining);
+    };
     Object.defineProperty(source, "remainingRequests", { get: () => Math.max(0, remaining) });
     source.resume = async () => { use(); return options; };
     source.request = async (path, fields) => {
@@ -34,23 +44,39 @@ export async function quotaDays(slots: DailySlot[], invoice: (event: string) => 
         return JSON.stringify({ iTotalRecords: rows.length, iTotalDisplayRecords: rows.length,
           aaData: rows.slice(0, Number(fields!.length)) });
       }
-      return `<table><thead><tr><th>Tournament fees ($) [Cart Discounts deducted]</th><th>Primary membership fees ($)</th><th>PayPal/Credit Card Fee Contributions ($)</th><th>Other fees ($)</th><th>Refunded ($)</th><th>Gross Revenue ($)</th></tr></thead><tbody><tr><td>320.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>320.00</td></tr></tbody></table>`;
+      const amount = (counts[Number(fields!.tname) - 1] * 10).toFixed(2);
+      return `<table><thead><tr><th>Tournament fees ($) [Cart Discounts deducted]</th><th>Primary membership fees ($)</th><th>PayPal/Credit Card Fee Contributions ($)</th><th>Other fees ($)</th><th>Refunded ($)</th><th>Gross Revenue ($)</th></tr></thead><tbody><tr><td>${amount}</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>${amount}</td></tr></tbody></table>`;
     };
     source.playerRows = async id => {
       use(); selected = Number(id) - 1;
-      return Array.from({ length: 32 }, (_, i) => ({ order_id: String((selected + 1) * 1000 + i),
-        player_id: String(i + 1), paypal_trans_id: "synthetic", tournament: `2026 ${cards[selected].family}`,
+      return Array.from({ length: counts[selected] }, (_, i) => ({ order_id: String((selected + 1) * 1000 + i),
+        ...(backlog ? { uscf_id: String(10000000 + i) } : { player_id: String(i + 1) }),
+        paypal_trans_id: "synthetic", tournament: `2026 ${cards[selected].family}`,
         status: "Approved", section_amount: "10.00", membership_amount: "0.00", is_deleted: "",
         order_value: "10.00", payment_date: "2026-11-01", payment_time: "12:00:00" }));
     };
     source.invoice = async () => { use(); return invoice(`2026 ${cards[selected].family}`); };
+    source.publicEntryList = async () => {
+      use();
+      const headers = ["Player's Name", "Player's Name", "FIDE ID", "FIDE Rating", "USCF ID", "USCF Rating", "State", "Section", "Schedule", "Bye(s)"];
+      return `<table><tr>${headers.map(h => `<th>${h}</th>`).join("")}</tr>${Array.from({ length: counts[selected] }, (_, i) =>
+        `<tr><td><span id="#bname_${i + 1}"></span></td><td>Synthetic</td><td></td><td></td><td>${10000000 + i}</td><td></td><td></td><td>Open</td><td></td><td></td></tr>`).join("")}</table>`;
+    };
     return source;
   };
   const days = [];
+  const historicalProofs = () => [...store.entries()].filter(([key]) => key.startsWith("order_checkpoint:")
+    && cards.some(card => card.status === "complete" && key === `order_checkpoint:2:${encodeURIComponent(card.family + "|2026")}`))
+    .reduce((n, [, raw]) => n + Object.keys(JSON.parse(raw).orders).length, 0);
   try {
     Date.now = () => tick;
     for (let day = 0; day < 2; day++) {
       const initial = writes;
+      const initialHistoricalProofs = historicalProofs();
+      maximumSourceRequests = 0;
+      if (backlog) for (const card of cards.filter(c => c.status === "live")) {
+        card.count_observed_at = new Date(Date.parse("2026-11-09T00:00:00Z") + day * 86_400_000).toISOString();
+      }
       let maximumBatch = 0; let maximumHeartbeat = 0; let completed = 0; let trainingCompleted = 0; let trainingSlots = 0; let moneySlots = 0;
       for (const slot of slots) {
         tick = Date.parse("2026-11-09T00:00:00Z") + day * 86_400_000 + slot.minute * 60_000;
@@ -72,10 +98,16 @@ export async function quotaDays(slots: DailySlot[], invoice: (event: string) => 
         }
       }
       const snapshots = [...store.entries()].filter(([key]) => key.startsWith("receipts:")).map(([, raw]) => JSON.parse(raw));
-      days.push({ writes: writes - initial, maximumBatch, maximumHeartbeat, completed, trainingCompleted, trainingSlots, moneySlots,
+      days.push({ writes: writes - initial, maximumBatch, maximumHeartbeat, maximumSourceRequests, completed, trainingCompleted, trainingSlots, moneySlots,
         trainingSnapshots: [...store.keys()].filter(key => key.startsWith("registrations:")).length,
-        snapshots: snapshots.length, conserved: snapshots.every(value => value.summary.net_cents === 32000),
-        checkpointWritesArePerEvent: [...store.keys()].filter(key => key.startsWith("order_checkpoint:")).length === 36 });
+        snapshots: snapshots.length, conserved: snapshots.every(value => value.summary.net_cents
+          === cards.find(card => card.family === value.family)!.current_count * 1000),
+        checkpointWritesArePerEvent: [...store.keys()].filter(key => key.startsWith("order_checkpoint:")).length === cards.length,
+        refreshedLive: snapshots.filter(value => cards.find(card => card.family === value.family)?.status === "live"
+          && Date.parse(value.source_as_of) >= Date.parse("2026-11-09T00:00:00Z") + day * 86_400_000).length,
+        matchedLiveCohorts: snapshots.filter(value => cards.find(card => card.family === value.family)?.status === "live"
+          && value.cohort.length === value.registration_count).length,
+        historicalProofs: historicalProofs(), historicalProofsAdded: historicalProofs() - initialHistoricalProofs });
     }
   } finally { Date.now = realNow; }
   return { days };

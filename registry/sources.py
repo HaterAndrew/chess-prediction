@@ -6,6 +6,7 @@ from registry.keys import (fee_edition_key, flyer_code, historical_edition_key,
 from registry.resolve import Source
 from shared.editions import split_edition_name
 from tournament_aliases import canonicalize_family
+from fees.urls import ANNOUNCEMENT_SOURCES
 
 SUMMARY = "tournament_summary.csv"
 METADATA = "tournament_metadata.csv"
@@ -39,7 +40,8 @@ SOURCES = (
            edition_of=lambda r: fee_edition_key(r["url"]),
            label=lambda r: r["url"],
            exemption_of=lambda r: fee_exemption(flyer_code(r["url"])),
-           warning_of=_fee_year_note, column="fee_urls"),
+           warning_of=_fee_year_note, column="fee_urls",
+           uniqueness_group=lambda url: "announcement" if url in ANNOUNCEMENT_SOURCES else "flyer"),
     Source("historical_standings.csv",
            edition_of=lambda r: standings_edition_key(r["tournament_name"], r["year"]),
            label=lambda r: r["tournament_name"], column="standings_names"),

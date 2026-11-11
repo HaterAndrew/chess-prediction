@@ -1,5 +1,5 @@
 import { ChessActionClient } from "./client";
-import { matchTournament } from "./editions";
+import { resolveTournament } from "./source-edition";
 import { receiptForecast } from "./forecast";
 import { parseSummary, tournamentOptions } from "./html";
 import { buildReceiptSnapshot } from "./report";
@@ -10,13 +10,14 @@ import { readHistory, readSnapshot, readCalibration, invalidHistory } from "./st
 import { calendarDate, snapshotKey, validateSnapshot } from "./types";
 import { FinanceWriteBudget } from "./write-budget";
 import type { ReceiptCard, ReceiptSnapshot } from "./types";
+import { acquireRegistrationLinks } from "./registration-links";
 
 export interface FinanceEnv {
   FINANCE_KV: KVNamespace;
   CHESS_ACTION_COOKIE?: string;
 }
 
-const SOURCE_POLICY_VERSION = 2;
+const SOURCE_POLICY_VERSION = 3;
 const DAY = 86_400_000;
 const SOURCE_ERRORS = new Set([
   "source_login_expired", "source_login_failed", "source_session_invalid", "source_network_failed",
@@ -32,6 +33,7 @@ const SOURCE_ERRORS = new Set([
   "public_registration_unavailable", "public_registration_schema_changed",
   "secondary_membership_requires_reconciliation", "order_cache_capacity_exceeded", "invoice_schema_changed",
   "order_cache_read_limit",
+  "registration_schema_changed", "registration_identity_invalid", "registration_time_invalid", "registration_timestamps_missing",
 ]);
 const RECONCILIATION_ERRORS = new Set(["entry_reconciliation_failed", "discount_reconciliation_failed",
   "order_reconciliation_failed", "shared_order_reconciliation_failed", "receipt_reconciliation_failed"]);
@@ -106,7 +108,7 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
     const repairedCalendar = lastAttempt.reason === "event_calendar_missing" && calendarDate(card.event_start)
       && (card.registration_close == null || calendarDate(card.registration_close));
     const repairedPolicy = lastAttempt.source_policy_version !== SOURCE_POLICY_VERSION
-      && ["public_registration_schema_changed", "public_registration_unavailable", "unreconciled_payment_status", "invoice_schema_changed", "receipt_reconciliation_failed"].includes(lastAttempt.reason ?? "");
+      && ["public_registration_schema_changed", "public_registration_unavailable", "unreconciled_payment_status", "invoice_schema_changed", "receipt_reconciliation_failed", "unmapped_tournament", "report_edition_mismatch"].includes(lastAttempt.reason ?? "");
     const repairCohort = !!previous && previous.source_policy_version !== SOURCE_POLICY_VERSION
       && previous.cohort.length !== previous.registration_count && !!card.count_cohort_hash && !!card.count_observed_at;
     if (lastAttempt.ok === false && !lastAttempt.resume && !repairedCalendar && !repairedPolicy
@@ -123,10 +125,13 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
   let collected = 0;
   let failed = 0;
   const calibration = needed.filter(item => item.priority > 0).sort(byRotation)[0];
-  // Alternate first access across nightly batches. A costly successful report
-  // must not starve either live events or historical calibration indefinitely.
+  // Reserve one first-access slot every two hours for calibration while live
+  // reports are due. The other three receipt slots in that window prioritize
+  // live refreshes, so large reports can finish before their proofs age out.
   const other = needed.filter(item => item !== calibration).slice(0, 5);
-  const calibrationFirst = new Date(now).getUTCHours() % 2 === 0;
+  const clock = new Date(now);
+  const calibrationFirst = !needed.some(item => item.priority === 0)
+    || clock.getUTCHours() % 2 === 0 && clock.getUTCMinutes() < 20;
   const batch = calibration ? calibrationFirst ? [calibration, ...other] : [...other, calibration] : needed.slice(0, 6);
   for (const { card, previous } of batch) {
     // Leave unstarted work due for the next batch, rather than marking it failed.
@@ -137,7 +142,10 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
     const statusKey = `event_status:${encodeURIComponent(card.family)}:${card.year}`;
     const acquisition = new OrderAcquisition(env.FINANCE_KV, `${card.family}|${card.year}`, Date.now, previous?.source_as_of);
     try {
-      const tournamentId = matchTournament(card, options);
+      const tournamentId = await resolveTournament(card, options, id => client.eventSettings(id));
+      // A yearless label is admitted only after the resolver proves the exact
+      // source ID, family and event start. Keep raw labels for invoice matching.
+      const sourceTitle = options.find(option => option.id === tournamentId)!.title.trim();
       const filters = client.filters(tournamentId);
       const before = await parseSummary(await client.request("ajax_get_txn_total.php", filters));
       const rows = await client.playerRows(tournamentId);
@@ -149,7 +157,9 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
       const sourceAsOf = new Date(now + Math.max(0, Date.now() - wallStartedAt)).toISOString();
       const snapshot = await buildReceiptSnapshot(calendarCard, tournamentId, rows, after, sourceAsOf,
         (transaction, expected) => acquireCartRows(client, acquisition, transaction, expected),
-        async () => parsePublicRegistrations(await client.publicEntryList(card.family, card.year)));
+        async () => parsePublicRegistrations(await client.publicEntryList(card.family, card.year)),
+        /^\d{4}\s/.test(sourceTitle) ? undefined : sourceTitle,
+        () => acquireRegistrationLinks(client, card, tournamentId, new Date().toISOString()));
       validateSnapshot(snapshot);
       // Proof persistence and its retirement fence precede financial publication.
       await acquisition.checkpoint(true);

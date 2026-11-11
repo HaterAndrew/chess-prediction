@@ -1,5 +1,6 @@
 // Local runtime harness only; neither production configuration references it.
 import { registrationRuntime } from "./registration";
+import { receiptEditionRuntime } from "./receipt-edition";
 import { ChessActionClient } from "../src/finance/client";
 import { parseSummary, tournamentOptions } from "../src/finance/html";
 import financeWorker from "../src/finance/collector";
@@ -17,8 +18,10 @@ export default {
   async fetch(request: Request): Promise<Response> {
     const registration = await registrationRuntime(request);
     if (registration) return registration;
+    const receiptEdition = await receiptEditionRuntime(request, syntheticInvoice);
+    if (receiptEdition) return receiptEdition;
     if (new URL(request.url).pathname === "/quota-days") {
-      return Response.json(await quotaDays(await request.json() as DailySlot[], syntheticInvoice));
+      return Response.json(await quotaDays(await request.json() as DailySlot[], syntheticInvoice, new URL(request.url).searchParams.has("backlog")));
     }
     if (new URL(request.url).pathname === "/quota-faults") {
       return Response.json(await quotaFaults(syntheticInvoice));
@@ -108,6 +111,7 @@ export default {
       return Response.json({first,second,attempts});
     }
     if (new URL(request.url).pathname === "/budget-priority") {
+      const { now = "2026-11-09T02:00:00Z", live = true } = await request.json() as { now?: string; live?: boolean };
       const store = new Map<string, string>();
       const kv = { get: async (key: string | string[]) => Array.isArray(key) ? new Map(key.map(k => [k, store.get(k) ?? null])) : store.get(key) ?? null,
         put: async (key: string, value: string) => { store.set(key, value); } } as unknown as KVNamespace;
@@ -116,9 +120,9 @@ export default {
       const attempted: string[] = [];
       source.request = async (_path, filters) => { attempted.push(filters!.tname); throw new Error("source_request_limit"); };
       await collectBatch({ FINANCE_KV: kv, CHESS_ACTION_COOKIE: "synthetic" }, [
-        { family: "Live Open", year: 2026, status: "live", current_count: 1, event_start: "2026-11-14" },
+        { family: "Live Open", year: 2026, status: live ? "live" : "complete", current_count: 1, event_start: "2026-11-14" },
         { family: "Finished Open", year: 2026, status: "complete", current_count: 1, event_start: "2026-11-01" },
-      ], Date.parse("2026-11-09T02:30:00Z"), source);
+      ], Date.parse(now), source);
       return Response.json({ attempted });
     }
     if (new URL(request.url).pathname === "/costly-calibration") {
@@ -150,7 +154,7 @@ export default {
       ];
       const batches = [];
       for (const hour of [2, 3]) batches.push(await collectBatch({ FINANCE_KV: kv, CHESS_ACTION_COOKIE: "synthetic" }, cards,
-        Date.parse(`2026-11-09T0${hour}:30:00Z`), client()));
+        Date.parse(`2026-11-09T0${hour}:00:00Z`), client()));
       return Response.json({ attempted, batches });
     }
     if (new URL(request.url).pathname === "/calendar-retry") {
@@ -158,7 +162,7 @@ export default {
       const store = new Map<string, string>([
         ["event_status:Legacy:2026", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: "event_calendar_missing" })],
         ["event_status:Missing:2026", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: "event_calendar_missing" })],
-        ["event_status:Unrelated:2026", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: "unreconciled_payment_status", source_policy_version: 2 })],
+        ["event_status:Unrelated:2026", JSON.stringify({ attempted_at: attemptedAt, ok: false, reason: "source_timeout", source_policy_version: 2 })],
       ]);
       const kv = { get: async (key: string) => store.get(key) ?? null,
         put: async (key: string, value: string) => { store.set(key, value); } } as unknown as KVNamespace;

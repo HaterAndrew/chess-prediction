@@ -2,6 +2,10 @@
 reason strings are test contract, do not reword).
 """
 import logging
+import re
+
+from bs4 import BeautifulSoup
+from fees.urls import ANNOUNCEMENT_SOURCES
 
 from fees.page_text import (  # noqa: F401  (re-exported for callers of fees.parse)
     _clean, _days_gap, _drop_stale_year, _guess_event_start, _guess_title,
@@ -41,11 +45,21 @@ def parse_flyer(html, url):
     """
     year = _guess_year_from_url(url)
     title = _guess_title(html, url)
+    announcement = url in ANNOUNCEMENT_SOURCES
+    if announcement:
+        # Ignore menus and unrelated stories. A missing or changed article
+        # structure cannot supply an edition's fees.
+        articles = BeautifulSoup(html, "html.parser").find_all("article")
+        if len(articles) != 1:
+            return None
+        html = str(articles[0])
 
     # Work with the visible text (tags stripped) for regex matching,
     # but keep original for structured tag searches
     text = _clean(html)
     event_start = _guess_event_start(html, year)
+    if announcement and (not event_start or int(event_start[:4]) != year):
+        return None
 
     has_eb_phrase = bool(_EARLY_BIRD_PHRASE_RE.search(text))
 
@@ -89,8 +103,13 @@ def parse_flyer(html, url):
 
     # --- Onsite fee ---
     onsite_fee = None
+    if announcement:
+        explicit_onsite = re.search(r"\bon[\s-]*site\s+entr(?:y|ies)\s*:\s*(\$[\d,]+)", text, re.I)
+        if explicit_onsite:
+            onsite_fee = _parse_fee(explicit_onsite.group(1))
     for m in _ONSITE_RE.finditer(text):
-        onsite_fee = _parse_fee(m.group(1))
+        if onsite_fee is None:
+            onsite_fee = _parse_fee(m.group(1))
         break
     if onsite_fee is None:
         for m in _ONSITE_RE.finditer(html):

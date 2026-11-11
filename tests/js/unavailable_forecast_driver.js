@@ -16,7 +16,7 @@ const context = vm.createContext({ console, performance: { now: () => 0 },
   localStorage: { getItem: () => '[0,1]', setItem() {} },
   TOURNAMENT_DATA: { generated: '2026-11-10', counts_through: '2026-11-09' },
 });
-for (const file of ['util_core.js', 'hero_kpi.js', 'panels_info.js', 'season_cards.js', 'email_compose.js', 'tab_compare.js', 'compare_chart.js', 'perf_live.js', 'panels_grid.js', 'chart_main.js']) {
+for (const file of ['util_core.js', 'chart_data.js', 'hero_kpi.js', 'panels_info.js', 'season_cards.js', 'email_compose.js', 'tab_compare.js', 'compare_chart.js', 'perf_live.js', 'panels_grid.js', 'chart_main.js', 'chart_hist.js']) {
   vm.runInContext(fs.readFileSync(path.join(root, 'docs', file), 'utf8'), context, { filename: file });
 }
 const unavailable = { family: 'Example <Open>', year: 2027, status: 'live', current_count: 3,
@@ -104,5 +104,40 @@ vm.runInContext('perfDrawLive(periodData)', context);
 assert.match(node('perfLive').innerHTML, /Original evaluation: 16 forecasts/);
 assert.match(node('perfLive').innerHTML, /Current evaluation: frozen on 2026-11-10/);
 assert.match(node('perfLive').innerHTML, /No finished events have graded forecasts yet/);
+
+context.proxy = {...context.supported, historical: [{year: 2025,count:25,source_section:'Young Adult/Middle Age',source_family:'Predecessor'}], n_historical_editions:1, low_confidence:true, history_basis:'transferred_sections', history_note:'Based on prior Young Adult/Middle Age sections; 2027 rules differ.'};
+assert.match(vm.runInContext('_heroRangeHTML(proxy, false)', context), /historical observation/);
+assert.match(vm.runInContext('_heroRangeHTML(proxy, false)', context), /2027 rules differ/);
+context.hostileProxy = {...context.proxy, history_note:'<img src=x> " title="foreign'};
+const escapedBasis=vm.runInContext('_heroRangeHTML(hostileProxy, false)', context);
+assert.doesNotMatch(escapedBasis, /<img/);
+assert.doesNotMatch(escapedBasis.slice(0,escapedBasis.indexOf('>')), /title="foreign/);
+assert.match(escapedBasis, /&lt;img/);assert.match(escapedBasis,/&quot;/);
+assert.equal(vm.runInContext('historySlots(proxy.historical,{year:2027,count:6})[0].label', context), '2025 section');
+for (const length of ['short','medium','long']) {
+ context.length=length;
+ const text=vm.runInContext('emailFormatTournament(proxy,length)',context);
+ const html=vm.runInContext('emailHTMLTournament(proxy,length)',context);
+ assert.match(text,/prior Young Adult\/Middle Age sections/);assert.match(html,/prior Young Adult\/Middle Age sections/);
+ assert.doesNotMatch(text+html,/Last year was|last year we|finished at/);
+}
+
+context.proxySelection = [context.proxy, {...context.proxy, family:'Other proxy'}];
+assert.equal(vm.runInContext('emailOverallTheme(proxySelection)',context),'');
+for (const length of ['medium','long']) {
+ context.length=length;
+ const html=vm.runInContext("emailBuildHTML('Subject','',proxySelection,length,{biggestUp:null,biggestDown:null,fastestPace:null,behindPace:[]},'')",context);
+ assert.doesNotMatch(html,/holding steady|improvement across|lagging across/);
+ assert.match(html,/prior Young Adult\/Middle Age sections/);
+}
+context.directHistory = {...context.supported,historical:[{year:2026,count:6}]};
+assert.match(vm.runInContext('emailOverallTheme([proxy,directHistory])',context),/^Among events with comparable prior editions,/);
+assert.equal(vm.runInContext('emailOverallTheme([directHistory])',context),'Things are holding steady across the board.');
+Object.assign(context,{histChartObj:null});
+vm.runInContext('_avgPad=()=>0;renderHistorical(proxy)',context);
+assert.equal(chartConfigs.at(-1).options.plugins.tooltip.callbacks.title([{dataIndex:0}]),'2025 section');
+assert.equal(node('histChart').description.columns[0],'Year / section');
+assert.match(node('histChart').description.caption,/prior section counts/);
+assert.match(node('histNote').innerHTML,/2027 rules differ/);
 console.log(JSON.stringify({ hero: true, animation_switch: true, progress: true, milestones: true,
   card: true, email_lengths: 3, escaped_html: true, comparison: true, main_chart: true, mixed_comparison: true, sorting: true, zero_forecast: true, empty_periods: true }));

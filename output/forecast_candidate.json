@@ -1,14 +1,14 @@
 {
   "schema": 1,
-  "asset_sha256": "0c28e9345c484afafce472f52a5171716466d7c75ac86c11bd48dff50a135228",
-  "run_ts": "2026-11-11 07:45:59",
-  "model_label": "n5v7",
-  "model_hash": "1cc6cfdc8bacadab",
-  "code_commit": "b2da8f92442e",
+  "asset_sha256": "db21a1238e9d5730bba10153d1199b991b0e5bc0ffe47d58e8f1ee15e36986cf",
+  "run_ts": "2026-11-11 23:54:42",
+  "model_label": "n5v8",
+  "model_hash": "60309b4f04d260a7",
+  "code_commit": "",
   "rows": [
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "Kings Island Open",
@@ -28,13 +28,13 @@
       "tier": "roster-pending",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "Kings Island Open",
@@ -54,13 +54,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "Kings Island Open",
@@ -80,13 +80,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "National Chess Congress",
@@ -106,13 +106,13 @@
       "tier": "roster-pending",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "National Chess Congress",
@@ -132,13 +132,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "National Chess Congress",
@@ -158,13 +158,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "North American Open",
@@ -184,13 +184,13 @@
       "tier": "roster-pending",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "North American Open",
@@ -210,13 +210,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "North American Open",
@@ -236,13 +236,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "Eastern Open",
@@ -262,13 +262,13 @@
       "tier": "roster-pending",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "Eastern Open",
@@ -288,13 +288,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "Eastern Open",
@@ -314,13 +314,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "Boston Chess Congress",
@@ -340,13 +340,13 @@
       "tier": "roster-pending",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "Boston Chess Congress",
@@ -366,13 +366,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "Boston Chess Congress",
@@ -392,13 +392,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "Liberty Bell Open",
@@ -418,13 +418,13 @@
       "tier": "roster-pending",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "Liberty Bell Open",
@@ -444,13 +444,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "Liberty Bell Open",
@@ -470,13 +470,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "Golden State Open",
@@ -496,13 +496,13 @@
       "tier": "roster-pending",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "Golden State Open",
@@ -522,13 +522,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 0,
       "family": "Golden State Open",
@@ -548,13 +548,13 @@
       "tier": "",
       "low_confidence": 0,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "Southwest Class Championships",
@@ -574,13 +574,13 @@
       "tier": "roster-pending",
       "low_confidence": 1,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "George Washington Open",
@@ -600,13 +600,13 @@
       "tier": "roster-pending",
       "low_confidence": 1,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "Saratoga Tournament Of-The-Ages Open",
@@ -618,21 +618,21 @@
       "count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "point": "",
-      "ci_lower": "",
-      "ci_upper": "",
+      "point": 18,
+      "ci_lower": 12,
+      "ci_upper": 25,
       "ci_level": 0.8,
-      "route": "insufficient_history",
+      "route": "metadata_historical_avg",
       "tier": "roster-pending",
       "low_confidence": 1,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "New York State Senior Championship",
@@ -644,21 +644,21 @@
       "count": 0,
       "gross_count": 0,
       "withdrawal_count": 0,
-      "point": "",
-      "ci_lower": "",
-      "ci_upper": "",
+      "point": 40,
+      "ci_lower": 32,
+      "ci_upper": 49,
       "ci_level": 0.8,
-      "route": "insufficient_history",
+      "route": "metadata_historical_avg",
       "tier": "roster-pending",
       "low_confidence": 1,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "New York State High School Championship",
@@ -678,13 +678,13 @@
       "tier": "roster-pending",
       "low_confidence": 1,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "New York State Scholastic Championships Grades K-8",
@@ -704,13 +704,13 @@
       "tier": "roster-pending",
       "low_confidence": 1,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "Western Class Championships",
@@ -730,13 +730,13 @@
       "tier": "roster-pending",
       "low_confidence": 1,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "Mid-America Open",
@@ -756,13 +756,13 @@
       "tier": "roster-pending",
       "low_confidence": 1,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "Southern Class Championships",
@@ -782,13 +782,13 @@
       "tier": "roster-pending",
       "low_confidence": 1,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     },
     {
       "as_of_date": "2026-11-11",
-      "run_ts": "2026-11-11 07:45:59",
+      "run_ts": "2026-11-11 23:54:42",
       "origin": "nightly",
       "published": 1,
       "family": "Atlantic City Open",
@@ -808,9 +808,9 @@
       "tier": "roster-pending",
       "low_confidence": 1,
       "is_stale": 0,
-      "model_label": "n5v7",
-      "model_hash": "1cc6cfdc8bacadab",
-      "code_commit": "b2da8f92442e"
+      "model_label": "n5v8",
+      "model_hash": "60309b4f04d260a7",
+      "code_commit": ""
     }
   ]
 }

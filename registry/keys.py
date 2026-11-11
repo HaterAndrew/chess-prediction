@@ -15,7 +15,7 @@ which tournament_aliases imports.
 import pandas as pd
 
 from fees.codes import FAMILY_TO_CODE, SENIOR_FAMILY_TRANSITION
-from fees.urls import flyer_parts
+from fees.urls import fee_source_parts
 from shared.editions import split_edition_name
 from tournament_aliases import STANDINGS_NAME_MAP, canonicalize_family, cca_family
 
@@ -75,7 +75,7 @@ def fee_edition_key(url, table=None):
     """(family, year) for a chesstour flyer URL "<code><yy>.htm". Raises
     UnresolvedKey for a URL or code with no family, AmbiguousKey for a code
     that maps to two families."""
-    parts = flyer_parts(url)
+    parts = fee_source_parts(url)
     if not parts:
         raise UnresolvedKey(f"flyer URL {url!r} has no <code><yy>.htm page")
     code, year = parts
@@ -92,5 +92,5 @@ def fee_edition_key(url, table=None):
 
 def flyer_code(url):
     """The <code> of a flyer URL, or None."""
-    parts = flyer_parts(url)
+    parts = fee_source_parts(url)
     return parts[0] if parts else None

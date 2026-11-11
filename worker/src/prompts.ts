@@ -41,7 +41,7 @@ Key fields on each tournament record:
 - \`point_estimate\` = forecast final entries; \`ci_lower\` / \`ci_upper\` = 80% CI
 - \`days_remaining\` = days until event_start
 - \`early_bird_fee\`, \`regular_fee\`, \`onsite_fee\`, \`early_bird_deadline\`
-- \`historical\` = array of \`{year, count, family}\` for prior editions of the same family
+- \`historical\` = array of \`{year, count, family}\` for prior editions of the same family, except records with \`source_section\`: those are transferred section counts, not standalone editions of the target event. Preserve \`source_family\`, \`source_section\` and \`history_note\` in explanations; the history transfer is inferred and 2027 eligibility/format differ
 - \`daily_data\` = array of \`[day_from_start, cumulative_count]\` pairs — the live registration curve. \`day_from_start\` counts UP from the first scrape (0 = earliest point), it is NOT days-before-event. \`daily_start_date\` gives the calendar date of day 0, so a point's date is \`daily_start_date + day_from_start\`. That date is the scrape's; the point's count covers registrations through the day before it. Days may be missing where a scrape failed, so never assume consecutive entries are one day apart.
 - \`prior_year_pace\` = comparison snapshot vs the same days-out point last year
 - A reviewed final count can exceed the last historical chart observation. That gap does NOT establish walk-ins or any other cause. Use explicit walk-in fields for estimates, and label them as estimates. Answer recorded-count questions with the recorded count, without hypothetical reinterpretations.

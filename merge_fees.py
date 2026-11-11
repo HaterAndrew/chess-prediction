@@ -39,7 +39,7 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 from validate_fees import FAMILY_TO_CODE  # noqa: E402
 from shared.season import CURRENT_SEASON  # noqa: E402
 from fees.codes import flyer_code_for  # noqa: E402
-from fees.urls import flyer_parts  # noqa: E402
+from fees.urls import fee_source_parts, flyer_parts  # noqa: E402
 
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 FEES_CSV = os.path.join(OUTPUT_DIR, "tournament_fees.csv")
@@ -139,9 +139,16 @@ def merge_fees(dry_run=False, today=None, first_season=None):
                       f"the card")
                 skipped += 1
             continue
-        match = fees[fees["url"].map(lambda url: flyer_parts(url) == (code, int(year)))]
+        match = fees[fees["url"].map(lambda url: fee_source_parts(url) == (code, int(year)))]
         if len(match) == 0:
             continue
+        # A stale flyer must not mask a correctly dated organizer-linked
+        # announcement. Prefer the flyer when both dates remain compatible.
+        md = pd.to_datetime(row.get("start_date"), errors="coerce")
+        dates = pd.to_datetime(match["event_start"], errors="coerce")
+        compatible = match[(dates - md).abs() <= pd.Timedelta(days=3)]
+        if not compatible.empty:
+            match = compatible.sort_values("url", key=lambda urls: urls.map(lambda url: 0 if flyer_parts(url) else 1), kind="stable")
         fr = match.iloc[0]
 
         # Cross-check the event date so a stray code can't paste fees onto the

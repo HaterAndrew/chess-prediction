@@ -40,6 +40,7 @@ from scrape_fees import (
 # decomposition); re-imported here so validate_fees.FAMILY_TO_CODE stays a
 # module attribute for merge_fees, validate_scraped_data, and the tests.
 from fees.codes import FAMILY_TO_CODE, UNMAPPED_CODES  # noqa: F401
+from fees.urls import ANNOUNCEMENT_SOURCES
 from scraper_utils import polite_session, respectful_get, DEFAULT_TIMEOUT
 from shared.season import CURRENT_SEASON
 
@@ -71,6 +72,7 @@ def candidate_urls(family, year):
         from fees.urls import flyer_filename
         out.append("https://www.chesstour.com/" + flyer_filename(code, yy))
         out.append("https://www.chesstour.com/" + flyer_filename(code, year))
+        out.extend(url for url, edition in ANNOUNCEMENT_SOURCES.items() if edition == (code, int(year)))
     return out
 
 
@@ -184,6 +186,17 @@ def main():
                 continue
             flyer = parse_flyer(html, u)
             used_url = u
+            if flyer:
+                try:
+                    source_date = date.fromisoformat(flyer.get("event_start") or "")
+                    target_date = date.fromisoformat(r.get("start_date") or "")
+                except ValueError:
+                    flyer = None
+                else:
+                    if abs((source_date - target_date).days) > 3:
+                        flyer = None
+                if flyer is None:
+                    log.warning("    source date does not verify this edition; trying next source")
             if flyer:
                 break
         verdict, notes = compare(r, flyer)

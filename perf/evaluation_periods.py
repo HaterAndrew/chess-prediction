@@ -7,8 +7,9 @@ import pandas as pd
 
 from perf.live_record import last_run_per_day, match_forecasts, summarize_live
 
-CURRENT_FROZEN_ON = '2026-11-10'
-CURRENT_FROZEN_HASH = '1cc6cfdc8bacadab'
+# Section-history forecasts start a separate period; prior ledger rows and the original archive remain intact.
+CURRENT_FROZEN_ON = '2026-11-11'
+CURRENT_FROZEN_HASH = '60309b4f04d260a7'
 ORIGINAL_ARCHIVE = Path(__file__).with_name('evaluations') / '2026-09-27.json'
 ORIGINAL_ARCHIVE_SHA256 = '2f12ab79058a86dd61e879a04bbfa51b115a7d1e02741480d0b1fc000b667665'
 

@@ -80,7 +80,8 @@ function _heroCaption(t, ciLevel) {
   const confLabel = isLow
     ? (nHist >= 2 ? 'Low confidence' : 'Very low confidence')
     : (nHist >= 8 ? 'High confidence' : 'Medium confidence');
-  const conf = `${confLabel}, ${nHist} edition${nHist === 1 ? '' : 's'}`;
+  const unit = t.history_basis === 'transferred_sections' ? 'historical observation' : 'edition';
+  const conf = `${confLabel}, ${nHist} ${unit}${nHist === 1 ? '' : 's'}`;
   const parts = [`${ciLevel}% range`, isLow ? `<span class="conf-low">${conf}</span>` : conf];
   const tier = t.prediction_tier;
   if (tier && tier !== 'family-direct') parts.push(HERO_TIER_LABELS[tier] || tier.replace('-', ' '));
@@ -89,6 +90,7 @@ function _heroCaption(t, ciLevel) {
 
 // Why the model is as confident as it is, in one sentence.
 function _confidenceReason(t) {
+  if (t.history_basis === 'transferred_sections') return t.history_note;
   const conf = (t.confidence_label || '').toLowerCase();
   const tier = (t.prediction_tier || 'family-direct').toLowerCase();
   if (tier === 'family-direct' && conf.includes('high')) return 'Strong prior data: 5+ years of same-month history for this family.';
@@ -110,12 +112,13 @@ function _heroRangeHTML(t, done) {
   const lo = t.ci_lower, hi = t.ci_upper, pe = t.point_estimate;
   // Clamp so an off-band point estimate (a rare model edge case) still lands inside the bracket.
   const pct = Math.max(0, Math.min(100, ((pe - lo) / (hi - lo)) * 100));
-  const reason = _confidenceReason(t);
+  const reason = esc(_confidenceReason(t)).replace(/"/g, '&quot;');
   return `
       <div class="range" role="img" aria-label="${ciLevel}% confidence interval from ${fmt(lo)} to ${fmt(hi)}, point estimate ${fmt(pe)}. ${reason}" title="${reason}">
         <span class="range-bound">${fmt(lo)}</span>
         <div class="range-track"><div class="range-mark" style="left:${pct.toFixed(2)}%"></div></div>
         <span class="range-bound">${fmt(hi)}</span>
       </div>
-      <div class="range-caption">${done ? `${ciLevel}% range` : _heroCaption(t, ciLevel)}</div>`;
+      <div class="range-caption">${done ? `${ciLevel}% range` : _heroCaption(t, ciLevel)}</div>
+      ${t.history_basis === 'transferred_sections' ? `<div class="range-caption">${esc(t.history_note)}</div>` : ''}`;
 }

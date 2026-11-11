@@ -11,7 +11,9 @@ function financialRow(row: Row): Row {
   for (const key of ["order_id", "tournament", "section", "payment_date", "payment_time", "payment_type", "is_deleted"] as const) result[key] = text(row[key]);
   const deletion = row.is_deleted === false ? "0" : row.is_deleted === true ? "1" : text(row.is_deleted);
   result.is_deleted = ["", "0", "No"].includes(deletion) ? "" : "1";
-  if (!/^\d+$/.test(String(result.order_id)) || !/^\d{4}\s[^\r\n]{1,240}$/.test(String(result.tournament))
+  // Keep invoice labels exact, including calendar-verified yearless events.
+  // Publication still checks the selected edition in buildReceiptSnapshot.
+  if (!/^\d+$/.test(String(result.order_id)) || !/^(?:\d{4}\s[^\r\n]{1,240}|[^\d\s\r\n][^\r\n]{0,239})$/.test(String(result.tournament))
       || !/^\d{4}-\d{2}-\d{2}$/.test(String(result.payment_date)) || !/^\d{2}:\d{2}:\d{2}$/.test(String(result.payment_time))
       || !/^\d{0,3}$/.test(String(result.payment_type)) || String(result.section).length > 240) throw new Error("source_schema_changed");
   const status = text(row.status);

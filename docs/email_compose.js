@@ -2,13 +2,18 @@
 // chosen length, the season theme and highlights, the subject, and the HTML
 // version (split from tab_email.js, which calls these from generateEmail).
 
+function emailDirectHistory(t) {
+  return (t.historical || []).filter(h => !h.source_section);
+}
+
 function emailLastYear(t) {
-  if (!t.historical || !t.historical.length) return null;
-  return [...t.historical].sort((a, b) => b.year - a.year)[0];
+  if (!emailDirectHistory(t).length) return null;
+  return emailDirectHistory(t).sort((a, b) => b.year - a.year)[0];
 }
 function emailHistAvg(t) {
-  if (!t.historical || !t.historical.length) return null;
-  const c = t.historical.map(h => h.count);
+  if (!emailDirectHistory(t).length) return null;
+  const c = emailDirectHistory(t).map(h => h.count);
+  if (!c.length) return null;
   return Math.round(c.reduce((a, b) => a + b, 0) / c.length);
 }
 
@@ -25,8 +30,9 @@ function emailFormatTournament(t, len) {
   const pace = t.prior_year_pace;
   const name = t.family.toUpperCase();
   if (!hasForecast(t)) return `${name}:  We are at ${t.current_count} entries. Forecast unavailable: no completed editions on record.`;
-  const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
+  const sorted = t.historical ? emailDirectHistory(t).sort((a, b) => b.year - a.year) : [];
   const parts = [];
+  if (t.history_basis === 'transferred_sections') parts.push(t.history_note);
 
   // ── SHORT ──
   if (len === 'short') {
@@ -112,20 +118,26 @@ function emailFormatTournament(t, len) {
 
 function emailOverallTheme(selected) {
   if (selected.length && selected.every(t => !hasForecast(t))) return 'Forecasts unavailable for the selected events.';
-  let ahead = 0, behind = 0;
+  let ahead = 0, behind = 0, compared = 0;
   selected.forEach(t => {
     const ly = emailLastYear(t);
-    if (!ly || !hasForecast(t)) return;
+    if (!ly || ly.count <= 0 || !hasForecast(t)) return;
+    compared++;
     const pct = (t.point_estimate - ly.count) / ly.count;
     if (pct > 0.05) ahead++;
     else if (pct < -0.05) behind++;
   });
+  if (!compared) return '';
   const total = ahead + behind;
-  if (total === 0) return 'Things are holding steady across the board.';
-  if (behind === 0) return 'The overall theme is improvement across the board.';
-  if (ahead === 0) return 'The overall theme is we are still lagging across the board.';
-  if (ahead >= behind) return 'The overall theme is a mixed bag \u2014 some improvement, but we are still behind on a few events.';
-  return 'The overall theme today is there has been some improvement, but we are still lagging.';
+  let theme;
+  if (total === 0) theme = 'Things are holding steady across the board.';
+  else if (behind === 0) theme = 'The overall theme is improvement across the board.';
+  else if (ahead === 0) theme = 'The overall theme is we are still lagging across the board.';
+  else if (ahead >= behind) theme = 'The overall theme is a mixed bag \u2014 some improvement, but we are still behind on a few events.';
+  else theme = 'The overall theme today is there has been some improvement, but we are still lagging.';
+  return compared < selected.length
+    ? `Among events with comparable prior editions, ${theme[0].toLowerCase()}${theme.slice(1)}`
+    : theme;
 }
 
 // ── Highlights: biggest mover, fastest pace, behind-pace flags ──
@@ -197,10 +209,11 @@ function emailHTMLTournament(t, len) {
   const ly = emailLastYear(t);
   const avg = emailHistAvg(t);
   const pace = t.prior_year_pace;
-  const sorted = t.historical ? [...t.historical].sort((a, b) => b.year - a.year) : [];
+  const sorted = t.historical ? emailDirectHistory(t).sort((a, b) => b.year - a.year) : [];
   const parts = [];
   const name = esc(t.family);
   if (!hasForecast(t)) return `<h3>${name}</h3><p>We are at ${esc(fmt(t.current_count))} entries. Forecast unavailable: no completed editions on record.</p>`;
+  if (t.history_basis === 'transferred_sections') parts.push(`<p>${esc(t.history_note)}</p>`);
   const B = v => `<strong style="color:${EM.text}">${esc(String(v))}</strong>`;
   const colorFor = pct => pct > 0 ? EM.green : pct < 0 ? EM.red : EM.text;
 

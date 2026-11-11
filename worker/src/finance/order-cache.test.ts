@@ -17,6 +17,18 @@ function storage() {
 }
 
 describe("financial acquisition checkpoints", () => {
+  it("retains exact yearless invoice labels without admitting a different event", async () => {
+    const { kv } = storage();
+    const selected = source({ tournament: "Saratoga Tournament Of-The-Ages Open", invoice_event_subtotal_cents: 1000 });
+    const first = new OrderAcquisition(kv, "Saratoga Tournament Of-The-Ages Open|2027");
+    await first.rows("invoice:2:1", [selected], async () => [selected]);
+    await first.checkpoint();
+    const resumed = new OrderAcquisition(kv, "Saratoga Tournament Of-The-Ages Open|2027");
+    expect(await resumed.rows("invoice:2:1", [selected], async () => { throw Error("unexpected_source_read"); }))
+      .toMatchObject([{ tournament: selected.tournament, invoice_event_subtotal_cents: 1000 }]);
+    const wrong = { ...selected, tournament: "2026 Saratoga Tournament Of-The-Ages Open" };
+    await expect(resumed.rows("invoice:2:1", [wrong], async () => [selected])).rejects.toThrow("shared_order_line_missing");
+  });
   it("persists many verified orders with one bounded checkpoint write", async () => {
     const { kv, writes } = storage();
     const acquisition = new OrderAcquisition(kv, "Example Open|2026");

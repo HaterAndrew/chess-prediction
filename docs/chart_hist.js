@@ -174,7 +174,7 @@ function renderHistorical(t) {
           callbacks: {
             title(items) {
               if (!items.length) return '';
-              return slots[items[0].dataIndex].label + ' Edition';
+              return slots[items[0].dataIndex].label + (t.history_basis === 'transferred_sections' ? '' : ' Edition');
             },
             label(item) {
               return ` Entries: ${fmt(item.raw)}`;
@@ -219,6 +219,7 @@ function renderHistorical(t) {
   });
 
   _describeHistory(t, ctx, slots, { done, showRange, histAvg, prevIdx });
+  if (t.history_basis === 'transferred_sections') note.innerHTML = `<div class="comp-footnote">${esc(t.history_note)}</div>`;
   if (slots.some(s => s.flag)) {
     note.innerHTML = `<div class="comp-footnote">* 2019 and 2022 World Open were a single combined registration page (9 sections). Counts adjusted to top-6 only for apples-to-apples vs the 2023+ split. Estimates use chessevents.com final-standings ratios.</div>`;
   }
@@ -232,7 +233,8 @@ function _describeHistory(t, canvas, slots, d) {
   const now = d.done
     ? `${cur.label} ${fmt(cur.count)} final`
     : `${cur.label} forecast ~${fmt(cur.count)}${d.showRange ? ` (80% range ${fmt(t.ci_lower)} to ${fmt(t.ci_upper)})` : ''}`;
-  const label = `${t.family} entries by edition, ${eds[0].label} to ${cur.label}: ${now}; past average ${fmt(d.histAvg)}.`;
+  const basis = t.history_basis === 'transferred_sections' ? 'prior section counts and current forecast' : 'entries by edition';
+  const label = `${t.family} ${basis}, ${eds[0].label} to ${cur.label}: ${now}; past average ${fmt(d.histAvg)}.`;
   const rows = slots.map((s, i) => {
     if (s.kind === 'gap') return [s.label, 'No edition on record', null];
     const p = d.prevIdx(i);
@@ -240,5 +242,5 @@ function _describeHistory(t, canvas, slots, d) {
     const entries = s.kind === 'current' && !d.done ? `~${fmt(s.count)} (forecast)` : fmt(s.count);
     return [s.label, entries, change];
   });
-  chartDescribe(canvas, { label, caption: `${t.family}: entries by edition`, columns: ['Edition', 'Entries', 'Change on the Edition Before'], rows });
+  chartDescribe(canvas, { label, caption: `${t.family}: ${basis}`, columns: t.history_basis === 'transferred_sections' ? ['Year / section', 'Entries', 'Change on Previous Observation'] : ['Edition', 'Entries', 'Change on the Edition Before'], rows });
 }

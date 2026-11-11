@@ -30,4 +30,16 @@ describe("source/public registration identity", async () => {
     }
   });
 
+  it("joins a newly assigned source ID only to an explicit unrated public row with a unique name", async () => {
+    const name_hash = await sha256("synthetic player");
+    const source = { uscf_id: "87654321", fide_id: "7654321", player_first_name: "Synthetic", player_last_name: "Player" };
+    const pending = { id: "103", uscf: "", fide: "", name_hash, new_uscf: true as const };
+    expect(await matchPublicRegistrations([source], [pending])).toEqual(["103"]);
+    expect(await matchPublicRegistrations([source], [{ id: "103", uscf: "", fide: "", name_hash }])).toBeNull();
+    expect(await matchPublicRegistrations([source], [{ ...pending, uscf: "11111111" }])).toBeNull();
+    expect(await matchPublicRegistrations([source], [pending, { ...pending, id: "104" }])).toBeNull();
+    expect(await matchPublicRegistrations([source], [pending, { id: "104", uscf: "11111111", fide: source.fide_id }])).toBeNull();
+    expect(await matchPublicRegistrations([{ ...source, player_last_name: "Other" }], [pending])).toBeNull();
+  });
+
 });

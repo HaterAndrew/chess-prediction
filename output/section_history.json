@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "source_family": "New York State Senior Championship With Young Adult Mi",
+  "editions": [
+    {
+      "year": 2025,
+      "tournament_id": "3731",
+      "source_as_of": "2026-11-11T22:15:54.132636+00:00",
+      "active": 54,
+      "withdrawn": 3,
+      "total": 57,
+      "sections": [
+        {
+          "name": "Senior",
+          "active": 30,
+          "withdrawn": 2
+        },
+        {
+          "name": "Young Adult/Middle Age",
+          "active": 24,
+          "withdrawn": 1
+        }
+      ]
+    },
+    {
+      "year": 2026,
+      "tournament_id": "4182",
+      "source_as_of": "2026-11-11T22:15:54.127849+00:00",
+      "active": 60,
+      "withdrawn": 1,
+      "total": 61,
+      "sections": [
+        {
+          "name": "Senior",
+          "active": 48,
+          "withdrawn": 1
+        },
+        {
+          "name": "Young Adult/Middle Age",
+          "active": 12,
+          "withdrawn": 0
+        }
+      ]
+    }
+  ]
+}

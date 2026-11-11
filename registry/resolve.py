@@ -47,6 +47,7 @@ class Source:
     unknown_family_rule: Optional[str] = None
     unique: bool = True
     column: Optional[str] = None
+    uniqueness_group: Callable = lambda label: None
 
 
 @dataclass
@@ -91,9 +92,9 @@ def resolve_source(source, frame, families):
         else:
             result.unresolved.append(f"{source.file} row {i}: {value}")
     if source.unique:
-        counts = Counter(edition for edition, _ in result.rows)
+        counts = Counter((edition, source.uniqueness_group(label)) for edition, label in result.rows)
         result.duplicates = [
             f"{source.file}: {family} {year} has {n} rows"
-            for (family, year), n in sorted(counts.items()) if n > 1
+            for ((family, year), _), n in sorted(counts.items()) if n > 1
         ]
     return result

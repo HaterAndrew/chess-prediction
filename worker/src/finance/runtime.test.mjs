@@ -49,6 +49,56 @@ const summaryHtml = `<table><thead><tr>
 </tr></thead><tbody><tr><td>100.00</td><td>10.00</td><td>3.00</td><td>2.00</td><td>15.00</td><td>100.00</td></tr></tbody></table>`;
 
 describe("native Worker source boundaries", () => {
+  it("proves stale profile identities through complete native order references", async () => {
+    const result = (await invoke("/receipt-edition", {staleProfile:true})).body;
+    expect(result.result, JSON.stringify(result)).toEqual({collected:1,failed:0});
+    expect(result.snapshot).toMatchObject({registrations:1,cohort:1});
+    expect(result.sourceRequestsWereReadOnly).toBe(true);
+    expect(result.sourceCalls[0]).toBeLessThanOrEqual(42);
+  });
+  it("withholds a cohort when native references do not match the public ID set", async () => {
+    const result = (await invoke("/receipt-edition", {staleProfile:true,foreignLinks:true})).body;
+    expect(result.snapshot).toMatchObject({cohort:0});
+    expect(result.missing).toBe("unmatched_count");
+  });
+  it("rejects wrong-event native rows and a changed native count fence", async () => {
+    for (const body of [{wrongNativeEvent:true},{changedNativeCount:true}]) {
+      const result = (await invoke("/receipt-edition", {staleProfile:true,...body})).body;
+      expect(result.result).toEqual({collected:0,failed:1});
+      expect(result.snapshot).toBeNull();
+    }
+  });
+  it("resumes invoice proof after a bounded native-reference request limit", async () => {
+    const result = (await invoke("/receipt-edition", {staleProfile:true,limited:true})).body;
+    expect(result.firstStatus).toMatchObject({reason:"source_request_limit",resume:true});
+    expect(result.retry, JSON.stringify(result)).toEqual({collected:1,failed:0});
+    expect(result.snapshot).toMatchObject({cohort:1});
+    expect(result.sourceCalls[0]).toBeLessThanOrEqual(8);
+    expect(result.sourceCalls[1]).toBeLessThanOrEqual(42);
+  });
+  it("retries a repaired yearless receipt event only after proving its source calendar", async () => {
+    const result = (await invoke("/receipt-edition", {})).body;
+    expect(result.result, JSON.stringify(result)).toEqual({ collected: 1, failed: 0 });
+    expect(result.retry).toEqual({ collected: 0, failed: 0 });
+    expect(result.snapshot).toEqual({ family: "Saratoga Tournament Of-The-Ages Open", year: 2027, registrations: 1, cohort: 1, net: 1000 });
+    expect(result.settingsReads).toBe(1);
+    expect(result.sourceRequestsWereReadOnly).toBe(true);
+  });
+  it("captures verified zero receipts for a yearless source event", async () => {
+    const result = (await invoke("/receipt-edition", { empty: true })).body;
+    expect(result.result, JSON.stringify(result)).toEqual({ collected: 1, failed: 0 });
+    expect(result.snapshot).toMatchObject({ year: 2027, registrations: 0, cohort: 0, net: 0 });
+  });
+  it("refuses wrong-year calendars and foreign receipt rows without repeated same-day reads", async () => {
+    for (const body of [{ wrongYear: true }, { foreignRow: true }]) {
+      const result = (await invoke("/receipt-edition", body)).body;
+      expect(result.result).toEqual({ collected: 0, failed: 1 });
+      expect(result.retry).toEqual({ collected: 0, failed: 0 });
+      expect(result.snapshot).toBeNull();
+      expect(result.settingsReads).toBe(1);
+      expect(result.reportReads).toBe(body.wrongYear ? 0 : 1);
+    }
+  });
   it("resolves a yearless source name only through exact source identity, family and start date", async () => {
     const card = { family: "Saratoga Tournament Of-The-Ages Open", year: 2027, status: "live", event_start: "2027-02-26" };
     const options = [{ id: "4912", title: card.family }];
@@ -139,6 +189,29 @@ describe("native Worker source boundaries", () => {
       expect(day.conserved).toBe(true); expect(day.checkpointWritesArePerEvent).toBe(true);
     }
   }, 30_000);
+  it("refreshes large live events within a day while retaining historical bootstrap progress", async () => {
+    const config = readFileSync(new URL("../../wrangler.finance.toml", import.meta.url), "utf8");
+    const schedules = JSON.parse(/^crons\s*=\s*(\[[^\n]+\])/m.exec(config)[1]);
+    const slots = [];
+    for (const cron of schedules) for (let hour = 0; hour < 24; hour++) {
+      for (const minute of cron.split(" ")[0].split(",").map(Number)) {
+        slots.push({ minute: hour * 60 + minute, heartbeat: isSessionHeartbeat(cron) });
+      }
+    }
+    slots.sort((a, b) => a.minute - b.minute);
+    const result = (await invoke("/quota-days?backlog", slots)).body;
+    console.info("live_backlog_rehearsal", JSON.stringify(result));
+    for (const day of result.days) {
+      expect(day.refreshedLive).toBe(17);
+      expect(day.matchedLiveCohorts).toBe(17);
+      expect(day.conserved).toBe(true);
+      expect(day.historicalProofsAdded).toBeGreaterThan(0);
+      expect(day.maximumSourceRequests).toBeLessThanOrEqual(42);
+      expect(day.writes).toBeLessThanOrEqual(936);
+      expect(day.maximumBatch).toBeLessThanOrEqual(12);
+      expect(day.maximumHeartbeat).toBe(1);
+    }
+  }, 60_000);
   it("routes the heartbeat to session health without starting a financial batch", async () => {
     expect((await invoke("/session-missing", {})).body).toMatchObject({
       rejected: true, session: { ok: false, reason: "source_session_required" }, financial_status_written: false,
@@ -230,8 +303,14 @@ describe("native Worker source boundaries", () => {
     const result = (await invoke("/public-cohort", { html })).body;
     expect(result).toEqual([{ id: "101", uscf: "", fide: "", name_hash: createHash("sha256").update("synthetic player").digest("hex") }]);
     expect(JSON.stringify(result)).not.toContain("Synthetic");
+    const pending = html.replace("<td></td><td></td><td></td>", "<td></td><td></td><td>NEW</td>");
+    expect((await invoke("/public-cohort", {html:pending})).body[0]).toMatchObject({new_uscf:true});
     const malformed = html.replace("<td></td><td></td><td></td>", "<td></td><td></td><td>1234567</td>");
     expect((await invoke("/public-cohort", {html:malformed})).body[0]).not.toHaveProperty("name_hash");
+    // A rated namesake invalidates name-only matching for a NEW player too.
+    const ratedRow = `<tr>${cells.map((c, i) => `<td>${i === 4 ? "12345678" : c.replaceAll("bname_101", "bname_102")}</td>`).join("")}</tr>`;
+    const collision = html.replace("</table>", ratedRow + "</table>");
+    expect((await invoke("/public-cohort", {html:collision})).body.every(row => !row.name_hash)).toBe(true);
   });
   it("keeps the admin cookie out of public-list requests", async () => {
     const result = await invoke("/public-fetch", { replies: [
@@ -262,6 +341,13 @@ describe("native Worker source boundaries", () => {
   });
   it("attempts reserved calibration before live work can exhaust the request budget", async () => {
     expect((await invoke("/budget-priority", {})).body).toEqual({ attempted: ["2"] });
+  });
+  it("uses the remaining receipt slots for live work and returns idle capacity to calibration", async () => {
+    for (const now of ["2026-11-09T02:20:00Z", "2026-11-09T03:00:00Z", "2026-11-09T03:20:00Z"]) {
+      expect((await invoke("/budget-priority", { now })).body).toEqual({ attempted: ["1"] });
+    }
+    expect((await invoke("/budget-priority", { now: "2026-11-09T04:00:00Z" })).body).toEqual({ attempted: ["2"] });
+    expect((await invoke("/budget-priority", { now: "2026-11-09T03:20:00Z", live: false })).body).toEqual({ attempted: ["2"] });
   });
   it("rebuilds damaged pooled history from a reconciled source snapshot", async () => {
     expect((await invoke("/repair?corrupt=1", {})).body).toEqual({ first: { collected: 1, failed: 0 },

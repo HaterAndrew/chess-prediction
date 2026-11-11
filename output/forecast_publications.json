@@ -12,5 +12,12 @@
     "producer_run_ts": "2026-11-10 18:54:18",
     "rows": 31,
     "verified_at": "2026-11-10T19:01:39.508566+00:00"
+  },
+  "db21a1238e9d5730bba10153d1199b991b0e5bc0ffe47d58e8f1ee15e36986cf": {
+    "model_hash": "60309b4f04d260a7",
+    "producer_as_of_date": "2026-11-11",
+    "producer_run_ts": "2026-11-11 23:54:42",
+    "rows": 31,
+    "verified_at": "2026-11-11T23:28:36.144393+00:00"
   }
 }

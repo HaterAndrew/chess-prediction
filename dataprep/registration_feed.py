@@ -17,6 +17,7 @@ import pandas as pd
 
 from dataprep.registration_contract import FeedError, _require, _time, validate_feed
 from dataprep.registration_source import fetch_feed
+from dataprep.registration_observations import write_empty_observations
 from dataprep.spikes import annotate_spikes
 from tournament_aliases import canonicalize_family
 
@@ -203,6 +204,7 @@ def merge_feed(output_dir, body, now=None):
         _require((summary.tid == original.tid).sum() == 1)
         pending.append((index, original, x))
     if not pending:
+        write_empty_observations(root, records, now)
         return stats
     if PROVENANCE not in summary:
         summary[PROVENANCE] = pd.Series(index=summary.index, dtype="object")
@@ -248,6 +250,7 @@ def merge_feed(output_dir, body, now=None):
             summary.at[index, column] = target.iloc[0][column]
         stats["imported"] += 1
     _write_pair(summary_path, summary, daily_path, daily)
+    write_empty_observations(root, records, now)
     return stats
 
 

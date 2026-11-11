@@ -15,7 +15,7 @@ from shared.season import CURRENT_SEASON
 # there); legacy name kept for the discovery loop and tests.
 from fees.codes import FLYER_PROBE_CODES as TOURNAMENT_CODES  # noqa: F401
 from fees.codes import FAMILY_TO_CODE
-from fees.urls import flyer_filename
+from fees.urls import ANNOUNCEMENT_SOURCES, flyer_filename
 
 log = logging.getLogger(__name__)
 
@@ -98,7 +98,9 @@ def generate_candidate_urls(known_urls=()):
     urls = {CHESSTOUR + flyer_filename(code, yy) for code in TOURNAMENT_CODES for yy in YEAR_SUFFIXES}
     seasons = [f"{y % 100:02d}" for y in (CURRENT_SEASON, CURRENT_SEASON + 1)]
     urls |= {CHESSTOUR + flyer_filename(code, yy) for code in set(FAMILY_TO_CODE.values()) for yy in seasons}
-    return urls | {flyer_url(u) for u in known_urls}
+    return urls | set(ANNOUNCEMENT_SOURCES) | {
+        u if u in ANNOUNCEMENT_SOURCES else flyer_url(u) for u in known_urls
+    }
 
 
 def probe_urls(urls):

@@ -56,7 +56,7 @@ function weeklyStops(endMs, startMs) {
 // A slot: {label, year, count (null for a gap), kind: past|gap|current, flag}.
 function historySlots(past, current) {
   const eds = (past || []).map(h => ({
-    label: h.adjusted ? `${h.year}*` : String(h.year), year: h.year, count: h.count, kind: 'past',
+    label: h.source_section ? `${h.year} section` : h.adjusted ? `${h.year}*` : String(h.year), year: h.year, count: h.count, kind: 'past',
     flag: h.adjusted ? { kind: h.adjusted, raw: h.count_raw } : null,
   }));
   eds.push({ label: String(current.year), year: current.year, count: current.count, kind: 'current', flag: null });

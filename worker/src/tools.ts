@@ -27,7 +27,10 @@ export interface Tournament {
   low_confidence?: boolean;
   prediction_source?: string;
   n_historical_editions?: number;
-  historical?: Array<{ year: number; count: number; family: string }>;
+  history_basis?: string;
+  history_note?: string;
+  history_transfer_inferred?: boolean;
+  historical?: Array<{ year: number; count: number; family: string; source_family?: string; source_section?: string }>;
   daily_data?: Array<[number, number]>;
   registration_curve?: unknown;
   prior_year_pace?: Record<string, unknown> | null;
@@ -188,11 +191,14 @@ export function historicalForFamily(data: WebsiteData, args: { family?: string; 
       .slice(0, 10);
     return { error: `No exact match for family "${args.family}".`, candidates };
   }
-  const points = new Map<number, number>();
+  const points = new Map<number, { count: number; source_family?: string; source_section?: string }>();
   for (const t of matches) {
-    if (typeof t.current_count === "number") points.set(t.year, t.current_count);
+    if (typeof t.current_count === "number") points.set(t.year, {count: t.current_count});
     if (Array.isArray(t.historical)) {
-      for (const h of t.historical) points.set(h.year, h.count);
+      for (const h of t.historical) {
+        const prior = points.get(h.year);
+        if (!prior || !h.source_section) points.set(h.year, {count: h.count, ...(h.source_section ? {source_family: h.source_family, source_section: h.source_section} : {})});
+      }
     }
   }
   const sorted = [...points.entries()].sort((a, b) => b[0] - a[0]);
@@ -200,7 +206,8 @@ export function historicalForFamily(data: WebsiteData, args: { family?: string; 
   const top = sorted.slice(0, nYears).sort((a, b) => a[0] - b[0]);
   return {
     family: matches[0].family,
-    series: top.map(([year, count]) => ({ year, count })),
+    series: top.map(([year, point]) => ({ year, ...point })),
+    ...(top.some(([, point]) => point.source_section) ? {history_basis: "transferred_sections", history_transfer_inferred: true, history_note: matches.find(t => t.history_note)?.history_note} : {}),
   };
 }
 
@@ -213,7 +220,8 @@ export function compareYears(
   }
   const hist = historicalForFamily(data, { family: args.family, n_years: 20 }) as {
     family?: string;
-    series?: Array<{ year: number; count: number }>;
+    series?: Array<{ year: number; count: number; source_family?: string; source_section?: string }>;
+    history_note?: string;
     error?: string;
   };
   if (hist.error || !hist.series) return hist;
@@ -228,8 +236,9 @@ export function compareYears(
   }
   return {
     family: hist.family,
-    year_a: { year: args.year_a, count: a?.count ?? null },
-    year_b: { year: args.year_b, count: b?.count ?? null },
+    year_a: { year: args.year_a, count: a?.count ?? null, ...(a?.source_section ? {source_family: a.source_family, source_section: a.source_section} : {}) },
+    year_b: { year: args.year_b, count: b?.count ?? null, ...(b?.source_section ? {source_family: b.source_family, source_section: b.source_section} : {}) },
+    ...(a?.source_section || b?.source_section ? {history_basis: "transferred_sections", history_transfer_inferred: true, history_note: hist.history_note} : {}),
     delta,
     pct_change: pct,
   };

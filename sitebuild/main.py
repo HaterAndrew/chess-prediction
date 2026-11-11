@@ -23,6 +23,7 @@ from sitebuild.helpers import (OUTPUT_DIR, TODAY, _fam_eq, determine_status,
                                m04c, print_recalibration)
 from sitebuild.history import add_historical_editions
 from sitebuild.metadata import build_metadata_cards
+from sitebuild.section_history import SectionHistoryError, load_section_history
 from sitebuild.scrape_join import (consecutive_zero_scrape_days, counts_by_edition,
                                    extend_chart_daily, latest_by_edition, scrape_daily_series)
 from sitebuild.scrape_merge import merge_scrape_counts, normalize_scrape
@@ -230,10 +231,15 @@ def main():
     # Keyed on the edition: the finished 2026 card of a family must not stop
     # the same family's 2027 metadata card from being added.
     existing_editions = {(canonicalize_family(t['family']), t['year']) for t in tournaments_out}
+    try:
+        section_history = load_section_history(OUTPUT_DIR, summary, corpus.standings)
+    except SectionHistoryError as error:
+        print(f"WARNING: {error}; withheld supplemental attendance histories.")
+        section_history = []
     build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS,
                          _consecutive_zero_scrape_days, _scrape_daily_series,
                          _scrape_lookup, fitted, existing_editions,
-                         get_event_end_date, meta, summary, tournaments_out)
+                         get_event_end_date, meta, summary, tournaments_out, section_history)
 
 
     add_historical_editions(EXCLUDE_FAMILIES, fitted.curves, daily,

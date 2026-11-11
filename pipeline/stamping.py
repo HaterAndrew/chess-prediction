@@ -149,8 +149,18 @@ def _stamp_stale_flag(is_stale):
     data['last_updated'] = config.RUN_TS
     data['is_stale'] = is_stale
     data['counts_through'] = counts_through(_scrape_dates(config.SCRAPE_CSV))
-    from pipeline.receipt_metadata import attach_receipt_observations
-    attach_receipt_observations(data, config.SCRAPE_CSV)
+    from pipeline.receipt_metadata import EmptyObservationError, attach_receipt_observations
+    from dataprep.registration_observations import EMPTY_OBSERVATIONS
+    try:
+        attach_receipt_observations(data, config.SCRAPE_CSV, os.path.join(config.OUTPUT_DIR, EMPTY_OBSERVATIONS))
+    except EmptyObservationError:
+        # The optional native proof is independent of the public scrape.
+        # Record its failure and withhold it without blocking other editions.
+        from pipeline import warns
+        message = "Empty registration observation cache invalid; withheld supplemental empty proofs."
+        print(f"  WARNING: {message}")
+        warns._PIPELINE_WARNINGS.append({'step': 'Registration observations', 'text': message})
+        attach_receipt_observations(data, config.SCRAPE_CSV)
     if data['counts_through'] is None:
         print(f"  WARNING: no scrape dates in {config.SCRAPE_CSV} — counts_through unset; "
               "the site shows '–' for the day counts run through")

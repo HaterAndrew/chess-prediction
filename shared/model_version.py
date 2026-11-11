@@ -17,7 +17,8 @@ from shared.paths import PROJECT_DIR
 # for events without curves (#187), the new-event prior (#189) and short
 # ranges sized around the pickup blend (#191).
 # n5v7 (2026-11-10): unavailable forecasts without completed history; separate evaluation period.
-MODEL_LABEL = "n5v7"
+# n5v8 (2026-11-11): verified separate section histories for split age-group events.
+MODEL_LABEL = "n5v8"
 
 # Everything between the scraped count and the published card: the corpus
 # loader, the forecast entry point and its routes, the engine, the card

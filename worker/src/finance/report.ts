@@ -2,6 +2,7 @@ import { allocateCents } from "./allocation";
 import { normalizeFamily } from "./editions";
 import { matchPublicRegistrations } from "./public-cohort";
 import type { PublicRegistration } from "./public-cohort";
+import { matchRegistrationLinks, type RegistrationLink } from "./registration-links";
 import { calendarDate, cents, cohortHash, sha256, INVOICE_DISCOUNT_VARIANT } from "./types";
 import type { ReceiptBucket, ReceiptCard, ReceiptSnapshot, ReceiptSummary } from "./types";
 
@@ -52,15 +53,20 @@ function assertRow(row: Row): void {
   paidAt(row);
 }
 
-function belongs(row: Row, card: ReceiptCard): boolean {
+function belongs(row: Row, card: ReceiptCard, sourceTitle?: string): boolean {
   const parts = /^(\d{4})\s+(.+)$/.exec(text(row.tournament));
+  if (!parts && sourceTitle !== undefined) return text(row.tournament) === sourceTitle;
   return !!parts && Number(parts[1]) === card.year && normalizeFamily(parts[2]) === normalizeFamily(card.family);
 }
 
 /** Choose an identity column only by proving its hash matches the observed public set. */
-async function sourceCohort(rows: Row[], card: ReceiptCard, loadPublic?: () => Promise<PublicRegistration[]>): Promise<ReceiptSnapshot["cohort"]> {
+async function sourceCohort(rows: Row[], card: ReceiptCard, loadPublic?: () => Promise<PublicRegistration[]>,
+  loadLinks?: () => Promise<RegistrationLink[]>): Promise<ReceiptSnapshot["cohort"]> {
   if (!card.count_cohort_hash || !card.count_observed_at) return [];
   const registrations = rows.filter(r => !deleted(r));
+  // A complete empty report has no identities to join. The forecast still
+  // requires the model's exact empty-set hash before it can return a value.
+  if (!registrations.length) return [];
   const fields = Object.keys(registrations[0] ?? {}).filter(k => /^(?:id|pid|player_id|registration_id|entry_id|player_tournament_id)$/i.test(k));
   const matches: ReceiptSnapshot["cohort"][] = [];
   for (const field of fields) {
@@ -71,7 +77,9 @@ async function sourceCohort(rows: Row[], card: ReceiptCard, loadPublic?: () => P
     if (observed.length === card.current_count && await cohortHash(observed.map(r => r.id)) === card.count_cohort_hash) matches.push(cohort);
   }
   if (!matches.length && loadPublic) {
-    const ids = await matchPublicRegistrations(registrations, await loadPublic());
+    const publicRows = await loadPublic();
+    let ids = await matchPublicRegistrations(registrations, publicRows);
+    if (!ids && loadLinks) ids = await matchRegistrationLinks(registrations, await loadLinks(), publicRows);
     if (ids && ids.length === registrations.length) {
       const cohort = await Promise.all(registrations.map(async (r, i) => ({ id: await sha256(ids[i]), paid_at: paidAt(r) })));
       const observed = cohort.filter(r => Date.parse(r.paid_at) <= Date.parse(card.count_observed_at!));
@@ -86,10 +94,14 @@ export async function buildReceiptSnapshot(
   card: ReceiptCard, tournamentId: string, rows: Row[], summary: ReceiptSummary,
   sourceAsOf: string, loadOrder: (transaction: string, expected: Row[]) => Promise<Row[]>,
   loadPublic?: () => Promise<PublicRegistration[]>,
+  sourceTitle?: string,
+  loadLinks?: () => Promise<RegistrationLink[]>,
 ): Promise<ReceiptSnapshot> {
   if (!calendarDate(card.event_start) || (card.registration_close != null && !calendarDate(card.registration_close))) throw new Error("event_calendar_missing");
   rows.forEach(assertRow);
-  if (rows.some(row => !belongs(row, card))) throw new Error("report_edition_mismatch");
+  if (sourceTitle !== undefined && (/^\d{4}\s/.test(sourceTitle)
+      || normalizeFamily(sourceTitle) !== normalizeFamily(card.family))) throw new Error("report_edition_mismatch");
+  if (rows.some(row => !belongs(row, card, sourceTitle))) throw new Error("report_edition_mismatch");
   const discounts = (r: Row) => money(r.public_discount_amount) + money(r.discount_amount);
   const sectionSum = rows.reduce((n, r) => n + money(r.section_amount), 0);
   const discountSum = rows.reduce((n, r) => n + discounts(r), 0);
@@ -156,7 +168,7 @@ export async function buildReceiptSnapshot(
       const row = full[0];
       const gap = row.invoice_discount_cents;
       const net = row.invoice_net_order_cents;
-      if (full.length !== 1 || !belongs(row, card) || row.status !== "Approved" || row.invoice_discount_variant !== INVOICE_DISCOUNT_VARIANT
+      if (full.length !== 1 || !belongs(row, card, sourceTitle) || row.status !== "Approved" || row.invoice_discount_variant !== INVOICE_DISCOUNT_VARIANT
           || !Number.isSafeInteger(gap) || Number(gap) <= 0 || !hasInvoice || !Number.isSafeInteger(net) || Number(net) < 0
           || Number(net) + Number(gap) !== [...totals][0] || Number(row.invoice_event_subtotal_cents) + totalContribution !== net) {
         throw new Error("invoice_schema_changed");
@@ -167,7 +179,7 @@ export async function buildReceiptSnapshot(
     const expectedCash = freeOnlyOrder ? 0 : netOrderTotal - totalContribution;
     const subtract = fullRaw !== expectedCash;
     const cashOnlyOrder = full.some(manualCash) && full.every(r => manualCash(r) || freeRegistration(r));
-    const manualCorrection = (cashOnlyOrder || freeOnlyOrder) && full.every(r => belongs(r, card));
+    const manualCorrection = (cashOnlyOrder || freeOnlyOrder) && full.every(r => belongs(r, card, sourceTitle));
     const inferDiscount = !cashOnlyOrder && !freeOnlyOrder && fullDiscounts === 0 && fullRaw > expectedCash;
     if (freeOnlyOrder) {
       const subtotals = new Set(full.map(r => hasInvoice ? Number(r.invoice_event_subtotal_cents) : money(r.order_value)));
@@ -227,7 +239,7 @@ export async function buildReceiptSnapshot(
     const eventWeights = new Map<string, number>();
     full.forEach(r => eventWeights.set(eventKey(r), (eventWeights.get(eventKey(r)) ?? 0) + originalCash(r)));
     const eventAllocation = allocateCents(totalContribution, [...eventWeights].map(([id, cash]) => ({ id, cash })));
-    const targetRows = full.filter(r => belongs(r, card));
+    const targetRows = full.filter(r => belongs(r, card, sourceTitle));
     const lineWeights = new Map<string, number>();
     targetRows.forEach(r => lineWeights.set(signature(r), (lineWeights.get(signature(r)) ?? 0) + originalCash(r)));
     const lineAllocation = allocateCents(eventAllocation.get(eventKey(part[0])) ?? 0,
@@ -281,7 +293,7 @@ export async function buildReceiptSnapshot(
       manual_free_adjustment_cents: correction.free } : {}),
     ...(invoiceDiscountTotal ? { invoice_discount_variant: INVOICE_DISCOUNT_VARIANT,
       invoice_discount_cents: invoiceDiscountTotal } : {}),
-    cohort: await sourceCohort(rows, card, loadPublic), buckets: [...buckets.values()],
+    cohort: await sourceCohort(rows, card, loadPublic, loadLinks), buckets: [...buckets.values()],
     previous_net_cents: null, previous_as_of: null,
   };
 }

@@ -64,7 +64,7 @@ function filters(id: string, status: string, start: number, length: number) {
 }
 
 export async function acquireRegistrations(client: RegistrationSource, card: { family: string; year: number }, id: string,
-  sourceAsOf: string): Promise<RegistrationAggregate> {
+  sourceAsOf: string, onIdentity?: (id: string, row: Record<string, unknown>) => void): Promise<RegistrationAggregate> {
   if (!/^\d{1,12}$/.test(id) || !Number.isFinite(Date.parse(sourceAsOf))) throw new Error("registration_schema_changed");
   const totals: number[] = [];
   const identities = new Set<string>();
@@ -84,6 +84,8 @@ export async function acquireRegistrations(client: RegistrationSource, card: { f
         const key = String(row.eventId ?? "");
         if (String(row.tourid) !== id || !/^\d{1,20}$/.test(key) || identities.has(key)) throw new Error("registration_identity_invalid");
         identities.add(key);
+        // Request-local observers do not change the closed aggregate output.
+        onIdentity?.(key, row);
         const time = registrationTime(row.createdAt);
         if (time !== null) {
           // Display times have explicit source offsets validated above. Permit

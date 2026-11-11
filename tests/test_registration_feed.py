@@ -112,6 +112,27 @@ def inputs(tmp_path):
     return summary, daily
 
 
+def test_empty_report_metadata_is_written_only_after_full_feed_validation(tmp_path):
+    import json
+    inputs(tmp_path)
+    empty = snapshot()
+    empty.update(active=0, withdrawn=0, total=0, ts_count=0, first_reg=None,
+                 last_reg=None, daily=[], calendar_daily=[])
+    assert merge_feed(tmp_path, feed(empty), NOW)["waiting"] == 1
+    cache = tmp_path / "empty_registration_observations.json"
+    assert json.loads(cache.read_text())["records"][0]["total"] == 0
+    before = cache.read_bytes()
+    invalid = copy.deepcopy(empty)
+    invalid["active"] = 1
+    with pytest.raises(FeedError):
+        merge_feed(tmp_path, feed(invalid), NOW)
+    assert cache.read_bytes() == before
+    failed = feed(empty)
+    failed["records"][0].update(ok=False, reason="source_timeout")
+    merge_feed(tmp_path, failed, NOW)
+    assert json.loads(cache.read_text())["records"] == []
+
+
 def test_preserves_old_curves_scrape_peak_and_tid_and_is_idempotent(tmp_path):
     original, old_daily = inputs(tmp_path)
     result = merge_feed(tmp_path, feed(snapshot()), NOW)

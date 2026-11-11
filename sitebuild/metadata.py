@@ -11,7 +11,7 @@ from sitebuild.helpers import (TODAY, _apply_wo_top6_adjustment,
                                m04c, sanitize_early_bird)
 
 
-def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecutive_zero_scrape_days, _scrape_daily_series, _scrape_lookup, fitted, existing_editions, get_event_end_date, meta, summary, tournaments_out):
+def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecutive_zero_scrape_days, _scrape_daily_series, _scrape_lookup, fitted, existing_editions, get_event_end_date, meta, summary, tournaments_out, section_history=()):
     def is_settled(fam, yr):
         return is_event_complete(get_event_end_date(fam, yr), TODAY)
 
@@ -61,6 +61,16 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
              "family": h['family']}
             for _, h in hist.iterrows()
         ])
+        if myear >= 2027:
+            known_years = {h["year"] for h in historical}
+            historical.extend(dict(h) for h in section_history
+                              if h["family"] == canon_family and h["year"] < myear
+                              and h["year"] not in known_years)
+            historical.sort(key=lambda h: h["year"])
+        transferred = sorted({h["source_section"] for h in historical if h.get("source_section")})
+        history_basis = ({"history_basis": "transferred_sections", "history_transfer_inferred": True,
+                          "history_note": f"Based on prior {', '.join(transferred)} sections; 2027 rules differ."}
+                         if transferred else {})
         # H12: an event whose start date has already passed but that never entered
         # the roster path (a CCA sub-class the export folds into its parent — e.g.
         # World Open Under 13) used to be silently dropped by an
@@ -107,6 +117,7 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
                 "ci_upper": int(settled_count),
                 "ci_level": 0.80,
                 "historical": historical,
+                **history_basis,
                 "daily_data": _rp_series,
                 "daily_start_date": _rp_start,
                 "registration_curve": reg_curve,
@@ -199,6 +210,7 @@ def build_metadata_cards(EXCLUDE_FAMILIES, NOT_TRACKED_MIN_ZERO_DAYS, _consecuti
             "ci_upper": ci_hi,
             "ci_level": 0.80,
             "historical": historical,
+            **history_basis,
             "daily_data": _rp_series,
             "daily_start_date": _rp_start,
             "registration_curve": reg_curve,

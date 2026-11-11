@@ -4,7 +4,7 @@ import re
 from datetime import datetime
 
 from fees.patterns import _EVENT_DATE_RE, _TITLE_GUESSES
-from fees.urls import flyer_parts
+from fees.urls import fee_source_parts
 
 
 def _clean(text):
@@ -55,7 +55,7 @@ def _normalise_date(raw, year_hint=None):
 
 def _guess_year_from_url(url):
     """Extract a 2-digit year suffix from a chesstour.com filename."""
-    parts = flyer_parts(url)
+    parts = fee_source_parts(url)
     if parts:
         return parts[1] if parts[1] < 2050 else parts[1] - 100
     return None

@@ -12,7 +12,7 @@ from pipeline.ledger import LEDGER_FIELDS
 ORIGINAL = {'archived_on': '2026-11-10', 'results': {'n_records': 16, 'model_hash': FROZEN_HASH}}
 
 
-def _row(model_hash, *, stamp='2026-11-10 12:00:00', day='2026-11-10', point=100):
+def _row(model_hash, *, stamp='2026-11-11 12:00:00', day='2026-11-11', point=100):
     return {'family': 'Harbor Open', 'year': 2026, 'as_of_date': day,
             'run_ts': stamp, 'origin': 'nightly', 'published': 1,
             'point': point, 'ci_lower': 90 if point is not None else None,
@@ -23,12 +23,12 @@ def _row(model_hash, *, stamp='2026-11-10 12:00:00', day='2026-11-10', point=100
 
 def _events(final=100):
     return pd.DataFrame([{'tid': 1, 'family': 'Harbor Open', 'tournament_year': 2026,
-                          'start': pd.Timestamp('2026-11-24'), 'final_count': final}])
+                          'start': pd.Timestamp('2026-11-25'), 'final_count': final}])
 
 
 def test_a_later_old_version_cannot_replace_the_current_period_forecast():
     ledger = pd.DataFrame([_row(periods.CURRENT_FROZEN_HASH),
-                           _row(FROZEN_HASH, stamp='2026-11-10 20:00:00', point=900)])
+                           _row(FROZEN_HASH, stamp='2026-11-11 20:00:00', point=900)])
     current = periods.evaluation_blocks(ledger, _events(), ORIGINAL)[1]['results']
     assert current['n_records'] == 1
     assert current['pooled']['14']['mae_pct'] == 0
@@ -40,14 +40,14 @@ def test_current_hash_before_the_new_period_is_not_retrospective_evidence():
     current = periods.evaluation_blocks(ledger, _events(), ORIGINAL)[1]['results']
     assert current['n_records'] == 0
     assert current['protocol']['first_date'] is None
-    assert current['frozen_on'] == '2026-11-10'
+    assert current['frozen_on'] == periods.CURRENT_FROZEN_ON
 
 
 def test_current_unavailability_blocks_an_older_day_and_counts_the_omission():
-    ledger = pd.DataFrame([_row(periods.CURRENT_FROZEN_HASH, day='2026-11-11', point=None),
+    ledger = pd.DataFrame([_row(periods.CURRENT_FROZEN_HASH, day='2026-11-12', point=None),
                            _row(periods.CURRENT_FROZEN_HASH)])
     events = _events()
-    events['start'] = pd.Timestamp('2026-11-25')
+    events['start'] = pd.Timestamp('2026-11-26')
     current = periods.evaluation_blocks(ledger, events, ORIGINAL)[1]['results']
     assert current['n_records'] == 0
     assert current['n_unavailable_forecasts'] == 1
@@ -85,5 +85,5 @@ def test_missing_or_header_only_ledgers_keep_original_and_waiting_periods(tmp_pa
     assert block['n_records'] == 0
     assert block['holdout']['n_records'] == 16
     assert block['evaluation_periods'][1]['results']['n_records'] == 0
-    assert block['evaluation_periods'][1]['results']['frozen_on'] == '2026-11-10'
+    assert block['evaluation_periods'][1]['results']['frozen_on'] == periods.CURRENT_FROZEN_ON
     assert json.dumps(block, allow_nan=False)

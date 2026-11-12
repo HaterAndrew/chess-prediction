@@ -2,93 +2,93 @@
   "files": [
     {
       "filename": "daily_registration_counts.csv",
-      "sha256": "a4c769d5395149d741d8ca46c4aa22dc8fc7af212f3a1d57d0404bcccfe5a4d3",
+      "sha256": "c131de1b6f6d5a2a0d01888d3032c0927e471df2e3706123e874e9fa1370286d",
       "row_count": 13968,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "daily_scrape.csv",
-      "sha256": "8eadc6db9e8478390dceef77e72160b6768ab42002aabd1067e40a8eaf93f8f8",
-      "row_count": 4319,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "sha256": "62c806256549b062f94ebaa6fba7490cc1bb8fc1900f1301f4e6b3393c9c219b",
+      "row_count": 4337,
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "edition_registry.csv",
-      "sha256": "3387c86cf56c30e879731e0103d186955be5c598a5d8c80c1258483e97e19ed3",
+      "sha256": "e97cbade7624489f7dce3c6f17e1f624f72df8a73244cef9a3592f9f9724b20f",
       "row_count": 1131,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "final_count_corrections.csv",
       "sha256": "676a1df0e8ee0327a0c4195a8bf63c96634104efd1fe8ba227d36fc1b407ca45",
       "row_count": 8,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "forecast_ledger.csv",
       "sha256": "4a3368558b35e58edb361ff609ca3068af7066bf323ef387f34543a8ec7ee583",
       "row_count": 2205,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "forecast_ledger_backfill.csv",
       "sha256": "326b33f00d74c85640795de37a1f5a6c214ad8c316e9b50a231410f11f52651b",
       "row_count": 4654,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "historical_standings.csv",
       "sha256": "30e0fbb551da2de6ed5a292ce6a9d291b4828ad5920eaf182213e0b7e844af1a",
       "row_count": 888,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "historical_tournaments.csv",
       "sha256": "a78b46ac505bf403165d17faa8f4613ca222a08e85eb5a4c5d693316d9e015a9",
       "row_count": 754,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "tournament_fees.csv",
       "sha256": "9a7a7da0aa8062a4b4cb2e71a5bf90f11c91c4922dd527226e2451a47c841590",
       "row_count": 122,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "tournament_metadata.csv",
       "sha256": "80bde7411ead4a11c351e885b94b8b8bb63a8b746cf97d77e75077d3b1bde352",
       "row_count": 337,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "tournament_summary.csv",
-      "sha256": "38fa836c16bfb6dfddab7b27ea01a1de26c6b2304c658cde6861160e58752702",
+      "sha256": "914c9e7c96a18522b5e49a264a3dbbc522f6b13612b175360d24b2c1907635da",
       "row_count": 790,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "update_log.csv",
-      "sha256": "7b4b90c5b1373ae09c7ad18e48e2743dbcf935b34349ba74fad1f952ff4ca8a3",
-      "row_count": 5461,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "sha256": "dbb17f020720f9437c39847e9627f10791fdba27714e7aa278e560532a071bc1",
+      "row_count": 5474,
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "walk_forward_records.csv",
       "sha256": "4ba149201f1295001813a2a491f4c5cd86d291a1737c1f3df6fd9d7f94ddb350",
       "row_count": 1102,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "walk_in_family_stats.csv",
       "sha256": "773a379f43c3dc6f596ae90587f36d7cdd5ddf3425f12362609dc6ac6079b084",
       "row_count": 49,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     },
     {
       "filename": "walk_in_multipliers.csv",
       "sha256": "cb9596fbd0e9a5f6960889de614aeb0de40a6c2b0025e618a879f50c37489c28",
       "row_count": 451,
-      "timestamp": "2026-11-11T23:28:36Z"
+      "timestamp": "2026-11-12T08:25:11Z"
     }
   ]
 }

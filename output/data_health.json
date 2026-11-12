@@ -1,25 +1,13 @@
 {
-  "generated": "2026-11-11",
-  "scanned_at": "2026-11-11T07:48:13",
+  "generated": "2026-11-12",
+  "scanned_at": "2026-11-12T08:25:10",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
     "MEDIUM": 0,
-    "INFO": 21
+    "INFO": 19
   },
   "findings": [
-    {
-      "severity": "INFO",
-      "mode": "forecast-unavailable",
-      "family": "Saratoga Tournament Of-The-Ages Open",
-      "message": "No completed editions on record; observed counts remain available"
-    },
-    {
-      "severity": "INFO",
-      "mode": "forecast-unavailable",
-      "family": "New York State Senior Championship",
-      "message": "No completed editions on record; observed counts remain available"
-    },
     {
       "severity": "INFO",
       "mode": "roster-pending",

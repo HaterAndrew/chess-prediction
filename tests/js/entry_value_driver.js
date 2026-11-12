@@ -60,7 +60,7 @@ async function main() {
   assert.equal(node('thValue').hidden, true);
   assert.equal(node('thActual').hidden, true);
   context.TOURNAMENT_DATA.tournaments = ['A', 'B', 'C'].map(card);
-  await load([event('A', 25025, 1000), event('B', 0, 2000), event('C', null, 3000)]);
+  await load([event('A', 25025, 1000, { last_day: { value: 12.5, span: 1 } }), event('B', 0, 2000), event('C', null, 3000)]);
   assert.equal(node('thValue').hidden, false);
   assert.equal(node('thActual').hidden, false);
   const actual = run("actualValueCell({family:'A', year:2027})");
@@ -70,6 +70,8 @@ async function main() {
   assert.doesNotMatch(actual, /\$1,000/);
   assert.match(actual, /after recorded refunds/);
   assert.match(actual, /2026-11-12/);
+  assert.match(actual, /\+\$12\.5 last day/);
+  assert.doesNotMatch(run("valueCell({family:'A', year:2027})"), /last day/);
   assert.match(run("valueCell({family:'A', year:2027})"), /\$1,000/);
   assert.match(run("valueCell({family:'A', year:2027})"), /aria-label="\$1,000\. Expected final Chess Action receipts/);
   assert.match(run("actualValueCell({family:'B', year:2027})"), /\$0\.00/);
@@ -98,15 +100,24 @@ async function main() {
   keySort(headers[0], 'Enter');
   assert.equal(headers[0].getAttribute('aria-sort'), 'ascending');
   assert.equal(headers[1].getAttribute('aria-sort'), null);
+  await load([event('A', 25025, 1000, { last_day: { value: -10, span: 3 } })]);
+  assert.match(run("actualValueCell({family:'A', year:2027})"), /−\$10 \/ 3d/);
+  assert.doesNotMatch(run("valueCell({family:'A', year:2027})"), /−\$10|3d/);
+  for (const last_day of [null, { value: 0, span: 1 }, { value: NaN, span: 1 }]) {
+    await load([event('A', 25025, 1000, { last_day })]);
+    assert.doesNotMatch(run("actualValueCell({family:'A', year:2027})"), /last day|td-value-sub/);
+  }
   for (const invalid of [null, undefined, -1, 1.5, '25025', Infinity, Number.MAX_SAFE_INTEGER + 1]) {
-    await load([event('A', invalid)]);
+    await load([event('A', invalid, 1000, { last_day: { value: 12.5, span: 1 } })]);
     assert.doesNotMatch(run("actualValueCell({family:'A', year:2027})"), /\$/);
   }
-  await load([event('A', 25025, null, { missing: 'no_history' })]);
+  await load([event('A', 25025, null, { missing: 'no_history', last_day: { value: 12.5, span: 1 } })]);
   assert.match(run("actualValueCell({family:'A', year:2027})"), /\$250\.25/);
-  await load([event('A', 25025, 1000, { stale: true, missing: 'collection_failed' })]);
+  assert.match(run("actualValueCell({family:'A', year:2027})"), /\+\$12\.5 last day/);
+  await load([event('A', 25025, 1000, { stale: true, missing: 'collection_failed', last_day: { value: 12.5, span: 1 } })]);
   assert.match(run("actualValueCell({family:'A', year:2027})"), /stale/);
   assert.match(run("actualValueCell({family:'A', year:2027})"), /refresh needed/);
+  assert.doesNotMatch(run("actualValueCell({family:'A', year:2027})"), /last day/);
   await load([event('A', 25025, 1000, { basis: 'onsite' })]);
   assert.doesNotMatch(run("actualValueCell({family:'A', year:2027})"), /\$/);
   assert.match(run("valueCell({family:'A', year:2027})"), /\$1,000/);

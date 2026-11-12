@@ -58,7 +58,7 @@ function _receiptCell(ev) {
   }
   const date = typeof ev.source_as_of === 'string' ? ev.source_as_of.slice(0, 10) : '';
   const detail = `${explanation} Source: ${date || 'unknown'}.${ev.stale ? ' Previous projection; refresh needed.' : ''}`;
-  const note = ev.stale ? '<div class="td-value-sub">stale</div>' : _valueLastDay(ev.last_day);
+  const note = ev.stale ? '<div class="td-value-sub">stale</div>' : '';
   return `<td data-label="Expected" class="num"><span class="td-value" tabindex="0" aria-label="${esc(_fmtUsd(ev.value) + '. ' + detail)}" title="${esc(detail)}">${_fmtUsd(ev.value)}</span>${note}</td>`;
 }
 
@@ -89,7 +89,7 @@ function actualValueCell(t) {
     `Separately collected onsite payments are excluded. Source: ${date || 'unknown'}.` +
     (ev.stale ? ' Previous receipt total; refresh needed.' : '');
   const amount = '$' + (cents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const note = ev.stale ? '<div class="td-value-sub">stale</div>' : '';
+  const note = ev.stale ? '<div class="td-value-sub">stale</div>' : _valueLastDay(ev.last_day);
   return `<td data-label="Actual so far" class="num"><span class="td-value" tabindex="0" aria-label="${esc(amount + '. ' + detail)}" title="${esc(detail)}">${amount}</span>${note}</td>`;
 }
 

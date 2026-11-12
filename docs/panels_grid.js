@@ -16,9 +16,15 @@ function sortTable(col, ev) {
     tableSortDir = 'asc';
   }
   // Update header classes
-  document.querySelectorAll('.tourney-table th.sortable').forEach(th => th.classList.remove('asc', 'desc'));
-  const header = ev && ev.target ? ev.target.closest('th') : document.querySelector(`.tourney-table th[onclick*="'${col}'"]`);
-  if (header) header.classList.add(tableSortDir);
+  document.querySelectorAll('.tourney-table th.sortable').forEach(th => {
+    th.classList.remove('asc', 'desc');
+    th.removeAttribute('aria-sort');
+  });
+  const header = ev && ev.target ? ev.target.closest('th') : document.querySelector(`.tourney-table th[data-col="${col}"]`);
+  if (header) {
+    header.classList.add(tableSortDir);
+    header.setAttribute('aria-sort', tableSortDir === 'asc' ? 'ascending' : 'descending');
+  }
   renderAllTournaments();
 }
 
@@ -114,6 +120,11 @@ function renderAllTournaments() {
         if (xa === null || xb === null) return (xa === null ? 1 : 0) - (xb === null ? 1 : 0);
         return dir * (xa - xb);
       }
+      case 'actual': {
+        const xa = actualValueFor(entryValueFor(ta)), xb = actualValueFor(entryValueFor(tb));
+        if (xa === null || xb === null) return (xa === null ? 1 : 0) - (xb === null ? 1 : 0);
+        return dir * (xa - xb);
+      }
       case 'predicted':
         if (!hasForecast(ta) || !hasForecast(tb)) return Number(!hasForecast(ta)) - Number(!hasForecast(tb));
         return dir * (ta.point_estimate - tb.point_estimate);
@@ -159,7 +170,7 @@ function renderAllTournaments() {
       <td data-label="Last day" class="num">${_lastDayCell(t)}</td>
       <td data-label="Predicted" class="td-predicted">${hasForecast(t) ? fmt(t.point_estimate) : 'Unavailable'}</td>
       <td data-label="Likely Range" class="td-range">${ci}</td>
-      <td data-label="Progress">${hasForecast(t) && t.point_estimate > 0 ? `<span class="td-progress"><span class="pace-bar-wrap" aria-hidden="true"><span class="pace-bar-fill" style="width:${pct}%"></span></span><span class="td-pct">${pct}%</span></span>` : '–'}</td>${entryValueOn() ? valueCell(t) : ''}
+      <td data-label="Progress">${hasForecast(t) && t.point_estimate > 0 ? `<span class="td-progress"><span class="pace-bar-wrap" aria-hidden="true"><span class="pace-bar-fill" style="width:${pct}%"></span></span><span class="td-pct">${pct}%</span></span>` : '–'}</td>${entryValueOn() ? valueCell(t) + actualValueCell(t) : ''}
     </tr>`;
   }).join('');
   if (active.length === 0) {

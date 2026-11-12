@@ -1,5 +1,5 @@
-// entry_value.js — the organizer's Value column on the Season table: the
-// approximate dollar value of entries per event, from the Worker's
+// entry_value.js — the organizer's Expected and Actual so far columns on the
+// Season table, from the Worker's
 // /entry-value, which answers only to the shared key (worker/src/value-route.ts).
 //
 // The figures stay behind the key. The key field opens from the Value button
@@ -54,23 +54,43 @@ function _receiptCell(ev) {
   const explanation = 'Expected final Chess Action receipts after refunds, before processor fees. ' +
     'Separately collected onsite payments are excluded.';
   if (!Number.isFinite(ev.value)) {
-    return `<td data-label="Value" class="num td-value-missing" title="${esc(reasons[ev.missing] || 'Receipts are unavailable.')}">unavailable</td>`;
+    return `<td data-label="Expected" class="num td-value-missing" title="${esc(reasons[ev.missing] || 'Receipts are unavailable.')}">unavailable</td>`;
   }
   const date = typeof ev.source_as_of === 'string' ? ev.source_as_of.slice(0, 10) : '';
   const detail = `${explanation} Source: ${date || 'unknown'}.${ev.stale ? ' Previous projection; refresh needed.' : ''}`;
   const note = ev.stale ? '<div class="td-value-sub">stale</div>' : _valueLastDay(ev.last_day);
-  return `<td data-label="Value" class="num"><span class="td-value" tabindex="0" aria-label="${esc(detail)}" title="${esc(detail)}">${_fmtUsd(ev.value)}</span>${note}</td>`;
+  return `<td data-label="Expected" class="num"><span class="td-value" tabindex="0" aria-label="${esc(_fmtUsd(ev.value) + '. ' + detail)}" title="${esc(detail)}">${_fmtUsd(ev.value)}</span>${note}</td>`;
 }
 
 // The Value cell for one table row. Called by renderAllTournaments only
 // while the column is unlocked.
 function valueCell(t) {
   const ev = entryValueFor(t);
-  if (!ev) return '<td data-label="Value" class="num">–</td>';
+  if (!ev) return '<td data-label="Expected" class="num">–</td>';
   if (ev.basis === 'chess_action_receipts') return _receiptCell(ev);
-  if (ev.missing) return '<td data-label="Value" class="num td-value-missing">no fee posted</td>';
+  if (ev.missing) return '<td data-label="Expected" class="num td-value-missing">no fee posted</td>';
   const basis = ev.basis === 'onsite' ? ' title="Only the at-the-door fee is posted"' : '';
-  return `<td data-label="Value" class="num"><span class="td-value"${basis}>${_fmtUsd(ev.value)}</span>${_valueLastDay(ev.last_day)}</td>`;
+  return `<td data-label="Expected" class="num"><span class="td-value"${basis}>${_fmtUsd(ev.value)}</span>${_valueLastDay(ev.last_day)}</td>`;
+}
+
+// An unavailable projection can still carry recorded receipts. Legacy fee
+// estimates cannot supply an actual amount, and missing is never zero.
+function actualValueFor(ev) {
+  return ev && ev.basis === 'chess_action_receipts' &&
+    Number.isSafeInteger(ev.actual_cents) && ev.actual_cents >= 0 ? ev.actual_cents : null;
+}
+
+function actualValueCell(t) {
+  const ev = entryValueFor(t);
+  const cents = actualValueFor(ev);
+  if (cents === null) return '<td data-label="Actual so far" class="num td-value-missing" title="Recorded receipts are unavailable.">–</td>';
+  const date = typeof ev.source_as_of === 'string' ? ev.source_as_of.slice(0, 10) : '';
+  const detail = 'Recorded Chess Action receipts after recorded refunds, before processor fees. ' +
+    `Separately collected onsite payments are excluded. Source: ${date || 'unknown'}.` +
+    (ev.stale ? ' Previous receipt total; refresh needed.' : '');
+  const amount = '$' + (cents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const note = ev.stale ? '<div class="td-value-sub">stale</div>' : '';
+  return `<td data-label="Actual so far" class="num"><span class="td-value" tabindex="0" aria-label="${esc(amount + '. ' + detail)}" title="${esc(detail)}">${amount}</span>${note}</td>`;
 }
 
 function _valueMessage(text) {
@@ -81,8 +101,10 @@ function _valueMessage(text) {
 }
 
 function _syncValueUi() {
-  const th = document.getElementById('thValue');
-  if (th) th.hidden = !entryValueOn();
+  for (const id of ['thValue', 'thActual']) {
+    const th = document.getElementById(id);
+    if (th) th.hidden = !entryValueOn();
+  }
   const form = document.getElementById('valueUnlock');
   if (form && entryValueOn()) form.hidden = true;
   const open = document.getElementById('valueOpen');

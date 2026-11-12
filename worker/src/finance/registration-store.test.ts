@@ -14,6 +14,26 @@ function storage(values: Map<string, string>) {
   return { get: async (keys: string | string[]) => { if (!Array.isArray(keys)) return values.get(keys) ?? null; expect(keys.length).toBeLessThanOrEqual(100);return new Map(keys.map(k => [k, values.get(k) ?? null])); } } as unknown as KVNamespace;
 }
 describe("registration cache/RPC projection", () => {
+  it("observes only the private policy number while keeping the returned record closed", async () => {
+    const x = { ...await record(), source_policy_version: 1, source_rows: ["PRIVATE ROW"] };
+    const observed: Array<[string, number | null]> = [];
+    const result = await registrationRecords(storage(new Map([[registrationKey(card), JSON.stringify(x)]])), [card], now,
+      (key, version) => observed.push([key, version]));
+    expect(observed).toEqual([[registrationKey(card), 1]]);
+    expect(JSON.stringify(result)).not.toMatch(/source_policy_version|PRIVATE|source_rows/);
+  });
+  it("does not treat a local observer failure as corrupt source data", async () => {
+    await expect(registrationRecords(storage(new Map([[registrationKey(card), JSON.stringify(await record())]])), [card], now,
+      () => { throw new Error("local_observer_failed"); })).rejects.toThrow("local_observer_failed");
+  });
+  it("does not pass arbitrary policy contents to the scheduler", async () => {
+    const x = { ...await record(), source_policy_version: { password: "PRIVATE" } };
+    const observed: Array<number | null> = [];
+    const result = await registrationRecords(storage(new Map([[registrationKey(card), JSON.stringify(x)]])), [card], now,
+      (_key, version) => observed.push(version));
+    expect(observed).toEqual([null]);
+    expect(JSON.stringify(result)).not.toMatch(/source_policy_version|PRIVATE|password/);
+  });
   it("ignores extra envelope fields and projects only closed aggregate fields", async () => {
     const x = { ...await record(), password: "PRIVATE ENVELOPE", source_rows: ["PRIVATE ROW"] };
     const values = new Map([[registrationKey(card), JSON.stringify(x)]]);

@@ -28,7 +28,8 @@ export function registrationTargets(cards: RegistrationCard[], now: number): Reg
   if (targets.length > 200) throw new Error("registration_cache_invalid");
   return targets;
 }
-export async function registrationRecords(kv: KVNamespace, cards: RegistrationCard[], now = Date.now()): Promise<RegistrationRecord[]> {
+export async function registrationRecords(kv: KVNamespace, cards: RegistrationCard[], now = Date.now(),
+  onSourcePolicy?: (key: string, version: number | null) => void): Promise<RegistrationRecord[]> {
   const targets = registrationTargets(cards, now);
   const records: RegistrationRecord[] = [];
   for (let i = 0; i < targets.length; i += 100) {
@@ -36,6 +37,7 @@ export async function registrationRecords(kv: KVNamespace, cards: RegistrationCa
     const values = await kv.get(group.map(registrationKey), "text");
     for (const card of group) {
       const base = { family: card.family, year: card.year };
+      let observed = false, policy: number | null = null;
       try {
         const text = values.get(registrationKey(card));
         if (!text) { records.push({ ...base, attempted_at: null, ok: false, reason: "not_collected", data: null, retry: false }); continue; }
@@ -48,9 +50,14 @@ export async function registrationRecords(kv: KVNamespace, cards: RegistrationCa
         if (data && Date.parse(data.source_as_of) > now + 300_000 || x.ok && !data || x.ok && x.reason !== null) throw new Error("registration_cache_invalid");
         // Do not forward arbitrary envelope/cache fields across the RPC boundary.
         records.push({ ...base, attempted_at: x.attempted_at, ok: x.ok, reason: x.reason, data, retry: x.retry === true && x.reason === "source_request_limit" });
+        policy = Number.isSafeInteger(x.source_policy_version) && x.source_policy_version >= 0 ? x.source_policy_version : null;
+        observed = true;
       } catch {
         records.push({ ...base, attempted_at: null, ok: false, reason: "registration_cache_invalid", data: null, retry: false });
       }
+      // Scheduler-only metadata is never added to the closed serving record.
+      // Observer failures propagate rather than masquerading as damaged data.
+      if (observed) onSourcePolicy?.(registrationKey(card), policy);
     }
     if (new TextEncoder().encode(JSON.stringify(records)).byteLength > 6_000_000) throw new Error("registration_cache_invalid");
   }

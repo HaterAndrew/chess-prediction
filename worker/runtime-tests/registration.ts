@@ -80,7 +80,8 @@ export async function registrationRuntime(request: Request): Promise<Response | 
     return Response.json({ first, retry, second, totals: records.map(r => r.data?.total), puts });
   }
   if (path === "/registration-failure-isolation") {
-    const now = Date.now();
+    // Keep its paid-history bucket inside the fixture's forecast horizon.
+    const now = Date.parse("2026-11-10T02:40:00Z");
     const id = await sha256("synthetic-player");
     const card: ReceiptCard = { family: "Example Open", year: 2026, status: "live", current_count: 1, point_estimate: 2,
       event_start: "2026-11-14", regular_fee: 10, count_observed_at: new Date(now - 3_600_000).toISOString(), count_cohort_hash: await cohortHash([id]) };

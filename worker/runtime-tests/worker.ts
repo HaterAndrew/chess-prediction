@@ -1,4 +1,5 @@
 // Local runtime harness only; neither production configuration references it.
+import { recoveryPriority } from "./recovery-priority";
 import { registrationRuntime } from "./registration";
 import { receiptEditionRuntime } from "./receipt-edition";
 import { ChessActionClient } from "../src/finance/client";
@@ -16,6 +17,7 @@ const syntheticInvoice = (event: string) => `<html><head></head><body><div id="i
 
 export default {
   async fetch(request: Request): Promise<Response> {
+    if (new URL(request.url).pathname === "/recovery-priority") return recoveryPriority(request);
     const registration = await registrationRuntime(request);
     if (registration) return registration;
     const receiptEdition = await receiptEditionRuntime(request, syntheticInvoice);

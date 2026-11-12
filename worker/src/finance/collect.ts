@@ -80,7 +80,7 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
     return { collected: 0, failed: 1 };
   }
   const freshEventRequests = client.remainingRequests;
-  const needed: Array<{ card: ReceiptCard; previous: Awaited<ReturnType<typeof readSnapshot>>; priority: number; attempted: string }> = [];
+  const needed: Array<{ card: ReceiptCard; previous: Awaited<ReturnType<typeof readSnapshot>>; priority: number; recovery: boolean; attempted: string }> = [];
   const midnight = Date.parse(attemptedAt.slice(0, 10) + "T00:00:00Z");
   const families = new Set(cards.filter(c => c.status === "live").map(c => c.family));
   const priorYears = new Map<string, number[]>();
@@ -116,12 +116,17 @@ export async function collectBatch(env: FinanceEnv, cards: ReceiptCard[], now = 
     const due = card.status === "live" || recent ? midnight : now - 7 * DAY;
     if (!previous || repairCohort || lastAttempt.ok === false || Date.parse(previous.source_as_of) < due
         || Date.parse(card.count_observed_at ?? "") > Date.parse(previous.source_as_of)) {
-      needed.push({ card, previous, priority: card.status === "live" ? 0 : recent ? 1 : 2, attempted: lastAttempt.attempted_at ?? "" });
+      // Recover unavailable reports ahead of routine midnight refreshes. A
+      // capture aged one day joins this tier before the 36-hour freshness cap,
+      // so continuing large imports cannot indefinitely starve healthy reports.
+      const recovery = card.status === "live" && (!previous || repairCohort || lastAttempt.ok === false
+        || now - Date.parse(previous.source_as_of) >= DAY);
+      needed.push({ card, previous, priority: card.status === "live" ? 0 : recent ? 1 : 2, recovery, attempted: lastAttempt.attempted_at ?? "" });
     }
   }
   const byAge = (a: typeof needed[number], b: typeof needed[number]) => (a.previous?.source_as_of ?? "").localeCompare(b.previous?.source_as_of ?? "");
   const byRotation = (a: typeof needed[number], b: typeof needed[number]) => a.attempted.localeCompare(b.attempted) || byAge(a, b);
-  needed.sort((a, b) => a.priority - b.priority || byRotation(a, b) || b.card.year - a.card.year || a.card.family.localeCompare(b.card.family));
+  needed.sort((a, b) => a.priority - b.priority || Number(b.recovery) - Number(a.recovery) || byRotation(a, b) || b.card.year - a.card.year || a.card.family.localeCompare(b.card.family));
   let collected = 0;
   let failed = 0;
   const calibration = needed.filter(item => item.priority > 0).sort(byRotation)[0];

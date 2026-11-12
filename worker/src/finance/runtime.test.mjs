@@ -339,6 +339,21 @@ describe("native Worker source boundaries", () => {
   it("retries repaired source-policy failures once without disabling daily backoff", async () => {
     expect((await invoke("/source-policy-retry", {})).body).toEqual({first:{collected:0,failed:1},second:{collected:0,failed:0},attempts:1});
   });
+  it("recovers unavailable live reports before older healthy daily refreshes", async () => {
+    for (const kind of ["missing", "resume", "cohort"]) {
+      expect((await invoke("/recovery-priority", {kind})).body).toMatchObject({attempted:["2"],healthyMissing:null});
+    }
+  });
+  it("preserves healthy rotation and daily failure backoff", async () => {
+    for (const kind of ["healthy", "blocked"]) expect((await invoke("/recovery-priority", {kind})).body.attempted).toEqual(["1"]);
+  });
+  it("promotes aging captures before the 36-hour freshness cutoff", async () => {
+    expect((await invoke("/recovery-priority", {healthyAgeHours:24})).body).toMatchObject({attempted:["1"],healthyMissing:null});
+    expect((await invoke("/recovery-priority", {healthyAgeHours:23.99})).body).toMatchObject({attempted:["2"],healthyMissing:null});
+  });
+  it("keeps the reserved calibration slot ahead of live recovery", async () => {
+    expect((await invoke("/recovery-priority", {calibration:true,now:"2026-11-09T02:00:00Z"})).body.attempted).toEqual(["3"]);
+  });
   it("attempts reserved calibration before live work can exhaust the request budget", async () => {
     expect((await invoke("/budget-priority", {})).body).toEqual({ attempted: ["2"] });
   });

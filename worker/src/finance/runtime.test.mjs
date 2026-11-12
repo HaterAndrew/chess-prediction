@@ -43,6 +43,37 @@ async function invoke(path, body) {
   return { status: response.status, body: await response.json() };
 }
 
+describe("registration source mapping recovery", () => {
+  it("retries and prioritizes an old same-day unmapped record when its exact source now matches", async () => {
+    const x = (await invoke("/mapping-recovery", {})).body;
+    expect(x.firstRecord).toMatchObject({ ok: true, source_policy_version: 1, data: { total: 1 } });
+    expect(new Set(x.attempts[0].ids)).toEqual(new Set(["4182"]));
+    expect(new Set(x.attempts[1].ids)).toEqual(new Set(["2"]));
+    expect(JSON.stringify(x.records)).not.toContain("source_policy_version");
+    for (const attempt of x.attempts) expect(attempt.calls).toBeLessThanOrEqual(6);
+    expect(Math.max(x.firstPuts, x.secondPuts)).toBeLessThanOrEqual(12);
+  });
+  it.each(["current", "future", "absent", "ambiguous"])("preserves same-day backoff for %s source mappings", async mode => {
+    const x = (await invoke("/mapping-recovery", { mode })).body;
+    expect(x.firstRecord).toMatchObject({ ok: false, reason: "unmapped_tournament" });
+    expect(new Set(x.attempts[0].ids)).toEqual(new Set(["2"]));
+    expect(x.attempts[1].ids).toEqual([]);
+  });
+  it("retains identity refusal and records the policy without repeatedly retrying it", async () => {
+    const x = (await invoke("/mapping-recovery", { mode: "identity" })).body;
+    expect(x.firstRecord).toMatchObject({ ok: false, reason: "registration_identity_invalid", source_policy_version: 1, data: null });
+    expect(new Set(x.attempts[1].ids)).toEqual(new Set(["2"]));
+  });
+  it("leaves an unstarted repair due when the source budget cannot begin it", async () => {
+    const x = (await invoke("/mapping-recovery", { mode: "limited" })).body;
+    expect(x.first).toEqual({ collected: 0, failed: 0 });
+    expect(x.firstRecord).not.toHaveProperty("source_policy_version");
+    expect(x.finalRecord).toMatchObject({ ok: true, source_policy_version: 1 });
+    expect(x.attempts[0].ids).toEqual([]);
+    expect(new Set(x.attempts[1].ids)).toEqual(new Set(["4182"]));
+  });
+});
+
 const summaryHtml = `<table><thead><tr>
 <th>Tournament fees ($) <br>[Cart Discounts deducted]</th><th>Primary membership fees ($)</th>
 <th>PayPal/Credit Card Fee Contributions ($)</th><th>Other fees ($)</th><th>Refunded ($)</th><th>Gross Revenue ($)</th>

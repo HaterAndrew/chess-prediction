@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-12",
-  "scanned_at": "2026-11-12T08:25:10",
+  "generated": "2026-11-13",
+  "scanned_at": "2026-11-13T08:04:26",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -29,12 +29,6 @@
     {
       "severity": "INFO",
       "mode": "roster-pending",
-      "family": "Kings Island Open",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
       "family": "Liberty Bell Open",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
@@ -53,6 +47,12 @@
     {
       "severity": "INFO",
       "mode": "roster-pending",
+      "family": "Southwest Class Championships",
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
       "family": "Atlantic City Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
@@ -60,6 +60,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "George Washington Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Kings Island Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
@@ -96,12 +102,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Southern Class Championships",
-      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Southwest Class Championships",
       "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {

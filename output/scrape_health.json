@@ -1198,5 +1198,13 @@
     "error_count": 0,
     "warning_count": 3,
     "duration_seconds": 183.3
+  },
+  {
+    "timestamp": "2026-11-13 08:04:26",
+    "success": true,
+    "row_count": 18,
+    "error_count": 0,
+    "warning_count": 3,
+    "duration_seconds": 182.4
   }
 ]

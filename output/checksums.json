@@ -4,91 +4,91 @@
       "filename": "daily_registration_counts.csv",
       "sha256": "c131de1b6f6d5a2a0d01888d3032c0927e471df2e3706123e874e9fa1370286d",
       "row_count": 13968,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "daily_scrape.csv",
-      "sha256": "9ff739dfb30ccb4c388b151f93129a6fc529f954e6e4110dec1e0702e5bbc763",
-      "row_count": 4355,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "sha256": "07a5214528b6c0bf92ba17e3bf4eda9a4e5d49fdf7952272c609f183c899f0ef",
+      "row_count": 4373,
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "edition_registry.csv",
       "sha256": "e97cbade7624489f7dce3c6f17e1f624f72df8a73244cef9a3592f9f9724b20f",
       "row_count": 1131,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "final_count_corrections.csv",
       "sha256": "676a1df0e8ee0327a0c4195a8bf63c96634104efd1fe8ba227d36fc1b407ca45",
       "row_count": 8,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "forecast_ledger.csv",
       "sha256": "d199f84fce029bbb533c3853de342c6e10cd47417dfe0886f7c441b5da75d552",
       "row_count": 2267,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "forecast_ledger_backfill.csv",
       "sha256": "326b33f00d74c85640795de37a1f5a6c214ad8c316e9b50a231410f11f52651b",
       "row_count": 4654,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "historical_standings.csv",
       "sha256": "30e0fbb551da2de6ed5a292ce6a9d291b4828ad5920eaf182213e0b7e844af1a",
       "row_count": 888,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "historical_tournaments.csv",
       "sha256": "a78b46ac505bf403165d17faa8f4613ca222a08e85eb5a4c5d693316d9e015a9",
       "row_count": 754,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "tournament_fees.csv",
       "sha256": "9a7a7da0aa8062a4b4cb2e71a5bf90f11c91c4922dd527226e2451a47c841590",
       "row_count": 122,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "tournament_metadata.csv",
       "sha256": "80bde7411ead4a11c351e885b94b8b8bb63a8b746cf97d77e75077d3b1bde352",
       "row_count": 337,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "tournament_summary.csv",
-      "sha256": "4e4e4e661b32fa1b58a2d1b62a8f06b6b692ec61cff393d34093d9e6eb1dbd73",
+      "sha256": "de89ababce201e62393879e86b296019d40a44914b9c3f95f8296f38f63938e7",
       "row_count": 790,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "update_log.csv",
-      "sha256": "bcdb6ced4101325921df32afbd1d3c1a7ca7859d23099f5ebf10d7530997d8dd",
-      "row_count": 5487,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "sha256": "e253454f849d44cb9dcbe5ab7590da5a137c7265081338aaa8fd7279cd155a1c",
+      "row_count": 5500,
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "walk_forward_records.csv",
       "sha256": "4ba149201f1295001813a2a491f4c5cd86d291a1737c1f3df6fd9d7f94ddb350",
       "row_count": 1102,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "walk_in_family_stats.csv",
       "sha256": "773a379f43c3dc6f596ae90587f36d7cdd5ddf3425f12362609dc6ac6079b084",
       "row_count": 49,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     },
     {
       "filename": "walk_in_multipliers.csv",
       "sha256": "cb9596fbd0e9a5f6960889de614aeb0de40a6c2b0025e618a879f50c37489c28",
       "row_count": 451,
-      "timestamp": "2026-11-13T08:06:21Z"
+      "timestamp": "2026-11-14T07:40:49Z"
     }
   ]
 }

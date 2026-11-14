@@ -769,20 +769,20 @@ tid,tournament_name,family,tournament_year,final_count,has_timestamps,ts_count,f
 4421,2026 Eastern Chess Congress (in New Jersey),Eastern Chess Congress,2026.0,446,True,446,2026-04-23 14:51:27,2026-10-24 09:13:01,False,False,2026-10-24 09:13:01,False,75.0,1.0,False,2026-11-11T01:41:34.454Z,4521
 4422,2026 Eastern Class Championships (in Connecticut),Eastern Class Championships,2026.0,206,True,206,2026-04-23 14:47:56,2026-10-17 09:35:20,False,False,2026-10-17 09:35:20,False,75.0,1.0,False,2026-11-11T01:41:55.107Z,4520
 4423,2026 Indianapolis Open,Indianapolis Open,2026.0,180,True,180,2026-05-12 15:11:42,2026-08-22 09:53:59,False,False,2026-08-22 09:53:59,False,56.0,0.5,False,2026-11-11T03:41:14.059Z,4496
-4424,2026 Kings Island Open,Kings Island Open,2026.0,282,False,0,,,False,False,,False,,,True,,
+4424,2026 Kings Island Open,Kings Island Open,2026.0,293,False,0,,,False,False,,False,,,True,,
 4425,2026 Los Angeles Open,Los Angeles Open,2026.0,306,True,306,2026-05-03 16:00:53,2026-11-07 09:42:48,False,False,2026-11-07 09:42:48,False,61.0,2.0,False,2026-11-11T03:41:59.192Z,4531
 4426,2026 Midwest Class Championships,Midwest Class Championships,2026.0,237,True,237,2026-04-25 08:06:53,2026-10-10 09:55:15,False,False,2026-10-10 09:55:15,False,,0.0,False,2026-11-11T04:41:32.438Z,4519
-4427,2026 National Chess Congress,National Chess Congress,2026.0,223,False,0,,,False,False,,False,,,True,,
+4427,2026 National Chess Congress,National Chess Congress,2026.0,236,False,0,,,False,False,,False,,,True,,
 4428,2026 New York State Championship,New York State Championship,2026.0,332,True,332,2026-04-06 02:54:09,2026-09-05 21:42:28,False,False,2026-09-05 21:42:28,False,58.0,3.0,False,2026-11-11T04:41:53.570Z,4476
 4429,2026 North American Blitz Championship,North American Blitz Championship,2026.0,16,False,0,,,False,False,,False,,,True,,
-4430,2026 North American Open,North American Open,2026.0,440,False,0,,,False,False,,False,,,True,,
+4430,2026 North American Open,North American Open,2026.0,447,False,0,,,False,False,,False,,,True,,
 4431,2026 Southern Open,Southern Open,2026.0,206,True,206,2026-04-27 21:50:19,2026-07-18 06:02:23,False,False,2026-07-18 06:02:23,False,64.0,1.0,False,2026-11-11T07:41:32.415Z,4416
 4432,2026 World Open Under 13 Championship,World Open Under 13 Championship,2026.0,86,True,86,2026-04-06 22:47:56,2026-06-29 08:47:32,False,False,2026-06-29 08:47:32,False,57.0,1.0,False,2026-11-11T09:41:10.279Z,4398
 4433,2026 Eastern Open,Eastern Open,2026.0,19,False,0,,,False,False,,False,,,True,,
 4434,2027 Atlantic City Open,Atlantic City Open,2027.0,1,False,0,,,False,False,,False,,,True,,
-4435,2027 Boston Chess Congress,Boston Chess Congress,2027.0,5,False,0,,,False,False,,False,,,True,,
+4435,2027 Boston Chess Congress,Boston Chess Congress,2027.0,8,False,0,,,False,False,,False,,,True,,
 4436,2027 George Washington Open,George Washington Open,2027.0,1,False,0,,,False,False,,False,,,True,,
-4437,2027 Liberty Bell Open,Liberty Bell Open,2027.0,4,False,0,,,False,False,,False,,,True,,
+4437,2027 Liberty Bell Open,Liberty Bell Open,2027.0,5,False,0,,,False,False,,False,,,True,,
 4438,2027 Southern Class,Southern Class Championships,2027.0,2,False,0,,,False,False,,False,,,True,,
 4439,2027 Southwest Class Championships,Southwest Class Championships,2027.0,1,False,0,,,False,False,,False,,,True,,
 4440,2027 Golden State Open,Golden State Open,2027.0,2,False,0,,,False,False,,False,,,True,,

@@ -1,43 +1,4 @@
 run_timestamp,family,status,current_count,point_estimate,ci_lower,ci_upper,days_remaining,prediction_source,year
-2026-08-17 02:34:21,Atlantic Open,live,141,242,207,283,4,,
-2026-08-17 02:34:21,Indianapolis Open,live,103,169,146,196,4,,
-2026-08-17 02:34:21,New York State Championship,live,81,324,285,368,18,,
-2026-08-17 02:34:21,Midwest Class Championships,live,12,313,296,338,53,,
-2026-08-17 02:34:21,Eastern Class Championships (in Connecticut),live,9,221,198,246,60,,
-2026-08-17 02:34:21,Eastern Chess Congress (in New Jersey),live,10,469,404,513,67,,
-2026-08-17 02:34:21,Los Angeles Open,live,6,365,289,413,81,,
-2026-08-17 02:34:21,Kings Island Open,live,8,346,318,364,88,,
-2026-08-17 02:34:21,National Chess Congress,live,9,623,572,677,102,,
-2026-08-17 02:34:21,North American Open,live,43,1081,946,1199,131,,
-2026-08-17 02:34:21,Eastern Open,live,0,387,367,404,131,,
-2026-08-17 02:34:21,Boston Chess Congress,complete,359,359,359,359,0,,
-2026-08-17 02:34:21,Liberty Bell Open,complete,564,564,564,564,0,,
-2026-08-17 02:34:21,Golden State Open,complete,387,387,387,387,0,,
-2026-08-17 02:34:21,George Washington Open,complete,209,209,209,209,0,,
-2026-08-17 02:34:21,Southwest Class Championships,complete,492,492,492,492,0,,
-2026-08-17 02:34:21,Atlantic City Open,complete,424,424,424,424,0,,
-2026-08-17 02:34:21,Western Class Championships,complete,318,318,318,318,0,,
-2026-08-17 02:34:21,Mid-America Open,complete,200,200,200,200,0,,
-2026-08-17 02:34:21,New York State High School Championship,complete,198,198,198,198,0,,
-2026-08-17 02:34:21,New York State Senior Championship With Young Adult Mi,complete,61,61,61,61,0,,
-2026-08-17 02:34:21,New York State Scholastic Championships Grades K-8,complete,1753,1753,1753,1753,0,,
-2026-08-17 02:34:21,Chicago Open,complete,917,917,917,917,0,,
-2026-08-17 02:34:21,World Open top 6 sections,complete,1066,1066,1066,1066,0,,
-2026-08-17 02:34:21,World Open lower sections,complete,93,93,93,93,0,,
-2026-08-17 02:34:21,DC International,complete,107,107,107,107,0,,
-2026-08-17 02:34:21,Southern Class Championships,complete,195,195,195,195,0,,
-2026-08-17 02:34:21,New York State Open,complete,109,109,109,109,0,,
-2026-08-17 02:34:21,DC Open,complete,188,188,188,188,0,,
-2026-08-17 02:34:21,Chicago Class,complete,288,288,288,288,0,,
-2026-08-17 02:34:21,Bradley Open,complete,209,209,209,209,0,,
-2026-08-17 02:34:21,Hartford Open,complete,206,206,206,206,0,,
-2026-08-17 02:34:21,Pittsburgh Open,complete,170,170,170,170,0,,
-2026-08-17 02:34:21,Pacific Coast Open,complete,394,394,394,394,0,,
-2026-08-17 02:34:21,Cleveland Open,complete,179,179,179,179,0,,
-2026-08-17 02:34:21,Central California Open,complete,169,169,169,169,0,,
-2026-08-17 02:34:21,Continental Open,complete,266,266,266,266,0,,
-2026-08-17 02:34:21,Southern Open,complete,206,206,206,206,0,,
-2026-08-17 02:34:21,World Open Under 13 Championship,complete,82,82,82,82,0,,
 2026-08-18 02:29:39,Atlantic Open,live,168,238,197,289,3,,
 2026-08-18 02:29:39,Indianapolis Open,live,115,163,137,195,3,,
 2026-08-18 02:29:39,New York State Championship,live,89,328,289,372,17,,
@@ -5499,3 +5460,55 @@ run_timestamp,family,status,current_count,point_estimate,ci_lower,ci_upper,days_
 2026-11-14 07:37:51,New York State Championship,complete,332,332,332,332,0,final,2026
 2026-11-14 07:37:51,Southern Open,complete,206,206,206,206,0,final,2026
 2026-11-14 07:37:51,World Open Under 13 Championship,complete,86,86,86,86,0,final,2026
+2026-11-15 07:53:37,Kings Island Open,live,294,294,294,294,0,in_progress_actual,2026
+2026-11-15 07:53:37,National Chess Congress,live,248,661,604,722,12,model,2026
+2026-11-15 07:53:37,North American Open,live,454,1198,1127,1274,41,model,2026
+2026-11-15 07:53:37,Eastern Open,live,20,374,348,402,41,model,2026
+2026-11-15 07:53:37,Boston Chess Congress,live,8,353,285,422,54,model,2027
+2026-11-15 07:53:37,Liberty Bell Open,live,5,558,450,668,61,model,2027
+2026-11-15 07:53:37,Golden State Open,live,3,377,304,451,61,model,2027
+2026-11-15 07:53:37,Southwest Class Championships,live,2,477,385,571,88,model,2027
+2026-11-15 07:53:37,George Washington Open,live,1,264,225,313,103,metadata_historical_avg,2027
+2026-11-15 07:53:37,Saratoga Tournament Of-The-Ages Open,live,0,18,12,25,103,metadata_historical_avg,2027
+2026-11-15 07:53:37,New York State Senior Championship,live,0,40,32,49,103,metadata_historical_avg,2027
+2026-11-15 07:53:37,New York State High School Championship,live,3,208,198,219,104,metadata_historical_avg,2027
+2026-11-15 07:53:37,New York State Scholastic Championships Grades K-8,live,20,1505,1095,1772,111,metadata_historical_avg,2027
+2026-11-15 07:53:37,Western Class Championships,live,1,348,285,405,117,metadata_historical_avg,2027
+2026-11-15 07:53:37,Mid-America Open,live,0,283,231,324,124,metadata_historical_avg,2027
+2026-11-15 07:53:37,Southern Class Championships,live,2,214,182,261,124,metadata_historical_avg,2027
+2026-11-15 07:53:37,Atlantic City Open,live,1,465,419,523,129,metadata_historical_avg,2027
+2026-11-15 07:53:37,Boston Chess Congress,complete,359,359,359,359,0,final,2026
+2026-11-15 07:53:37,Liberty Bell Open,complete,564,564,564,564,0,final,2026
+2026-11-15 07:53:37,Golden State Open,complete,387,387,387,387,0,final,2026
+2026-11-15 07:53:37,George Washington Open,complete,209,209,209,209,0,final,2026
+2026-11-15 07:53:37,Southwest Class Championships,complete,492,492,492,492,0,final,2026
+2026-11-15 07:53:37,Atlantic City Open,complete,424,424,424,424,0,final,2026
+2026-11-15 07:53:37,Western Class Championships,complete,318,318,318,318,0,final,2026
+2026-11-15 07:53:37,Mid-America Open,complete,200,200,200,200,0,final,2026
+2026-11-15 07:53:37,New York State High School Championship,complete,198,198,198,198,0,final,2026
+2026-11-15 07:53:37,New York State Senior Championship With Young Adult Mi,complete,61,61,61,61,0,final,2026
+2026-11-15 07:53:37,New York State Scholastic Championships Grades K-8,complete,1753,1753,1753,1753,0,final,2026
+2026-11-15 07:53:37,Chicago Open,complete,917,917,917,917,0,final,2026
+2026-11-15 07:53:37,World Open top 6 sections,complete,1111,1111,1111,1111,0,final,2026
+2026-11-15 07:53:37,World Open lower sections,complete,96,96,96,96,0,final,2026
+2026-11-15 07:53:37,DC International,complete,107,107,107,107,0,final,2026
+2026-11-15 07:53:37,Southern Class Championships,complete,195,195,195,195,0,final,2026
+2026-11-15 07:53:37,New York State Open,complete,109,109,109,109,0,final,2026
+2026-11-15 07:53:37,DC Open,complete,188,188,188,188,0,final,2026
+2026-11-15 07:53:37,Chicago Class,complete,303,303,303,303,0,final,2026
+2026-11-15 07:53:37,Bradley Open,complete,209,209,209,209,0,final,2026
+2026-11-15 07:53:37,Hartford Open,complete,206,206,206,206,0,final,2026
+2026-11-15 07:53:37,Pittsburgh Open,complete,170,170,170,170,0,final,2026
+2026-11-15 07:53:37,Pacific Coast Open,complete,394,394,394,394,0,final,2026
+2026-11-15 07:53:37,Cleveland Open,complete,179,179,179,179,0,final,2026
+2026-11-15 07:53:37,Atlantic Open,complete,242,242,242,242,0,final,2026
+2026-11-15 07:53:37,Central California Open,complete,169,169,169,169,0,final,2026
+2026-11-15 07:53:37,Continental Open,complete,280,280,280,280,0,final,2026
+2026-11-15 07:53:37,Eastern Chess Congress,complete,446,446,446,446,0,final,2026
+2026-11-15 07:53:37,Eastern Class Championships,complete,206,206,206,206,0,final,2026
+2026-11-15 07:53:37,Indianapolis Open,complete,180,180,180,180,0,final,2026
+2026-11-15 07:53:37,Los Angeles Open,complete,306,306,306,306,0,final,2026
+2026-11-15 07:53:37,Midwest Class Championships,complete,237,237,237,237,0,final,2026
+2026-11-15 07:53:37,New York State Championship,complete,332,332,332,332,0,final,2026
+2026-11-15 07:53:37,Southern Open,complete,206,206,206,206,0,final,2026
+2026-11-15 07:53:37,World Open Under 13 Championship,complete,86,86,86,86,0,final,2026

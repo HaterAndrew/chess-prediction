@@ -13,5 +13,5 @@ beautifulsoup4==4.15.0
 # pydantic and typeguard are pandera's own dependencies, pinned because their
 # major releases have broken pandera before.
 pandera[pandas]==0.35.0
-pydantic==2.14.2
+pydantic==2.14.3
 typeguard==4.6.0

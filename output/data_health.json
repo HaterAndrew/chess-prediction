@@ -1,11 +1,11 @@
 {
-  "generated": "2026-11-16",
-  "scanned_at": "2026-11-16T08:03:58",
+  "generated": "2026-11-17",
+  "scanned_at": "2026-11-17T09:19:06",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
     "MEDIUM": 0,
-    "INFO": 19
+    "INFO": 18
   },
   "findings": [
     {
@@ -60,12 +60,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "George Washington Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "Kings Island Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-16 21:27:14",
+  "generated": "2026-11-17 09:14:29",
   "count": 4,
   "total_occurrences": 4,
   "warnings": [
@@ -7,25 +7,25 @@
       "step": "Validate scraped data",
       "text": "No readable entry list for Saratoga Tournament Of-The-Ages Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKifng==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-16 08:00:50"
+      "generated": "2026-11-17 09:14:29"
     },
     {
       "step": "Validate scraped data",
       "text": "No readable entry list for 2027 New York State Senior Championship (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKifnQ==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-16 08:00:50"
+      "generated": "2026-11-17 09:14:29"
     },
     {
       "step": "Validate scraped data",
       "text": "No readable entry list for 2027 Mid-America Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKefoQ==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-16 08:00:50"
+      "generated": "2026-11-17 09:14:29"
     },
     {
       "step": "Registration feed",
       "text": "Registration feed incomplete: 1 failed, 0 stale, 0 without timestamps; reasons={'registration_identity_invalid': 1}; retained verified curves for those editions.",
       "count": 1,
-      "generated": "2026-11-16 08:00:50"
+      "generated": "2026-11-17 09:14:29"
     }
   ]
 }

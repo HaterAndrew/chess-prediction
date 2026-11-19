@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-18",
+  "generated": "2026-11-19",
   "model": "N5v4_Final",
   "n_tournaments": 34,
   "grade": "B+",
@@ -4201,7 +4201,7 @@
     }
   ],
   "n_corpus_tournaments": 790,
-  "n_entry_records": 198192,
+  "n_entry_records": 198219,
   "corpus_year_min": 2012,
   "corpus_year_max": 2027,
   "corpus_year_span": 16,
@@ -6456,7 +6456,7 @@
       "source": "forecast ledger and its backfill",
       "match_days": 3,
       "first_date": "2026-03-23",
-      "last_date": "2026-11-17"
+      "last_date": "2026-11-18"
     },
     "n_records": 186,
     "n_invalid_ranges": 0,
@@ -7619,7 +7619,7 @@
             "source": "forecast ledger and its backfill",
             "match_days": 3,
             "first_date": "2026-11-11",
-            "last_date": "2026-11-17"
+            "last_date": "2026-11-18"
           },
           "n_records": 1,
           "n_invalid_ranges": 0,

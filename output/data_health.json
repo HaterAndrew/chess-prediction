@@ -1,18 +1,18 @@
 {
-  "generated": "2026-11-18",
-  "scanned_at": "2026-11-18T08:37:02",
+  "generated": "2026-11-19",
+  "scanned_at": "2026-11-19T08:52:16",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
     "MEDIUM": 1,
-    "INFO": 18
+    "INFO": 19
   },
   "findings": [
     {
       "severity": "MEDIUM",
       "mode": "large-withdrawal-gap",
       "family": "Liberty Bell Open",
-      "message": "1 of 9 scraped entries withdrawn (11%) as of 2026-11-18"
+      "message": "1 of 9 scraped entries withdrawn (11%) as of 2026-11-19"
     },
     {
       "severity": "INFO",
@@ -60,6 +60,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Atlantic City Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "Chicago Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {

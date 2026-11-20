@@ -91558,7 +91558,7 @@
     }
   ],
   "last_updated": "2026-11-19 08:50:09",
-  "is_stale": false,
+  "is_stale": true,
   "counts_through": "2026-11-18",
   "alerts": [
     {
@@ -91687,5 +91687,8 @@
       "n_years": 4,
       "message": "Registrations are 100.0% below 4-year at-this-point pace"
     }
-  ]
+  ],
+  "pipeline_degraded": true,
+  "degraded_reason": "Nightly run failed at the test + lint gate; showing the last published data",
+  "degraded_at": "2026-11-20 08:38:50"
 }

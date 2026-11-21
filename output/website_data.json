@@ -91690,5 +91690,5 @@
   ],
   "pipeline_degraded": true,
   "degraded_reason": "Nightly run failed at the test + lint gate; showing the last published data",
-  "degraded_at": "2026-11-20 08:38:50"
+  "degraded_at": "2026-11-21 08:23:32"
 }

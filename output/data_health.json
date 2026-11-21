@@ -1,19 +1,13 @@
 {
-  "generated": "2026-11-19",
-  "scanned_at": "2026-11-19T08:52:16",
+  "generated": "2026-11-21",
+  "scanned_at": "2026-11-21T11:36:49",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
-    "MEDIUM": 1,
+    "MEDIUM": 0,
     "INFO": 19
   },
   "findings": [
-    {
-      "severity": "MEDIUM",
-      "mode": "large-withdrawal-gap",
-      "family": "Liberty Bell Open",
-      "message": "1 of 9 scraped entries withdrawn (11%) as of 2026-11-19"
-    },
     {
       "severity": "INFO",
       "mode": "roster-pending",

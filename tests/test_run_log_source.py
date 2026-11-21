@@ -9,11 +9,15 @@ worthless unless both halves agree on it.
 """
 import csv
 import json
+from datetime import datetime, timedelta
+
+import pytest
 
 from tournament_aliases import canonicalize_family
 
 from healthcheck import context
 from pipeline import config, run_log
+from shared.season import CURRENT_SEASON
 
 LEGACY_HEADER = ("run_timestamp,family,status,current_count,point_estimate,"
                  "ci_lower,ci_upper,days_remaining")
@@ -21,7 +25,7 @@ LEGACY_HEADER = ("run_timestamp,family,status,current_count,point_estimate,"
 
 def _log_run(tmp_path, monkeypatch, log_path, **card_over):
     """Run the logger against one synthetic card, return the rows it left."""
-    card = dict(family="Graduated Open", year=2026, status="live",
+    card = dict(family="Graduated Open", year=CURRENT_SEASON, status="live",
                 current_count=13, point_estimate=313, ci_lower=296,
                 ci_upper=338, days_remaining=48, prediction_source="model")
     card.update(card_over)
@@ -42,19 +46,26 @@ def test_new_log_records_the_estimator_that_produced_the_row(tmp_path, monkeypat
     assert rows[-1]["prediction_source"] == "model"
 
 
-def test_existing_log_gains_the_column_without_losing_rows(tmp_path, monkeypatch):
+@pytest.mark.parametrize("age_days", [1, 89, 91])
+def test_existing_log_gains_the_column_and_retains_recent_rows(tmp_path, monkeypatch,
+                                                              age_days):
     """Appending a wider row under the old header would misalign the whole
-    file, so the writer migrates it first and pads the runs it cannot attribute."""
+    file, so the writer migrates it first and pads the runs it cannot attribute.
+    Retention still removes old rows after migration."""
     log = tmp_path / "update_log.csv"
+    timestamp = (datetime.now() - timedelta(days=age_days)).strftime("%Y-%m-%d %H:%M:%S")
     log.write_text(LEGACY_HEADER + "\n"
-                   "2026-08-22 02:29:07,Graduated Open,live,13,313,296,338,48\n")
+                   f"{timestamp},Graduated Open,live,13,313,296,338,48\n")
 
     rows = _log_run(tmp_path, monkeypatch, log)
 
-    assert len(rows) == 2
-    assert rows[0]["days_remaining"] == "48"
-    assert rows[0]["prediction_source"] == ""
-    assert rows[1]["prediction_source"] == "model"
+    assert len(rows) == (2 if age_days < 90 else 1)
+    if age_days < 90:
+        assert rows[0]["run_timestamp"] == timestamp
+        assert rows[0]["days_remaining"] == "48"
+        assert rows[0]["prediction_source"] == ""
+    assert rows[-1]["prediction_source"] == "model"
+    assert rows[-1]["year"] == str(CURRENT_SEASON)
 
 
 def test_migration_refuses_a_header_it_did_not_write(tmp_path):

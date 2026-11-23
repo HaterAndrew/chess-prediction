@@ -1,8 +1,14 @@
 {
-  "generated": "2026-11-23 09:08:14",
-  "count": 6,
-  "total_occurrences": 6,
+  "generated": "2026-11-23 23:07:27",
+  "count": 7,
+  "total_occurrences": 7,
   "warnings": [
+    {
+      "step": "Enrichment: fees",
+      "text": "fee-merge: no FAMILY_TO_CODE mapping for Chicago Open Blitz \u2014 scraped flyer fees (if any) cannot reach the card",
+      "count": 1,
+      "generated": "2026-11-23 23:07:27"
+    },
     {
       "step": "Validate scraped data",
       "text": "No readable entry list for Saratoga Tournament Of-The-Ages Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKifng==); withdrawals unknown, kept index count 1",

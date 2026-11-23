@@ -34,6 +34,13 @@
     "rows": 31,
     "verified_at": "2026-11-14T07:41:55.110841+00:00"
   },
+  "3798254246468e085423681d836f9c83dd2ac86f5caa1a7b94bb7918c24b48ea": {
+    "model_hash": "60309b4f04d260a7",
+    "producer_as_of_date": "2026-11-23",
+    "producer_run_ts": "2026-11-23 09:08:14",
+    "rows": 31,
+    "verified_at": "2026-11-23T09:14:43.676780+00:00"
+  },
   "562a3e917725bccc4adc219f79e1dddf0be6ad7bbc43a1edd5fb074d0fa02bf8": {
     "model_hash": "60309b4f04d260a7",
     "producer_as_of_date": "2026-11-15",

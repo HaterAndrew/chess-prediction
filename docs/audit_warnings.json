@@ -1,49 +1,49 @@
 {
-  "generated": "2026-11-23 23:07:27",
+  "generated": "2026-11-24 10:57:54",
   "count": 7,
   "total_occurrences": 7,
   "warnings": [
     {
-      "step": "Enrichment: fees",
-      "text": "fee-merge: no FAMILY_TO_CODE mapping for Chicago Open Blitz \u2014 scraped flyer fees (if any) cannot reach the card",
-      "count": 1,
-      "generated": "2026-11-23 23:07:27"
-    },
-    {
       "step": "Validate scraped data",
       "text": "No readable entry list for Saratoga Tournament Of-The-Ages Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKifng==); withdrawals unknown, kept index count 1",
       "count": 1,
-      "generated": "2026-11-23 09:08:14"
+      "generated": "2026-11-24 10:57:54"
     },
     {
       "step": "Validate scraped data",
       "text": "No readable entry list for 2027 New York State Senior Championship (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKifnQ==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-23 09:08:14"
+      "generated": "2026-11-24 10:57:54"
     },
     {
       "step": "Validate scraped data",
       "text": "No readable entry list for 2027 Mid-America Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKefoQ==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-23 09:08:14"
+      "generated": "2026-11-24 10:57:54"
     },
     {
       "step": "Validate scraped data",
       "text": "No readable entry list for 2027 Chicago Open Blitz (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKihnw==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-23 09:08:14"
+      "generated": "2026-11-24 10:57:54"
     },
     {
       "step": "Validate scraped data",
       "text": "No readable entry list for 2027 Chicago Open (https://www.chessaction.com/tournaments/advance_entry_list.php?tid=nKihng==); withdrawals unknown, kept index count 0",
       "count": 1,
-      "generated": "2026-11-23 09:08:14"
+      "generated": "2026-11-24 10:57:54"
     },
     {
       "step": "Registration feed",
       "text": "Registration feed incomplete: 1 failed, 0 stale, 0 without timestamps; reasons={'registration_identity_invalid': 1}; retained verified curves for those editions.",
       "count": 1,
-      "generated": "2026-11-23 09:08:14"
+      "generated": "2026-11-24 10:57:54"
+    },
+    {
+      "step": "Enrichment: fees",
+      "text": "fee-merge: no FAMILY_TO_CODE mapping for Chicago Open Blitz \u2014 scraped flyer fees (if any) cannot reach the card",
+      "count": 1,
+      "generated": "2026-11-23 23:07:27"
     }
   ]
 }

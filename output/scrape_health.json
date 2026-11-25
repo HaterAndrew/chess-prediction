@@ -1286,5 +1286,13 @@
     "error_count": 0,
     "warning_count": 5,
     "duration_seconds": 279.5
+  },
+  {
+    "timestamp": "2026-11-25 09:55:57",
+    "success": true,
+    "row_count": 19,
+    "error_count": 0,
+    "warning_count": 4,
+    "duration_seconds": 180.6
   }
 ]

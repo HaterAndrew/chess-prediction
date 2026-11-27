@@ -11,8 +11,10 @@ export async function mappingRecovery(request: Request): Promise<Response> {
   const ordinary = { family: "Earlier Historical Open", year: 2026, status: "complete", event_start: "2026-10-01" };
   const store = new Map<string, string>();
   store.set(registrationKey(legacy), JSON.stringify({ attempted_at: new Date(now - 3_600_000).toISOString(),
-    ok: false, reason: "unmapped_tournament", data: null, retry: false,
-    ...(mode === "current" ? { source_policy_version: 1 } : mode === "future" ? { source_policy_version: 2 } : {}) }));
+    ok: false, reason: mode.startsWith("identity-") ? "registration_identity_invalid" : "unmapped_tournament", data: null, retry: false,
+    ...(mode === "current" || mode === "identity-current" ? { source_policy_version: 2 }
+      : mode === "future" ? { source_policy_version: 3 }
+      : ["identity-recovery", "identity-failure"].includes(mode) ? { source_policy_version: 1 } : {}) }));
   let puts = 0;
   const kv = { get: async (key: string | string[]) => Array.isArray(key)
     ? new Map(key.map(k => [k, store.get(k) ?? null])) : store.get(key) ?? null,
@@ -31,7 +33,7 @@ export async function mappingRecovery(request: Request): Promise<Response> {
       const fields = new URLSearchParams(String(init.body));
       const id = fields.get("tournment")!; attempt.ids.push(id);
       const rows = fields.get("status") === "active" ? [{ eventId: "1",
-        tourid: mode === "identity" && id === "4182" ? "999" : id,
+        tourid: ["identity", "identity-failure"].includes(mode) && id === "4182" ? "999" : id,
         createdAt: '<span title="2026-01-01 12:00:00 UTC">2026-01-01 12:00:00<br />(GMT+00:00)</span>' }] : [];
       return Response.json({ aaData: rows, iTotalRecords: rows.length, iTotalDisplayRecords: rows.length });
     }, limit);

@@ -8,7 +8,7 @@ import type { RegistrationCard } from "./registrations";
 import { FinanceWriteBudget } from "./write-budget";
 import { matchTournament } from "./editions";
 
-const REGISTRATION_SOURCE_POLICY_VERSION = 1;
+const REGISTRATION_SOURCE_POLICY_VERSION = 2;
 
 // ScheduledController.cron contains the whole expression, so select the slot
 // by scheduledTime, never by the late wall clock of an invocation.
@@ -35,7 +35,8 @@ export async function collectRegistrations(env: FinanceEnv, cards: RegistrationC
   const byKey = new Map(cards.map(c => [registrationKey(c), c]));
   const repairs = new Set(records.filter(record => {
     const key = registrationKey(record);
-    if (record.reason !== "unmapped_tournament" || (policies.get(key) ?? 0) >= REGISTRATION_SOURCE_POLICY_VERSION) return false;
+    if (!["unmapped_tournament", "registration_identity_invalid"].includes(record.reason ?? "")
+        || (policies.get(key) ?? 0) >= REGISTRATION_SOURCE_POLICY_VERSION) return false;
     try { matchTournament(byKey.get(key)!, options); return true; }
     catch (error) {
       if (error instanceof Error && ["unmapped_tournament", "ambiguous_tournament", "incompatible_edition"].includes(error.message)) return false;

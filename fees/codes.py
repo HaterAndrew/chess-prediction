@@ -31,6 +31,8 @@ FAMILY_TO_CODE = {
     "Bradley Open": "brad",
     "Central California Open": "cco",
     "Chicago Open": "chio",
+    # Separate blitz flyer, verified at chiob26.htm; never use the main fee.
+    "Chicago Open Blitz": "chiob",
     "Cleveland Open": "clev",
     "Continental Open": "cono",
     "Indianapolis Open": "io",

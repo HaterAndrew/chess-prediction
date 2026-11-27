@@ -41,12 +41,35 @@ describe("registration source aggregates", () => {
       .rejects.toThrow("registration_timestamps_missing");
     expect(await acquireRegistrations(source([], []), card, "123", now)).toMatchObject({ total: 0, ts_count: 0, daily: [], calendar_daily: [] });
   });
-  it("paginates completely, including withdrawals", async () => {
+  it("reads complete bounded reports, including withdrawals", async () => {
     const client = source(Array.from({ length: 1001 }, (_, i) => row(i + 1, "2026-02-01 12:00:00")), []);
     expect((await acquireRegistrations(client, card, "123", now)).total).toBe(1001);
     expect(client.calls.map(c => [c.status, c.start, c.length])).toEqual([
-      ["active", "0", "1000"], ["active", "1000", "1000"], ["withdrawn", "0", "1000"],
+      ["active", "0", "10000"], ["withdrawn", "0", "10000"],
       ["active", "0", "1"], ["withdrawn", "0", "1"]]);
+  });
+  it("does not split timestamp ties across unstable offset pages", async () => {
+    const active = Array.from({ length: 1685 }, (_, i) => row(i + 1, "2026-02-01 12:00:00"));
+    const withdrawn = Array.from({ length: 68 }, (_, i) => row(i + 1686, "2026-02-01 12:00:00"));
+    const client = source(active, withdrawn);
+    const original = client.request;
+    client.request = async (path, fields, method) => fields.status === "active" && fields.start === "1000"
+      ? JSON.stringify({ iTotalRecords: 1685, iTotalDisplayRecords: 1685, aaData: active.slice(995, 1680) })
+      : original(path, fields, method);
+    expect(await acquireRegistrations(client, card, "123", now)).toMatchObject({ active: 1685, withdrawn: 68, total: 1753, ts_count: 1753 });
+  });
+  it("rejects a truncated report instead of accepting a partial aggregate", async () => {
+    const client = source([row(1, "2026-02-01 12:00:00")], [], x => ({ ...(x as object), iTotalRecords: 2, iTotalDisplayRecords: 2 }));
+    await expect(acquireRegistrations(client, card, "123", now)).rejects.toThrow("source_incomplete");
+  });
+  it("keeps the combined report byte ceiling", async () => {
+    const client = source([{ ...row(1, "2026-02-01 12:00:00"), padding: "x".repeat(8_000_000) }], []);
+    await expect(acquireRegistrations(client, card, "123", now)).rejects.toThrow("source_too_many_rows");
+  });
+  it("keeps the combined active and withdrawn row ceiling", async () => {
+    const rows = Array.from({ length: 10001 }, (_, i) => row(i + 1, "2026-02-01 12:00:00"));
+    await expect(acquireRegistrations(source(rows.slice(0, 6000), rows.slice(6000)), card, "123", now))
+      .rejects.toThrow("source_too_many_rows");
   });
   it.each([
     ["wrong tournament", [ { ...row(1, "2026-02-01 12:00:00"), tourid: "999" } ], []],

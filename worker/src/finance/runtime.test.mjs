@@ -46,7 +46,7 @@ async function invoke(path, body) {
 describe("registration source mapping recovery", () => {
   it("retries and prioritizes an old same-day unmapped record when its exact source now matches", async () => {
     const x = (await invoke("/mapping-recovery", {})).body;
-    expect(x.firstRecord).toMatchObject({ ok: true, source_policy_version: 1, data: { total: 1 } });
+    expect(x.firstRecord).toMatchObject({ ok: true, source_policy_version: 2, data: { total: 1 } });
     expect(new Set(x.attempts[0].ids)).toEqual(new Set(["4182"]));
     expect(new Set(x.attempts[1].ids)).toEqual(new Set(["2"]));
     expect(JSON.stringify(x.records)).not.toContain("source_policy_version");
@@ -59,18 +59,30 @@ describe("registration source mapping recovery", () => {
     expect(new Set(x.attempts[0].ids)).toEqual(new Set(["2"]));
     expect(x.attempts[1].ids).toEqual([]);
   });
-  it("retains identity refusal and records the policy without repeatedly retrying it", async () => {
-    const x = (await invoke("/mapping-recovery", { mode: "identity" })).body;
-    expect(x.firstRecord).toMatchObject({ ok: false, reason: "registration_identity_invalid", source_policy_version: 1, data: null });
+  it.each(["identity", "identity-failure"])("retains %s refusal and records the policy without repeatedly retrying it", async mode => {
+    const x = (await invoke("/mapping-recovery", { mode })).body;
+    expect(x.firstRecord).toMatchObject({ ok: false, reason: "registration_identity_invalid", source_policy_version: 2, data: null });
     expect(new Set(x.attempts[1].ids)).toEqual(new Set(["2"]));
   });
   it("leaves an unstarted repair due when the source budget cannot begin it", async () => {
     const x = (await invoke("/mapping-recovery", { mode: "limited" })).body;
     expect(x.first).toEqual({ collected: 0, failed: 0 });
     expect(x.firstRecord).not.toHaveProperty("source_policy_version");
-    expect(x.finalRecord).toMatchObject({ ok: true, source_policy_version: 1 });
+    expect(x.finalRecord).toMatchObject({ ok: true, source_policy_version: 2 });
     expect(x.attempts[0].ids).toEqual([]);
     expect(new Set(x.attempts[1].ids)).toEqual(new Set(["4182"]));
+  });
+  it("recovers an old same-day identity failure under the new bounded-report policy", async () => {
+    const x = (await invoke("/mapping-recovery", { mode: "identity-recovery" })).body;
+    expect(x.firstRecord).toMatchObject({ ok: true, source_policy_version: 2, data: { total: 1 } });
+    expect(new Set(x.attempts[0].ids)).toEqual(new Set(["4182"]));
+    expect(new Set(x.attempts[1].ids)).toEqual(new Set(["2"]));
+  });
+  it("preserves daily backoff for identity failures already attempted under the new policy", async () => {
+    const x = (await invoke("/mapping-recovery", { mode: "identity-current" })).body;
+    expect(x.firstRecord).toMatchObject({ ok: false, reason: "registration_identity_invalid", source_policy_version: 2 });
+    expect(new Set(x.attempts[0].ids)).toEqual(new Set(["2"]));
+    expect(x.attempts[1].ids).toEqual([]);
   });
 });
 

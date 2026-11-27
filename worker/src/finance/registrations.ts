@@ -71,35 +71,29 @@ export async function acquireRegistrations(client: RegistrationSource, card: { f
   const times: string[] = [];
   let bytes = 0;
   for (const status of ["active", "withdrawn"]) {
-    let total: number | null = null;
-    let received = 0;
-    for (let start = 0; start < LIMIT; start += 1000) {
-      const text = await client.request("ajaxRegistrationDataTable.php", filters(id, status, start, 1000), "POST");
-      bytes += new TextEncoder().encode(text).byteLength;
-      if (bytes > 8_000_000) throw new Error("source_too_many_rows");
-      const result = page(text, 1000);
-      if (total !== null && total !== result.total) throw new Error("source_changed_during_read");
-      total = result.total;
-      for (const row of result.rows) {
-        const key = String(row.eventId ?? "");
-        if (String(row.tourid) !== id || !/^\d{1,20}$/.test(key) || identities.has(key)) throw new Error("registration_identity_invalid");
-        identities.add(key);
-        // Request-local observers do not change the closed aggregate output.
-        onIdentity?.(key, row);
-        const time = registrationTime(row.createdAt);
-        if (time !== null) {
-          // Display times have explicit source offsets validated above. Permit
-          // the maximum local offset, without guessing the operator timezone.
-          if (millis(time) > Date.parse(sourceAsOf) + 14 * 3_600_000) throw new Error("registration_time_invalid");
-          times.push(time);
-        }
+    // The source sorts only by timestamp. Equal timestamps can straddle
+    // offset pages in a different order, repeating IDs and omitting others.
+    // Read each status in one report within the existing row/byte ceilings.
+    const text = await client.request("ajaxRegistrationDataTable.php", filters(id, status, 0, LIMIT), "POST");
+    bytes += new TextEncoder().encode(text).byteLength;
+    if (bytes > 8_000_000) throw new Error("source_too_many_rows");
+    const result = page(text, LIMIT);
+    if (result.rows.length !== result.total) throw new Error("source_incomplete");
+    for (const row of result.rows) {
+      const key = String(row.eventId ?? "");
+      if (String(row.tourid) !== id || !/^\d{1,20}$/.test(key) || identities.has(key)) throw new Error("registration_identity_invalid");
+      identities.add(key);
+      // Request-local observers do not change the closed aggregate output.
+      onIdentity?.(key, row);
+      const time = registrationTime(row.createdAt);
+      if (time !== null) {
+        // Display times have explicit source offsets validated above. Permit
+        // the maximum local offset, without guessing the operator timezone.
+        if (millis(time) > Date.parse(sourceAsOf) + 14 * 3_600_000) throw new Error("registration_time_invalid");
+        times.push(time);
       }
-      received += result.rows.length;
-      if (received === total) break;
-      if (result.rows.length !== 1000 || received > total) throw new Error("source_incomplete");
     }
-    if (received !== total) throw new Error("source_incomplete");
-    totals.push(total);
+    totals.push(result.total);
   }
   if (identities.size > LIMIT) throw new Error("source_too_many_rows");
   for (const [i, status] of ["active", "withdrawn"].entries()) {

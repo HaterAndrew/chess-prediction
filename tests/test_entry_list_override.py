@@ -277,3 +277,51 @@ def test_entry_list_redirect_is_not_followed(run, monkeypatch):
     assert tournament["entry_count"] == 9
     mismatch = json.loads(open(entries.MISMATCH_PATH).read())["mismatches"]
     assert mismatch[0]["entry_list_count"] is None
+
+
+def test_wrapper_accepts_generated_basename_without_cca_prefix(run):
+    url = "https://www.chessaction.com/tournaments/advance_entry_list.php?tid=saratoga27"
+    target = "https://www.chessaction.com/tournaments/advlists/CCA/STOTAO27/STOTAO27_alp_n.html"
+    rows, mismatch = run({url: 'x' * 1200 + 'var alpnewfilename = "advlists/CCA/STOTAO27/STOTAO27_alp_n.html";',
+                          target: _page(2, 0)}, [
+        {"name": "Saratoga Tournament Of-The-Ages Open", "year": 2027,
+         "entry_count": 2, "entry_list_url": url}])
+    assert rows[0]["active_count"] == 2
+    assert mismatch["mismatches"] == []
+
+
+@pytest.mark.parametrize("index_count", [0, 2])
+def test_explicit_empty_list_requires_an_empty_index(run, index_count):
+    empty = "x" * 1200 + "<h5>No participants have been registered for this event yet.</h5>"
+    rows, mismatch = run({"MAO27": empty}, [
+        {"name": "2027 Mid-America Open", "year": 2027, "entry_count": index_count}])
+    assert rows[0]["entry_count"] == index_count
+    if index_count == 0:
+        assert rows[0]["count_cohort_hash"]
+        assert mismatch["mismatches"] == []
+    else:
+        assert "count_cohort_hash" not in rows[0]
+        assert len(mismatch["mismatches"]) == 1
+
+
+def test_wrapper_rejects_different_directory_and_file_stems(run):
+    url = "https://www.chessaction.com/tournaments/advance_entry_list.php?tid=saratoga27"
+    _, mismatch = run({url: 'x' * 1200 + 'var alpnewfilename = "advlists/CCA/STOTAO27/OTHER27_alp_n.html";'}, [
+        {"name": "Saratoga Tournament Of-The-Ages Open", "year": 2027,
+         "entry_count": 2, "entry_list_url": url}])
+    assert len(mismatch["mismatches"]) == 1
+
+
+@pytest.mark.parametrize("other", [
+    '"https://outside.invalid/list.html"',
+    '"advlists/CCA/STOTAO27/OTHER27_alp_n.html"',
+    'untrustedVariable',
+])
+def test_wrapper_rejects_mixed_valid_and_invalid_assignments(run, other):
+    url = "https://www.chessaction.com/tournaments/advance_entry_list.php?tid=saratoga27"
+    _, mismatch = run({url: 'x' * 1200
+        + 'var alpnewfilename = "advlists/CCA/STOTAO27/STOTAO27_alp_n.html";'
+        + f'var alpnewfilename = {other};'}, [
+        {"name": "Saratoga Tournament Of-The-Ages Open", "year": 2027,
+         "entry_count": 2, "entry_list_url": url}])
+    assert len(mismatch["mismatches"]) == 1

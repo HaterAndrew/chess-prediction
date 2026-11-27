@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-26",
-  "scanned_at": "2026-11-26T09:35:36",
+  "generated": "2026-11-27",
+  "scanned_at": "2026-11-27T09:45:03",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -30,12 +30,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Liberty Bell Open",
-      "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "National Chess Congress",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
@@ -72,6 +66,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Mid-America Open",
+      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "National Chess Congress",
       "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {

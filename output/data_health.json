@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-27",
-  "scanned_at": "2026-11-27T09:45:03",
+  "generated": "2026-11-28",
+  "scanned_at": "2026-11-28T09:00:52",
   "counts": {
     "CRITICAL": 0,
     "HIGH": 0,
@@ -18,6 +18,12 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Eastern Open",
+      "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
+    },
+    {
+      "severity": "INFO",
+      "mode": "roster-pending",
+      "family": "George Washington Open",
       "message": "model prediction from live scrape \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {
@@ -54,12 +60,6 @@
       "severity": "INFO",
       "mode": "roster-pending",
       "family": "Chicago Open",
-      "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
-    },
-    {
-      "severity": "INFO",
-      "mode": "roster-pending",
-      "family": "George Washington Open",
       "message": "interim estimate \u2014 not in trained roster yet (pending verified registration timestamps)"
     },
     {

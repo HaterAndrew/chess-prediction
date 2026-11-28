@@ -16,6 +16,25 @@ META_COLS = ["family", "year", "regular_fee", "onsite_fee", "early_bird_fee",
              "early_bird_deadline", "start_date"]
 
 
+def test_chicago_blitz_takes_only_its_own_editions_flyer(tmp_path, monkeypatch):
+    meta_csv = _setup(tmp_path, monkeypatch, "2026-05-24")
+    meta = pd.read_csv(meta_csv)
+    meta["family"] = "Chicago Open Blitz"
+    meta["start_date"] = "2026-05-24"
+    meta.to_csv(meta_csv, index=False)
+    from fees.codes import FAMILY_TO_CODE
+    monkeypatch.setattr(merge_fees, "FAMILY_TO_CODE", FAMILY_TO_CODE)
+    fees = pd.read_csv(merge_fees.FEES_CSV)
+    fees["url"] = "https://www.chesstour.com/chiob26.htm"
+    fees["regular_fee"] = 40
+    fees["onsite_fee"] = 50
+    main = fees.assign(url="https://www.chesstour.com/chio26.htm", regular_fee=999)
+    next_season = fees.assign(url="https://www.chesstour.com/chiob27.htm", year=2027, regular_fee=777)
+    pd.concat([main, next_season, fees]).to_csv(merge_fees.FEES_CSV, index=False)
+    assert merge_fees.merge_fees(first_season=2026) == 1
+    assert pd.read_csv(meta_csv).iloc[0]["regular_fee"] == 40
+
+
 def _setup(tmp_path, monkeypatch, flyer_event_start):
     meta = pd.DataFrame([{
         "family": "TestFam", "year": 2026, "regular_fee": "", "onsite_fee": "",

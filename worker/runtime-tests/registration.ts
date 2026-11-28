@@ -70,7 +70,7 @@ export async function registrationRuntime(request: Request): Promise<Response | 
             eventId: String((active ? 0 : 5001) + start + i + 1), tourid: fields.get("tournment"),
             createdAt: '<span title="2026-11-01 12:00:00 UTC">2026-11-01 12:00:00<br />(GMT+00:00)</span>',
           })) });
-      });
+      }, 14); // Keep the leftover-request retry reachable with four-report reads.
     };
     const now = Date.parse("2026-11-10T00:40:00Z");
     const first = await collectRegistrations({ FINANCE_KV: kv, CHESS_ACTION_COOKIE: "session=synthetic" }, cards, now, makeClient());

@@ -216,20 +216,25 @@ def _fetch_entry_list(session, url):
     if urlsplit(url).path == '/tournaments/advance_entry_list.php':
         # CCA's per-event wrapper names its generated alphabetical list. Read
         # that strict same-site path without running the page's JavaScript.
-        paths = set(re.findall(
-            r'var\s+alpnewfilename\s*=\s*["\']'
-            r'(advlists/CCA/CCA_[A-Za-z0-9_]+/CCA_[A-Za-z0-9_]+_alp_n\.html)["\']',
-            resp.text,
-        ))
-        if len(paths) != 1:
+        declarations = re.findall(r'var\s+alpnewfilename\s*=\s*([^;\r\n]*)', resp.text)
+        if len(declarations) != 1:
             return None
-        return _fetch_entry_list(session, 'https://www.chessaction.com/tournaments/' + paths.pop())
+        path = re.fullmatch(
+            r'(["\'])(advlists/CCA/([A-Za-z0-9_]{1,80})/\3_alp_n\.html)\1\s*',
+            declarations[0],
+        )
+        if not path:
+            return None
+        return _fetch_entry_list(session, 'https://www.chessaction.com/tournaments/' + path.group(2))
     wd_match = _WD_PATTERN.search(resp.text)
     if wd_match:
         return ObservedCounts(int(wd_match.group(1)), int(wd_match.group(2)), resp.text)
     active_match = _ACTIVE_ONLY_PATTERN.search(resp.text)
     if active_match:
         return ObservedCounts(int(active_match.group(1)), None, resp.text)
+    if (re.search(r'>\s*No participants have been registered for this event yet\.\s*<', resp.text)
+            and not re.search(r'id=["\']#bname_\d+', resp.text)):
+        return ObservedCounts(0, 0, resp.text)
     return None
 
 
@@ -298,8 +303,9 @@ def scrape_withdrawals(tournaments):
 
         active, withdrawn = counts
         list_gross = active + (withdrawn or 0)
-        if not (_counts_agree(t['entry_count'], list_gross)
-                or _counts_agree(t['entry_count'], active)):
+        if ((list_gross == 0 and t['entry_count'] != 0)
+                or not (_counts_agree(t['entry_count'], list_gross)
+                        or _counts_agree(t['entry_count'], active))):
             logger.warning("Entry list %s shows %d entries but the CCA index shows %d for %s; "
                            "the page likely belongs to another event. Keeping the index count.",
                            url, list_gross, t['entry_count'], t['name'])
